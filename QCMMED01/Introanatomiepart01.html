@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اختبار الطالب</title>
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6fa;
+      color: #333;
+    }
+
+    .quiz-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .input-section {
+      margin: 20px 0;
+    }
+
+    .input-section label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .input-section input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background: linear-gradient(to right, #007bff, #0056b3);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px auto;
+      display: block;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    #question-container {
+      display: none;
+      margin: 20px 0;
+    }
+
+    .question-review {
+      margin: 15px 0;
+      padding: 15px;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .question-review.green {
+      background: #d4edda;
+      border: 2px solid #28a745;
+    }
+
+    .question-review.red {
+      background: #f8d7da;
+      border: 2px solid #dc3545;
+    }
+
+    .question-review.white {
+      background: #f9f9f9;
+      border: 2px solid #ddd;
+    }
+
+    .explain-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 10px;
+      font-size: 14px;
+      border-radius: 15px;
+      background: #007bff;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .explain-btn:hover {
+      background: #0056b3;
+      transform: scale(1.1);
+    }
+
+    .final-message {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .result-message {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .result-message.positive {
+      color: green;
+    }
+
+    .result-message.negative {
+      color: red;
+    }
+
+    .emoji {
+      font-size: 24px;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <header>
+      <h1>اختبار الطالب</h1>
+    </header>
+    <main id="start-section">
+      <div class="input-section">
+        <label for="student-name">ادخل اسمك:</label>
+        <input type="text" id="student-name" placeholder="اسمك هنا...">
+      </div>
+      <div class="input-section">
+        <label for="custom-time">اختر الزمن للأسئلة (بالثواني):</label>
+        <input type="number" id="custom-time" placeholder="إن لم تُدخل زمنًا سيتم تطبيق الزمن الافتراضي (30 ثانية)">
+      </div>
+      <button id="start-quiz">بدء الاختبار</button>
+    </main>
+
+    <main id="question-container">
+      <p>الوقت المتبقي: <span id="time-left">0</span> ثانية</p>
+      <h2 id="question-text">السؤال هنا...</h2>
+      <div id="options-container"></div>
+      <button id="next-button" style="display: none;">السؤال التالي</button>
+    </main>
+
+    <footer id="result-section">
+      <h2>النتيجة النهائية</h2>
+      <p>الطالب: <span id="student-result-name"></span></p>
+      <div id="results"></div>
+      <div class="final-message" id="final-message"></div>
+      <div class="result-message" id="result-message"></div>
+    </footer>
+  </div>
+
+  <!-- نافذة منبثقة للشرح -->
+  <div id="explanation-modal" class="modal">
+    <div class="modal-content">
+      <h3>الشرح</h3>
+      <p id="explanation-text">سيظهر الشرح هنا...</p>
+      <button onclick="closeExplanation()">إغلاق</button>
+    </div>
+  </div>
+
+  <script>
+
+
+    const questions = [
+      { 
+        text: "L'anatomie actuelle: ", 
+        options: [
+          "A Est surtout appliquée",
+          "B Est tout de même fondée sur la dissection du cadavre ",
+          "c Intègre la confection des images en 3D des organes du corps humain",
+          "D Intègre la dissection en 3D d'un homme virtuel ",
+          "E Est uniquement limitée à l'aspect descriptif ",
+           "A+B+C+D+E "
+
+        ], 
+        correct: 5,
+        explanation: " قريبا  " 
+      },
+ 
+
+
+
+
+
+
+    ];
+
+    let currentQuestionIndex = 0;
+    let timeLeft = 30;
+    let timerInterval;
+    let selectedAnswers = [];
+
+    const startSection = document.getElementById("start-section");
+    const questionContainer = document.getElementById("question-container");
+    const resultSection = document.getElementById("result-section");
+    const optionsContainer = document.getElementById("options-container");
+    const timeDisplay = document.getElementById("time-left");
+    const studentNameInput = document.getElementById("student-name");
+    const customTimeInput = document.getElementById("custom-time");
+    const startQuizButton = document.getElementById("start-quiz");
+    const nextButton = document.getElementById("next-button");
+    const resultsContainer = document.getElementById("results");
+    const studentResultName = document.getElementById("student-result-name");
+    const finalMessage = document.getElementById("final-message");
+    const explanationModal = document.getElementById("explanation-modal");
+    const explanationText = document.getElementById("explanation-text");
+
+    startQuizButton.addEventListener("click", startQuiz);
+
+    function startQuiz() {
+      const studentName = studentNameInput.value;
+      const customTime = customTimeInput.value ? parseInt(customTimeInput.value) : 30;
+
+      if (!studentName) {
+        alert("يرجى إدخال اسم الطالب.");
+        return;
+      }
+
+      startSection.style.display = "none";
+      questionContainer.style.display = "block";
+      studentResultName.textContent = studentName;
+      timeLeft = customTime;
+      startTimer();
+      showQuestion();
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timeDisplay.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          showResult();
+        }
+      }, 1000);
+    }
+
+    function showQuestion() {
+      const question = questions[currentQuestionIndex];
+      const questionText = document.getElementById("question-text");
+      questionText.textContent = question.text;
+
+      optionsContainer.innerHTML = "";
+      question.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.onclick = () => selectAnswer(index);
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function selectAnswer(answerIndex) {
+      selectedAnswers[currentQuestionIndex] = answerIndex;
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        showQuestion();
+      } else {
+        clearInterval(timerInterval);
+        showResult();
+      }
+    }
+
+    function showResult() {
+      questionContainer.style.display = "none";
+      resultSection.style.display = "block";
+
+      questions.forEach((question, idx) => {
+        const userAnswer = selectedAnswers[idx];
+        const correctAnswer = question.correct;
+
+        const resultDiv = document.createElement("div");
+        resultDiv.className = "question-review " + (userAnswer === correctAnswer ? "green" : "red");
+
+        resultDiv.innerHTML = `
+          <p><strong>السؤال:</strong> ${question.text}</p>
+          <p><strong>إجابتك:</strong> ${userAnswer !== undefined ? question.options[userAnswer] : "لم تجب"}</p>
+          <p><strong>الإجابة الصحيحة:</strong> ${question.options[correctAnswer]}</p>
+          <button class="explain-btn" onclick="showExplanation('${question.explanation}')">عرض الشرح</button>
+        `;
+
+        resultsContainer.appendChild(resultDiv);
+      });
+
+      const score = selectedAnswers.reduce((acc, ans, idx) => acc + (ans === questions[idx].correct ? 1 : 0), 0);
+      const percentage = (score / questions.length) * 100;
+
+      finalMessage.textContent = percentage >= 60 ? "أحسنت!" : "حاول مرة أخرى!";
+    }
+
+    function showExplanation(text) {
+      explanationText.textContent = text;
+      explanationModal.classList.add("active");
+    }
+
+    function closeExplanation() {
+      explanationModal.classList.remove("active");
+    }
+  </script>
+</body>
+</html>
