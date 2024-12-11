@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr"> <!-- تغيير dir إلى ltr هنا للغة الفرنسية -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اختبار تفاعلي</title>
+  <style>
+    /* إعدادات عامة */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+      direction: ltr;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #0056b3;
+    }
+
+    .timer-container {
+      background-color: #343a40;
+      padding: 10px 0;
+      text-align: center;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .duration-select {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .question-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      flex: 1;
+      padding-right: 20px;
+    }
+
+    .options {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .options li {
+      padding: 10px;
+      background-color: #f0f0f0;
+      margin: 5px 0;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    .options li.selected {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .options li.correct {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .options li.incorrect {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .options li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .results {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .question-review {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .question-review.green {
+      background-color: #28a745;
+    }
+
+    .question-review.red {
+      background-color: #dc3545;
+    }
+
+    .explain-btn {
+      background-color: #ffc107;
+      color: #333;
+      padding: 8px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .explain-btn:hover {
+      background-color: #e0a800;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.3s ease;
+    }
+
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-content {
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .close-btn {
+      background: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .close-btn:hover {
+      background: #b02a37;
+    }
+
+  </style>
+</head>
+
+
+
+
+<body>
+  <header>
+    <br>
+    <br>  <br>  <br>
+    <h1>اختبار تفاعلي</h1>
+  </header>
+
+  <!-- حاوية الوقت العلوي -->
+  <div class="timer-container">
+    الوقت المتبقي: <span id="timer">00:00</span>
+  </div>
+
+  <div class="container">
+    <div class="duration-select">
+      <label for="duration">أدخل مدة الاختبار (بالدقائق): </label>
+      <input type="number" id="custom-duration" name="custom-duration" min="1" max="60" value="10" />
+      <button class="btn" onclick="startQuiz()">ابدأ الاختبار</button>
+    </div>
+
+    <div id="question-container" style="display: none;"></div>
+
+    <div id="result-section" style="display: none;">
+      <h2>النتيجة</h2>
+      <div id="results-container"></div>
+      <p id="final-message"></p>
+      <p id="total-time-message"></p>
+      <button class="btn" onclick="restartQuiz()">إعادة الاختبار</button>
+      <button class="btn" onclick="window.location.href='MED02.html';">الخروج</button>
+
+    </div>
+  </div>
+
+
+  
+
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!-- نافذة منبثقة للشرح -->
+  <div id="explanation-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeExplanation()">إغلاق</button>
+      <h3 class="modal-title">الشرح</h3>
+      <div class="modal-body" id="explanation-text"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+
+
+
+
+
+ 
+
+//QES-01
+
+
+
+  {
+  text: "<span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>QCM N°54 U1 2024</span>   <span style='color:red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;'>ANNABA</span>  <br> <br> L'observation microscopique d'une artère montre une intima assez épaisse, média riche en fibres élastiques avec absence de la limitante élastique externe", 
+
+  options: [ "A &nbsp; &nbsp; &nbsp;  Artère dispositif de bloc ", "B   &nbsp; &nbsp; &nbsp;  Le tronc brachio-céphalique"  ,"C &nbsp; &nbsp; &nbsp;  L'artère fémorale" ,"D   &nbsp; &nbsp; &nbsp;    Artère cérébrale", "E  &nbsp; &nbsp; &nbsp;    Artère radiale" ], 
+  
+  correct: [1],  
+ 
+  explanation: "<span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>الشروحات القصيرة</span>  <br><br><br><br> A &nbsp; &nbsp; &nbsp; Artère à dispositif de bloc: Ces artères présentent des caractéristiques spécifiques liées à leur fonction de régulation du flux sanguin.<br><br><br><br> C &nbsp; &nbsp; &nbsp; Artère fémorale: C'est une artère musculaire, avec une média riche en cellules musculaires lisses et moins de fibres élastiques.<br><br><br><br> D &nbsp; &nbsp; &nbsp; Artère cérébrale: Principalement une artère musculaire, bien qu'elle puisse présenter des caractéristiques élastiques selon son segment.<br><br><br><br> E &nbsp; &nbsp; &nbsp; Artère radiale: Une artère musculaire de moyen calibre.<br><br><br><br> <span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>الشروحات</span>  <br><br> <br><br> A &nbsp; &nbsp; &nbsp; &nbsp; les artères à dispositif de bloc : جهاز انسداد الشرايين <br> الذي ينتمي الى  نوع الشرايين الغير نمطية Artere Atypiaque <br> *les artères à dispositif de bloc : جهاز انسداد الشرايين <br>- Les fibres musculaires lisses de la paroi forment des anneaux qui contrôlent et peuvent fermer la lumière du vaisseau, intervenant ainsi dans la régulation du débit artériel (artères cardiaques, rénales et pulmonaires), dans les phénomènes d'érection (pénis, mamelon) et dans la menstruation (artères utérines).<br> تشكل ألياف العضلات الملساء الموجودة في الجدار حلقات تتحكم في تجويف الوعاء الدموي ويمكن أن تغلقه، وبالتالي تتدخل في تنظيم تدفق الشرايين (الشرايين القلبية والكلوية والرئوية)، وفي ظواهر الانتصاب (القضيب والحلمة) وفي الحيض ( شرايين الرحم).<br><br>- Les artères coronaires présentent une musculature striée de type cardiaque.<br> تحتوي الشرايين التاجية على عضلات قلبية مخططة.<br><br>لنأخذ ظاهرة الانتصاب كمثال <br><br><b>اللغة العربية:</b><br> يحدث الانتصاب نتيجة سلسلة من التفاعلات الفسيولوجية. تبدأ العملية بإرسال الجهاز العصبي الباراسمبتاوي إشارات عصبية إلى القضيب استجابةً للإثارة الجنسية. هذه الإشارات تحفز خلايا العضلات الملساء في جدران الشرايين القضيبية لإنتاج مادة كيميائية تسمى cGMP. يؤدي ارتفاع مستوى cGMP إلى استرخاء هذه العضلات، مما يسمح بتدفق كمية كبيرة من الدم إلى الأجسام الكهفية في القضيب. في الوقت نفسه، تنقبض العضلات العاصرة في قاعدة القضيب، مما يمنع خروج الدم. هذا الازدياد في تدفق الدم وانسداد الوريد يسبب الانتصاب.<br>عند انتهاء الإثارة الجنسية، يتم تحطيم cGMP بواسطة إنزيم يسمى PDE5، مما يؤدي إلى انقباض العضلات الملساء وتدفق الدم خارج القضيب، وبالتالي يعود القضيب إلى حالته الطبيعية.<br><br><b>اللغة الإنجليزية:</b><br> An erection occurs as a result of a series of physiological reactions. The process begins when the parasympathetic nervous system sends nerve signals to the penis in response to sexual stimulation. These signals stimulate the smooth muscle cells in the walls of the penile arteries to produce a chemical called cGMP. The increased level of cGMP causes these muscles to relax, allowing a large amount of blood to flow into the corpora cavernosa of the penis. Simultaneously, the sphincter muscles at the base of the penis contract, preventing blood from flowing out. This increased blood flow and venous occlusion causes an erection. When sexual stimulation ends, cGMP is broken down by an enzyme called PDE5, causing the smooth muscles to contract and blood to flow out of the penis, thus returning the penis to its flaccid state.<br><br><b>اللغة الفرنسية:</b><br>Une érection se produit à la suite d'une série de réactions physiologiques. Le processus commence lorsque le système nerveux parasympathique envoie des signaux nerveux au pénis en réponse à une stimulation sexuelle. Ces signaux stimulent les cellules musculaires lisses des parois des artères péniennes à produire une substance chimique appelée cGMP. L'augmentation du niveau de cGMP provoque le relâchement de ces muscles, permettant à une grande quantité de sang de s'écouler dans les corps caverneux du pénis. Simultanément, les muscles sphinctériens à la base du pénis se contractent, empêchant le sang de sortir. Cette augmentation du flux sanguin et l'occlusion veineuse provoquent une érection. Lorsque la stimulation sexuelle cesse, le cGMP est décomposé par une enzyme appelée PDE5, ce qui entraîne la contraction des muscles lisses et l'écoulement du sang hors du pénis, ramenant ainsi le pénis à son état flasque. <br><br><b>المصطلحات الطبية:</b><br>• الجهاز العصبي الباراسمبتاوي: جزء من الجهاز العصبي اللاإرادي.<br>• cGMP: غوانوسين أحادي الفوسفات الدوري.<br>• الأجسام الكهفية: أنسجة إسفنجية في القضيب تمتلئ بالدم أثناء الانتصاب.<br>• العضلات العاصرة: عضلات دائرية الشكل تعمل كصمامات.<br>• PDE5: فوسفوديستراز نوع 5.<br><br>كيف يؤدي استرخاء العضلات إلى تدفق كمية كبيرة من الدم؟<br>تخيل أن الشريان هو أنبوب مملوء بالماء. عندما تنقبض العضلات حول هذا الأنبوب (الشريان)، تضيق فتحة الأنبوب ويقل تدفق الماء (الدم). والعكس صحيح، عندما تسترخي هذه العضلات، تتسع فتحة الأنبوب ويزداد تدفق الماء."},
+
+
+
+
+//QES-02
+
+
+  { 
+
+    text: "L'observation microscopique d'une artère montre, une intima fine, media riche en fibres musculaires avec présence de deux limitantes élastiques interne et externe, s'agit-il ?", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;  L'aorte ", "B   &nbsp; &nbsp; &nbsp;  Le tronc brachio-céphalique"  ,"C &nbsp; &nbsp; &nbsp;  L'artère fémcrale" ,"D   &nbsp; &nbsp; &nbsp;    Artère cérébrale", "E  &nbsp; &nbsp; &nbsp;    Artère pulmonaire" ], 
+    correct: [2],  
+    explanation: "A &nbsp; &nbsp; &nbsp; Artère à dispositif de bloc: Ces artères présentent des caractéristiques spécifiques liées à leur fonction de régulation du flux sanguin.<br><br> C &nbsp; &nbsp; &nbsp; Artère fémorale: C'est une artère musculaire, avec une média riche en cellules musculaires lisses et moins de fibres élastiques.<br><br> D &nbsp; &nbsp; &nbsp; Artère cérébrale: Principalement une artère musculaire, bien qu'elle puisse présenter des caractéristiques élastiques selon son segment.<br><br> E &nbsp; &nbsp; &nbsp; Artère radiale: Une artère musculaire de moyen calibre."},
+  
+
+
+
+//QES0-03
+
+  { 
+
+
+    text: "La couche sous endothéllale des artères est constituée par: ", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;  Un tissu conjonctif d'épaisseur variable ", "B   &nbsp; &nbsp; &nbsp;  Une proportion variable de fibres musculaires lisses, de fibres élastiques et de fibres de collagène "  ,"C &nbsp; &nbsp; &nbsp;  Un tissu adipaux" ,"D   &nbsp; &nbsp; &nbsp;    Un tissu nodal", "E  &nbsp; &nbsp; &nbsp;    Un tissu lymphoide " ], 
+    correct: [0],  
+    explanation: "قريبا"
+  },
+  
+
+//QES0-04
+
+  { 
+    text: "La classification des artères: ", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;   Dépend de la composition de la média ", "B   &nbsp; &nbsp; &nbsp;   Dépend de l'épaisseur de la paroi artérielle "  ,"C &nbsp; &nbsp; &nbsp;   Les arteres cérébrales comme artères typiques" ,"D   &nbsp; &nbsp; &nbsp;  Les artères coronaires corime artères de distribution", "E  &nbsp; &nbsp; &nbsp;    Présence ou non d'une limitante élastique dans la paroi " ], 
+    correct: [0],  
+    explanation: "قريبا"
+  },
+  
+
+
+
+//QES0-05
+
+
+
+  { 
+    text: "A propos de l'artère élastique:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;   Elle dérive du mésenchyme extra-embryonnaire ", "B   &nbsp; &nbsp; &nbsp;   Contribue à la distribution du sang vers les organes "  ,"C &nbsp; &nbsp; &nbsp;    Ses trois couches bien délimitées par des limitantes élastiques bien visibles" ,"D   &nbsp; &nbsp; &nbsp;  Sa paroi est irriguée par vasa vasorum de l'adventice", "E  &nbsp; &nbsp; &nbsp;  Le monoxyde d'azote a un effet vasodilacateur sur sa paroi   " ], 
+    correct: [4],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+
+ 
+
+
+//QES0-06
+
+
+  { 
+    text: "Au niveau de l'artère musculaire:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;   L'intima est vascularisée et subdivisée en 4 plans ", "B   &nbsp; &nbsp; &nbsp;   Les composants élastiques et musculaires sont présents à part égale dans la média "  ,"C &nbsp; &nbsp; &nbsp; Les cellules rameuses forment des couches concentriques au niveau de la média" ,"D   &nbsp; &nbsp; &nbsp;   La limitante élastique externe manque dans les petites artères musculaires  ", "E  &nbsp; &nbsp; &nbsp;  Le tonus musculaire de la parol contribue à la conduction du sang sous haute pression","F  &nbsp; &nbsp; &nbsp;  A+C  " ," G &nbsp; &nbsp; &nbsp;  A+B","H  &nbsp; &nbsp; &nbsp;  D+E  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; C+D" ], 
+    correct: [3],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+
+
+//QES0-07
+
+
+{ 
+    text: "A propos de l'endothélium:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;    lappartient à la media des artères ", "B   &nbsp; &nbsp; &nbsp;   Les cellules endotheliales sont cubiques "  ,"C &nbsp; &nbsp; &nbsp; C'est un épithélium pavimenteux simple" ,"D   &nbsp; &nbsp; &nbsp;   Le noyau des cellules endotheliales bombe dans la lumière  ", "E  &nbsp; &nbsp; &nbsp;  Il est absent au niveau des artères élastiques","F  &nbsp; &nbsp; &nbsp;  A+C  " ," G &nbsp; &nbsp; &nbsp;  A+B","H  &nbsp; &nbsp; &nbsp;  D+E  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; C+D" ], 
+    correct: [8],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+
+//QES0-08
+
+
+{ 
+    text: "La couche sous endothéliale des artères est constituée par:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;    Un tissu conjonctif d'épaisseur variable", "B   &nbsp; &nbsp; &nbsp;   Une proportion variable de fibres musculaires lisses, de fibres élastiques et de fibres de collagène "  ,"C &nbsp; &nbsp; &nbsp;  Un tissu nodal  " ,"D   &nbsp; &nbsp; &nbsp;    Un tissu nodal", "E  &nbsp; &nbsp; &nbsp;   Un tissu lymphoïde" ], 
+    correct: [0],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+//QES0-09       
+
+{ 
+    text: "  J'observe une coupe d'une paroi vasculaire au microscope, que vois-je ?", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp; Des fibres de collagène ", "B   &nbsp; &nbsp; &nbsp;   Des fibres élastiques "  ,"C &nbsp; &nbsp; &nbsp;  Cette paroi est uniquement conjonctive" ,"D   &nbsp; &nbsp; &nbsp;   Cette paroi comprend un építhélium de revêtement", "E  &nbsp; &nbsp; &nbsp;  On voit des cellules pavimenteuses","F  &nbsp; &nbsp; &nbsp;  A+C  " ," G &nbsp; &nbsp; &nbsp;  A+B+C","H  &nbsp; &nbsp; &nbsp;  A+D+E  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; A+B+D+E" ], 
+    correct: [8],  
+    explanation: "قريبا"
+  },
+
+
+//QES0-10
+
+{ 
+    text: " Parmi les propositions suivantes relatives aux artères, quelle(s) est (sont) celle(s) qui est (sont) exacte(s)  ?", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp; Les artères cérébrales sont des artères de gros calibre avec une paroi qui est épaisse ", "B   &nbsp; &nbsp; &nbsp;   Les artères musculaires sont dépourvues de limitante élastique interne "  ,"C &nbsp; &nbsp; &nbsp; La proportion du tissu élastique diminue parallèlement au diametre des vaisseaux, tandis que la composante musculaire augmente" ,"D   &nbsp; &nbsp; &nbsp;    Les constituants élastiques, principalement au niveau des grosses artères, interviennent dans le maintien de la pression artérielle entre deux battements cardiaques ", "E  &nbsp; &nbsp; &nbsp;  E. Les constituants musculaires contrôlent le débit sanguin vers les différents tissus","F  &nbsp; &nbsp; &nbsp;  A+C  " ," G &nbsp; &nbsp; &nbsp;  A+B+C","H  &nbsp; &nbsp; &nbsp;  A+D+E  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; A+C+E" ], 
+    correct: [7],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+
+
+
+
+
+//QES0-11
+
+
+{ 
+    text: " Parmi les caractéristiques suivantes, quelle(s) est (sont) celle(s) qui s'applique (ut) aux artères élastiques? ", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;    L'intima est assez épaisse avec une couche conjonctive sous- endotheliale ", "B   &nbsp; &nbsp; &nbsp;   La limitante élastique interne est bien distincte des lames élastiques de la media"  ,"C &nbsp; &nbsp; &nbsp;   La media est épaisse et comporte plusieurs dizaines de couches de lames élastiques concentriques " ,"D   &nbsp; &nbsp; &nbsp;    L'adventice est relativement mince mais riche en fibres elastiques ", "E  &nbsp; &nbsp; &nbsp;  Elles comportent obligatoirement des vasa-vasorum et des fibres nerveuses","F  &nbsp; &nbsp; &nbsp;  A+B+C  " ," G &nbsp; &nbsp; &nbsp;  A+B+C+D","H  &nbsp; &nbsp; &nbsp;  A+B+C+E  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; A+C+D+E" ], 
+  correct: [8],  
+    explanation: "قريبا"
+  },
+
+
+
+
+//QES12
+
+{ 
+    text: "  A propos des artères:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp; Ce sont des vaisseaux qui conduisent le sang sous pression du crœur vers les capillaires ", "B   &nbsp; &nbsp; &nbsp;    L'endothelium qui tapisse l'intima est un épithélium prismatique simple "  ,"C &nbsp; &nbsp; &nbsp;  Elles présentent un aspect régulier et tonique lors de Pobservation en microscopie électronique" ,"D   &nbsp; &nbsp; &nbsp;    Leur structure varie avec le diamètre, avec réduction du tissu élastique vers l'amont", "E  &nbsp; &nbsp; &nbsp;  Toutes les propositions sont fausses","F  &nbsp; &nbsp; &nbsp;  A+C  " ," G &nbsp; &nbsp; &nbsp;  D+E","H  &nbsp; &nbsp; &nbsp;  B+E  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; C+E" ], 
+    correct: [6],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+
+
+//QES13
+
+{ 
+    text: "  Les artères de type élastique:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;  Correspondent aux artères de moyen calibre ", "B   &nbsp; &nbsp; &nbsp; Sont des vaisseaux de distribution "  ,"C &nbsp; &nbsp; &nbsp;   Possèdent une intima assez épaisse avec couche sous endotheliale" ,"D   &nbsp; &nbsp; &nbsp;    Présentent une média épaisse formée d'une dizaine de couches de lames élastiques", "E  &nbsp; &nbsp; &nbsp;  Leur adventice est épaisse et renferme des fibres élastiques","F  &nbsp; &nbsp; &nbsp;  A+C  " ," G &nbsp; &nbsp; &nbsp;  D+E","H  &nbsp; &nbsp; &nbsp;  C+D  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; C+E" ], 
+    correct: [8],  
+    explanation: "قريبا"
+  },
+
+
+
+//QES14
+
+{ 
+    text: "   Les vasa vasorum sont:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp; Des capillaires sanguins situés dans l'intima des vaisseaux sanguins  ", "B   &nbsp; &nbsp; &nbsp;  Des petits vaisseaux sanguins nourriciers situés dans la media des vaisseaux "  ,"C &nbsp; &nbsp; &nbsp;   Des vaisseaux nourriciers destinés à l'adventice et les deux ters externes de la média" ,"D   &nbsp; &nbsp; &nbsp;     De petits valsseaux sanguins nourriciers situés dans l'adventice des artères et des veines", "E  &nbsp; &nbsp; &nbsp;  Toutes ces propositions sont fausses","F  &nbsp; &nbsp; &nbsp;  A+C  " ," G &nbsp; &nbsp; &nbsp;  D+E","H  &nbsp; &nbsp; &nbsp;  C+D  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; C+E" ], 
+    correct: [8],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+
+
+//QES15
+
+{ 
+    text: "  Les artères de type musculaire:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp; Correspondent à la ramification des artères de gros calibre  ", "B   &nbsp; &nbsp; &nbsp;  Sont des vaisseaux de conduction "  ,"C &nbsp; &nbsp; &nbsp;   Leur intima est fine, faite d'un endothélium et d'une couche sous endotheliale" ,"D   &nbsp; &nbsp; &nbsp;     Leur média est plus ou moins épaisse, faite de cellules musculaires lisses à orientation circulaire", "E  &nbsp; &nbsp; &nbsp;   Toutes ces propositions sont fausses","F  &nbsp; &nbsp; &nbsp;  A+D  " ," G &nbsp; &nbsp; &nbsp;  D+E","H  &nbsp; &nbsp; &nbsp;  C+D  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; C+E" ], 
+    correct: [5],  
+    explanation: "قريبا"
+  },
+
+
+
+//QES16
+
+{ 
+    text: "    A propos des artères:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;    Sont des vaisseaux qui conduisent le sang sous pression du cœur vers les capillaires ", "B   &nbsp; &nbsp; &nbsp;   L'endothélium qui tapisse l'intima est un épithélium cubique simple"  ,"C &nbsp; &nbsp; &nbsp;   Leur diamètre augmente au fur et à mesure que l'on s'éloigne du coeur" ,"D   &nbsp; &nbsp; &nbsp;     Leur structure varie en fonction de leur diamètre avec réduction Leur diamètre augmente au fur et à mesure que l'on s'éloigne du cœur", "E  &nbsp; &nbsp; &nbsp;  Leur structure varie en fonction de leur diamètre avec réduction du tissu élastique vers l'aval","F  &nbsp; &nbsp; &nbsp;  A+E  " ," G &nbsp; &nbsp; &nbsp;  D+E","H  &nbsp; &nbsp; &nbsp;  C+D  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; C+E" ], 
+    correct: [5],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+//QES17
+
+{ 
+    text: "    Les artères de type élastique:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp; Correspondent aux artères de gros calibres", "B   &nbsp; &nbsp; &nbsp;   Sont des vaisseaux de conduction"  ,"C &nbsp; &nbsp; &nbsp;    Possèdent une intima assez épaisse avec une couche sous endotheliale" ,"D   &nbsp; &nbsp; &nbsp;    Leurs média est épaisse avec une dizaine de fibres musculaires", "E  &nbsp; &nbsp; &nbsp;   Leurs adventice est épaisse et renferme des fibres élastiques","F  &nbsp; &nbsp; &nbsp;  A+E  " ," G &nbsp; &nbsp; &nbsp;  D+E","H  &nbsp; &nbsp; &nbsp;  C+D  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; A+B+C" ], 
+    correct: [9],  
+    explanation: "قريبا"
+  },
+
+
+//QES18
+
+
+{ 
+    text: "    Les artères de type musculaire:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp; Correspondent à la ramification des artères de gros calibres", "B   &nbsp; &nbsp; &nbsp;   Sont des vaisseaux de conduction de la pression sanguine"  ,"C &nbsp; &nbsp; &nbsp;    Sont des vaisseaux de distribution" ,"D   &nbsp; &nbsp; &nbsp;    Leur intima est fine, faite d'un endothelium et d'une couche sous endotheliale", "E  &nbsp; &nbsp; &nbsp;   Leur média est plus au moins épaisse, faite de cellules musculaires lisses à orientation circulaire","F  &nbsp; &nbsp; &nbsp;  A+E  " ," G &nbsp; &nbsp; &nbsp;  D+E","H  &nbsp; &nbsp; &nbsp;  C+D  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; A+C+E" ], 
+    correct: [9],  
+    explanation: "قريبا"
+  },
+
+
+
+
+//QES19
+
+{ 
+    text: " Les vasa-vasorum sont:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;   Des capillaires sanguins situés dans l'intima des vaisseaux sanguins", "B   &nbsp; &nbsp; &nbsp;   Sont des vaisseaux de conduction de la pression sanguine"  ,"C &nbsp; &nbsp; &nbsp;    Des vaisseaux nourriciers destiné à l'adventice et les deux tiers externes de la média" ,"D   &nbsp; &nbsp; &nbsp;    Des petits vaisseaux sanguins nourriciers situés dans l'adventice des artères et des veines", "E  &nbsp; &nbsp; &nbsp;   Toutes ses propositions sont fausses","F  &nbsp; &nbsp; &nbsp;  A+E  " ," G &nbsp; &nbsp; &nbsp;  D+E","H  &nbsp; &nbsp; &nbsp;  B+D  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; C+D" ], 
+    correct: [9],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//QES20
+
+{ 
+    text: " Les artères:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;    Ont des vaisseaux qui conduisent le sang sous pression des capillaires vers le cœur. ", "B   &nbsp; &nbsp; &nbsp;   Leur paroi est formée d'une intima, media et une adventice."  ,"C &nbsp; &nbsp; &nbsp;     Elles présentent un aspect régulier et tonique au microscope électronique." ,"D   &nbsp; &nbsp; &nbsp;     Leur diamètre augmente au fur et à mesure que l'on s'éloigne du cœur", "E  &nbsp; &nbsp; &nbsp;   Leur structure varie en fonction de leur diamètre avec réduction du tissu élastique vers l'aval.","F  &nbsp; &nbsp; &nbsp;  A+E  " ," G &nbsp; &nbsp; &nbsp;  D+E","H  &nbsp; &nbsp; &nbsp;  B+D  "  ,"I &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; B+C+E" ], 
+    correct: [9],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+
+//QES21
+
+{ 
+    text: "  Les artères de type élastique:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;   Correspondent aux artères de petit calibre.", "B   &nbsp; &nbsp; &nbsp;  Sont des vaisseaux de conduction."  ,"C &nbsp; &nbsp; &nbsp;      Possèdent une intima assez épaisse sans couche sous endotheliale." ,"D   &nbsp; &nbsp; &nbsp;      Leur média est mince avec deux couches de fibras élastiques", "E  &nbsp; &nbsp; &nbsp;   Leur adventice est épaisse et renferme des fibres élastiques."], 
+    correct: [1],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+//QES22
+
+{ 
+    text: "  Les artères de type musculaire:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;   Correspondent aux artères de gros calibre.", "B   &nbsp; &nbsp; &nbsp;  Sont des vaisseaux de conduction de la pression sanguine."  ,"C &nbsp; &nbsp; &nbsp;     Sont des vaisseaux de distribution." ,"D   &nbsp; &nbsp; &nbsp;       Leur intima est Epaisse.", "E  &nbsp; &nbsp; &nbsp;   Leur media est plus au moins Epaisse faite de cellules musculaires striées."], 
+    correct: [2],  
+    explanation: "قريبا"
+  },
+
+
+
+
+//QES23
+
+{ 
+    text: " Les vasa vasorum constituent:", 
+
+    options: [ "A &nbsp; &nbsp; &nbsp;  Sont des capillaires sanguins situés dans l'intima des vaisseaux sanguins.", "B   &nbsp; &nbsp; &nbsp;   Sont de petits vaisseaux sanguins nourriciers situés dans la media des vaisseaux."  ,"C &nbsp; &nbsp; &nbsp;     Des vaisseaux sanguins nourriciers situés seulement dans l'adventice des veines." ,"D   &nbsp; &nbsp; &nbsp;     De petits vaisseaux sanguins nourriciers situés dans l'adventice des artères et des veines.", "E  &nbsp; &nbsp; &nbsp;    Irriguent l'adventice et les deux tiers internes de la media."], 
+    correct: [3],  
+    explanation: "قريبا"
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+  { 
+    text: "ما هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم؟", 
+    options: ["الإنجيل", "التوراة", "القرآن", "الزبور"], 
+    correct: [2],  
+    explanation: "القرآن الكريم هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم."
+  },
+  { 
+    text: "ما هو عدد ركعات صلاة الفجر؟", 
+    options: ["ركعتين", "أربع ركعات", "ثلاث ركعات", "ركعة واحدة"], 
+    correct: [0],  
+    explanation: "صلاة الفجر تتكون من ركعتين."
+  },
+  { 
+    text: "في أي عام هجري ولد النبي محمد صلى الله عليه وسلم؟", 
+    options: ["عام 570", "عام 510", "عام 590", "عام 600"], 
+    correct: [0],  
+    explanation: "النبي محمد صلى الله عليه وسلم وُلد في عام 570 ميلادي."
+  },
+  { 
+    text: "ما هو اسم أطول سورة في القرآن؟", 
+    options: ["سورة البقرة", "سورة آل عمران", "سورة النحل", "سورة الفاتحة"], 
+    correct: [0],  
+    explanation: "سورة البقرة هي أطول سورة في القرآن."
+  }
+
+
+    ];
+
+    let currentQuestionIndex = 0;
+    let selectedAnswers = [];
+    let timer;
+    let timeLeft;
+    let totalTime = 0;
+    let quizDuration = 0;
+
+    const questionContainer = document.getElementById("question-container");
+    const resultSection = document.getElementById("result-section");
+    const resultsContainer = document.getElementById("results-container");
+    const finalMessage = document.getElementById("final-message");
+    const totalTimeMessage = document.getElementById("total-time-message");
+    const timerElement = document.getElementById("timer");
+
+    function startQuiz() {
+      quizDuration = parseInt(document.getElementById("custom-duration").value) * 60; // تحويل الدقائق إلى ثوانٍ
+      currentQuestionIndex = 0;
+      selectedAnswers = [];
+      totalTime = 0;
+      document.querySelector('.duration-select').style.display = "none";
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const question = questions[currentQuestionIndex];
+      questionContainer.innerHTML = `
+        <div class="question">
+          <p><strong>${question.text}</strong></p>
+          <ul class="options">
+            ${question.options.map((option, index) => `
+              <li class="option" onclick="toggleSelection(${index})">${option}</li>
+            `).join('')}
+          </ul>
+        </div>
+        <button class="btn" onclick="submitAnswer()">إرسال</button>
+      `;
+      questionContainer.style.display = "block";
+      startTimer();
+    }
+
+    function toggleSelection(optionIndex) {
+      const question = questions[currentQuestionIndex];
+      const options = document.querySelectorAll(".options li");
+
+      options.forEach((option, index) => {
+        option.classList.remove("selected");
+      });
+
+      options[optionIndex].classList.add("selected");
+      selectedAnswers[currentQuestionIndex] = optionIndex;
+    }
+
+    function submitAnswer() {
+      const selectedOption = selectedAnswers[currentQuestionIndex];
+      const question = questions[currentQuestionIndex];
+
+      const options = document.querySelectorAll(".options li");
+      if (selectedOption !== undefined) {
+        options[selectedOption].classList.add(question.correct.includes(selectedOption) ? "correct" : "incorrect");
+      }
+      
+      currentQuestionIndex++;
+      totalTime = quizDuration - timeLeft;
+      if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+      } else {
+        displayResults();
+      }
+    }
+
+    function startTimer() {
+      timeLeft = quizDuration;
+      timer = setInterval(function() {
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          displayResults();
+        } else {
+          timeLeft--;
+          timerElement.innerText = formatTime(timeLeft);
+        }
+      }, 1000);
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secondsRemaining = seconds % 60;
+      return `${String(minutes).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+    }
+
+    function displayResults() {
+      questionContainer.style.display = "none";
+      resultSection.style.display = "block";
+      let correctAnswersCount = 0;
+
+      questions.forEach((question, index) => {
+        const isCorrect = question.correct.includes(selectedAnswers[index]);
+        const reviewClass = isCorrect ? "green" : "red";
+        const reviewText = isCorrect ? "إجابة صحيحة" : "إجابة خاطئة";
+
+        resultsContainer.innerHTML += `
+          <div class="question-review ${reviewClass}">
+            <p><strong>${question.text}</strong></p>
+            <p>${reviewText}</p>
+            <button class="explain-btn" onclick="showExplanation(${index})">عرض الشرح</button>
+          </div>
+        `;
+        if (isCorrect) {
+          correctAnswersCount++;
+        }
+      });
+
+      finalMessage.innerText = `لقد أجبت على ${correctAnswersCount} من ${questions.length} أسئلة بشكل صحيح.`;
+      totalTimeMessage.innerText = `الوقت المستغرق: ${formatTime(totalTime)}`;
+    }
+
+    function showExplanation(index) {
+  const explanationModal = document.getElementById("explanation-modal");
+  const explanationText = document.getElementById("explanation-text");
+  explanationText.innerHTML = questions[index].explanation; // استخدام innerHTML بدلاً من innerText لعرض أكواد HTML مثل <br>
+  explanationModal.classList.add("active");
+}
+
+
+    function closeExplanation() {
+      const explanationModal = document.getElementById("explanation-modal");
+      explanationModal.classList.remove("active");
+    }
+    
+    function restartQuiz() {
+      location.reload();
+    }
+
+    function exitQuiz() {
+      window.location.href = "https://www.google.com";
+    }
+  </script>
+</body>
+</html>
