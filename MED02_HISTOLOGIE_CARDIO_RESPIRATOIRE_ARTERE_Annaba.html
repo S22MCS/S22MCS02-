@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr"> <!-- تغيير dir إلى ltr هنا للغة الفرنسية -->
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>اختبار تفاعلي</title>
+  <title>اختبار تفاعلي</title>     
   <style>
     /* إعدادات عامة */
     body {
@@ -45,20 +45,38 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .duration-select {
+    .question-container {
+      display: flex;
+      flex-direction: column;
       margin-bottom: 20px;
+    }
+
+    /* إطار خاص بالصورة */
+    .image-frame {
+      background-color: #e9ecef;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
 
-    .question-container {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
+    .image-frame img {
+      max-width: 300px; /* تحديد الحجم المثالي للصورة */
+      height: auto;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .image-frame img:hover {
+      transform: scale(1.05);
     }
 
     .question {
-      flex: 1;
-      padding-right: 20px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     .options {
@@ -68,31 +86,35 @@
     }
 
     .options li {
-      padding: 10px;
+      padding: 15px;
       background-color: #f0f0f0;
       margin: 5px 0;
       cursor: pointer;
       border-radius: 4px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
     .options li.selected {
       background-color: #007bff;
       color: white;
+      transform: scale(1.05);
     }
 
     .options li.correct {
       background-color: #28a745;
       color: white;
+      transform: scale(1.05);
     }
 
     .options li.incorrect {
       background-color: #dc3545;
       color: white;
+      transform: scale(1.05);
     }
 
     .options li:hover {
       background-color: #e0e0e0;
+      transform: scale(1.02);
     }
 
     .btn {
@@ -193,24 +215,25 @@
 
   </style>
 </head>
-
-
-
-
 <body>
+
+  <br>
+    <br> 
   <header>
-    <br>
-    <br>  <br>  
-    <h1>اختبار تفاعلي</h1>
+    <h1>  اختبار  الشرايين في علم الانسجة  لطلبة سنة ثانية طب</h1>
   </header>
 
   <!-- حاوية الوقت العلوي -->
-  <div class="timer-container">
+
+  
+  <div  class="timer-container">
+ 
     الوقت المتبقي: <span id="timer">00:00</span>
   </div>
 
   <div class="container">
     <div class="duration-select">
+      &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
       <label for="duration">أدخل مدة الاختبار (بالدقائق): </label>
       <input type="number" id="custom-duration" name="custom-duration" min="1" max="60" value="10" />
       <button class="btn" onclick="startQuiz()">ابدأ الاختبار</button>
@@ -224,19 +247,10 @@
       <p id="final-message"></p>
       <p id="total-time-message"></p>
       <button class="btn" onclick="restartQuiz()">إعادة الاختبار</button>
-      <button class="btn" onclick="window.location.href='MED02.html';">الخروج</button>
+      <button class="btn" onclick="window.location.href='page2.html';">الخروج</button>
 
     </div>
   </div>
-
-
-  
-
-
-  <br>
-  <br>
-  <br>
- =
 
   <!-- نافذة منبثقة للشرح -->
   <div id="explanation-modal" class="modal">
@@ -249,16 +263,11 @@
 
   <script>
     const questions = [
-
-
-
-
-
+      
+       
  
 
 //QES-01
-
-
 
   { 
     text: "<span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>QCM N°53 U1 2024</span>   <span style='color:red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;'>ANNABA</span>  <br> <br> L'observation microscopique d'une artère montre une intima assez épaisse, média riche en fibres élastiques avec absence de la limitante élastique externe", 
@@ -267,17 +276,17 @@
   
   correct: [1],  
  
-  explanation: "<span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>الشروحات القصيرة</span>  <br><br><br><br> A &nbsp; &nbsp; &nbsp; Artère à dispositif de bloc: Ces artères présentent des caractéristiques spécifiques liées à leur fonction de régulation du flux sanguin.<br><br><br><br> C &nbsp; &nbsp; &nbsp; Artère fémorale: C'est une artère musculaire, avec une média riche en cellules musculaires lisses et moins de fibres élastiques.<br><br><br><br> D &nbsp; &nbsp; &nbsp; Artère cérébrale: Principalement une artère musculaire, bien qu'elle puisse présenter des caractéristiques élastiques selon son segment.<br><br><br><br> E &nbsp; &nbsp; &nbsp; Artère radiale: Une artère musculaire de moyen calibre.<br><br><br><br> <span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>الشروحات</span>  <br><br> <br><br> A &nbsp; &nbsp; &nbsp; &nbsp; les artères à dispositif de bloc : جهاز انسداد الشرايين <br> الذي ينتمي الى  نوع الشرايين الغير نمطية Artere Atypiaque <br> *les artères à dispositif de bloc : جهاز انسداد الشرايين <br>- Les fibres musculaires lisses de la paroi forment des anneaux qui contrôlent et peuvent fermer la lumière du vaisseau, intervenant ainsi dans la régulation du débit artériel (artères cardiaques, rénales et pulmonaires), dans les phénomènes d'érection (pénis, mamelon) et dans la menstruation (artères utérines).<br> تشكل ألياف العضلات الملساء الموجودة في الجدار حلقات تتحكم في تجويف الوعاء الدموي ويمكن أن تغلقه، وبالتالي تتدخل في تنظيم تدفق الشرايين (الشرايين القلبية والكلوية والرئوية)، وفي ظواهر الانتصاب (القضيب والحلمة) وفي الحيض ( شرايين الرحم).<br><br>- Les artères coronaires présentent une musculature striée de type cardiaque.<br> تحتوي الشرايين التاجية على عضلات قلبية مخططة.<br><br>لنأخذ ظاهرة الانتصاب كمثال <br><br><b>اللغة العربية:</b><br> يحدث الانتصاب نتيجة سلسلة من التفاعلات الفسيولوجية. تبدأ العملية بإرسال الجهاز العصبي الباراسمبتاوي إشارات عصبية إلى القضيب استجابةً للإثارة الجنسية. هذه الإشارات تحفز خلايا العضلات الملساء في جدران الشرايين القضيبية لإنتاج مادة كيميائية تسمى cGMP. يؤدي ارتفاع مستوى cGMP إلى استرخاء هذه العضلات، مما يسمح بتدفق كمية كبيرة من الدم إلى الأجسام الكهفية في القضيب. في الوقت نفسه، تنقبض العضلات العاصرة في قاعدة القضيب، مما يمنع خروج الدم. هذا الازدياد في تدفق الدم وانسداد الوريد يسبب الانتصاب.<br>عند انتهاء الإثارة الجنسية، يتم تحطيم cGMP بواسطة إنزيم يسمى PDE5، مما يؤدي إلى انقباض العضلات الملساء وتدفق الدم خارج القضيب، وبالتالي يعود القضيب إلى حالته الطبيعية.<br><br><b>اللغة الإنجليزية:</b><br> An erection occurs as a result of a series of physiological reactions. The process begins when the parasympathetic nervous system sends nerve signals to the penis in response to sexual stimulation. These signals stimulate the smooth muscle cells in the walls of the penile arteries to produce a chemical called cGMP. The increased level of cGMP causes these muscles to relax, allowing a large amount of blood to flow into the corpora cavernosa of the penis. Simultaneously, the sphincter muscles at the base of the penis contract, preventing blood from flowing out. This increased blood flow and venous occlusion causes an erection. When sexual stimulation ends, cGMP is broken down by an enzyme called PDE5, causing the smooth muscles to contract and blood to flow out of the penis, thus returning the penis to its flaccid state.<br><br><b>اللغة الفرنسية:</b><br>Une érection se produit à la suite d'une série de réactions physiologiques. Le processus commence lorsque le système nerveux parasympathique envoie des signaux nerveux au pénis en réponse à une stimulation sexuelle. Ces signaux stimulent les cellules musculaires lisses des parois des artères péniennes à produire une substance chimique appelée cGMP. L'augmentation du niveau de cGMP provoque le relâchement de ces muscles, permettant à une grande quantité de sang de s'écouler dans les corps caverneux du pénis. Simultanément, les muscles sphinctériens à la base du pénis se contractent, empêchant le sang de sortir. Cette augmentation du flux sanguin et l'occlusion veineuse provoquent une érection. Lorsque la stimulation sexuelle cesse, le cGMP est décomposé par une enzyme appelée PDE5, ce qui entraîne la contraction des muscles lisses et l'écoulement du sang hors du pénis, ramenant ainsi le pénis à son état flasque. <br><br><b>المصطلحات الطبية:</b><br>• الجهاز العصبي الباراسمبتاوي: جزء من الجهاز العصبي اللاإرادي.<br>• cGMP: غوانوسين أحادي الفوسفات الدوري.<br>• الأجسام الكهفية: أنسجة إسفنجية في القضيب تمتلئ بالدم أثناء الانتصاب.<br>• العضلات العاصرة: عضلات دائرية الشكل تعمل كصمامات.<br>• PDE5: فوسفوديستراز نوع 5.<br><br>كيف يؤدي استرخاء العضلات إلى تدفق كمية كبيرة من الدم؟<br>تخيل أن الشريان هو أنبوب مملوء بالماء. عندما تنقبض العضلات حول هذا الأنبوب (الشريان)، تضيق فتحة الأنبوب ويقل تدفق الماء (الدم). والعكس صحيح، عندما تسترخي هذه العضلات، تتسع فتحة الأنبوب ويزداد تدفق الماء."},
+  explanation: "<span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>الشروحات القصيرة</span>  <br><br><br><br> A &nbsp; &nbsp; &nbsp; Artère à dispositif de bloc: Ces artères présentent des caractéristiques spécifiques liées à leur fonction de régulation du flux sanguin.<br><br><br><br> C &nbsp; &nbsp; &nbsp; Artère fémorale: C'est une artère musculaire, avec une média riche en cellules musculaires lisses et moins de fibres élastiques.<br><br><br><br> D &nbsp; &nbsp; &nbsp; Artère cérébrale: Principalement une artère musculaire, bien qu'elle puisse présenter des caractéristiques élastiques selon son segment.<br><br><br><br> E &nbsp; &nbsp; &nbsp; Artère radiale: Une artère musculaire de moyen calibre.<br><br><br><br> <span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>الشروحات</span>  <br><br> <br><br> A &nbsp; &nbsp; &nbsp; &nbsp; les artères à dispositif de bloc : جهاز انسداد الشرايين <br> الذي ينتمي الى  نوع الشرايين الغير نمطية Artere Atypiaque <br> *les artères à dispositif de bloc : جهاز انسداد الشرايين <br>- Les fibres musculaires lisses de la paroi forment des anneaux qui contrôlent et peuvent fermer la lumière du vaisseau, intervenant ainsi dans la régulation du débit artériel (artères cardiaques, rénales et pulmonaires), dans les phénomènes d'érection (pénis, mamelon) et dans la menstruation (artères utérines).<br> تشكل ألياف العضلات الملساء الموجودة في الجدار حلقات تتحكم في تجويف الوعاء الدموي ويمكن أن تغلقه، وبالتالي تتدخل في تنظيم تدفق الشرايين (الشرايين القلبية والكلوية والرئوية)، وفي ظواهر الانتصاب (القضيب والحلمة) وفي الحيض ( شرايين الرحم).<br><br>- Les artères coronaires présentent une musculature striée de type cardiaque.<br> تحتوي الشرايين التاجية على عضلات قلبية مخططة.<br><br>لنأخذ ظاهرة الانتصاب كمثال <br><br><b>اللغة العربية:</b><br> يحدث الانتصاب نتيجة سلسلة من التفاعلات الفسيولوجية. تبدأ العملية بإرسال الجهاز العصبي الباراسمبتاوي إشارات عصبية إلى القضيب استجابةً للإثارة الجنسية. هذه الإشارات تحفز خلايا العضلات الملساء في جدران الشرايين القضيبية لإنتاج مادة كيميائية تسمى cGMP. يؤدي ارتفاع مستوى cGMP إلى استرخاء هذه العضلات، مما يسمح بتدفق كمية كبيرة من الدم إلى الأجسام الكهفية في القضيب. في الوقت نفسه، تنقبض العضلات العاصرة في قاعدة القضيب، مما يمنع خروج الدم. هذا الازدياد في تدفق الدم وانسداد الوريد يسبب الانتصاب.<br>عند انتهاء الإثارة الجنسية، يتم تحطيم cGMP بواسطة إنزيم يسمى PDE5، مما يؤدي إلى انقباض العضلات الملساء وتدفق الدم خارج القضيب، وبالتالي يعود القضيب إلى حالته الطبيعية.<br><br><b>اللغة الإنجليزية:</b><br> An erection occurs as a result of a series of physiological reactions. The process begins when the parasympathetic nervous system sends nerve signals to the penis in response to sexual stimulation. These signals stimulate the smooth muscle cells in the walls of the penile arteries to produce a chemical called cGMP. The increased level of cGMP causes these muscles to relax, allowing a large amount of blood to flow into the corpora cavernosa of the penis. Simultaneously, the sphincter muscles at the base of the penis contract, preventing blood from flowing out. This increased blood flow and venous occlusion causes an erection. When sexual stimulation ends, cGMP is broken down by an enzyme called PDE5, causing the smooth muscles to contract and blood to flow out of the penis, thus returning the penis to its flaccid state.<br><br><b>اللغة الفرنسية:</b><br>Une érection se produit à la suite d'une série de réactions physiologiques. Le processus commence lorsque le système nerveux parasympathique envoie des signaux nerveux au pénis en réponse à une stimulation sexuelle. Ces signaux stimulent les cellules musculaires lisses des parois des artères péniennes à produire une substance chimique appelée cGMP. L'augmentation du niveau de cGMP provoque le relâchement de ces muscles, permettant à une grande quantité de sang de s'écouler dans les corps caverneux du pénis. Simultanément, les muscles sphinctériens à la base du pénis se contractent, empêchant le sang de sortir. Cette augmentation du flux sanguin et l'occlusion veineuse provoquent une érection. Lorsque la stimulation sexuelle cesse, le cGMP est décomposé par une enzyme appelée PDE5, ce qui entraîne la contraction des muscles lisses et l'écoulement du sang hors du pénis, ramenant ainsi le pénis à son état flasque. <br><br><b>المصطلحات الطبية:</b><br>• الجهاز العصبي الباراسمبتاوي: جزء من الجهاز العصبي اللاإرادي.<br>• cGMP: غوانوسين أحادي الفوسفات الدوري.<br>• الأجسام الكهفية: أنسجة إسفنجية في القضيب تمتلئ بالدم أثناء الانتصاب.<br>• العضلات العاصرة: عضلات دائرية الشكل تعمل كصمامات.<br>• PDE5: فوسفوديستراز نوع 5.<br><br>كيف يؤدي استرخاء العضلات إلى تدفق كمية كبيرة من الدم؟<br>تخيل أن الشريان هو أنبوب مملوء بالماء. عندما تنقبض العضلات حول هذا الأنبوب (الشريان)، تضيق فتحة الأنبوب ويقل تدفق الماء (الدم). والعكس صحيح، عندما تسترخي هذه العضلات، تتسع فتحة الأنبوب ويزداد تدفق الماء.",
 
 
-
+   },
 
 //QES-02
 
 
   { 
 
-    text: "<span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>QCM N°29 U1 2023</span>   <span style='color:red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;'>ANNABA</span>  <br> <br>     L'observation microscopique d'une artère montre, une intima fine, media riche en fibres musculaires avec présence de deux limitantes élastiques interne et externe, s'agit-il ?", 
+  text: "<span style='color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;'>QCM N°29 U1 2023</span>   <span style='color:red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;'>ANNABA</span>  <br> <br>     L'observation microscopique d'une artère montre, une intima fine, media riche en fibres musculaires avec présence de deux limitantes élastiques interne et externe, s'agit-il ?", 
 
     options: [ "A &nbsp; &nbsp; &nbsp;  L'aorte ", "B   &nbsp; &nbsp; &nbsp;  Le tronc brachio-céphalique"  ,"C &nbsp; &nbsp; &nbsp;  L'artère fémorale" ,"D   &nbsp; &nbsp; &nbsp;    Artère cérébrale", "E  &nbsp; &nbsp; &nbsp;    Artère pulmonaire" ], 
     correct: [2],  
@@ -598,17 +607,6 @@
   },
 
 
-
-
-
-
-
-
-
-
-
-
-
   { 
     text: "ما هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم؟", 
     options: ["الإنجيل", "التوراة", "القرآن", "الزبور"], 
@@ -635,8 +633,10 @@
   }
 
       
-  ];
-let currentQuestionIndex = 0;
+  
+    ];
+
+    let currentQuestionIndex = 0;
     let selectedAnswers = [];
     let timer;
     let timeLeft;
@@ -787,60 +787,3 @@ let currentQuestionIndex = 0;
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
