@@ -634,10 +634,9 @@
     explanation: "سورة البقرة هي أطول سورة في القرآن."
   }
 
-
-    ];
-
-    let currentQuestionIndex = 0;
+      
+  ];
+let currentQuestionIndex = 0;
     let selectedAnswers = [];
     let timer;
     let timeLeft;
@@ -652,8 +651,7 @@
     const timerElement = document.getElementById("timer");
 
     function startQuiz() {
-      quizDuration = parseInt(document.getElementById("custom-duration").value) * 60; // تحويل الدقائق إلى ثوانٍ
-      currentQuestionIndex = 0;
+      quizDuration = parseInt(document.getElementById("custom-duration").value) * 60;
       selectedAnswers = [];
       totalTime = 0;
       document.querySelector('.duration-select').style.display = "none";
@@ -663,41 +661,54 @@
     function loadQuestion() {
       const question = questions[currentQuestionIndex];
       questionContainer.innerHTML = `
-        <div class="question">
-          <p><strong>${question.text}</strong></p>
-          <ul class="options">
-            ${question.options.map((option, index) => `
-              <li class="option" onclick="toggleSelection(${index})">${option}</li>
-            `).join('')}
-          </ul>
+        <div class="question-container">
+          <!-- إطار الصورة -->
+          <div class="image-frame">
+            ${question.image ? `<img src="${question.image}" alt="صورة" />` : '' }
+          </div>
+          <div class="question">
+            <p><strong>${question.text}</strong></p>
+            <ul class="options">
+              ${question.options.map((option, index) => `
+                <li onclick="selectOption(${index})">
+                  ${option}
+                </li>
+              `).join('')}
+            </ul>
+          </div>
         </div>
-        <button class="btn" onclick="submitAnswer()">إرسال</button>
+        <button class="btn" onclick="submitAnswer()">إرسال الإجابة</button>
       `;
       questionContainer.style.display = "block";
-      startTimer();
+
+      if (currentQuestionIndex === 0) {
+        startTimer();
+      }
     }
 
-    function toggleSelection(optionIndex) {
-      const question = questions[currentQuestionIndex];
+    function selectOption(optionIndex) {
       const options = document.querySelectorAll(".options li");
-
       options.forEach((option, index) => {
-        option.classList.remove("selected");
+        if (index === optionIndex) {
+          option.classList.add("selected");
+        } else {
+          option.classList.remove("selected");
+        }
       });
-
-      options[optionIndex].classList.add("selected");
       selectedAnswers[currentQuestionIndex] = optionIndex;
     }
 
     function submitAnswer() {
-      const selectedOption = selectedAnswers[currentQuestionIndex];
       const question = questions[currentQuestionIndex];
-
+      const isCorrect = selectedAnswers[currentQuestionIndex] === question.correct[0];
       const options = document.querySelectorAll(".options li");
-      if (selectedOption !== undefined) {
-        options[selectedOption].classList.add(question.correct.includes(selectedOption) ? "correct" : "incorrect");
+
+      if (isCorrect) {
+        options[selectedAnswers[currentQuestionIndex]].classList.add("correct");
+      } else {
+        options[selectedAnswers[currentQuestionIndex]].classList.add("incorrect");
       }
-      
+
       currentQuestionIndex++;
       totalTime = quizDuration - timeLeft;
       if (currentQuestionIndex < questions.length) {
@@ -732,7 +743,7 @@
       let correctAnswersCount = 0;
 
       questions.forEach((question, index) => {
-        const isCorrect = question.correct.includes(selectedAnswers[index]);
+        const isCorrect = selectedAnswers[index] === question.correct[0];
         const reviewClass = isCorrect ? "green" : "red";
         const reviewText = isCorrect ? "إجابة صحيحة" : "إجابة خاطئة";
 
@@ -752,6 +763,7 @@
       totalTimeMessage.innerText = `الوقت المستغرق: ${formatTime(totalTime)}`;
     }
 
+
     function showExplanation(index) {
   const explanationModal = document.getElementById("explanation-modal");
   const explanationText = document.getElementById("explanation-text");
@@ -764,7 +776,7 @@
       const explanationModal = document.getElementById("explanation-modal");
       explanationModal.classList.remove("active");
     }
-    
+
     function restartQuiz() {
       location.reload();
     }
@@ -775,9 +787,6 @@
   </script>
 </body>
 </html>
-
-
-
 
 
 
