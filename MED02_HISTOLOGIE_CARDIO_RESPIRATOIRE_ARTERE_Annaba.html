@@ -4,6 +4,259 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>اختبار تفاعلي</title>     
+
+
+
+
+
+
+
+
+
+
+
+
+  <style>
+    /* إعدادات الصفحة الأساسية */
+    body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #edf2f7; /* خلفية موحدة ناعمة */
+        color: #333;
+        transition: filter 0.5s ease, background-color 0.5s ease;
+    }
+
+    header, main {
+        padding: 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 2rem;
+        color: #444;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.2s ease-in-out;
+    }
+
+    main h2 {
+        font-size: 1.5rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    main p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #666;
+    }
+
+    /* الحاوية */
+    #controlPanel {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(145deg, #e0e5ec, #ffffff); /* تأثير ثلاثي الأبعاد */
+        border-radius: 50px;
+        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+    }
+
+    #controlPanel.expanded {
+        width: 320px;
+        height: auto;
+        border-radius: 20px;
+        box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
+    }
+
+    /* الزر */
+    #toggleButton {
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c); /* تأثير دائري */
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #toggleButton:hover {
+        transform: scale(1.1) rotate(5deg); /* تكبير ودوران بسيط */
+        box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.5);
+        background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+    }
+
+    #emoji {
+        font-size: 32px;
+        line-height: 1;
+        animation: bounce 2s infinite ease-in-out;
+    }
+
+    #toggleText {
+        font-size: 14px;
+        color: white;
+        position: absolute;
+        bottom: -20px;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #toggleButton:hover #toggleText {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+
+    /* شريط التمرير */
+    #colorTempSlider {
+        width: 90%;
+        margin: 10px 0;
+        appearance: none;
+        height: 12px;
+        background: linear-gradient(90deg, #43a047 0%, #e0f2f1 100%); /* تأثير تدرج */
+        border-radius: 6px;
+        outline: none;
+        cursor: pointer;
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+    }
+
+    #colorTempSlider::-webkit-slider-thumb {
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        background: radial-gradient(circle, #4caf50, #388e3c);
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    #colorTempSlider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+    }
+
+    #label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        display: none;
+        text-align: center;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .expanded #label {
+        display: block;
+    }
+
+    /* الرسوم المتحركة */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* تحسين التوافق مع الهواتف */
+    @media (max-width: 768px) {
+        #controlPanel {
+            bottom: 10px;
+            right: 10px;
+        }
+        #toggleButton {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- أداة التحكم -->
+<div id="controlPanel">
+    <button id="toggleButton">
+        <span id="emoji">🌙</span>
+        <span id="toggleText">تشغيل</span>
+    </button>
+    <label id="label" for="colorTempSlider">درجة حرارة اللون:</label>
+    <input type="range" id="colorTempSlider" min="1800" max="27000" step="100" value="6500">
+</div>
+
+<script>
+    const controlPanel = document.getElementById('controlPanel');
+    const toggleButton = document.getElementById('toggleButton');
+    const emoji = document.getElementById('emoji');
+    const toggleText = document.getElementById('toggleText');
+    const slider = document.getElementById('colorTempSlider');
+
+    let isEyeProtectionEnabled = false;
+
+    toggleButton.addEventListener('click', () => {
+        controlPanel.classList.toggle('expanded');
+
+        if (isEyeProtectionEnabled) {
+            isEyeProtectionEnabled = false;
+            emoji.textContent = '🌙';
+            toggleText.textContent = 'تشغيل';
+            document.documentElement.style.filter = 'none';
+        } else {
+            isEyeProtectionEnabled = true;
+            emoji.textContent = '🛡️';
+            toggleText.textContent = 'إيقاف';
+            slider.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                controlPanel.classList.remove('expanded');
+            }, 5000);
+        }
+    });
+
+    slider.addEventListener('input', () => {
+        if (!isEyeProtectionEnabled) return;
+
+        const temp = slider.value;
+        const warmth = (temp - 1800) / (27000 - 1800);
+        const sepia = 0.4 + 0.6 * (1 - warmth);
+        const brightness = 1 - 0.2 * warmth;
+
+        document.documentElement.style.filter = `sepia(${sepia}) brightness(${brightness})`;
+    });
+</script>
+</body>
+
+
+
+
+
+
+
+
+
+
   <style>
     /* إعدادات عامة */
     body {
