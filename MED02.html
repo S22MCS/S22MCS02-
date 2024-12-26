@@ -6,6 +6,242 @@
 
 
     <title>صفحة   اختبارت  أَدَاة  عِلْم   لطلاب  السنة   الثانية   طب </title>
+
+
+
+
+
+
+
+
+
+  
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.2s ease, filter 0.2s ease;
+        }
+    
+        #controlPanel {
+            position: fixed;
+            top: 30px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1px 4px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            max-width: 90%;
+        }
+    
+        #controlPanel label {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+        }
+    
+        #colorTempSlider {
+            width: 200px;
+            appearance: none;
+            height: 10px;
+            background: linear-gradient(90deg, #ff9a76 0%, #ffd4a3 100%);
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            position: relative;
+        }
+    
+        #colorTempSlider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ff5722;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+    
+        #colorTempSlider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+    
+        #colorTempSlider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #ff5722;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+    
+        #colorTempSlider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+        }
+    
+        .toggleButton {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+    
+        .toggleButton.off {
+            background: #f44336;
+        }
+    
+        .toggleButton:hover {
+            background: #3e8e41;
+        }
+    
+        .toggleButton.off:hover {
+            background: #d32f2f;
+        }
+    
+        #marker {
+            position: absolute;
+            left: 0;
+            top: -15px;
+            font-size: 12px;
+            color: red;
+            transform: translateX(5px);
+        }
+    
+        h1, p, img {
+            transition: filter 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+        }
+    
+        h1 {
+            color: #444;
+            text-align: center;
+        }
+    
+        p {
+            color: #555;
+            text-align: center;
+            margin: 0 20px;
+        }
+    
+        img {
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+      </style>
+    </head>
+    <body>
+        <div id="controlPanel">
+            <label for="colorTempSlider">درجة حرارة اللون (1800K - 27000K):</label>
+            <input type="range" id="colorTempSlider" min="1800" max="27000" step="100" value="6500">
+            <span id="marker">1800K</span>
+            <button id="toggleButton" class="toggleButton">
+              تشغيل و 
+              إيقاف حماية العين  
+    
+            </button>
+        </div>
+    
+        <script>
+            // القيم المرجعية لدرجة الحرارة
+            const minTemp = 1800;
+            const maxTemp = 27000;
+    
+            let isEyeProtectionEnabled = false;  // يتم بدء التشغيل في حالة إيقاف الحماية
+    
+            // دالة لحساب تأثيرات اللون بناءً على درجة الحرارة
+            function calculateColorStyles(temp) {
+                const warmth = (temp - minTemp) / (maxTemp - minTemp); // نسبة الحرارة
+                const sepia = 0.4 + 0.6 * (1 - warmth);       // تأثير sepia أقوى
+                const brightness = 1 - 0.2 * warmth;         // تقليل السطوع عند درجات حرارة أعلى
+                const bgColor = `rgb(${255 - warmth * 80}, ${244 - warmth * 100}, ${233 - warmth * 120})`; // خلفية دافئة
+    
+                return {
+                    filter: `sepia(${sepia}) brightness(${brightness})`,
+                    backgroundColor: bgColor
+                };
+            }
+    
+            const slider = document.getElementById("colorTempSlider");
+            const toggleButton = document.getElementById("toggleButton");
+            const marker = document.getElementById("marker");
+    
+            // تغيير تأثير حماية العين عند تغيير شريط التمرير
+            slider.addEventListener("input", () => {
+                const temperature = parseInt(slider.value, 10);
+                const styles = calculateColorStyles(temperature);
+    
+                // تحديث تأثيرات اللون
+                if (isEyeProtectionEnabled) {
+                    document.body.style.filter = styles.filter;
+                    document.body.style.backgroundColor = styles.backgroundColor;
+                    document.querySelectorAll("h1, p, img").forEach(element => {
+                        element.style.filter = styles.filter;
+                    });
+                }
+    
+                // تحديد موقع المؤشر (السهم) وفقًا للقيمة
+                const percentage = (temperature - minTemp) / (maxTemp - minTemp) * 100;
+                marker.style.left = `calc(${percentage}% - 20px)`; // تغيير موقع السهم
+                marker.textContent = `${temperature}K`; // تحديث قيمة درجة الحرارة
+            });
+    
+            // التبديل بين تشغيل وإيقاف حماية العين
+            toggleButton.addEventListener("click", () => {
+                isEyeProtectionEnabled = !isEyeProtectionEnabled;
+    
+                if (isEyeProtectionEnabled) {
+                    toggleButton.textContent = "إيقاف حماية العين";
+                    toggleButton.classList.remove("off");
+                    slider.dispatchEvent(new Event("input"));
+                } else {
+                    toggleButton.textContent = "تشغيل حماية العين";
+                    toggleButton.classList.add("off");
+                    document.body.style.filter = "none";
+                    document.body.style.backgroundColor = "";
+                    document.querySelectorAll("h1, p, img").forEach(element => {
+                        element.style.filter = "none";
+                    });
+                }
+            });
+        </script>
+    </body>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <style>
         /* إعدادات أساسية */
         body {
