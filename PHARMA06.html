@@ -1,266 +1,10 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-
-    <title>صفحة   اختبارت  أَدَاة  عِلْم   لطلاب  السنة   الثانية   طب </title>
-
-
-
-
-    <style>
-        /* إعدادات الصفحة الأساسية */
-        body {
-            margin: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: #edf2f7; /* خلفية موحدة ناعمة */
-            color: #333;
-            transition: filter 0.5s ease, background-color 0.5s ease;
-        }
-
-        header, main {
-            padding: 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 2rem;
-            color: #444;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1.2s ease-in-out;
-        }
-
-        main h2 {
-            font-size: 1.5rem;
-            color: #555;
-            margin-bottom: 10px;
-        }
-
-        main p {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: #666;
-        }
-
-        /* الحاوية */
-        #controlPanel {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(145deg, #e0e5ec, #ffffff); /* تأثير ثلاثي الأبعاد */
-            border-radius: 50px;
-            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            width: 60px;
-            height: 60px;
-            overflow: hidden;
-            transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
-        }
-
-        #controlPanel.expanded {
-            width: 320px;
-            height: auto;
-            border-radius: 20px;
-            box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
-        }
-
-        /* الزر */
-        #toggleButton {
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c); /* تأثير دائري */
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 28px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.5);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        #toggleButton:hover {
-            transform: scale(1.1) rotate(5deg); /* تكبير ودوران بسيط */
-            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.5);
-            background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
-        }
-
-        #emoji {
-            font-size: 32px;
-            line-height: 1;
-            animation: bounce 2s infinite ease-in-out;
-        }
-
-        #toggleText {
-            font-size: 14px;
-            color: white;
-            position: absolute;
-            bottom: -20px;
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        #toggleButton:hover #toggleText {
-            opacity: 1;
-            transform: translateY(-5px);
-        }
-
-        /* شريط التمرير */
-        #colorTempSlider {
-            width: 90%;
-            margin: 10px 0;
-            appearance: none;
-            height: 12px;
-            background: linear-gradient(90deg, #43a047 0%, #e0f2f1 100%); /* تأثير تدرج */
-            border-radius: 6px;
-            outline: none;
-            cursor: pointer;
-            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
-        }
-
-        #colorTempSlider::-webkit-slider-thumb {
-            appearance: none;
-            width: 22px;
-            height: 22px;
-            background: radial-gradient(circle, #4caf50, #388e3c);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
-            transition: transform 0.2s ease-in-out;
-        }
-
-        #colorTempSlider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        #label {
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-            display: none;
-            text-align: center;
-            animation: fadeIn 0.8s ease-in-out;
-        }
-
-        .expanded #label {
-            display: block;
-        }
-
-        /* الرسوم المتحركة */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        /* تحسين التوافق مع الهواتف */
-        @media (max-width: 768px) {
-            #controlPanel {
-                bottom: 10px;
-                right: 10px;
-            }
-            #toggleButton {
-                width: 50px;
-                height: 50px;
-                font-size: 24px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- أداة التحكم -->
-    <div id="controlPanel">
-        <button id="toggleButton">
-            <span id="emoji">🌙</span>
-            <span id="toggleText">تشغيل</span>
-        </button>
-        <label id="label" for="colorTempSlider">درجة حرارة اللون:</label>
-        <input type="range" id="colorTempSlider" min="1800" max="27000" step="100" value="6500">
-    </div>
-
-    <script>
-        const controlPanel = document.getElementById('controlPanel');
-        const toggleButton = document.getElementById('toggleButton');
-        const emoji = document.getElementById('emoji');
-        const toggleText = document.getElementById('toggleText');
-        const slider = document.getElementById('colorTempSlider');
-
-        let isEyeProtectionEnabled = false;
-
-        toggleButton.addEventListener('click', () => {
-            controlPanel.classList.toggle('expanded');
-
-            if (isEyeProtectionEnabled) {
-                isEyeProtectionEnabled = false;
-                emoji.textContent = '🌙';
-                toggleText.textContent = 'تشغيل';
-                document.documentElement.style.filter = 'none';
-            } else {
-                isEyeProtectionEnabled = true;
-                emoji.textContent = '🛡️';
-                toggleText.textContent = 'إيقاف';
-                slider.dispatchEvent(new Event('input'));
-                setTimeout(() => {
-                    controlPanel.classList.remove('expanded');
-                }, 5000);
-            }
-        });
-
-        slider.addEventListener('input', () => {
-            if (!isEyeProtectionEnabled) return;
-
-            const temp = slider.value;
-            const warmth = (temp - 1800) / (27000 - 1800);
-            const sepia = 0.4 + 0.6 * (1 - warmth);
-            const brightness = 1 - 0.2 * warmth;
-
-            document.documentElement.style.filter = `sepia(${sepia}) brightness(${brightness})`;
-        });
-    </script>
-</body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <title>صفحة الدروس لطلاب الطب</title>
     <style>
         /* إعدادات أساسية */
         body {
@@ -272,9 +16,8 @@
             color: #333;
         }
 
-  
         header {
-            background: linear-gradient(45deg, #007bff  ,  #007bff );
+            background: linear-gradient(45deg, #007bff, #66ccff);
             color: #fff;
             padding: 2rem 0;
             text-align: center;
@@ -390,8 +133,7 @@
         }
 
         .buttons button:hover {
-            background: #007bff;
-       
+            background: #0056b3;
         }
 
         .lessons-list {
@@ -441,9 +183,15 @@
 
 <body>
     <header>
-        <h1>
-            مرحباً بك في صفحة اختبارت  أَدَاة  عِلْم   لطلاب  السنة   الثانية   طب</h1>
+        <h1>مرحباً بك في صفحة الدروس لطلاب الطب</h1>
         <nav>
+       
+    
+        
+
+
+
+
 
             <style>
                 body {
@@ -492,272 +240,56 @@
                   }
                 }
               </style>
-
-
               <nav>
-                <a href="MED01.html"> 🩺 السنة الأولى 🩺</a>
-                <a href="MED02.html"> 🩺السنة الثانية</a>
-                <a href="MED03.html"> 🩺السنة الثالثة🩺 </a>
-                <a href="MED04.html">🩺السنة الرابعة🩺</a>
-                <a href="MED05.html">🩺السنة الخامسة🩺</a>
-                <a href="MED06.html"> 🩺السنة السادسة🩺</a>
-                <a href="MED07.html"> 🩺السنة السابعة🩺</a>
+                <a href="MED01.html">السنة الأولى</a>
+                <a href="MED02.html">السنة الثانية</a>
+                <a href="MED03.html">السنة الثالثة</a>
+                <a href="MED04.html">السنة الرابعة</a>
+                <a href="MED05.html">السنة الخامسة</a>
+                <a href="MED06.html">السنة السادسة</a>
+                <a href="MED07.html">السنة السابعة</a>
               </nav>
 
 
 
 
 
-           <br>
-        
-         
+          <br>
+
 
           <ul>
-            <li><a href="#cardiorespiratoirehistologie">Cardio Resperatoire Histologie  </a></li>
-            <li><a href="#cardiorespiratoirehistologie">Cardio Resperatoire Anatomie  </a></li>
+  
             <li><a href="#">المزيد قريبا  </a></li>
-        </nav>
-
+     
+    </nav>
 
     </header>
 
 
 
+  
 
-
-    
-
-       
-         
-        
-    <header2>
-        <nav style="display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #007bff, #007bff); padding: 20px 0;">
-            <div style="text-align: center;">
-                <p style="font-size: 1.8rem; font-weight: bold; color: #fff; background: linear-gradient(90deg, #42a5f5, #4caf50, #00c853, #8bc34a); 
-                          background-size: 300%; animation: gradientMove 6s infinite; padding: 10px 25px; 
-                          border-radius: 30px; box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5), 0 4px 10px rgba(0, 0, 0, 0.2); 
-                          display: inline-block; transform: scale(1); transition: transform 0.3s ease-in-out;"
-                     onmouseover="this.style.transform='scale(1.1)';"
-                     onmouseout="this.style.transform='scale(1)';">
-                     🧠QCM  &nbsp;&nbsp;&nbsp;   +0   &nbsp;&nbsp;&nbsp;  
-                     عدد الاسئلة  🩻 
-                </p>
-            </div>
-        </nav>
-    
-        <style>
-            /* حركة التدرج */
-            @keyframes gradientMove {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
-        
-            /* تأثير ظهور النص */
-            @keyframes fadeIn {
-                from { opacity: 0; transform: scale(0.8); }
-                to { opacity: 1; transform: scale(1); }
-            }
-        </style>
-    </header2>
-    
-          
 
 
 
     <main>
-    
         <!-- أمثلة من الأقسام -->
-
-
-
-
-        <section id="#cardiorespiratoirehistologie" class="lesson-section">
-            <h2> Cardio Resperatoire  HISTOLOGIE</h2>
-            <img src="QCMPIC/CARDIO RESPIRATOIRE HISTOLOGIE.jpg" alt="صورة علم التشريح" width="300" height="250">
+        <section id="#" class="lesson-section">
+            <h2>قادمون قريبا ان شاء الله </h2>
+            <img src="QCMPIC/KADIMON.jpg" alt="صورة علم التشريح" width="500" height="400">
             <div class="lesson-info">
-                <p>عدد الدروس: 10</p>
-                <p>تعرف على هيكل ووظائف جسم الإنسان بالتفصيل.</p>
+                <p>قريبا ان شاء الله </p>
+                <p>قريبا ان  شاء الله .</p>
             </div>
-
-
-
-
             <div class="buttons">
-                <button onclick="toggleLessons('histologicardiorespiratoire-lessons')">عرض الدروس</button>
+                <button onclick="toggleLessons('anatomy-lessons')">عرض الدروس</button>
             </div>
-            <ul id="histologicardiorespiratoire-lessons" class="lessons-list">
-                <li>
-                   
-                    <div>
-                        <button style="background: #007bff; color: #fff; font-size: 16px; border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer; transition: 0.3s;"
-                                onclick="toggleLessons('istologicardiorespiratoire-lessons')"
-                                onmouseover="this.style.background='#0056b3'; this.style.transform='scale(1.05)';"
-                                onmouseout="this.style.background='#007bff'; this.style.transform='scale(1)';">
-                          La Paroi Cardiaque &nbsp; &nbsp;   جدار القلب
-                        </button>
-                        <div>
-                      <ul id="istologicardiorespiratoire-lessons" style="display: none; padding: 0; margin-top: 10px;">
-                       
-
-
-                        <li style="margin: 5px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(255, 14, 14, 0.902);">
-                            <a href="MED02_HISTOLOGIE_CARDIO_RESPIRATOIRE_ARTERE_Annaba.html" style="text-decoration: none; color: #ffa806; font-weight:  bold;">كلية عنابة ANNABA </a>
-                        </li>
-
-
-
-                          <li style="margin: 5px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(255, 14, 14, 0.902);">
-                            <a href="MED02_HISTOLOGIE_CARDIO_RESPIRATOIRE_ARTERE_Annaba.html" style="text-decoration: none; color: #ffa806; font-weight:  bold;">كلية سيدي بلعباس  </a>
-                        </li>
-
-                      </ul>
-
-
-
-
-                     
-                      
-                      <script>
-                        function toggleLessons(id) {
-                          const lessons = document.getElementById(id);
-                          lessons.style.display = lessons.style.display === "none" || !lessons.style.display ? "block" : "none";
-                        }
-                      </script>
-                    </div>
-
-             <br>
+            <ul id="anatomy-lessons" class="lessons-list">
+                <li><a href="#"style="text-decoration: none; color: #007BFF;">  قريبا  ان شاء الله  </a></li>
              
-                    <div>
-                        <button style="background: #007bff; color: #fff; font-size: 16px; border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer; transition: 0.3s;"
-                                onclick="toggleLessons('Histologicardiorespiratoireartere-lessons')"
-                                onmouseover="this.style.background='#0056b3'; this.style.transform='scale(1.05)';"
-                                onmouseout="this.style.background='#007bff'; this.style.transform='scale(1)';">
-                             LES ARTERES  &nbsp; &nbsp; الشرايين
-                        </button>
-                        <div>
-                      <ul id="Histologicardiorespiratoireartere-lessons" style="display: none; padding: 0; margin-top: 10px;">
-                       
-                    
-                        <li style="margin: 5px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(14, 255, 187, 0.902);">
-                            <a href="MED02_HISTOLOGIE_CARDIO_RESPIRATOIRE_ARTERE_Annaba.html" style="text-decoration: none; color: #007BFF; font-weight:  bold;">كلية عنابة ANNABA </a>
-                        </li>
-
-                        <li style="margin: 5px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(255, 3, 3, 0.1);">
-                            <a href="#" style="text-decoration: none; color: #ff0000; font-weight: bold;">سيدي بلعباس </a>
-                          </li>
-
-
-                          
-                      </ul>
-
-                      <script>
-                        function toggleLessons(id) {
-                          const lessons = document.getElementById(id);
-                          lessons.style.display = lessons.style.display === "none" || !lessons.style.display ? "block" : "none";
-                        }
-                      </script>
-                    </div>
-
-
-
-                </li>
-
-               
-
               </ul>
               
         </section>
-
-
-
-
-
-
-
-
-
-        <section id="#cardiorespiratoireanatomie" class="lesson-section">
-
-            <h2> Cardio Resperatoire  ANATOMIE</h2>
-            <img src="QCMPIC/KADIMON.jpg" alt="صورة علم التشريح" width="300" height="250">
-            <div class="lesson-info">
-                <p>عدد الدروس: 10</p>
-                <p>قريبا </p>
-            </div>
-
-
-
-
-
-
-
-
-
-
-            <div class="buttons">
-                <button onclick="toggleLessons('anatomiecardiorespiratoire-lessons')">عرض الدروس</button>
-            </div>
-            <ul id="anatomiecardiorespiratoire-lessons" class="lessons-list">
-                <li>
-
-
-
-
-
-                   
-                    <div>
-                        <button style="background: #007bff; color: #fff; font-size: 16px; border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer; transition: 0.3s;"
-                                onclick="toggleLessons('paroisduthoraxcardiorespiratoire-lessons')"
-                                onmouseover="this.style.background='#0056b3'; this.style.transform='scale(1.05)';"
-                                onmouseout="this.style.background='#007bff'; this.style.transform='scale(1)';">
-                          La Parois du thorax  &nbsp; &nbsp;جدار القفص الصدري
-                        </button>
-                        <div>
-                      <ul id="paroisduthoraxcardiorespiratoire-lessons" style="display: none; padding: 0; margin-top: 10px;">
-                       
-
-
-                        <li style="margin: 5px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(255, 14, 14, 0.902);">
-                            <a href="MED02_HISTOLOGIE_CARDIO_RESPIRATOIRE_ARTERE_Annaba.html" style="text-decoration: none; color: #ffa806; font-weight:  bold;">كلية عنابة ANNABA </a>
-                        </li>
-
-
-
-                          <li style="margin: 5px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(255, 14, 14, 0.902);">
-                            <a href="MED02_HISTOLOGIE_CARDIO_RESPIRATOIRE_ARTERE_Annaba.html" style="text-decoration: none; color: #ffa806; font-weight:  bold;">كلية سيدي بلعباس  </a>
-                        </li>
-
-                      </ul>
-
-
-
-
-                     
-                      
-                      <script>
-                        function toggleLessons(id) {
-                          const lessons = document.getElementById(id);
-                          lessons.style.display = lessons.style.display === "none" || !lessons.style.display ? "block" : "none";
-                        }
-                      </script>
-                    </div>
-
-
-
-
-
-
-        </section>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -789,12 +321,6 @@
         }
     </script>
 </body>
-
-
-
-
-
-
 
 
 
@@ -948,6 +474,7 @@
 
 
 
+
    
 <style>
     /* إعدادات أساسية */
@@ -1044,8 +571,6 @@
     }
 </style>
 </head>
-
-
 <body>
 <footer>
     <div class="social-links">
@@ -1106,7 +631,7 @@
 
 
 
-    <p>مخصص <span>لطلبة السنة الثانية  طب</span> - جميع الحقوق محفوظة &copy; 2025</p>
+    <p>مخصص <span>لطلبة الطب</span> - جميع الحقوق محفوظة &copy; 2025</p>
 </footer>
 
 
@@ -1116,9 +641,6 @@
 
 
 </body>
-
-
-
 
 
 
