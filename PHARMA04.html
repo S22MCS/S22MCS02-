@@ -241,13 +241,35 @@
                 }
               </style>
               <nav>
-                <a href="MED01.html">السنة الأولى</a>
-                <a href="MED02.html">السنة الثانية</a>
-                <a href="MED03.html">السنة الثالثة</a>
-                <a href="MED04.html">السنة الرابعة</a>
-                <a href="MED05.html">السنة الخامسة</a>
-                <a href="MED06.html">السنة السادسة</a>
-                <a href="MED07.html">السنة السابعة</a>
+                <a href="#" onclick="loadPage('PHARMA01.html')">💊 السنة الأولى 💊</a>
+                <a href="#" onclick="loadPage('PHARMA02.html')">💊 السنة الثانية 💊</a>
+                <a href="#" onclick="loadPage('PHARMA03.html')">💊 السنة الثالثة 💊</a>
+                <a href="#" onclick="loadPage('PHARMA04.html')">💊 السنة الرابعة 💊</a>
+                <a href="#" onclick="loadPage('PHARMA05.html')">💊 السنة الخامسة 💊</a>
+                <a href="#" onclick="loadPage('PHARMA06.html')">💊 السنة السادسة 💊</a>
+                
+                <div id="content" style="margin-top: 20px;">هنا سيتم تحميل المحتوى.</div>
+                
+                <script>
+                    function loadPage(page) {
+                        // إنشاء طلب AJAX لتحميل الصفحة
+                        const xhr = new XMLHttpRequest();
+                        xhr.open("GET", page, true);
+                        xhr.onload = function () {
+                            if (xhr.status === 200) {
+                                // تحميل المحتوى داخل عنصر معين
+                                document.getElementById('content').innerHTML = xhr.responseText;
+                            } else {
+                                document.getElementById('content').innerHTML = "تعذر تحميل الصفحة.";
+                            }
+                        };
+                        xhr.onerror = function () {
+                            document.getElementById('content').innerHTML = "حدث خطأ أثناء التحميل.";
+                        };
+                        xhr.send();
+                    }
+                </script>
+                
               </nav>
 
 
