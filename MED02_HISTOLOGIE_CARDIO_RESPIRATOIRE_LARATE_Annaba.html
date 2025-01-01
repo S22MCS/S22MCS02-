@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    اختبار   الطحال في علم الانسجة  وحدة
+      القلب والجهاز التنفسي  كلية عنابة  </title>    
+
+
+  <style>
+    /* إعدادات الصفحة الأساسية */
+    body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #edf2f7; /* خلفية موحدة ناعمة */
+        color: #333;
+        transition: filter 0.5s ease, background-color 0.5s ease;
+    }
+
+    header, main {
+        padding: 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 2rem;
+        color: #444;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.2s ease-in-out;
+    }
+
+    main h2 {
+        font-size: 1.5rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    main p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #666;
+    }
+
+    /* الحاوية */
+    #controlPanel {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(145deg, #e0e5ec, #ffffff); /* تأثير ثلاثي الأبعاد */
+        border-radius: 50px;
+        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+    }
+
+    #controlPanel.expanded {
+        width: 320px;
+        height: auto;
+        border-radius: 20px;
+        box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
+    }
+
+    /* الزر */
+    #toggleButton {
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c); /* تأثير دائري */
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #toggleButton:hover {
+        transform: scale(1.1) rotate(5deg); /* تكبير ودوران بسيط */
+        box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.5);
+        background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+    }
+
+    #emoji {
+        font-size: 32px;
+        line-height: 1;
+        animation: bounce 2s infinite ease-in-out;
+    }
+
+    #toggleText {
+        font-size: 14px;
+        color: white;
+        position: absolute;
+        bottom: -20px;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #toggleButton:hover #toggleText {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+
+    /* شريط التمرير */
+    #colorTempSlider {
+        width: 90%;
+        margin: 10px 0;
+        appearance: none;
+        height: 12px;
+        background: linear-gradient(90deg, #43a047 0%, #e0f2f1 100%); /* تأثير تدرج */
+        border-radius: 6px;
+        outline: none;
+        cursor: pointer;
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+    }
+
+    #colorTempSlider::-webkit-slider-thumb {
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        background: radial-gradient(circle, #4caf50, #388e3c);
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    #colorTempSlider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+    }
+
+    #label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        display: none;
+        text-align: center;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .expanded #label {
+        display: block;
+    }
+
+    /* الرسوم المتحركة */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* تحسين التوافق مع الهواتف */
+    @media (max-width: 768px) {
+        #controlPanel {
+            bottom: 10px;
+            right: 10px;
+        }
+        #toggleButton {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- أداة التحكم -->
+<div id="controlPanel">
+    <button id="toggleButton">
+        <span id="emoji">🌙</span>
+        <span id="toggleText">تشغيل</span>
+    </button>
+    <label id="label" for="colorTempSlider">درجة حرارة اللون:</label>
+    <input type="range" id="colorTempSlider" min="1800" max="27000" step="100" value="6500">
+</div>
+
+<script>
+    const controlPanel = document.getElementById('controlPanel');
+    const toggleButton = document.getElementById('toggleButton');
+    const emoji = document.getElementById('emoji');
+    const toggleText = document.getElementById('toggleText');
+    const slider = document.getElementById('colorTempSlider');
+
+    let isEyeProtectionEnabled = false;
+
+    toggleButton.addEventListener('click', () => {
+        controlPanel.classList.toggle('expanded');
+
+        if (isEyeProtectionEnabled) {
+            isEyeProtectionEnabled = false;
+            emoji.textContent = '🌙';
+            toggleText.textContent = 'تشغيل';
+            document.documentElement.style.filter = 'none';
+        } else {
+            isEyeProtectionEnabled = true;
+            emoji.textContent = '🛡️';
+            toggleText.textContent = 'إيقاف';
+            slider.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                controlPanel.classList.remove('expanded');
+            }, 5000);
+        }
+    });
+
+    slider.addEventListener('input', () => {
+        if (!isEyeProtectionEnabled) return;
+
+        const temp = slider.value;
+        const warmth = (temp - 1800) / (27000 - 1800);
+        const sepia = 0.4 + 0.6 * (1 - warmth);
+        const brightness = 1 - 0.2 * warmth;
+
+        document.documentElement.style.filter = `sepia(${sepia}) brightness(${brightness})`;
+    });
+</script>
+</body>
+
+  
+
+
+
+
+
+
+  <style>
+    /* إعدادات عامة */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+      direction: ltr;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #0056b3;
+    }
+
+    .timer-container {
+      background-color: #343a40;
+      padding: 10px 0;
+      text-align: center;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+  ء
+    /* إطار خاص بالصورة */
+    .image-frame {
+      background-color: #e9ecef;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+ 
+
+
+
+
+
+
+    .image-frame {
+  display: flex; /* استخدام الفلكس لتمركز الصورة */
+  justify-content: center; /* تمركز الصورة أفقياً */
+  align-items: center; /* تمركز الصورة عمودياً */
+  width: 100%; /* الحاوية تأخذ العرض الكامل */
+  height: 100%; /* الحاوية تأخذ الارتفاع الكامل */
+}
+
+.image-frame img {
+  max-width: 300px; /* تحديد الحجم الأقصى للصورة */
+  height: auto; /* الحفاظ على النسب الأصلية للصورة */
+  border-radius: 8px; /* إضافة حواف مدورة للصورة */
+  transition: transform 0.3s ease; /* إضافة تأثير انتقالي */
+}
+
+/* استعلامات الوسائط لأجهزة الهواتف */
+@media (max-width: 767px) {
+  .image-frame img {
+    max-width: 200px; /* تغيير الحجم الأقصى للصورة على الهواتف */
+  }
+}
+
+@media (max-width: 480px) {
+  .image-frame img {
+    max-width: 150px; /* تقليل الحجم الأقصى أكثر للأجهزة الصغيرة جدًا */
+  }
+}
+
+
+
+
+
+
+    .image-frame img:hover {
+      transform: scale(1.05);
+    }
+
+
+
+
+    .question {
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .options {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .options li {
+      padding: 15px;
+      background-color: #f0f0f0;
+      margin: 5px 0;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .options li.selected {
+      background-color: #007bff;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li.correct {
+      background-color: #28a745;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li.incorrect {
+      background-color: #dc3545;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li:hover {
+      background-color: #e0e0e0;
+      transform: scale(1.02);
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .results {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .question-review {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .question-review.green {
+      background-color: #28a745;
+    }
+
+    .question-review.red {
+      background-color: #dc3545;
+    }
+
+    .explain-btn {
+      background-color: #ffc107;
+      color: #333;
+      padding: 8px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .explain-btn:hover {
+      background-color: #e0a800;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.3s ease;
+    }
+
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-content {
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      overflow-y: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .close-btn {
+      background: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .close-btn:hover {
+      background: #b02a37;
+    }
+
+
+
+/* إضافة أنماط لتوسيط النافذة في وسط الشاشة */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white; /* خلفية بيضاء */
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+  display: none; /* مخفي بشكل افتراضي */
+  color: black; /* تغيير النص إلى اللون الأسود ليتناسب مع الخلفية البيضاء */
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+
+
+.modal.active {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    max-height: 80%; /* تحديد الحد الأقصى للارتفاع */
+    overflow-y: auto; /* تمكين التمرير عموديًا فقط إذا كان المحتوى يتجاوز الحد */
+    border-radius: 10px;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* إضافة تأثير الظل */
+    -webkit-overflow-scrolling: touch; /* تحسين التمرير على أجهزة اللمس */
+}
+
+/* إضافة تأثير تدرج لون عند التمرير */
+.modal.active::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal.active::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #fff; /* تأثير على الحافة */
+}
+
+.modal.active::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <br>
+    <br> 
+  <header>
+
+    <h1> اختبار   الطحال في علم الانسجة  وحدة
+      القلب والجهاز التنفسي  كلية عنابة </h1>
+  </header>
+
+  <!-- حاوية الوقت العلوي -->
+
+  
+  <div  class="timer-container">
+ 
+    الوقت المتبقي: <span id="timer">00:00</span>
+  </div>
+
+  <div class="container">
+    <div class="duration-select">
+      &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+      <label for="duration">أدخل مدة الاختبار (بالدقائق): </label>
+      <input type="number" id="custom-duration" name="custom-duration" min="1" max="60" value="10" />
+      <button class="btn" onclick="startQuiz()">ابدأ الاختبار</button>
+    </div>
+
+    <div id="question-container" style="display: none;"></div>
+
+    <div id="result-section" style="display: none;">
+      <h2>النتيجة</h2>
+      <div id="results-container"></div>
+      <p id="final-message"></p>
+      <p id="total-time-message"></p>
+      <button class="btn" onclick="restartQuiz()">إعادة الاختبار</button>
+      <button class="btn" onclick="window.location.href='page2.html';">الخروج</button>
+
+    </div>
+  </div>
+
+  <!-- نافذة منبثقة للشرح -->
+  <div id="explanation-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeExplanation()">إغلاق</button>
+      <h3 class="modal-title">الشرح</h3>
+      <div class="modal-body" id="explanation-text"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      
+       
+ 
+
+
+
+
+
+
+
+
+
+2. A propos de la rate:
+
+A. C'est un organe lympho-épithelial
+
+B Son origine embryologique est l'entoblaste
+
+C. Elle est responsable de la maturation des lymphocytes T
+
+D. Elle participe à la filtration de la lymphe
+
+E. L'hématopolèse splénique se fait uniquement pendant la vie fortale entre le 5 et le 7 mois
+
+3. Une des propositions suivantes ne correspond pas à la pulpe rouge:
+
+A La Pulpe rouge est le tissu majoritaire de la rate
+
+3. Elle est formée de cordons de Billroth et capillaires sinusoides
+
+Represente le lieu de synthèse et maturation des globules rouges
+
+D. Les cellules endotheliales des sinus veineux sont organisées en couches discontinuée
+
+E Les globules rouges altérées ne peuvent pas traverser la parol des capillaires et sont phagocytés par les macrophages
+
+4. A propos de la structure microscopique de la rate:
+
+A. La trame reticulaire est spécifique uniquement pour la pulpe blanche
+
+B. La rate est un organe lymphoide secondaire par l'intermédiaire de la pulpe rouge
+
+C. Le reseau vasculaire formé par les sinus veineux et les capillaires sinusoides est important et constitue la pulpe rouge
+
+D. La pulpe blanche est formée d'un manchon cellulaire organisé autour d'une veine
+
+
+
+//QES01
+
+
+{
+ 
+  text: `
+    <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+      QCM N°20 U1 2023
+    </span>   
+    &nbsp;&nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+      ANNABA
+    </span>
+
+ &nbsp;&nbsp; &nbsp;
+<span style="color: #007BFF; display: inline-block; padding: 5px 10px; border-radius: 15px; background-color: #E6F0FF;">
+    &#10004;   الشرح المختصر
+
+</span>
+
+
+
+    <br><br>
+        A propos de la rate:
+  `,
+  options: [
+    "A &nbsp;&nbsp;&nbsp;        La rate est un organe lympho építhélial",
+    "B &nbsp;&nbsp;&nbsp;         La pulpe blanche est le tissu majoritaire de la rate",
+    "C &nbsp;&nbsp;&nbsp;        La pulpe blanche est formée d'un manchon cellulaire organisé autour d'une veine",
+    "D &nbsp;&nbsp;&nbsp;       Le manchon periartériel est une zone riche en lymphocytes B",
+    "E &nbsp;&nbsp;&nbsp;        Les globutes rouges altérées ne peuvent pas traverser la paroi capillaire et sont phagocytées par les macrophages "  ,
+   
+
+
+
+
+  ],   
+  correct: [4],
+
+ explanation: `
+       &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+    <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+      الشروحات القصيرة
+    </span>
+    <br><br>
+    <span style="font-size: 14px; color: #555;">
+     
+    
+    
+      La réponse  &nbsp;&nbsp;  A &nbsp;&nbsp;&nbsp;        La rate est un organe lympho építhélial  &nbsp;&nbsp;
+     <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+      réponse fausse   الاجابة خاطئة  </span>
+
+
+
+Les organes lymphoépithéliaux, comme les amygdales ou les plaques de Peyer, sont caractérisés par une association étroite entre le tissu lymphoïde et un épithélium. La rate, elle, est un organe riche en tissu lymphoïde, mais elle n'est pas associée à un épithélium de la même manière. Son rôle principal est de filtrer le sang et de participer à la réponse immunitaire, mais sa structure est différente de celle des organes lymphoépithéliaux.
+   ج: الطحال هو عضو ليمفاوي ظهاري: خطأ
+
+لماذا ؟ تتميز الأعضاء اللمفاوية الظهارية، مثل اللوزتين أو بقع باير، بارتباط وثيق بين الأنسجة اللمفاوية والظهارة. الطحال هو عضو غني بالأنسجة اللمفاوية، لكنه لا يرتبط بالظهارة بنفس الطريقة. ويتمثل دورها الرئيسي في تصفية الدم والمشاركة في الاستجابة المناعية، ولكن بنيتها تختلف عن بنية الأعضاء اللمفاوية الظهارية.
+
+      <br> <br> 
+      &nbsp;&nbsp;   
+    <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+      التبرير
+     </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+     في الاقتراح ذكر ان الطحال عضو lymphoépithélial 
+     وهاذا خاطئ كون الطحال la rate 
+     عضو  lymphoïde secondaire très vascularisé
+
+
+
+
+
+      <br> <br><br> <br>
+
+          La réponse  &nbsp;&nbsp;      C &nbsp;&nbsp;&nbsp;        La paume des mains en dedans    &nbsp;&nbsp;
+     <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+      réponse fausse   الاجابة خاطئة  </span>
+
+
+
+
+  <br> <br> 
+      &nbsp;&nbsp;   
+    <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+      التبرير
+     </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+      لان  في الاجابة مذكور انه la paume de la main en dedant  
+      بمعنى للداخل  
+
+
+
+
+
+
+  <br> <br><br> <br>
+
+
+
+          La réponse  &nbsp;&nbsp;           D &nbsp;&nbsp;&nbsp;       Le regard vers le haut   &nbsp;&nbsp;
+     <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+      réponse fausse   الاجابة خاطئة  </span>
+
+      
+
+  <br> <br> 
+      &nbsp;&nbsp;   
+    <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+      التبرير
+     </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+      لان  في الاجابة مذكور انه Le regard vers le haut  
+      بمعنى للاعلى  
+
+
+
+
+
+
+      <br> <br><br> <br>
+      &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+  
+        <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+     La bonne réponse est  الاجابة الصحيحة هي 
+    </span>   
+    <br><br><br>
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp    &nbsp;&nbsp          B+E 
+    
+    <br>    
+      B &nbsp;&nbsp;&nbsp;         Les bras pendants le long du corps
+
+       <br>
+      E &nbsp;&nbsp;&nbsp;        Les pieds joints posés sur le sol 
+
+
+    </span>
+
+
+
+      <br><br><br> <br><br> <br>
+  &nbsp;&nbsp;    &nbsp;&nbsp;      &nbsp;    &nbsp;&nbsp;    &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+  
+    <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+      الشروحات
+    </span>
+    <br><br><br>
+    <span style="font-size: 14px; color: #555;">
+      الشروحات الطويلة قريبًا
+    </span>
+      
+    la rate est un organe  lymphoïde secondaire très vascularisé  
+    ونقول lymphoïde  وليس 
+    lamphatique او  lympho építhélial 
+والفرق بين 
+  
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+Les organes lymphoépithéliaux, comme les amygdales ou les plaques de Peyer, sont caractérisés par une association étroite entre le tissu lymphoïde et un épithélium.
+<br>
+تتميز الأعضاء اللمفاوية الظهارية، مثل اللوزتين أو بقع باير، بارتباط وثيق بين الأنسجة اللمفاوية والظهارة
+<br><br>
+La rate, elle, est un organe riche en tissu lymphoïde, mais elle n'est pas associée à un épithélium de la même manière. 
+<br>
+الطحال هو عضو غني بالأنسجة اللمفاوية، لكنه لا يرتبط بالظهارة بنفس الطريقة
+<br><br>
+Son rôle principal est de filtrer le sang et de participer à la réponse immunitaire, mais sa structure est différente de celle des organes lymphoépithéliaux.
+<br>
+ويتمثل دورها الرئيسي في تصفية الدم والمشاركة في الاستجابة المناعية، ولكن بنيتها تختلف عن بنية الأعضاء اللمفاوية الظهارية
+
+
+
+},
+
+
+
+//QES02
+
+{
+
+  text: `
+    <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+      QCM N°02 S1 2024
+    </span>   
+    &nbsp;&nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+      ANNABA
+    </span>
+    <br><br>
+   La nomina anatomica est une base essentielle pour la communication entre médecins et scientifiques. Parmi les propositions suivantes, quelles sont celles qui correspondent à cette nomina anatomica?
+
+  `,
+ 
+  options: [
+    "A &nbsp;&nbsp;&nbsp;         Elle est rédigée en langue anglaise",
+    "B &nbsp;&nbsp;&nbsp;         Elle est rédigée en langue latine",
+    "C &nbsp;&nbsp;&nbsp;        Elle est une nomenclature européenne",
+    "D &nbsp;&nbsp;&nbsp;       Elle est une nomenclature internationale",
+    "E &nbsp;&nbsp;&nbsp;          Elle universalise l'étude de du corps humain "  ,
+    "G &nbsp;&nbsp;&nbsp;      B+D+E"
+
+  ],   
+  correct: [5],
+
+ 
+  explanation: `
+       &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+    <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+      الشروحات القصيرة
+    </span>
+    <br><br>
+    <span style="font-size: 14px; color: #555;">
+     
+    
+    
+      La réponse  &nbsp;&nbsp;   A &nbsp;&nbsp;&nbsp;         Elle est rédigée en langue anglaise   &nbsp;&nbsp;
+     <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+      réponse fausse   الاجابة خاطئة  </span>
+
+
+      <br> <br> 
+      &nbsp;&nbsp;   
+    <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+      التبرير
+     </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;  
+
+      لان  في الاجابة مذكور انه anglaise  اي انجليزية وهي ليست كذلك 
+
+
+      <br> <br><br> <br>
+
+
+
+          La réponse  &nbsp;&nbsp;      C &nbsp;&nbsp;&nbsp;        Elle est une nomenclature européenne    &nbsp;&nbsp;
+     <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+      réponse fausse   الاجابة خاطئة  </span>
+
+
+ <br> <br> 
+      &nbsp;&nbsp;   
+    <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+      التبرير
+     </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;  
+
+
+      لان  في الاجابة مذكور انه européenne   
+      بمعنى اوروبية وهي ليست كذلك  
+
+
+
+
+
+
+      <br> <br><br> <br>
+      &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+  
+        <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+     La bonne réponse est  الاجابة الصحيحة هي 
+    </span>   
+    <br><br><br>
+    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp    &nbsp;&nbsp          B+D+E
+    
+    <br>    
+      B &nbsp;&nbsp;&nbsp;         Elle est rédigée en langue latine
+
+       <br>
+      D &nbsp;&nbsp;&nbsp;       Elle est une nomenclature internationale
+
+      <br>
+      E &nbsp;&nbsp;&nbsp;          Elle universalise l'étude de du corps humain 
+
+    </span>
+
+
+
+      <br><br><br> <br><br> <br>
+  &nbsp;&nbsp;    &nbsp;&nbsp;      &nbsp;    &nbsp;&nbsp;    &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+  
+    <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+      الشروحات
+    </span>
+    <br><br><br>
+    <span style="font-size: 14px; color: #555;">
+      الشروحات الطويلة قريبًا
+    </span>` 
+},
+
+
+
+
+  { 
+   text: "المقاومة  واجبة " ,  
+    options: [   " نعم في حالة توفر الامور",
+  " نعم ونوفر لها الاسباب",
+  " كلا الحياة مهما كانت   افضل ",
+  " ليس خيار جميل "], 
+  correct: [1],  
+  explanation: " قريبا "},
+
+
+
+  { 
+    text: "ما هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم؟", 
+    options: ["الإنجيل", "التوراة", "القرآن", "الزبور"], 
+    correct: [2],  
+    explanation: "القرآن الكريم هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم."
+  },
+
+
+
+  { 
+
+    text: "ما هو عدد ركعات صلاة الفجر؟", 
+    options: ["ركعتين", "أربع ركعات", "ثلاث ركعات", "ركعة واحدة"], 
+    correct: [0],  
+    explanation: "صلاة الفجر تتكون من ركعتين."
+    
+  },
+
+
+
+
+  
+  { 
+    text: "في أي عام هجري ولد النبي محمد صلى الله عليه وسلم؟", 
+    options: ["عام 570", "عام 510", "عام 590", "عام 600"], 
+    correct: [0],  
+    explanation: "النبي محمد صلى الله عليه وسلم وُلد في عام 570 ميلادي."
+  },
+
+
+  
+  
+  { 
+    text: "ما هو اسم أطول سورة في القرآن؟", 
+    options: ["سورة البقرة", "سورة آل عمران", "سورة النحل", "سورة الفاتحة"], 
+    correct: [0],  
+    explanation: "سورة البقرة هي أطول سورة في القرآن."
+  }
+
+
+  
+      
+  
+    ];
+
+    let currentQuestionIndex = 0;
+    let selectedAnswers = [];
+    let timer;
+    let timeLeft;
+    let totalTime = 0;
+    let quizDuration = 0;
+
+    const questionContainer = document.getElementById("question-container");
+    const resultSection = document.getElementById("result-section");
+    const resultsContainer = document.getElementById("results-container");
+    const finalMessage = document.getElementById("final-message");
+    const totalTimeMessage = document.getElementById("total-time-message");
+    const timerElement = document.getElementById("timer");
+
+    function startQuiz() {
+      quizDuration = parseInt(document.getElementById("custom-duration").value) * 60;
+      selectedAnswers = [];
+      totalTime = 0;
+      document.querySelector('.duration-select').style.display = "none";
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const question = questions[currentQuestionIndex];
+      questionContainer.innerHTML = `
+        <div class="question-container">
+          <!-- إطار الصورة -->
+          <div class="image-frame">
+            ${question.image ? `<img src="${question.image}" alt="صورة" />` : '' }
+          </div>
+          <div class="question">
+            <p><strong>${question.text}</strong></p>
+            <ul class="options">
+              ${question.options.map((option, index) => `
+                <li onclick="selectOption(${index})">
+                  ${option}
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        </div>
+        <button class="btn" onclick="submitAnswer()">إرسال الإجابة</button>
+      `;
+      questionContainer.style.display = "block";
+
+      if (currentQuestionIndex === 0) {
+        startTimer();
+      }
+    }
+
+    function selectOption(optionIndex) {
+      const options = document.querySelectorAll(".options li");
+      options.forEach((option, index) => {
+        if (index === optionIndex) {
+          option.classList.add("selected");
+        } else {
+          option.classList.remove("selected");
+        }
+      });
+      selectedAnswers[currentQuestionIndex] = optionIndex;
+    }
+
+    function submitAnswer() {
+      const question = questions[currentQuestionIndex];
+      const isCorrect = selectedAnswers[currentQuestionIndex] === question.correct[0];
+      const options = document.querySelectorAll(".options li");
+
+      if (isCorrect) {
+        options[selectedAnswers[currentQuestionIndex]].classList.add("correct");
+      } else {
+        options[selectedAnswers[currentQuestionIndex]].classList.add("incorrect");
+      }
+
+      currentQuestionIndex++;
+      totalTime = quizDuration - timeLeft;
+      if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+      } else {
+        displayResults();
+      }
+    }
+
+    function startTimer() {
+      timeLeft = quizDuration;
+      timer = setInterval(function() {
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          displayResults();
+        } else {
+          timeLeft--;
+          timerElement.innerText = formatTime(timeLeft);
+        }
+      }, 1000);
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secondsRemaining = seconds % 60;
+      return `${String(minutes).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+    }
+
+    function displayResults() {
+      questionContainer.style.display = "none";
+      resultSection.style.display = "block";
+      let correctAnswersCount = 0;
+
+      questions.forEach((question, index) => {
+        const isCorrect = selectedAnswers[index] === question.correct[0];
+        const reviewClass = isCorrect ? "green" : "red";
+        const reviewText = isCorrect ? "إجابة صحيحة" : "إجابة خاطئة";
+
+        resultsContainer.innerHTML += `
+          <div class="question-review ${reviewClass}">
+            <p><strong>${question.text}</strong></p>
+            <p>${reviewText}</p>
+            <button class="explain-btn" onclick="showExplanation(${index})">عرض الشرح</button>
+          </div>
+        `;
+        if (isCorrect) {
+          correctAnswersCount++;
+        }
+      });
+
+      finalMessage.innerText = `لقد أجبت على ${correctAnswersCount} من ${questions.length} أسئلة بشكل صحيح.`;
+      totalTimeMessage.innerText = `الوقت المستغرق: ${formatTime(totalTime)}`;
+    }
+
+
+
+
+
+
+
+
+
+    function showExplanation(index) {
+  // إنشاء المودال (نافذة الشرح) باستخدام جافا سكريبت
+  const explanationModal = document.createElement("div");
+  explanationModal.classList.add("modal");
+
+  const explanationText = document.createElement("div");
+  explanationText.classList.add("explanation-text");
+  explanationText.innerHTML = questions[index].explanation; // عرض الشرح باستخدام innerHTML
+
+  // إضافة الشرح داخل المودال
+  explanationModal.appendChild(explanationText);
+
+  // إضافة المودال إلى الـ body
+  document.body.appendChild(explanationModal);
+
+  // تفعيل عرض المودال بإضافة الكلاس active
+  setTimeout(() => {
+    explanationModal.classList.add("active");
+  }, 10);
+
+  // إغلاق المودال عند النقر عليه
+  explanationModal.onclick = function() {
+    explanationModal.classList.remove("active");
+    setTimeout(() => {
+      document.body.removeChild(explanationModal); // إزالة المودال بعد التلاشي
+    }, 300); // التأخير عند إزالة العنصر بعد التلاشي
+  };
+}
+
+
+
+    function closeExplanation() {
+      const explanationModal = document.getElementById("explanation-modal");
+      explanationModal.classList.remove("active");
+    }
+
+    function restartQuiz() {
+      location.reload();
+    }
+
+    function exitQuiz() {
+      window.location.href = "https://www.google.com";
+    }
+  </script>
+</body>
+</html>
