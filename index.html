@@ -708,7 +708,6 @@
 
 
 
-
     <section id="app" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #6a11cb, #2575fc); text-align: center; padding: 20px; overflow: hidden; position: relative;">
         <!-- Background Waves -->
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0;">
@@ -729,28 +728,96 @@
         </div>
         
         <!-- Content Box -->
-        <div style="position: relative; z-index: 1; background-color: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); max-width: 400px; width: 100%; animation: fadeIn 2s ease;">
-            <img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" alt="تحميل تطبيق أداة علم" style="width: 100%; border-radius: 10px; margin-bottom: 15px; animation: bounceIn 2s;">
-            <h5 style="margin: 15px 0;">
-                <a href="javascript:location.reload();" style="text-decoration: none; color: #007bff; font-size: 1.5rem; font-weight: bold; animation: fadeIn 1.5s 0.5s backwards;">⚡🚀 تحميل تطبيق أداة علم</a>
+        <div class="content-box">
+            <img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" alt="تحميل تطبيق أداة علم" class="content-image">
+            <h5 class="content-title">
+                <a href="javascript:location.reload();" class="content-link">⚡🚀 تحميل تطبيق أداة علم</a>
             </h5>
-            <div style="margin: 15px 0; font-size: 1rem; color: #333; animation: slideIn 2s 0.5s backwards;">
-                <small style="display: block; margin-bottom: 5px;"><i class="fa fa-user-graduate"></i> 👥 إجمالي عدد الأعضاء: <strong>10,500+</strong> 🌟</small>
+            <div class="content-details">
+                <small><i class="fa fa-user-graduate"></i> 👥 إجمالي عدد الأعضاء: <strong>10,500+</strong> 🌟</small>
                 <small><i class="fa fa-user"></i> 🎓📚 لطلاب الجامعيين المتميزين</small>
             </div>
-            <div style="margin-top: 20px;">
-                <a href="https://adatealm.github.io/ADATEALM/#Download" 
-                   style="display: inline-block; background-color: #007bff; color: #fff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 1rem; font-weight: bold; transition: transform 0.3s, box-shadow 0.3s;" 
-                   onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 20px rgba(0, 0, 0, 0.3)';" 
-                   onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.1)';">
-                    📥⚡ حمل التطبيق الآن
-                </a>
+            <div class="content-action">
+                <a href="https://adatealm.github.io/ADATEALM/#Download" class="download-button">📥⚡ حمل التطبيق الآن</a>
             </div>
         </div>
     </section>
     
-    <!-- CSS Animations -->
+    <!-- CSS Styles -->
     <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+    
+        .content-box {
+            position: relative;
+            z-index: 1;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 2s ease;
+        }
+    
+        .content-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            animation: bounceIn 2s;
+        }
+    
+        .content-title {
+            margin: 15px 0;
+            font-size: 1.5rem;
+            color: #007bff;
+            font-weight: bold;
+            animation: fadeIn 1.5s 0.5s backwards;
+        }
+    
+        .content-link {
+            text-decoration: none;
+            color: #007bff;
+        }
+    
+        .content-details {
+            margin: 15px 0;
+            font-size: 1rem;
+            color: #333;
+            animation: slideIn 2s 0.5s backwards;
+        }
+    
+        .content-details small {
+            display: block;
+            margin-bottom: 5px;
+        }
+    
+        .content-action {
+            margin-top: 20px;
+        }
+    
+        .download-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+    
+        .download-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+    
+        /* Keyframes for Animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -786,9 +853,41 @@
                 transform: scale(1);
             }
         }
+    
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content-box {
+                padding: 15px;
+                max-width: 90%;
+            }
+    
+            .content-title {
+                font-size: 1.3rem;
+            }
+    
+            .download-button {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .content-box {
+                padding: 10px;
+                max-width: 100%;
+            }
+    
+            .content-title {
+                font-size: 1.2rem;
+            }
+    
+            .download-button {
+                font-size: 0.8rem;
+                padding: 7px 14px;
+            }
+        }
     </style>
     
-
 
     
     <!-- Footer Start -->
