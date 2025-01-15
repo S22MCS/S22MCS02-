@@ -1,0 +1,2588 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <title>
+    
+         اختبار     نظام الكاف  والأزيجوس
+    في علم التشريح   وحدة
+    القلب والجهاز التنفسي  كلية عنابة  
+
+</title>    
+
+
+  <style>
+    /* إعدادات الصفحة الأساسية */
+    body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #edf2f7; /* خلفية موحدة ناعمة */
+        color: #333;
+        transition: filter 0.5s ease, background-color 0.5s ease;
+    }
+
+    header, main {
+        padding: 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 2rem;
+        color: #444;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.2s ease-in-out;
+    }
+
+    main h2 {
+        font-size: 1.5rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    main p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #666;
+    }
+
+    /* الحاوية */
+    #controlPanel {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        background: linear-gradient(145deg, #e0e5ec, #ffffff); /* تأثير ثلاثي الأبعاد */
+        border-radius: 50px;
+        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 45px;
+        height: 45px;
+        overflow: hidden;
+        transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+    }
+
+    #controlPanel.expanded {
+        width: 320px;
+        height: auto;
+        border-radius: 20px;
+        box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
+    }
+
+    /* الزر */
+    #toggleButton {
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c); /* تأثير دائري */
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #toggleButton:hover {
+        transform: scale(1.1) rotate(5deg); /* تكبير ودوران بسيط */
+        box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.5);
+        background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+    }
+
+    #emoji {
+        font-size: 32px;
+        line-height: 1;
+        animation: bounce 2s infinite ease-in-out;
+    }
+
+    #toggleText {
+        font-size: 14px;
+        color: white;
+        position: absolute;
+        bottom: -20px;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #toggleButton:hover #toggleText {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+
+    /* شريط التمرير */
+    #colorTempSlider {
+        width: 90%;
+        margin: 10px 0;
+        appearance: none;
+        height: 12px;
+        background: linear-gradient(90deg, #43a047 0%, #e0f2f1 100%); /* تأثير تدرج */
+        border-radius: 6px;
+        outline: none;
+        cursor: pointer;
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+    }
+
+    #colorTempSlider::-webkit-slider-thumb {
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        background: radial-gradient(circle, #4caf50, #388e3c);
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    #colorTempSlider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+    }
+
+    #label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        display: none;
+        text-align: center;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .expanded #label {
+        display: block;
+    }
+
+    /* الرسوم المتحركة */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* تحسين التوافق مع الهواتف */
+    @media (max-width: 768px) {
+        #controlPanel {
+            bottom: 10px;
+            right: 10px;
+        }
+        #toggleButton {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- أداة التحكم -->
+<div id="controlPanel">
+    <button id="toggleButton">
+        <span id="emoji">🌙</span>
+        <span id="toggleText">تشغيل</span>
+    </button>
+    <label id="label" for="colorTempSlider">درجة حرارة اللون:</label>
+    <input type="range" id="colorTempSlider" min="1800" max="27000" step="100" value="6500">
+</div>
+
+<script>
+    const controlPanel = document.getElementById('controlPanel');
+    const toggleButton = document.getElementById('toggleButton');
+    const emoji = document.getElementById('emoji');
+    const toggleText = document.getElementById('toggleText');
+    const slider = document.getElementById('colorTempSlider');
+
+    let isEyeProtectionEnabled = false;
+
+    toggleButton.addEventListener('click', () => {
+        controlPanel.classList.toggle('expanded');
+
+        if (isEyeProtectionEnabled) {
+            isEyeProtectionEnabled = false;
+            emoji.textContent = '🌙';
+            toggleText.textContent = 'تشغيل';
+            document.documentElement.style.filter = 'none';
+        } else {
+            isEyeProtectionEnabled = true;
+            emoji.textContent = '🛡️';
+            toggleText.textContent = 'إيقاف';
+            slider.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                controlPanel.classList.remove('expanded');
+            }, 5000);
+        }
+    });
+
+    slider.addEventListener('input', () => {
+        if (!isEyeProtectionEnabled) return;
+
+        const temp = slider.value;
+        const warmth = (temp - 1800) / (27000 - 1800);
+        const sepia = 0.4 + 0.6 * (1 - warmth);
+        const brightness = 1 - 0.2 * warmth;
+
+        document.documentElement.style.filter = `sepia(${sepia}) brightness(${brightness})`;
+    });
+</script>
+</body>
+
+  
+
+
+
+
+
+
+  <style>
+    /* إعدادات عامة */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+      direction: ltr;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #0056b3;
+    }
+
+    .timer-container {
+      background-color: #343a40;
+      padding: 10px 0;
+      text-align: center;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+  ء
+    /* إطار خاص بالصورة */
+    .image-frame {
+      background-color: #e9ecef;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .image-frame {
+  display: flex; /* استخدام الفلكس لتمركز الصورة */
+  justify-content: center; /* تمركز الصورة أفقياً */
+  align-items: center; /* تمركز الصورة عمودياً */
+  width: 100%; /* الحاوية تأخذ العرض الكامل */
+  height: 100%; /* الحاوية تأخذ الارتفاع الكامل */
+}
+
+.image-frame img {
+  max-width: 300px; /* تحديد الحجم الأقصى للصورة */
+  height: auto; /* الحفاظ على النسب الأصلية للصورة */
+  border-radius: 8px; /* إضافة حواف مدورة للصورة */
+  transition: transform 0.3s ease; /* إضافة تأثير انتقالي */
+}
+
+/* استعلامات الوسائط لأجهزة الهواتف */
+@media (max-width: 767px) {
+  .image-frame img {
+    max-width: 200px; /* تغيير الحجم الأقصى للصورة على الهواتف */
+  }
+}
+
+@media (max-width: 480px) {
+  .image-frame img {
+    max-width: 150px; /* تقليل الحجم الأقصى أكثر للأجهزة الصغيرة جدًا */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .image-frame img:hover {
+      transform: scale(1.05);
+    }
+
+
+
+
+    .question {
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .options {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .options li {
+      padding: 15px;
+      background-color: #f0f0f0;
+      margin: 5px 0;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .options li.selected {
+      background-color: #007bff;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li.correct {
+      background-color: #28a745;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li.incorrect {
+      background-color: #dc3545;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li:hover {
+      background-color: #e0e0e0;
+      transform: scale(1.02);
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .results {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .question-review {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .question-review.green {
+      background-color: #28a745;
+    }
+
+    .question-review.red {
+      background-color: #dc3545;
+    }
+
+    .explain-btn {
+      background-color: #ffc107;
+      color: #333;
+      padding: 8px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .explain-btn:hover {
+      background-color: #e0a800;
+    }
+
+
+
+
+    .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+    z-index: 1000;
+    overflow: hidden; /* منع التصفح العرضي العام */
+}
+
+.modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto; /* السماح بالتصفح العمودي فقط */
+    overflow-x: hidden; /* منع التصفح العرضي افتراضيًا */
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    overflow-x: auto; /* السماح بالتصفح العرضي إذا كان هناك صور عريضة */
+}
+
+.fixed-buttons {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    z-index: 1001;
+}
+
+.close-btn, .copy-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.close-btn {
+    color: #ff4d4d;
+}
+
+.copy-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.copy-btn:hover {
+    background-color: #45a049;
+}
+
+/* تحسين توافق الأجهزة المحمولة */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .fixed-buttons {
+        padding: 5px;
+    }
+
+    .close-btn, .copy-btn {
+        font-size: 20px;
+        padding: 5px 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+  <br>
+    <br> 
+  <header>
+
+    <h1> 
+  
+      اختبار     نظام الكاف  والأزيجوس
+      في علم التشريح   وحدة
+      القلب والجهاز التنفسي  كلية عنابة  
+
+    </h1>
+
+
+    <h1> 
+  
+      اختبار     نظام الكاف  والأزيجوس
+      في علم التشريح   وحدة
+      القلب والجهاز التنفسي  كلية عنابة  
+
+    </h1>
+  </header>
+
+  <!-- حاوية الوقت العلوي -->
+
+  
+  <div  class="timer-container">
+ 
+    الوقت المتبقي: <span id="timer">00:00</span>
+  </div>
+
+  <div class="container">
+    <div class="duration-select">
+      &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+      <label for="duration">أدخل مدة الاختبار (بالدقائق): </label>
+      <input type="number" id="custom-duration" name="custom-duration" min="1" max="60" value="10" />
+      <button class="btn" onclick="startQuiz()">ابدأ الاختبار</button>
+    </div>
+
+    <div id="question-container" style="display: none;"></div>
+
+    <div id="result-section" style="display: none;">
+      <h2>النتيجة</h2>
+      <div id="results-container"></div>
+      <p id="final-message"></p>
+      <p id="total-time-message"></p>
+      <button class="btn" onclick="restartQuiz()">إعادة الاختبار</button>
+      <button class="btn" onclick="window.location.href='page2.html';">الخروج</button>
+
+    </div>
+  </div>
+
+  <!-- نافذة منبثقة للشرح -->
+  <div id="explanation-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeExplanation()">إغلاق</button>
+      <h3 class="modal-title">الشرح</h3>
+      <div class="modal-body" id="explanation-text"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      
+       
+ 
+
+
+
+
+
+
+
+
+//QES01
+
+
+
+
+{
+ 
+ text: `
+   <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+     QCM N°24 U1 2024
+   </span>   
+   &nbsp;&nbsp;&nbsp;
+<span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0; font-weight: bold;">
+   ANNABA
+</span>
+
+
+
+&nbsp;&nbsp; &nbsp;
+<span style="color: #007BFF; display: inline-block; padding: 5px 10px; border-radius: 15px; background-color: #E6F0FF;">
+   &#10004;   الشرح المختصر
+</span>
+
+
+
+<span style="color: #FFC107; display: inline-block; padding: 5px 10px; border-radius: 15px; background-color: #FFFBE6; font-weight: bold;">
+   ⚡ الشروحات  ⚡
+</span>
+
+
+
+
+
+   <br><br>
+     Le système veineux fait par:
+ `,
+ options: [
+   "A &nbsp;&nbsp;&nbsp;         Les veines pulmonaires et hémi-veine azygos supérieure.",
+   "B &nbsp;&nbsp;&nbsp;         Les veines pulmonaire et la veine cave supérieure.",
+   "C &nbsp;&nbsp;&nbsp;         Les veines pulmonaires et la veine cave inférieur.",
+   "D &nbsp;&nbsp;&nbsp;         Les veines pulmonaires et la grande veine azygos.",
+   "E &nbsp;&nbsp;&nbsp;         Les  veines pulmonaires les systèmes cave et azygos. "  
+  
+
+
+
+
+ ],   
+ correct: [4],
+
+explanation: `
+      &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+   <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+     الشروحات القصيرة
+   </span>
+   <br><br>
+   <span style="font-size: 14px; color: #555;">
+    
+   
+   
+     La réponse  &nbsp;&nbsp;  A &nbsp;&nbsp;&nbsp;           Les veines pulmonaires et hémi-veine azygos supérieure.  &nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+     réponse fausse   الاجابة خاطئة  </span>
+
+
+
+
+     <br> <br> 
+     &nbsp;&nbsp;   
+   <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+     التبرير
+    </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+
+  Cette option est incorrecte car elles ne mentionnent pas l'ensemble du système veineux. 
+  <br> 
+هذه الخيارات غير صحيحة لأنها لا تذكر الجهاز الوريدي بأكمله
+  <br> <br>
+  Ils se concentrent uniquement sur une certaine partie .
+  <br>
+يركزون على جزء معين منه فقط 
+  <br> <br>   <br> 
+
+   Le système veineux consiste  du  :Les veines pulmonaires les systèmes cave et azygos.
+  <br> <br>
+يتكون الجهاز الوريدي من: الأوردة الرئوية، والأجوف، والأنظمة اللازيجوية  
+
+
+
+
+
+
+
+
+
+
+     <br> <br><br> <br><br> <br>
+
+         La réponse  &nbsp;&nbsp;      B &nbsp;&nbsp;&nbsp;         présente deux zones: la corticale et la medullaire.   &nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+     réponse fausse   الاجابة خاطئة  </span>
+
+
+
+
+ <br> <br> 
+     &nbsp;&nbsp;   
+   <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+     التبرير
+    </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+
+Cette option est incorrecte car elles ne mentionnent pas l'ensemble du système veineux. 
+  <br> 
+هذه الخيارات غير صحيحة لأنها لا تذكر الجهاز الوريدي بأكمله
+  <br> <br>
+  Ils se concentrent uniquement sur une certaine partie .
+  <br>
+يركزون على جزء معين منه فقط 
+  <br> <br>   <br> 
+
+   Le système veineux consiste  du  :Les veines pulmonaires les systèmes cave et azygos.
+  <br> <br>
+يتكون الجهاز الوريدي من: الأوردة الرئوية، والأجوف، والأنظمة اللازيجوية  
+
+
+
+
+
+
+
+
+
+
+ <br> <br><br> <br><br> <br>
+
+
+
+         La réponse  &nbsp;&nbsp;           C &nbsp;&nbsp;&nbsp;            est un organe lobulė  &nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+     réponse fausse   الاجابة خاطئة  </span>
+
+     
+
+ <br> <br> 
+     &nbsp;&nbsp;   
+   <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+     التبرير
+    </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+
+
+
+Cette option est incorrecte car  il manque autre partie c'est les vein cave supérieur et inferieur.
+<br><br>
+هذا الخيار غير صحيح بسبب فقدان جزء آخر: الوريد الأجوف العلوي والسفلي
+
+
+
+
+
+
+
+
+
+ <br> <br><br> <br><br> <br><br>
+
+
+
+
+         La réponse  &nbsp;&nbsp;           D &nbsp;&nbsp;&nbsp;             possède une capsule traversée par des lymphatiques afférents  &nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+     réponse fausse   الاجابة خاطئة  </span>
+
+     
+
+ <br> <br> 
+     &nbsp;&nbsp;   
+   <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+     التبرير
+    </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+Cette option est incorrecte car   elles ne mentionnent pas l'ensemble du système veineux. 
+  <br> 
+هذه الخيارات غير صحيحة لأنها لا تذكر الجهاز الوريدي بأكمله
+  <br> <br>
+  Ils se concentrent uniquement sur une certaine partie .
+  <br>
+يركزون على جزء معين منه فقط 
+  <br> <br>   <br> 
+
+   Le système veineux consiste  du  :Les veines pulmonaires les systèmes cave et azygos.
+  <br> <br>
+يتكون الجهاز الوريدي من: الأوردة الرئوية، والأجوف، والأنظمة اللازيجوية  
+
+
+
+
+
+
+
+
+
+
+
+     <br> <br><br> <br><br> <br>
+     &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+ 
+       <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+    La bonne réponse est  الاجابة الصحيحة هي 
+   </span>   
+   <br><br><br>
+   &nbsp;&nbsp;&nbsp; &nbsp;&nbsp    &nbsp;&nbsp        
+   
+   <br>    
+      E &nbsp;&nbsp;&nbsp;            Les  veines pulmonaires les systèmes cave et azygos.        
+      <br>
+      <br>
+الأوردة الرئوية والأنظمة الأجوفية واللازجية
+   </span>
+
+
+
+
+
+
+
+
+     <br><br><br> <br><br> <br><br> <br>
+ &nbsp;&nbsp;    &nbsp;&nbsp;      &nbsp;    &nbsp;&nbsp;    &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+ 
+   <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+     الشروحات 
+   </span>
+
+
+   <br><br><br><br><br>
+
+
+
+En résumé, le système veineux est constitué de différents réseaux veineux qui travaillent ensemble pour ramener le sang désoxygéné vers le coeur. 
+<br>
+
+باختصار، يتكون الجهاز الوريدي من شبكات وريدية مختلفة تعمل معًا لإعادة الدم غير المؤكسج إلى القلب
+
+
+<br><br>
+
+Les veines pulmonaires, le système cave et le système azygos sont tous des composants essentiels de ce système.
+<br>
+
+تعتبر الأوردة الرئوية، ونظام الأجوف، ونظام الأزيجوس كلها مكونات أساسية لهذا النظام
+
+
+
+<br><br><br><br>
+
+<div style="display: flex; justify-content: center; gap: 20px; text-align: center;">
+ <div><img src="2MEDimg/COEUR.jpg" style="width: 300px;"><h3>صورة القلب</h3><p>رسم توضيحي للقلب البشري.</p></div>
+
+ <div><img src="2MEDimg/VEINE AZYGOS.jpg" style="width: 300px;">
+   <br><h3>الوريد الأزيغوسي</h3><p>رسم يوضح مسار الوريد الأزيغوسي.</p></div>
+</div>
+
+
+
+
+
+   `
+},
+
+
+
+
+
+//QES02
+
+{
+
+  text: `
+    <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+      QCM N°02 S1 2024
+    </span>   
+    &nbsp;&nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+      ANNABA
+    </span>
+    <br><br>
+    La grande veine azygos:
+  `,
+ 
+  options: [
+    
+
+  "A &nbsp;&nbsp;&nbsp;           Elle draine les poumons, plèvres et le coeur.",
+   "B &nbsp;&nbsp;&nbsp;         elle est formée par ta réunion de deux racines constantes .",
+   "C &nbsp;&nbsp;&nbsp;           Elle monte dans le médiastin antérieur jusqu'à la T4.",
+   "D &nbsp;&nbsp;&nbsp;        elle se termine dans la paroi postérieure de la veine cave supérieure.",
+   "E &nbsp;&nbsp;&nbsp;          Elle se termine dans la paroi antérieure de la veine cave supérieure. "  ,
+
+  ],   
+  correct: [5],
+
+ 
+explanation: `
+      &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+   <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+     الشروحات القصيرة
+   </span>
+   <br><br>
+   <span style="font-size: 14px; color: #555;">
+    
+   
+   
+     La réponse  &nbsp;&nbsp;  A &nbsp;&nbsp;&nbsp;             Elle draine les poumons, plèvres et le coeur.  &nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+     réponse fausse   الاجابة خاطئة  </span>
+
+
+
+
+     <br> <br> 
+     &nbsp;&nbsp;   
+   <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+     التبرير
+    </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+
+  
+
+Le système azygos est un réseau de drainage pariétal ;
+<br>
+النظام الأزيجوسي هو عبارة عن شبكة تصريف جدارية؛
+<br><br><br>
+ il draine les parois dorsale,  thoracique et abdominale en plus des viscères médiastinaux. 
+<br>
+ ويقوم بتصفية الجدران الظهرية والصدرية والبطنية بالإضافة إلى أحشاء المنصف
+
+
+
+
+     <br> <br><br> <br><br> <br>
+
+         La réponse  &nbsp;&nbsp;      B &nbsp;&nbsp;&nbsp;         elle est formée par ta réunion de deux racines constantes .   &nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+     réponse fausse   الاجابة خاطئة  </span>
+
+
+
+
+ <br> <br> 
+     &nbsp;&nbsp;   
+   <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+     التبرير
+    </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+
+
+
+
+Origine de VEINE AZYGOS	 :
+    <br> 
+أصل الوريد الأزيجى:
+
+    <br> <br>      <br> 
+
+-Elle naît dans l’abdomen, à la hauteur du 11e espace intercostal droit.
+    <br> 
+- يبدأ في البطن، على مستوى الحيز الوربي الأيمن الحادي عشر.
+
+
+-Elle est formée par la fusion de 2 racines :
+    <br> 
+-يتكون من اندماج جذرين:
+
+
+✅	Une racine latérale =12e veine intercostale droite +veine lombaire ascendante droite(est Constante) .
+    <br> 
+✅ جذر جانبي = الوريد الوربي الأيمن الثاني عشر + الوريد القطني الصاعد الأيمن (ثابت).
+
+    <br> <br>     <br> 
+
+⚠️	Une racine médiale :issue de la face postérieure de la VCI  (inconstante)  .
+    <br> 
+⚠️ جذر وسطي: ينشأ من الوجه الخلفي للضرس العقلي (غير ثابت).
+
+
+
+
+ <br> <br><br> <br><br> <br>    <br> 
+
+
+
+         La réponse  &nbsp;&nbsp;           C &nbsp;&nbsp;&nbsp;           Elle monte dans le médiastin antérieur jusqu'à la T4 . &nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+     réponse fausse   الاجابة خاطئة  </span>
+
+     <br> <br>    <br> 
+     
+     &nbsp;&nbsp;   
+   <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+     التبرير
+    </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+<br> 
+
+La veine azygos ne monte pas dans le médiastin antérieur, mais plutôt dans le médiastin postérieur.
+ <br>  
+الوريد الأزيغوسي لا يصعد في المنصف الأمامي، بل في المنصف الخلفي
+<br> <br>   
+Elle termine son trajet au niveau de la T4, où elle se jette dans la veine cave supérieure (VCS).
+ <br>  
+ينتهي مساره عند مستوى الفقرة T4، حيث يصب في الوريد الأجوف العلوي
+<br> <br>   
+Pendant tout son trajet, elle reste dans le médiastin postérieur, jamais dans l'antérieur.
+ <br>  
+يبقى مساره دائمًا في المنصف الخلفي وليس الأمامي
+
+
+ <br> <br><br> <br><br> <br><br>
+
+
+
+
+         La réponse  &nbsp;&nbsp;           E &nbsp;&nbsp;&nbsp;             Elle se termine dans la paroi antérieure de la veine cave supérieure .  &nbsp;&nbsp;
+    <span style="color: red; display: inline-block; padding: 5px; border-radius: 15px; background-color: #f7e0e0;">
+     réponse fausse   الاجابة خاطئة  </span>
+
+     
+
+ <br> <br> 
+     &nbsp;&nbsp;   
+   <span style="color: blue; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f0ff;">
+     التبرير
+    </span>
+&nbsp;&nbsp;   &nbsp;&nbsp;   
+
+
+
+
+      LA VIENE AZYGOS     elle se termine dans la paroi postérieure de la veine cave supérieure.   
+          <br>
+الوريد الأجوف العلوي وينتهي في الجدار الخلفي للوريد الأجوف العلوي
+          <br>    <br>
+ OÙ  ELLE S’INCLINE EN AVANT  FORMANT  LA CROSSE DE L’AZYGOS,
+حيث يميل إلى الأمام ليشكل صليب الأزيجوس
+ <br>
+ <br>
+      <br>
+ ELLE PASSE AU DESSUS DU PÉDICULE  PULMONAIRE 
+  <br>
+ ويمر فوق السويقة الرئوية
+ <br>
+      <br>
+ ET SE TERMINE DANS LA PAROI POSTÉRIEUR DE LA VEINE CAVE SUPERIEURE.
+ <br>
+  وينتهي في الجدار الخلفي للوريد الأجوف العلوي
+   </span>
+
+
+
+
+     <br> <br><br> <br><br> <br>
+     &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+ 
+       <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+    La bonne réponse est  الاجابة الصحيحة هي 
+   </span>   
+   <br><br><br>
+   &nbsp;&nbsp;&nbsp; &nbsp;&nbsp    &nbsp;&nbsp        
+   
+   <br>    
+      D &nbsp;&nbsp;&nbsp;           elle se termine dans la paroi postérieure de la veine cave supérieure.        
+      <br>
+     
+  
+الوريد الأجوف العلوي وينتهي في الجدار الخلفي للوريد الأجوف العلوي
+          <br>    <br>
+      <br>
+
+
+
+      
+ OÙ  ELLE S’INCLINE EN AVANT  FORMANT  LA CROSSE DE L’AZYGOS,
+حيث يميل إلى الأمام ليشكل صليب الأزيجوس
+ <br>
+ <br>
+      <br>
+ ELLE PASSE AU DESSUS DU PÉDICULE  PULMONAIRE 
+  <br>
+ ويمر فوق السويقة الرئوية
+ <br>
+      <br>
+ ET SE TERMINE DANS LA PAROI POSTÉRIEUR DE LA VEINE CAVE SUPERIEURE.
+ <br>
+  وينتهي في الجدار الخلفي للوريد الأجوف العلوي
+   </span>
+
+
+
+
+
+
+
+
+     <br><br><br> <br><br> <br><br> <br>
+ &nbsp;&nbsp;    &nbsp;&nbsp;      &nbsp;    &nbsp;&nbsp;    &nbsp;&nbsp;      &nbsp; &nbsp;&nbsp;  &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;        &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;  
+ 
+   <span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+     الشروحات 
+   </span>
+
+
+   <br><br><br><br><br>
+
+
+
+
+
+
+
+<span style="color: green; display: inline-block; padding: 5px; border-radius: 15px; background-color: #e0f7e9;">
+  الشروحات 
+</span>
+
+<br><br><br><br><br>
+
+<h3 style="color: blue;">III/- SYSTEME AZYGOS :</h3>
+
+<ul>
+  <li>Le système azygos est un réseau de drainage pariétal ; il draine les parois dorsale, thoracique et abdominale en plus des viscères médiastinaux.
+    <br>النظام الأزغوس هو شبكة تصريف جداري؛ يقوم بتصريف الجدران الظهرية والصدرية والبطنية بالإضافة إلى الأحشاء الوسيطية.
+  </li>
+  
+  <li>Il forme un système anastomotique entre les 2 veines caves (il relie les 2 veines caves) ce qui le rend extrêmement important en cas d’obstruction à la circulation dans le système cave.
+    <br>يشكل نظام مفاغرة بين الوريدين الأجوفين (يربط بين الوريدين الأجوفين) مما يجعله بالغ الأهمية في حالة انسداد الدورة الدموية في النظام الأجوف.
+  </li>
+  
+  <li>Il est situé dans le médiastin postérieur.
+    <br>يقع في المنصف الخلفي.
+  </li>
+</ul>
+
+<h4 style="color: darkgreen;">Il est composé de :</h4>
+<ol>
+  <li>La veine azygos (1) (grande azygos).
+    <br>الوريد الأزغوس (1) (الأزغوس الكبير).
+  </li>
+  
+  <li>Les petites veines azygos qui se terminent dans la précédente :
+    <ul>
+      <li>Veine hémi-azygos (A)
+        <br>الوريد نصف الأزغوس (A)
+      </li>
+      <li>Veine hémi-azygos accessoire (B)
+        <br>الوريد نصف الأزغوس الإضافي (B)
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<h4 style="color: darkgreen;">VEINE AZYGOS</h4>
+<ul>
+  <li><strong>Origine :</strong>
+    <ul>
+      <li>Elle naît dans l’abdomen, à la hauteur du 11<sup>e</sup> espace intercostal droit.
+        <br>تنشأ في البطن على مستوى الفراغ الوربي الحادي عشر الأيمن.
+      </li>
+      <li>Elle est formée par la fusion de 2 racines :
+        <ul>
+          <li><em>Une racine latérale :</em> 12<sup>e</sup> veine intercostale droite + veine lombaire ascendante droite.
+            <br><em>جذر جانبي:</em> الوريد الوربي الثاني عشر الأيمن + الوريد القطني الصاعد الأيمن.
+          </li>
+          <li><em>Une racine médiale :</em> issue de la face postérieure de la VCI.
+            <br><em>جذر وسطي:</em> ينشأ من الوجه الخلفي للوريد الأجوف السفلي.
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  <li><strong>Trajet :</strong>
+    <ul>
+      <li>La veine azygos n’existe que du côté droit de la colonne vertébrale qu’elle longe jusqu’à T₄ (portion ascendante).
+        <br>الوريد الأزغوس يوجد فقط على الجانب الأيمن من العمود الفقري الذي يمتد عليه حتى الفقرة الرابعة الصدرية (الجزء الصاعد).
+      </li>
+      <li>Au niveau de T₄, elle s’incurve au-dessus de pédicule pulmonaire droit et se vide dans la VCS (portion horizontale = crosse de la veine azygos).
+        <br>على مستوى الفقرة الرابعة الصدرية، ينحني فوق السويقة الرئوية اليمنى ويفرغ في الوريد الأجوف العلوي (الجزء الأفقي = قوس الوريد الأزغوس).
+      </li>
+    </ul>
+  </li>
+
+  <li><strong>Terminaison :</strong> à la face postérieure de la VCS.
+    <br>النهاية: في الوجه الخلفي للوريد الأجوف العلوي.
+  </li>
+
+  <li><strong>Branches collatérales :</strong>
+    <ul>
+      <li>La veine hémi-azygos
+        <br>الوريد نصف الأزغوس
+      </li>
+      <li>La veine hémi-azygos accessoire
+        <br>الوريد نصف الأزغوس الإضافي
+      </li>
+      <li>La 8<sup>e</sup> veine intercostale gauche
+        <br>الوريد الوربي الثامن الأيسر
+      </li>
+      <li>Les veines intercostales postérieures droites
+        <br>الأوردة الوربية الخلفية اليمنى
+      </li>
+      <li>Les veines médiastinales, œsophagiennes, bronchiques et péricardiques
+        <br>الأوردة الوسيطية، المريئية، القصبية، والتأمورية
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+
+
+
+
+
+<figure style="text-align: center;">
+  <img src="file-DUDRQUXeYbSQeFVH3c4EQ2.png" alt="Image 1" style="width:100%; max-width:400px;">
+  <figcaption>
+    <span>🇸🇦 العربية: الشكل 1: رسم تخطيطي للنظام الأزغوسي 🇸🇦</span><br>
+    <span>🇺🇸 English: Figure 1: Diagram of the azygos system 🇺🇸</span><br>
+    <span>🇫🇷 Français: Figure 1 : Schéma du système azygos 🇫🇷</span>
+  </figcaption>
+</figure>
+
+<figure style="text-align: center;">
+  <img src="file-3zN2wpmnvWZc3YtCSw3dxe.png" alt="Image 2" style="width:100%; max-width:400px;">
+  <figcaption>
+    <span>🇸🇦 العربية: الشكل 2: تفاصيل أصول الوريد الأزغوسي ونصف الأزغوسي 🇸🇦</span><br>
+    <span>🇺🇸 English: Figure 2: Details of the origins of the azygos and hemiazygos veins 🇺🇸</span><br>
+    <span>🇫🇷 Français: Figure 2 : Détails des origines des veines azygos et hémi-azygos 🇫🇷</span>
+  </figcaption>
+</figure>
+
+<figure style="text-align: center;">
+  <img src="file-3wSWnFdJfy61oa2nhPtfS3.png" alt="Image 3" style="width:100%; max-width:400px;">
+  <figcaption>
+    <span>🇸🇦 العربية: الشكل 3: موقع الوريد الأزغوسي في المنصف 🇸🇦</span><br>
+    <span>🇺🇸 English: Figure 3: Location of the azygos vein in the mediastinum 🇺🇸</span><br>
+    <span>🇫🇷 Français: Figure 3 : Localisation de la veine azygos dans le médiastin 🇫🇷</span>
+  </figcaption>
+</figure>
+
+
+
+
+
+<br><br><br><br>
+
+
+
+   `
+},
+
+
+
+
+
+
+
+
+
+
+  { 
+   text: "المقاومة  واجبة " ,  
+    options: [   " نعم في حالة توفر الامور",
+  " نعم ونوفر لها الاسباب",
+  " كلا الحياة مهما كانت   افضل ",
+  " ليس خيار جميل "], 
+  correct: [1],  
+  explanation: " قريبا "},
+
+
+
+  { 
+    text: "ما هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم؟", 
+    options: ["الإنجيل", "التوراة", "القرآن", "الزبور"], 
+    correct: [2],  
+    explanation: "القرآن الكريم هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم."
+  },
+
+
+
+  { 
+
+    text: "ما هو عدد ركعات صلاة الفجر؟", 
+    options: ["ركعتين", "أربع ركعات", "ثلاث ركعات", "ركعة واحدة"], 
+    correct: [0],  
+    explanation: "صلاة الفجر تتكون من ركعتين."
+    
+  },
+
+
+
+
+  
+  { 
+    text: "في أي عام هجري ولد النبي محمد صلى الله عليه وسلم؟", 
+    options: ["عام 570", "عام 510", "عام 590", "عام 600"], 
+    correct: [0],  
+    explanation: "النبي محمد صلى الله عليه وسلم وُلد في عام 570 ميلادي."
+  },
+
+
+  
+  
+  { 
+    text: "ما هو اسم أطول سورة في القرآن؟", 
+    options: ["سورة البقرة", "سورة آل عمران", "سورة النحل", "سورة الفاتحة"], 
+    correct: [0],  
+    explanation: "سورة البقرة هي أطول سورة في القرآن."
+  }
+
+
+
+
+
+  ];
+
+let currentQuestionIndex = 0;
+let selectedAnswers = [];
+let timer;
+let timeLeft;
+let totalTime = 0;
+let quizDuration = 0;
+
+const questionContainer = document.getElementById("question-container");
+const resultSection = document.getElementById("result-section");
+const resultsContainer = document.getElementById("results-container");
+const finalMessage = document.getElementById("final-message");
+const totalTimeMessage = document.getElementById("total-time-message");
+const timerElement = document.getElementById("timer");
+
+function startQuiz() {
+  quizDuration = parseInt(document.getElementById("custom-duration").value) * 60;
+  selectedAnswers = [];
+  totalTime = 0;
+  document.querySelector('.duration-select').style.display = "none";
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const question = questions[currentQuestionIndex];
+  questionContainer.innerHTML = `
+    <div class="question-container">
+      <!-- إطار الصورة -->
+      <div class="image-frame">
+        ${question.image ? `<img src="${question.image}" alt="صورة" />` : '' }
+      </div>
+      <div class="question">
+        <p><strong>${question.text}</strong></p>
+        <ul class="options">
+          ${question.options.map((option, index) => `
+            <li onclick="selectOption(${index})">
+              ${option}
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    </div>
+    <button class="btn" onclick="submitAnswer()">إرسال الإجابة</button>
+  `;
+  questionContainer.style.display = "block";
+
+  if (currentQuestionIndex === 0) {
+    startTimer();
+  }
+}
+
+function selectOption(optionIndex) {
+  const options = document.querySelectorAll(".options li");
+  options.forEach((option, index) => {
+    if (index === optionIndex) {
+      option.classList.add("selected");
+    } else {
+      option.classList.remove("selected");
+    }
+  });
+  selectedAnswers[currentQuestionIndex] = optionIndex;
+}
+
+function submitAnswer() {
+  const question = questions[currentQuestionIndex];
+  const isCorrect = selectedAnswers[currentQuestionIndex] === question.correct[0];
+  const options = document.querySelectorAll(".options li");
+
+  if (isCorrect) {
+    options[selectedAnswers[currentQuestionIndex]].classList.add("correct");
+  } else {
+    options[selectedAnswers[currentQuestionIndex]].classList.add("incorrect");
+  }
+
+  currentQuestionIndex++;
+  totalTime = quizDuration - timeLeft;
+  if (currentQuestionIndex < questions.length) {
+    loadQuestion();
+  } else {
+    displayResults();
+  }
+}
+
+function startTimer() {
+  timeLeft = quizDuration;
+  timer = setInterval(function() {
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      displayResults();
+    } else {
+      timeLeft--;
+      timerElement.innerText = formatTime(timeLeft);
+    }
+  }, 1000);
+}
+
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secondsRemaining = seconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+}
+
+function displayResults() {
+  questionContainer.style.display = "none";
+  resultSection.style.display = "block";
+  let correctAnswersCount = 0;
+
+  questions.forEach((question, index) => {
+    const isCorrect = selectedAnswers[index] === question.correct[0];
+    const reviewClass = isCorrect ? "green" : "red";
+    const reviewText = isCorrect ? "إجابة صحيحة" : "إجابة خاطئة";
+
+    resultsContainer.innerHTML += `
+      <div class="question-review ${reviewClass}">
+        <p><strong>${question.text}</strong></p>
+        <p>${reviewText}</p>
+        <button class="explain-btn" onclick="showExplanation(${index})">عرض الشرح</button>
+      </div>
+    `;
+    if (isCorrect) {
+      correctAnswersCount++;
+    }
+  });
+
+  finalMessage.innerText = `لقد أجبت على ${correctAnswersCount} من ${questions.length} أسئلة بشكل صحيح.`;
+  totalTimeMessage.innerText = `الوقت المستغرق: ${formatTime(totalTime)}`;
+}
+
+
+
+
+
+
+
+
+
+function showExplanation(index) {
+// إنشاء المودال (نافذة الشرح) باستخدام جافا سكريبت
+const explanationModal = document.createElement("div");
+explanationModal.classList.add("modal");
+
+const explanationText = document.createElement("div");
+explanationText.classList.add("explanation-text");
+explanationText.innerHTML = questions[index].explanation; // عرض الشرح باستخدام innerHTML
+
+// إضافة الشرح داخل المودال
+explanationModal.appendChild(explanationText);
+
+// إضافة المودال إلى الـ body
+document.body.appendChild(explanationModal);
+
+// تفعيل عرض المودال بإضافة الكلاس active
+setTimeout(() => {
+explanationModal.classList.add("active");
+}, 10);
+
+// إغلاق المودال عند النقر عليه
+explanationModal.onclick = function() {
+explanationModal.classList.remove("active");
+setTimeout(() => {
+  document.body.removeChild(explanationModal); // إزالة المودال بعد التلاشي
+}, 300); // التأخير عند إزالة العنصر بعد التلاشي
+};
+}
+
+
+
+function closeExplanation() {
+  const explanationModal = document.getElementById("explanation-modal");
+  explanationModal.classList.remove("active");
+}
+
+function restartQuiz() {
+  location.reload();
+}
+
+function exitQuiz() {
+  window.location.href = "https://www.google.com";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function showExplanation(index) {
+const explanationModal = document.createElement("div");
+explanationModal.classList.add("modal");
+
+const explanationContent = document.createElement("div");
+explanationContent.classList.add("modal-content");
+
+const fixedButtons = document.createElement("div");
+fixedButtons.classList.add("fixed-buttons");
+
+const closeButton = document.createElement("button");
+closeButton.classList.add("close-btn");
+closeButton.innerHTML = "&#x274C;"; // Emoji for close button
+closeButton.onclick = function() {
+    closeExplanation(explanationModal);
+};
+
+
+
+
+
+
+
+
+
+
+
+const copyButton = document.createElement("button");
+copyButton.classList.add("copy-btn");
+copyButton.innerText = "نسخ النص";
+copyButton.onclick = function() {
+    copyToClipboard(questions[index].explanation);
+    alert("تم نسخ النص!");
+};
+
+fixedButtons.appendChild(closeButton);
+fixedButtons.appendChild(copyButton);
+explanationContent.appendChild(fixedButtons);
+
+const explanationText = document.createElement("div");
+explanationText.innerHTML = questions[index].explanation;
+explanationContent.appendChild(explanationText);
+
+explanationModal.appendChild(explanationContent);
+document.body.appendChild(explanationModal);
+
+setTimeout(() => {
+    explanationModal.classList.add("active");
+}, 10);
+
+explanationModal.onclick = function(event) {
+    if (event.target === explanationModal) {
+        closeExplanation(explanationModal);
+    }
+};
+}
+
+function closeExplanation(modal) {
+modal.classList.remove("active");
+setTimeout(() => {
+    document.body.removeChild(modal);
+}, 300);
+}
+
+
+
+function copyToClipboard(text) {
+// وظيفة لتصفية الأكواد البرمجية
+function filterCode(input) {
+    // إزالة جميع الوسوم البرمجية باستخدام التعبير المنتظم
+    return input.replace(/<code>.*?<\/code>/gs, '');
+}
+
+const filteredText = filterCode(text);
+const tempInput = document.createElement("textarea");
+tempInput.value = filteredText;
+document.body.appendChild(tempInput);
+tempInput.select();
+document.execCommand("copy");
+document.body.removeChild(tempInput);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--زر استغفار مطور-->
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #f0f8ff, #e6f7ff);
+        }
+
+        .istighfar-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.2s, background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .istighfar-button:hover {
+            transform: scale(1.1);
+            background-color: #138496;
+        }
+
+        .istighfar-popup {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 999;
+            width: 220px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .istighfar-popup span {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .motivation {
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .close-button, .delete-button {
+            display: block;
+            margin: 5px auto 0;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+        }
+
+        .close-button:hover, .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        .settings {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings:hover {
+            background-color: #218838;
+        }
+
+        .settings-popup {
+            position: fixed;
+            bottom: 150px;
+            left: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 999;
+            width: 250px;
+        }
+
+        .settings-popup label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        .settings-popup input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .settings-popup button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .settings-popup button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <button class="istighfar-button" onclick="toggleIstighfarPopup()">📿</button>
+    <button class="settings" id="settingsButton" onclick="toggleSettingsPopup()">⚙️</button>
+    <div class="istighfar-popup" id="istighfarPopup">
+        <span id="istighfarText">استغفر الله</span>
+        <div class="motivation">✨ لا تنسَ أن الذكر هو غذاء الروح ✨</div>
+        <button class="close-button" onclick="toggleIstighfarPopup()">إغلاق</button>
+        <button class="delete-button" onclick="removeIstighfarButton()">حذف</button>
+    </div>
+    <div class="settings-popup" id="settingsPopup">
+        <label for="interval">⏱️ عدد الثواني بين كل ظهور:</label>
+        <input type="number" id="interval" placeholder="أدخل عدد الثواني" min="1">
+        <label for="count">🔄 عدد مرات الظهور:</label>
+        <input type="number" id="count" placeholder="أدخل عدد المرات" min="1">
+        <button onclick="applySettings()">تطبيق</button>
+    </div>
+
+    <script>
+        let timerInterval;
+        let autoPopupInterval;
+        const istighfarPhrases = [
+            "استغفر الله العظيم",
+            "اللهم صل وسلم على نبينا محمد",
+            "سبحان الله وبحمده",
+            "اللهم اغفر لي",
+            "رب اغفر لي وتب علي"
+        ];
+        let userInterval = 300000; // 5 دقائق افتراضية
+        let userCount = 3; // عدد مرات افتراضي
+
+        function toggleIstighfarPopup() {
+            const popup = document.getElementById('istighfarPopup');
+            const settingsButton = document.getElementById('settingsButton');
+            if (popup.style.display === 'none' || popup.style.display === '') {
+                popup.style.display = 'block';
+                settingsButton.style.display = 'block'; // إظهار زر الإعدادات عند ظهور النافذة
+                startIstighfarTimer(10);
+            } else {
+                popup.style.display = 'none';
+                settingsButton.style.display = 'none'; // إخفاء زر الإعدادات عند إغلاق النافذة
+                clearInterval(timerInterval);
+            }
+        }
+
+        function startIstighfarTimer(seconds) {
+            const istighfarText = document.getElementById('istighfarText');
+            let remainingTime = seconds;
+
+            updateIstighfarText();
+            timerInterval = setInterval(() => {
+                remainingTime--;
+                if (remainingTime >= 0) {
+                    istighfarText.textContent = `${istighfarPhrases[Math.floor(Math.random() * istighfarPhrases.length)]} (${remainingTime})`;
+                } else {
+                    clearInterval(timerInterval);
+                    setTimeout(() => {
+                        toggleIstighfarPopup(); // إغلاق النافذة بعد مهلة قصيرة
+                    }, 5000); // 5 ثوانٍ لقراءة الجملة
+                }
+            }, 1000);
+        }
+
+        function updateIstighfarText() {
+            const istighfarText = document.getElementById('istighfarText');
+            istighfarText.textContent = istighfarPhrases[Math.floor(Math.random() * istighfarPhrases.length)];
+        }
+
+        function toggleSettingsPopup() {
+            const settingsPopup = document.getElementById('settingsPopup');
+            settingsPopup.style.display = settingsPopup.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function applySettings() {
+            const intervalInput = document.getElementById('interval').value;
+            const countInput = document.getElementById('count').value;
+
+            userInterval = intervalInput ? intervalInput * 1000 : userInterval;
+            userCount = countInput ? parseInt(countInput) : userCount;
+
+            toggleSettingsPopup();
+            startAutoPopup();
+        }
+
+        function startAutoPopup() {
+            let appearances = 0;
+            autoPopupInterval = setInterval(() => {
+                if (appearances < userCount) {
+                    toggleIstighfarPopup();
+                    appearances++;
+                } else {
+                    clearInterval(autoPopupInterval);
+                }
+            }, userInterval);
+        }
+
+        function removeIstighfarButton() {
+            document.querySelector('.istighfar-button').style.display = 'none';
+            document.querySelector('.settings').style.display = 'none';
+            clearInterval(autoPopupInterval); // إيقاف التشغيل التلقائي عند حذف الزر
+        }
+
+        // تشغيل النافذة تلقائيًا كل خمس دقائق إذا لم يتم تشغيلها يدويًا
+        window.onload = () => {
+            autoPopupInterval = setInterval(() => {
+                toggleIstighfarPopup();
+            }, 300000); // 300000 ميلي ثانية = 5 دقائق
+        };
+    </script>
+</body2>
+</html2>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+    <style>
+        body {
+            font-family: 'Tajawal', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f3;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #007bff;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            z-index: 1000;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .floating-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .popup {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: white;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 350px;
+            display: none;
+            z-index: 999;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .popup.active {
+            display: block;
+        }
+
+        .motivational-msg {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        .motivational-msg.success {
+            color: #28a745;
+        }
+
+        .motivational-msg.warning {
+            color: #dc3545;
+        }
+
+        .ayah {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+            font-style: italic;
+            text-align: right;
+        }
+
+        .btn-prayed, .btn-not-prayed {
+            margin: 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-prayed {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-not-prayed {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-close {
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-close:hover {
+            background-color: #0056b3;
+        }
+
+        .next-prayer {
+            margin-top: 15px;
+            font-size: 16px;
+            color: red;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .date-display {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        .btn-view-schedule {
+            margin-top: 20px;
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-view-schedule:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<!-- الزر العائم -->
+<button id="floatingBtn" class="floating-btn">🕌</button>
+
+<!-- النافذة المنبثقة -->
+<div id="prayerPopup" class="popup">
+    <div id="dateDisplay" class="date-display"></div>
+    <div id="prayerTimesList"></div>
+    <div class="next-prayer" id="nextPrayer"></div>
+    <div class="motivational-msg" id="motivationalMsg"></div>
+    <div class="ayah" id="ayah">﴿ إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَـٰبًۭا مَّوْقُوتًۭا ﴾</div>
+    <a href="https://mawaqit.net/ar/" class="btn-view-schedule">عرض جدول الصلاة</a>
+    <button class="btn-close" onclick="togglePopup(false)">إغلاق</button>
+</div>
+
+<script>
+    const floatingBtn = document.getElementById("floatingBtn");
+    const prayerPopup = document.getElementById("prayerPopup");
+    const prayerTimesList = document.getElementById("prayerTimesList");
+    const motivationalMsg = document.getElementById("motivationalMsg");
+    const nextPrayerElement = document.getElementById("nextPrayer");
+    const dateDisplay = document.getElementById("dateDisplay");
+
+    const prayerTimes = [
+        { name: "الفجر", time: "05:00" },
+        { name: "الظهر", time: "12:15" },
+        { name: "العصر", time: "15:45" },
+        { name: "المغرب", time: "18:30" },
+        { name: "العشاء", time: "20:00" }
+    ];
+
+    function togglePopup(show) {
+        prayerPopup.classList.toggle("active", show);
+    }
+
+    function updatePrayerTimes() {
+        prayerTimesList.innerHTML = prayerTimes.map((prayer) => `
+            <div>
+                <span>${prayer.name}: ${prayer.time}</span>
+                <button class="btn-prayed" onclick="handlePrayer(true)">صليت</button>
+                <button class="btn-not-prayed" onclick="handlePrayer(false)">لم أصلي</button>
+            </div>
+        `).join("");
+    }
+
+    function handlePrayer(prayed) {
+        if (prayed) {
+            motivationalMsg.textContent = "جزاك الله خيرًا على صلاتك.";
+            motivationalMsg.className = "motivational-msg success";
+        } else {
+            motivationalMsg.textContent = "إن لم تكن معذورًا شرعياً، تذكر أن الصلاة عمود الدين.";
+            motivationalMsg.className = "motivational-msg warning";
+        }
+    }
+
+    function calculateNextPrayer() {
+        const now = new Date();
+        const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        const nextPrayer = prayerTimes.find(prayer => prayer.time > currentTime);
+        if (nextPrayer) {
+            const nextTime = new Date(now.toDateString() + ' ' + nextPrayer.time);
+            const diff = Math.max(0, nextTime - now);
+            const hours = Math.floor(diff / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            nextPrayerElement.textContent = `الصلاة القادمة: ${nextPrayer.name} بعد ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية.`;
+        } else {
+            nextPrayerElement.textContent = "لا توجد صلوات متبقية لهذا اليوم.";
+        }
+    }
+
+    function updateDateDisplay() {
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', timeZone: 'UTC' };
+        const gregorianDate = now.toLocaleDateString('ar-SA', options);
+        const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', options).format(now);
+        dateDisplay.innerHTML = `التاريخ الميلادي: ${gregorianDate}<br>التاريخ الهجري: ${hijriDate}`;
+    }
+
+    setInterval(calculateNextPrayer, 1000);
+    setInterval(updateDateDisplay, 1000);
+    floatingBtn.addEventListener("click", () => togglePopup(!prayerPopup.classList.contains("active")));
+
+    updatePrayerTimes();
+    calculateNextPrayer();
+    updateDateDisplay();
+</script>
+
+</body>
+</html>
+
+
+
+
+</html>
