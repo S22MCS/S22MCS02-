@@ -16,235 +16,236 @@
 </title>    
 
 
-  <style>
-    /* إعدادات الصفحة الأساسية */
-    body {
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-        background-color: #edf2f7; /* خلفية موحدة ناعمة */
-        color: #333;
-        transition: filter 0.5s ease, background-color 0.5s ease;
-    }
 
-    header, main {
-        padding: 20px;
-        text-align: center;
-    }
+<style>
+  /* إعدادات الصفحة الأساسية */
+  body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #edf2f7; /* خلفية موحدة ناعمة */
+      color: #333;
+      transition: filter 0.5s ease, background-color 0.5s ease;
+  }
 
-    header h1 {
-        font-size: 2rem;
-        color: #444;
-        margin-bottom: 20px;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 1.2s ease-in-out;
-    }
+  header, main {
+      padding: 20px;
+      text-align: center;
+  }
 
-    main h2 {
-        font-size: 1.5rem;
-        color: #555;
-        margin-bottom: 10px;
-    }
+  header h1 {
+      font-size: 2rem;
+      color: #444;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1.2s ease-in-out;
+  }
 
-    main p {
-        font-size: 1rem;
-        line-height: 1.6;
-        color: #666;
-    }
+  main h2 {
+      font-size: 1.5rem;
+      color: #555;
+      margin-bottom: 10px;
+  }
 
-    /* الحاوية */
-    #controlPanel {
-        position: fixed;
-        bottom: 100px;
-        right: 20px;
-        background: linear-gradient(145deg, #e0e5ec, #ffffff); /* تأثير ثلاثي الأبعاد */
-        border-radius: 50px;
-        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        width: 45px;
-        height: 45px;
-        overflow: hidden;
-        transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
-    }
+  main p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #666;
+  }
 
-    #controlPanel.expanded {
-        width: 320px;
-        height: auto;
-        border-radius: 20px;
-        box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
-    }
+  /* الحاوية */
+  #controlPanel {
+      position: fixed;
+      bottom: 250px;
+      right: 20px;
+      background: linear-gradient(145deg, #e0e5ec, #ffffff); /* تأثير ثلاثي الأبعاد */
+      border-radius: 50px;
+      box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 45px;
+      height: 45px;
+      overflow: hidden;
+      transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+  }
 
-    /* الزر */
-    #toggleButton {
-        width: 60px;
-        height: 60px;
-        background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c); /* تأثير دائري */
-        border: none;
-        border-radius: 50%;
-        color: white;
-        font-size: 28px;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.5);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+  #controlPanel.expanded {
+      width: 320px;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
+  }
 
-    #toggleButton:hover {
-        transform: scale(1.1) rotate(5deg); /* تكبير ودوران بسيط */
-        box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.5);
-        background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
-    }
+  /* الزر */
+  #toggleButton {
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c); /* تأثير دائري */
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
 
-    #emoji {
-        font-size: 32px;
-        line-height: 1;
-        animation: bounce 2s infinite ease-in-out;
-    }
+  #toggleButton:hover {
+      transform: scale(1.1) rotate(5deg); /* تكبير ودوران بسيط */
+      box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.5);
+      background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+  }
 
-    #toggleText {
-        font-size: 14px;
-        color: white;
-        position: absolute;
-        bottom: -20px;
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
+  #emoji {
+      font-size: 32px;
+      line-height: 1;
+      animation: bounce 2s infinite ease-in-out;
+  }
 
-    #toggleButton:hover #toggleText {
-        opacity: 1;
-        transform: translateY(-5px);
-    }
+  #toggleText {
+      font-size: 14px;
+      color: white;
+      position: absolute;
+      bottom: -20px;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+  }
 
-    /* شريط التمرير */
-    #colorTempSlider {
-        width: 90%;
-        margin: 10px 0;
-        appearance: none;
-        height: 12px;
-        background: linear-gradient(90deg, #43a047 0%, #e0f2f1 100%); /* تأثير تدرج */
-        border-radius: 6px;
-        outline: none;
-        cursor: pointer;
-        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
-    }
+  #toggleButton:hover #toggleText {
+      opacity: 1;
+      transform: translateY(-5px);
+  }
 
-    #colorTempSlider::-webkit-slider-thumb {
-        appearance: none;
-        width: 22px;
-        height: 22px;
-        background: radial-gradient(circle, #4caf50, #388e3c);
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
-        transition: transform 0.2s ease-in-out;
-    }
+  /* شريط التمرير */
+  #colorTempSlider {
+      width: 90%;
+      margin: 10px 0;
+      appearance: none;
+      height: 12px;
+      background: linear-gradient(90deg, #43a047 0%, #e0f2f1 100%); /* تأثير تدرج */
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+      box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+  }
 
-    #colorTempSlider::-webkit-slider-thumb:hover {
-        transform: scale(1.2);
-    }
+  #colorTempSlider::-webkit-slider-thumb {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      background: radial-gradient(circle, #4caf50, #388e3c);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+      transition: transform 0.2s ease-in-out;
+  }
 
-    #label {
-        font-size: 14px;
-        font-weight: bold;
-        color: #333;
-        display: none;
-        text-align: center;
-        animation: fadeIn 0.8s ease-in-out;
-    }
+  #colorTempSlider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+  }
 
-    .expanded #label {
-        display: block;
-    }
+  #label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      display: none;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+  }
 
-    /* الرسوم المتحركة */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+  .expanded #label {
+      display: block;
+  }
 
-    @keyframes bounce {
-        0%, 100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-10px);
-        }
-    }
+  /* الرسوم المتحركة */
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+          transform: translateY(-10px);
+      }
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
 
-    /* تحسين التوافق مع الهواتف */
-    @media (max-width: 768px) {
-        #controlPanel {
-            bottom: 10px;
-            right: 10px;
-        }
-        #toggleButton {
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
-        }
-    }
+  @keyframes bounce {
+      0%, 100% {
+          transform: translateY(0);
+      }
+      50% {
+          transform: translateY(-10px);
+      }
+  }
+
+  /* تحسين التوافق مع الهواتف */
+  @media (max-width: 768px) {
+      #controlPanel {
+          bottom: 10px;
+          right: 10px;
+      }
+      #toggleButton {
+          width: 50px;
+          height: 50px;
+          font-size: 24px;
+      }
+  }
 </style>
 </head>
 <body>
 <!-- أداة التحكم -->
 <div id="controlPanel">
-    <button id="toggleButton">
-        <span id="emoji">🌙</span>
-        <span id="toggleText">تشغيل</span>
-    </button>
-    <label id="label" for="colorTempSlider">درجة حرارة اللون:</label>
-    <input type="range" id="colorTempSlider" min="1800" max="27000" step="100" value="6500">
+  <button id="toggleButton">
+      <span id="emoji">🌙</span>
+      <span id="toggleText">تشغيل</span>
+  </button>
+  <label id="label" for="colorTempSlider">درجة حرارة اللون:</label>
+  <input type="range" id="colorTempSlider" min="1800" max="27000" step="100" value="6500">
 </div>
 
 <script>
-    const controlPanel = document.getElementById('controlPanel');
-    const toggleButton = document.getElementById('toggleButton');
-    const emoji = document.getElementById('emoji');
-    const toggleText = document.getElementById('toggleText');
-    const slider = document.getElementById('colorTempSlider');
+  const controlPanel = document.getElementById('controlPanel');
+  const toggleButton = document.getElementById('toggleButton');
+  const emoji = document.getElementById('emoji');
+  const toggleText = document.getElementById('toggleText');
+  const slider = document.getElementById('colorTempSlider');
 
-    let isEyeProtectionEnabled = false;
+  let isEyeProtectionEnabled = false;
 
-    toggleButton.addEventListener('click', () => {
-        controlPanel.classList.toggle('expanded');
+  toggleButton.addEventListener('click', () => {
+      controlPanel.classList.toggle('expanded');
 
-        if (isEyeProtectionEnabled) {
-            isEyeProtectionEnabled = false;
-            emoji.textContent = '🌙';
-            toggleText.textContent = 'تشغيل';
-            document.documentElement.style.filter = 'none';
-        } else {
-            isEyeProtectionEnabled = true;
-            emoji.textContent = '🛡️';
-            toggleText.textContent = 'إيقاف';
-            slider.dispatchEvent(new Event('input'));
-            setTimeout(() => {
-                controlPanel.classList.remove('expanded');
-            }, 5000);
-        }
-    });
+      if (isEyeProtectionEnabled) {
+          isEyeProtectionEnabled = false;
+          emoji.textContent = '🌙';
+          toggleText.textContent = 'تشغيل';
+          document.documentElement.style.filter = 'none';
+      } else {
+          isEyeProtectionEnabled = true;
+          emoji.textContent = '🛡️';
+          toggleText.textContent = 'إيقاف';
+          slider.dispatchEvent(new Event('input'));
+          setTimeout(() => {
+              controlPanel.classList.remove('expanded');
+          }, 5000);
+      }
+  });
 
-    slider.addEventListener('input', () => {
-        if (!isEyeProtectionEnabled) return;
+  slider.addEventListener('input', () => {
+      if (!isEyeProtectionEnabled) return;
 
-        const temp = slider.value;
-        const warmth = (temp - 1800) / (27000 - 1800);
-        const sepia = 0.4 + 0.6 * (1 - warmth);
-        const brightness = 1 - 0.2 * warmth;
+      const temp = slider.value;
+      const warmth = (temp - 1800) / (27000 - 1800);
+      const sepia = 0.4 + 0.6 * (1 - warmth);
+      const brightness = 1 - 0.2 * warmth;
 
-        document.documentElement.style.filter = `sepia(${sepia}) brightness(${brightness})`;
-    });
+      document.documentElement.style.filter = `sepia(${sepia}) brightness(${brightness})`;
+  });
 </script>
 </body>
 
@@ -684,8 +685,7 @@
     <br> 
     <header style="text-align: center; padding: 20px; background: #dbeafe; font-family: Arial, sans-serif;">
       <h1 style="color: #0d47a1; margin: 20px 0; font-size: 1.5em;">🩺 اختبار نظام الكاف والأزيجوس في علم التشريح عنابة</h1>
-      <h1 style="color: #01579b; margin: 20px 0; font-size: 1.5em;">⚕️ Test sur systèmes cav et Azygos Annaba</h1>
-      <h1 style="color: #0277bd; margin: 20px 0; font-size: 1.5em;">🩻 Test on the cave and Azygos system Annaba</h1>
+
     </header>
     
   
@@ -1465,22 +1465,19 @@ Pendant tout son trajet, elle reste dans le médiastin postérieur, jamais dans 
   },
 
 
-  
-  
-  { 
-    text: "ما هو اسم أطول سورة في القرآن؟", 
-    options: ["سورة البقرة", "سورة آل عمران", "سورة النحل", "سورة الفاتحة"], 
-    correct: [0],  
-    explanation: "سورة البقرة هي أطول سورة في القرآن."
-  }
 
-
-
-
-
-
-
-
+  {
+    text: "ما هو اسم أطول سورة في القرآن؟",
+    options: ["سورة البقرة", "سورة آل عمران", "سورة النحل", "سورة الفاتحة"],
+    correct: [0],
+    explanation: "سورة البقرة هي أطول سورة في القرآن.",
+    link: "https://example.com/booklet1", // رابط مخصص للسؤال
+    buttonColor: "red", // لون مخصص للزر
+    buttonText: "تحميل كتيب سورة البقرة", // نص مخصص للزر
+    buttonStyle: "bold" // تصميم مخصص للزر
+  },
+  // أضف أسئلة أخرى بنفس التنسيق
+];
 
 
 
@@ -1488,8 +1485,6 @@ Pendant tout son trajet, elle reste dans le médiastin postérieur, jamais dans 
   
 
 
-
-  ];
 
 let currentQuestionIndex = 0;
 let selectedAnswers = [];
@@ -1630,137 +1625,171 @@ function displayResults() {
 
 
 
-function showExplanation(index) {
-// إنشاء المودال (نافذة الشرح) باستخدام جافا سكريبت
-const explanationModal = document.createElement("div");
-explanationModal.classList.add("modal");
-
-const explanationText = document.createElement("div");
-explanationText.classList.add("explanation-text");
-explanationText.innerHTML = questions[index].explanation; // عرض الشرح باستخدام innerHTML
-
-// إضافة الشرح داخل المودال
-explanationModal.appendChild(explanationText);
-
-// إضافة المودال إلى الـ body
-document.body.appendChild(explanationModal);
-
-// تفعيل عرض المودال بإضافة الكلاس active
-setTimeout(() => {
-explanationModal.classList.add("active");
-}, 10);
-
-// إغلاق المودال عند النقر عليه
-explanationModal.onclick = function() {
-explanationModal.classList.remove("active");
-setTimeout(() => {
-  document.body.removeChild(explanationModal); // إزالة المودال بعد التلاشي
-}, 300); // التأخير عند إزالة العنصر بعد التلاشي
-};
-}
-
-
-
-function closeExplanation() {
-  const explanationModal = document.getElementById("explanation-modal");
-  explanationModal.classList.remove("active");
-}
-
-function restartQuiz() {
-  location.reload();
-}
-
-function exitQuiz() {
-  window.location.href = "https://www.google.com";
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 function showExplanation(index) {
-const explanationModal = document.createElement("div");
-explanationModal.classList.add("modal");
+    const question = questions[index];
+    const explanationModal = document.createElement("div");
+    explanationModal.classList.add("modal");
 
-const explanationContent = document.createElement("div");
-explanationContent.classList.add("modal-content");
+    const explanationContent = document.createElement("div");
+    explanationContent.classList.add("modal-content");
 
-const fixedButtons = document.createElement("div");
-fixedButtons.classList.add("fixed-buttons");
+    const fixedButtons = document.createElement("div");
+    fixedButtons.classList.add("fixed-buttons");
 
-const closeButton = document.createElement("button");
-closeButton.classList.add("close-btn");
-closeButton.innerHTML = "&#x274C;"; // Emoji for close button
-closeButton.onclick = function() {
-    closeExplanation(explanationModal);
-};
-
-
-
-    
-
-const copyButton = document.createElement("button");
-copyButton.classList.add("copy-btn");
-copyButton.innerText = "نسخ النص";
-copyButton.onclick = function() {
-    copyToClipboard(questions[index].explanation);
-    alert("تم نسخ النص!");
-};
-
-fixedButtons.appendChild(closeButton);
-fixedButtons.appendChild(copyButton);
-explanationContent.appendChild(fixedButtons);
-
-const explanationText = document.createElement("div");
-explanationText.innerHTML = questions[index].explanation;
-explanationContent.appendChild(explanationText);
-
-explanationModal.appendChild(explanationContent);
-document.body.appendChild(explanationModal);
-
-setTimeout(() => {
-    explanationModal.classList.add("active");
-}, 10);
-
-explanationModal.onclick = function(event) {
-    if (event.target === explanationModal) {
+    const closeButton = document.createElement("button");
+    closeButton.classList.add("close-btn");
+    closeButton.innerHTML = "&#x274C;"; // زر الإغلاق
+    closeButton.onclick = function() {
         closeExplanation(explanationModal);
-    }
-};
+    };
+
+    const linkButton = document.createElement("button");
+    linkButton.classList.add("link-btn");
+    linkButton.innerText = question.buttonText || "تحميل الكتيب";
+    linkButton.style.color = question.buttonColor || "black"; // استخدام اللون المخصص أو الافتراضي
+    linkButton.style.fontWeight = question.buttonStyle === "bold" ? "bold" : "normal"; // استخدام التصميم المخصص أو الافتراضي
+    linkButton.onclick = function() {
+        window.location.href = question.link;
+    };
+
+    fixedButtons.appendChild(closeButton);
+    fixedButtons.appendChild(linkButton);
+    explanationContent.appendChild(fixedButtons);
+
+    const explanationText = document.createElement("div");
+    explanationText.innerHTML = question.explanation;
+    explanationContent.appendChild(explanationText);
+
+    explanationModal.appendChild(explanationContent);
+    document.body.appendChild(explanationModal);
+
+    setTimeout(() => {
+        explanationModal.classList.add("active");
+    }, 10);
+
+    explanationModal.onclick = function(event) {
+        if (event.target === explanationModal) {
+            closeExplanation(explanationModal);
+        }
+    };
 }
 
 function closeExplanation(modal) {
-modal.classList.remove("active");
-setTimeout(() => {
-    document.body.removeChild(modal);
-}, 300);
+    modal.classList.remove("active");
+    setTimeout(() => {
+        document.body.removeChild(modal);
+    }, 300);
 }
 
 
 
-function copyToClipboard(text) {
-// وظيفة لتصفية الأكواد البرمجية
-function filterCode(input) {
-    // إزالة جميع الوسوم البرمجية باستخدام التعبير المنتظم
-    return input.replace(/<code>.*?<\/code>/gs, '');
-}
 
-const filteredText = filterCode(text);
-const tempInput = document.createElement("textarea");
-tempInput.value = filteredText;
-document.body.appendChild(tempInput);
-tempInput.select();
-document.execCommand("copy");
-document.body.removeChild(tempInput);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1768,332 +1797,6 @@ document.body.removeChild(tempInput);
 </script>
 
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
