@@ -821,6 +821,87 @@
 
 
 
+
+
+
+
+
+
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px; /* مسافة بين الأزرار */
+    margin-top: 20px;
+}
+
+/* ✅ تصميم زر عام */
+.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    min-width: 140px; /* حجم مناسب */
+}
+
+/* ✨ تأثير عند تمرير الماوس */
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* ✨ تأثير عند النقر */
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* ✅ لون مختلف لزر الخروج */
+.exit-btn {
+    background-color: #dc3545;
+}
+
+/* ✨ تأثير عند تمرير الماوس */
+.exit-btn:hover {
+    background-color: #a71d2a;
+}
+
+/* ✅ تحسين الأزرار للهواتف */
+@media (max-width: 480px) {
+    .button-container {
+        flex-direction: column; /* يجعل الأزرار عمودية على الهواتف */
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%; /* الأزرار تأخذ العرض الكامل */
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </style>
 </head>
 <body>
@@ -876,8 +957,13 @@
       <div id="results-container"></div>
       <p id="final-message"></p>
       <p id="total-time-message"></p>
-      <button class="btn" onclick="restartQuiz()">إعادة الاختبار</button>
-      <button class="btn" onclick="window.location.href='index.html';">الخروج</button>
+
+    <div class="button-container">
+    <button class="btn" onclick="restartQuiz()">🔄 إعادة الاختبار</button>
+
+    <button class="btn exit-btn" onclick="window.location.href='index.html';">🚪 الخروج</button>
+</div>
+
 
     </div>
   </div>
