@@ -740,6 +740,81 @@
 
 
 
+.duration-select {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* توسيط جميع العناصر */
+    justify-content: center;
+    gap: 12px; /* مسافة بين العناصر */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+    margin: auto; /* توسيط في الصفحة */
+}
+
+/* ✅ تحسين تصميم التسمية (label) */
+.duration-select label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* ✅ تحسين مربع الإدخال */
+.duration-select input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ✨ تأثير عند التركيز */
+.duration-select input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* ✅ تحسين زر "ابدأ الاختبار" */
+.duration-select .btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+/* ✨ تأثير عند تمرير الماوس */
+.duration-select .btn:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ تحسين التناسب مع الهواتف */
+@media (max-width: 480px) {
+    .duration-select {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .duration-select input {
+        font-size: 14px;
+    }
+
+    .duration-select .btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
 
 
 
@@ -784,18 +859,13 @@
   </div>
 
   <div class="container">
-    <div class="duration-select">
-
-      <label for="duration">
-        &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-        
-        الزمن (بالدقائق): </label>
-      <input type="number" id="custom-duration" name="custom-duration" min="1" max="60" value="10" />
-      <button class="btn" onclick="startQuiz()">ابدأ الاختبار</button>
+    
+      <div class="duration-select">
+        <label for="duration">⏳ الزمن (بالدقائق):</label>
+        <input type="number" id="custom-duration" name="custom-duration" min="1" max="60" value="10" />
+        <button class="btn" onclick="startQuiz()">ابدأ الاختبار</button>
     </div>
-
-
-
+    
 
 
 
