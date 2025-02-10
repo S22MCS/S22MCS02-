@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <title>
 
     اختبار  وحدة الجهاز الهضمي مقياس   علم الأنسجة  تجويف الفم والغدد اللعابية
@@ -17,10 +15,53 @@
 
 
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
+  
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: "Tajawal", Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
 
+        .btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #0056b3, #003e80);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
+
+        @media (max-width: 600px) {
+            .btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
 
 
 
@@ -894,6 +935,36 @@
 
 
 
+        body {
+            font-family: "Tajawal", Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            display: inline-block;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #0056b3, #004095);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+  
 
 
 
@@ -959,8 +1030,9 @@
       <p id="total-time-message"></p>
 
     <div class="button-container">
-    <button class="btn" onclick="restartQuiz()">🔄 إعادة الاختبار</button>
+      <button class="btn" onclick="restartQuiz()">🔄 إعادة الاختبار</button>
 
+  
     <button class="btn exit-btn" onclick="window.location.href='index.html';">🚪 الخروج</button>
 </div>
 
@@ -4051,6 +4123,84 @@ function loadQuestion() {
     startTimer();
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function restartQuiz() {
+            let timerInterval;
+            Swal.fire({
+                title: "📢 تأكيد!",
+                html: "<b style='color: #d33;'>⚠️ سيتم إعادة الاختبار!</b><br><br><span id='countdown' style='color: #007bff; font-weight: bold;'>5</span> ثوانٍ متبقية",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#007bff",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "✅ نعم",
+                cancelButtonText: "❌ لا",
+                background: "rgba(255, 255, 255, 0.9)",
+                backdrop: "rgba(0, 0, 0, 0.5)",
+                width: "280px", /* ✅ نافذة أصغر حجمًا */
+                padding: "15px",
+                didOpen: () => {
+                    let countdown = 5;
+                    timerInterval = setInterval(() => {
+                        countdown--;
+                        document.getElementById("countdown").textContent = countdown;
+                        if (countdown <= 0) {
+                            clearInterval(timerInterval);
+                            Swal.close();
+                        }
+                    }, 1000);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+                timer: 5000
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "🔄 جاري إعادة الاختبار...",
+                        text: "يرجى الانتظار",
+                        icon: "info",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            });
+        }
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function selectOption(optionIndex) {
   const options = document.querySelectorAll(".options li");
