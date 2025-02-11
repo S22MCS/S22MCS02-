@@ -1,0 +1,4536 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <title>
+اختبار المريء في علم الأنسجة عنابة
+  </title>   
+    
+
+</title>    
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+  
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: "Tajawal", Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #0056b3, #003e80);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
+
+        @media (max-width: 600px) {
+            .btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* إعدادات الصفحة الأساسية */
+    body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #edf2f7; /* خلفية موحدة ناعمة */
+        color: #333;
+        transition: filter 0.5s ease, background-color 0.5s ease;
+    }
+
+    header, main {
+        padding: 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 2rem;
+        color: #444;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.2s ease-in-out;
+    }
+
+    main h2 {
+        font-size: 1.5rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    main p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #666;
+    }
+
+   /* الحاوية */
+   #controlPanel {
+    position: fixed;
+    top: 70px; /* تعديل هذه القيمة ليتطابق مع ارتفاع زر "صلاة" */
+    right: 0px; /* جعلها في أقصى اليمين */
+    background: linear-gradient(145deg, #e0e5ec, #ffffff); /* تأثير ثلاثي الأبعاد */
+    border-radius: 50px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 45px;
+    height: 45px;
+    overflow: hidden;
+    transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+}
+
+
+
+    #controlPanel.expanded {
+    width: 200px; /* تقليل العرض */
+    height: 150px; /* تقليل الارتفاع */
+    border-radius: 15px;
+    box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.15), -15px -15px 30px rgba(255, 255, 255, 0.9);
+}
+
+    /* الزر */
+    #toggleButton {
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c); /* تأثير دائري */
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #toggleButton:hover {
+        transform: scale(1.1) rotate(5deg); /* تكبير ودوران بسيط */
+        box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.5);
+        background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+    }
+
+    #emoji {
+        font-size: 32px;
+        line-height: 1;
+        animation: bounce 2s infinite ease-in-out;
+    }
+
+    #toggleText {
+        font-size: 14px;
+        color: white;
+        position: absolute;
+        bottom: -20px;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #toggleButton:hover #toggleText {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+
+    /* شريط التمرير */
+    #colorTempSlider {
+        width: 90%;
+        margin: 10px 0;
+        appearance: none;
+        height: 12px;
+        background: linear-gradient(90deg, #43a047 0%, #e0f2f1 100%); /* تأثير تدرج */
+        border-radius: 6px;
+        outline: none;
+        cursor: pointer;
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+    }
+
+    #colorTempSlider::-webkit-slider-thumb {
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        background: radial-gradient(circle, #4caf50, #388e3c);
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    #colorTempSlider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+    }
+
+    #label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        display: none;
+        text-align: center;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .expanded #label {
+        display: block;
+    }
+
+    /* الرسوم المتحركة */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* تحسين التوافق مع الهواتف */
+    @media (max-width: 768px) {
+        #controlPanel {
+            bottom: 10px;
+            right: 10px;
+        }
+        #toggleButton {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- أداة التحكم -->
+<div id="controlPanel">
+    <button id="toggleButton">
+        <span id="emoji">🌙</span>
+        <span id="toggleText">تشغيل</span>
+    </button>
+    <label id="label" for="colorTempSlider">درجة حرارة اللون:</label>
+    <input type="range" id="colorTempSlider" min="1800" max="27000" step="100" value="6500">
+</div>
+
+<script>
+    const controlPanel = document.getElementById('controlPanel');
+    const toggleButton = document.getElementById('toggleButton');
+    const emoji = document.getElementById('emoji');
+    const toggleText = document.getElementById('toggleText');
+    const slider = document.getElementById('colorTempSlider');
+
+    let isEyeProtectionEnabled = false;
+
+    toggleButton.addEventListener('click', () => {
+        controlPanel.classList.toggle('expanded');
+
+        if (isEyeProtectionEnabled) {
+            isEyeProtectionEnabled = false;
+            emoji.textContent = '🌙';
+            toggleText.textContent = 'تشغيل';
+            document.documentElement.style.filter = 'none';
+        } else {
+            isEyeProtectionEnabled = true;
+            emoji.textContent = '🛡️';
+            toggleText.textContent = 'إيقاف';
+            slider.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                controlPanel.classList.remove('expanded');
+            }, 5000);
+        }
+    });
+
+    slider.addEventListener('input', () => {
+        if (!isEyeProtectionEnabled) return;
+
+        const temp = slider.value;
+        const warmth = (temp - 1800) / (27000 - 1800);
+        const sepia = 0.4 + 0.6 * (1 - warmth);
+        const brightness = 1 - 0.2 * warmth;
+
+        document.documentElement.style.filter = `sepia(${sepia}) brightness(${brightness})`;
+    });
+</script>
+</body>
+
+
+
+
+
+
+
+
+  <style>
+    /* إعدادات عامة */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+      direction: ltr;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #0056b3;
+    }
+
+    .timer-container {
+      background-color: #343a40;
+      padding: 10px 0;
+      text-align: center;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 80px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+  ء
+    /* إطار خاص بالصورة */
+    .image-frame {
+      background-color: #e9ecef;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .image-frame {
+  display: flex; /* استخدام الفلكس لتمركز الصورة */
+  justify-content: center; /* تمركز الصورة أفقياً */
+  align-items: center; /* تمركز الصورة عمودياً */
+  width: 100%; /* الحاوية تأخذ العرض الكامل */
+  height: 100%; /* الحاوية تأخذ الارتفاع الكامل */
+}
+
+.image-frame img {
+  max-width: 300px; /* تحديد الحجم الأقصى للصورة */
+  height: auto; /* الحفاظ على النسب الأصلية للصورة */
+  border-radius: 8px; /* إضافة حواف مدورة للصورة */
+  transition: transform 0.3s ease; /* إضافة تأثير انتقالي */
+}
+
+/* استعلامات الوسائط لأجهزة الهواتف */
+@media (max-width: 767px) {
+  .image-frame img {
+    max-width: 200px; /* تغيير الحجم الأقصى للصورة على الهواتف */
+  }
+}
+
+@media (max-width: 480px) {
+  .image-frame img {
+    max-width: 150px; /* تقليل الحجم الأقصى أكثر للأجهزة الصغيرة جدًا */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .image-frame img:hover {
+      transform: scale(1.05);
+    }
+
+
+
+
+    .question {
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .options {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .options li {
+      padding: 15px;
+      background-color: #f0f0f0;
+      margin: 5px 0;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .options li.selected {
+      background-color: #007bff;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li.correct {
+      background-color: #28a745;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li.incorrect {
+      background-color: #dc3545;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li:hover {
+      background-color: #e0e0e0;
+      transform: scale(1.02);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+/* ✅ حاوية الزر لتوسيطه في كل الشاشات */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* ✅ تحسين الزر ليبدو حديثًا */
+.btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    font-size: 18px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ✨ تأثير عند التحويل */
+.btn:hover {
+    background: linear-gradient(135deg, #0056b3, #003d80);
+    transform: scale(1.05);
+    box-shadow: 0 7px 20px rgba(0, 85, 204, 0.4);
+}
+
+/* ✨ تأثير النقر */
+.btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 3px 10px rgba(0, 85, 204, 0.3);
+}
+
+/* ✅ تحسين التصميم للهواتف */
+@media (max-width: 600px) {
+    .btn {
+        width: 90%;
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .results {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .question-review {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .question-review.green {
+      background-color: #28a745;
+    }
+
+    .question-review.red {
+      background-color: #dc3545;
+    }
+
+    .explain-btn {
+      background-color: #ffc107;
+      color: #333;
+      padding: 8px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .explain-btn:hover {
+      background-color: #e0a800;
+    }
+
+
+
+
+    .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+    z-index: 1000;
+    overflow: hidden; /* منع التصفح العرضي العام */
+}
+
+.modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto; /* السماح بالتصفح العمودي فقط */
+    overflow-x: hidden; /* منع التصفح العرضي افتراضيًا */
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    overflow-x: auto; /* السماح بالتصفح العرضي إذا كان هناك صور عريضة */
+}
+
+.fixed-buttons {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    z-index: 1001;
+}
+
+.close-btn, .copy-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.close-btn {
+    color: #ff4d4d;
+}
+
+.copy-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.copy-btn:hover {
+    background-color: #45a049;
+}
+
+/* تحسين توافق الأجهزة المحمولة */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .fixed-buttons {
+        padding: 5px;
+    }
+
+    .close-btn, .copy-btn {
+        font-size: 20px;
+        padding: 5px 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.duration-select {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* توسيط جميع العناصر */
+    justify-content: center;
+    gap: 12px; /* مسافة بين العناصر */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+    margin: auto; /* توسيط في الصفحة */
+}
+
+/* ✅ تحسين تصميم التسمية (label) */
+.duration-select label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* ✅ تحسين مربع الإدخال */
+.duration-select input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ✨ تأثير عند التركيز */
+.duration-select input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* ✅ تحسين زر "ابدأ الاختبار" */
+.duration-select .btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+/* ✨ تأثير عند تمرير الماوس */
+.duration-select .btn:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ تحسين التناسب مع الهواتف */
+@media (max-width: 480px) {
+    .duration-select {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .duration-select input {
+        font-size: 14px;
+    }
+
+    .duration-select .btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px; /* مسافة بين الأزرار */
+    margin-top: 20px;
+}
+
+/* ✅ تصميم زر عام */
+.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    min-width: 140px; /* حجم مناسب */
+}
+
+/* ✨ تأثير عند تمرير الماوس */
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* ✨ تأثير عند النقر */
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* ✅ لون مختلف لزر الخروج */
+.exit-btn {
+    background-color: #dc3545;
+}
+
+/* ✨ تأثير عند تمرير الماوس */
+.exit-btn:hover {
+    background-color: #a71d2a;
+}
+
+/* ✅ تحسين الأزرار للهواتف */
+@media (max-width: 480px) {
+    .button-container {
+        flex-direction: column; /* يجعل الأزرار عمودية على الهواتف */
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%; /* الأزرار تأخذ العرض الكامل */
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+        body {
+            font-family: "Tajawal", Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            display: inline-block;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #0056b3, #004095);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+  
+
+
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+  <br>
+    <br> 
+    <header style="text-align: center; padding: 20px; background: #dbeafe; font-family: Arial, sans-serif;">
+      <h1 style="color: #0d47a1; margin: 20px 0; font-size: 1.5em;">
+        🩺 اختبار المريء في علم الأنسجة عنابة
+      <br>
+        ⚕️Test de Oesophage  en Histologie Annaba
+        <br>
+        🩻Esophagus Test in Histology Annaba
+      </h1>
+
+
+
+
+    </header>
+    
+  
+      
+
+
+
+
+
+    
+
+  <!-- حاوية الوقت العلوي -->
+
+  
+  <div  class="timer-container">
+ 
+    الوقت المتبقي: <span id="timer">00:00</span>
+  </div>
+
+  <div class="container">
+    
+      <div class="duration-select">
+        <label for="duration">⏳ الزمن (بالدقائق):</label>
+        <input type="number" id="custom-duration" name="custom-duration" min="1" max="60" value="10" />
+        <button class="btn" onclick="startQuiz()">ابدأ الاختبار</button>
+    </div>
+    
+
+
+
+    <div id="question-container" style="display: none;"></div>
+
+    <div id="result-section" style="display: none;">
+      <h2>النتيجة</h2>
+      <div id="results-container"></div>
+      <p id="final-message"></p>
+      <p id="total-time-message"></p>
+
+    <div class="button-container">
+      <button class="btn" onclick="restartQuiz()">🔄 إعادة الاختبار</button>
+
+  
+    <button class="btn exit-btn" onclick="window.location.href='index.html';">🚪 الخروج</button>
+</div>
+
+
+    </div>
+  </div>
+
+  <!-- نافذة منبثقة للشرح -->
+  <div id="explanation-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeExplanation()">إغلاق</button>
+      <h3 class="modal-title">الشرح</h3>
+      <div class="modal-body" id="explanation-text"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      
+       
+ 
+
+
+
+
+
+
+
+//QES01
+
+
+
+{
+ 
+ text: `
+
+ <style>
+   .badge {
+     display: inline-block;
+     padding: 5px 10px;
+     margin: 8px 5px;
+     border-radius: 15px;
+     font-size: 0.9rem;
+     font-weight: bold;
+     text-align: center;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     transition: transform 0.3s, box-shadow 0.3s;
+     cursor: pointer;
+   }
+
+   .badge:hover {
+     transform: scale(1.05);
+     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+   }
+
+   .green {
+     color: #28A745;
+     background-color: #e0f7e9;
+   }
+
+   .red {
+     color: #FF4D4D;
+     background-color: #f7e0e0;
+   }
+
+   .blue {
+     color: #007BFF;
+     background-color: #E6F0FF;
+   }
+
+   .yellow {
+     color: #FFC107;
+     background-color: #FFFBE6;
+   }
+ </style>
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+ <div>
+
+
+   
+
+
+
+   <span class="badge green">
+     <i class="fas fa-book"></i>
+     QCM N°42 U2 2024
+   </span>
+
+    <span class="badge red">
+     <i class="fas fa-map-marker-alt"></i>
+     ANNABA
+     </span>
+
+ <span class="badge blue">
+ 
+     الشرح المختصر
+
+         <i class="fas fa-check-circle"></i>
+   </span>
+
+   <span class="badge yellow">
+    
+      الشروحات 
+       <i class="fas fa-bolt"></i>
+   </span>
+ 
+
+   
+   <span class="badge" style="background-color: black; color: white;">
+    ملخص الدرس 
+    <i class="fas fa-caret-down" style="color: red;"></i>
+</span>
+
+<br>
+
+<div style="width: 100%; text-align: center; margin-top: 20px; font-family: 'Arial', sans-serif; font-size: 18px; font-weight: bold; color: #000000;">
+La langue est une structure musculaire recouverte par une muqueuse qui présente des papilles à sa surface:
+
+</div>
+
+`,
+
+
+
+
+options: [
+  "A &nbsp;&nbsp;&nbsp;       L'ensemble des papilles présente des dispositifs gustatils, bourgeons de goût, localisés à leur surface épitheliale. ",
+  "B &nbsp;&nbsp;&nbsp;      La face linguale supérieure présente une faible kératinisation des 2/3 antérieurs.",
+  "C &nbsp;&nbsp;&nbsp;       Les papilles fungiformes, grossièrement triangulaires à la coupe sont supportées par un axe papillaire conjonctif unique.",
+  "D &nbsp;&nbsp;&nbsp;     Les bourgeons de goût au niveau des papilles caliciformes sont localisés à la surface superficielle de la papille.",
+  "E &nbsp;&nbsp;&nbsp;       Les papilles fungiformes sont limitées par un sillon circulaire, le vallum, au fond duquel débouchent les canaux excréteurs des glandes séreuses de van Ebner. "  
+ 
+
+  ],   
+correct: [1],
+
+explanation:  `
+
+
+<br> 
+
+<br><br>
+
+<div id="animated-box" tabindex="0" style="
+   position: relative;
+   margin: 0 auto; 
+   transform: scale(1); 
+   background: linear-gradient(135deg, #e3f2fd, #90caf9); 
+   border: 2px solid #1565c0; 
+   border-radius: 20px; 
+   text-align: center; 
+   padding: 20px 30px; 
+   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); 
+   font-size: 1.2em; 
+   font-weight: bold; 
+   color: #0d47a1; 
+   font-family: 'Arial', sans-serif; 
+   cursor: pointer; 
+   transition: all 0.4s ease-in-out; 
+   display: block; 
+   width: fit-content;
+">
+   <span id="text" style="
+     display: inline-block; 
+     transition: all 0.4s ease; 
+     will-change: transform, color;
+   ">
+
+
+La langue est une structure musculaire recouverte par une muqueuse qui présente des papilles à sa surface:
+
+
+     </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+ /* تأثير عند الظهور */
+ #animated-box {
+   animation: fadeInAndPulse 1s ease-in-out forwards;
+ }
+
+ @keyframes fadeInAndPulse {
+   0% { transform: scale(0.8); opacity: 0; }
+   50% { transform: scale(1.1); opacity: 1; }
+   100% { transform: scale(1); }
+ }
+
+ /* تأثير عند التمرير بالمؤشر */
+ @keyframes textHoverBounce {
+   0%, 100% { transform: translateY(0); }
+   50% { transform: translateY(-10px); }
+ }
+
+ /* عند وضع المؤشر */
+ #animated-box:hover {
+   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+   transform: scale(1.05);
+   background: linear-gradient(135deg, #bbdefb, #64b5f6);
+   border-color: #0d47a1;
+ }
+
+ #animated-box:hover #text {
+   animation: textHoverBounce 0.6s ease-in-out infinite;
+   color: #0d47a1;
+   text-shadow: 0 5px 10px rgba(21, 101, 192, 0.6);
+ }
+
+ /* عند الضغط */
+ #animated-box:active {
+   transform: scale(0.97);
+   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+   border-color: #003c8f;
+ }
+
+ #animated-box:active #text {
+   transform: scale(0.95) rotate(-5deg);
+   color: #003c8f;
+   text-shadow: 0px 8px 15px rgba(13, 71, 161, 0.7);
+ }
+
+ /* تحسين التصميم على الشاشات الصغيرة */
+ @media (max-width: 600px) {
+   #animated-box {
+     font-size: 1em;
+     padding: 15px 20px;
+   }
+ }
+
+ @media (max-width: 400px) {
+   #animated-box {
+     font-size: 0.9em;
+     padding: 12px 15px;
+   }
+ }
+</style>
+
+
+</div></div>
+<br><br><br><br>
+
+
+
+
+
+
+
+
+
+<div id="isolated-component">
+  <style>
+    #isolated-component {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 15px;
+      background-color: #d0e9ff;
+      border: 2px solid #1e90ff;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      font-family: 'Arial', sans-serif;
+    }
+
+    #isolated-component .option-box {
+      padding: 14px 20px;
+      border-radius: 12px;
+      background-color: #ff0000;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+    }
+
+    #isolated-component .option-box strong {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    #isolated-component .option-box span {
+      display: block;
+      margin-top: 8px;
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    #isolated-component .justification-bubble {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #bbdefb, #64b5f6);
+      border: 2px solid #1e90ff;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e90ff;
+      text-align: center;
+    }
+
+    #isolated-component .justification-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      margin: 5px 0;
+    }
+
+    #isolated-component .translation {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #555;
+      font-style: italic;
+      margin: 5px 0;
+    }
+  </style>
+
+  <div class="main-container">
+    <div class="option-box">
+      <strong>A</strong> - الخيار الاول
+  
+  
+      <span>  L'ensemble des papilles présente des dispositifs gustatifs, bourgeons de goût, localisés à leur surface épithéliale .
+        
+        </span>
+      
+
+      
+      <span>الإجابة خاطئة - Réponse fausse</span>
+    </div>
+
+    
+    <div style="text-align: center;">
+  <div class="justification-bubble" style="display: inline-block; max-width: 600px; text-align: justify;">
+    <strong>التبرير</strong>
+ 
+          </div>
+</div>
+    <br><br>
+<div style="
+    max-width: 800px; 
+    margin: 30px auto; 
+    padding: 25px; 
+    background: linear-gradient(135deg, #ffffff, #f1f8fe); 
+    border-radius: 15px; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); 
+    font-family: 'Arial', sans-serif; 
+    line-height: 1.8; 
+    text-align: justify;
+    border-left: 8px solid #2196F3;
+    transition: all 0.3s ease-in-out;
+">
+
+    <h2 style="
+        color: #1565C0;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 15px;
+    ">
+        معلومات عن الحليمات الذوقية / Les papilles gustatives
+    </h2>
+
+    <p style="
+        font-size: 16px; 
+        color: #333; 
+        padding: 10px 15px; 
+        background: #e3f2fd; 
+        border-radius: 8px;
+        box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.05);
+    ">
+<p>  <span style="font-size: 20px;">🔻</span> <strong style="color: #D32F2F;">En français :</strong> Toutes les papilles ne contiennent pas des bourgeons du goût sur leur surface épithéliale. En réalité, seules certaines papilles, comme les papilles caliciformes et fongiformes, contiennent ces récepteurs gustatifs. Les papilles filiformes, par exemple, ne sont pas impliquées dans la gustation.
+    </p>
+
+    <p style="
+        font-size: 16px; 
+        color: #333; 
+        padding: 10px 15px; 
+        background: #fff3e0; 
+        border-radius: 8px;
+        box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.05);
+    ">
+<p>  <span style="font-size: 20px;">🔻</span> <strong style="color: #D32F2F;">بالعربية :</strong> ليس كل الحليمات تحتوي على براعم التذوق على سطحها. في الواقع، فقط بعض الحليمات، مثل الحليمات الكأسية والفطرية، تحتوي على هذه المستقبلات الذوقية. أما الحليمات الخيطية، على سبيل المثال، فهي لا تشارك في عملية التذوق.
+    </p>
+
+</div>
+
+
+</div></div>
+  </div>
+</div>
+
+
+
+
+
+
+<br><br><br><br>
+
+
+<div id="isolated-component">
+  <style>
+    #isolated-component {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 15px;
+      background-color: #d0e9ff;
+      border: 2px solid #1e90ff;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      font-family: 'Arial', sans-serif;
+    }
+
+    #isolated-component .option-box {
+      padding: 14px 20px;
+      border-radius: 12px;
+      background-color: #ff0000;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+    }
+
+    #isolated-component .option-box strong {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    #isolated-component .option-box span {
+      display: block;
+      margin-top: 8px;
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    #isolated-component .justification-bubble {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #bbdefb, #64b5f6);
+      border: 2px solid #1e90ff;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e90ff;
+      text-align: center;
+    }
+
+    #isolated-component .justification-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      margin: 5px 0;
+    }
+
+    #isolated-component .translation {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #555;
+      font-style: italic;
+      margin: 5px 0;
+    }
+  </style>
+
+  <div class="main-container">
+    <div class="option-box">
+      <strong>C</strong> -  الخيار الثالث
+
+
+      <span> Les papilles fungiformes, grossièrement triangulaires à la coupe sont supportées par un axe papillaire conjonctif unique .</span>
+      
+      
+      <span>الإجابة خاطئة - Réponse fausse</span>
+    </div>
+
+
+<div style="text-align: center;">
+
+  <div class="justification-bubble" text-align: justify;">
+    <strong>التبرير</strong>
+    <br>
+       </div>
+</div>
+
+
+
+    <style>
+    /* إعدادات الصفحة الأساسية */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    /* الحاوية الرئيسية */
+    .container {
+        max-width: 95%; /* توسيع العرض ليتناسب مع مختلف الشاشات */
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    /* تأثير عند تمرير الفأرة */
+    .container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* العناوين */
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    /* نصوص المحتوى */
+    .text {
+        font-size: 16px;
+        line-height: 1.7;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+
+    /* تنسيق النص الفرنسي */
+    .french {
+        background-color: #e3f2fd;
+        border-left: 5px solid #2196F3;
+        text-align: left;
+    }
+
+    /* تنسيق النص العربي */
+    .arabic {
+        background-color: #ffebee;
+        border-right: 5px solid #d32f2f;
+        text-align: right;
+        direction: rtl;
+    }
+
+    /* تحسين التناسق للهواتف */
+    @media (max-width: 768px) {
+        .container {
+            max-width: 100%;
+            padding: 12px;
+        }
+
+        .title {
+            font-size: 18px;
+        }
+
+        .text {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="container">
+
+
+      <div class="title">  <span style="font-size: 20px;">🔻</span> بالعربية :</div>
+    <div class="text arabic">
+  </span> الحليمات الفطرية (<em>fungiformes</em>) لها شكل مستدير أو يشبه الفطر، وليس مثلثياً كما هو مذكور. بالإضافة إلى ذلك، فهي ليست مدعومة بمحور نسيجي ضام واحد، بل بمجموعة من الأنسجة الضامة الوعائية.
+    </div>
+
+
+
+    <div class="title"> <span style="font-size: 20px;">🔻</span> En français :</div>
+    <div class="text french">
+Les papilles fungiformes ont une forme plutôt arrondie ou en champignon et non triangulaire en coupe histologique. De plus, elles ne sont pas soutenues par un seul axe conjonctif unique, mais plutôt par un ensemble de tissus conjonctifs vascularisés.
+    </div>
+
+
+  
+
+
+</div> 
+ </div>
+</div>
+</div>
+
+
+
+
+
+
+
+<br><br><br><br>
+
+
+<div id="isolated-component">
+  <style>
+    #isolated-component {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 15px;
+      background-color: #d0e9ff;
+      border: 2px solid #1e90ff;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      font-family: 'Arial', sans-serif;
+    }
+
+    #isolated-component .option-box {
+      padding: 14px 20px;
+      border-radius: 12px;
+      background-color: #ff0000;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+    }
+
+    #isolated-component .option-box strong {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    #isolated-component .option-box span {
+      display: block;
+      margin-top: 8px;
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    #isolated-component .justification-bubble {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #bbdefb, #64b5f6);
+      border: 2px solid #1e90ff;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e90ff;
+      text-align: center;
+    }
+
+    #isolated-component .justification-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      margin: 5px 0;
+    }
+
+    #isolated-component .translation {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #555;
+      font-style: italic;
+      margin: 5px 0;
+    }
+  </style>
+
+  <div class="main-container">
+    <div class="option-box">
+      <strong>D</strong> -  الخيار الرابع 
+      <span> 
+Les bourgeons de goût au niveau des papilles caliciformes sont localisés à la surface superficielle de la papille .
+        </span>
+      <span>الإجابة خاطئة - Réponse fausse</span>
+    </div>
+
+    
+<div style="text-align: center;">
+
+  <div class="justification-bubble" text-align: justify;">
+    <strong>التبرير</strong>
+    <br>
+       </div>
+</div>
+
+
+<style>
+    /* إعدادات الصفحة الأساسية */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    /* الحاوية الرئيسية */
+    .container {
+        max-width: 95%; /* توسيع العرض ليتناسب مع مختلف الشاشات */
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    /* تأثير عند تمرير الفأرة */
+    .container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* العناوين */
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    /* نصوص المحتوى */
+    .text {
+        font-size: 16px;
+        line-height: 1.7;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+
+    /* تنسيق النص الفرنسي */
+    .french {
+        background-color: #e3f2fd;
+        border-left: 5px solid #2196F3;
+        text-align: left;
+    }
+
+    /* تنسيق النص العربي */
+    .arabic {
+        background-color: #ffebee;
+        border-right: 5px solid #d32f2f;
+        text-align: right;
+        direction: rtl;
+    }
+
+    /* تحسين التناسق للهواتف */
+    @media (max-width: 768px) {
+        .container {
+            max-width: 100%;
+            padding: 12px;
+        }
+
+        .title {
+            font-size: 18px;
+        }
+
+        .text {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="container">
+
+
+      <div class="title">  <span style="font-size: 20px;">🔻</span> بالعربية :</div>
+    <div class="text arabic">
+        براعم التذوق في الحليمات الكأسية (caliciformes) ليست موجودة على سطحها العلوي، وإنما على 
+        الجوانب الجانبية لهذه الحليمات، داخل الأخاديد حيث تتجمع اللعاب لتساعد في تحليل النكهات.
+    </div>
+
+
+
+    <div class="title"> <span style="font-size: 20px;">🔻</span> En français :</div>
+    <div class="text french">
+        Les bourgeons du goût des papilles caliciformes ne sont pas situés sur leur surface 
+        superficielle mais sur les faces latérales de la papille, dans les sillons où la salive 
+        circule pour faciliter la détection des goûts.
+    </div>
+
+
+
+</div>
+
+
+
+</div>
+</div>
+
+
+
+
+
+<br><br><br><br>
+
+
+<div id="isolated-component">
+  <style>
+    #isolated-component {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 15px;
+      background-color: #d0e9ff;
+      border: 2px solid #1e90ff;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      font-family: 'Arial', sans-serif;
+    }
+
+    #isolated-component .option-box {
+      padding: 14px 20px;
+      border-radius: 12px;
+      background-color: #ff0000;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+    }
+
+    #isolated-component .option-box strong {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    #isolated-component .option-box span {
+      display: block;
+      margin-top: 8px;
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    #isolated-component .justification-bubble {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #bbdefb, #64b5f6);
+      border: 2px solid #1e90ff;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e90ff;
+      text-align: center;
+    }
+
+    #isolated-component .justification-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      margin: 5px 0;
+    }
+
+    #isolated-component .translation {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #555;
+      font-style: italic;
+      margin: 5px 0;
+    }
+  </style>
+
+  <div class="main-container">
+    <div class="option-box">
+      <strong>E</strong> -  الخيار الخامس 
+      <span> 
+    Les papilles fungiformes sont limitées par un sillon circulaire, le vallum, au fond duquel débouchent les canaux excréteurs des glandes séreuses de van Ebner .
+        
+        </span>
+      <span>الإجابة خاطئة - Réponse fausse</span>
+    </div>
+
+
+
+
+
+
+<div style="text-align: center;">
+  <div class="justification-bubble" style="display: inline-block;">
+    التبرير
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<style>
+    /* إعدادات الصفحة الأساسية */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    /* الحاوية الرئيسية */
+    .container {
+        max-width: 95%; /* توسيع العرض ليتناسب مع مختلف الشاشات */
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    /* تأثير عند تمرير الفأرة */
+    .container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* العناوين */
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    /* نصوص المحتوى */
+    .text {
+        font-size: 16px;
+        line-height: 1.7;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+
+    /* تنسيق النص الفرنسي */
+    .french {
+        background-color: #e3f2fd;
+        border-left: 5px solid #2196F3;
+        text-align: left;
+    }
+
+    /* تنسيق النص العربي */
+    .arabic {
+        background-color: #ffebee;
+        border-right: 5px solid #d32f2f;
+        text-align: right;
+        direction: rtl;
+    }
+
+    /* تحسين التناسق للهواتف */
+    @media (max-width: 768px) {
+        .container {
+            max-width: 100%;
+            padding: 12px;
+        }
+
+        .title {
+            font-size: 18px;
+        }
+
+        .text {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="container">
+
+
+      <div class="title">  <span style="font-size: 20px;">🔻</span> بالعربية :</div>
+    <div class="text arabic">
+بالعربية : هذا الوصف ينطبق على الحليمات الكأسية (caliciformes) وليس الحليمات الفطرية (fungiformes). فالأخدود الدائري (vallum) والقنوات الإفرازية لغدد فون إبنر (von Ebner) توجد في الحليمات الكأسية، وليس في الحليمات الفطرية.
+    </div>
+
+
+    
+    <div class="title"> <span style="font-size: 20px;">🔻</span> En français :</div>
+    <div class="text french">
+        Les bourgeons du goût des papilles caliciformes ne sont pas situés sur leur surface 
+        superficielle mais sur les faces latérales de la papille, dans les sillons où la salive 
+        circule pour faciliter la détection des goûts.
+    </div>
+
+</div>
+   </div>
+  </div>
+</div>
+
+<br><br><br><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+
+<div id="uvule-box">
+  <style>
+    /* التصميم الأساسي */
+    #uvule-box {
+      padding: 20px;
+      background: linear-gradient(135deg, #d4edda, #a3d9a5);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      font-family: 'Arial', sans-serif;
+      max-width: 90%; /* استخدام نسبة مئوية لتقليل العرض */
+      margin: 20px auto;
+      line-height: 1.8;
+      color: #2d4739;
+      text-align: center;
+      border: 1px solid #8bc990;
+    }
+
+    /* عنوان رئيسي */
+    #uvule-box .uvule-title {
+      display: inline-block;
+      background: #81c784;
+      color: #ffffff;
+      padding: 12px 30px;
+      border-radius: 20px;
+      font-size: 1.2rem; /* وحدة نسبية مناسبة لجميع الأجهزة */
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* محتوى النصوص */
+    #uvule-box .uvule-content {
+      font-size: 1rem;
+      text-align: justify;
+      margin-bottom: 30px;
+      color: #2d4739;
+      line-height: 1.8;
+      padding: 0 10px;
+    }
+
+    #uvule-box .uvule-content p {
+      margin: 10px 0;
+    }
+
+    /* الإجابة الصحيحة */
+    #uvule-box .uvule-answer {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #ffffff;
+      font-style: italic;
+      display: inline-block;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #43a047, #2e7d32);
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* استعلامات الوسائط لتصميم متجاوب */
+    @media (max-width: 768px) {
+      #uvule-box {
+        padding: 15px;
+        font-size: 0.9rem; /* تقليل حجم النص للشاشات الأصغر */
+      }
+
+      #uvule-box .uvule-title {
+        padding: 10px 20px;
+        font-size: 1rem; /* تقليل حجم العنوان */
+      }
+
+      #uvule-box .uvule-answer {
+        padding: 10px 15px;
+        font-size: 0.9rem; /* تعديل حجم الإجابة */
+      }
+    }
+
+    @media (max-width: 480px) {
+      #uvule-box {
+        padding: 10px;
+        font-size: 0.8rem;
+      }
+
+      #uvule-box .uvule-title {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+      }
+
+      #uvule-box .uvule-answer {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+
+
+
+
+<!-- عنوان  -->
+<div class="uvule-title">
+B &nbsp;&nbsp;&nbsp;       La face linguale supérieure présente une faible kératinisation des 2/3 antérieurs.
+</div>
+
+
+
+<style>
+    /* تنسيق عام للمحتوى */
+    .uvule-content {
+        background-color: #f9f9f9;
+        border-left: 5px solid #007BFF;
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 8px;
+        font-family: 'Poppins', Arial, sans-serif;
+        font-size: 18px;
+        line-height: 1.8;
+        color: #333;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 90%;
+        width: 100%;
+    }
+
+    /* تنسيق الفقرة */
+    .uvule-content p {
+        margin: 0;
+        text-align: justify;
+    }
+
+    /* تمييز النصوص الهامة */
+    .uvule-content p strong {
+        color: #007BFF;
+    }
+
+    /* تحسين المظهر على الشاشات الصغيرة */
+    @media (max-width: 600px) {
+        .uvule-content {
+            padding: 15px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    }
+</style>
+
+<!-- النصوص المحسنة -->
+<div class="uvule-content">
+    <p>
+        ✅ <strong>Conclusion :</strong> Pourquoi B est correcte ?<br>
+        "La face linguale supérieure présente une faible kératinisation des 2/3 antérieurs"<br>
+        ✔️ Cette affirmation est correcte, car la partie antérieure de la langue présente une kératinisation modérée à faible, contrairement au tiers postérieur où la kératinisation est plus marquée.
+    </p>
+    <br>
+    <p>
+        ✅ <strong>الخلاصة:</strong> لماذا الإجابة B صحيحة؟<br>
+        "السطح العلوي للسان يتميز بقرنية ضعيفة في الثلثين الأماميين"<br>
+        ✔️ هذا صحيح، لأن الجزء الأمامي من اللسان يظهر تقرنًا معتدلًا إلى ضعيف، على عكس الثلث الخلفي حيث يكون التقرن أكثر وضوحًا.
+    </p>
+</div>
+
+
+
+
+    <!-- الإجابة الصحيحة -->
+    <div class="uvule-answer">
+        ✅ <strong>La bonne réponse est - الإجابة الصحيحة هي :</strong>
+    </div>
+</div>
+
+
+</div></div>
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br>
+
+  <style>
+    /* إعدادات الصفحة */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Cairo', sans-serif;
+  background: linear-gradient(to bottom right, #eef2f7, #d9e5f2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #333;
+  text-align: center;
+}
+
+#animated-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff6f00, #ffa726);
+  border: 2px solid #ff8f00;
+  border-radius: 15px;
+  padding: 12px 24px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  font-size: 1.4em;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  animation: pulse 1.8s infinite;
+}
+
+      animation: pulse 1.8s infinite;
+    }
+
+    #animated-box:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #ffa726, #ffd54f);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    #animated-box span {
+      display: inline-block;
+      animation: bounceText 1.5s infinite;
+      text-shadow: 0 5px 15px rgba(255, 111, 0, 0.8);
+    }
+
+    /* تأثير النبض */
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+      50% {
+        box-shadow: 0 10px 25px rgba(255, 111, 0, 0.4);
+      }
+    }
+
+    /* تأثير النص */
+    @keyframes bounceText {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    /* مربع النصوص */
+    .description {
+      max-width: 800px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+      line-height: 1.6;
+      text-align: justify;
+      color: #444;
+      margin-top: 20px;
+      animation: fadeInUp 1s ease;
+      position: relative;
+    }
+
+    .description::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 4px;
+      background: linear-gradient(135deg, #4fc3f7, #1976d2);
+      border-radius: 10px;
+    }
+
+    /* تأثير الظهور */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* تحسين العرض للأجهزة الصغيرة */
+    @media (max-width: 600px) {
+      #animated-box {
+        padding: 10px 20px;
+        font-size: 1.2em;
+      }
+
+      .description {
+        padding: 15px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- العنصر التفاعلي -->
+  <div id="animated-box">
+    <span>⚡ الشروحات ⚡</span>
+  </div>
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br>
+
+
+
+
+
+
+<br><br><br><br><br><br><br>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: right;
+            direction: rtl;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 90%;
+            width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            line-height: 1.8;
+        }
+        h3 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .highlight {
+            background: #ffebcc;
+            padding: 12px;
+            border-radius: 5px;
+            display: block;
+            margin: 15px 0;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            background: #eef5ff;
+            padding: 12px;
+            border-radius: 5px;
+            margin: 8px 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .icon {
+            margin-left: 8px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 15px;
+            }
+            ul li {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>🦷 ملخص الغشاء المخاطي الفموي</h3>
+        <p>
+  
+        <p style="text-align: center; font-weight: bold; color: #2c3e50;">🔹 إذن، مرونة الخدود ليست صدفة، بل تكيف طبيعي مهم يساعدنا على الأكل والتحدث بسهولة! 🎯</p>
+    </div>
+</body>
+
+
+    
+
+<br><br><br><br><br><br><br>
+
+
+    <style>
+        .image-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .styled-image {
+            width: 100%;
+            max-width: 612px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .styled-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="image-container">
+        <img src="2MEDU02HISTOLOGIEIMG/terminison des face dentaire.jpg" 
+             alt="نهاية السطح السني تحت المجهر" 
+             class="styled-image" 
+             loading="lazy">
+    </div>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br><br><br>
+ <style>
+ /* عزل التأثير داخل .lesson-summary */
+.lesson-summary {
+    font-family: 'Cairo', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: auto; /* تقليل الارتفاع */
+    padding: 10px 0; /* تقليل التباعد العلوي والسفلي */
+    color: #333;
+    text-align: center;
+}
+
+/* خصائص صندوق الملخص */
+.lesson-summary #animated-box {
+    display: inline-block;
+    text-align: center;
+    background: black;
+    border-radius: 20px;
+    padding: 15px 25px; /* تصغير الحواف الداخلية */
+    margin: 5px auto; /* تقليل التباعد العلوي والسفلي */
+    font-size: 1.3em; /* تصغير الخط قليلاً */
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: 3px solid transparent;
+    background-image: linear-gradient(black, black), 
+                      linear-gradient(135deg, #ff5733, #ffcc33);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 0 8px 20px rgba(255, 87, 51, 0.5);
+    animation: glow 1.5s infinite alternate;
+}
+
+/* تأثير التحويم */
+.lesson-summary #animated-box:hover {
+    transform: scale(1.05);
+    background-image: linear-gradient(black, black),
+                      linear-gradient(135deg, #ffcc33, #ff5733);
+    box-shadow: 0 12px 25px rgba(255, 204, 51, 0.7);
+}
+
+/* تأثير الوميض */
+@keyframes glow {
+    0% { box-shadow: 0 8px 20px rgba(255, 87, 51, 0.5); }
+    100% { box-shadow: 0 12px 30px rgba(255, 204, 51, 0.7); }
+}
+
+/* تحسين النص داخل الصندوق */
+.lesson-summary #animated-box span {
+    display: inline-block;
+    font-family: 'Tajawal', sans-serif;
+    letter-spacing: 1px;
+    animation: bounceText 1.5s infinite;
+    text-shadow: 0 5px 15px rgba(255, 204, 51, 0.9);
+}
+
+/* تأثير القفز على النص */
+@keyframes bounceText {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); } /* تقليل القفز */
+}
+
+   
+  </style>
+</head>
+<body>
+
+  <div class="lesson-summary">
+    <div id="animated-box">
+      <span>🔻 ملخص الدرس  🔻</span>
+    </div>
+  </div>
+
+<br><br><br><br><br><br><br><br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li style="direction: ltr; text-align: left;">
+    <span style="background-color: #FFD700; padding: 3px 5px; border-radius: 5px; white-space: nowrap;">L'épithélium</span> 
+    <span style="background-color: #FFD700; padding: 3px 5px; border-radius: 5px; white-space: nowrap;">œsophagien</span> 
+    dérive de  
+    <span style="background-color: #FFD700; padding: 3px 5px; border-radius: 5px; white-space: nowrap;">l'intestin</span> 
+    <span style="background-color: #FFD700; padding: 3px 5px; border-radius: 5px; white-space: nowrap;">primitif</span> 
+    <span style="background-color: #FFD700; padding: 3px 5px; border-radius: 5px; white-space: nowrap;">antérieur.</span>
+</li>
+
+
+
+  `
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//نهايى
+
+
+  { 
+   text: "المقاومة  واجبة " ,  
+    options: [   " نعم في حالة توفر الامور",
+  " نعم ونوفر لها الاسباب",
+  " كلا الحياة مهما كانت   افضل ",
+  " ليس خيار جميل "], 
+  correct: [1],  
+  explanation: " قريبا "},
+
+
+
+  { 
+    text: "ما هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم؟", 
+    options: ["الإنجيل", "التوراة", "القرآن", "الزبور"], 
+    correct: [2],  
+    explanation: "القرآن الكريم هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم."
+  },
+
+
+
+  { 
+
+    text: "ما هو عدد ركعات صلاة الفجر؟", 
+    options: ["ركعتين", "أربع ركعات", "ثلاث ركعات", "ركعة واحدة"], 
+    correct: [0],  
+    explanation: "صلاة الفجر تتكون من ركعتين."
+    
+  },
+
+
+
+
+  
+  { 
+    text: "في أي عام هجري ولد النبي محمد صلى الله عليه وسلم؟", 
+    options: ["عام 570", "عام 510", "عام 590", "عام 600"], 
+    correct: [0],  
+    explanation: "النبي محمد صلى الله عليه وسلم وُلد في عام 570 ميلادي."
+  },
+
+
+
+  {
+    text: "ما هو اسم أطول سورة في القرآن؟",
+    options: ["سورة البقرة", "سورة آل عمران", "سورة النحل", "سورة الفاتحة"],
+    correct: [0],
+    explanation: "سورة البقرة هي أطول سورة في القرآن.",
+
+
+    link: "", // رابط مخصص للسؤال
+    buttonColor: "red", // لون مخصص للزر
+    buttonText: "تحميل كتيب سورة البقرة", // نص مخصص للزر
+    buttonStyle: "bold" // تصميم مخصص للزر
+  },
+  // أضف أسئلة أخرى بنفس التنسيق
+];
+
+
+let currentQuestionIndex = 0;
+let selectedAnswers = [];
+let timer;
+let timeLeft;
+let totalTime = 0;
+let quizDuration = 0;
+
+const questionContainer = document.getElementById("question-container");
+const resultSection = document.getElementById("result-section");
+const resultsContainer = document.getElementById("results-container");
+const finalMessage = document.getElementById("final-message");
+const totalTimeMessage = document.getElementById("total-time-message");
+const timerElement = document.getElementById("timer");
+
+function startQuiz() {
+  quizDuration = parseInt(document.getElementById("custom-duration").value) * 60;
+  selectedAnswers = [];
+  totalTime = 0;
+  document.querySelector('.duration-select').style.display = "none";
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const question = questions[currentQuestionIndex];
+  questionContainer.innerHTML = `
+    <div class="question-container">
+      <!-- إطار الصورة -->
+      <div class="image-frame">
+        ${question.image ? `<img src="${question.image}" alt="صورة" />` : '' }
+      </div>
+      <div class="question">
+        <p><strong>${question.text}</strong></p>
+        <ul class="options">
+          ${question.options.map((option, index) => `
+            <li onclick="selectOption(${index})">
+              ${option}
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    </div>
+    <button class="btn" onclick="submitAnswer()">إرسال الإجابة</button>
+  `;
+  questionContainer.style.display = "block";
+
+  if (currentQuestionIndex === 0) {
+    startTimer();
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function restartQuiz() {
+            let timerInterval;
+            Swal.fire({
+                title: "📢 تأكيد!",
+                html: "<b style='color: #d33;'>⚠️ سيتم إعادة الاختبار!</b><br><br><span id='countdown' style='color: #007bff; font-weight: bold;'>5</span> ثوانٍ متبقية",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#007bff",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "✅ نعم",
+                cancelButtonText: "❌ لا",
+                background: "rgba(255, 255, 255, 0.9)",
+                backdrop: "rgba(0, 0, 0, 0.5)",
+                width: "280px", /* ✅ نافذة أصغر حجمًا */
+                padding: "15px",
+                didOpen: () => {
+                    let countdown = 5;
+                    timerInterval = setInterval(() => {
+                        countdown--;
+                        document.getElementById("countdown").textContent = countdown;
+                        if (countdown <= 0) {
+                            clearInterval(timerInterval);
+                            Swal.close();
+                        }
+                    }, 1000);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+                timer: 5000
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "🔄 جاري إعادة الاختبار...",
+                        text: "يرجى الانتظار",
+                        icon: "info",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            });
+        }
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function selectOption(optionIndex) {
+  const options = document.querySelectorAll(".options li");
+  options.forEach((option, index) => {
+    if (index === optionIndex) {
+      option.classList.add("selected");
+    } else {
+      option.classList.remove("selected");
+    }
+  });
+  selectedAnswers[currentQuestionIndex] = optionIndex;
+}
+
+function submitAnswer() {
+  const question = questions[currentQuestionIndex];
+  const isCorrect = selectedAnswers[currentQuestionIndex] === question.correct[0];
+  const options = document.querySelectorAll(".options li");
+
+  if (isCorrect) {
+    options[selectedAnswers[currentQuestionIndex]].classList.add("correct");
+  } else {
+    options[selectedAnswers[currentQuestionIndex]].classList.add("incorrect");
+  }
+
+  currentQuestionIndex++;
+  totalTime = quizDuration - timeLeft;
+  if (currentQuestionIndex < questions.length) {
+    loadQuestion();
+  } else {
+    displayResults();
+  }
+}
+
+function startTimer() {
+  timeLeft = quizDuration;
+  timer = setInterval(function() {
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      displayResults();
+    } else {
+      timeLeft--;
+      timerElement.innerText = formatTime(timeLeft);
+    }
+  }, 1000);
+}
+
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secondsRemaining = seconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+}
+
+function displayResults() {
+  questionContainer.style.display = "none";
+  resultSection.style.display = "block";
+  let correctAnswersCount = 0;
+
+  questions.forEach((question, index) => {
+    const isCorrect = selectedAnswers[index] === question.correct[0];
+    const reviewClass = isCorrect ? "green" : "red";
+    const reviewText = isCorrect ? "إجابة صحيحة" : "إجابة خاطئة";
+
+    resultsContainer.innerHTML += `
+      <div class="question-review ${reviewClass}">
+        <p><strong>${question.text}</strong></p>
+        <p>${reviewText}</p>
+        <button class="explain-btn" onclick="showExplanation(${index})">عرض الشرح</button>
+      </div>
+    `;
+    if (isCorrect) {
+      correctAnswersCount++;
+    }
+  });
+
+  finalMessage.innerText = `لقد أجبت على ${correctAnswersCount} من ${questions.length} أسئلة بشكل صحيح.`;
+  totalTimeMessage.innerText = `الوقت المستغرق: ${formatTime(totalTime)}`;
+}
+
+
+
+
+
+function showExplanation(index) {
+    const question = questions[index];
+    const explanationModal = document.createElement("div");
+    explanationModal.classList.add("modal");
+
+    const explanationContent = document.createElement("div");
+    explanationContent.classList.add("modal-content");
+
+    const fixedButtons = document.createElement("div");
+    fixedButtons.classList.add("fixed-buttons");
+
+    const closeButton = document.createElement("button");
+    closeButton.classList.add("close-btn");
+    closeButton.innerHTML = "&#x274C;"; // زر الإغلاق
+    closeButton.onclick = function() {
+        closeExplanation(explanationModal);
+    };
+
+
+
+
+
+
+
+
+
+
+
+    const linkButton = document.createElement("button");
+linkButton.classList.add("link-btn");
+linkButton.innerText = question.buttonText || "";
+linkButton.style.color = question.buttonColor || "black"; // استخدام اللون المخصص أو الافتراضي
+linkButton.style.fontWeight = question.buttonStyle === "bold" ? "bold" : "normal"; // استخدام التصميم المخصص أو الافتراضي
+
+// تعطيل الزر مع إخفائه
+linkButton.style.display = "none";
+
+// إذا أردت لاحقًا إظهار الزر مرة أخرى، يمكنك تغيير display إلى "block" أو "inline-block"
+// linkButton.style.display = "block";
+
+// الزر لن يعمل حتى لو تم إعادة تمكينه لاحقًا
+linkButton.onclick = function() {
+    if (linkButton.style.display !== "none") {
+        window.location.href = question.link;
+    }
+};
+
+
+
+
+
+    fixedButtons.appendChild(closeButton);
+    fixedButtons.appendChild(linkButton);
+    explanationContent.appendChild(fixedButtons);
+
+    const explanationText = document.createElement("div");
+    explanationText.innerHTML = question.explanation;
+    explanationContent.appendChild(explanationText);
+
+    explanationModal.appendChild(explanationContent);
+    document.body.appendChild(explanationModal);
+
+    setTimeout(() => {
+        explanationModal.classList.add("active");
+    }, 10);
+
+    explanationModal.onclick = function(event) {
+        if (event.target === explanationModal) {
+            closeExplanation(explanationModal);
+        }
+    };
+}
+
+function closeExplanation(modal) {
+    modal.classList.remove("active");
+    setTimeout(() => {
+        document.body.removeChild(modal);
+    }, 300);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let zoomed = false;
+
+function toggleZoom() {
+    const image = document.getElementById('gifImage');
+    const exitBtn = document.getElementById('exitZoomBtn');
+    
+    if (!zoomed) {
+        image.style.transform = 'scale(1.5)';
+        image.style.transition = 'transform 0.3s ease-in-out';
+        exitBtn.style.display = 'inline-block';
+        zoomed = true;
+    } else {
+        exitZoom();
+    }
+}
+
+function exitZoom() {
+    const image = document.getElementById('gifImage');
+    const exitBtn = document.getElementById('exitZoomBtn');
+    
+    image.style.transform = 'scale(1)';
+    exitBtn.style.display = 'none';
+    zoomed = false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const animatedBox = document.getElementById("animated-box");
+
+    // مراقبة العنصر عند الظهور
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    animatedBox.classList.add("visible"); // تفعيل الحركة عند الظهور
+                }
+            });
+        },
+        { threshold: 0.5 } // يبدأ التأثير عند ظهور 50% من العنصر
+    );
+
+    observer.observe(animatedBox);
+
+    // تأثير نبض عند النقر
+    animatedBox.addEventListener("click", () => {
+        const text = document.getElementById("text");
+        text.style.animation = "textHoverBounce 0.4s ease-in-out";
+        setTimeout(() => {
+            text.style.animation = ""; // إعادة الحالة الأصلية
+        }, 400);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+
+
+<!--زر استغفار مطور-->
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #f0f8ff, #e6f7ff);
+        }
+
+        .istighfar-button {
+            position: fixed;
+            bottom: 19px;
+            left: 10px;
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.2s, background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .istighfar-button:hover {
+            transform: scale(1.1);
+            background-color: #138496;
+        }
+
+
+
+        
+
+.istighfar-popup {
+            position: fixed;
+          
+
+
+            width: 100px; /* تصغير العرض */
+    padding: 10px; /* تقليل التباعد الداخلي */
+    bottom: 40px; /* تقليل المسافة عن الزر */
+            left: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 999;
+            width: 230px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .istighfar-popup span {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .motivation {
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .close-button, .delete-button {
+            display: block;
+            margin: 5px auto 0;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+        }
+
+        .close-button:hover, .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        .settings {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings:hover {
+            background-color: #218838;
+        }
+
+ 
+        /* نافذة الإعدادات */
+        .settings-popup {
+            position: fixed;
+            bottom: 140px;
+            left: 50px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 999;
+            width: 160px; /* تصغير العرض */
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .settings-popup label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        .settings-popup input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .settings-popup button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .settings-popup button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+  <button class="istighfar-button" onclick="toggleIstighfarPopup()">📿</button>
+  <button class="settings" id="settingsButton" onclick="toggleSettingsPopup()">⚙️</button>
+  <div class="istighfar-popup" id="istighfarPopup">
+
+
+   <!-- زر استغفر الله -->
+<div style="display: inline-block; padding: 8px 16px; background: #e0f7fa; color: #00796b; font-family: 'Amiri', serif; font-size: 1em; font-weight: bold; border-radius: 50px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #b2ebf2; text-align: center; cursor: pointer; transition: transform 0.3s, background 0.3s; margin-bottom: 8px;" 
+onmouseover="this.style.background='#b2ebf2'; this.style.transform='scale(1.05)';" 
+onmouseout="this.style.background='#e0f7fa'; this.style.transform='scale(1)';">
+<span id="istighfarText">استغفر الله</span>
+</div>
+
+<!-- آية الاستغفار -->
+<div class="motivation" style="text-align: center; padding: 6px 12px; background: #f0f8ff; font-family: 'Amiri', serif; border: 1px solid #b3d9e8; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); margin: 6px auto; max-width: 90%; line-height: 1.4;">
+<p style="color: #0d47a1; font-size: 0.85em; font-weight: bold; margin: 6px 0; word-wrap: break-word; direction: rtl;">
+  ﴿ وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا ﴾
+</p>
+<p style="color: #616161; font-size: 0.75em; margin: 3px 0; direction: rtl;">[ النساء: 110 ]</p>
+<a href="https://surahquran.com/aya-110-sora-4.html" target="_blank" style="color: #0288d1; text-decoration: none; font-size: 0.7em; font-weight: bold; display: block; margin-top: 5px;">🔗 شرح الآية</a>
+</div>
+
+<!-- حديث الاستغفار -->
+<div class="motivation" style="text-align: center; padding: 6px 12px; background: #fff3e0; font-family: 'Amiri', serif; border: 1px solid #ffcc80; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); margin: 6px auto; max-width: 90%; line-height: 1.4;">
+<p style="color: #e65100; font-size: 0.8em; font-weight: bold; margin: 5px 0; word-wrap: break-word; direction: rtl;">
+  5/1873- وعنِ ابْنِ عَبَّاسٍ رضِي اللَّه عنْهُما قَال: قالَ رَسولُ اللَّهِ ﷺ: منْ لَزِم الاسْتِغْفَار، جَعَلَ اللَّه لَهُ مِنْ كُلِّ ضِيقٍ مخْرجًا، ومنْ كُلِّ هَمٍّ فَرجًا، وَرَزَقَهُ مِنْ حيْثُ لاَ يَحْتَسِبُ رواه أبو داود.
+</p>
+<a href="https://binbaz.org.sa/audios/2653/587-%D9%85%D9%86-%D8%AD%D8%AF%D9%8A%D8%AB-%D9%85%D9%86-%D9%84%D8%B2%D9%85-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%BA%D9%81%D8%A7%D8%B1-%D8%AC%D8%B9%D9%84-%D8%A7%D9%84%D9%84%D9%87-%D9%84%D9%87-%D9%85%D9%86-%D9%83%D9%84-%D8%B6%D9%8A%D9%82-%D9%85%D8%AE%D8%B1%D8%AC%D8%A7" target="_blank" style="color: #d32f2f; text-decoration: none; font-size: 0.7em; font-weight: bold; display: block; margin-top: 4px;">🔗 الاستماع للحديث</a>
+</div>
+
+    
+    
+        <button class="close-button" onclick="toggleIstighfarPopup()">إغلاق</button>
+        <button class="delete-button" onclick="removeIstighfarButton()">حذف</button>
+    </div>
+    <div class="settings-popup" id="settingsPopup">
+        <label for="interval">⏱️ عدد الثواني بين كل ظهور:</label>
+        <input type="number" id="interval" placeholder="أدخل عدد الثواني" min="1">
+        <label for="count">🔄 عدد مرات الظهور:</label>
+        <input type="number" id="count" placeholder="أدخل عدد المرات" min="1">
+        <button onclick="applySettings()">تطبيق</button>
+    </div>
+
+    <script>
+        let timerInterval;
+        let autoPopupInterval;
+        const istighfarPhrases = [
+            "استغفر الله العظيم",
+            "اللهم صل وسلم على نبينا محمد",
+            "سبحان الله وبحمده",
+            "اللهم اغفر لي",
+            "رب اغفر لي وتب علي"
+        ];
+        let userInterval = 300000; // 5 دقائق افتراضية
+        let userCount = 3; // عدد مرات افتراضي
+
+        function toggleIstighfarPopup() {
+            const popup = document.getElementById('istighfarPopup');
+            const settingsButton = document.getElementById('settingsButton');
+            if (popup.style.display === 'none' || popup.style.display === '') {
+                popup.style.display = 'block';
+                settingsButton.style.display = 'block'; // إظهار زر الإعدادات عند ظهور النافذة
+                startIstighfarTimer(10);
+            } else {
+                popup.style.display = 'none';
+                settingsButton.style.display = 'none'; // إخفاء زر الإعدادات عند إغلاق النافذة
+                clearInterval(timerInterval);
+            }
+        }
+
+        function startIstighfarTimer(seconds) {
+            const istighfarText = document.getElementById('istighfarText');
+            let remainingTime = seconds;
+
+            updateIstighfarText();
+            timerInterval = setInterval(() => {
+                remainingTime--;
+                if (remainingTime >= 0) {
+                    istighfarText.textContent = `${istighfarPhrases[Math.floor(Math.random() * istighfarPhrases.length)]} (${remainingTime})`;
+                } else {
+                    clearInterval(timerInterval);
+                    setTimeout(() => {
+                        toggleIstighfarPopup(); // إغلاق النافذة بعد مهلة قصيرة
+                    }, 5000); // 5 ثوانٍ لقراءة الجملة
+                }
+            }, 1000);
+        }
+
+        function updateIstighfarText() {
+            const istighfarText = document.getElementById('istighfarText');
+            istighfarText.textContent = istighfarPhrases[Math.floor(Math.random() * istighfarPhrases.length)];
+        }
+
+        function toggleSettingsPopup() {
+            const settingsPopup = document.getElementById('settingsPopup');
+            settingsPopup.style.display = settingsPopup.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function applySettings() {
+            const intervalInput = document.getElementById('interval').value;
+            const countInput = document.getElementById('count').value;
+
+            userInterval = intervalInput ? intervalInput * 1000 : userInterval;
+            userCount = countInput ? parseInt(countInput) : userCount;
+
+            toggleSettingsPopup();
+            startAutoPopup();
+        }
+
+        function startAutoPopup() {
+            let appearances = 0;
+            autoPopupInterval = setInterval(() => {
+                if (appearances < userCount) {
+                    toggleIstighfarPopup();
+                    appearances++;
+                } else {
+                    clearInterval(autoPopupInterval);
+                }
+            }, userInterval);
+        }
+
+        function removeIstighfarButton() {
+            document.querySelector('.istighfar-button').style.display = 'none';
+            document.querySelector('.settings').style.display = 'none';
+            clearInterval(autoPopupInterval); // إيقاف التشغيل التلقائي عند حذف الزر
+        }
+
+        // تشغيل النافذة تلقائيًا كل خمس دقائق إذا لم يتم تشغيلها يدويًا
+        window.onload = () => {
+            autoPopupInterval = setInterval(() => {
+                toggleIstighfarPopup();
+            }, 300000); // 300000 ميلي ثانية = 5 دقائق
+        };
+    </script>
+</body2>
+</html2>
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أزرار التحذير والصلاة</title>
+    <style>
+        /* تنسيق الزر العائم للتحذير (في اليسار) */
+        .floating-btn-warning {
+            position: fixed;
+            bottom: 140px;
+            left: 10px; /* تغيير الموضع ليكون في اليسار */
+            width: 50px;
+            height: 50px;
+            background-color: #ff2512;
+            color: white;
+            font-size: 23px;
+            font-weight: normal;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease;
+            z-index: 9999;
+        }
+
+        /* حركة الزر التحذيري */
+        @keyframes moveAndGlowWarning {
+            0% {
+                transform: translateX(0) translateY(0);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                background-color: #ff6f61;
+            }
+            50% {
+                transform: translateX(15px) translateY(-15px);
+                box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+                background-color: #ff3d2e;
+            }
+            100% {
+                transform: translateX(0) translateY(0);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                background-color: #ff6f61;
+            }
+        }
+
+        /* نافذة منبثقة للزر التحذيري */
+                                                            /* نافذة منبثقة للزر التحذيري */
+.popup-warning {
+    position: fixed;
+    bottom: 3%; /* مسافة مناسبة من الأسفل */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%; /* تقليل العرض ليكون أكثر مرونة */
+    max-width: 250px; /* الحد الأقصى للعرض */
+    background-color: #ffffff;
+    border-radius: 10px; /* حواف مدورة لطيفة */
+    padding: 1em; /* حشو داخلي مرن */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* تحسين الظلال */
+    display: none;
+    z-index: 9998;
+    font-size: 1em; /* حجم نص مرن */
+}
+
+/* استجابة للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .popup-warning {
+        width: 70%; /* عرض مناسب للأجهزة اللوحية */
+        bottom: 5%; /* مسافة منطقية من الأسفل */
+        padding: 0.8em; /* تقليل الحشو قليلاً */
+    }
+}
+
+@media (max-width: 480px) {
+    .popup-warning {
+        width: 85%; /* عرض يناسب الهواتف */
+        bottom: 7%; /* مسافة أكبر من الأسفل */
+        padding: 0.6em; /* تقليل الحشو أكثر */
+        font-size: 0.9em; /* تصغير حجم النص */
+    }
+}
+
+/* إضافة حركة لطيفة عند ظهور النافذة */
+.popup-warning.show {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* تأثير الحركة */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* تنسيق الزر العائم للصلاة (في اليمين) */
+        .floating-btn-prayer {
+            position: fixed;
+            bottom: 20px;
+            right: 10px; /* تغيير الموضع ليكون في الجهة اليمنى */
+            width: 60px;
+            height: 60px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 32px;
+            font-weight: normal;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease;
+            z-index: 9999;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* نافذة الصلاة */
+        .popup-prayer {
+    position: fixed;
+    bottom: 5%; /* مسافة مرنة من الأسفل */
+    right: 5%; /* محاذاة مرنة لليمين */
+    width: 50%; /* عرض مرن */
+    max-width: 250px; /* حد أقصى للعرض */
+    background: #fff;
+    border-radius: 10px;
+    padding: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 9998;
+    font-size: 1em; /* حجم نص مرن */
+}
+
+/* استجابة للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .popup-prayer {
+        width: 70%;
+        bottom: 7%;
+        padding: 0.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .popup-prayer {
+        width: 85%;
+        bottom: 10%;
+        padding: 0.6em;
+        font-size: 0.9em;
+    }
+}
+
+/* حركة عند الظهور */
+.popup-prayer.show {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* النافذة التحفيزية */
+        .motivational-msg {
+            font-size: 1.1em;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        /* الأزرار داخل النافذة */
+        .btn-close {
+            background-color: #FF5722;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-close:hover {
+            background-color: #FF3D00;
+        }
+    </style>
+</head>
+<body>
+
+<!-- زر التحذير (في اليسار) -->
+<button class="floating-btn-warning" onclick="togglePopupWarning()">⚠️</button>
+
+<!-- نافذة التحذير -->
+<div id="popupWarning" class="popup-warning">
+    <div class="popup-header" style="text-align: center; background-color: #0b04fb; padding: 15px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-bottom: 20px; font-family: 'Arial', sans-serif; color: white;">
+        <p style="font-size: 1.5em; font-weight: bold; letter-spacing: 1px; margin: 0; text-transform: uppercase;">روابط الفيديو التحفيزية</p>
+    </div>
+    
+
+    <div class="popup-content" style="text-align: center; background-color: #3e0b10; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); max-width: 90%; margin: 15px auto; font-family: 'Arial', sans-serif; color: #b71c1c;">
+        <p style="font-size: 1.2em; font-weight: bold; color: #d32f2f; margin-bottom: 15px;">عدُوكَ لَنْ يَنْتَظِرَك بِطَبَقٍ مِنْ وُرُود</p>
+      
+        <a href="https://t.me/S22MCS">
+            <img src="adatealm/S⚡2⚡2MCS.jpg" alt="Updated Image" style="max-width: 100%; height: auto; border: none; outline: 3px solid #0b04fb; border-radius: 5px;">
+        </a>
+    </div>
+    
+    
+
+      <div class="popup-content">
+        <p><a href="https://youtu.be/onxqPZMeOjs?si=EjatZc_mypSoksXp" target="_blank">🕌 الواجبات التي يجب أن يقوم بها المسلم تجاه دينه</a></p>
+        <p><a href="https://youtu.be/LtvZItwx7cQ?si=ho5c4EGIHduDj5Fb" target="_blank">⏳ لا تكن فارغاً: درس سيغير حياتك في إدارة الوقت</a></p>
+        <p><a href="https://youtu.be/onxqPZMeOjs?si=1JuyFk931yuYHjL" target="_blank">🌍 الفائدة من متابعة أخبار غزة بعد الآن؟</a></p>
+        <p class="final-message">يَكْفِي كَذَا لِليَوْمِ يَا مُؤْمِنُ</p>
+    </div>
+    
+    <style>
+      .popup-content {
+        background: white;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 90%;
+        max-width: 320px;
+        margin: auto;
+      }
+    
+      .popup-content a {
+        display: block;
+        text-decoration: none;
+        color: #007BFF;
+        font-weight: bold;
+        margin: 8px 0;
+      }
+    
+      .popup-content a:hover {
+        color: #0056b3;
+      }
+    
+      .final-message {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #4CAF50;
+        margin-top: 10px;
+      }
+    </style>
+    
+
+
+
+
+
+    <button class="btn-close" onclick="togglePopupWarning()">إغلاق</button>
+</div>
+
+<!-- زر الصلاة (في اليمين) -->
+<button id="floatingBtnPrayer" class="floating-btn-prayer" onclick="togglePopupPrayer()">🕌</button>
+
+
+
+<!-- نافذة الصلاة -->
+<div id="prayerPopup" class="popup-prayer">
+
+
+
+
+ <!-- نص أعلى زر الإغلاق -->
+<div class="popup-header">
+    <p>
+        <div class="ayah" id="ayah" style="text-align: center; padding: 6px; background: #e3f2fd; color: #1565c0; font-family: 'Amiri', serif; font-size: 0.8em; font-weight: bold; border-radius: 6px; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); margin: 15px auto; max-width: 75%; direction: rtl;">
+            ﴿ فَإِذَا قَضَيْتُمُ الصَّلَاةَ فَاذْكُرُوا اللَّهَ قِيَامًا وَقُعُودًا وَعَلَىٰ جُنُوبِكُمْ ۚ فَإِذَا اطْمَأْنَنتُمْ فَأَقِيمُوا الصَّلَاةَ ۚ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾
+            <p style="color: #424242; font-size: 0.6em; margin-top: 4px; font-family: 'Arial', sans-serif;">
+                [ النساء: 103 ]
+            </p>                                                                                                                                   
+            <a href="https://surahquran.com/aya-103-sora-4.html" target="_blank" style="color: #0288d1; text-decoration: none; font-size: 0.9em; font-weight: bold; padding: 4px 8px; border-radius: 5px; background-color: #f1f8ff; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#e1f5fe'; this.style.boxShadow='0 5px 10px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.backgroundColor='#f1f8ff'; this.style.boxShadow='0 3px 6px rgba(0, 0, 0, 0.1)';">
+                🔗 شرح الآية
+            </a>
+            
+            <div style="margin-top: 8px; font-size: 0.8em; color: #424242; font-weight: normal;">
+                <p>للاطلاع على أوقات الصلاة المحلية، يمكنك زيارة الموقع التالي:</p>
+                <a href="https://mawaqit.net/ar/" target="_blank" style="color: #0288d1; text-decoration: none; font-size: 0.9em; font-weight: bold; padding: 4px 8px; border-radius: 5px; background-color: #f1f8ff; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#e1f5fe'; this.style.boxShadow='0 5px 10px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.backgroundColor='#f1f8ff'; this.style.boxShadow='0 3px 6px rgba(0, 0, 0, 0.1)';">
+                    🕋 أوقات الصلاة
+                </a>
+            </div>
+        </div>
+        
+        
+        
+       
+        
+    </p>
+</div>
+
+
+<!-- نص أسفل نافذة الصلاة -->
+<div class="popup-footer">
+
+    <p>توقيت الصلاة للولاية المحددة</p>
+</div>
+
+
+
+    <!-- قائمة اختيار الولاية -->
+    <select id="stateSelector" onchange="updatePrayerTimes()">
+
+
+
+
+
+
+ <option value="annaba" style="color: green;">عنابة (23)</option>
+<option value="sidi_bel_abbes" style="color: green;">سيدي بلعباس (22)</option>
+<option value="oran" style="color: green;">وهران (31)</option>
+<option value="alger" style="color: green;">الجزائر (01)</option>
+<option value="jelma" style="color: green;">قالمة (24)</option>
+<option value="batna" style="color: green;">باتنة (05)</option>
+<option value="constantine" style="color: green;">قسنطينة (25)</option>
+<option value="TAREF" style="color: green;">الطارف (15)</option>
+
+
+
+
+
+
+
+
+
+        <!-- أضف المزيد من الخيارات هنا -->
+    </select>
+    <div id="nextPrayerTime" class="next-prayer-time"></div>
+    <div id="prayerTimesList" class="prayer-times-list"></div>
+    <div class="motivational-msg" id="motivationalMsg"></div>
+    <button class="btn-close" onclick="togglePopupPrayer(false)">إغلاق</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    // بيانات أوقات الصلاة لكل ولاية (مثال)
+    const prayerTimesByState = {
+      
+   
+    annaba: [
+        { name: "الفجر", time: "06:09" },
+        { name: "الظهر", time: "12:39" },
+        { name: "العصر", time: "15:18" },
+        { name: "المغرب", time: "17:40" },
+        { name: "العشاء", time: "19:03" }
+    ],
+    sidi_bel_abbes: [
+        { name: "الفجر", time: "05:10" },
+        { name: "الظهر", time: "12:13" },
+        { name: "العصر", time: "15:56" },
+        { name: "المغرب", time: "18:16" },
+        { name: "العشاء", time: "19:42" }
+    ],
+
+    oran: [
+        { name: "الفجر", time: "06:34" },
+        { name: "الظهر", time: "13:13" },
+        { name: "العصر", time: "15:55" },
+        { name: "المغرب", time: "18:15" },
+        { name: "العشاء", time: "19:42" }
+    ],
+    alger: [
+
+
+        { name: "الفجر", time: "06:20" },
+        { name: "الظهر", time: "12:58" },
+        { name: "العصر", time: "15:38" },
+        { name: "المغرب", time: "17:57" },
+        { name: "العشاء", time: "19:26" }
+    ],
+
+
+
+    jelma: [
+        { name: "الفجر", time: "6:03" },
+        { name: "الظهر", time: "12:41" },
+        { name: "العصر", time: "15:22" },
+        { name: "المغرب", time: "17:41" },
+        { name: "العشاء", time: "19:09" }
+    ],
+    batna: [
+        
+    { name: "الفجر", time: "6:07" },
+        { name: "الظهر", time: "12:46" },
+        { name: "العصر", time: "15:28" },
+        { name: "المغرب", time: "17:48" },
+        { name: "العشاء", time: "19:15" }
+    ],
+    constantine: [
+      { name: "الفجر", time: "6:06" },
+        { name: "الظهر", time: "12:44" },
+        { name: "العصر", time: "15:25" },
+        { name: "المغرب", time: "17:44" },
+        { name: "العشاء", time: "19:12" }
+
+
+   
+
+    ],
+
+
+TAREF: [
+        { name: "الفجر", time: "05:59" },
+        { name: "الظهر", time: "12:37" },
+        { name: "العصر", time: "15:17" },
+        { name: "المغرب", time: "17:37" },
+        { name: "العشاء", time: "19:05" }
+    ],
+    
+
+
+
+
+
+
+
+
+
+    };
+
+    // تاريخ البدء (1-18-2025)
+    const startDate = new Date('2025-01-16');
+
+    // تحويل الوقت إلى ثواني
+    function timeToSeconds(time) {
+        const [hours, minutes] = time.split(':').map(Number);
+        return hours * 3600 + minutes * 60;
+    }
+
+    // إضافة دقيقة إلى الوقت
+    function addOneMinute(time) {
+        const [hours, minutes] = time.split(':').map(Number);
+        let newMinutes = minutes + 1;
+        let newHours = hours;
+
+        if (newMinutes === 60) {
+            newMinutes = 0;
+            newHours += 1;
+        }
+
+        return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+    }
+
+    // حساب الأيام الماضية من تاريخ البدء
+    function getDaysPassed() {
+        const currentDate = new Date();
+        const timeDiff = currentDate - startDate;
+        return Math.floor(timeDiff / (1000 * 3600 * 24));
+    }
+
+    // حساب الوقت المتبقي للصلاة القادمة
+    function getNextPrayerTime() {
+        const currentTime = new Date();
+        const currentTimeInSeconds = currentTime.getHours() * 3600 + currentTime.getMinutes() * 60 + currentTime.getSeconds();
+
+        const selectedState = document.getElementById("stateSelector").value;
+        const prayerTimes = prayerTimesByState[selectedState];
+
+        let nextPrayer = null;
+        let nextPrayerTimeInSeconds = Infinity;
+
+        prayerTimes.forEach(prayer => {
+            // إضافة دقيقة لكل يوم ماضي
+            const daysPassed = getDaysPassed();
+            let prayerTime = prayer.time;
+
+            for (let i = 0; i < daysPassed; i++) {
+                prayerTime = addOneMinute(prayerTime);
+            }
+
+            const prayerTimeInSeconds = timeToSeconds(prayerTime);
+            if (prayerTimeInSeconds > currentTimeInSeconds && prayerTimeInSeconds < nextPrayerTimeInSeconds) {
+                nextPrayer = prayer;
+                nextPrayerTimeInSeconds = prayerTimeInSeconds;
+            }
+        });
+
+        if (nextPrayer) {
+            const nextPrayerTimeRemaining = nextPrayerTimeInSeconds - currentTimeInSeconds;
+            const minutesRemaining = Math.floor(nextPrayerTimeRemaining / 60);
+            const secondsRemaining = nextPrayerTimeRemaining % 60;
+            document.getElementById("nextPrayerTime").textContent = `الصلاة القادمة: ${nextPrayer.name} في ${minutesRemaining} دقيقة و ${secondsRemaining} ثانية`;
+        } else {
+            document.getElementById("nextPrayerTime").textContent = "أنت في وقت الصلاة!";
+        }
+    }
+
+    // تحديث أوقات الصلاة بناءً على الولاية المختارة
+    function updatePrayerTimes() {
+        const selectedState = document.getElementById("stateSelector").value;
+        const prayerTimes = prayerTimesByState[selectedState];
+
+        const prayerTimesList = document.getElementById("prayerTimesList");
+        prayerTimesList.innerHTML = prayerTimes.map((prayer, index) => {
+            // إضافة دقيقة لكل يوم ماضي
+            const daysPassed = getDaysPassed();
+            let prayerTime = prayer.time;
+
+            for (let i = 0; i < daysPassed; i++) {
+                prayerTime = addOneMinute(prayerTime);
+            }
+
+            return `
+                <div>
+                    <span>${prayer.name}: ${prayerTime}</span>
+                    <button onclick="handlePrayer(${index}, true)" style="background-color: green; color: white; font-size: 10px; font-family: 'Courier New', monospace; font-weight: bold; padding: 4px 8px; border: 2px solid darkgreen; border-radius: 4px; cursor: pointer; transition: all 0.3s ease-in-out;" onmouseover="this.style.backgroundColor='darkgreen';" onmouseout="this.style.backgroundColor='green';">صليت</button>
+                    <button onclick="handlePrayer(${index}, false)" style="background-color: red; color: white; font-size: 10px; font-family: 'Courier New', monospace; font-weight: bold; padding: 4px 8px; border: 2px solid darkred; border-radius: 4px; cursor: pointer; transition: all 0.3s ease-in-out;" onmouseover="this.style.backgroundColor='darkred';" onmouseout="this.style.backgroundColor='red';">لم أصلي</button>
+                </div>
+            `;
+        }).join("");
+
+        getNextPrayerTime();
+    }
+
+    // التعامل مع الصلاة
+    function handlePrayer(prayerIndex, prayed) {
+        const motivationalMsg = document.getElementById("motivationalMsg");
+        if (prayed) {
+           
+            motivationalMsg.textContent = `جزاك الله خيرًا على صلاتك وثبتك عليها في وقتها ان شاء الله`; 
+motivationalMsg.style.cssText = `
+    color: green; 
+    font-size: 16px; 
+    font-weight: normal; 
+    text-align: center; 
+    font-family: Arial, sans-serif; 
+    padding: 8px; 
+    border: 1px solid green; 
+    border-radius: 6px; 
+    background-color: #e9f7e9;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+
+        } else {
+            motivationalMsg.textContent = `إن لم تكن معذورًا شرعياً على جانبه أو حائضًا، وإن كنت رجلًا فتصرف بسرعة أولاً، تذكر أن الصلاة عمود الدين.`; 
+motivationalMsg.style.cssText = `
+    color: red; 
+    font-size: 16px; 
+    font-weight: normal; 
+    text-align: center; 
+    font-family: Arial, sans-serif; 
+    padding: 8px; 
+    border: 1px solid red; 
+    border-radius: 6px; 
+    background-color: #f7e0e0;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+`;
+  }
+    }
+
+    // فتح وإغلاق نافذة الصلاة
+    function togglePopupPrayer() {
+        const popup = document.getElementById("prayerPopup");
+        popup.style.display = popup.style.display === "block" ? "none" : "block";
+        updatePrayerTimes();
+    }
+
+    // فتح وإغلاق نافذة التحذير
+    function togglePopupWarning() {
+        const popup = document.getElementById("popupWarning");
+        popup.style.display = popup.style.display === "block" ? "none" : "block";
+    }
+
+    // تحديث الوقت عند تحميل الصفحة
+    window.onload = function() {
+        updatePrayerTimes();
+        setInterval(getNextPrayerTime, 1000);
+    };
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <style>
+        /* زر عائم صغير */
+        .floating-btn {
+            position: fixed;
+            bottom: 530px;
+            left: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* صورة الزر بحجم أصغر */
+        .floating-btn img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .floating-btn img:hover {
+            transform: scale(1.1);
+        }
+
+        /* نافذة منبثقة في وسط الشاشة */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1001;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* زر الإغلاق بشكل أنيق */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            color: #cc0000;
+        }
+
+        /* عنوان النافذة */
+        .popup h3 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* أزرار التواصل بتصميم عصري */
+        .popup a {
+            display: block;
+            margin: 10px auto;
+            text-decoration: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 90%;
+            text-align: center;
+        }
+
+        .popup a:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        .telegram-btn { background-color: #0088cc; }
+        .instagram-btn { background-color: #e4405f; }
+        .facebook-btn { background-color: #3b5998; }
+
+        /* تأثير الظهور */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* تحسين مظهر النافذة للهواتف */
+        @media (max-width: 500px) {
+            .popup {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- زر عائم بصيغة GIF -->
+    <button class="floating-btn" id="floating-btn" onclick="togglePopup()">
+        <img src="img/ai-assistant.gif" alt="تواصل معنا">
+    </button>
+
+    <!-- النافذة المنبثقة -->
+    <div class="popup" id="popup">
+        <button class="close-btn" onclick="togglePopup()">✖</button>
+        <div class="contact-container">
+            <h3 class="contact-title">📩 تواصل معنا</h3>
+            <p class="contact-text">في حالة توفر مشكلة أو لديك اقتراح سواء حول اختبار أو غيره تواصل معنا</p>
+            
+            <div class="social-links">
+                <a href="http://t.me/ADATEALM_bot" target="_blank" class="btn telegram-btn">
+                    <img src="img/direct.gif" alt="بوت تيليغرام"> بوت تيليغرام
+                </a>
+                
+                <a href="https://t.me/adatealm" target="_blank" class="btn telegram-btn">
+                    <img src="img/telegram.png" alt="تيليغرام"> تيليغرام
+                </a>
+                
+                <a href="https://www.facebook.com/share/1BFTe2mWNL/" target="_blank" class="btn facebook-btn">
+                    <img src="img/facebook.png" alt="فيسبوك"> فيسبوك
+                </a>
+                
+                <a href="https://www.instagram.com/adat_ealm?igsh=djg1eXlwMTJvM2xw" target="_blank" class="btn instagram-btn">
+                    <img src="img/social.png" alt="إنستغرام"> إنستغرام
+                </a>
+            </div>
+        </div>
+        
+        <style>
+        .contact-container {
+            text-align: center;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            margin: auto;
+        }
+        
+        .contact-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        .contact-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            transition: 0.3s;
+        }
+        
+        .btn img {
+            width: 24px;
+            height: 24px;
+            margin-left: 10px;
+        }
+        
+        .telegram-btn { background: #0088cc; }
+        .facebook-btn { background: #1877f2; }
+        .instagram-btn { background: #e1306c; }
+        
+        .btn:hover {
+            opacity: 0.8;
+        }
+        </style>
+        
+
+
+
+
+    <script>
+        function togglePopup() {
+            var popup = document.getElementById("popup");
+            popup.style.display = (popup.style.display === "block") ? "none" : "block";
+        }
+    </script>
+
+</body>
+</html>
