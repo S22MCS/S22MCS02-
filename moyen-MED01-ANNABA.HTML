@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب معدل السنة الأولى طب</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        table { width: 80%; margin: auto; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 10px; text-align: center; }
+        th { background-color: #4CAF50; color: white; }
+        input { width: 50px; text-align: center; }
+        .above-ten { background-color: lightgreen; }
+        .below-ten { background-color: lightcoral; }
+    </style>
+</head>
+<body>
+    <h2>حساب معدل السنة الأولى طب</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>المقياس</th>
+                <th>المعامل</th>
+                <th>امتحان 1</th>
+                <th>امتحان 2</th>
+                <th>TP</th>
+                <th>إدراج TP؟</th>
+                <th>معدل المقياس</th>
+                <th>كم ينقصك في المادة</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+    <h3>المعدل الفصلي: <span id="semester-moyenne">0.00</span> <span id="semester-message"></span></h3>
+    <h3>كم ينقصك على معدل 10 فصلي: <span id="missing-semester">0.00</span></h3>
+    <h3>المعدل السنوي: <span id="moyenne">0.00</span></h3>
+    <h3>كم ينقصك على معدل 10 سنوي: <span id="missing-annual">0.00</span></h3>
+
+    <button onclick="captureScreenshot()">التقاط صورة للشاشة</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        const modules = [
+            { name: "Anatomie", coef: 2, singleExam: false },
+            { name: "Biophysique", coef: 2, singleExam: false },
+            { name: "Biochimie", coef: 2, singleExam: false },
+            { name: "Biostat/INFO", coef: 2, singleExam: false },
+            { name: "Chimie", coef: 2, singleExam: false },
+            { name: "Cytologie", coef: 2, singleExam: false },
+            { name: "Embryologie", coef: 1, singleExam: true },
+            { name: "Histo", coef: 1, singleExam: true },
+            { name: "Physio", coef: 1, singleExam: true },
+            { name: "SSH", coef: 1, singleExam: true }
+        ];
+
+        const tbody = document.getElementById("table-body");
+
+        modules.forEach((mod, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${mod.name}</td>
+                <td>${mod.coef}</td>
+                <td><input type="number" min="0" max="20" step="0.1" id="exam1-${index}" oninput="calculate()"></td>
+                <td>${mod.singleExam ? '-' : '<input type="number" min="0" max="20" step="0.1" id="exam2-' + index + '\" oninput=\"calculate()\">'}</td>
+                <td><input type="number" min="0" max="20" step="0.1" id="tp-${index}" oninput="calculate()"></td>
+                <td><input type="checkbox" id="include-tp-${index}" checked onchange="calculate()"></td>
+                <td id="module-avg-${index}" class="below-ten">0.00</td>
+                <td id="missing-points-${index}">0.00</td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        function calculate() {
+            let totalScore = 0;
+            let totalCoef = 0;
+
+            modules.forEach((mod, index) => {
+                let exam1 = parseFloat(document.getElementById(`exam1-${index}`).value) || 0;
+                let exam2 = mod.singleExam ? 0 : (parseFloat(document.getElementById(`exam2-${index}`).value) || 0);
+                let tp = parseFloat(document.getElementById(`tp-${index}`).value) || 0;
+                let includeTP = document.getElementById(`include-tp-${index}`).checked;
+
+                let avg = mod.singleExam ? exam1 : ((exam1 + exam2) / 2);
+                if (includeTP) avg = (avg + tp) / 2;
+
+                document.getElementById(`module-avg-${index}`).innerText = avg.toFixed(2);
+                document.getElementById(`module-avg-${index}`).className = avg >= 10 ? "above-ten" : "below-ten";
+
+                let missingPoints = avg >= 10 ? 0 : (10 - avg).toFixed(2);
+                document.getElementById(`missing-points-${index}`).innerText = missingPoints;
+
+                totalScore += avg * mod.coef;
+                totalCoef += mod.coef;
+            });
+
+            let finalAvg = totalScore / totalCoef;
+            document.getElementById("moyenne").innerText = finalAvg.toFixed(2);
+            document.getElementById("moyenne").className = finalAvg >= 10 ? "above-ten" : "below-ten";
+
+            let missingAnnual = finalAvg >= 10 ? 0 : (10 - finalAvg).toFixed(2);
+            document.getElementById("missing-annual").innerText = missingAnnual;
+
+            document.getElementById("semester-moyenne").innerText = finalAvg.toFixed(2);
+            document.getElementById("semester-moyenne").className = finalAvg >= 10 ? "above-ten" : "below-ten";
+            document.getElementById("semester-message").innerText = finalAvg >= 10 ? "احسنت، استمر!" : "شمر على ساعديك!";
+
+            document.getElementById("missing-semester").innerText = missingAnnual;
+        }
+
+        function captureScreenshot() {
+            html2canvas(document.body, { scale: 2 }).then(canvas => {
+                canvas.toBlob(blob => {
+                    let link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'screenshot.png';
+                    link.click();
+                }, 'image/png');
+            });
+        }
+    </script>
+</body>
+</html>
