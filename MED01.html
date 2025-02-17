@@ -689,70 +689,107 @@
  
 
 
+   
 
 
-
-
-
+ 
 
 
       <style>
-        .floating-drive-btn {
+        /* زر عائم لحساب المعدل */
+        .floating-MOYEN-btn {
             all: unset;
             position: fixed;
-            top: 15px;
-            right: 15px;
-            width: 50px;
-            height: 50px;
+            top: 20px;
+            left: 20px; /* تثبيت الزر في الجهة اليسرى */
+            width: 60px; /* حجم أكبر */
+            height: 60px;
             border-radius: 50%;
             background: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            z-index: 9999;
+            z-index: 9999; /* فوق جميع العناصر */
             display: flex;
             align-items: center;
             justify-content: center;
             transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden; /* منع الصورة من الخروج عن الحدود */
         }
-        .floating-drive-btn img, .drive-btn img {
-            width: 30px;
-            height: 30px;
+
+        .floating-MOYEN-btn img {
+            width: 70px; /* تكبير حجم الـ GIF */
+            height: 70px;
+            object-fit: cover; /* الحفاظ على تناسب الصورة */
+            border-radius: 50%;
             transition: transform 0.2s;
+            pointer-events: none; /* تعطيل تفاعل الصورة حتى لا تؤثر على باقي العناصر */
         }
-        .floating-drive-btn:hover { transform: scale(1.1); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); }
-        .floating-drive-btn:active { transform: scale(0.9); }
-        .drive-btn {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #fff;
-            text-decoration: none;
-            background: linear-gradient(90deg, #42a5f5, #4caf50, #00c853, #8bc34a);
-            background-size: 300%;
-            animation: gradientMove 6s infinite, fadeIn 0.8s forwards;
-            padding: 12px 30px;
-            border-radius: 40px;
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5), 0 4px 10px rgba(0, 0, 0, 0.2);
+
+        .floating-MOYEN-btn:hover { 
+            transform: scale(1.1); 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); 
+        }
+
+        .floating-MOYEN-btn:active { 
+            transform: scale(0.9); 
+        }
+
+        /* تنسيق القسم */
+        #MOYEN {
+            padding: 50px;
+            text-align: center;
+            background: #007BFF;
+            color: white;
+        }
+
+        .MOYEN-btn {
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            background: white;
+            color: #007BFF;
+            padding: 12px 20px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
             transition: transform 0.3s, box-shadow 0.3s;
-            opacity: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-        .drive-btn:hover { transform: scale(1.1); box-shadow: 0 10px 25px rgba(0, 123, 255, 0.7); }
-        .drive-btn:hover img { transform: rotate(10deg) scale(1.1); }
-        @keyframes gradientMove { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .MOYEN-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .MOYEN-btn img {
+            width: 30px;
+            height: 30px;
+        }
     </style>
-    
-    <a class="floating-drive-btn" href="moyen-MED01-ANNABA.HTML">
-        🧮
+</head>
+<body>
+
+    <!-- زر عائم مع صورة GIF -->
+    <a class="floating-MOYEN-btn" href="#MOYEN">
+        <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnhkY3doZDIwc3ViZzdtazF3aWZqdXd4ejExODZnZXl2eTN5aXVnMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7btObApReFdPILwk/giphy.gif" 
+             alt="حساب المعدل" />
     </a>
-    <section id="drivers" style="padding: 50px; text-align: center; background: #007BFF; color: white;">
-        <nav style="display: flex; justify-content: center; align-items: center; padding: 20px 0;">
-            <a href="moyen-MED01-ANNABA.HTML" class="drive-btn">🧮 حساب المعدل</a>
+
+    <!-- القسم الذي سينتقل إليه المستخدم عند الضغط -->
+    <section id="MOYEN">
+ 
+
+        <nav>
+            <a href="moyen-MED01-ANNABA.HTML" class="MOYEN-btn">
+              <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnhkY3doZDIwc3ViZzdtazF3aWZqdXd4ejExODZnZXl2eTN5aXVnMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7btObApReFdPILwk/giphy.gif" 
+              alt="حساب المعدل" />
+                <span>🧮 حساب المعدل🧮</span>
+                <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnhkY3doZDIwc3ViZzdtazF3aWZqdXd4ejExODZnZXl2eTN5aXVnMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7btObApReFdPILwk/giphy.gif" 
+                alt="حساب المعدل" />
+            </a>
         </nav>
     </section>
-    
 
 
 
@@ -763,6 +800,26 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    <br>
+
+
+
+
+
+
+    <div>
 
           <style>
               /* تحسين الزر العائم */
