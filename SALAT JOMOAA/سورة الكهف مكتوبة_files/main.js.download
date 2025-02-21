@@ -1,0 +1,348 @@
+if (window.location.hostname !== 'surahquran' + '.' + 'com') {
+    window.location.href = 'https://' + 'surahquran' + '.' + 'com' + window.location.pathname;
+}
+document.addEventListener("DOMContentLoaded", function() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9854153653609744";
+    script.setAttribute('crossorigin', 'anonymous');
+    document.head.appendChild(script);
+});
+
+$(document).ready(function() {
+    "use strict";
+
+    var window_width = $(window).width(),
+        window_height = window.innerHeight,
+        header_height = $(".default-header").height(),
+        header_height_static = $(".site-header.static").outerHeight(),
+        fitscreen = window_height - header_height;
+
+    $(".fullscreen").css("height", window_height)
+    $(".fitscreen").css("height", fitscreen);
+
+    //------- Niceselect  js --------//  
+
+    if (document.getElementById("default-select")) {
+        $('select').niceSelect();
+    };
+    if (document.getElementById("default-select2")) {
+        $('select').niceSelect();
+    };
+    if (document.getElementById("service-select")) {
+        $('select').niceSelect();
+    };    
+
+    //------- Lightbox  js --------//  
+
+    $('.img-gal').magnificPopup({
+        type: 'image',
+        gallery: {
+            enabled: true
+        }
+    });
+
+    $('.play-btn').magnificPopup({
+        type: 'iframe',
+        mainClass: 'mfp-fade',
+        removalDelay: 160,
+        preloader: false,
+        fixedContentPos: false
+    });
+
+    //------- Datepicker  js --------//  
+
+      $( function() {
+        $( "#datepicker" ).datepicker();
+        $( "#datepicker2" ).datepicker();
+      } );
+
+
+    //------- Superfist nav menu  js --------//  
+
+    $('.nav-menu').superfish({
+        animation: {
+            opacity: 'show'
+        },
+        speed: 400
+    });
+
+    /* ---------------------------------------------
+     accordion
+     --------------------------------------------- */
+
+    var allPanels = $(".accordion > dd").hide();
+    allPanels.first().slideDown("easeOutExpo");
+    $(".accordion").each(function() {
+        $(this).find("dt > a").first().addClass("active").parent().next().css({
+            display: "block"
+        });
+    });
+
+
+     $(document).on('click', '.accordion > dt > a', function(e) {
+
+        var current = $(this).parent().next("dd");
+        $(this).parents(".accordion").find("dt > a").removeClass("active");
+        $(this).addClass("active");
+        $(this).parents(".accordion").find("dd").slideUp("easeInExpo");
+        $(this).parent().next().slideDown("easeOutExpo");
+
+        return false;
+
+    });
+
+    //------- Tabs Js --------//  
+    if (document.getElementById("horizontalTab")) {
+
+    $('#horizontalTab').jqTabs({
+        direction: 'horizontal',
+        duration: 200
+    });
+    
+    };  
+
+
+    //------- Owl Carusel  js --------//  
+
+
+    $('.active-popular-carusel').owlCarousel({
+        items:4,
+        margin: 30,
+        loop:true,
+        dots: true,
+        autoplayHoverPause: true,
+        smartSpeed:650,         
+        autoplay:true,      
+            responsive: {
+            0: {
+                items: 1
+            },
+            480: {
+                items: 1,
+            },
+            768: {
+                items: 2,
+            },
+            992: {
+                items:4
+            }
+        }
+    });
+
+    $('.active-upcoming-event-carusel').owlCarousel({
+        items:2,
+        margin: 30,
+        loop:true,
+        dots: true,
+        autoplayHoverPause: true,
+        smartSpeed:650,         
+        autoplay:true,      
+            responsive: {
+            0: {
+                items: 1
+            },
+            480: {
+                items: 1,
+            },
+            992: {
+                items: 2,
+            }
+        }
+    });
+
+
+    $('.active-review-carusel').owlCarousel({
+        items:2,
+        margin: 30,
+        loop:true,
+        dots: true,
+        autoplayHoverPause: true,
+        smartSpeed:650,         
+        autoplay:true,      
+            responsive: {
+            0: {
+                items: 1
+            },
+            480: {
+                items: 1,
+            },
+            768: {
+                items: 2,
+            }
+        }
+    });
+
+    //------- Mobile Nav  js --------//  
+
+    if ($('#nav-menu-container').length) {
+        var $mobile_nav = $('#nav-menu-container').clone().prop({
+            id: 'mobile-nav'
+        });
+        $mobile_nav.find('> ul').attr({
+            'class': '',
+            'id': ''
+        });
+        $('body').append($mobile_nav);
+        $('body').prepend('<button type="button" id="mobile-nav-toggle" title="القائمة"><i class="lnr lnr-menu"></i></button>');
+        $('body').append('<div id="mobile-body-overly"></div>');
+        $('#mobile-nav').find('.menu-has-children').prepend('<i class="lnr lnr-chevron-down"></i>');
+
+        $(document).on('click', '.menu-has-children i', function(e) {
+            $(this).next().toggleClass('menu-item-active');
+            $(this).nextAll('ul').eq(0).slideToggle();
+            $(this).toggleClass("lnr-chevron-up lnr-chevron-down");
+        });
+
+        $(document).on('click', '#mobile-nav-toggle', function(e) {
+            $('body').toggleClass('mobile-nav-active');
+            $('#mobile-nav-toggle i').toggleClass('lnr-cross lnr-menu');
+            $('#mobile-body-overly').toggle();
+        });
+
+            $(document).on('click', function(e) {
+            var container = $("#mobile-nav, #mobile-nav-toggle");
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                if ($('body').hasClass('mobile-nav-active')) {
+                    $('body').removeClass('mobile-nav-active');
+                    $('#mobile-nav-toggle i').toggleClass('lnr-cross lnr-menu');
+                    $('#mobile-body-overly').fadeOut();
+                }
+            }
+        });
+    } else if ($("#mobile-nav, #mobile-nav-toggle").length) {
+        $("#mobile-nav, #mobile-nav-toggle").hide();
+    }
+
+    //------- Smooth Scroll  js --------//  
+
+    $('.nav-menu a, #mobile-nav a, .scrollto').on('click', function() {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+            var target = $(this.hash);
+            if (target.length) {
+                var top_space = 0;
+
+                if ($('#header').length) {
+                    top_space = $('#header').outerHeight();
+
+                    if (!$('#header').hasClass('header-fixed')) {
+                        top_space = top_space;
+                    }
+                }
+
+                $('html, body').animate({
+                    scrollTop: target.offset().top - top_space
+                }, 1500, 'easeInOutExpo');
+
+                if ($(this).parents('.nav-menu').length) {
+                    $('.nav-menu .menu-active').removeClass('menu-active');
+                    $(this).closest('li').addClass('menu-active');
+                }
+
+                if ($('body').hasClass('mobile-nav-active')) {
+                    $('body').removeClass('mobile-nav-active');
+                    $('#mobile-nav-toggle i').toggleClass('lnr-times lnr-bars');
+                    $('#mobile-body-overly').fadeOut();
+                }
+                return false;
+            }
+        }
+    });
+
+    $(document).ready(function() {
+
+        $('html, body').hide();
+
+        if (window.location.hash) {
+
+            setTimeout(function() {
+
+                $('html, body').scrollTop(0).show();
+
+                $('html, body').animate({
+
+                    scrollTop: $(window.location.hash).offset().top - 108
+
+                }, 1000)
+
+            }, 0);
+
+        } else {
+
+            $('html, body').show();
+
+        }
+
+    });
+
+
+
+    //------- Header Scroll Class  js --------//  
+
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 100) {
+            $('#header').addClass('header-scrolled');
+        } else {
+            $('#header').removeClass('header-scrolled');
+        }
+    });
+
+    //------- Mailchimp js --------//  
+
+    $(document).ready(function() {
+        $('#mc_embed_signup').find('form').ajaxChimp();
+    });
+
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    var floatingMessage = document.createElement('div');
+    floatingMessage.id = "floating-message";
+    floatingMessage.style.display = "none";
+    floatingMessage.style.borderRadius = "10px";
+    floatingMessage.style.position = "fixed";
+    floatingMessage.style.top = "50%";
+    floatingMessage.style.transform = "translate(-30%, -50%)";
+    floatingMessage.style.backgroundColor = "#ffffff";
+    floatingMessage.style.padding = "22px";
+    floatingMessage.style.border = "1px solid #ccc";
+    floatingMessage.style.textAlign = "center";
+    floatingMessage.style.zIndex = "9999";
+    floatingMessage.innerHTML = `
+        <link rel="stylesheet" href="https://surahquran.com/css/font-awesome.min.css">
+		<div style="position: absolute; top: 10px; left: 10px; cursor: pointer; font-weight: 400;font-size: 20px; color: #999;" id="close-button"><i class="fa fa-times"></i></div>
+        <p style="font-size: 18px; font-weight: 600;">Follow تابعنا</p>
+        <div style="font-size:30px;">
+            <p>
+                <a target="_blank" rel="noreferrer nofollow" href="https://www.youtube.com/@qu2an"><i style="color:#ffffff; background-color: red; border-radius: 50%;width: 50px; padding: 10px;" class="fa fa-youtube"></i></a>
+                <a target="_blank" rel="noreferrer nofollow" href="https://whatsapp.com/channel/0029Va5MToh7Noa3Lp0KeE3I"><i style="color:#ffffff; background-color: #25d366;width: 50px; border-radius: 50%; padding: 10px;" class="fa fa-whatsapp"></i></a>
+                <a target="_blank" rel="noreferrer nofollow" href="https://t.me/+WH6339De7VWXnSTa"><i style="color:#ffffff; background-color: #21a7e5; border-radius: 50%;width: 50px; padding: 10px;" class="fa fa-telegram"></i></a>
+            </p>
+            <p>
+                <a target="_blank" rel="noreferrer nofollow" href="https://www.facebook.com/qu2an"><i style="color:#ffffff; background-color: #3c5a98; border-radius: 50%;width: 50px; padding: 10px;" class="fa fa-facebook"></i></a>
+                <a target="_blank" rel="noreferrer nofollow" href="https://www.instagram.com/qu2an/"><i style="color:#ffffff; background-color: #f7016c; border-radius: 50%;width: 50px; padding: 10px;" class="fa fa-instagram"></i></a>
+            </p>
+        </div>
+    `;
+    document.body.appendChild(floatingMessage);
+
+    var closeButton = document.getElementById("close-button");
+    if (!localStorage.getItem("messageClosed")) {
+        setTimeout(function() {
+            floatingMessage.style.display = "block";
+        }, 50000);
+    }
+
+    closeButton.addEventListener("click", function() {
+        floatingMessage.style.display = "none";
+        localStorage.setItem("messageClosed", true);
+    });
+
+    function clearMessageStatus() {
+        localStorage.removeItem("messageClosed");
+    }
+
+    window.onload = function() {
+        setTimeout(clearMessageStatus, 24 * 60 * 60 * 1000);
+    };
+});

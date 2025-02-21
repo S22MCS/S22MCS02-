@@ -1,0 +1,16 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('https://surahquran.com/service-worker.js').then(function(registration) {
+      // تم التسجيل بنجاح
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // حدث خطأ أثناء التسجيل
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
+
+// تنفيذ الخدمة
+self.addEventListener('fetch', function(event) {
+  // تنفيذ بعض المنطق هنا
+});
