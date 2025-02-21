@@ -3754,25 +3754,6 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -3827,6 +3808,16 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
 </head>
 <body>
 
+    <!-- إشعار سورة الكهف -->
+    <div id="kahfModal" class="custom-modal" style="display: none;">
+        <div class="custom-modal-content">
+            <h1>✨ فضل سورة الكهف ✨</h1>
+            <p>"من قرأ سورة الكهف ليلة الجمعة أضاء له من النور فيما بينه وبين البيت العتيق".</p>
+            <button class="custom-button" onclick="window.location.href='سورة الكهف مكتوبة.html'">انتقل إليها الآن</button>
+            <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
+        </div>
+    </div>
+    
     <!-- إشعار صلاة الجمعة -->
     <div id="jumaaModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
@@ -3837,16 +3828,6 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
             </audio>
             <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها".</p>
             <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
-        </div>
-    </div>
-    
-    <!-- إشعار سورة الكهف -->
-    <div id="kahfModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            <h1>✨ فضل سورة الكهف ✨</h1>
-            <p>"من قرأ سورة الكهف ليلة الجمعة أضاء له من النور فيما بينه وبين البيت العتيق".</p>
-            <button class="custom-button" onclick="window.location.href='سورة الكهف مكتوبة.html'">انتقل إليها الآن</button>
-            <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
         </div>
     </div>
 
@@ -3862,8 +3843,10 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
     <script>
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = "none";
-            let audio = document.getElementById("jumaaAudio");
-            if (audio) audio.pause(); // إيقاف تشغيل الصوت عند إغلاق الإشعار
+            if (modalId === "jumaaModal") {
+                let audio = document.getElementById("jumaaAudio");
+                if (audio) audio.pause(); // إيقاف تشغيل الصوت عند إغلاق الإشعار
+            }
         }
 
         function showModals() {
@@ -3872,12 +3855,14 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
             let hours = today.getHours();
 
             if (dayOfWeek === 5) { // الجمعة
-                document.getElementById("kahfModal").style.display = "flex"; // عرض شعار سورة الكهف طيلة اليوم
+                document.getElementById("kahfModal").style.display = "flex"; // عرض إشعار سورة الكهف طيلة اليوم
                 if (hours < 14) {
-                    document.getElementById("jumaaModal").style.display = "flex"; // عرض صلاة الجمعة حتى 14:00
+                    document.getElementById("jumaaModal").style.display = "flex"; // عرض إشعار صلاة الجمعة حتى 14:00
                 }
             }
-            document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار العام دائمًا
+            setTimeout(() => {
+                document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار العام بعد البقية
+            }, 1000);
         }
 
         window.onload = showModals;
