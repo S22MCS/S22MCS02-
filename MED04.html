@@ -790,54 +790,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -888,109 +840,65 @@
             background-color: #c9302c;
             transform: scale(1.05);
         }
-        #unmuteMessage {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ffcc00;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            display: none;
-        }
     </style>
 </head>
 <body>
-    <!-- إشعار الجمعة -->
-    <div id="fridayModal" class="custom-modal" style="display: none;">
+
+    <!-- إشعار صلاة الجمعة -->
+    <div id="jumaaModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
             <h1>✨ فضل صلاة الجمعة ✨</h1>
-            <audio id="fridayAudio" muted>
-                <source src="your-audio-file.mp3" type="audio/mpeg">
+            <audio id="jumaaAudio" autoplay>
+                <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
                 متصفحك لا يدعم تشغيل الصوت.
             </audio>
             <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها".</p>
-            <button class="custom-button btn-close" onclick="closeFridayModal()">لاحقًا</button>
+            <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
         </div>
     </div>
     
+    <!-- إشعار سورة الكهف -->
+    <div id="kahfModal" class="custom-modal" style="display: none;">
+        <div class="custom-modal-content">
+            <h1>✨ فضل سورة الكهف ✨</h1>
+            <p>"من قرأ سورة الكهف ليلة الجمعة أضاء له من النور فيما بينه وبين البيت العتيق".</p>
+            <button class="custom-button" onclick="window.location.href='سورة الكهف مكتوبة.html'">انتقل إليها الآن</button>
+            <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
+        </div>
+    </div>
+
     <!-- الإشعار العام -->
     <div id="generalModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
             <h1>⚡ أَدَاة عِلْم ⚡</h1>
-            <audio id="generalAudio" muted>
-                <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
-                متصفحك لا يدعم تشغيل الصوت.
-            </audio>
             <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
             <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
         </div>
     </div>
 
-    <!-- رسالة لتنبيه المستخدم -->
-    <div id="unmuteMessage" onclick="enableAudio()">🔊 اضغط هنا لتشغيل الصوت</div>
-
     <script>
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = "none";
-        }
-
-        function closeFridayModal() {
-            document.getElementById("fridayModal").style.display = "none";
-            document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار الأول بعد إغلاق الجمعة
-            playAudio("generalAudio");
-        }
-
-        function playAudio(audioId) {
-            let audioElement = document.getElementById(audioId);
-            audioElement.volume = 1.0; // رفع الصوت لأقصى حد
-            audioElement.muted = false; // تشغيل الصوت بعد كتمه
-            let playPromise = audioElement.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("المتصفح منع التشغيل التلقائي، عرض رسالة تفعيل الصوت.");
-                    document.getElementById("unmuteMessage").style.display = "block"; // إظهار الرسالة
-                });
-            }
-        }
-
-        function enableAudio() {
-            let fridayAudio = document.getElementById("fridayAudio");
-            let generalAudio = document.getElementById("generalAudio");
-
-            fridayAudio.muted = false;
-            generalAudio.muted = false;
-            document.getElementById("unmuteMessage").style.display = "none"; // إخفاء الرسالة
-
-            // إعادة تشغيل الصوت بعد التفعيل
-            playAudio("fridayAudio");
+            let audio = document.getElementById("jumaaAudio");
+            if (audio) audio.pause(); // إيقاف تشغيل الصوت عند إغلاق الإشعار
         }
 
         function showModals() {
-            let today = new Date().getDay();
-            let fridayAudio = document.getElementById("fridayAudio");
-            let generalAudio = document.getElementById("generalAudio");
+            let today = new Date();
+            let dayOfWeek = today.getDay();
+            let hours = today.getHours();
 
-            if (today === 5) { // يوم الجمعة
-                document.getElementById("fridayModal").style.display = "flex";
-                playAudio("fridayAudio");
-
-                // عند انتهاء صوت الجمعة، يظهر الإشعار الأول تلقائيًا
-                fridayAudio.onended = function() {
-                    document.getElementById("generalModal").style.display = "flex";
-                    playAudio("generalAudio");
-                };
-            } else {
-                document.getElementById("generalModal").style.display = "flex";
-                playAudio("generalAudio");
+            if (dayOfWeek === 5) { // الجمعة
+                document.getElementById("kahfModal").style.display = "flex"; // عرض شعار سورة الكهف طيلة اليوم
+                if (hours < 14) {
+                    document.getElementById("jumaaModal").style.display = "flex"; // عرض صلاة الجمعة حتى 14:00
+                }
             }
+            document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار العام دائمًا
         }
 
-        // تشغيل الإشعارات فور تحميل الصفحة
         window.onload = showModals;
     </script>
+
 </body>
 </html>

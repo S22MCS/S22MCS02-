@@ -1712,124 +1712,116 @@
 
 
 
-
-
-
-
-
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>إشعارات هامة</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .custom-modal {
+                display: flex;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+            }
+            .custom-modal-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 15px;
+                width: 90%;
+                max-width: 350px;
+                text-align: center;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                animation: fadeIn 0.3s ease-in-out;
+            }
+            .custom-button {
+                padding: 10px;
+                border-radius: 8px;
+                font-size: 14px;
+                text-align: center;
+                cursor: pointer;
+                border: none;
+                transition: background 0.3s, transform 0.2s;
+            }
+            .btn-close {
+                background-color: #d9534f;
+                color: white;
+            }
+            .btn-close:hover {
+                background-color: #c9302c;
+                transform: scale(1.05);
+            }
+        </style>
+    </head>
+    <body>
     
-
-
-
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إشعار هام</title>
-    <style>
-        /* جعل النافذة تتناسب مع شاشات الهواتف */
-        .custom-modal {
-            display: flex;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* خلفية معتمة */
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-
-        .custom-modal-content {
-            background-color: white;
-            padding: 15px;
-            border-radius: 12px;
-            width: 95%;
-            max-width: 340px; /* عرض أصغر مناسب للهواتف */
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            direction: rtl;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .custom-modal-content img {
-            max-width: 50px; /* تصغير الشعار */
-            margin-bottom: 10px;
-        }
-
-        .custom-modal-content h1 {
-            font-size: 22px; /* تصغير العنوان */
-            color: black;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .custom-modal-content h2 {
-            font-size: 16px; /* تقليل حجم العنوان الفرعي */
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .custom-modal-content p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #555;
-            margin-bottom: 8px;
-        }
-
-        .custom-close-btn {
-            all: unset;
-            display: block;
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #d9534f;
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 94%;
-            font-size: 14px;
-            text-align: center;
-            transition: background 0.3s;
-        }
-
-        .custom-close-btn:hover {
-            background-color: #c9302c;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-    </style>
-
-
-<body>
-    <div class="custom-modal" id="customModal">
-        <div class="custom-modal-content">
-            <img src="adatealm/ADATEALMMOKH.jpg" alt="شعار أَدَاة عِلْم">
-            <h2>السلام عليكم ويا مرحبًا بعودتك، يا عضونا الكريم، إلى <br> </h2>
-           
-            <h1 style="font-size: 36px; color: black; text-align: center; font-weight: bold;">
-              ⚡ أَدَاة عِلْم ⚡
-          </h1>
-          
-            <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
-            <p>يمكنك استكشاف الميزات المتاحة حاليًا، وسنحرص على إضافة المزيد من التحديثات والمزايا الجديدة عند زيارتك القادمة بإذن الله تعالى.</p>
-            <p>يرجى ملاحظة أن هذا ينطبق على جميع الإضافات والمميزات داخل الموقع.</p>
-            <p>🌩️ انتظرونا قريبا🌩️</p>
-            <p><strong>تَكَتُل اَلْقَطَرَاتِ يُوَلِدُ سَيْلَاً</strong><br><strong>تَكَتُل الأَعْضَاءِ يُوَلِدُ جَسَداً</strong></p>
-            <button class="custom-close-btn" onclick="closeModal()">إغلاق</button>
+        <!-- إشعار صلاة الجمعة -->
+        <div id="jumaaModal" class="custom-modal" style="display: none;">
+            <div class="custom-modal-content">
+                <h1>✨ فضل صلاة الجمعة ✨</h1>
+                <audio id="jumaaAudio" autoplay>
+                    <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
+                    متصفحك لا يدعم تشغيل الصوت.
+                </audio>
+                <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها".</p>
+                <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
+            </div>
         </div>
-    </div>
-
-    <script>
-        function closeModal() {
-            document.getElementById("customModal").style.display = "none";
-        }
-    </script>
-</body>
-</html>
+        
+        <!-- إشعار سورة الكهف -->
+        <div id="kahfModal" class="custom-modal" style="display: none;">
+            <div class="custom-modal-content">
+                <h1>✨ فضل سورة الكهف ✨</h1>
+                <p>"من قرأ سورة الكهف ليلة الجمعة أضاء له من النور فيما بينه وبين البيت العتيق".</p>
+                <button class="custom-button" onclick="window.location.href='سورة الكهف مكتوبة.html'">انتقل إليها الآن</button>
+                <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
+            </div>
+        </div>
+    
+        <!-- الإشعار العام -->
+        <div id="generalModal" class="custom-modal" style="display: none;">
+            <div class="custom-modal-content">
+                <h1>⚡ أَدَاة عِلْم ⚡</h1>
+                <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
+                <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
+            </div>
+        </div>
+    
+        <script>
+            function closeModal(modalId) {
+                document.getElementById(modalId).style.display = "none";
+                let audio = document.getElementById("jumaaAudio");
+                if (audio) audio.pause(); // إيقاف تشغيل الصوت عند إغلاق الإشعار
+            }
+    
+            function showModals() {
+                let today = new Date();
+                let dayOfWeek = today.getDay();
+                let hours = today.getHours();
+    
+                if (dayOfWeek === 5) { // الجمعة
+                    document.getElementById("kahfModal").style.display = "flex"; // عرض شعار سورة الكهف طيلة اليوم
+                    if (hours < 14) {
+                        document.getElementById("jumaaModal").style.display = "flex"; // عرض صلاة الجمعة حتى 14:00
+                    }
+                }
+                document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار العام دائمًا
+            }
+    
+            window.onload = showModals;
+        </script>
+    
+    </body>
+    </html>
+    
