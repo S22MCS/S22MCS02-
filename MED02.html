@@ -3756,9 +3756,6 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
 
 
 
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -3827,7 +3824,7 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
     <div id="jumaaModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
             <h1> فضل صلاة الجمعة </h1>
-            <audio id="jumaaAudio" autoplay>
+            <audio id="jumaaAudio">
                 <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
                 متصفحك لا يدعم تشغيل الصوت.
             </audio>
@@ -3841,6 +3838,7 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
         <div class="custom-modal-content">
             <h1>⚡ أَدَاة عِلْم ⚡</h1>
             <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
+            <p>المزيد قادم  والتحديثات يومية ان شاء الله </p>
             <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
         </div>
     </div>
@@ -3863,9 +3861,11 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
                 document.getElementById("kahfModal").style.display = "flex"; // عرض إشعار سورة الكهف طيلة اليوم
                 if (hours < 14) {
                     document.getElementById("jumaaModal").style.display = "flex"; // عرض إشعار صلاة الجمعة حتى 14:00
+                    let audio = document.getElementById("jumaaAudio");
+                    if (audio) audio.play(); // تشغيل الصوت فقط إذا كان الوقت مناسبًا
                 } else {
                     let audio = document.getElementById("jumaaAudio");
-                    if (audio) audio.pause(); // إيقاف تشغيل الصوت بعد الساعة 14:00
+                    if (audio) audio.pause(); // إيقاف التشغيل بعد الساعة 14:00
                 }
             }
             setTimeout(() => {
