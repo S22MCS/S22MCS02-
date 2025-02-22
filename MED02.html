@@ -3759,19 +3759,6 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -3830,12 +3817,12 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
     <div id="kahfModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
             <h1> فضل سورة الكهف </h1>
-            <p>من قرأ سورةَ الكهفِ يومَ الجمعةِ أضاء له النُّورُ ما بينَه و بين البيتِ العتيقِ</p>
-            <button onclick="window.location.href='سورة الكهف مكتوبة.html'">انتقل إليها الآن</button>
+            <p>من قرأ سورةَ الكهفِ يومَ الجمعةِ أضاء له النُّورُ ما بينَه و بين البيتِ العتيقِ</p>
+            <button onclick="window.location.href='سورة الكهف مكتوبة.html'" class="custom-button">انتقل إليها الآن</button>
             <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
         </div>
     </div>
-
+    
     <!-- إشعار صلاة الجمعة -->
     <div id="jumaaModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
@@ -3852,9 +3839,8 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
     <!-- الإشعار العام -->
     <div id="generalModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
-          <h1>⚡ أَدَاة عِلْم ⚡</h1>
-          <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
-          <p>المزيد قادم  والتحديثات يومية ان شاء الله </p>
+            <h1>⚡ أَدَاة عِلْم ⚡</h1>
+            <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
             <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
         </div>
     </div>
@@ -3877,6 +3863,9 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
                 document.getElementById("kahfModal").style.display = "flex"; // عرض إشعار سورة الكهف طيلة اليوم
                 if (hours < 14) {
                     document.getElementById("jumaaModal").style.display = "flex"; // عرض إشعار صلاة الجمعة حتى 14:00
+                } else {
+                    let audio = document.getElementById("jumaaAudio");
+                    if (audio) audio.pause(); // إيقاف تشغيل الصوت بعد الساعة 14:00
                 }
             }
             setTimeout(() => {
