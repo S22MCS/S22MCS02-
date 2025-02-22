@@ -762,36 +762,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -850,23 +820,8 @@
     <div id="kahfModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
             <h1> فضل سورة الكهف </h1>
-            <p>من قرأ سورةَ الكهفِ يومَ الجمعةِ أضاء له النُّورُ ما بينَه و بين البيتِ العتيقِ
-              الراوي : أبو سعيد الخدري | المحدث : الألباني | المصدر : صحيح الجامع
-              الصفحة أو الرقم: 6471 | خلاصة حكم المحدث : صحيح
-              التخريج : أخرجه البيهقي (6209)</p>
-            <p>
-            عن ابن مسعود قال : قال رسول الله صلى الله عليه وسلم { : من قرأ حرفا من كتاب الله فله حسنة والحسنة بعشر أمثالها ، لا أقول الم حرف ، ولكن ألف حرف ، ولام حرف ، وميم حرف } . رواه الترمذي .
-          </p>
-
-
-
-
-            <button onclick="window.location.href='سورة الكهف مكتوبة.html'" 
-    style="background-color: #0056b3; color: white; font-size: 16px; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; transition: 0.3s; font-family: 'Tahoma', sans-serif; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
-    انتقل إليها الآن
-</button>
-
-        
+            <p>من قرأ سورةَ الكهفِ يومَ الجمعةِ أضاء له النُّورُ ما بينَه و بين البيتِ العتيقِ</p>
+            <button onclick="window.location.href='سورة الكهف مكتوبة.html'" class="custom-button">انتقل إليها الآن</button>
             <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
         </div>
     </div>
@@ -875,7 +830,7 @@
     <div id="jumaaModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
             <h1> فضل صلاة الجمعة </h1>
-            <audio id="jumaaAudio" autoplay>
+            <audio id="jumaaAudio">
                 <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
                 متصفحك لا يدعم تشغيل الصوت.
             </audio>
@@ -912,6 +867,11 @@
                 document.getElementById("kahfModal").style.display = "flex"; // عرض إشعار سورة الكهف طيلة اليوم
                 if (hours < 14) {
                     document.getElementById("jumaaModal").style.display = "flex"; // عرض إشعار صلاة الجمعة حتى 14:00
+                    let audio = document.getElementById("jumaaAudio");
+                    if (audio) audio.play(); // تشغيل الصوت فقط إذا كان الوقت مناسبًا
+                } else {
+                    let audio = document.getElementById("jumaaAudio");
+                    if (audio) audio.pause(); // إيقاف التشغيل بعد الساعة 14:00
                 }
             }
             setTimeout(() => {
