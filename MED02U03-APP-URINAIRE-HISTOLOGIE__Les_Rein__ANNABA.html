@@ -1,0 +1,5257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <title>
+     اختبار حول الكلى
+ في علم الانسجة لكلية عنابة
+</title>   
+    
+
+</title>    
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: "Tajawal", Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #0056b3, #003e80);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
+
+        @media (max-width: 600px) {
+            .btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* إعدادات الصفحة الأساسية */
+    body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #edf2f7; /* خلفية موحدة ناعمة */
+        color: #333;
+        transition: filter 0.5s ease, background-color 0.5s ease;
+    }
+
+    header, main {
+        padding: 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 2rem;
+        color: #444;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.2s ease-in-out;
+    }
+
+    main h2 {
+        font-size: 1.5rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    main p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #666;
+    }
+
+   /* الحاوية */
+   #controlPanel {
+    position: fixed;
+    top: 70px; /* تعديل هذه القيمة ليتطابق مع ارتفاع زر "صلاة" */
+    right: 0px; /* جعلها في أقصى اليمين */
+    background: linear-gradient(145deg, #e0e5ec, #ffffff); /* تأثير ثلاثي الأبعاد */
+    border-radius: 50px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 45px;
+    height: 45px;
+    overflow: hidden;
+    transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+}
+
+
+
+    #controlPanel.expanded {
+    width: 200px; /* تقليل العرض */
+    height: 150px; /* تقليل الارتفاع */
+    border-radius: 15px;
+    box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.15), -15px -15px 30px rgba(255, 255, 255, 0.9);
+}
+
+    /* الزر */
+    #toggleButton {
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c); /* تأثير دائري */
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #toggleButton:hover {
+        transform: scale(1.1) rotate(5deg); /* تكبير ودوران بسيط */
+        box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.2), -8px -8px 20px rgba(255, 255, 255, 0.5);
+        background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+    }
+
+    #emoji {
+        font-size: 32px;
+        line-height: 1;
+        animation: bounce 2s infinite ease-in-out;
+    }
+
+    #toggleText {
+        font-size: 14px;
+        color: white;
+        position: absolute;
+        bottom: -20px;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #toggleButton:hover #toggleText {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+
+    /* شريط التمرير */
+    #colorTempSlider {
+        width: 90%;
+        margin: 10px 0;
+        appearance: none;
+        height: 12px;
+        background: linear-gradient(90deg, #43a047 0%, #e0f2f1 100%); /* تأثير تدرج */
+        border-radius: 6px;
+        outline: none;
+        cursor: pointer;
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+    }
+
+    #colorTempSlider::-webkit-slider-thumb {
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        background: radial-gradient(circle, #4caf50, #388e3c);
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    #colorTempSlider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+    }
+
+    #label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        display: none;
+        text-align: center;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .expanded #label {
+        display: block;
+    }
+
+    /* الرسوم المتحركة */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* تحسين التوافق مع الهواتف */
+    @media (max-width: 768px) {
+        #controlPanel {
+            bottom: 10px;
+            right: 10px;
+        }
+        #toggleButton {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- أداة التحكم -->
+<div id="controlPanel">
+    <button id="toggleButton">
+        <span id="emoji">🌙</span>
+        <span id="toggleText">تشغيل</span>
+    </button>
+    <label id="label" for="colorTempSlider">درجة حرارة اللون:</label>
+    <input type="range" id="colorTempSlider" min="1800" max="27000" step="100" value="6500">
+</div>
+
+<script>
+    const controlPanel = document.getElementById('controlPanel');
+    const toggleButton = document.getElementById('toggleButton');
+    const emoji = document.getElementById('emoji');
+    const toggleText = document.getElementById('toggleText');
+    const slider = document.getElementById('colorTempSlider');
+
+    let isEyeProtectionEnabled = false;
+
+    toggleButton.addEventListener('click', () => {
+        controlPanel.classList.toggle('expanded');
+
+        if (isEyeProtectionEnabled) {
+            isEyeProtectionEnabled = false;
+            emoji.textContent = '🌙';
+            toggleText.textContent = 'تشغيل';
+            document.documentElement.style.filter = 'none';
+        } else {
+            isEyeProtectionEnabled = true;
+            emoji.textContent = '🛡️';
+            toggleText.textContent = 'إيقاف';
+            slider.dispatchEvent(new Event('input'));
+            setTimeout(() => {
+                controlPanel.classList.remove('expanded');
+            }, 5000);
+        }
+    });
+
+    slider.addEventListener('input', () => {
+        if (!isEyeProtectionEnabled) return;
+
+        const temp = slider.value;
+        const warmth = (temp - 1800) / (27000 - 1800);
+        const sepia = 0.4 + 0.6 * (1 - warmth);
+        const brightness = 1 - 0.2 * warmth;
+
+        document.documentElement.style.filter = `sepia(${sepia}) brightness(${brightness})`;
+    });
+</script>
+</body>
+
+
+
+
+
+
+
+
+  <style>
+    /* إعدادات عامة */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+      direction: ltr;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #0056b3;
+    }
+
+    .timer-container {
+      background-color: #343a40;
+      padding: 10px 0;
+      text-align: center;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 80px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+  ء
+    /* إطار خاص بالصورة */
+    .image-frame {
+      background-color: #e9ecef;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .image-frame {
+  display: flex; /* استخدام الفلكس لتمركز الصورة */
+  justify-content: center; /* تمركز الصورة أفقياً */
+  align-items: center; /* تمركز الصورة عمودياً */
+  width: 100%; /* الحاوية تأخذ العرض الكامل */
+  height: 100%; /* الحاوية تأخذ الارتفاع الكامل */
+}
+
+.image-frame img {
+  max-width: 300px; /* تحديد الحجم الأقصى للصورة */
+  height: auto; /* الحفاظ على النسب الأصلية للصورة */
+  border-radius: 8px; /* إضافة حواف مدورة للصورة */
+  transition: transform 0.3s ease; /* إضافة تأثير انتقالي */
+}
+
+/* استعلامات الوسائط لأجهزة الهواتف */
+@media (max-width: 767px) {
+  .image-frame img {
+    max-width: 200px; /* تغيير الحجم الأقصى للصورة على الهواتف */
+  }
+}
+
+@media (max-width: 480px) {
+  .image-frame img {
+    max-width: 150px; /* تقليل الحجم الأقصى أكثر للأجهزة الصغيرة جدًا */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .image-frame img:hover {
+      transform: scale(1.05);
+    }
+
+
+
+
+    .question {
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .options {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .options li {
+      padding: 15px;
+      background-color: #f0f0f0;
+      margin: 5px 0;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .options li.selected {
+      background-color: #007bff;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li.correct {
+      background-color: #28a745;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li.incorrect {
+      background-color: #dc3545;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .options li:hover {
+      background-color: #e0e0e0;
+      transform: scale(1.02);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+/* ✅ حاوية الزر لتوسيطه في كل الشاشات */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* ✅ تحسين الزر ليبدو حديثًا */
+.btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    font-size: 18px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ✨ تأثير عند التحويل */
+.btn:hover {
+    background: linear-gradient(135deg, #0056b3, #003d80);
+    transform: scale(1.05);
+    box-shadow: 0 7px 20px rgba(0, 85, 204, 0.4);
+}
+
+/* ✨ تأثير النقر */
+.btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 3px 10px rgba(0, 85, 204, 0.3);
+}
+
+/* ✅ تحسين التصميم للهواتف */
+@media (max-width: 600px) {
+    .btn {
+        width: 90%;
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .results {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .question-review {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .question-review.green {
+      background-color: #28a745;
+    }
+
+    .question-review.red {
+      background-color: #dc3545;
+    }
+
+    .explain-btn {
+      background-color: #ffc107;
+      color: #333;
+      padding: 8px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .explain-btn:hover {
+      background-color: #e0a800;
+    }
+
+
+
+
+    .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+    z-index: 1000;
+    overflow: hidden; /* منع التصفح العرضي العام */
+}
+
+.modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto; /* السماح بالتصفح العمودي فقط */
+    overflow-x: hidden; /* منع التصفح العرضي افتراضيًا */
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    overflow-x: auto; /* السماح بالتصفح العرضي إذا كان هناك صور عريضة */
+}
+
+.fixed-buttons {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    z-index: 1001;
+}
+
+.close-btn, .copy-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.close-btn {
+    color: #ff4d4d;
+}
+
+.copy-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.copy-btn:hover {
+    background-color: #45a049;
+}
+
+/* تحسين توافق الأجهزة المحمولة */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .fixed-buttons {
+        padding: 5px;
+    }
+
+    .close-btn, .copy-btn {
+        font-size: 20px;
+        padding: 5px 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.duration-select {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* توسيط جميع العناصر */
+    justify-content: center;
+    gap: 12px; /* مسافة بين العناصر */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+    margin: auto; /* توسيط في الصفحة */
+}
+
+/* ✅ تحسين تصميم التسمية (label) */
+.duration-select label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* ✅ تحسين مربع الإدخال */
+.duration-select input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ✨ تأثير عند التركيز */
+.duration-select input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* ✅ تحسين زر "ابدأ الاختبار" */
+.duration-select .btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+/* ✨ تأثير عند تمرير الماوس */
+.duration-select .btn:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ تحسين التناسب مع الهواتف */
+@media (max-width: 480px) {
+    .duration-select {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .duration-select input {
+        font-size: 14px;
+    }
+
+    .duration-select .btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px; /* مسافة بين الأزرار */
+    margin-top: 20px;
+}
+
+/* ✅ تصميم زر عام */
+.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    min-width: 140px; /* حجم مناسب */
+}
+
+/* ✨ تأثير عند تمرير الماوس */
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* ✨ تأثير عند النقر */
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* ✅ لون مختلف لزر الخروج */
+.exit-btn {
+    background-color: #dc3545;
+}
+
+/* ✨ تأثير عند تمرير الماوس */
+.exit-btn:hover {
+    background-color: #a71d2a;
+}
+
+/* ✅ تحسين الأزرار للهواتف */
+@media (max-width: 480px) {
+    .button-container {
+        flex-direction: column; /* يجعل الأزرار عمودية على الهواتف */
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%; /* الأزرار تأخذ العرض الكامل */
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+        body {
+            font-family: "Tajawal", Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            display: inline-block;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #0056b3, #004095);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+  
+
+
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+  <br>
+    <br> 
+    <header style="text-align: center; padding: 20px; background: #dbeafe; font-family: Arial, sans-serif;">
+      <h1 style="color: #0d47a1; margin: 20px 0; font-size: 1.5em;">
+        🩺     اختبار حول علم الأجنة للجهاز البولي   في علم الانسجة لكلية عنابة
+
+     
+
+
+         
+      <br>
+        ⚕️   Test sur Les Rein    en histologie pour la Faculté d'Annaba
+        <br>
+        🩻Test on the Kidney in Histology for the Faculty of Annaba
+
+
+
+
+    </header>
+    
+  
+      
+
+
+
+
+
+    
+
+  <!-- حاوية الوقت العلوي -->
+
+  
+  <div  class="timer-container">
+ 
+    الوقت المتبقي: <span id="timer">00:00</span>
+  </div>
+
+  <div class="container">
+    
+      <div class="duration-select">
+        <label for="duration">⏳ الزمن (بالدقائق):</label>
+        <input type="number" id="custom-duration" name="custom-duration" min="1" max="60" value="10" />
+        <button class="btn" onclick="startQuiz()">ابدأ الاختبار</button>
+    </div>
+    
+
+
+
+    <div id="question-container" style="display: none;"></div>
+
+    <div id="result-section" style="display: none;">
+      <h2>النتيجة</h2>
+      <div id="results-container"></div>
+      <p id="final-message"></p>
+      <p id="total-time-message"></p>
+
+    <div class="button-container">
+      <button class="btn" onclick="restartQuiz()">🔄 إعادة الاختبار</button>
+
+  
+    <button class="btn exit-btn" onclick="window.location.href='index.html';">🚪 الخروج</button>
+</div>
+
+
+    </div>
+  </div>
+
+  <!-- نافذة منبثقة للشرح -->
+  <div id="explanation-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeExplanation()">إغلاق</button>
+      <h3 class="modal-title">الشرح</h3>
+      <div class="modal-body" id="explanation-text"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      
+       
+ 
+
+
+
+
+
+
+
+//QES01
+
+{
+ 
+ text: `
+
+ <style>
+   .badge {
+     display: inline-block;
+     padding: 5px 10px;
+     margin: 8px 5px;
+     border-radius: 15px;
+     font-size: 0.9rem;
+     font-weight: bold;
+     text-align: center;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     transition: transform 0.3s, box-shadow 0.3s;
+     cursor: pointer;
+   }
+
+   .badge:hover {
+     transform: scale(1.05);
+     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+   }
+
+   .green {
+     color: #28A745;
+     background-color: #e0f7e9;
+   }
+
+   .red {
+     color: #FF4D4D;
+     background-color: #f7e0e0;
+   }
+
+   .blue {
+     color: #007BFF;
+     background-color: #E6F0FF;
+   }
+
+   .yellow {
+     color: #FFC107;
+     background-color: #FFFBE6;
+   }
+ </style>
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+ <div>
+
+
+   
+
+
+
+   <span class="badge green">
+     <i class="fas fa-book"></i>
+     QCM N°33 U03 2024
+   </span>
+
+    <span class="badge red">
+     <i class="fas fa-map-marker-alt"></i>
+     ANNABA
+     </span>
+
+ <span class="badge blue">
+ 
+     الشرح المختصر
+
+         <i class="fas fa-check-circle"></i>
+   </span>
+
+   <span class="badge yellow">
+    
+      الشروحات 
+       <i class="fas fa-bolt"></i>
+   </span>
+ 
+
+   
+   <span class="badge" style="background-color: black; color: white;">
+    ملخص الدرس 
+    <i class="fas fa-caret-down" style="color: red;"></i>
+</span>
+
+<br>
+
+<div style="width: 100%; text-align: center; margin-top: 20px; font-family: 'Arial', sans-serif; font-size: 18px; font-weight: bold; color: #000000;">
+
+En arrière, le rein contracte des rapports avec ces éléments anatomiques, sauf un, lequel?
+
+</div>
+
+
+
+
+`,
+options: [
+  "A &nbsp;&nbsp;&nbsp;         Elle occupe la partie antérieure du plancher buccal . ",
+  "B &nbsp;&nbsp;&nbsp;       Sur sa face inférieure, le V lingual présente à son sommet le foramen cæcum.",
+  "C &nbsp;&nbsp;&nbsp;     Le V lingual divise le dos de la langue en une partie postérieure buccale et antérieure pharyngienne.",
+  "D &nbsp;&nbsp;&nbsp;                Les papilles gustatives se situent en arrière du V lingual .",
+  "E &nbsp;&nbsp;&nbsp;         Les bords latéraux de la langue répondent aux arcades dentaires . "  
+ 
+
+  ],   
+correct: [4],
+
+explanation:  `
+
+<br> 
+
+<br><br>
+
+<div id="animated-box" tabindex="0" style="
+  position: relative;
+  margin: 0 auto; 
+  transform: scale(1); 
+  background: linear-gradient(135deg, #e3f2fd, #90caf9); 
+  border: 2px solid #1565c0; 
+  border-radius: 20px; 
+  text-align: center; 
+  padding: 20px 30px; 
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); 
+  font-size: 1.2em; 
+  font-weight: bold; 
+  color: #0d47a1; 
+  font-family: 'Arial', sans-serif; 
+  cursor: pointer; 
+  transition: all 0.4s ease-in-out; 
+  display: block; 
+  width: fit-content;
+">
+  <span id="text" style="
+    display: inline-block; 
+    transition: all 0.4s ease; 
+    will-change: transform, color;
+  ">
+
+
+En arrière, le rein contracte des rapports avec ces éléments anatomiques, sauf un, lequel?
+
+
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+/* تأثير عند الظهور */
+#animated-box {
+  animation: fadeInAndPulse 1s ease-in-out forwards;
+}
+
+@keyframes fadeInAndPulse {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* تأثير عند التمرير بالمؤشر */
+@keyframes textHoverBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* عند وضع المؤشر */
+#animated-box:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #bbdefb, #64b5f6);
+  border-color: #0d47a1;
+}
+
+#animated-box:hover #text {
+  animation: textHoverBounce 0.6s ease-in-out infinite;
+  color: #0d47a1;
+  text-shadow: 0 5px 10px rgba(21, 101, 192, 0.6);
+}
+
+/* عند الضغط */
+#animated-box:active {
+  transform: scale(0.97);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  border-color: #003c8f;
+}
+
+#animated-box:active #text {
+  transform: scale(0.95) rotate(-5deg);
+  color: #003c8f;
+  text-shadow: 0px 8px 15px rgba(13, 71, 161, 0.7);
+}
+
+/* تحسين التصميم على الشاشات الصغيرة */
+@media (max-width: 600px) {
+  #animated-box {
+    font-size: 1em;
+    padding: 15px 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  #animated-box {
+    font-size: 0.9em;
+    padding: 12px 15px;
+  }
+}
+</style>
+
+
+</div></div>
+
+
+
+
+
+
+
+<br><br><br><br>
+
+
+<div id="popup-component">
+  <style>
+    #popup-component {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      border-radius: 15px;
+      background-color: #f4f8ff;
+      border: 2px solid #1e90ff;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      font-family: 'Arial', sans-serif;
+      z-index: 1000;
+      position: relative;
+    }
+
+    .option-box {
+      padding: 14px;
+      border-radius: 12px;
+      background-color: #d32f2f;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .justification-bubble {
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #bbdefb, #64b5f6);
+      border: 2px solid #1e90ff;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      font-weight: bold;
+      color: #1e90ff;
+      text-align: center;
+    }
+
+    .text-container {
+      margin-top: 15px;
+    }
+
+    .text-container .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .text-container .arabic, .text-container .french {
+      padding: 12px;
+      border-radius: 8px;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .arabic {
+      background-color: #000;
+      color: #fff;
+      text-align: right;
+      direction: rtl;
+      border-right: 5px solid #d32f2f;
+    }
+
+    .french {
+      background-color: #fff;
+      color: #333;
+      text-align: left;
+      border-left: 5px solid #1e90ff;
+    }
+
+    @media (max-width: 768px) {
+      #popup-component {
+        max-width: 100%;
+        padding: 15px;
+      }
+    }
+  </style>
+
+  <div class="option-box">C - الخيار الثالث<br>Des lobules adipeux sont souvent situés en profondeur.<br>الإجابة خاطئة - Réponse fausse</div>
+
+  <div style="text-align: center;">
+    <div class="justification-bubble">التبرير</div>
+  </div>
+
+  <div class="text-container">
+    <div class="title">🔻 بالعربية :</div>
+    <div class="text arabic">
+      إن التأكيد على أن "الفصوص الدهنية غالبًا ما تكون موجودة في عمق الطبقة تحت المخاطية للمريء" هو صحيح جزئيًا، حيث إن وجودها ممكن. ومع ذلك، من المهم ملاحظة أنه ليس قاعدة عامة، وأن كميتها متغيرة.
+    </div>
+<br>
+    <div class="title">🔻 En français :</div>
+    <div class="text french">
+      L'affirmation selon laquelle <strong>"des lobules adipeux sont souvent situés en profondeur dans la sous-muqueuse œsophagienne"</strong> est partiellement vraie, car leur présence est possible. Cependant, il est important de noter que ce n'est pas une règle générale et que leur quantité est variable.
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<br><br><br><br>
+
+
+
+
+
+<div id="popup-component">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+    #popup-component {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      border-radius: 15px;
+      background-color: #f4f8ff;
+      border: 2px solid #1e90ff;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      font-family: 'Roboto', sans-serif;
+      z-index: 1000;
+      position: relative;
+    }
+
+    .option-box {
+      padding: 14px;
+      border-radius: 12px;
+      background-color: #d32f2f;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .justification-bubble {
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #bbdefb, #64b5f6);
+      border: 2px solid #1e90ff;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 18px;
+      font-weight: bold;
+      color: #1e90ff;
+      text-align: center;
+    }
+
+    .text-container {
+      margin-top: 15px;
+    }
+
+    .text-container .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #1e90ff;
+    }
+
+    .text-container .arabic, .text-container .french {
+      padding: 12px;
+      border-radius: 8px;
+      line-height: 1.8;
+      font-size: 18px;
+    }
+
+    .arabic {
+      background-color: #222;
+      color: #ffd700;
+      text-align: right;
+      direction: rtl;
+      border-right: 5px solid #d32f2f;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .french {
+      background-color: #fff;
+      color: #333;
+      text-align: left;
+      border-left: 5px solid #1e90ff;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    @media (max-width: 768px) {
+      #popup-component {
+        max-width: 100%;
+        padding: 15px;
+      }
+    }
+  </style>
+
+  <div class="option-box">
+    C - الخيار الثالث<br>Des lobules adipeux sont souvent situés en profondeur.<br>الإجابة خاطئة - Réponse fausse
+  </div>
+
+  <div style="text-align: center;">
+    <div class="justification-bubble">التبرير</div>
+  </div>
+
+  <div class="text-container">
+    <div class="title">🔻 بالعربية :</div>
+    <div class="text arabic">
+      إن التأكيد على أن **"الفصوص الدهنية غالبًا ما تكون موجودة"** في عمق الطبقة تحت المخاطية للمريء هو **صحيح جزئيًا**، حيث إن وجودها **ممكن**. ومع ذلك، من المهم ملاحظة أنه **ليس قاعدة عامة**، وأن كميتها **متغيرة**.
+    </div>
+<br>
+    <div class="title">🔻 En français :</div>
+    <div class="text french">
+      L'affirmation selon laquelle <strong>"des lobules adipeux sont souvent situés en profondeur dans la sous-muqueuse œsophagienne"</strong> est partiellement vraie, car leur présence est possible. Cependant, il est important de noter que ce n'est pas une règle générale et que leur quantité est variable.
+    </div>
+  </div>
+</div>
+
+
+
+<br><br><br><br>
+
+
+
+
+
+<br><br><br><br>
+
+
+<div id="popup-component">
+  <style>
+    #popup-component {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      border-radius: 15px;
+      background-color: #f4f8ff;
+      border: 2px solid #1e90ff;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      font-family: 'Arial', sans-serif;
+      z-index: 1000;
+      position: relative;
+    }
+
+    .option-box {
+      padding: 14px;
+      border-radius: 12px;
+      background-color: #d32f2f;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .justification-bubble {
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #bbdefb, #64b5f6);
+      border: 2px solid #1e90ff;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      font-weight: bold;
+      color: #1e90ff;
+      text-align: center;
+    }
+
+    .text-container {
+      margin-top: 15px;
+    }
+
+    .text-container .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .text-container .arabic, .text-container .french {
+      padding: 12px;
+      border-radius: 8px;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .arabic {
+      background-color: #000;
+      color: #fff;
+      text-align: right;
+      direction: rtl;
+      border-right: 5px solid #d32f2f;
+    }
+
+    .french {
+      background-color: #fff;
+      color: #333;
+      text-align: left;
+      border-left: 5px solid #1e90ff;
+    }
+
+    @media (max-width: 768px) {
+      #popup-component {
+        max-width: 100%;
+        padding: 15px;
+      }
+    }
+  </style>
+
+  <div class="option-box">C - الخيار الثالث<br>Des lobules adipeux sont souvent situés en profondeur.<br>الإجابة خاطئة - Réponse fausse</div>
+
+  <div style="text-align: center;">
+    <div class="justification-bubble">التبرير</div>
+  </div>
+
+  <div class="text-container">
+    <div class="title">🔻 بالعربية :</div>
+    <div class="text arabic">
+      إن التأكيد على أن "الفصوص الدهنية غالبًا ما تكون موجودة في عمق الطبقة تحت المخاطية للمريء" هو صحيح جزئيًا، حيث إن وجودها ممكن. ومع ذلك، من المهم ملاحظة أنه ليس قاعدة عامة، وأن كميتها متغيرة.
+    </div>
+<br>
+    <div class="title">🔻 En français :</div>
+    <div class="text french">
+      L'affirmation selon laquelle <strong>"des lobules adipeux sont souvent situés en profondeur dans la sous-muqueuse œsophagienne"</strong> est partiellement vraie, car leur présence est possible. Cependant, il est important de noter que ce n'est pas une règle générale et que leur quantité est variable.
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<br><br><br><br>
+
+
+
+
+
+<div id="popup-component">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+    #popup-component {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      border-radius: 15px;
+      background-color: #f4f8ff;
+      border: 2px solid #1e90ff;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      font-family: 'Roboto', sans-serif;
+      z-index: 1000;
+      position: relative;
+    }
+
+    .option-box {
+      padding: 14px;
+      border-radius: 12px;
+      background-color: #d32f2f;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .justification-bubble {
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #bbdefb, #64b5f6);
+      border: 2px solid #1e90ff;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 18px;
+      font-weight: bold;
+      color: #1e90ff;
+      text-align: center;
+    }
+
+    .text-container {
+      margin-top: 15px;
+    }
+
+    .text-container .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #1e90ff;
+    }
+
+    .text-container .arabic, .text-container .french {
+      padding: 12px;
+      border-radius: 8px;
+      line-height: 1.8;
+      font-size: 18px;
+    }
+
+    .arabic {
+      background-color: #222;
+      color: #ffd700;
+      text-align: right;
+      direction: rtl;
+      border-right: 5px solid #d32f2f;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .french {
+      background-color: #fff;
+      color: #333;
+      text-align: left;
+      border-left: 5px solid #1e90ff;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    @media (max-width: 768px) {
+      #popup-component {
+        max-width: 100%;
+        padding: 15px;
+      }
+    }
+  </style>
+
+  <div class="option-box">
+    C - الخيار الثالث<br>Des lobules adipeux sont souvent situés en profondeur.<br>الإجابة خاطئة - Réponse fausse
+  </div>
+
+  <div style="text-align: center;">
+    <div class="justification-bubble">التبرير</div>
+  </div>
+
+  <div class="text-container">
+    <div class="title">🔻 بالعربية :</div>
+    <div class="text arabic">
+      إن التأكيد على أن **"الفصوص الدهنية غالبًا ما تكون موجودة"** في عمق الطبقة تحت المخاطية للمريء هو **صحيح جزئيًا**، حيث إن وجودها **ممكن**. ومع ذلك، من المهم ملاحظة أنه **ليس قاعدة عامة**، وأن كميتها **متغيرة**.
+    </div>
+<br>
+    <div class="title">🔻 En français :</div>
+    <div class="text french">
+      L'affirmation selon laquelle <strong>"des lobules adipeux sont souvent situés en profondeur dans la sous-muqueuse œsophagienne"</strong> est partiellement vraie, car leur présence est possible. Cependant, il est important de noter que ce n'est pas une règle générale et que leur quantité est variable.
+    </div>
+  </div>
+</div>
+
+
+
+<br><br><br><br>
+
+
+
+
+
+
+
+
+<br><br><br><br><br>
+<div id="uvule-box">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Poppins:wght@400;700&display=swap');
+
+    #uvule-box {
+      padding: 15px;
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      font-family: 'Poppins', sans-serif;
+      max-width: 85%;
+      margin: 15px auto;
+      line-height: 1.6;
+      color: #000;
+      text-align: center;
+      border: 1px solid #64b5f6;
+    }
+
+    .uvule-title {
+      display: inline-block;
+      background: #2e7d32;
+      color: #fff;
+      padding: 10px 25px;
+      border-radius: 15px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .uvule-content {
+      background-color: #fff;
+      border-left: 4px solid #1e88e5;
+      padding: 15px;
+      margin: 15px auto;
+      border-radius: 10px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #000;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+      max-width: 85%;
+      text-align: justify;
+    }
+
+    .uvule-content.arabic {
+      direction: rtl;
+      text-align: right;
+    }
+
+    .uvule-content p {
+      margin: 8px 0;
+      color: #000;
+    }
+
+    .uvule-content p strong {
+      color: #1565c0;
+      font-weight: bold;
+    }
+
+    .uvule-answer {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      font-style: italic;
+      display: inline-block;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #2e7d32, #1b5e20);
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      letter-spacing: 1px;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 768px) {
+      #uvule-box {
+        padding: 10px;
+        font-size: 0.85rem;
+      }
+
+      .uvule-title {
+        padding: 8px 18px;
+        font-size: 1rem;
+      }
+
+      .uvule-answer {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+      }
+
+      .uvule-content {
+        font-size: 14px;
+        line-height: 1.5;
+        padding: 12px;
+      }
+    }
+  </style>
+
+  <div class="uvule-title">
+    A &nbsp;&nbsp;&nbsp; Elle est constituée d'un tissu conjonctif lâche.
+  </div>
+
+  <div class="uvule-content">
+    <p>
+      ✅ <strong>Conclusion :</strong> Pourquoi A est-elle correcte ?<br>
+      <strong>« Elle est constituée d'un tissu conjonctif lâche »</strong><br>
+      ✔️ Cette affirmation est correcte, car dans la question, on nous demande <strong>la suggestion qui ne correspond pas à la sous-muqueuse œsophagienne</strong>.<br><br>
+      ❌ <strong>Correction :</strong> La sous-muqueuse œsophagienne <strong>n'est pas constituée exclusivement</strong> d'un tissu conjonctif lâche.<br><br>
+      🔹 <strong>Composition réelle :</strong> Elle est formée d’un tissu conjonctif <strong>modérément dense à dense</strong>, riche en fibres élastiques, en vaisseaux sanguins et en nerfs.<br>
+    </p>
+  </div>
+
+  <div class="uvule-content arabic">
+    <p>
+      ✅ <strong>الاستنتاج:</strong> لماذا الخيار A صحيح؟<br>
+      <strong>« إنها تتكون من نسيج ضام رخو »</strong><br>
+      ✔️ هذه العبارة صحيحة لأن السؤال يطلب <strong>الاقتراح الذي لا يتوافق مع الطبقة تحت المخاطية للمريء</strong>.<br><br>
+      ❌ <strong>التصحيح:</strong> الطبقة تحت المخاطية للمريء <strong>لا تتكون حصريًا</strong> من نسيج ضام رخو.<br><br>
+      🔹 <strong>التركيب الحقيقي:</strong> تتكون من <strong>نسيج ضام متوسط الكثافة إلى كثيف</strong>، غني بالألياف المرنة والأوعية الدموية والأعصاب.<br>
+    </p>
+  </div>
+
+  <div class="uvule-answer">
+    ✅ <strong>La bonne réponse est - الإجابة الصحيحة هي :</strong>
+  </div>
+</div>
+
+
+
+<br><br><br><br>
+
+ <style>
+   /* إعدادات الصفحة */
+body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Cairo', sans-serif;
+ background: linear-gradient(to bottom right, #eef2f7, #d9e5f2);
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ height: 100vh;
+ color: #333;
+ text-align: center;
+}
+
+#animated-box {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ background: linear-gradient(135deg, #ff6f00, #ffa726);
+ border: 2px solid #ff8f00;
+ border-radius: 15px;
+ padding: 12px 24px;
+ box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+ font-size: 1.4em;
+ font-weight: bold;
+ color: white;
+ cursor: pointer;
+ transition: all 0.3s ease-in-out;
+ animation: pulse 1.8s infinite;
+}
+
+     animation: pulse 1.8s infinite;
+   }
+
+   #animated-box:hover {
+     transform: scale(1.05);
+     background: linear-gradient(135deg, #ffa726, #ffd54f);
+     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+   }
+
+   #animated-box span {
+     display: inline-block;
+     animation: bounceText 1.5s infinite;
+     text-shadow: 0 5px 15px rgba(255, 111, 0, 0.8);
+   }
+
+   /* تأثير النبض */
+   @keyframes pulse {
+     0%, 100% {
+       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+     }
+     50% {
+       box-shadow: 0 10px 25px rgba(255, 111, 0, 0.4);
+     }
+   }
+
+   /* تأثير النص */
+   @keyframes bounceText {
+     0%, 100% {
+       transform: translateY(0);
+     }
+     50% {
+       transform: translateY(-8px);
+     }
+   }
+
+   /* مربع النصوص */
+   .description {
+     max-width: 800px;
+     background: #ffffff;
+     padding: 20px;
+     border-radius: 12px;
+     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+     font-size: 1rem;
+     line-height: 1.6;
+     text-align: justify;
+     color: #444;
+     margin-top: 20px;
+     animation: fadeInUp 1s ease;
+     position: relative;
+   }
+
+   .description::before {
+     content: '';
+     position: absolute;
+     top: -10px;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 50px;
+     height: 4px;
+     background: linear-gradient(135deg, #4fc3f7, #1976d2);
+     border-radius: 10px;
+   }
+
+   /* تأثير الظهور */
+   @keyframes fadeInUp {
+     from {
+       opacity: 0;
+       transform: translateY(20px);
+     }
+     to {
+       opacity: 1;
+       transform: translateY(0);
+     }
+   }
+
+   /* تحسين العرض للأجهزة الصغيرة */
+   @media (max-width: 600px) {
+     #animated-box {
+       padding: 10px 20px;
+       font-size: 1.2em;
+     }
+
+     .description {
+       padding: 15px;
+       font-size: 0.9rem;
+     }
+   }
+ </style>
+</head>
+<body>
+
+ <!-- العنصر التفاعلي -->
+ <div id="animated-box">
+   <span>⚡ الشروحات ⚡</span>
+ </div>
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br>
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br><br><br>
+ <style>
+ /* عزل التأثير داخل .lesson-summary */
+.lesson-summary {
+    font-family: 'Cairo', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: auto; /* تقليل الارتفاع */
+    padding: 10px 0; /* تقليل التباعد العلوي والسفلي */
+    color: #333;
+    text-align: center;
+}
+
+/* خصائص صندوق الملخص */
+.lesson-summary #animated-box {
+    display: inline-block;
+    text-align: center;
+    background: black;
+    border-radius: 20px;
+    padding: 15px 25px; /* تصغير الحواف الداخلية */
+    margin: 5px auto; /* تقليل التباعد العلوي والسفلي */
+    font-size: 1.3em; /* تصغير الخط قليلاً */
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: 3px solid transparent;
+    background-image: linear-gradient(black, black), 
+                      linear-gradient(135deg, #ff5733, #ffcc33);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 0 8px 20px rgba(255, 87, 51, 0.5);
+    animation: glow 1.5s infinite alternate;
+}
+
+/* تأثير التحويم */
+.lesson-summary #animated-box:hover {
+    transform: scale(1.05);
+    background-image: linear-gradient(black, black),
+                      linear-gradient(135deg, #ffcc33, #ff5733);
+    box-shadow: 0 12px 25px rgba(255, 204, 51, 0.7);
+}
+
+/* تأثير الوميض */
+@keyframes glow {
+    0% { box-shadow: 0 8px 20px rgba(255, 87, 51, 0.5); }
+    100% { box-shadow: 0 12px 30px rgba(255, 204, 51, 0.7); }
+}
+
+/* تحسين النص داخل الصندوق */
+.lesson-summary #animated-box span {
+    display: inline-block;
+    font-family: 'Tajawal', sans-serif;
+    letter-spacing: 1px;
+    animation: bounceText 1.5s infinite;
+    text-shadow: 0 5px 15px rgba(255, 204, 51, 0.9);
+}
+
+/* تأثير القفز على النص */
+@keyframes bounceText {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); } /* تقليل القفز */
+}
+
+   
+  </style>
+</head>
+<body>
+
+  <div class="lesson-summary">
+    <div id="animated-box">
+      <span>🔻 ملخص الدرس  🔻</span>
+    </div>
+  </div>
+
+<br><br><br><br><br><br><br><br><br>
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Néphron - النيفرون</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Noto+Naskh+Arabic:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bubble {
+            width: 100%;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(30, 30, 30, 0.95);
+            box-shadow: 0 6px 18px rgba(0, 150, 255, 0.3);
+            border-left: 6px solid #007bff;
+            text-align: left;
+            color: #fff;
+            transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .bubble:hover {
+            box-shadow: 0 10px 25px rgba(0, 150, 255, 0.4);
+            transform: translateY(-4px);
+        }
+
+        .bubble h2 {
+            font-size: 22px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #00aaff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .highlight {
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        p, ul {
+            font-size: 18px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .arabic {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+            text-align: right;
+            font-weight: bold;
+            color: #ffdd55;
+            margin-top: 10px;
+            border-top: 1px solid #ffcc00;
+            padding-top: 10px;
+        }
+
+        .bubble img {
+            display: block;
+            margin: auto;
+            width: 100%;
+            max-width: 350px;
+            border-radius: 10px;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .bubble img:hover {
+            transform: scale(1.05);
+        }
+
+        .separator {
+            width: 100%;
+            height: 2px;
+            background-color: red;
+            margin: 20px 0;
+        }
+
+        ul li::marker {
+    content: "▼"; /* استبدال الرمز الافتراضي بمثلث مقلوب */
+    color: red; /* تغيير اللون إلى الأحمر */
+    font-size: 14px; /* ضبط الحجم */
+}
+
+
+        @media (max-width: 480px) {
+            .bubble {
+                padding: 16px;
+            }
+
+            .bubble h2 {
+                font-size: 20px;
+            }
+
+            p, li {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+<div class="bubble">
+    <h2>LE REIN (الكُلية)</h2>
+
+    <h3 style="text-align: center;">I. Généralités (المفاهيم العامة)</h3>
+
+    <p><strong>▪ L'appareil urinaire assure l'épuration du milieu intérieur et régule son osmolarité en élaborant et en éliminant l'urine. De plus, les reins ont une activité endocrine.</strong></p>
+    <p class="arabic"><strong>▪ يضمن الجهاز البولي تنقية البيئة الداخلية للجسم، وينظم التوازن التناضحي من خلال تكوين وإخراج البول. بالإضافة إلى ذلك، تمتلك الكلى نشاطًا هرمونيًا.</strong></p>
+    <div class="separator"></div>
+    
+    <p><strong>▪ De point de vue anatomique, l'appareil urinaire est constitué par les deux reins et par les voies urinaires (calices, bassinet, uretère, vessie et urètre).</strong></p>
+    <p class="arabic"><strong>▪ من الناحية التشريحية، يتكون الجهاز البولي من الكليتين والمسالك البولية (الكؤوس الكلوية، الحوض الكلوي، الحالب، المثانة والإحليل).</strong></p>
+    <div class="separator"></div>
+    
+    <p><strong>▪ De point de vue physiologique, l'appareil urinaire comporte :</strong></p>
+    <p class="arabic"><strong>▪ من الناحية الفسيولوجية، يتكون الجهاز البولي من:</strong></p>
+    <div class="separator"></div>
+    
+    <ul>
+        <li><strong>- Une partie sécrétrice formée par les néphrons, auxquels sont annexés les vaisseaux fonctionnels.</strong></li>
+        <li class="arabic"><strong>- جزء إفرازي مكون من النيفرونات المرتبطة بالأوعية الدموية الوظيفية.</strong></li>
+    </ul>
+    <div class="separator"></div>
+    
+    <ul>
+        <li><strong>- Une partie excrétrice, formée par les voies urinaires intra- et extra-rénales.</strong></li>
+        <li class="arabic"><strong>- جزء إخراجي، يتكون من المسالك البولية داخل الكلية وخارجها.</strong></li>
+    </ul>
+
+</div>
+
+
+
+
+
+<div class="bubble">
+    <h2>II. ORGANISATION GÉNÉRALE (التنظيم العام)</h2>
+
+    <p><strong>▪ Les reins sont des organes pairs de couleur brun rougeâtre, situés en région dorsolombaire de part et d’autre de la colonne vertébrale, en arrière du péritoine.</strong></p>
+    <p class="arabic"><strong>▪ الكليتان عضوان مزدوجان ذات لون بني محمر، تقعان في المنطقة القطنية الظهرية على جانبي العمود الفقري، خلف الصفاق.</strong></p>
+    
+    <div class="separator"></div>
+
+    <p><strong>▪ Ils ont une forme de haricot mesurant environ 12 cm de haut, 6 cm de large et 3 cm d'épaisseur et pèsent environ 150g.</strong></p>
+    <p class="arabic"><strong>▪ لهما شكل حبة الفاصولياء، حيث يبلغ طولهما حوالي 12 سم، وعرضهما 6 سم، وسماكتهما 3 سم، ويصل وزنهما إلى حوالي 150 غرامًا.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Leur bord interne est concave, le bord externe est convexe.</strong></p>
+    <p class="arabic"><strong>▪ الحافة الداخلية مقعرة، بينما الحافة الخارجية محدبة.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Leur concavité interne renferme le hile, par où pénètrent les vaisseaux et sortent les voies urinaires formant le bassinet.</strong></p>
+    <p class="arabic"><strong>▪ تحتوي الجهة المقعرة على سرة الكلية التي تدخل منها الأوعية الدموية وتخرج منها المسالك البولية لتشكيل الحوض الكلوي.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Ils sont enveloppés d’une capsule fibreuse et entourés par du tissu adipeux.</strong></p>
+    <p class="arabic"><strong>▪ تحاط الكلية بمحفظة ليفية، وتكون محاطة أيضًا بنسيج دهني.</strong></p>
+
+    <div class="separator"></div>
+
+    <h3>🔹 Coupe longitudinale (مقطع طولي في الكلية)</h3>
+    <p><strong>▪ Sur une coupe longitudinale, à l'état frais, on distingue successivement, en partant de la concavité :</strong></p>
+    <p class="arabic"><strong>▪ في المقطع الطولي، عند الحالة الطازجة، يمكن تمييز البُنى التالية، بدءًا من الجهة المقعرة:</strong></p>
+
+    <div class="separator"></div>
+
+    <ul>
+        <li><strong>➤ Le hile:</strong> contient le bassinet, une cavité de forme conique qui se prolonge à l’intérieur du rein par 2 ou 3 grands calices. Ces derniers se ramifient en 8 à 18 petits calices.</li>
+        <li class="arabic"><strong>➤ سرة الكلية:</strong> تحتوي على الحوض الكلوي، وهو تجويف ذو شكل مخروطي يمتد داخل الكلية عبر 2 أو 3 كؤوس كلوية كبيرة، والتي تتفرع بدورها إلى 8 إلى 18 كأسًا صغيرًا.</li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <ul>
+        <li><strong>➤ Le parenchyme rénal:</strong> est divisé en deux zones :</li>
+        <li class="arabic"><strong>➤ النسيج الكلوي:</strong> ينقسم إلى منطقتين:</li>
+
+        <ul>
+            <li><strong>- La médullaire.</strong></li>
+            <li class="arabic"><strong>- النخاعية.</strong></li>
+
+            <li><strong>- La corticale.</strong></li>
+            <li class="arabic"><strong>- القشرية.</strong></li>
+        </ul>
+    </ul>
+
+    <div class="separator"></div>
+
+    
+    <img src="2MEDU3HISTOLOGIEIMG/2C1.jpg" 
+         alt="Médullaire rénale - النخاع الكلوي" 
+         style="width: 100%; max-width: 400px; border-radius: 8px; margin-top: 10px;">
+  
+</div>
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">A) La médullaire (المنطقة النخاعية)</h3>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ La zone interne du parenchyme, rouge.</strong></p>
+    <p class="arabic"><strong>▪ هي المنطقة الداخلية من النسيج الكلوي، ولونها أحمر.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Elle a un aspect strié de façon radiaire.</strong></p>
+    <p class="arabic"><strong>▪ تتميز بمظهر مخطط بشكل شعاعي.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Elle contient :</strong></p>
+    <p class="arabic"><strong>▪ تحتوي على:</strong></p>
+
+    <div class="separator"></div>
+
+    <h4>🔹 Les pyramides de Malpighi (أهرامات مالبيغي)</h4>
+
+    <ul>
+        <li><strong>➤ Des structures coniques, au nombre de 8 à 18 par rein.</strong></li>
+        <li class="arabic"><strong>➤ هي تراكيب مخروطية، وعددها يتراوح بين 8 إلى 18 في كل كلية.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ Leur base est externe et leur pointe fait saillie au niveau d'un petit calice formant la papille rénale.</strong></li>
+        <li class="arabic"><strong>➤ قاعدتها خارجية، بينما قممها تبرز داخل الكؤوس الصغيرة مكونة الحليمات الكلوية.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ La papille rénale est criblée d’orifices (10 à 20) : area cribrosa.</strong></li>
+        <li class="arabic"><strong>➤ تحتوي الحليمة الكلوية على 10 إلى 20 فتحة تسمى "المنطقة المصفوية".</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ Les pyramides de Malpighi sont composées :</strong></li>
+        <li class="arabic"><strong>➤ تتكون أهرامات مالبيغي من:</strong></li>
+
+        <ul>
+            <li><strong>- Des branches ascendantes et descendantes de l’anse de Henlé.</strong></li>
+            <li class="arabic"><strong>- الفروع الصاعدة والهابطة لعروة هنلي.</strong></li>
+
+            <li><strong>- Des tubes collecteurs.</strong></li>
+            <li class="arabic"><strong>- الأنابيب الجامعة.</strong></li>
+        </ul>
+    </ul>
+
+    <div class="separator"></div>
+
+    <h4>🔹 Les pyramides de Ferrein (أهرامات فيرين)</h4>
+
+    <ul>
+        <li><strong>➤ Ce sont des irradiations médullaires partant de la base des pyramides de Malpighi.</strong></li>
+        <li class="arabic"><strong>➤ هي امتدادات نخاعية تنطلق من قاعدة أهرامات مالبيغي.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ Elles s'infiltrent dans la zone corticale.</strong></li>
+        <li class="arabic"><strong>➤ تمتد نحو المنطقة القشرية.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ Leur sommet est effilé vers la corticale.</strong></li>
+        <li class="arabic"><strong>➤ قمتها مدببة باتجاه القشرة الكلوية.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ Leur nombre est 400 à 500 par pyramide de Malpighi.</strong></li>
+        <li class="arabic"><strong>➤ عددها يتراوح بين 400 إلى 500 لكل هرم مالبيغي.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ Elles contiennent :</strong></li>
+        <li class="arabic"><strong>➤ تحتوي على:</strong></li>
+
+        <ul>
+            <li><strong>- La partie initiale des tubes collecteurs.</strong></li>
+            <li class="arabic"><strong>- الجزء الأولي من الأنابيب الجامعة.</strong></li>
+
+            <li><strong>- Des portions plus ou moins longues des anses de Henlé des glomérules corticaux.</strong></li>
+            <li class="arabic"><strong>- أجزاء متفاوتة الطول من عروات هنلي الخاصة بالكبيبات القشرية.</strong></li>
+        </ul>
+    </ul>
+
+    <div class="separator"></div>
+
+</div>
+
+
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">B) La corticale (المنطقة القشرية)</h3>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Elle est composée des segments contournés des néphrons et des corpuscules de Malpighi.</strong></p>
+    <p class="arabic"><strong>▪ تتكون من الأجزاء الملتفة للنيفرونات وكبيبات مالبيغي.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ La corticale est divisée en trois zones :</strong></p>
+    <p class="arabic"><strong>▪ تنقسم القشرة إلى ثلاث مناطق:</strong></p>
+
+    <div class="separator"></div>
+
+    <h4>🔹 1. Cortex corticis (القشرة السطحية)</h4>
+    <ul>
+        <li><strong>➤ Située sous la capsule rénale.</strong></li>
+        <li class="arabic"><strong>➤ تقع تحت المحفظة الكلوية.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ Peu épaisse.</strong></li>
+        <li class="arabic"><strong>➤ رقيقة السُّمك.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ Dépourvue de corpuscules de Malpighi.</strong></li>
+        <li class="arabic"><strong>➤ لا تحتوي على كبيبات مالبيغي.</strong></li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <h4>🔹 2. Le labyrinthe rénal (المتاهة الكلوية)</h4>
+    <ul>
+        <li><strong>➤ Situé sous le cortex corticis.</strong></li>
+        <li class="arabic"><strong>➤ يقع تحت القشرة السطحية.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>➤ Entre les pyramides de Ferrein.</strong></li>
+        <li class="arabic"><strong>➤ بين أهرامات فيرين.</strong></li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <h4>🔹 3. Colonnes de Bertin (أعمدة بيرتين)</h4>
+    <ul>
+        <li><strong>➤ Situées entre les pyramides de Malpighi.</strong></li>
+        <li class="arabic"><strong>➤ تقع بين أهرامات مالبيغي.</strong></li>
+    </ul>
+
+    <div class="separator"></div>
+
+  
+</div>
+
+
+<div class="bubble">
+    <h3>🔬 III. STRUCTURE HISTOLOGIQUE DU REIN (التركيب النسيجي للكلية)</h3>
+
+    <div class="separator"></div>
+
+    <ul>
+        <li><strong>🔹 Le parenchyme rénal (نسيج الكلية):</strong> constitué d'un amoncellement d'unités 
+            anatomiques et fonctionnelles élémentaires : <strong>le néphron.</strong></li>
+        <li class="arabic">🔹 نسيج الكلية: يتكون من مجموعة من الوحدات التشريحية والوظيفية الأساسية: <strong>النيفرون.</strong></li>
+
+        <li>🔻 <strong>Nombre :</strong> Il en existe un peu plus de 1 million par rein.</li>
+        <li class="arabic">🔻 <strong>العدد :</strong> يوجد أكثر من مليون نيفرون في كل كلية.</li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <h4>🔹 Le néphron et ses extrémités (النيفرون ونهاياته)</h4>
+    <ul>
+        <li>🔻 <strong>Extrémité proximale :</strong> S'associe à un glomérule vasculaire pour former le corpuscule rénal.</li>
+        <li class="arabic">🔻 <strong>النهاية القريبة :</strong> تتصل بكبيبة وعائية لتشكيل الكُبَيْبَة الكلوية.</li>
+
+        <li>🔻 <strong>Extrémité distale :</strong> Se jette dans un tube collecteur.</li>
+        <li class="arabic">🔻 <strong>النهاية البعيدة :</strong> تصب في أنبوب جامع.</li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <h4>🔹 Les tubes collecteurs (الأنابيب الجامعة)</h4>
+    <ul>
+        <li>🔻 Aussi appelés <strong>tubes de Bellini</strong>.</li>
+        <li class="arabic">🔻 تُعرف أيضًا باسم <strong>أنابيب بيلليني</strong>.</li>
+
+        <li>🔻 Ils s'ouvrent dans le petit calice au niveau de la papille rénale.</li>
+        <li class="arabic">🔻 تفتح في الكأس الصغير عند مستوى الحليمة الكلوية.</li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <h4>🔹 Le tube urinifère (الأنبوب البولي)</h4>
+    <ul>
+        <li>🔻 Formé par un néphron et un tube collecteur.</li>
+        <li class="arabic">🔻 يتكون من نيفرون وأنبوب جامع.</li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <h4>🔹 Le tissu conjonctif interstitiel (النسيج الضام البيني)</h4>
+    <ul>
+        <li>🔻 Situé entre les tubes urinifères.</li>
+        <li class="arabic">🔻 يقع بين الأنابيب البولية.</li>
+
+        <li>🔻 Contient les vaisseaux sanguins et les nerfs.</li>
+        <li class="arabic">🔻 يحتوي على الأوعية الدموية والأعصاب.</li>
+    </ul>
+
+    <div class="separator"></div>
+
+</div>
+
+
+
+    
+
+
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">A. Le Néphron – الوحدة الوظيفية للكلية (النفرون)</h3>
+
+    
+    <div class="separator"></div>
+
+    <p><strong>▪ Le néphron est un tube de 50 à 55 mm de long.</strong></p>
+    <p class="arabic"><strong>▪ النفرون هو أنبوب يبلغ طوله من 50 إلى 55 ملم.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Il comprend 4 segments :</strong></p>
+    <p class="arabic"><strong>▪ يتكون من 4 أجزاء:</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>➤ 1. Le corpuscule rénal :</strong> (الجسم الكلوي)</p>
+
+    <div class="separator"></div>
+
+    <p><strong>➤ 2. Le segment proximal :</strong> correspond au tube contourné proximal et au segment droit.</p>
+    <p class="arabic"><strong>➤ 2. الجزء القريب:</strong> يتوافق مع الأنبوب الملتوي القريب والجزء المستقيم.</p>
+
+    <div class="separator"></div>
+
+    <p><strong>➤ 3. Le segment grêle ou moyen :</strong> correspond à la partie grêle de l'anse de Henlé.</p>
+    <p class="arabic"><strong>➤ 3. الجزء الرقيق أو المتوسط:</strong> يتوافق مع الجزء الرقيق من عروة هنلي.</p>
+
+    <div class="separator"></div>
+
+    <p><strong>➤ 4. Le segment distal :</strong> correspond à la portion large de l'anse de Henlé et au tube contourné distal.</p>
+    <p class="arabic"><strong>➤ 4. الجزء البعيد:</strong> يتوافق مع الجزء العريض من عروة هنلي والأنبوب الملتوي البعيد.</p>
+
+    <div class="separator"></div>
+
+   
+</div>
+
+
+
+
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">1) Le corpuscule rénal (الجسم الكلوي)</h3>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Il est situé en zone corticale et est le point de départ du néphron.</strong></p>
+    <p class="arabic"><strong>▪ يقع في المنطقة القشرية وهو نقطة انطلاق النفرون.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ C'est le lieu de la filtration.</strong></p>
+    <p class="arabic"><strong>▪ وهو موقع الترشيح.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Il s'agit d'une formation sphérique de 180 à 200 μm de diamètre, comportant :</strong></p>
+    <p class="arabic"><strong>▪ هو تشكيل كروي يتراوح قطره بين 180 و200 ميكرومتر، ويشمل:</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>➤ Un pôle vasculaire :</strong> où pénètre l'artère afférente et d'où sort l'artère efférente.</p>
+    <p class="arabic"><strong>➤ القطب الوعائي:</strong> حيث تدخل الشريان الوارد وتخرج الشريان الصادر.</p>
+
+    <div class="separator"></div>
+
+    <p><strong>➤ Un pôle urinaire :</strong> d'où part le segment proximal du tube urinaire.</p>
+    <p class="arabic"><strong>➤ القطب البولي:</strong> حيث يبدأ الجزء القريب من الأنبوب البولي.</p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Il est formé par un peloton vasculaire : le glomérule de Malpighi entouré par une enveloppe : la capsule de Bowman.</strong></p>
+    <p class="arabic"><strong>▪ يتكون من شبكة وعائية: الكبيبة المالبيغية المحاطة بغلاف يسمى محفظة بومان.</strong></p>
+
+    <div class="separator"></div>
+
+    
+</div>
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">A) La capsule de Bowman (محفظة بومان)</h3>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Elle est composée de deux feuillets :</strong></p>
+    <p class="arabic"><strong>▪ تتكون من وريقتين:</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>➤ Un feuillet pariétal: formant la limite externe du glomérule.</strong></p>
+    <p class="arabic"><strong>➤ الوريقة الجدارية: تشكل الحدود الخارجية للكبيبة.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>➤ Un feuillet viscéral: tapissant la face externe des capillaires.</strong></p>
+    <p class="arabic"><strong>➤ الوريقة الحشوية: تبطن السطح الخارجي للشعيرات الدموية.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Les deux feuillets délimitent un espace ou chambre glomérulaire (la chambre urinaire) en continuité avec la lumière du tube contourné proximal.</strong></p>
+    <p class="arabic"><strong>▪ تفصل الوريقتان غرفة تسمى الحجرة الكبيبية (الحجرة البولية) والتي تتصل بتجويف الأنبوب الملتف القريب.</strong></p>
+
+    <div class="separator"></div>
+
+</div>
+
+
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">D1. Le feuillet pariétal (الوريقة الجدارية)</h3>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Il est formé d’une fine couche conjonctive et d’une couche de cellules épithéliales pavimenteuses reposant sur une lame basale.</strong></p>
+    <p class="arabic"><strong>▪ يتكون من طبقة رقيقة من النسيج الضام وطبقة من الخلايا الظهارية الحرشفية تستند إلى غشاء قاعدي.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Il se réfléchit au niveau du pôle vasculaire et se continue par le feuillet viscéral.</strong></p>
+    <p class="arabic"><strong>▪ ينثني عند القطب الوعائي ويتصل بالوريقة الحشوية.</strong></p>
+
+    <div class="separator"></div>
+
+    
+</div>
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">2. Le feuillet viscéral (الوريقة الحشوية)</h3>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ À ce niveau, les cellules épithéliales recouvrent le glomérule.</strong></p>
+    <p class="arabic"><strong>▪ في هذا المستوى، تغطي الخلايا الظهارية الكبيبة.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Elles se modifient considérablement; ce sont les podocytes.</strong></p>
+    <p class="arabic"><strong>▪ تتحول بشكل كبير، وتسمى الخلايا القدمية (Podocytes).</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Le corps cellulaire fait saillie dans la lumière de la chambre urinaire et possède des prolongements cytoplasmiques qui entourent les capillaires :</strong></p>
+    <p class="arabic"><strong>▪ يبرز جسم الخلية في تجويف الغرفة البولية، ويحتوي على امتدادات سيتوبلازمية تحيط بالشعيرات الدموية:</strong></p>
+
+    <ul>
+        <li><strong>Prolongements primaires</strong> (الامتدادات الأولية)</li>
+        <li><strong>Prolongements secondaires</strong> (الامتدادات الثانوية)</li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Ces dernières donnent naissance aux pédicelles, qui s’intercalent entre ceux des podocytes voisins.</strong></p>
+    <p class="arabic"><strong>▪ تنتج هذه الامتدادات أرجل صغيرة (Pédicelles) تتشابك مع تلك الخاصة بالخلايا القدمية المجاورة.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Les extrémités renflées de ces pédicelles sont très régulièrement disposées le long de la lame basale.</strong></p>
+    <p class="arabic"><strong>▪ تتوزع نهايات هذه الأرجل الصغيرة بشكل منتظم على طول الغشاء القاعدي.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Entre les pédicelles, existe un espace de 25 nm : la fente de filtration.</strong></p>
+    <p class="arabic"><strong>▪ بين الأرجل الصغيرة، يوجد فراغ بحجم 25 نانومتر يسمى شق الترشيح.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ À cet endroit, seule la lame basale peut séparer l'espace vasculaire de la lumière du tube urinaire.</strong></p>
+    <p class="arabic"><strong>▪ في هذا المكان، يمكن فقط للغشاء القاعدي أن يفصل بين الفضاء الوعائي وتجويف الأنبوب البولي.</strong></p>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Le cytoplasme des podocytes renferme, en plus des organites habituels :</strong></p>
+    <p class="arabic"><strong>▪ يحتوي سيتوبلازم الخلايا القدمية، بالإضافة إلى العضيات المعتادة، على:</strong></p>
+
+    <ul>
+        <li>Des vacuoles de pinocytose (حويصلات الشرب الخلوي)</li>
+        <li>Des microfilaments d'actine (خيوط الأكتين الدقيقة)</li>
+    </ul>
+
+    <div class="separator"></div>
+
+</div>
+
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">b) Le glomérule de Malpighi (كبيبة مالبيغي)</h3>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Il s'agit d'un réseau capillaire porte artériel qui s'appuie sur du tissu conjonctif et est revêtu à l'extérieur par les podocytes.</strong></p>
+    <p class="arabic"><strong>▪ هو شبكة من الشعيرات الدموية التي تستند إلى نسيج ضام وتغطى من الخارج بالخلايا القدمية (Podocytes).</strong></p>
+
+    <div class="separator"></div>
+
+    <h4>1. Le réseau capillaire (الشبكة الشعرية)</h4>
+
+    <ul>
+        <li><strong>L'artère afférente</strong> se divise au niveau du pôle vasculaire en 3 à 5 branches courtes, donnant chacune une touffe de capillaires sanguins. Ceux-ci confluent vers l'artère efférente. Ce sont des capillaires fenêtrés.</li>
+        <li class="arabic"><strong>الشريان الوارد</strong> ينقسم عند القطب الوعائي إلى 3 إلى 5 فروع قصيرة، يعطي كل منها حزمة من الشعيرات الدموية، والتي تتجمع لتشكيل الشريان الصادر. هذه الشعيرات ذات نوافذ صغيرة.</li>
+
+        <div class="separator"></div>
+
+        <li><strong>L'endothélium</strong> présente des pores réguliers de 70 à 90 nm de diamètre et repose sur une lame basale.</li>
+        <li class="arabic"><strong>الطبقة البطانية</strong> تحتوي على ثقوب منتظمة بقطر يتراوح بين 70 إلى 90 نانومتر وترتكز على الغشاء القاعدي.</li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <h4>2. La lame basale (الغشاء القاعدي)</h4>
+
+    <ul>
+        <li><strong>Située entre les pédicelles et les cellules endothéliales.</strong></li>
+        <li class="arabic"><strong>تقع بين الأرجل الصغيرة (Pédicelles) والخلايا البطانية.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>Elle est épaisse (240 à 340 nm) et formée par 3 feuillets d’inégale densité :</strong></li>
+        <li class="arabic"><strong>سميكة (240 إلى 340 نانومتر) وتتكون من 3 طبقات ذات كثافات متفاوتة :</strong></li>
+
+        <ul>
+            <li><strong>Lamina rara interna</strong> (الطبقة الرقيقة الداخلية)</li>
+            <li><strong>Lamina densa</strong> (الطبقة الكثيفة)</li>
+            <li><strong>Lamina rara externa</strong> (الطبقة الرقيقة الخارجية)</li>
+        </ul>
+
+        <div class="separator"></div>
+
+        <li><strong>Elles sont constituées essentiellement par :</strong></li>
+        <li class="arabic"><strong>تتكون أساسًا من :</strong></li>
+
+        <ul>
+            <li>Collagène type VI (الكولاجين النوع السادس)</li>
+            <li>Protéoglycanes (البروتيوغليكانات)</li>
+            <li>Fibronectine (الفيبرونيكتين)</li>
+        </ul>
+
+        <div class="separator"></div>
+
+        <li><strong>La lame basale est synthétisée par les cellules endothéliales et les podocytes.</strong></li>
+        <li class="arabic"><strong>يتم تصنيع الغشاء القاعدي بواسطة الخلايا البطانية والخلايا القدمية.</strong></li>
+    </ul>
+
+    <div class="separator"></div>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">3. Le mésangium (المزانجيوم)</h3>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Il associe :</strong></p>
+    <p class="arabic"><strong>▪ يتكون من:</strong></p>
+
+    <ul>
+        <li>Une matrice conjonctive amorphe et des cellules mésangiales.</li>
+        <li class="arabic">مصفوفة نسيج ضام غير متبلورة وخلايا مزانجية.</li>
+
+        <div class="separator"></div>
+
+        <li>Ces éléments, de forme irrégulière, ont des prolongements qui s'insinuent entre les capillaires.</li>
+        <li class="arabic">هذه العناصر غير منتظمة الشكل، ولها امتدادات تتداخل بين الشعيرات الدموية.</li>
+
+        <div class="separator"></div>
+
+        <li>Elles renferment des filaments intra-cytoplasmiques et ont des propriétés phagocytaires.</li>
+        <li class="arabic">تحتوي على خيوط داخل الهيولى وتتميز بقدرات بلعمية.</li>
+
+        <div class="separator"></div>
+
+        <li>Ces cellules se rapprochent des péricytes et peuvent participer à l'élimination de certaines grosses molécules déposées sur la lame basale.</li>
+        <li class="arabic">تشبه هذه الخلايا الخلايا المحيطة (Péricytes) ويمكن أن تساهم في إزالة بعض الجزيئات الكبيرة المترسبة على الغشاء القاعدي.</li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <h3>c) La barrière de filtration (حاجز الترشيح)</h3>
+
+    <div class="separator"></div>
+
+    <p><strong>▪ Elle est composée de trois couches :</strong></p>
+    <p class="arabic"><strong>▪ يتكون من ثلاث طبقات :</strong></p>
+
+    <ul>
+        <li><strong>L'endothélium fenêtré des capillaires.</strong></li>
+        <li class="arabic"><strong>الطبقة البطانية ذات النوافذ في الشعيرات الدموية.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>La lame basale (240 à 340 nm).</strong></li>
+        <li class="arabic"><strong>الغشاء القاعدي (بسمك 240 إلى 340 نانومتر).</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>Les fentes de filtration (25 nm) formées par les podocytes.</strong></li>
+        <li class="arabic"><strong>شقوق الترشيح (25 نانومتر) التي تتشكل بواسطة الخلايا القدمية (Podocytes).</strong></li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <img src="2MEDU3HISTOLOGIEIMG/barriere-filtration.jpg" 
+         alt="Barrière de Filtration - حاجز الترشيح" 
+         style="width: 100%; max-width: 400px; border-radius: 8px; margin-top: 10px;">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">2) Le segment proximal (الجزء القريب)</h3>
+
+    <div class="separator"></div>
+
+    <ul>
+        <li><strong>▪ Sa lumière est relativement large.</strong></li>
+        <li class="arabic"><strong>▪ تجويفه واسع نسبيًا.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>▪ C'est un tube de 15 mm de long et 50 à 60 μm de diamètre.</strong></li>
+        <li class="arabic"><strong>▪ هو أنبوب بطول 15 مم وقطر 50 إلى 60 ميكرومتر.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>▪ Dans la plus grande partie de son trajet, il reste dans le parenchyme cortical.</strong></li>
+        <li class="arabic"><strong>▪ يبقى في الغالب ضمن النسيج القشري للكلية.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>▪ Il est très contourné, puis se termine par un segment droit qui s'enfonce dans la pyramide de Ferrein: le segment droit de Schachowa.</strong></li>
+        <li class="arabic"><strong>▪ يكون متعرجًا جدًا، ثم ينتهي بجزء مستقيم يمتد داخل هرم "فيريين": الجزء المستقيم لـ "شاشوا".</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>▪ C'est le segment à bâtonnets et à bordure striée.</strong></li>
+        <li class="arabic"><strong>▪ هو الجزء ذو العصيات والحدود المخططة.</strong></li>
+
+        <div class="separator"></div>
+
+        <li><strong>▪ La paroi est formée par un épithélium cubique simple: les néphrocytes, reposant sur une membrane basale.</strong></li>
+        <li class="arabic"><strong>▪ يتكون جداره من ظهارة مكعبة بسيطة: الخلايا الكلوية، مستندة إلى غشاء قاعدي.</strong></li>
+    </ul>
+
+    <div class="separator"></div>
+ 
+        <h3 style="text-align: center;">Structure du Segment Proximal (تركيب الجزء القريب)</h3>
+    
+        <div class="separator"></div>
+    
+        <ul>
+            <li><strong>▪ Le pôle apical :</strong> hérissé de nombreuses microvillosités formant la bordure en brosse (<span style="color: red;">PAS+</span>), riche en glycolème et en enzymes.</li>
+            <li class="arabic"><strong>▪ القطب القِمِّي :</strong> مليء بالزغيبات الدقيقة التي تشكل الحدود الفرشاتية (<span style="color: red;">PAS+</span>)، وهو غني بالجليكوكاليكس والإنزيمات.</li>
+    
+            <div class="separator"></div>
+    
+            <li><strong>▪ Invaginations membranaires :</strong> des canalicules apicaux impliqués dans l’endocytose.</li>
+            <li class="arabic"><strong>▪ تغضنات غشائية :</strong> تتشكل القُنيَّات القِمِّيَّة المشاركة في عمليات الالتقام الخلوي.</li>
+    
+            <div class="separator"></div>
+    
+            <li><strong>▪ Faces latérales :</strong> cellules unies par un complexe de jonction avec interdigitations membranaires et desmosomes.</li>
+            <li class="arabic"><strong>▪ الجوانب الجانبية :</strong> تتصل الخلايا بواسطة معقد ارتباطات متشابكة وتتداخل أغشيتها مع وجود الديسموزومات.</li>
+    
+            <div class="separator"></div>
+    
+            <li><strong>▪ Pôle basal :</strong> contient de nombreuses mitochondries allongées perpendiculaires à la membrane basale (<span style="color: rgb(18, 158, 245);">bâtonnets basaux de Heidenhain</span>).</li>
+            <li class="arabic"><strong>▪ القطب القاعدي :</strong> يحتوي على العديد من الميتوكوندريا الطويلة المتعامدة مع الغشاء القاعدي (<span style="color: rgb(18, 158, 245)e;">عصي هايدنهاين القاعدية</span>).</li>
+    
+            <div class="separator"></div>
+    
+            <li><strong>▪ Replis basaux :</strong> les replis de Pease forment le <span style="color: green;">labyrinthe basal de Ruska</span>.</li>
+            <li class="arabic"><strong>▪ الطيات القاعدية :</strong> تشكل طيات "بيز" <span style="color: green;">المتاهة القاعدية لـ "روسكا"</span>.</li>
+    
+            <div class="separator"></div>
+    
+            <li><strong>▪ Noyau :</strong> clair, sphérique et situé en position basale.</li>
+            <li class="arabic"><strong>▪ النواة :</strong> واضحة، كروية، ومتموضعة قاعدياً.</li>
+    
+            <div class="separator"></div>
+    
+            <li><strong>▪ Cytoplasme :</strong> acidophile, avec vacuoles de pinocytose au pôle apical et un appareil de Golgi supranucléaire.</li>
+            <li class="arabic"><strong>▪ السيتوبلازم :</strong> محب للحمض، يحتوي على فجوات التقطير الخلوي في القطب القمي، وجهاز جولجي فوق النواة.</li>
+        </ul>
+    
+        <div class="separator"></div>
+    
+    </div>
+
+
+
+
+
+<div class="bubble">
+    <div class="separator"></div>
+
+    <h3 style="text-align: center;">3) Le segment moyen (الجزء المتوسط)</h3>
+    
+    <div class="separator"></div>
+    
+    <ul>
+        <li><strong>▪ Correspond à la partie grêle de l'anse de Henlé.</strong></li>
+        <li class="arabic"><strong>▪ يُمثل الجزء الرقيق من عروة هنلي.</strong></li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Longueur variable :</strong> de 2 mm (pour les anses courtes) à 14 mm (pour les plus longues).</li>
+        <li class="arabic"><strong>▪ الطول متغير:</strong> من 2 ملم للأقواس القصيرة إلى 14 ملم للأقواس الطويلة.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Diamètre :</strong> environ 12 à 15 μm.</li>
+        <li class="arabic"><strong>▪ القُطر :</strong> حوالي 12 إلى 15 ميكرومتر.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Absence de bâtonnets et de bordure en brosse.</strong></li>
+        <li class="arabic"><strong>▪ لا يحتوي على العُصيّات أو الحدود الفرشاتية.</strong></li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Épithélium :</strong> endothéliforme, constitué d'une assise de cellules aplaties reposant sur la membrane basale.</li>
+        <li class="arabic"><strong>▪ الظهارة :</strong> تشبه بطانة الأوعية الدموية، مكونة من طبقة واحدة من الخلايا المسطحة التي تستند إلى الغشاء القاعدي.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Pôle apical :</strong> contient quelques microvillosités et est relié aux cellules voisines par des interdigitations membranaires.</li>
+        <li class="arabic"><strong>▪ القطب القِمِّي :</strong> يحتوي على بعض الزغيبات الدقيقة، وتتصل الخلايا ببعضها عبر تشابكات الغشاء الخلوي.</li>
+    </ul>
+    
+    <div class="separator"></div>
+ </div>
+
+
+
+
+
+    <div class="bubble">
+    <div class="separator"></div>
+
+    <h3 style="text-align: center;">4) Le segment distal (الجزء البعيد)</h3>
+    
+    <div class="separator"></div>
+    
+    <ul>
+        <li><strong>▪ Correspond à la fin de la partie large ascendante de l'anse de Henlé et au tube contourné distal.</strong></li>
+        <li class="arabic"><strong>▪ يُمثل نهاية الجزء العريض الصاعد من عروة هنلي والأنبوب الملتوي البعيد.</strong></li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Diamètre :</strong> environ 40 μm.</li>
+        <li class="arabic"><strong>▪ القُطر :</strong> حوالي 40 ميكرومتر.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Présence de bâtonnets, mais absence de bordure en brosse.</strong></li>
+        <li class="arabic"><strong>▪ يحتوي على العُصيّات لكنه لا يحتوي على الحدود الفرشاتية.</strong></li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Paroi :</strong> formée par une couche de cellules cubiques reposant sur la membrane basale.</li>
+        <li class="arabic"><strong>▪ الجدار :</strong> يتكون من طبقة من الخلايا المكعبة التي تستند إلى الغشاء القاعدي.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Relation avec le corpuscule rénal :</strong> Ce segment passe au niveau du pôle vasculaire du corpuscule homologue, près de l'artère afférente.</li>
+        <li class="arabic"><strong>▪ العلاقة مع الجُسَيم الكُبيبي :</strong> يمر هذا الجزء عند القطب الوعائي للجُسَيم الكُبيبي المماثل، بالقرب من الشريان الوارد.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Macula densa :</strong> une zone où l'épithélium est plus épais, appartenant à l'appareil juxta-glomérulaire.</li>
+        <li class="arabic"><strong>▪ البُقعة الكثيفة :</strong> منطقة حيث يكون النسيج الطلائي أكثر سماكة، وهي جزء من الجهاز المجاور للكبيبة.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Cellules épithéliales :</strong> Plus petites que les néphrocytes.</li>
+        <li class="arabic"><strong>▪ الخلايا الطلائية :</strong> أصغر قليلاً من الخلايا النبيبية الكُلوية.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Pôle basal :</strong> Présence des bâtonnets de Heidenhain.</li>
+        <li class="arabic"><strong>▪ القطب القاعدي :</strong> يحتوي على عُصيّات هايدنهاين.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Noyau :</strong> Volumineux et en position médiane.</li>
+        <li class="arabic"><strong>▪ النواة :</strong> كبيرة الحجم وموجودة في المنتصف.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Cytoplasme :</strong> Pauvre en organites, sauf pour un appareil de Golgi bien développé.</li>
+        <li class="arabic"><strong>▪ السيتوبلازم :</strong> فقير في العُضيات، ولكن يحتوي على جهاز جولجي متطور.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Faces latérales :</strong> Reliées par un complexe de jonction et des interdigitations.</li>
+        <li class="arabic"><strong>▪ الجوانب الجانبية :</strong> متصلة بواسطة معقد من الوصلات والتشابكات الغشائية.</li>
+    </ul>
+    
+</div>
+    
+
+
+
+
+
+
+
+<div class="bubble">
+<div class="separator"></div>
+
+<h3 style="text-align: center;">5) L’appareil juxta-glomérulaire (الجهاز المجاور للكبيبة)</h3>
+
+<div class="separator"></div>
+
+<ul>
+    <li><strong>▪ Définition :</strong> Petite structure endocrine située au pôle vasculaire du corpuscule rénal.</li>
+    <li class="arabic"><strong>▪ التعريف :</strong> هيكل صغير ذو وظيفة صمّاء يقع عند القطب الوعائي للجُسَيم الكُبيبي.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Rôle :</strong> Régule la pression artérielle et le volume sanguin en libérant la rénine.</li>
+    <li class="arabic"><strong>▪ الوظيفة :</strong> ينظم ضغط الدم وحجم الدم عبر إفراز الرينين.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Localisation :</strong> Situé à l’intersection entre les artérioles afférente et efférente du glomérule et le tube contourné distal.</li>
+    <li class="arabic"><strong>▪ الموقع :</strong> يقع عند التقاء الشُرين الوارد والشُرين الصادر للكبيبة والأنبوب الملتوي البعيد.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Lacis :</strong> L’espace limité par ces trois éléments.</li>
+    <li class="arabic"><strong>▪ اللَّاكيس :</strong> المساحة المحددة بواسطة هذه العناصر الثلاثة.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Composition :</strong> Il comprend trois constituants principaux :</li>
+    <li class="arabic"><strong>▪ التكوين :</strong> يتألف من ثلاثة مكونات رئيسية :</li>
+
+    <div class="separator"></div>
+
+    <ul>
+        <li><strong>1. Les cellules myoépithéloïdes de Ruyters :</strong> Situées dans la paroi de l’artériole afférente, elles sécrètent la rénine.</li>
+        <li class="arabic"><strong>1. خلايا رويترز العضلية الظهارية :</strong> موجودة في جدار الشُرين الوارد، وتُفرز الرينين.</li>
+
+        <div class="separator"></div>
+
+        <li><strong>2. La macula densa :</strong> Partie modifiée du tube contourné distal qui détecte les variations de la concentration en sodium.</li>
+        <li class="arabic"><strong>2. البُقعة الكثيفة :</strong> جزء معدل من الأنبوب الملتوي البعيد يكتشف تغيرات تركيز الصوديوم.</li>
+
+        <div class="separator"></div>
+
+        <li><strong>3. Les cellules du Lacis :</strong> Situées entre l’artériole afférente et la macula densa, elles participent à la transmission des signaux entre les cellules juxta-glomérulaires.</li>
+        <li class="arabic"><strong>3. خلايا اللَّاكيس :</strong> تقع بين الشُرين الوارد والبُقعة الكثيفة، وتساهم في نقل الإشارات بين خلايا الجهاز المجاور للكبيبة.</li>
+    </ul>
+</ul>
+
+<div class="separator"></div>
+
+</div>
+
+
+
+
+
+
+<div class="bubble">
+<div class="separator"></div>
+
+<h3 style="text-align: center;">a) Les cellules myoépithéloïdes de Ruyters (Cellules granuleuses)</h3>
+<h3 style="text-align: center;">(أ) الخلايا العضلية الظهارية لرويترز (الخلايا الحُبيبية)</h3>
+
+<div class="separator"></div>
+
+<ul>
+    <li><strong>▪ Localisation :</strong> À proximité du corpuscule, l'artériole afférente perd sa limitante élastique interne, et les cellules musculaires lisses de la média se transforment en cellules arrondies appelées cellules myoépithéloïdes de Ruyters.</li>
+    <li class="arabic"><strong>▪ الموقع :</strong> بالقرب من الجُسَيم الكُبيبي، يفقد الشُرين الوارد غشاءه المرن الداخلي، وتتحول خلايا العضلات الملساء في الطبقة الوسطى إلى خلايا دائرية تُعرف باسم خلايا رويترز العضلية الظهارية.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Structure :</strong> Leur pôle interne est en contact avec l'endothélium artériel, tandis que leur pôle externe est en rapport avec les cellules de la macula densa et des terminaisons nerveuses adrénergiques.</li>
+    <li class="arabic"><strong>▪ البنية :</strong> يكون قطبها الداخلي على تماس مع البطانة الغشائية للشُرين، بينما يكون قطبها الخارجي على اتصال بخلايا البُقعة الكثيفة ونهايات الأعصاب الأدرينالية.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Cytoplasme :</strong> Il contient des filaments contractiles de myosine, un ergastoplasme et un appareil de Golgi développés, ainsi que des granulations PAS+ qui renferment de la rénine.</li>
+    <li class="arabic"><strong>▪ السيتوبلازم :</strong> يحتوي على خيوط تقلصية من الميوسين، وشبكة إندوبلازمية خشنة، وجهاز غولجي متطور، بالإضافة إلى حبيبات موجبة التفاعل مع الـPAS، والتي تحتوي على الرينين.</li>
+</ul>
+
+<div class="separator"></div>
+
+
+</div>
+
+<div class="bubble">
+    <div class="separator"></div>
+
+<h3 style="text-align: center;">c) Les cellules du Lacis</h3>
+<h3 style="text-align: center;">(ج) خلايا اللاكيس</h3>
+
+<div class="separator"></div>
+
+<ul>
+    <li><strong>▪ Définition :</strong> Le lacis est l'espace pyramidal compris entre l'artériole afférente, l'artériole efférente et la macula densa.</li>
+    <li class="arabic"><strong>▪ التعريف :</strong> اللاكيس هو الفراغ الهرمي المحصور بين الشُرين الوارد، الشُرين الصادر، والبقعة الكثيفة.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Organisation :</strong> Les cellules qui forment le lacis sont disposées en pile d'assiettes et sont entourées par une membrane basale propre.</li>
+    <li class="arabic"><strong>▪ التنظيم :</strong> تُرتب الخلايا المكونة للاكيس على شكل كومة من الصفائح، وهي محاطة بغشاء قاعدي خاص بها.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Nature des cellules :</strong> Ce sont des cellules mésangiales extraglomérulaires en continuité avec les cellules mésangiales intraglomérulaires entourées de matrice amorphe.</li>
+    <li class="arabic"><strong>▪ طبيعة الخلايا :</strong> هي خلايا ميزانجية خارج الكبيبة، متصلة بالخلايا الميزانجية داخل الكبيبة، وتحيط بها مادة خلوية غير منتظمة.</li>
+</ul>
+
+<div class="separator"></div>
+
+</div>
+
+
+
+
+
+<div class="bubble">
+
+    <div class="separator"></div>
+
+    <h3 style="text-align: center;">a) Les néphrons courts</h3>
+    <h3 style="text-align: center;">(أ) النيفرونات القصيرة</h3>
+    
+    <div class="separator"></div>
+    
+    <ul>
+        <li><strong>▪ Localisation :</strong> dont le glomérule est dans la région superficielle de la corticale.</li>
+        <li class="arabic"><strong>▪ الموقع :</strong> الكبيبة موجودة في المنطقة السطحية من القشرة.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Volume :</strong> Glomérule de petit volume (donc une surface de filtration moindre).</li>
+        <li class="arabic"><strong>▪ الحجم :</strong> كبيبة ذات حجم صغير، مما يعني سطح ترشيح أقل.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Anse de Henlé :</strong> Anse grêle de Henle courte ne descendant pas au-delà de la partie externe de la médullaire.</li>
+        <li class="arabic"><strong>▪ عروة هنلي :</strong> عروة هنلي رفيعة وقصيرة، لا تنزل إلى ما بعد الجزء الخارجي من النخاع.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Abondance :</strong> Ces néphrons à anse courte sont les plus abondants (80 à 90 % des néphrons).</li>
+        <li class="arabic"><strong>▪ الوفرة :</strong> هذه النيفرونات ذات العروة القصيرة هي الأكثر شيوعًا (تشكل 80 إلى 90% من إجمالي النيفرونات).</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Réabsorption :</strong> Leur capacité de réabsorption du sodium est faible « néphrons perdeurs de sel ».</li>
+        <li class="arabic"><strong>▪ إعادة الامتصاص :</strong> قدرتها على إعادة امتصاص الصوديوم ضعيفة، لذا تُعرف باسم "النيفرونات المفقِدة للملح".</li>
+    </ul>
+    
+    <div class="separator"></div>
+    
+
+</div>
+
+
+<div class="bubble">
+
+    <div class="separator"></div>
+
+    <h3 style="text-align: center;">B. Le tube collecteur</h3>
+    <h3 style="text-align: center;">ب. الأنبوب الجامع</h3>
+    
+    <div class="separator"></div>
+    
+    <ul>
+        <li><strong>▪ Structure :</strong> C’est un segment sans bâtonnets et sans bordure en brosse.</li>
+        <li class="arabic"><strong>▪ التركيب :</strong> هو جزء خالٍ من العصيودات وخالٍ من الحافة الفرشاتية.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Début :</strong> Il débute par un segment contourné appelé canal d'union.</li>
+        <li class="arabic"><strong>▪ البداية :</strong> يبدأ بجزء ملتف يسمى القناة الرابطة.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Trajet :</strong> Il se jette dans le tube droit de Bellini qui descend dans la pyramide de Malpighi et débouche à la papille rénale.</li>
+        <li class="arabic"><strong>▪ المسار :</strong> يصب في الأنبوب المستقيم لبيلليني الذي ينزل داخل هرم مالبيغي وينفتح عند الحليمة الكلوية.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Calibre :</strong> Son calibre passe de 100 à 200 μm.</li>
+        <li class="arabic"><strong>▪ القطر :</strong> يتراوح قطره بين 100 و 200 ميكرومتر.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Épithélium :</strong> L'ensemble de ce segment collecteur est bordé par un épithélium cubique simple.</li>
+        <li class="arabic"><strong>▪ الظهارة :</strong> يُبطن هذا الجزء من الأنبوب الجامع بظهارة مكعبة بسيطة.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Types cellulaires :</strong> Il contient deux types de cellules reposant sur la basale :</li>
+        <li class="arabic"><strong>▪ أنواع الخلايا :</strong> يحتوي على نوعين من الخلايا تستند إلى الغشاء القاعدي :</li>
+    
+        <ul>
+            <li><strong>➤ Les cellules claires.</strong></li>
+            <li class="arabic"><strong>➤ الخلايا الشفافة.</strong></li>
+    
+            <li><strong>➤ Les cellules sombres ou intercalaires.</strong></li>
+            <li class="arabic"><strong>➤ الخلايا الداكنة أو المُدخَلة.</strong></li>
+        </ul>
+    
+    </ul>
+    
+    <div class="separator"></div>
+    <div class="separator"></div>
+
+<h3 style="text-align: center;">1) Les cellules claires</h3>
+<h3 style="text-align: center;">1) الخلايا الشفافة</h3>
+
+<div class="separator"></div>
+
+<ul>
+    <li><strong>▪ Nombre :</strong> Ce sont les plus nombreuses.</li>
+    <li class="arabic"><strong>▪ العدد :</strong> هي الأكثر عددًا.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Noyau :</strong> Leur noyau est arrondi.</li>
+    <li class="arabic"><strong>▪ النواة :</strong> نواتها مستديرة.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Pôle apical :</strong> Possède quelques microvillosités et est recouvert par un glycolemme abondant.</li>
+    <li class="arabic"><strong>▪ القطب القمي :</strong> يحتوي على بعض الزغيبات الدقيقة ومغطى بغشاء جليكوبروتيني وفير.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Faces latérales :</strong> Réunies à proximité du pôle apical par des complexes de jonction.</li>
+    <li class="arabic"><strong>▪ السطوح الجانبية :</strong> متصلة بالقرب من القطب القمي بواسطة معقدات الوصل.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Cytoplasme :</strong> Pauvre en organites.</li>
+    <li class="arabic"><strong>▪ السيتوبلازم :</strong> فقير بالعضيات.</li>
+</ul>
+
+<div class="separator"></div>
+<div class="separator"></div>
+
+<h3 style="text-align: center;">2) Les cellules sombres (intercalaires)</h3>
+<h3 style="text-align: center;">2) الخلايا الداكنة (الخلايا المتداخلة)</h3>
+
+<div class="separator"></div>
+
+<ul>
+    <li><strong>▪ Rareté :</strong> Elles sont rares, disposées isolément entre les cellules précédentes, principalement dans la partie initiale du segment collecteur.</li>
+    <li class="arabic"><strong>▪ الندرة :</strong> نادرة، موزعة بشكل منفصل بين الخلايا السابقة، وتوجد بشكل أساسي في الجزء الأولي من الأنبوب الجامع.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Cytoplasme :</strong> Riche en mitochondries et en ribosomes.</li>
+    <li class="arabic"><strong>▪ السيتوبلازم :</strong> غني بالميتوكوندريا والريبوسومات.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Pôle apical :</strong> Possède une bordure striée apicale et des replis basaux de la membrane plasmique.</li>
+    <li class="arabic"><strong>▪ القطب القمي :</strong> يحتوي على حافة مخططة قمية وثنيات قاعدية في الغشاء البلازمي.</li>
+</ul>
+
+<div class="separator"></div>
+
+</div>
+
+
+
+<div class="bubble">
+    <div class="separator"></div>
+
+    <h3 style="text-align: center;">C. Le tissu interstitiel</h3>
+    <h3 style="text-align: center;">ج. النسيج الخلالي</h3>
+    
+    <div class="separator"></div>
+    
+    <ul>
+        <li><strong>▪ Dans le cortex rénal :</strong> L'espace interstitiel est réduit et occupé par des vaisseaux sanguins et lymphatiques.</li>
+        <li class="arabic"><strong>▪ في القشرة الكلوية :</strong> المساحة الخلالية صغيرة وتحتوي على الأوعية الدموية واللمفاوية.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Dans la médullaire :</strong> Il est plus important et joue un rôle essentiel surtout à proximité du sommet de la papille.</li>
+        <li class="arabic"><strong>▪ في النخاع الكلوي :</strong> تكون المساحة الخلالية أكبر وتلعب دورًا مهمًا، خاصة بالقرب من قمة الحليمة الكلوية.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Composition :</strong> Il est constitué par un matériel lâche et de cellules essentiellement des fibroblastes.</li>
+        <li class="arabic"><strong>▪ التكوين :</strong> يتكون من نسيج رخو وخلايا، بشكل أساسي من الخلايا الليفية.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Rôle :</strong> Il joue un rôle dans l'homéostasie à proximité des anses de Henlé, des vasa recta et des canaux collecteurs.</li>
+        <li class="arabic"><strong>▪ الدور :</strong> يساهم في التوازن الداخلي بالقرب من عروة هنلي، الأوعية المستقيمة، والأنابيب الجامعة.</li>
+    </ul>
+    
+    <div class="separator"></div>
+    
+</div>
+
+
+
+
+<div class="bubble">
+    <h3 style="text-align: center;">IV. VASCULARISATION ET INNERVATION</h3>
+    <h3 style="text-align: center;">التروية الدموية والتعصيب</h3>
+    
+    <ul>
+        <li><strong>▪ L'artère rénale :</strong> Elle aborde le rein au niveau du hile, se divise en quelques branches d'où se détachent les artères interlobaires qui pénètrent dans les colonnes de Bertin.</li>
+        <li class="arabic"><strong>▪ الشريان الكلوي :</strong> يصل إلى الكلية عند مستوى السرة، وينقسم إلى عدة فروع تتفرع منها الشرايين بين الفصوص التي تخترق أعمدة برتين.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Les artères interlobaires :</strong> À la base des pyramides de Malpighi, elles se divisent en artères arciformes qui ont un trajet parallèle à la surface du rein.</li>
+        <li class="arabic"><strong>▪ الشرايين بين الفصوص :</strong> عند قاعدة أهرامات مالبيغي، تنقسم إلى شرايين قوسية تتخذ مسارًا موازيًا لسطح الكلية.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Les artères interlobulaires :</strong> Durant leur trajet, elles donnent des collatérales qui remontent dans la corticale entre les pyramides de Ferrein.</li>
+        <li class="arabic"><strong>▪ الشرايين بين الفصيصات :</strong> خلال مسارها، تعطي فروعًا جانبية تصعد في القشرة بين أهرامات فيرين.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Les artérioles afférentes :</strong> Ce sont des branches courtes issues des artères interlobulaires et alimentent les glomérules.</li>
+        <li class="arabic"><strong>▪ الشرايين الواردة :</strong> فروع قصيرة تنشأ من الشرايين بين الفصيصات وتغذي الكبيبات.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Les capillaires péritubulaires :</strong> Au niveau des corpuscules rénaux superficiels et du cortex moyen, l'artériole efférente se ramifie en un réseau de capillaires entourant les tubes contournés proximaux et distaux.</li>
+        <li class="arabic"><strong>▪ الشعيرات الدموية حول النبيبات :</strong> عند مستوى الكبيبات الكلوية السطحية والقشرة الوسطى، تتفرع الشريان الصادر إلى شبكة من الشعيرات الدموية تحيط بالنبيبات القريبة والبعيدة.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Les vasa recta :</strong> Au niveau des corpuscules rénaux juxtamédullaires, l'artériole efférente se divise en nombreux vaisseaux droits descendant dans la médullaire pour entourer les anses de Henlé.</li>
+        <li class="arabic"><strong>▪ الأوعية المستقيمة :</strong> عند مستوى الكبيبات الكلوية المجاورة لللب، ينقسم الشريان الصادر إلى العديد من الأوعية المستقيمة التي تنحدر إلى اللب لتحيط بحلقات هنلي.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Les veines interlobulaires :</strong> Elles drainent les réseaux capillaires issus des artères efférentes des glomérules et se jettent dans les veines arciformes.</li>
+        <li class="arabic"><strong>▪ الأوردة بين الفصيصات :</strong> تصرف الشبكات الشعرية الناتجة عن الشرايين الصادرة للكبيبات، وتصب في الأوردة القوسية.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Les veines arciformes :</strong> Elles reçoivent les veines droites ascendantes issues des réseaux capillaires médullaires.</li>
+      
+        <li class="arabic"><strong>▪ الأوردة القوسية :</strong> تستقبل الأوردة المستقيمة الصاعدة القادمة من الشبكات الشعرية في النخاع.</li>
+    
+    
+     
+            <li><strong>▪ Les veines arciformes :</strong> Elles se jettent dans les veines interlobaires qui confluent pour donner la veine rénale.</li>
+            <li class="arabic"><strong>▪ الأوردة القوسية :</strong> تصب في الأوردة بين الفصوص، والتي تتحد لتشكيل الوريد الكلوي.</li>
+        
+            <div class="separator"></div>
+        
+            <li><strong>▪ La vascularisation lymphatique :</strong> Elle constitue un réseau qui est calqué à celui des vaisseaux sanguins.</li>
+            <li class="arabic"><strong>▪ التروية اللمفاوية :</strong> تشكل شبكة مشابهة تمامًا لشبكة الأوعية الدموية.</li>
+        
+            <div class="separator"></div>
+        
+            <li><strong>▪ L'innervation du rein :</strong> Elle est de nature végétative (fibres sympathiques) et est destinée aux vaisseaux et à l'appareil juxtaglomérulaire.</li>
+            <li class="arabic"><strong>▪ تعصيب الكلية :</strong> من النوع اللاإرادي (ألياف ودية) وهو موجه للأوعية الدموية والجهاز المجاور للكبيبة.</li>
+        
+        
+    
+    </ul>
+
+    
+
+
+
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <div class="separator"></div>
+
+    <h3 style="text-align: center;">V. HISTOPHYSIOLOGIE</h3>
+    <h3 style="text-align: center;">V. الهستوفيزيولوجيا</h3>
+    
+    <div class="separator"></div>
+    
+    <p><strong>Le rein assure 2 grands groupes de fonction : La fonction exocrine et les fonctions endocrines.</strong></p>
+    <p class="arabic"><strong>يؤدي الكلى مجموعتين رئيسيتين من الوظائف: الوظيفة الإفرازية الخارجية والوظائف الإفرازية الداخلية.</strong></p>
+    
+    <div class="separator"></div>
+    
+    <h4>A) La production de l’urine: (fonction exocrine)</h4>
+    <h4 class="arabic">أ) إنتاج البول: (الوظيفة الإفرازية الخارجية)</h4>
+    
+    <p><strong>Elle est complexe, associant filtration, diffusion passive, sécrétion active et réabsorption sélective.</strong></p>
+    <p class="arabic"><strong>إنها عملية معقدة تشمل الترشيح، الانتشار السلبي، الإفراز النشط، وإعادة الامتصاص الانتقائي.</strong></p>
+    
+    <div class="separator"></div>
+    
+    <h4>1) La filtration glomérulaire:</h4>
+    <h4 class="arabic">1) الترشيح الكبيبي:</h4>
+    
+    <ul>
+        <li><strong>▪ Production :</strong> Elle produit 172 L d'urine primitive par 24 h.</li>
+        <li class="arabic"><strong>▪ الإنتاج :</strong> تنتج 172 لتراً من البول البدائي خلال 24 ساعة.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Composition :</strong> Elle est iso-osmolaire par rapport au plasma sanguin et riche en petites molécules.</li>
+        <li class="arabic"><strong>▪ التركيب :</strong> يكون متساوي الأسمولية مقارنةً بالبلازما الدموية وغنيًا بالجزيئات الصغيرة.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Réabsorption :</strong> 99 % de son volume sera réabsorbé dans la suite du tube urinaire.</li>
+        <li class="arabic"><strong>▪ إعادة الامتصاص :</strong> يتم إعادة امتصاص 99٪ من حجمه في باقي أجزاء الأنبوب البولي.</li>
+    </ul>
+    
+    <div class="separator"></div>
+    
+    <h4>2) La réabsorption tubulaire:</h4>
+    <h4 class="arabic">2) إعادة الامتصاص الأنبوبية:</h4>
+    
+    <ul>
+        <li><strong>▪ Processus :</strong> C'est un phénomène complexe qui intéresse l'eau, les sels minéraux et la plupart des molécules organiques présentes dans l'urine primitive.</li>
+        <li class="arabic"><strong>▪ العملية :</strong> هي ظاهرة معقدة تشمل الماء، الأملاح المعدنية ومعظم الجزيئات العضوية الموجودة في البول البدائي.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Volume :</strong> A la fin du segment proximal, l'urine est encore iso-osmotique par rapport au plasma, mais son volume n'est plus que de 43 L / 24 h.</li>
+        <li class="arabic"><strong>▪ الحجم :</strong> في نهاية الجزء القريب، يظل البول متساوي الأسمولية مقارنة بالبلازما، لكن حجمه يصبح 43 لترًا خلال 24 ساعة.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Concentration :</strong> Elle se concentre et devient hypertonique dans la branche grêle, puis, par mécanisme actif redevient hypo-osmolaire à l'entrée du tube contourné distal.</li>
+        <li class="arabic"><strong>▪ التركيز :</strong> يزداد تركيزه ويصبح مفرط التوتر في الفرع النحيف، ثم يعود إلى حالة منخفضة الأسمولية بآلية نشطة عند مدخل الأنبوب الملتف البعيد.</li>
+    
+        <div class="separator"></div>
+    
+        <li><strong>▪ Régulation hormonale :</strong> A partir du segment distal, il existe un contrôle actif hormonal de l'osmolarité par l'aldostérone et l'hormone antidiurétique.</li>
+        <li class="arabic"><strong>▪ التنظيم الهرموني :</strong> من الجزء البعيد، يوجد تحكم هرموني نشط في الأسمولية عبر الألدوستيرون والهرمون المضاد لإدرار البول.</li>
+    </ul>
+    
+    <div class="separator"></div>
+    
+</div>
+
+<div class="bubble">
+
+
+
+    <div class="separator"></div>
+
+<h4>B) Les fonctions endocrines:</h4>
+<h4 class="arabic">ب) الوظائف الإفرازية الداخلية:</h4>
+
+<div class="separator"></div>
+
+<h4>1) L’élaboration de la rénine:</h4>
+<h4 class="arabic">1) إنتاج الرينين:</h4>
+
+<ul>
+    <li><strong>▪ Fonction :</strong> C'est la fonction de l'appareil juxta-glomérulaire.</li>
+    <li class="arabic"><strong>▪ الوظيفة :</strong> هي وظيفة الجهاز المجاور للكبيبات.</li>
+
+    <div class="separator"></div>
+
+    <li><strong>▪ Rôle :</strong> C'est le mode principal de régulation de la pression artérielle par contrôle du tonus vasculaire.</li>
+    <li class="arabic"><strong>▪ الدور :</strong> هو الآلية الرئيسية لتنظيم ضغط الدم عن طريق التحكم في توتر الأوعية الدموية.</li>
+</ul>
+
+<div class="separator"></div>
+
+<h4>2) La régulation de l’érythropoïèse:</h4>
+<h4 class="arabic">2) تنظيم تكوين كريات الدم الحمراء:</h4>
+
+<ul>
+    <li><strong>▪ Effet de l'insuffisance rénale :</strong> L'insuffisance rénale entraîne une anémie par absence d'un facteur sérique : l’érythropoïétine stimulant la différenciation des cellules souches médullaires en pro-érythroblastes.</li>
+    <li class="arabic"><strong>▪ تأثير الفشل الكلوي :</strong> يؤدي الفشل الكلوي إلى فقر الدم بسبب غياب عامل مصل الدم: الإريثروبويتين، الذي يحفز تمايز الخلايا الجذعية النخاعية إلى طلائع كريات الدم الحمراء.</li>
+</ul>
+
+<div class="separator"></div>
+
+<h4>3) La transformation de la vitamine D:</h4>
+<h4 class="arabic">3) تحويل فيتامين د:</h4>
+
+<ul>
+    <li><strong>▪ Processus :</strong> Au niveau du rein, les cellules tubulaires du rein transforment le 25-hydroxycholécalciférol (inactif), au cours de la réabsorption, en 1-25 dihydroxycholécalciférol (actif).</li>
+    <li class="arabic"><strong>▪ العملية :</strong> على مستوى الكلى، تقوم الخلايا الأنبوبية الكلوية بتحويل 25-هيدروكسي كولي كالسيفيرول (غير نشط) أثناء إعادة الامتصاص، إلى 1-25 ثنائي هيدروكسي كولي كالسيفيرول (نشط).</li>
+</ul>
+
+<div class="separator"></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 10px;
+        }
+        .gallery-container {
+            max-width: 400px; /* يناسب شاشات الهواتف */
+            margin: 0 auto;
+        }
+        .gallery-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px; /* تباعد بين الصور */
+            transition: transform 0.3s ease-in-out;
+        }
+        .gallery-container img:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body>
+
+<div class="gallery-container">
+    <img src="2MEDU3HISTOLOGIEIMG/2C1.jpg" alt="صورة 1">
+    <img src="2MEDU3HISTOLOGIEIMG/2C2.jpg" alt="صورة 2">
+    <img src="2MEDU3HISTOLOGIEIMG/2C3.jpg" alt="صورة 3">
+    <img src="2MEDU3HISTOLOGIEIMG/2C4.jpg" alt="صورة 4">
+    <img src="2MEDU3HISTOLOGIEIMG/2C5.jpg" alt="صورة 5">
+    <img src="2MEDU3HISTOLOGIEIMG/2C6.jpg" alt="صورة 6">
+    <img src="2MEDU3HISTOLOGIEIMG/2C7.jpg" alt="صورة 7">
+    <img src="2MEDU3HISTOLOGIEIMG/2C8.jpg" alt="صورة 8">
+</div>
+
+</body>
+</html>
+
+
+
+</div>
+
+
+
+
+
+<br><br><br><br>
+
+  `
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+//نهايى
+
+
+{ 
+   text: "المقاومة  واجبة " ,  
+    options: [   " نعم في حالة توفر الامور",
+  " نعم ونوفر لها الاسباب",
+  " كلا الحياة مهما كانت   افضل ",
+  " ليس خيار جميل "], 
+  correct: [1],  
+  explanation: " قريبا "},
+
+
+
+  { 
+    text: "ما هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم؟", 
+    options: ["الإنجيل", "التوراة", "القرآن", "الزبور"], 
+    correct: [2],  
+    explanation: "القرآن الكريم هو أول كتاب أنزل على النبي محمد صلى الله عليه وسلم."
+  },
+
+
+
+  { 
+
+    text: "ما هو عدد ركعات صلاة الفجر؟", 
+    options: ["ركعتين", "أربع ركعات", "ثلاث ركعات", "ركعة واحدة"], 
+    correct: [0],  
+    explanation: "صلاة الفجر تتكون من ركعتين."
+    
+  },
+
+
+
+
+  
+  { 
+    text: "في أي عام هجري ولد النبي محمد صلى الله عليه وسلم؟", 
+    options: ["عام 570", "عام 510", "عام 590", "عام 600"], 
+    correct: [0],  
+    explanation: "النبي محمد صلى الله عليه وسلم وُلد في عام 570 ميلادي."
+  },
+
+
+
+  {
+    text: "ما هو اسم أطول سورة في القرآن؟",
+    options: ["سورة البقرة", "سورة آل عمران", "سورة النحل", "سورة الفاتحة"],
+    correct: [0],
+    explanation: "سورة البقرة هي أطول سورة في القرآن.",
+
+
+    link: "", // رابط مخصص للسؤال
+    buttonColor: "red", // لون مخصص للزر
+    buttonText: "تحميل كتيب سورة البقرة", // نص مخصص للزر
+    buttonStyle: "bold" // تصميم مخصص للزر
+  },
+  // أضف أسئلة أخرى بنفس التنسيق
+];
+
+
+let currentQuestionIndex = 0;
+let selectedAnswers = [];
+let timer;
+let timeLeft;
+let totalTime = 0;
+let quizDuration = 0;
+
+const questionContainer = document.getElementById("question-container");
+const resultSection = document.getElementById("result-section");
+const resultsContainer = document.getElementById("results-container");
+const finalMessage = document.getElementById("final-message");
+const totalTimeMessage = document.getElementById("total-time-message");
+const timerElement = document.getElementById("timer");
+
+function startQuiz() {
+  quizDuration = parseInt(document.getElementById("custom-duration").value) * 60;
+  selectedAnswers = [];
+  totalTime = 0;
+  document.querySelector('.duration-select').style.display = "none";
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const question = questions[currentQuestionIndex];
+  questionContainer.innerHTML = `
+    <div class="question-container">
+      <!-- إطار الصورة -->
+      <div class="image-frame">
+        ${question.image ? `<img src="${question.image}" alt="صورة" />` : '' }
+      </div>
+      <div class="question">
+        <p><strong>${question.text}</strong></p>
+        <ul class="options">
+          ${question.options.map((option, index) => `
+            <li onclick="selectOption(${index})">
+              ${option}
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    </div>
+    <button class="btn" onclick="submitAnswer()">إرسال الإجابة</button>
+  `;
+  questionContainer.style.display = "block";
+
+  if (currentQuestionIndex === 0) {
+    startTimer();
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function restartQuiz() {
+            let timerInterval;
+            Swal.fire({
+                title: "📢 تأكيد!",
+                html: "<b style='color: #d33;'>⚠️ سيتم إعادة الاختبار!</b><br><br><span id='countdown' style='color: #007bff; font-weight: bold;'>5</span> ثوانٍ متبقية",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#007bff",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "✅ نعم",
+                cancelButtonText: "❌ لا",
+                background: "rgba(255, 255, 255, 0.9)",
+                backdrop: "rgba(0, 0, 0, 0.5)",
+                width: "280px", /* ✅ نافذة أصغر حجمًا */
+                padding: "15px",
+                didOpen: () => {
+                    let countdown = 5;
+                    timerInterval = setInterval(() => {
+                        countdown--;
+                        document.getElementById("countdown").textContent = countdown;
+                        if (countdown <= 0) {
+                            clearInterval(timerInterval);
+                            Swal.close();
+                        }
+                    }, 1000);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+                timer: 5000
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "🔄 جاري إعادة الاختبار...",
+                        text: "يرجى الانتظار",
+                        icon: "info",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            });
+        }
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function selectOption(optionIndex) {
+  const options = document.querySelectorAll(".options li");
+  options.forEach((option, index) => {
+    if (index === optionIndex) {
+      option.classList.add("selected");
+    } else {
+      option.classList.remove("selected");
+    }
+  });
+  selectedAnswers[currentQuestionIndex] = optionIndex;
+}
+
+function submitAnswer() {
+  const question = questions[currentQuestionIndex];
+  const isCorrect = selectedAnswers[currentQuestionIndex] === question.correct[0];
+  const options = document.querySelectorAll(".options li");
+
+  if (isCorrect) {
+    options[selectedAnswers[currentQuestionIndex]].classList.add("correct");
+  } else {
+    options[selectedAnswers[currentQuestionIndex]].classList.add("incorrect");
+  }
+
+  currentQuestionIndex++;
+  totalTime = quizDuration - timeLeft;
+  if (currentQuestionIndex < questions.length) {
+    loadQuestion();
+  } else {
+    displayResults();
+  }
+}
+
+function startTimer() {
+  timeLeft = quizDuration;
+  timer = setInterval(function() {
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      displayResults();
+    } else {
+      timeLeft--;
+      timerElement.innerText = formatTime(timeLeft);
+    }
+  }, 1000);
+}
+
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secondsRemaining = seconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+}
+
+function displayResults() {
+  questionContainer.style.display = "none";
+  resultSection.style.display = "block";
+  let correctAnswersCount = 0;
+
+  questions.forEach((question, index) => {
+    const isCorrect = selectedAnswers[index] === question.correct[0];
+    const reviewClass = isCorrect ? "green" : "red";
+    const reviewText = isCorrect ? "إجابة صحيحة" : "إجابة خاطئة";
+
+    resultsContainer.innerHTML += `
+      <div class="question-review ${reviewClass}">
+        <p><strong>${question.text}</strong></p>
+        <p>${reviewText}</p>
+        <button class="explain-btn" onclick="showExplanation(${index})">عرض الشرح</button>
+      </div>
+    `;
+    if (isCorrect) {
+      correctAnswersCount++;
+    }
+  });
+
+  finalMessage.innerText = `لقد أجبت على ${correctAnswersCount} من ${questions.length} أسئلة بشكل صحيح.`;
+  totalTimeMessage.innerText = `الوقت المستغرق: ${formatTime(totalTime)}`;
+}
+
+
+
+
+
+function showExplanation(index) {
+    const question = questions[index];
+    const explanationModal = document.createElement("div");
+    explanationModal.classList.add("modal");
+
+    const explanationContent = document.createElement("div");
+    explanationContent.classList.add("modal-content");
+
+    const fixedButtons = document.createElement("div");
+    fixedButtons.classList.add("fixed-buttons");
+
+    const closeButton = document.createElement("button");
+    closeButton.classList.add("close-btn");
+    closeButton.innerHTML = "&#x274C;"; // زر الإغلاق
+    closeButton.onclick = function() {
+        closeExplanation(explanationModal);
+    };
+
+
+
+
+
+
+
+
+
+
+
+    const linkButton = document.createElement("button");
+linkButton.classList.add("link-btn");
+linkButton.innerText = question.buttonText || "";
+linkButton.style.color = question.buttonColor || "black"; // استخدام اللون المخصص أو الافتراضي
+linkButton.style.fontWeight = question.buttonStyle === "bold" ? "bold" : "normal"; // استخدام التصميم المخصص أو الافتراضي
+
+// تعطيل الزر مع إخفائه
+linkButton.style.display = "none";
+
+// إذا أردت لاحقًا إظهار الزر مرة أخرى، يمكنك تغيير display إلى "block" أو "inline-block"
+// linkButton.style.display = "block";
+
+// الزر لن يعمل حتى لو تم إعادة تمكينه لاحقًا
+linkButton.onclick = function() {
+    if (linkButton.style.display !== "none") {
+        window.location.href = question.link;
+    }
+};
+
+
+
+
+
+    fixedButtons.appendChild(closeButton);
+    fixedButtons.appendChild(linkButton);
+    explanationContent.appendChild(fixedButtons);
+
+    const explanationText = document.createElement("div");
+    explanationText.innerHTML = question.explanation;
+    explanationContent.appendChild(explanationText);
+
+    explanationModal.appendChild(explanationContent);
+    document.body.appendChild(explanationModal);
+
+    setTimeout(() => {
+        explanationModal.classList.add("active");
+    }, 10);
+
+    explanationModal.onclick = function(event) {
+        if (event.target === explanationModal) {
+            closeExplanation(explanationModal);
+        }
+    };
+}
+
+function closeExplanation(modal) {
+    modal.classList.remove("active");
+    setTimeout(() => {
+        document.body.removeChild(modal);
+    }, 300);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let zoomed = false;
+
+function toggleZoom() {
+    const image = document.getElementById('gifImage');
+    const exitBtn = document.getElementById('exitZoomBtn');
+    
+    if (!zoomed) {
+        image.style.transform = 'scale(1.5)';
+        image.style.transition = 'transform 0.3s ease-in-out';
+        exitBtn.style.display = 'inline-block';
+        zoomed = true;
+    } else {
+        exitZoom();
+    }
+}
+
+function exitZoom() {
+    const image = document.getElementById('gifImage');
+    const exitBtn = document.getElementById('exitZoomBtn');
+    
+    image.style.transform = 'scale(1)';
+    exitBtn.style.display = 'none';
+    zoomed = false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const animatedBox = document.getElementById("animated-box");
+
+    // مراقبة العنصر عند الظهور
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    animatedBox.classList.add("visible"); // تفعيل الحركة عند الظهور
+                }
+            });
+        },
+        { threshold: 0.5 } // يبدأ التأثير عند ظهور 50% من العنصر
+    );
+
+    observer.observe(animatedBox);
+
+    // تأثير نبض عند النقر
+    animatedBox.addEventListener("click", () => {
+        const text = document.getElementById("text");
+        text.style.animation = "textHoverBounce 0.4s ease-in-out";
+        setTimeout(() => {
+            text.style.animation = ""; // إعادة الحالة الأصلية
+        }, 400);
+    });
+});
+
+
+
+
+
+
+
+
+function toggleZoom() {
+      const img = document.getElementById('zoomable-image');
+      if (img.style.transform === "scale(4.5)") { // تكبير حتى 2.5 مرة
+        img.style.transform = "scale(1)"; // العودة للحجم الطبيعي
+      } else {
+        img.style.transform = "scale(4.5)"; // تكبير الصورة أكثر
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+
+
+<!--زر استغفار مطور-->
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #f0f8ff, #e6f7ff);
+        }
+
+        .istighfar-button {
+            position: fixed;
+            bottom: 19px;
+            left: 10px;
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.2s, background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .istighfar-button:hover {
+            transform: scale(1.1);
+            background-color: #138496;
+        }
+
+
+
+        
+
+.istighfar-popup {
+            position: fixed;
+          
+
+
+            width: 100px; /* تصغير العرض */
+    padding: 10px; /* تقليل التباعد الداخلي */
+    bottom: 40px; /* تقليل المسافة عن الزر */
+            left: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 999;
+            width: 230px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .istighfar-popup span {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .motivation {
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .close-button, .delete-button {
+            display: block;
+            margin: 5px auto 0;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+        }
+
+        .close-button:hover, .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        .settings {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings:hover {
+            background-color: #218838;
+        }
+
+ 
+        /* نافذة الإعدادات */
+        .settings-popup {
+            position: fixed;
+            bottom: 140px;
+            left: 50px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 999;
+            width: 160px; /* تصغير العرض */
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .settings-popup label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        .settings-popup input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .settings-popup button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .settings-popup button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+  <button class="istighfar-button" onclick="toggleIstighfarPopup()">📿</button>
+  <button class="settings" id="settingsButton" onclick="toggleSettingsPopup()">⚙️</button>
+  <div class="istighfar-popup" id="istighfarPopup">
+
+
+   <!-- زر استغفر الله -->
+<div style="display: inline-block; padding: 8px 16px; background: #e0f7fa; color: #00796b; font-family: 'Amiri', serif; font-size: 1em; font-weight: bold; border-radius: 50px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #b2ebf2; text-align: center; cursor: pointer; transition: transform 0.3s, background 0.3s; margin-bottom: 8px;" 
+onmouseover="this.style.background='#b2ebf2'; this.style.transform='scale(1.05)';" 
+onmouseout="this.style.background='#e0f7fa'; this.style.transform='scale(1)';">
+<span id="istighfarText">استغفر الله</span>
+</div>
+
+<!-- آية الاستغفار -->
+<div class="motivation" style="text-align: center; padding: 6px 12px; background: #f0f8ff; font-family: 'Amiri', serif; border: 1px solid #b3d9e8; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); margin: 6px auto; max-width: 90%; line-height: 1.4;">
+<p style="color: #0d47a1; font-size: 0.85em; font-weight: bold; margin: 6px 0; word-wrap: break-word; direction: rtl;">
+  ﴿ وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا ﴾
+</p>
+<p style="color: #616161; font-size: 0.75em; margin: 3px 0; direction: rtl;">[ النساء: 110 ]</p>
+<a href="https://surahquran.com/aya-110-sora-4.html" target="_blank" style="color: #0288d1; text-decoration: none; font-size: 0.7em; font-weight: bold; display: block; margin-top: 5px;">🔗 شرح الآية</a>
+</div>
+
+<!-- حديث الاستغفار -->
+<div class="motivation" style="text-align: center; padding: 6px 12px; background: #fff3e0; font-family: 'Amiri', serif; border: 1px solid #ffcc80; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); margin: 6px auto; max-width: 90%; line-height: 1.4;">
+<p style="color: #e65100; font-size: 0.8em; font-weight: bold; margin: 5px 0; word-wrap: break-word; direction: rtl;">
+  5/1873- وعنِ ابْنِ عَبَّاسٍ رضِي اللَّه عنْهُما قَال: قالَ رَسولُ اللَّهِ ﷺ: منْ لَزِم الاسْتِغْفَار، جَعَلَ اللَّه لَهُ مِنْ كُلِّ ضِيقٍ مخْرجًا، ومنْ كُلِّ هَمٍّ فَرجًا، وَرَزَقَهُ مِنْ حيْثُ لاَ يَحْتَسِبُ رواه أبو داود.
+</p>
+<a href="https://binbaz.org.sa/audios/2653/587-%D9%85%D9%86-%D8%AD%D8%AF%D9%8A%D8%AB-%D9%85%D9%86-%D9%84%D8%B2%D9%85-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%BA%D9%81%D8%A7%D8%B1-%D8%AC%D8%B9%D9%84-%D8%A7%D9%84%D9%84%D9%87-%D9%84%D9%87-%D9%85%D9%86-%D9%83%D9%84-%D8%B6%D9%8A%D9%82-%D9%85%D8%AE%D8%B1%D8%AC%D8%A7" target="_blank" style="color: #d32f2f; text-decoration: none; font-size: 0.7em; font-weight: bold; display: block; margin-top: 4px;">🔗 الاستماع للحديث</a>
+</div>
+
+    
+    
+        <button class="close-button" onclick="toggleIstighfarPopup()">إغلاق</button>
+        <button class="delete-button" onclick="removeIstighfarButton()">حذف</button>
+    </div>
+    <div class="settings-popup" id="settingsPopup">
+        <label for="interval">⏱️ عدد الثواني بين كل ظهور:</label>
+        <input type="number" id="interval" placeholder="أدخل عدد الثواني" min="1">
+        <label for="count">🔄 عدد مرات الظهور:</label>
+        <input type="number" id="count" placeholder="أدخل عدد المرات" min="1">
+        <button onclick="applySettings()">تطبيق</button>
+    </div>
+
+    <script>
+        let timerInterval;
+        let autoPopupInterval;
+        const istighfarPhrases = [
+            "استغفر الله العظيم",
+            "اللهم صل وسلم على نبينا محمد",
+            "سبحان الله وبحمده",
+            "اللهم اغفر لي",
+            "رب اغفر لي وتب علي"
+        ];
+        let userInterval = 300000; // 5 دقائق افتراضية
+        let userCount = 3; // عدد مرات افتراضي
+
+        function toggleIstighfarPopup() {
+            const popup = document.getElementById('istighfarPopup');
+            const settingsButton = document.getElementById('settingsButton');
+            if (popup.style.display === 'none' || popup.style.display === '') {
+                popup.style.display = 'block';
+                settingsButton.style.display = 'block'; // إظهار زر الإعدادات عند ظهور النافذة
+                startIstighfarTimer(10);
+            } else {
+                popup.style.display = 'none';
+                settingsButton.style.display = 'none'; // إخفاء زر الإعدادات عند إغلاق النافذة
+                clearInterval(timerInterval);
+            }
+        }
+
+        function startIstighfarTimer(seconds) {
+            const istighfarText = document.getElementById('istighfarText');
+            let remainingTime = seconds;
+
+            updateIstighfarText();
+            timerInterval = setInterval(() => {
+                remainingTime--;
+                if (remainingTime >= 0) {
+                    istighfarText.textContent = `${istighfarPhrases[Math.floor(Math.random() * istighfarPhrases.length)]} (${remainingTime})`;
+                } else {
+                    clearInterval(timerInterval);
+                    setTimeout(() => {
+                        toggleIstighfarPopup(); // إغلاق النافذة بعد مهلة قصيرة
+                    }, 5000); // 5 ثوانٍ لقراءة الجملة
+                }
+            }, 1000);
+        }
+
+        function updateIstighfarText() {
+            const istighfarText = document.getElementById('istighfarText');
+            istighfarText.textContent = istighfarPhrases[Math.floor(Math.random() * istighfarPhrases.length)];
+        }
+
+        function toggleSettingsPopup() {
+            const settingsPopup = document.getElementById('settingsPopup');
+            settingsPopup.style.display = settingsPopup.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function applySettings() {
+            const intervalInput = document.getElementById('interval').value;
+            const countInput = document.getElementById('count').value;
+
+            userInterval = intervalInput ? intervalInput * 1000 : userInterval;
+            userCount = countInput ? parseInt(countInput) : userCount;
+
+            toggleSettingsPopup();
+            startAutoPopup();
+        }
+
+        function startAutoPopup() {
+            let appearances = 0;
+            autoPopupInterval = setInterval(() => {
+                if (appearances < userCount) {
+                    toggleIstighfarPopup();
+                    appearances++;
+                } else {
+                    clearInterval(autoPopupInterval);
+                }
+            }, userInterval);
+        }
+
+        function removeIstighfarButton() {
+            document.querySelector('.istighfar-button').style.display = 'none';
+            document.querySelector('.settings').style.display = 'none';
+            clearInterval(autoPopupInterval); // إيقاف التشغيل التلقائي عند حذف الزر
+        }
+
+        // تشغيل النافذة تلقائيًا كل خمس دقائق إذا لم يتم تشغيلها يدويًا
+        window.onload = () => {
+            autoPopupInterval = setInterval(() => {
+                toggleIstighfarPopup();
+            }, 300000); // 300000 ميلي ثانية = 5 دقائق
+        };
+    </script>
+</body2>
+</html2>
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أزرار التحذير والصلاة</title>
+    <style>
+        /* تنسيق الزر العائم للتحذير (في اليسار) */
+        .floating-btn-warning {
+            position: fixed;
+            bottom: 140px;
+            left: 10px; /* تغيير الموضع ليكون في اليسار */
+            width: 50px;
+            height: 50px;
+            background-color: #ff2512;
+            color: white;
+            font-size: 23px;
+            font-weight: normal;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease;
+            z-index: 9999;
+        }
+
+        /* حركة الزر التحذيري */
+        @keyframes moveAndGlowWarning {
+            0% {
+                transform: translateX(0) translateY(0);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                background-color: #ff6f61;
+            }
+            50% {
+                transform: translateX(15px) translateY(-15px);
+                box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+                background-color: #ff3d2e;
+            }
+            100% {
+                transform: translateX(0) translateY(0);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                background-color: #ff6f61;
+            }
+        }
+
+        /* نافذة منبثقة للزر التحذيري */
+                                                            /* نافذة منبثقة للزر التحذيري */
+.popup-warning {
+    position: fixed;
+    bottom: 3%; /* مسافة مناسبة من الأسفل */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%; /* تقليل العرض ليكون أكثر مرونة */
+    max-width: 250px; /* الحد الأقصى للعرض */
+    background-color: #ffffff;
+    border-radius: 10px; /* حواف مدورة لطيفة */
+    padding: 1em; /* حشو داخلي مرن */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* تحسين الظلال */
+    display: none;
+    z-index: 9998;
+    font-size: 1em; /* حجم نص مرن */
+}
+
+/* استجابة للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .popup-warning {
+        width: 70%; /* عرض مناسب للأجهزة اللوحية */
+        bottom: 5%; /* مسافة منطقية من الأسفل */
+        padding: 0.8em; /* تقليل الحشو قليلاً */
+    }
+}
+
+@media (max-width: 480px) {
+    .popup-warning {
+        width: 85%; /* عرض يناسب الهواتف */
+        bottom: 7%; /* مسافة أكبر من الأسفل */
+        padding: 0.6em; /* تقليل الحشو أكثر */
+        font-size: 0.9em; /* تصغير حجم النص */
+    }
+}
+
+/* إضافة حركة لطيفة عند ظهور النافذة */
+.popup-warning.show {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* تأثير الحركة */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* تنسيق الزر العائم للصلاة (في اليمين) */
+        .floating-btn-prayer {
+            position: fixed;
+            bottom: 20px;
+            right: 10px; /* تغيير الموضع ليكون في الجهة اليمنى */
+            width: 60px;
+            height: 60px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 32px;
+            font-weight: normal;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease;
+            z-index: 9999;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* نافذة الصلاة */
+        .popup-prayer {
+    position: fixed;
+    bottom: 5%; /* مسافة مرنة من الأسفل */
+    right: 5%; /* محاذاة مرنة لليمين */
+    width: 50%; /* عرض مرن */
+    max-width: 250px; /* حد أقصى للعرض */
+    background: #fff;
+    border-radius: 10px;
+    padding: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 9998;
+    font-size: 1em; /* حجم نص مرن */
+}
+
+/* استجابة للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .popup-prayer {
+        width: 70%;
+        bottom: 7%;
+        padding: 0.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .popup-prayer {
+        width: 85%;
+        bottom: 10%;
+        padding: 0.6em;
+        font-size: 0.9em;
+    }
+}
+
+/* حركة عند الظهور */
+.popup-prayer.show {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* النافذة التحفيزية */
+        .motivational-msg {
+            font-size: 1.1em;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        /* الأزرار داخل النافذة */
+        .btn-close {
+            background-color: #FF5722;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-close:hover {
+            background-color: #FF3D00;
+        }
+    </style>
+</head>
+<body>
+
+<!-- زر التحذير (في اليسار) -->
+<button class="floating-btn-warning" onclick="togglePopupWarning()">⚠️</button>
+
+<!-- نافذة التحذير -->
+<div id="popupWarning" class="popup-warning">
+    <div class="popup-header" style="text-align: center; background-color: #0b04fb; padding: 15px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-bottom: 20px; font-family: 'Arial', sans-serif; color: white;">
+        <p style="font-size: 1.5em; font-weight: bold; letter-spacing: 1px; margin: 0; text-transform: uppercase;">روابط الفيديو التحفيزية</p>
+    </div>
+    
+
+    <div class="popup-content" style="text-align: center; background-color: #3e0b10; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); max-width: 90%; margin: 15px auto; font-family: 'Arial', sans-serif; color: #b71c1c;">
+        <p style="font-size: 1.2em; font-weight: bold; color: #d32f2f; margin-bottom: 15px;">عدُوكَ لَنْ يَنْتَظِرَك بِطَبَقٍ مِنْ وُرُود</p>
+      
+        <a href="https://t.me/S22MCS">
+            <img src="adatealm/S⚡2⚡2MCS.jpg" alt="Updated Image" style="max-width: 100%; height: auto; border: none; outline: 3px solid #0b04fb; border-radius: 5px;">
+        </a>
+    </div>
+    
+    
+
+      <div class="popup-content">
+        <p><a href="https://youtu.be/onxqPZMeOjs?si=EjatZc_mypSoksXp" target="_blank">🕌 الواجبات التي يجب أن يقوم بها المسلم تجاه دينه</a></p>
+        <p><a href="https://youtu.be/LtvZItwx7cQ?si=ho5c4EGIHduDj5Fb" target="_blank">⏳ لا تكن فارغاً: درس سيغير حياتك في إدارة الوقت</a></p>
+        <p><a href="https://youtu.be/onxqPZMeOjs?si=1JuyFk931yuYHjL" target="_blank">🌍 الفائدة من متابعة أخبار غزة بعد الآن؟</a></p>
+        <p class="final-message">يَكْفِي كَذَا لِليَوْمِ يَا مُؤْمِنُ</p>
+    </div>
+    
+    <style>
+      .popup-content {
+        background: white;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 90%;
+        max-width: 320px;
+        margin: auto;
+      }
+    
+      .popup-content a {
+        display: block;
+        text-decoration: none;
+        color: #007BFF;
+        font-weight: bold;
+        margin: 8px 0;
+      }
+    
+      .popup-content a:hover {
+        color: #0056b3;
+      }
+    
+      .final-message {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #4CAF50;
+        margin-top: 10px;
+      }
+    </style>
+    
+
+
+
+
+
+    <button class="btn-close" onclick="togglePopupWarning()">إغلاق</button>
+</div>
+
+<!-- زر الصلاة (في اليمين) -->
+<button id="floatingBtnPrayer" class="floating-btn-prayer" onclick="togglePopupPrayer()">🕌</button>
+
+
+
+<!-- نافذة الصلاة -->
+<div id="prayerPopup" class="popup-prayer">
+
+
+
+
+ <!-- نص أعلى زر الإغلاق -->
+<div class="popup-header">
+    <p>
+        <div class="ayah" id="ayah" style="text-align: center; padding: 6px; background: #e3f2fd; color: #1565c0; font-family: 'Amiri', serif; font-size: 0.8em; font-weight: bold; border-radius: 6px; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); margin: 15px auto; max-width: 75%; direction: rtl;">
+            ﴿ فَإِذَا قَضَيْتُمُ الصَّلَاةَ فَاذْكُرُوا اللَّهَ قِيَامًا وَقُعُودًا وَعَلَىٰ جُنُوبِكُمْ ۚ فَإِذَا اطْمَأْنَنتُمْ فَأَقِيمُوا الصَّلَاةَ ۚ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾
+            <p style="color: #424242; font-size: 0.6em; margin-top: 4px; font-family: 'Arial', sans-serif;">
+                [ النساء: 103 ]
+            </p>                                                                                                                                   
+            <a href="https://surahquran.com/aya-103-sora-4.html" target="_blank" style="color: #0288d1; text-decoration: none; font-size: 0.9em; font-weight: bold; padding: 4px 8px; border-radius: 5px; background-color: #f1f8ff; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#e1f5fe'; this.style.boxShadow='0 5px 10px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.backgroundColor='#f1f8ff'; this.style.boxShadow='0 3px 6px rgba(0, 0, 0, 0.1)';">
+                🔗 شرح الآية
+            </a>
+            
+            <div style="margin-top: 8px; font-size: 0.8em; color: #424242; font-weight: normal;">
+                <p>للاطلاع على أوقات الصلاة المحلية، يمكنك زيارة الموقع التالي:</p>
+                <a href="https://mawaqit.net/ar/" target="_blank" style="color: #0288d1; text-decoration: none; font-size: 0.9em; font-weight: bold; padding: 4px 8px; border-radius: 5px; background-color: #f1f8ff; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#e1f5fe'; this.style.boxShadow='0 5px 10px rgba(0, 0, 0, 0.2)';" onmouseout="this.style.backgroundColor='#f1f8ff'; this.style.boxShadow='0 3px 6px rgba(0, 0, 0, 0.1)';">
+                    🕋 أوقات الصلاة
+                </a>
+            </div>
+        </div>
+        
+        
+        
+       
+        
+    </p>
+</div>
+
+
+<!-- نص أسفل نافذة الصلاة -->
+<div class="popup-footer">
+
+    <p>توقيت الصلاة للولاية المحددة</p>
+</div>
+
+
+
+    <!-- قائمة اختيار الولاية -->
+    <select id="stateSelector" onchange="updatePrayerTimes()">
+
+
+
+
+
+
+ <option value="annaba" style="color: green;">عنابة (23)</option>
+<option value="sidi_bel_abbes" style="color: green;">سيدي بلعباس (22)</option>
+<option value="oran" style="color: green;">وهران (31)</option>
+<option value="alger" style="color: green;">الجزائر (01)</option>
+<option value="jelma" style="color: green;">قالمة (24)</option>
+<option value="batna" style="color: green;">باتنة (05)</option>
+<option value="constantine" style="color: green;">قسنطينة (25)</option>
+<option value="TAREF" style="color: green;">الطارف (15)</option>
+
+
+
+
+
+
+
+
+
+        <!-- أضف المزيد من الخيارات هنا -->
+    </select>
+    <div id="nextPrayerTime" class="next-prayer-time"></div>
+    <div id="prayerTimesList" class="prayer-times-list"></div>
+    <div class="motivational-msg" id="motivationalMsg"></div>
+    <button class="btn-close" onclick="togglePopupPrayer(false)">إغلاق</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    // بيانات أوقات الصلاة لكل ولاية (مثال)
+    const prayerTimesByState = {
+      
+   
+    annaba: [
+        { name: "الفجر", time: "06:09" },
+        { name: "الظهر", time: "12:39" },
+        { name: "العصر", time: "15:18" },
+        { name: "المغرب", time: "17:40" },
+        { name: "العشاء", time: "19:03" }
+    ],
+    sidi_bel_abbes: [
+        { name: "الفجر", time: "05:10" },
+        { name: "الظهر", time: "12:13" },
+        { name: "العصر", time: "15:56" },
+        { name: "المغرب", time: "18:16" },
+        { name: "العشاء", time: "19:42" }
+    ],
+
+    oran: [
+        { name: "الفجر", time: "06:34" },
+        { name: "الظهر", time: "13:13" },
+        { name: "العصر", time: "15:55" },
+        { name: "المغرب", time: "18:15" },
+        { name: "العشاء", time: "19:42" }
+    ],
+    alger: [
+
+
+        { name: "الفجر", time: "06:20" },
+        { name: "الظهر", time: "12:58" },
+        { name: "العصر", time: "15:38" },
+        { name: "المغرب", time: "17:57" },
+        { name: "العشاء", time: "19:26" }
+    ],
+
+
+
+    jelma: [
+        { name: "الفجر", time: "6:03" },
+        { name: "الظهر", time: "12:41" },
+        { name: "العصر", time: "15:22" },
+        { name: "المغرب", time: "17:41" },
+        { name: "العشاء", time: "19:09" }
+    ],
+    batna: [
+        
+    { name: "الفجر", time: "6:07" },
+        { name: "الظهر", time: "12:46" },
+        { name: "العصر", time: "15:28" },
+        { name: "المغرب", time: "17:48" },
+        { name: "العشاء", time: "19:15" }
+    ],
+    constantine: [
+      { name: "الفجر", time: "6:06" },
+        { name: "الظهر", time: "12:44" },
+        { name: "العصر", time: "15:25" },
+        { name: "المغرب", time: "17:44" },
+        { name: "العشاء", time: "19:12" }
+
+
+   
+
+    ],
+
+
+TAREF: [
+        { name: "الفجر", time: "05:59" },
+        { name: "الظهر", time: "12:37" },
+        { name: "العصر", time: "15:17" },
+        { name: "المغرب", time: "17:37" },
+        { name: "العشاء", time: "19:05" }
+    ],
+    
+
+
+
+
+
+
+
+
+
+    };
+
+    // تاريخ البدء (1-18-2025)
+    const startDate = new Date('2025-01-16');
+
+    // تحويل الوقت إلى ثواني
+    function timeToSeconds(time) {
+        const [hours, minutes] = time.split(':').map(Number);
+        return hours * 3600 + minutes * 60;
+    }
+
+    // إضافة دقيقة إلى الوقت
+    function addOneMinute(time) {
+        const [hours, minutes] = time.split(':').map(Number);
+        let newMinutes = minutes + 1;
+        let newHours = hours;
+
+        if (newMinutes === 60) {
+            newMinutes = 0;
+            newHours += 1;
+        }
+
+        return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+    }
+
+    // حساب الأيام الماضية من تاريخ البدء
+    function getDaysPassed() {
+        const currentDate = new Date();
+        const timeDiff = currentDate - startDate;
+        return Math.floor(timeDiff / (1000 * 3600 * 24));
+    }
+
+    // حساب الوقت المتبقي للصلاة القادمة
+    function getNextPrayerTime() {
+        const currentTime = new Date();
+        const currentTimeInSeconds = currentTime.getHours() * 3600 + currentTime.getMinutes() * 60 + currentTime.getSeconds();
+
+        const selectedState = document.getElementById("stateSelector").value;
+        const prayerTimes = prayerTimesByState[selectedState];
+
+        let nextPrayer = null;
+        let nextPrayerTimeInSeconds = Infinity;
+
+        prayerTimes.forEach(prayer => {
+            // إضافة دقيقة لكل يوم ماضي
+            const daysPassed = getDaysPassed();
+            let prayerTime = prayer.time;
+
+            for (let i = 0; i < daysPassed; i++) {
+                prayerTime = addOneMinute(prayerTime);
+            }
+
+            const prayerTimeInSeconds = timeToSeconds(prayerTime);
+            if (prayerTimeInSeconds > currentTimeInSeconds && prayerTimeInSeconds < nextPrayerTimeInSeconds) {
+                nextPrayer = prayer;
+                nextPrayerTimeInSeconds = prayerTimeInSeconds;
+            }
+        });
+
+        if (nextPrayer) {
+            const nextPrayerTimeRemaining = nextPrayerTimeInSeconds - currentTimeInSeconds;
+            const minutesRemaining = Math.floor(nextPrayerTimeRemaining / 60);
+            const secondsRemaining = nextPrayerTimeRemaining % 60;
+            document.getElementById("nextPrayerTime").textContent = `الصلاة القادمة: ${nextPrayer.name} في ${minutesRemaining} دقيقة و ${secondsRemaining} ثانية`;
+        } else {
+            document.getElementById("nextPrayerTime").textContent = "أنت في وقت الصلاة!";
+        }
+    }
+
+    // تحديث أوقات الصلاة بناءً على الولاية المختارة
+    function updatePrayerTimes() {
+        const selectedState = document.getElementById("stateSelector").value;
+        const prayerTimes = prayerTimesByState[selectedState];
+
+        const prayerTimesList = document.getElementById("prayerTimesList");
+        prayerTimesList.innerHTML = prayerTimes.map((prayer, index) => {
+            // إضافة دقيقة لكل يوم ماضي
+            const daysPassed = getDaysPassed();
+            let prayerTime = prayer.time;
+
+            for (let i = 0; i < daysPassed; i++) {
+                prayerTime = addOneMinute(prayerTime);
+            }
+
+            return `
+                <div>
+                    <span>${prayer.name}: ${prayerTime}</span>
+                    <button onclick="handlePrayer(${index}, true)" style="background-color: green; color: white; font-size: 10px; font-family: 'Courier New', monospace; font-weight: bold; padding: 4px 8px; border: 2px solid darkgreen; border-radius: 4px; cursor: pointer; transition: all 0.3s ease-in-out;" onmouseover="this.style.backgroundColor='darkgreen';" onmouseout="this.style.backgroundColor='green';">صليت</button>
+                    <button onclick="handlePrayer(${index}, false)" style="background-color: red; color: white; font-size: 10px; font-family: 'Courier New', monospace; font-weight: bold; padding: 4px 8px; border: 2px solid darkred; border-radius: 4px; cursor: pointer; transition: all 0.3s ease-in-out;" onmouseover="this.style.backgroundColor='darkred';" onmouseout="this.style.backgroundColor='red';">لم أصلي</button>
+                </div>
+            `;
+        }).join("");
+
+        getNextPrayerTime();
+    }
+
+    // التعامل مع الصلاة
+    function handlePrayer(prayerIndex, prayed) {
+        const motivationalMsg = document.getElementById("motivationalMsg");
+        if (prayed) {
+           
+            motivationalMsg.textContent = `جزاك الله خيرًا على صلاتك وثبتك عليها في وقتها ان شاء الله`; 
+motivationalMsg.style.cssText = `
+    color: green; 
+    font-size: 16px; 
+    font-weight: normal; 
+    text-align: center; 
+    font-family: Arial, sans-serif; 
+    padding: 8px; 
+    border: 1px solid green; 
+    border-radius: 6px; 
+    background-color: #e9f7e9;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+
+        } else {
+            motivationalMsg.textContent = `إن لم تكن معذورًا شرعياً على جانبه أو حائضًا، وإن كنت رجلًا فتصرف بسرعة أولاً، تذكر أن الصلاة عمود الدين.`; 
+motivationalMsg.style.cssText = `
+    color: red; 
+    font-size: 16px; 
+    font-weight: normal; 
+    text-align: center; 
+    font-family: Arial, sans-serif; 
+    padding: 8px; 
+    border: 1px solid red; 
+    border-radius: 6px; 
+    background-color: #f7e0e0;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+`;
+  }
+    }
+
+    // فتح وإغلاق نافذة الصلاة
+    function togglePopupPrayer() {
+        const popup = document.getElementById("prayerPopup");
+        popup.style.display = popup.style.display === "block" ? "none" : "block";
+        updatePrayerTimes();
+    }
+
+    // فتح وإغلاق نافذة التحذير
+    function togglePopupWarning() {
+        const popup = document.getElementById("popupWarning");
+        popup.style.display = popup.style.display === "block" ? "none" : "block";
+    }
+
+    // تحديث الوقت عند تحميل الصفحة
+    window.onload = function() {
+        updatePrayerTimes();
+        setInterval(getNextPrayerTime, 1000);
+    };
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
