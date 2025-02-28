@@ -1701,14 +1701,6 @@
 
 
 
-
-
-
-
-
-
-
-
     <!DOCTYPE html>
     <html lang="ar" dir="rtl">
     <head>
@@ -1792,42 +1784,53 @@
                 <h1>⚡ أَدَاة عِلْم ⚡</h1>
                 <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
                 <p>المزيد قادم  والتحديثات يومية ان شاء الله </p>
+                <p>  نذكركم ان التجربة على اجهزة الكمبيوتر افضل بكثير على الهواتف وسنحاول  باذم الله تحسين تجربة  على الهواتف </p>
                 <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
             </div>
         </div>
     
+    
         <script>
-            function closeModal(modalId) {
-                document.getElementById(modalId).style.display = "none";
-                if (modalId === "jumaaModal") {
-                    let audio = document.getElementById("jumaaAudio");
-                    if (audio) audio.pause(); // إيقاف تشغيل الصوت عند إغلاق الإشعار
-                }
-            }
-    
-            function showModals() {
-                let today = new Date();
-                let dayOfWeek = today.getDay();
-                let hours = today.getHours();
-    
-                if (dayOfWeek === 5) { // الجمعة
-                    document.getElementById("kahfModal").style.display = "flex"; // عرض إشعار سورة الكهف طيلة اليوم
-                    if (hours < 14) {
-                        document.getElementById("jumaaModal").style.display = "flex"; // عرض إشعار صلاة الجمعة حتى 14:00
-                        let audio = document.getElementById("jumaaAudio");
-                        if (audio) audio.play(); // تشغيل الصوت فقط إذا كان الوقت مناسبًا
-                    } else {
-                        let audio = document.getElementById("jumaaAudio");
-                        if (audio) audio.pause(); // إيقاف التشغيل بعد الساعة 14:00
-                    }
-                }
-                setTimeout(() => {
-                    document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار العام بعد البقية
-                }, 1000);
-            }
-    
-            window.onload = showModals;
-        </script>
+          function closeModal(modalId) {
+              document.getElementById(modalId).style.display = "none";
+          }
+      
+          function showModals() {
+              let today = new Date();
+              let dayOfWeek = today.getDay();
+              let hours = today.getHours();
+      
+              if (dayOfWeek === 5) { // الجمعة
+                  document.getElementById("kahfModal").style.display = "flex"; // عرض إشعار سورة الكهف طيلة اليوم
+                  if (hours < 14) {
+                      document.getElementById("jumaaModal").style.display = "flex"; // عرض إشعار صلاة الجمعة حتى 14:00
+                      let audio = document.getElementById("jumaaAudio");
+                      if (audio) {
+                          audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error)); // محاولة تشغيل الصوت مع معالجة الأخطاء
+                          audio.onended = function () {
+                              audio.pause(); // يضمن إيقاف الصوت بعد الانتهاء فقط
+                          };
+                      }
+                  }
+              }
+              setTimeout(() => {
+                  document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار العام بعد البقية
+              }, 1000);
+          }
+      
+          document.addEventListener("DOMContentLoaded", function() {
+              let audio = document.getElementById("jumaaAudio");
+              if (audio) {
+                  document.body.addEventListener("click", function() {
+                      if (audio.paused) {
+                          audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+                      }
+                  }, { once: true });
+              }
+          });
+      
+          window.onload = showModals;
+      </script>
     
     </body>
     </html>
