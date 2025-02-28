@@ -111,10 +111,12 @@
     <!-- Header End -->
 
 لالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالاالالالا
-<div class="container-fluid py-5 bg-light position-relative overflow-hidden">
-    <div class="text-center">
-        <h6 class="section-title bg-white text-center px-3">التخصصات</h6>
-        <h1 class="mb-4 text-primary font-weight-bold">التخصصات التي نقوم بتغطيتها</h1>
+
+
+                    <div class="container-fluid py-5 bg-light position-relative overflow-hidden">
+                        <div class="text-center">
+                    <h6 class="section-title bg-white text-center px-3">التخصصات </h6>
+                    <h1 class="mb-5" style="color: #fb873f;">التخصصات التي نقوم بتغطيتها </h1>
     </div>
     
     <div class="swiper-container">
@@ -304,10 +306,14 @@
       <!-- نص إرشادي للطالب -->
 
       <div class="instruction-container">
-        <p class="instruction-text">
-            <strong>مرر لليمين أو اليسار <span class="arrow-icon">⇆</span> أو استخدم الأسهم الجانبية للتنقل بين التخصصات. العرض يتحرك تلقائيًا!</strong>
-        </p>
-    </div>
+          <p class="instruction-text">
+            <strong>مرر لليمين أو اليسار <span class="arrow-icon">⇆</span>    و
+                استخدم الأسهم الجانبية للتنقل بين التخصصات. العرض يتحرك تلقائيًا
+
+                 !</strong>
+          </p>
+
+        </div>
     
 
     
@@ -366,6 +372,11 @@
         transition: transform 0.3s ease-in-out;
     }
 
+
+
+
+
+
     .content:hover img {
         transform: scale(1.1);
     }
@@ -380,27 +391,57 @@
         padding: 20px 0;
     }
 
+
+
     .swiper-slide {
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    .swiper-button-next, .swiper-button-prev {
-        color: #fb873f;
-        width: 40px;
-        height: 40px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 50%;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    }
+    
 
-    .swiper-button-next:hover, .swiper-button-prev:hover {
-        background: #fb873f;
-        color: white;
-    }
+
+
+
+
+
+
+
+
+    .swiper-button-next, .swiper-button-prev {
+    position: absolute;
+    top: auto;  /* إزالة التمركز في الأعلى */
+    bottom: -50px;  /* تحريك الأزرار للأسفل */
+    transform: translateY(0);  /* تصحيح أي تأثير للتمركز السابق */
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    width: 40px;
+    height: 40px;
+}
+
+/* محاذاة الأسهم في المنتصف */
+.swiper-button-next {
+    right: 45%;  
+}
+
+.swiper-button-prev {
+    left: 45%;  
+}
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    background: #fb873f;
+    color: white;
+}
+
+
+
+
+
+
+
+
 
     .swiper-pagination-bullet-active {
         background: #fb873f;
@@ -428,6 +469,8 @@
     border-radius: 10px;
     display: inline-block;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: right;
+    direction: rtl; /* يجعل اتجاه النص من اليمين إلى اليسار */
 }
 
 .arrow-icon {
@@ -1341,4 +1384,377 @@
         location.reload(); // تحديث الصفحة
     });
 </script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إشعارات هامة</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* خلفية النافذة المنبثقة */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        /* محتوى النافذة */
+        .custom-modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.4s ease-in-out;
+            max-height: 85vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* زر الإغلاق */
+        .btn-close {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-close:hover {
+            background-color: #cc0000;
+            transform: scale(1.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* عنوان النافذة */
+        .custom-modal-content h1 {
+            font-size: 24px;
+            color: red;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        /* عبارة السلام عليكم */
+        .greeting {
+            font-size: 18px;
+            font-weight: bold;
+            color: #008000;
+            margin-bottom: 10px;
+        }
+
+        /* منطقة التمرير */
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            max-height: 60vh;
+            text-align: right;
+        }
+
+        /* تحسين شريط التمرير */
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #eee;
+            border-radius: 10px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* تأثير الدخول */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- نافذة صلاة التراويح -->
+    <div id="taraweehModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <button class="btn-close" onclick="closeModal('taraweehModal')">&times;</button>
+            <p class="greeting">السلام عليكم ورحمة الله وبركاته</p>
+            <h1>فضل صلاة التراويح</h1>
+            <div class="modal-body">
+                <p><strong>أولًا:</strong> ما رواه البخاري (37) ومسلم (759) عَنْ أَبِي هُرَيْرَةَ أَنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ:  
+                <span style="color: #007bff;">"مَنْ قَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ"</span>.</p>
+
+                <p><strong>ثانيًا:</strong> "اتَّفَقَ الْعُلَمَاء عَلَى اِسْتِحْبَاب صَلاة التَّرَاوِيح، وَاخْتَلَفُوا فِي أَنَّ الأَفْضَل صَلاتهَا مُنْفَرِدًا فِي بَيْته أَمْ فِي جَمَاعَة فِي الْمَسْجِد؟  
+                فَقَالَ الشَّافِعِيّ وَجُمْهُور أَصْحَابه وَأَبُو حَنِيفَة وَأَحْمَد وَبَعْض الْمَالِكِيَّة وَغَيْرهمْ: الأَفْضَل صَلاتهَا جَمَاعَة كَمَا فَعَلَهُ عُمَر بْن الْخَطَّاب وَالصَّحَابَة رَضِيَ اللَّه عَنْهُمْ، وَاسْتَمَرَّ عَمَل الْمُسْلِمِينَ عَلَيْهِ."</p>
+
+                <p><strong>ثالثًا:</strong> وروى الترمذي (806) عَنْ أَبِي ذَرٍّ قَالَ: قال رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ:  
+                <span style="color: #007bff;">"مَنْ قَامَ مَعَ الْإِمَامِ حَتَّى يَنْصَرِفَ كُتِبَ لَهُ قِيَامُ لَيْلَةٍ"</span> وصححه الألباني في صحيح الترمذي.</p>
+
+                <p style="font-weight: bold; text-align: center; margin-top: 15px;">والله أعلم.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function showModals() {
+            let today = new Date();
+            let dayOfWeek = today.getDay();
+            if (dayOfWeek === 5) { // الجمعة
+                document.getElementById("taraweehModal").style.display = "flex";
+            }
+        }
+
+        window.onload = showModals;
+    </script>
+
+</body>
 </html>
