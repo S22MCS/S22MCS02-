@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+    <title>اختم قرآنك يشفع لك يوم القيامة ويختم أجلك</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #2a9d8f;
+            color: white;
+            padding: 20px 0;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .buttons-container {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .buttons-container button, .days-container button, .option, .close, .save {
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .days-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin: 20px;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            width: 90%;
+            height: 90%;
+            overflow-y: auto; /* للسماح بالتمرير عند الحاجة */
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+
+
+
+
+
+
+
+/* نافذة حفظ العلامة */
+.save-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+/* المحتوى داخل النافذة */
+.save-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* تنسيق الحقول */
+.save-content input {
+    width: 80%;
+    padding: 8px;
+    font-size: 16px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* تنسيق الجملة التحفيزية */
+.motivational {
+    font-weight: bold;
+    color: #2a9d8f;
+    margin-top: 10px;
+
+}
+
+
+
+
+
+
+/* تأثير عند تمرير الماوس */
+.popup-buttons button:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* تحسين للهواتف */
+@media (max-width: 768px) {
+    .popup-buttons {
+        width: 95%;
+        flex-wrap: wrap;
+        padding: 8px;
+    }
+
+    .popup-buttons button {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+}
+
+
+
+
+
+
+
+     /* تحسين عرض النافذة المنبثقة */
+     .popup-content {
+    background-color: white;
+    padding: 20px;
+    width: 90%;
+    height: 90%;
+    overflow-y: auto;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* جعل زر الإغلاق في أعلى اليمين */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* تنسيق الأزرار في الأعلى */
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* ترتيب الصور بشكل متناسق */
+#popup-content-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ضبط حجم الصور وجعلها متوافقة مع الهواتف */
+#popup-content-text img {
+    width: 90%;  /* الصورة تأخذ 90% من العرض */
+    max-width: 300px; /* تحديد أقصى عرض */
+    height: auto;
+    border-radius: 10px;
+    margin: 5px 0; /* تباعد بين الصور */
+}
+
+/* تحسين التصميم على الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .popup-content {
+        width: 95%;
+        height: 95%;
+    }
+
+    #popup-content-text img {
+        max-width: 250px; /* تقليل الحد الأقصى للصور */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <header>اختم قرآنك يشفع لك يوم القيامة ويختم أجلك</header>
+    
+    
+    
+    <div class="buttons-container">
+        <button class="custom-button" onclick="navigateToPage('ختم القرآن   (  ختمة واحدة  ).html')">ختمة واحدة</button>
+        <button class="custom-button" onclick="navigateToPage('')">ختمتين</button>
+    </div>
+    
+    <script>
+        function navigateToPage(pageUrl) {
+            window.location.href = pageUrl;
+        }
+    </script>
+    
+    <style>
+        /* تأثير الأزرار فقط دون المساس بتصميم الموقع */
+        .custom-button {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+    
+        .custom-button:hover {
+            background: linear-gradient(45deg, #0056b3, #003580);
+            transform: scale(1.05);
+        }
+    </style>
+    
+
+
+
+
+
+
+    
+    <div class="days-container" id="days-container"></div>
+    
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <h2 id="popup-title"></h2>
+            <div id="popup-content-text"></div>
+    
+            <button style="background-color: #b8860b; color: white; border: none; padding: 15px 30px; font-size: 20px; font-family: 'Amiri', serif; cursor: pointer; border-radius: 8px; margin: 5px;" 
+            onclick="selectOption('ورش')">
+        رواية ورش
+    </button>
+    
+    <br>
+    
+    <button style="background-color: #daa520; color: white; border: none; padding: 15px 30px; font-size: 20px; font-family: 'Amiri', serif; cursor: pointer; border-radius: 8px; margin: 5px;" 
+            onclick="selectOption('حفص')">
+        رواية حفص
+    </button>
+    
+    <script>
+        function selectOption(option) {
+            alert('تم اختيار ' + option);
+        }
+    </script>
+    
+
+            <br>
+            <button style="background-color: green; color: white; border: none; padding: 15px 30px; font-size: 20px; cursor: pointer; border-radius: 8px; transition: 0.3s;" 
+            onmouseover="this.style.backgroundColor='darkgreen'" 
+            onmouseout="this.style.backgroundColor='green'" 
+            onclick="alert('تم حفظ العلامة!')">
+        حفظ العلامة
+    </button>
+    
+            <br>
+            <button class="close" onclick="closePopup()">إغلاق</button>
+        </div>
+    </div>
+
+
+    <!-- نافذة حفظ العلامة -->
+<div class="save-popup" id="save-popup">
+    <div class="save-content">
+        <h2>📌 تسجيل موضع القراءة</h2>
+        <label>📖 رقم الصفحة:</label>
+        <input type="number" id="page-number" placeholder="أدخل رقم الصفحة" required>
+        
+        <p>📅 **التاريخ الهجري:** <span id="hijri-date"></span></p>
+        <p>📆 **التاريخ الميلادي:** <span id="gregorian-date"></span></p>
+        <p>⏰ **الوقت:** <span id="current-time"></span></p>
+        
+        <p class="motivational"> أحسنت يا بطل! استمر في جمع الحسنات التي ستنقذك في قبرك، فإنك لا تدري متى تكون ساعتك. ⏳</p>
+
+        <button onclick="captureScreenshot()">📸 حفظ</button>
+        <button onclick="closeSavePopup()">❌ إغلاق</button>
+    </div>
+</div>
+
+
+
+
+
+
+    <script>
+const content = {
+    "ورش": {
+        1: {
+            "الصبح": `
+                <p>📖 محتوى اليوم 1 - رواية ورش - الجزء المعين بعد صلاة الصبح:</p>
+                <img src="ورش مصحف/ورش1.jpg" alt="صفحة 1">
+                <img src="ورش مصحف/ورش2.jpg" alt="صفحة 2">
+                <img src="ورش مصحف/ورش3.jpg" alt="صفحة 3">
+                <img src="ورش مصحف/ورش4.jpg" alt="صفحة 4">
+            `
+        },
+        2: {  
+            "الصبح": `
+                <p>📖 محتوى اليوم 2 - رواية ورش - الجزء المعين بعد صلاة الصبح:</p>
+             <img src="ورش مصحف/ورش1.jpg" alt="صفحة 1">
+                <img src="ورش مصحف/ورش6.jpg" alt="صفحة 6">
+                <img src="ورش مصحف/ورش7.jpg" alt="صفحة 7">
+                <img src="ورش مصحف/ورش8.jpg" alt="صفحة 8">
+            `
+        }
+    },
+    "حفص": {
+        1: {
+            "الصبح": `
+                <p>📖 محتوى اليوم 1 - رواية حفص - الجزء المعين بعد صلاة الصبح:</p>
+                <img src="حفص مصحف/حفص1.jpg" alt="صفحة 1">
+                <img src="حفص مصحف/حفص2.jpg" alt="صفحة 2">
+                <img src="حفص مصحف/حفص3.jpg" alt="صفحة 3">
+                <img src="حفص مصحف/حفص4.jpg" alt="صفحة 4">
+            `
+        },
+        2: {  
+            "الصبح": `
+                <p>📖 محتوى اليوم 2 - رواية حفص - الجزء المعين بعد صلاة الصبح:</p>
+                <img src="حفص مصحف/حفص5.jpg" alt="صفحة 5">
+                <img src="حفص مصحف/حفص6.jpg" alt="صفحة 6">
+                <img src="حفص مصحف/حفص7.jpg" alt="صفحة 7">
+                <img src="حفص مصحف/حفص8.jpg" alt="صفحة 8">
+            `
+        }
+    }
+};
+
+const daysContainer = document.getElementById('days-container');
+const fragment = document.createDocumentFragment();
+
+for (let i = 1; i <= 30; i++) {
+    let dayButton = document.createElement('button');
+    dayButton.textContent = `اليوم ${i}`;
+    dayButton.onclick = () => openPopup(i);
+    fragment.appendChild(dayButton);
+}
+
+daysContainer.appendChild(fragment);
+
+let selectedDay = null;
+
+function openPopup(day) {
+    selectedDay = day;
+    
+    // 🔹 إعادة ضبط محتوى النافذة قبل التحديث لمنع عرض اليوم السابق
+    document.getElementById('popup-title').textContent = '';
+    document.getElementById('popup-content-text').innerHTML = '';
+    
+    document.getElementById('popup').style.display = 'flex';
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+}
+
+function selectOption(rwaya) {
+    if (selectedDay !== null && content[rwaya] && content[rwaya][selectedDay]) {
+        const contentForDay = content[rwaya][selectedDay]["الصبح"];
+        document.getElementById('popup-title').textContent = `اليوم ${selectedDay} - رواية ${rwaya}`;
+        
+        // 🔹 تحديث المحتوى فورًا بعد اختيار الرواية
+        document.getElementById('popup-content-text').innerHTML = contentForDay;
+    } else {
+        alert(" لم يتم اضافة   توفر المحتوى.");
+    }
+}
+
+
+
+
+
+
+
+
+// قائمة بأسماء الأيام والشهور الميلادية والهجرية
+const weekdays = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+const monthsGregorian = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+const monthsHijri = ["محرم", "صفر", "ربيع الأول", "ربيع الآخر", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
+
+// فتح النافذة عند الضغط على زر "حفظ العلامة"
+function saveBookmark() {
+    document.getElementById("save-popup").style.display = "flex";
+    
+    let today = new Date();
+
+    // الحصول على اليوم والشهر الميلادي
+    let weekday = weekdays[today.getDay()];
+    let monthName = monthsGregorian[today.getMonth()];
+    
+    // تنسيق التاريخ الميلادي مع اليوم والشهر كتابيًا
+    let formattedDate = `${weekday}, ${today.getDate()} ${monthName} ${today.getFullYear()}`;
+
+    // الحصول على الوقت الحالي بصيغة 24 ساعة وتحويل الأرقام إلى الإنجليزية
+    let timeNow = today.toLocaleTimeString("en-GB", { hour12: false });
+
+    // عرض التاريخ الميلادي والوقت في الصفحة
+    document.getElementById("gregorian-date").textContent = formattedDate;
+    document.getElementById("current-time").textContent = timeNow;
+
+    // جلب التاريخ الهجري تلقائيًا عبر API
+    fetch("https://api.aladhan.com/v1/gToH?date=" + today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear())
+    .then(response => response.json())
+    .then(data => {
+        let hijriDay = data.data.hijri.day;
+        let hijriMonthNumber = parseInt(data.data.hijri.month.number) - 1;
+        let hijriMonthName = monthsHijri[hijriMonthNumber];
+        let hijriYear = data.data.hijri.year;
+
+        // تنسيق التاريخ الهجري بالأرقام الإنجليزية
+        let hijriFormattedDate = `${weekday}, ${hijriDay} ${hijriMonthName} ${hijriYear}`;
+        document.getElementById("hijri-date").textContent = hijriFormattedDate;
+    });
+}
+
+// إغلاق النافذة
+function closeSavePopup() {
+    document.getElementById("save-popup").style.display = "none";
+}
+
+// أخذ لقطة شاشة للنافذة وحفظها
+function captureScreenshot() {
+    let pageNum = document.getElementById("page-number").value;
+    if (!pageNum) {
+        alert("⚠️ يرجى إدخال رقم الصفحة!");
+        return;
+    }
+
+    let savePopup = document.getElementById("save-popup");
+    html2canvas(savePopup).then(canvas => {
+        let imgData = canvas.toDataURL("image/png");
+        let link = document.createElement("a");
+        link.href = imgData;
+        link.download = `Bookmark_Page_${pageNum}.png`;
+        link.click();
+    });
+
+    alert("📌 تم الحفظ بنجاح!");
+    closeSavePopup();
+}
+
+
+    </script>
+</body>
+</html>
