@@ -1718,6 +1718,27 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!DOCTYPE html>
     <html lang="ar" dir="rtl">
     <head>
@@ -1790,7 +1811,9 @@
                     <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
                     متصفحك لا يدعم تشغيل الصوت.
                 </audio>
-                <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها".</p>
+                <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها"
+                  .   [صحيح] - [رواه مسلم] - [صحيح مسلم - 854]
+                </p>
                 <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
             </div>
         </div>
@@ -1801,43 +1824,72 @@
                 <h1>⚡ أَدَاة عِلْم ⚡</h1>
                 <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
                 <p>المزيد قادم  والتحديثات يومية ان شاء الله </p>
+                <p>  نذكركم ان التجربة على اجهزة الكمبيوتر افضل بكثير على الهواتف وسنحاول  باذم الله تحسين تجربة  على الهواتف </p>
                 <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
             </div>
         </div>
-    
+        
         <script>
-            function closeModal(modalId) {
-                document.getElementById(modalId).style.display = "none";
-                if (modalId === "jumaaModal") {
-                    let audio = document.getElementById("jumaaAudio");
-                    if (audio) audio.pause(); // إيقاف تشغيل الصوت عند إغلاق الإشعار
-                }
-            }
-    
-            function showModals() {
-                let today = new Date();
-                let dayOfWeek = today.getDay();
-                let hours = today.getHours();
-    
-                if (dayOfWeek === 5) { // الجمعة
-                    document.getElementById("kahfModal").style.display = "flex"; // عرض إشعار سورة الكهف طيلة اليوم
-                    if (hours < 14) {
-                        document.getElementById("jumaaModal").style.display = "flex"; // عرض إشعار صلاة الجمعة حتى 14:00
-                        let audio = document.getElementById("jumaaAudio");
-                        if (audio) audio.play(); // تشغيل الصوت فقط إذا كان الوقت مناسبًا
-                    } else {
-                        let audio = document.getElementById("jumaaAudio");
-                        if (audio) audio.pause(); // إيقاف التشغيل بعد الساعة 14:00
-                    }
-                }
-                setTimeout(() => {
-                    document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار العام بعد البقية
-                }, 1000);
-            }
-    
-            window.onload = showModals;
-        </script>
-    
-    </body>
-    </html>
-    
+          function closeModal(modalId) {
+              document.getElementById(modalId).style.display = "none";
+          }
+      
+          function showModals() {
+              let today = new Date();
+              let dayOfWeek = today.getDay();
+              let hours = today.getHours();
+      
+              // ✅ عرض الإشعار العام فورًا
+              document.getElementById("generalModal").style.display = "flex";
+      
+              if (dayOfWeek === 5) { // الجمعة فقط
+                  document.getElementById("kahfModal").style.display = "flex"; // إشعار سورة الكهف
+      
+                  if (hours < 14) { // قبل 14:00 فقط
+                      document.getElementById("jumaaModal").style.display = "flex"; // إشعار صلاة الجمعة
+                      
+                      let audio = document.getElementById("jumaaAudio");
+                      if (audio && !audio.dataset.played) { // تشغيل الصوت عند ظهور الإشعار
+                          let playAudio = () => {
+                              audio.play().then(() => {
+                                  audio.dataset.played = "true"; // منع التكرار
+                                  console.log("تم تشغيل صوت صلاة الجمعة.");
+                              }).catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+                          };
+      
+                          if (document.hasFocus()) {
+                              playAudio();
+                          } else {
+                              document.addEventListener("click", playAudio, { once: true });
+                              document.addEventListener("touchstart", playAudio, { once: true });
+                          }
+      
+                          audio.onended = function () {
+                              console.log("انتهى تشغيل ملف الصوت.");
+                          };
+                      }
+                  }
+              }
+          }
+      
+          document.addEventListener("DOMContentLoaded", function() {
+              let today = new Date();
+              let dayOfWeek = today.getDay();
+              let hours = today.getHours();
+      
+              if (dayOfWeek === 5 && hours < 14) { // تشغيل الصوت فقط يوم الجمعة قبل 14:00
+                  let audio = document.getElementById("jumaaAudio");
+                  if (audio) {
+                      document.body.addEventListener("click", function() {
+                          if (audio.paused) {
+                              audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+                          }
+                      }, { once: true });
+                  }
+              }
+          });
+      
+          // ✅ تشغيل `showModals` دائمًا لإظهار الإشعار العام مباشرةً
+          window.onload = showModals;
+      </script>
+      

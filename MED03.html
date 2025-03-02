@@ -839,7 +839,6 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -912,7 +911,9 @@
                 <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
                 متصفحك لا يدعم تشغيل الصوت.
             </audio>
-            <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها".</p>
+            <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها"
+              .   [صحيح] - [رواه مسلم] - [صحيح مسلم - 854]
+            </p>
             <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
         </div>
     </div>
@@ -927,8 +928,7 @@
             <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
         </div>
     </div>
-
-
+    
     <script>
       function closeModal(modalId) {
           document.getElementById(modalId).style.display = "none";
@@ -939,37 +939,57 @@
           let dayOfWeek = today.getDay();
           let hours = today.getHours();
   
-          if (dayOfWeek === 5) { // الجمعة
-              document.getElementById("kahfModal").style.display = "flex"; // عرض إشعار سورة الكهف طيلة اليوم
-              if (hours < 14) {
-                  document.getElementById("jumaaModal").style.display = "flex"; // عرض إشعار صلاة الجمعة حتى 14:00
+          // ✅ عرض الإشعار العام فورًا
+          document.getElementById("generalModal").style.display = "flex";
+  
+          if (dayOfWeek === 5) { // الجمعة فقط
+              document.getElementById("kahfModal").style.display = "flex"; // إشعار سورة الكهف
+  
+              if (hours < 14) { // قبل 14:00 فقط
+                  document.getElementById("jumaaModal").style.display = "flex"; // إشعار صلاة الجمعة
+                  
                   let audio = document.getElementById("jumaaAudio");
-                  if (audio) {
-                      audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error)); // محاولة تشغيل الصوت مع معالجة الأخطاء
+                  if (audio && !audio.dataset.played) { // تشغيل الصوت عند ظهور الإشعار
+                      let playAudio = () => {
+                          audio.play().then(() => {
+                              audio.dataset.played = "true"; // منع التكرار
+                              console.log("تم تشغيل صوت صلاة الجمعة.");
+                          }).catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+                      };
+  
+                      if (document.hasFocus()) {
+                          playAudio();
+                      } else {
+                          document.addEventListener("click", playAudio, { once: true });
+                          document.addEventListener("touchstart", playAudio, { once: true });
+                      }
+  
                       audio.onended = function () {
-                          audio.pause(); // يضمن إيقاف الصوت بعد الانتهاء فقط
+                          console.log("انتهى تشغيل ملف الصوت.");
                       };
                   }
               }
           }
-          setTimeout(() => {
-              document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار العام بعد البقية
-          }, 1000);
       }
   
       document.addEventListener("DOMContentLoaded", function() {
-          let audio = document.getElementById("jumaaAudio");
-          if (audio) {
-              document.body.addEventListener("click", function() {
-                  if (audio.paused) {
-                      audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
-                  }
-              }, { once: true });
+          let today = new Date();
+          let dayOfWeek = today.getDay();
+          let hours = today.getHours();
+  
+          if (dayOfWeek === 5 && hours < 14) { // تشغيل الصوت فقط يوم الجمعة قبل 14:00
+              let audio = document.getElementById("jumaaAudio");
+              if (audio) {
+                  document.body.addEventListener("click", function() {
+                      if (audio.paused) {
+                          audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+                      }
+                  }, { once: true });
+              }
           }
       });
   
+      // ✅ تشغيل `showModals` دائمًا لإظهار الإشعار العام مباشرةً
       window.onload = showModals;
   </script>
-
-</body>
-</html>
+  

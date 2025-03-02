@@ -2327,6 +2327,12 @@
 
 
 
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -2416,67 +2422,68 @@
             <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
         </div>
     </div>
+    
     <script>
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = "none";
-        }
-    
-        function showModals() {
-            let today = new Date();
-            let dayOfWeek = today.getDay();
-            let hours = today.getHours();
-    
-            // ✅ عرض الإشعار العام فورًا
-            document.getElementById("generalModal").style.display = "flex";
-    
-            if (dayOfWeek === 5) { // الجمعة فقط
-                document.getElementById("kahfModal").style.display = "flex"; // إشعار سورة الكهف
-    
-                if (hours < 14) { // قبل 14:00 فقط
-                    document.getElementById("jumaaModal").style.display = "flex"; // إشعار صلاة الجمعة
-                    
-                    let audio = document.getElementById("jumaaAudio");
-                    if (audio && !audio.dataset.played) { // تشغيل الصوت عند ظهور الإشعار
-                        let playAudio = () => {
-                            audio.play().then(() => {
-                                audio.dataset.played = "true"; // منع التكرار
-                                console.log("تم تشغيل صوت صلاة الجمعة.");
-                            }).catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
-                        };
-    
-                        if (document.hasFocus()) {
-                            playAudio();
-                        } else {
-                            document.addEventListener("click", playAudio, { once: true });
-                            document.addEventListener("touchstart", playAudio, { once: true });
-                        }
-    
-                        audio.onended = function () {
-                            console.log("انتهى تشغيل ملف الصوت.");
-                        };
-                    }
-                }
-            }
-        }
-    
-        document.addEventListener("DOMContentLoaded", function() {
-            let today = new Date();
-            let dayOfWeek = today.getDay();
-            let hours = today.getHours();
-    
-            if (dayOfWeek === 5 && hours < 14) { // تشغيل الصوت فقط يوم الجمعة قبل 14:00
-                let audio = document.getElementById("jumaaAudio");
-                if (audio) {
-                    document.body.addEventListener("click", function() {
-                        if (audio.paused) {
-                            audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
-                        }
-                    }, { once: true });
-                }
-            }
-        });
-    
-        // ✅ تشغيل `showModals` دائمًا لإظهار الإشعار العام مباشرةً
-        window.onload = showModals;
-    </script>
-    
+      function closeModal(modalId) {
+          document.getElementById(modalId).style.display = "none";
+      }
+  
+      function showModals() {
+          let today = new Date();
+          let dayOfWeek = today.getDay();
+          let hours = today.getHours();
+  
+          // ✅ عرض الإشعار العام فورًا
+          document.getElementById("generalModal").style.display = "flex";
+  
+          if (dayOfWeek === 5) { // الجمعة فقط
+              document.getElementById("kahfModal").style.display = "flex"; // إشعار سورة الكهف
+  
+              if (hours < 14) { // قبل 14:00 فقط
+                  document.getElementById("jumaaModal").style.display = "flex"; // إشعار صلاة الجمعة
+                  
+                  let audio = document.getElementById("jumaaAudio");
+                  if (audio && !audio.dataset.played) { // تشغيل الصوت عند ظهور الإشعار
+                      let playAudio = () => {
+                          audio.play().then(() => {
+                              audio.dataset.played = "true"; // منع التكرار
+                              console.log("تم تشغيل صوت صلاة الجمعة.");
+                          }).catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+                      };
+  
+                      if (document.hasFocus()) {
+                          playAudio();
+                      } else {
+                          document.addEventListener("click", playAudio, { once: true });
+                          document.addEventListener("touchstart", playAudio, { once: true });
+                      }
+  
+                      audio.onended = function () {
+                          console.log("انتهى تشغيل ملف الصوت.");
+                      };
+                  }
+              }
+          }
+      }
+  
+      document.addEventListener("DOMContentLoaded", function() {
+          let today = new Date();
+          let dayOfWeek = today.getDay();
+          let hours = today.getHours();
+  
+          if (dayOfWeek === 5 && hours < 14) { // تشغيل الصوت فقط يوم الجمعة قبل 14:00
+              let audio = document.getElementById("jumaaAudio");
+              if (audio) {
+                  document.body.addEventListener("click", function() {
+                      if (audio.paused) {
+                          audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+                      }
+                  }, { once: true });
+              }
+          }
+      });
+  
+      // ✅ تشغيل `showModals` دائمًا لإظهار الإشعار العام مباشرةً
+      window.onload = showModals;
+  </script>
+  
