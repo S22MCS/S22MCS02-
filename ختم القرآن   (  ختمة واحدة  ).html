@@ -483,8 +483,6 @@ function saveBookmark() {
 function closeSavePopup() {
     document.getElementById("save-popup").style.display = "none";
 }
-
-// أخذ لقطة شاشة للنافذة وحفظها
 function captureScreenshot() {
     let pageNum = document.getElementById("page-number").value;
     if (!pageNum) {
@@ -495,14 +493,21 @@ function captureScreenshot() {
     let savePopup = document.getElementById("save-popup");
     html2canvas(savePopup).then(canvas => {
         let imgData = canvas.toDataURL("image/png");
+
+        // إنشاء رابط لتحميل الصورة
         let link = document.createElement("a");
         link.href = imgData;
         link.download = `Bookmark_Page_${pageNum}.png`;
+        
+        // تفعيل التحميل
         link.click();
-    });
 
-    alert("📌 تم الحفظ بنجاح!");
-    closeSavePopup();
+        // عرض إشعار للمستخدم
+        alert("📌 تم الحفظ بنجاح! تم تنزيل الصورة في جهازك.");
+
+        // إغلاق النافذة
+        closeSavePopup();
+    });
 }
 
 
