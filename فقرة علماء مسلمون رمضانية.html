@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -142,7 +136,7 @@
 
     <div id="modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="close" onclick="closeModal()">×</span>
             <h2 id="scholar-name"></h2>
             <p id="scholar-info"></p>
             <button class="close-bottom" onclick="closeModal()">إغلاق</button>
@@ -151,47 +145,56 @@
 
     <script>
         function openModal(index) {
-            document.getElementById('scholar-name').innerText = "";
-            document.getElementById('scholar-info').innerText = "";
+            console.log(`فتح النافذة ليوم ${index}`);
+            document.getElementById('scholar-name').innerText = `العالم رقم ${index}`;
+            document.getElementById('scholar-info').innerText = `معلومات عن العالم ${index}.`;
             document.getElementById('modal').style.display = 'flex';
         }
 
         function closeModal() {
+            console.log("إغلاق النافذة");
             document.getElementById('modal').style.display = 'none';
         }
 
+        // إغلاق النافذة عند النقر خارجها
         window.onclick = function(event) {
-            if (event.target == document.getElementById('modal')) {
+            let modal = document.getElementById('modal');
+            if (event.target === modal) {
                 closeModal();
             }
-        }
+        };
 
         function updateDateTime() {
             let now = new Date();
-            document.getElementById('gregorian-date').innerText = now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            document.getElementById('time').innerText = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let gregorianDate = now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            let gregorianDateForeign = gregorianDate.replace(/[٠-٩]/g, match => String.fromCharCode(match.charCodeAt(0) - 0x0660 + 0x0030));
+            document.getElementById('gregorian-date').innerText = gregorianDate + " (" + gregorianDateForeign + ")";
+
+            let time = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let timeForeign = time.replace(/[٠-٩]/g, match => String.fromCharCode(match.charCodeAt(0) - 0x0660 + 0x0030));
+            document.getElementById('time').innerText = time + " (" + timeForeign + ")";
         }
-        
+
         async function getHijriDate() {
-            let response = await fetch('https://api.aladhan.com/v1/gToH?date=' + new Date().toISOString().split('T')[0]);
-            let data = await response.json();
-            let hijriDate = data.data.hijri.weekday.ar + '، ' + data.data.hijri.day + ' ' + data.data.hijri.month.ar + ' ' + data.data.hijri.year + ' هـ';
-            document.getElementById('hijri-date').innerText = hijriDate;
+            try {
+                let response = await fetch('https://api.aladhan.com/v1/gToH?date=' + new Date().toISOString().split('T')[0]);
+                let data = await response.json();
+                let hijriDate = data.data.hijri.weekday.ar + '، ' + data.data.hijri.day + ' ' + data.data.hijri.month.ar + ' ' + data.data.hijri.year + ' هـ';
+                let hijriDateForeign = hijriDate.replace(/[٠-٩]/g, match => String.fromCharCode(match.charCodeAt(0) - 0x0660 + 0x0030));
+                document.getElementById('hijri-date').innerText = hijriDate + " (" + hijriDateForeign + ")";
+            } catch (error) {
+                console.error("خطأ في جلب التاريخ الهجري:", error);
+            }
         }
-        
+
         window.onload = function() {
             updateDateTime();
             setInterval(updateDateTime, 1000);
             getHijriDate();
-            let today = new Date().getDate();
-            if (today >= 1 && today <= 30) {
-                openModal(today);
-            }
         };
     </script>
 </body>
 </html>
-
 
 
 
