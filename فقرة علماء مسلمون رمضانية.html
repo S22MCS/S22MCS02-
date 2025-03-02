@@ -1,0 +1,440 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>علماء مسلمون - رحلة في تاريخ العلم</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Amiri', serif;
+            text-align: center;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            font-size: 18px;
+        }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            max-width: 90%;
+            margin: auto;
+        }
+        button {
+            padding: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            background: #ffd700;
+            border: none;
+            border-radius: 10px;
+            color: black;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.3s;
+        }
+        button:hover {
+            background: #e6c200;
+            transform: scale(1.05);
+        }
+        .modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: black;
+            font-family: 'Amiri', serif;
+            width: 90vw;
+            height: 90vh;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .close {
+            cursor: pointer;
+            color: white;
+            background: red;
+            border-radius: 50%;
+            padding: 15px;
+            font-size: 28px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: background 0.3s, transform 0.2s;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .close:hover {
+            background: darkred;
+            transform: scale(1.2);
+        }
+        .close-bottom {
+            position: absolute;
+            bottom: 20px;
+            right: 50%;
+            transform: translateX(50%);
+            background: #d9534f;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .close-bottom:hover {
+            background: #c9302c;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span id="hijri-date"></span>
+        <span id="time"></span>
+        <span id="gregorian-date"></span>
+    </div>
+    <div class="container">
+        <h1>علماء مسلمون - رحلة في تاريخ العلم</h1>
+        <p>استكشف إنجازات العلماء المسلمين على مدار شهر رمضان.</p>
+    </div>
+    <div class="button-container">
+        <script>
+            for (let i = 1; i <= 30; i++) {
+                document.write(`<button onclick="openModal(${i})">اليوم ${i}</button>`);
+            }
+        </script>
+    </div>
+
+    <div id="modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="scholar-name"></h2>
+            <p id="scholar-info"></p>
+            <button class="close-bottom" onclick="closeModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(index) {
+            document.getElementById('scholar-name').innerText = "";
+            document.getElementById('scholar-info').innerText = "";
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('modal')) {
+                closeModal();
+            }
+        }
+
+        function updateDateTime() {
+            let now = new Date();
+            document.getElementById('gregorian-date').innerText = now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('time').innerText = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        
+        async function getHijriDate() {
+            let response = await fetch('https://api.aladhan.com/v1/gToH?date=' + new Date().toISOString().split('T')[0]);
+            let data = await response.json();
+            let hijriDate = data.data.hijri.weekday.ar + '، ' + data.data.hijri.day + ' ' + data.data.hijri.month.ar + ' ' + data.data.hijri.year + ' هـ';
+            document.getElementById('hijri-date').innerText = hijriDate;
+        }
+        
+        window.onload = function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            getHijriDate();
+            let today = new Date().getDate();
+            if (today >= 1 && today <= 30) {
+                openModal(today);
+            }
+        };
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إشعارات هامة</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Amiri', serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            max-height: 80vh;
+            overflow: hidden;
+            border: 4px solid #007bff;
+            animation: slideIn 0.4s ease-in-out;
+        }
+
+        .btn-close {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            margin: 20px auto 5px;
+        }
+
+        .btn-close:hover {
+            background-color: #c82333;
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            max-height: 50vh;
+            text-align: right;
+            font-weight: bold;
+            color: #222;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            background: #f9f9f9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="personModal" class="modal">
+        <div class="modal-content">
+            <h1> شخصية اليوم</h1>
+            <div class="modal-body">
+      
+             <!-- مكان عرض التاريخ -->
+<p id="duplicateDate" style="font-size: 18px; color: #28a745;"></p>
+<p id="currentDate" style="font-size: 18px; color: #28a745;"></p>
+
+شخصية اليوم تتميز بـ
+
+
+            </div>
+            <button class="btn-close" onclick="closeModal('personModal', 'lessonModal')">×</button>
+        </div>
+    </div>
+
+    <div id="lessonModal" class="modal">
+        <div class="modal-content">
+            <h1>   اعتز بامتك فهاذا  تذكير لك يا مسلم  </h1>
+            <div class="modal-body">
+                <span>🔻نرجو تذكيرك المسلمين ان تشريف علماء المسلمين   سبق  غيرهم🔻
+                    <br> 
+                    <br>    <br> 
+                    
+                    فمن العدو من  نسب لنفسه فاخذ الجزء او الكل  وطوره    وحصل مراده  بعد شغل  شعوب المسلمين  بالحروب والاستعمار المتعدد   بكل انواع سواء المباشر او غير المباشر    ومنه سحب  أعلام المسلمين ودورهم السابق   و الحاضر بشتى الساحات  والميادين  عن الاجيال السابقة والحالية وسعيهم للاحقة  ونسب الفضل لاعداء المسلمين  وهو ما نراه من مجابهة للسان العربي الفصيح  و من طمس  التاريخ الاسلامي والعربي  و لا ننسى  فك شمل المسلمين بالتفرفة  وزرع العداوة والبغضاء التي مزال يروج لها  وسائل  التواصل الاجتماعية وغيرها    ولم ولن  ينتهي   الصراع فالحرب سجال بينكم وبينهم رضيتم بالامر او ميعتم فمستمرة هي   لقيام الساعة 
+                    <br>   <br> 
+                    فتذكروا  تَكَتُل اَلْقَطَرَاتِ يُوَلِدُ سَيْلَاً تَكَتُل الأَعْضَاءِ يُوَلِدُ جَسَداً 
+                    <br>  <br> 
+                    الخطوات الصغيرة  هي ما تصنع  الانجازات الكبيرة 
+                    <br>  <br> 
+                    
+                    ولم نعلم  ونعهد  ان الاصلاح  والسعي له  منوط بالصالحين  فلو كان كذلك  لما وجدت الانجازات بعد الصحابة رضي الله عنهم  المبشرين  بالجنة  
+                    
+                    فلا تصغي لوساوس النفاق في هذه الحالة وابحث في الامر
+                    
+                     فليقدم  كل  مسلم ما استطاعت به نفسه  ومنه عن السابقين في القول
+                    "  اعرف الرجال بالحق ولا تعرف الحق بالرجال "
+                    
+                    
+                    <br> 
+                     <br> 
+                     <br> 
+                     <br>  <br> 
+                     🔻  فالله الله في امة اشهد ان لا اله الا الله واشهد ان محمد رسول الله  سدد الله عملكم ونصركم لامتكم      🔻</span>
+                    
+            </div>
+            <button class="btn-close" onclick="closeModal('lessonModal', 'secondModal')">×</button>
+        </div>
+    </div>
+
+    <div id="secondModal" class="modal">
+        <div class="modal-content">
+            <h1>فقرات أداة علم الرمضانية</h1>
+            <div class="modal-body">
+                <p>في رمضان هذا العام، نقدم فقرات مميزة:</p>
+                <ul>
+                    <li>📖 فقرة ختم القرآن إن شاء الله، حيث سيتم رفع عدد الصفحات يومياً.</li>
+                    <li>🔬 فقرة علماء مسلمون، لعرض مساهماتهم العظيمة في العلوم.</li>
+                </ul>
+                <p>لا تفوتوا متابعة هذه الفقرات والاستفادة من أجواء رمضان المباركة!</p>
+            </div>
+            <button class="btn-close" onclick="closeModal('secondModal')">×</button>
+        </div>
+    </div>
+
+    <script>
+function updateDate() {
+        let today = new Date();
+
+        // إعدادات لعرض التاريخ بالأرقام العربية (١٢٣٤)
+        let optionsArabicNumbers = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', numberingSystem: 'arab' };
+        let hijriDateArabic = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', optionsArabicNumbers).format(today);
+        let gregorianDateArabic = today.toLocaleDateString('ar-EG', optionsArabicNumbers);
+
+        // إعدادات لعرض التاريخ بالأرقام الأجنبية (1234)
+        let optionsEnglishNumbers = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', numberingSystem: 'latn' };
+        let hijriDateEnglish = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', optionsEnglishNumbers).format(today);
+        let gregorianDateEnglish = today.toLocaleDateString('ar-EG', optionsEnglishNumbers);
+
+        // عرض التاريخ الأول بالأرقام الأجنبية
+        document.getElementById("currentDate").innerHTML = `📅 اليوم هو ${hijriDateEnglish} (هجري) الموافق ${gregorianDateEnglish} (ميلادي)`;
+
+        // تكرار نفس السطر لكن بالأرقام العربية
+        document.getElementById("duplicateDate").innerHTML = `📅 اليوم هو ${hijriDateArabic} (هجري) الموافق ${gregorianDateArabic} (ميلادي)`;
+    }
+
+    window.onload = function() {
+        updateDate();
+    }
+
+
+
+
+
+
+        function closeModal(current, next = null) {
+            document.getElementById(current).style.display = "none";
+            localStorage.setItem(current + "_closed", "true");
+
+            if (next && !localStorage.getItem(next + "_closed")) {
+                document.getElementById(next).style.display = "flex";
+            }
+        
+
+    };
+</script>
+
+
+
+</body>
+</html>
