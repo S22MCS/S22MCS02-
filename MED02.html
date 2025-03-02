@@ -4150,8 +4150,6 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
             <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
         </div>
     </div>
-
-
     <script>
       function closeModal(modalId) {
           document.getElementById(modalId).style.display = "none";
@@ -4164,17 +4162,22 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
   
           if (dayOfWeek === 5) { // الجمعة
               document.getElementById("kahfModal").style.display = "flex"; // عرض إشعار سورة الكهف طيلة اليوم
+              let audio = document.getElementById("jumaaAudio");
+  
               if (hours < 14) {
                   document.getElementById("jumaaModal").style.display = "flex"; // عرض إشعار صلاة الجمعة حتى 14:00
-                  let audio = document.getElementById("jumaaAudio");
+                  
                   if (audio) {
-                      audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error)); // محاولة تشغيل الصوت مع معالجة الأخطاء
+                      audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+  
+                      // السماح للصوت بالاستمرار حتى ينتهي، حتى لو أغلق المستخدم الإشعار
                       audio.onended = function () {
-                          audio.pause(); // يضمن إيقاف الصوت بعد الانتهاء فقط
+                          console.log("انتهى تشغيل ملف الصوت.");
                       };
                   }
               }
           }
+  
           setTimeout(() => {
               document.getElementById("generalModal").style.display = "flex"; // عرض الإشعار العام بعد البقية
           }, 1000);
@@ -4193,6 +4196,4 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
   
       window.onload = showModals;
   </script>
-
-</body>
-</html>
+  
