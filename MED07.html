@@ -2,713 +2,102 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title>صفحة الدروس لطلاب الطب</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>النظام القلبي الوعائي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* إعدادات أساسية */
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            background-color: #e6f2ff;
-            color: #333;
-        }
-
-        header {
-            background: linear-gradient(45deg, #007bff, #66ccff);
-            color: #fff;
-            padding: 2rem 0;
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
             text-align: center;
-            position: relative;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('/mnt/data/2 (2).jpg') no-repeat center;
-            background-size: contain;
-            opacity: 0.2;
-            z-index: 1;
-        }
-
-        header h1 {
             margin: 0;
-            font-size: 2.5rem;
-            position: relative;
-            z-index: 2;
+            padding: 20px;
         }
 
-        nav {
-            position: relative;
-            z-index: 2;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        .biology-section {
+            max-width: 600px;
+            margin: auto;
             display: flex;
-            justify-content: center;
-            gap: 1.5rem;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
+        .bubble {
+            background: rgba(30, 30, 30, 0.95);
+            box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+            border-left: 6px solid #00aaff;
+            padding: 20px;
+            border-radius: 20px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .bubble:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
+        }
+
+        .bubble h2 {
+            color: #00aaff;
+            font-size: 22px;
+        }
+
+        .bubble p {
+            font-size: 22px;
+            font-family: 'Amiri', serif;
+            direction: rtl;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #008cff, #00508f);
+            padding: 22px;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0, 150, 255, 0.6);
+            font-size: 28px;
             font-weight: bold;
-            transition: color 0.3s ease;
-            font-size: 1.1rem;
         }
 
-        nav ul li a:hover {
-            color: #ffcc00;
-        }
-
-        main {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .lesson-section {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #d9e9f5;
-        }
-
-        .lesson-section:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            border-color: #b3d9f7;
-        }
-
-        .lesson-section h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #007bff;
-        }
-
-        .lesson-section img {
-            max-width: 100%;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .lesson-info {
-            background: #f8f9fa;
-            padding: 0.5rem;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            color: #555;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .buttons button {
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .buttons button:hover {
-            background: #0056b3;
-        }
-
-        .lessons-list {
-            display: none;
-            margin-top: 1rem;
-            text-align: left;
-            list-style: none;
-            padding: 0;
-        }
-
-        .lessons-list li {
-            background: #f8f9fa;
-            padding: 0.5rem;
-            margin-bottom: 0.5rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .lessons-list li:hover {
-            background: #e9ecef;
-        }
-
-        footer {
-            background: #007bff;
-            color: #fff;
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 1rem;
-        }
-
-        footer::before {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 3px;
-            background: #ffcc00;
-            margin: 0.5rem auto;
+        @media (max-width: 480px) {
+            .bubble p, .bubble h2 { font-size: 20px; }
+            .intro { font-size: 26px; padding: 20px; }
         }
     </style>
 </head>
-
 <body>
-    <header>
-        <h1>مرحباً بك في صفحة الدروس لطلاب الطب</h1>
-        <nav>
-       
-    
+    <div class="biology-section">
+        <div class="intro">عاموميــات | Generalities | Généralités</div>
+        
+        <div class="bubble">
+            <h2>هدف الدورة الدموية | Purpose of Circulation | Objectif de la Circulation</h2>
 
-
-
-
-
-            <style>
-                body {
-                  margin: 0;
-                  padding: 0;
-                  font-family: Arial, sans-serif;
-                  background-color: #007bff;
-                }
-            
-                nav {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  flex-wrap: wrap;
-                  gap: 15px;
-                  padding: 20px;
-                  background-color: #007bff;;
-                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                }
-            
-                nav a {
-                  text-decoration: none;
-                  padding: 10px 20px;
-                  border-radius: 25px;
-                  background-color: #4CAF50;
-                  color: #ffffff;
-                  font-weight: bold;
-                  transition: background-color 0.3s ease;
-                  text-align: center;
-                  min-width: 120px;
-                }
-            
-                nav a:hover {
-                  background-color: #45a049;
-                }
-            
-                @media (max-width: 768px) {
-                  nav {
-                    flex-direction: column;
-                    gap: 10px;
-                  }
-            
-                  nav a {
-                    width: 80%; /* عرض الزر يتناسب مع الشاشة */
-                    min-width: unset;
-                  }
-                }
-              </style>
-              <nav>
-                <a href="MED01.html" onclick="reloadPage(event, 'MED01.html')"> 🩺 السنة الأولى 🩺</a>
-                <a href="MED02.html" onclick="reloadPage(event, 'MED02.html')"> 🩺السنة الثانية</a>
-                <a href="MED03.html" onclick="reloadPage(event, 'MED03.html')"> 🩺السنة الثالثة🩺 </a>
-                <a href="MED04.html" onclick="reloadPage(event, 'MED04.html')">🩺السنة الرابعة🩺</a>
-                <a href="MED05.html" onclick="reloadPage(event, 'MED05.html')">🩺السنة الخامسة🩺</a>
-                <a href="MED06.html" onclick="reloadPage(event, 'MED06.html')"> 🩺السنة السادسة🩺</a>
-                <a href="MED07.html" onclick="reloadPage(event, 'MED07.html')"> 🩺السنة السابعة🩺</a>
-                
-                <script>
-                function reloadPage(event, url) {
-                    if (window.location.href.includes(url)) {
-                        event.preventDefault(); // منع السلوك الافتراضي للرابط
-                        window.location.reload(); // إعادة تحميل الصفحة
-                    }
-                }
-                </script>
-                
-              </nav>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <br>
-
-
-          <ul>
-  
-            <li><a href="#">المزيد قريبا  </a></li>
-     
-    </nav>
-
-    </header>
-
-
-
-  
-
-
-
-
-    <main>
-        <!-- أمثلة من الأقسام -->
-        <section id="#" class="lesson-section">
-            <h2>قادمون قريبا ان شاء الله </h2>
-            <img src="QCMPIC/KADIMON.jpg" alt="صورة علم التشريح" width="500" height="400">
-            <div class="lesson-info">
-                <p>قريبا ان شاء الله </p>
-                <p>قريبا ان  شاء الله .</p>
-            </div>
-            <div class="buttons">
-                <button onclick="toggleLessons('anatomy-lessons')">عرض الدروس</button>
-            </div>
-            <ul id="anatomy-lessons" class="lessons-list">
-                <li><a href="#"style="text-decoration: none; color: #007BFF;">  قريبا  ان شاء الله  </a></li>
-             
-              </ul>
-              
-        </section>
-
-
-
-
-    </main>
-
-
-
-
-
-
-
-
-
-    <script>
-        function toggleLessons(listId) {
-            // حدد قائمة الدروس باستخدام المعرف المرسل
-            const lessonsList = document.getElementById(listId);
-    
-            // تحقق إذا كانت القائمة موجودة
-            if (lessonsList) {
-                // إذا كانت القائمة معروضة، قم بإخفائها، وإلا قم بإظهارها
-                if (lessonsList.style.display === "block") {
-                    lessonsList.style.display = "none";
-                } else {
-                    lessonsList.style.display = "block";
-                }
-            }
-        }
-    </script>
-</body>
-
-   
-
-
-
-
-
-
-
-
-
-
-<!-- الفوتر الجديد -->
- <!-- فوتر S22MARKET الجذاب -->
- <footer style="background-color: #1E88E5; color: white; padding: 30px 20px; text-align: center; font-family: 'Arial', sans-serif; position: relative; overflow: hidden;">
-    <!-- القسم الداخلي ذو الخلفية السوداء -->
-    <div style="background-color: black; padding: 20px; border-radius: 10px; margin: 0 auto; max-width: 90%;">
-      <!-- النص المتحرك -->
-      <div style="overflow: hidden; position: relative; height: 80px; margin-bottom: 30px;">
-        <div id="neonText" style="display: inline-block; white-space: nowrap; font-size: 2.5rem; font-weight: bold; direction: rtl;">
-          <span class="neon-char">🌟</span>
-          <span class="neon-char">زوروا</span>
-          <span class="neon-char">متجرنا</span>
-          <span class="neon-char">🛒</span>
-          <span class="neon-char">S22MARKET</span>
-          <span class="neon-char">🛒</span>
-          <span class="neon-char">كل</span>
-          <span class="neon-char">ما</span>
-          <span class="neon-char">تحتاجه</span>
-          <span class="neon-char">في</span>
-          <span class="neon-char">مكان</span>
-          <span class="neon-char">واحد</span>
-          <span class="neon-char">🔥</span>
+            <p>توفير الأكسجين والوقود الأيضي والهرمونات والحرارة لكل خلية حية في الجسم وإزالة المنتجات النهائية الأيضية (ثاني أكسيد الكربون والماء) والحرارة التي تنتجها كل خلية.</p>
+            <p>Providing oxygen, metabolic fuels, hormones, and heat to every living cell in the body and removing the metabolic end products (CO2 and H2O) and the heat produced by each cell.</p>
+            <p>Apporter de l’O2, des combustibles métaboliques, des hormones, et de la chaleur à chaque cellule vivante de l’organisme et d’enlever les produits terminaux du métabolisme (CO2 et l’H2O) et la chaleur produits par chaque cellule.</p>
+      <br><br><br>
+            <p>جلب خلايا الدم البيضاء والصفائح الدموية والعديد من عوامل البلازما التي تلعب دورًا في دفاع الجسم ووقف النزيف.</p>
+            <p>Bringing white blood cells, platelets, and numerous plasma factors that play a role in the body's defense and hemostasis.</p>
+            <p>Amener les cellules blanches, les plaquettes et de nombreux facteurs plasmatiques jouant un rôle dans la défense de l’organisme et l’hémostase.</p>
         </div>
-      </div>
-  
-      <!-- روابط الصف الأول -->
-      <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 20px;">
-        <!-- الموقع الإلكتروني -->
-        <div style="text-align: center;">
-          <a href="https://s22market.github.io/S22MARKET/" target="_blank" style="text-decoration: none;">
-            <img src="S22MARKETSITELOGO.png" alt="Website" style="width: 50px; height: 50px; transition: transform 0.3s;">
-          </a>
-          <p style="color: #1565C0; margin-top: 5px; font-size: 14px;">الموقع الإلكتروني</p>
+        
+        <div class="bubble">
+            <p>يجب أن يتوافق تدفق الدم مع احتياجات كل خلية.</p>
+            <p>Blood flow must align with the needs of each cell.</p>
+            <p>Le débit sanguin doit s’accorder aux besoins de chaque cellule.</p>
         </div>
-        <!-- التطبيق معنا -->
-        <div style="text-align: center;">
-          <a href="https://s22market.github.io/S22MARKET/S22MARKET_app_site.html" target="_blank" style="text-decoration: none;">
-            <img src="APPICON.png" alt="App" style="width: 50px; height: 50px; transition: transform 0.3s;">
-          </a>
-          <p style="color: #00C853; margin-top: 5px; font-size: 14px;">حمّل التطبيق</p>
+        
+        <div class="bubble">
+            <p>على مستوى الأعضاء المختلفة، يحدث دوران الدم بشكل متوازي، ويتوافق تدفق الدم الذي يعبر العضو مع نسبة مئوية من Qc.</p>
+            <p>At the level of different organs, blood circulation occurs in parallel, and the blood flow through an organ corresponds to a percentage of Qc.</p>
+            <p>Au niveau des différents organes la circulation sanguine se fait en parallèle et le débit sanguin qui traverse un organe correspond à un pourcentage du Qc.</p>
         </div>
-      </div>
-  
-      <!-- روابط الصف الثاني -->
-      <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
-        <!-- فيسبوك -->
-        <div style="text-align: center;">
-          <a href="https://www.facebook.com/profile.php?id=61563869504735" target="_blank" style="text-decoration: none;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.3s;">
-          </a>
-          <p style="color: #1E88E5; margin-top: 5px; font-size: 14px;">فيسبوك</p>
+        
+        <div class="bubble">
+            <p>إن الدورة الدموية في الدماغ وعضلة القلب لها الأولوية، أما الدورة الدموية الأخرى فهي تتكيف بشكل دائم مع احتياجات العضو الذي يتلقى الدم.</p>
+            <p>The circulation in the brain and myocardium is prioritized, while other circulations continuously adapt to the needs of the perfused organ.</p>
+            <p>Le cerveau et le myocarde présentent une circulation prioritaire, les autres circulations sont adaptées en permanence aux besoins de l’organe perfusé.</p>
         </div>
-        <!-- إنستغرام -->
-        <div style="text-align: center;">
-          <a href="https://www.instagram.com/s22market2?igsh=d2VtM3h4M3A5N250" target="_blank" style="text-decoration: none;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 50px; height: 50px; transition: transform 0.3s;">
-          </a>
-          <p style="color: #E1306C; margin-top: 5px; font-size: 14px;">إنستغرام</p>
-        </div>
-        <!-- تيك توك -->
-        <div style="text-align: center;">
-          <a href="https://tiktok.com/@s22market" target="_blank" style="text-decoration: none;">
-            <img src="TIKTOK.png" alt="TikTok" style="width: 50px; height: 50px; transition: transform 0.3s;">
-          </a>
-          <p style="color: #ffffff; margin-top: 5px; font-size: 14px;">تيك توك</p>
-        </div>
-        <!-- تيليجرام -->
-        <div style="text-align: center;">
-          <a href="https://t.me/S22MARKET" target="_blank" style="text-decoration: none;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" style="width: 50px; height: 50px; transition: transform 0.3s;">
-          </a>
-          <p style="color: #0088CC; margin-top: 5px; font-size: 14px;">تيليجرام</p>
-        </div>
-        <!-- بوت مساعد -->
-        <div style="text-align: center;">
-          <a href="https://t.me/s22market_bot" target="_blank" style="text-decoration: none;">
-            <img src="BOT.jpg" alt="Bot" style="width: 50px; height: 50px; transition: transform 0.3s;">
-          </a>
-          <p style="color: #00CC66; margin-top: 5px; font-size: 14px;">بوت مساعد</p>
-        </div>
-      </div>
     </div>
-  </footer>
-  
-  <!-- CSS -->
-  <style>
-    #neonText {
-      animation: slide 10s linear infinite;
-    }
-  
-    .neon-char {
-      display: inline-block;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px #1E88E5, 0 0 40px #1E88E5, 0 0 50px #1565C0;
-      animation: flicker 1.5s infinite alternate;
-    }
-  
-    @keyframes slide {
-      from {
-        transform: translateX(100%);
-      }
-      to {
-        transform: translateX(-100%);
-      }
-    }
-  
-    @keyframes flicker {
-      0% {
-        opacity: 1;
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px #1E88E5, 0 0 20px #1565C0;
-      }
-      50% {
-        opacity: 0.8;
-        text-shadow: 0 0 7px rgba(255, 255, 255, 0.9), 0 0 15px #1E88E5, 0 0 30px #1565C0;
-      }
-      100% {
-        opacity: 1;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 25px #1E88E5, 0 0 40px #1565C0;
-      }
-    }
-  
-    a img:hover {
-      transform: scale(1.2);
-    }
-  </style>
-  
-<!-- فوتر S22MARKET الجذاب -->
-
-
-
-
-
-<style>
-    /* إعدادات أساسية */
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        line-height: 1.6;
-        background-color: #f4f9f9;
-        color: #333;
-    }
-
-    footer {
-        background: linear-gradient(135deg, #007bff, #66ccff);
-        color: #fff;
-        text-align: center;
-        padding: 2rem 0;
-        box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    footer .social-links {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-        flex-wrap: wrap;
-    }
-
-    footer .social-links a {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-decoration: none;
-        color: #fff;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    footer .social-links a:hover {
-        transform: scale(1.1);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    footer .social-links a img {
-        width: 35px; /* حجم أصغر */
-        height: 35px;
-        margin-bottom: 5px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        padding: 8px;
-    }
-
-    /* ألوان لكل أيقونة */
-    footer .social-links a.instagram img {
-        background-color: #e1306c;
-    }
-
-    footer .social-links a.telegram img {
-        background-color: #0088cc;
-    }
-
-    footer .social-links a.facebook img {
-        background-color: #1877f2;
-    }
-
-    footer .social-links a.tiktok img {
-        background-color: #000000;
-    }
-
-    footer .social-links a.twitter img {
-        background-color: #000000;
-    }
-
-    footer .social-links a.youtube img {
-        background-color: #ff0000;
-    }
-
-    footer .social-links span {
-        font-size: 0.75rem; /* خط أصغر */
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #b2dfdb;
-    }
-
-    footer p {
-        margin: 0;
-        font-size: 1rem;
-        color: #b2dfdb;
-    }
-
-    footer p span {
-        color: #ffd700;
-        font-weight: bold;
-    }
-</style>
-</head>
-<body>
-<footer>
-    <div class="social-links">
-        <a href="https://instagram.com/s22mcs?igshid=NzZlODBkYWE4Ng" target="_blank" class="instagram">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram">
-            <span>S22MCS</span>
-        </a>
-
-        <a href="https://t.me/S22MCS" target="_blank" class="telegram">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png" alt="Telegram">
-            <span>S22MCS</span>
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=61552919247921&mibextid=ZbWKwL" target="_blank" class="facebook">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook">
-            <span>S22MCS</span>
-        </a>
-        <a href="https://www.tiktok.com/@s22mcs?_t=8kfut6Df4lC&_r=1" target="_blank" class="tiktok">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok">
-            <span>S22MCS</span>
-        </a>
-        <a href="https://x.com/S22MCS?t=a7d9JIT0p_r-26CRAkYo0A&s=09" target="_blank" class="twitter">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/xbox-x.png" alt="X">
-            <span>S22MCS</span>
-        </a>
-        <a href="https://youtube.com/@S22MCS?si=Rejig-EPpBcuvEgD" target="_blank" class="youtube">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube">
-            <span>S22MCS</span>
-        </a>
-    </div>
-
-
-    <div class="social-links">
-        <a href="https://www.instagram.com/adat_ealm/profilecard/?igsh=bGNlZHBxenEzM2Uw" target="_blank" class="instagram">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram">
-            <span>اداة علم </span>
-        </a>
-
-        <a href="https://www.telegram.org" target="_blank" class="telegram">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png" alt="Telegram">
-            <span>اداة علم </span>
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=61560859966476" target="_blank" class="facebook">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook">
-            <span>اداة علم </span>
-        </a>
-        <a href="https://www.tiktok.com" target="_blank" class="tiktok">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok">
-            <span>اداة علم </span>
-        </a>
-  
-        <a href="https://www.youtube.com/@adatealm" target="_blank" class="youtube">
-            <img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube">
-            <span>اداة علم </span>
-        </a>
-    </div>
-
-
-
-
-
-    <p>مخصص <span>لطلبة الطب</span> - جميع الحقوق محفوظة &copy; 2025</p>
-</footer>
-
-
-
 </body>
-
-
-
-</body>
-
-
-
-
-<style>
-    /* تكييف التصميم لشاشات صغيرة (الهواتف) */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 1.8rem;
-        padding: 1rem;
-    }
-
-    nav ul {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    nav ul li a {
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
-    }
-
-    main {
-        grid-template-columns: 1fr; /* عمود واحد فقط */
-        padding: 1rem;
-    }
-
-    .lesson-section {
-        padding: 1rem;
-    }
-
-    footer {
-        padding: 1rem;
-    }
-
-    footer .social-links a img {
-        width: 30px; /* تقليل حجم الأيقونات */
-        height: 30px;
-    }
-
-    footer p {
-        font-size: 0.9rem;
-    }
-}
-
-/* تكييف لشاشات متوسطة الحجم (الأجهزة اللوحية) */
-@media (max-width: 1024px) {
-    header h1 {
-        font-size: 2.2rem;
-    }
-
-    nav ul {
-        gap: 1rem;
-    }
-
-    main {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
-}
-
-</style>
 </html>
 
 
@@ -738,258 +127,109 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إشعارات هامة</title>
+    <title>النطق التلقائي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-        }
-        .custom-modal {
-            display: flex;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-        .custom-modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        .custom-button {
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            text-align: center;
-            cursor: pointer;
-            border: none;
-            transition: background 0.3s, transform 0.2s;
-        }
-        .btn-close {
-            background-color: #d9534f;
+            font-family: 'Amiri', serif;
+            background-color: #121212;
             color: white;
+            text-align: center;
+            padding: 20px;
         }
-        .btn-close:hover {
-            background-color: #c9302c;
-            transform: scale(1.05);
+
+        .speak-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffcc00;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(255, 200, 0, 0.5);
+            cursor: pointer;
+            font-size: 22px;
+        }
+
+        .highlight {
+            background-color: rgba(255, 255, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .cursor-active {
+            cursor: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/Lightning-icon.png'), auto;
         }
     </style>
 </head>
 <body>
 
-    <!-- إشعار سورة الكهف -->
-    <div id="kahfModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            <h1> فضل سورة الكهف </h1>
-            <p>من قرأ سورةَ الكهفِ يومَ الجمعةِ أضاء له النُّورُ ما بينَه و بين البيتِ العتيقِ</p>
-            <button onclick="window.location.href='سورة الكهف مكتوبة.html'" class="custom-button">انتقل إليها الآن</button>
-            <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
-        </div>
-    </div>
-    
-    <!-- إشعار صلاة الجمعة -->
-    <div id="jumaaModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            <h1> فضل صلاة الجمعة </h1>
-            <audio id="jumaaAudio">
-                <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
-                متصفحك لا يدعم تشغيل الصوت.
-            </audio>
-            <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها"
-              .   [صحيح] - [رواه مسلم] - [صحيح مسلم - 854]
-            </p>
-            <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
-        </div>
-    </div>
+    <h1>انقر على أي نص للاستماع إليه! 🎧</h1>
+    <button onclick="loadVoices()" class="speak-btn" id="toggleSpeech">⚡</button>
 
-    <!-- الإشعار العام -->
-    <div id="generalModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            <h1>⚡ أَدَاة عِلْم ⚡</h1>
-            <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
-            <p>المزيد قادم  والتحديثات يومية ان شاء الله </p>
-            <p>  نذكركم ان التجربة على اجهزة الكمبيوتر افضل بكثير على الهواتف وسنحاول  باذم الله تحسين تجربة  على الهواتف </p>
-            <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
-        </div>
-    </div>
-    
+    <p class="speak-text">هذا نص باللغة العربية.</p>
+    <p class="speak-text">This is an English sentence.</p>
+    <p class="speak-text">Ceci est une phrase en français.</p>
+
     <script>
-      function closeModal(modalId) {
-          document.getElementById(modalId).style.display = "none";
-      }
-  
-      function showModals() {
-          let today = new Date();
-          let dayOfWeek = today.getDay();
-          let hours = today.getHours();
-  
-          // ✅ عرض الإشعار العام فورًا
-          document.getElementById("generalModal").style.display = "flex";
-  
-          if (dayOfWeek === 5) { // الجمعة فقط
-              document.getElementById("kahfModal").style.display = "flex"; // إشعار سورة الكهف
-  
-              if (hours < 14) { // قبل 14:00 فقط
-                  document.getElementById("jumaaModal").style.display = "flex"; // إشعار صلاة الجمعة
-                  
-                  let audio = document.getElementById("jumaaAudio");
-                  if (audio && !audio.dataset.played) { // تشغيل الصوت عند ظهور الإشعار
-                      let playAudio = () => {
-                          audio.play().then(() => {
-                              audio.dataset.played = "true"; // منع التكرار
-                              console.log("تم تشغيل صوت صلاة الجمعة.");
-                          }).catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
-                      };
-  
-                      if (document.hasFocus()) {
-                          playAudio();
-                      } else {
-                          document.addEventListener("click", playAudio, { once: true });
-                          document.addEventListener("touchstart", playAudio, { once: true });
-                      }
-  
-                      audio.onended = function () {
-                          console.log("انتهى تشغيل ملف الصوت.");
-                      };
-                  }
-              }
-          }
-      }
-  
-      document.addEventListener("DOMContentLoaded", function() {
-          let today = new Date();
-          let dayOfWeek = today.getDay();
-          let hours = today.getHours();
-  
-          if (dayOfWeek === 5 && hours < 14) { // تشغيل الصوت فقط يوم الجمعة قبل 14:00
-              let audio = document.getElementById("jumaaAudio");
-              if (audio) {
-                  document.body.addEventListener("click", function() {
-                      if (audio.paused) {
-                          audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
-                      }
-                  }, { once: true });
-              }
-          }
-      });
-  
-      // ✅ تشغيل `showModals` دائمًا لإظهار الإشعار العام مباشرةً
-      window.onload = showModals;
-  </script>
-  
+        let isActive = false;
+        let voices = [];
+
+        document.getElementById("toggleSpeech").addEventListener("click", function() {
+            isActive = !isActive;
+            document.body.classList.toggle("cursor-active", isActive);
+        });
+
+        document.querySelectorAll(".speak-text").forEach(element => {
+            element.addEventListener("click", function() {
+                if (isActive) {
+                    speakText(element.innerText);
+                }
+            });
+        });
+
+        function speakText(text) {
+            let utterance = new SpeechSynthesisUtterance(text);
+            let lang = detectLanguage(text);
+
+            utterance.lang = lang;
+            utterance.voice = getBestVoice(lang);
+            utterance.rate = 1.1;
+
+            speechSynthesis.speak(utterance);
+        }
+
+        function detectLanguage(text) {
+            let arabicRegex = /[\u0600-\u06FF]/;
+            let frenchRegex = /[éèêàçù]/;
+            let englishRegex = /[a-zA-Z]/;
+
+            if (arabicRegex.test(text)) return "ar-SA";
+            if (frenchRegex.test(text)) return "fr-FR";
+            if (englishRegex.test(text)) return "en-US";
+
+            return "en-US";
+        }
+
+        function getBestVoice(lang) {
+            return voices.find(voice => voice.lang.startsWith(lang)) || voices[0];
+        }
+
+        function loadVoices() {
+            voices = speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                setTimeout(loadVoices, 500);
+            }
+        }
+
+        window.onload = function() {
+            loadVoices();
+        };
+    </script>
+
+</body>
+</html>
