@@ -109,21 +109,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -141,7 +126,6 @@
             padding: 20px;
         }
 
-        /* زر القلم الناطق */
         .floating-btn {
             position: fixed;
             bottom: 20px;
@@ -153,7 +137,7 @@
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255, 204, 0, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             transition: background 0.3s, transform 0.2s;
             z-index: 9999;
         }
@@ -163,22 +147,34 @@
             transform: scale(1.1);
         }
 
-        /* تغيير المؤشر عند التفعيل */
         .active-cursor {
             cursor: url('https://upload.wikimedia.org/wikipedia/commons/3/3a/Lightning_bolt_symbol.png'), auto;
         }
     </style>
 </head>
 <body>
+
+    <h1>مرر فوق أي نص لسماعه! ⚡</h1>
+    <p>هذه جملة باللغة العربية.</p>
+    <p>This is a sentence in English.</p>
+    <p>Ceci est une phrase en français.</p>
+
     <button class="floating-btn" onclick="toggleSpeech()">⚡</button>
 
     <script>
         let speechSynthesisInstance = window.speechSynthesis;
         let isSpeechEnabled = false;
+        let lastSpokenText = "";
+        let currentUtterance = null;
+        let voices = [];
 
         function toggleSpeech() {
             isSpeechEnabled = !isSpeechEnabled;
             document.body.classList.toggle("active-cursor", isSpeechEnabled);
+
+            if (!isSpeechEnabled) {
+                stopSpeech();
+            }
 
             alert(isSpeechEnabled ? "⚡ القلم الناطق مفعّل! مرر فوق أي نص لسماعه." : "⛔ تم إيقاف القلم الناطق.");
         }
@@ -187,20 +183,65 @@
             if (!isSpeechEnabled) return;
 
             let text = event.target.innerText.trim();
-            if (text.length > 2) {
-                let lang = detectLanguage(text);
-                let utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = lang;
-
-                speechSynthesisInstance.speak(utterance);
+            if (text.length > 2 && text !== lastSpokenText) {
+                lastSpokenText = text;
+                speakText(text);
             }
         });
+
+        function speakText(text) {
+            stopSpeech(); // يوقف أي صوت حالي قبل تشغيل الجديد
+
+            let utterance = new SpeechSynthesisUtterance(text);
+            let lang = detectLanguage(text);
+
+            utterance.lang = lang;
+            utterance.voice = getBestVoice(lang);
+            utterance.rate = 1.2; // تحسين السرعة ليكون أكثر استجابة
+            utterance.volume = 1.0;
+
+            currentUtterance = utterance;
+            speechSynthesisInstance.speak(utterance);
+        }
 
         function detectLanguage(text) {
             if (/[\u0600-\u06FF]/.test(text)) return "ar-SA"; // العربية
             if (/[a-zA-Z]/.test(text)) return "en-US"; // الإنجليزية
             return "fr-FR"; // الفرنسية
         }
+
+        function getBestVoice(lang) {
+            voices = speechSynthesis.getVoices();
+            
+            if (lang === "en-US") {
+                return voices.find(voice => voice.lang.startsWith("en") && voice.name.toLowerCase().includes("male")) || voices.find(voice => voice.lang.startsWith("en")) || voices[0];
+            }
+
+            if (lang === "ar-SA") {
+                let arabicVoice = voices.find(voice => voice.lang.startsWith("ar"));
+                if (!arabicVoice) {
+                    console.warn("⚠️ لا يوجد صوت عربي متاح، سيتم استخدام صوت إنجليزي.");
+                    return voices.find(voice => voice.lang.startsWith("en")) || voices[0];
+                }
+                return arabicVoice;
+            }
+
+            return voices.find(voice => voice.lang.startsWith(lang)) || voices[0];
+        }
+
+        function stopSpeech() {
+            if (speechSynthesisInstance.speaking) {
+                speechSynthesisInstance.cancel();
+            }
+            currentUtterance = null;
+        }
+
+        window.onload = function() {
+            speechSynthesis.onvoiceschanged = function() {
+                voices = speechSynthesis.getVoices();
+            };
+        };
     </script>
+
 </body>
 </html>
