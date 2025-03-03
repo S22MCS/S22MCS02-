@@ -269,6 +269,82 @@
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         /* زر التصغير */
+         .resize-btn {
+                margin-top: 10px;
+                padding: 8px 15px;
+                background-color: #000;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s;
+            }
+    
+            .resize-btn:hover {
+                background-color: #333;
+            }
+    
+            /* تصغير الحاوية عند التفعيل */
+            .small {
+                transform: scale(0.5); /* يجعل الحاوية أصغر */
+                opacity: 0.7; /* تقليل الشفافية */
+            }
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            .additional-message {
+    font-size: 20px;
+    font-weight: normal;
+    color: #fff;
+    text-align: center;
+    margin-top: 10px;
+}
+
     </style>
 </head>
 <body>
@@ -322,23 +398,45 @@
     </div>
 
 
-
-    <div id="error-container" class="error-container">
-        <p id="hijri-date" class="error-message">
- 
- عالم اليوم 
-<br>
-أول من فرق بين الجدري والحصب   ومن  مولفاته 
- "الحاوي في الطب"  
-
-        </p>
-
+   
     
-    </div>
-    
-    
+        <!-- الحاوية -->
+        <div id="error-container" class="error-container">
+            <p id="hijri-date" class="error-message">
+                عالم اليوم 
+                <br>
+                أول من فرق بين الجدري والحصبة
+                <br>
+                ومن مؤلفاته "الحاوي في الطب"
+            </p>
 
 
+<p class="additional-message">
+    تقول كعادتنا ننتظر إجاباتكم وسيتم نشر الإجابة بعد صلاة المغرب.
+</p>
+    
+            <!-- زر التصغير -->
+            <button id="resize-button" class="resize-btn">تصغير</button>
+        </div>
+    
+        <script>
+            // الحصول على العناصر
+            const container = document.getElementById("error-container");
+            const resizeButton = document.getElementById("resize-button");
+    
+            // تبديل حجم الحاوية عند الضغط على الزر
+            resizeButton.addEventListener("click", function () {
+                container.classList.toggle("small");
+    
+                // تغيير نص الزر بين "تصغير" و"تكبير"
+                if (container.classList.contains("small")) {
+                    resizeButton.textContent = "تكبير";
+                } else {
+                    resizeButton.textContent = "تصغير";
+                }
+            });
+        </script>
+    
 
 
   
