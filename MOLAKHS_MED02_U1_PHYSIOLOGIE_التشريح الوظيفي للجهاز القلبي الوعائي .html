@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -5,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحديث الصفحة</title>
     <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            margin-top: 50px;
-        }
-        .refresh-btn {
+        /* يحتوي على الزر فقط، ولا يؤثر على باقي الصفحة */
+        .refresh-container {
             position: fixed;
             top: 10px;
-            left: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .refresh-button {
             background-color: #007bff;
             color: white;
             border: none;
@@ -21,15 +23,20 @@
             font-size: 16px;
             cursor: pointer;
             border-radius: 5px;
+            font-family: Arial, sans-serif;
         }
-        .refresh-btn:hover {
+
+        .refresh-button:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 
-    <button class="refresh-btn" onclick="location.reload();">تحديث الصفحة</button>
+    <!-- كائن مستقل للزر -->
+    <div class="refresh-container">
+        <button class="refresh-button" onclick="location.reload();">تحديث الصفحة</button>
+    </div>
 
 </body>
 </html>
