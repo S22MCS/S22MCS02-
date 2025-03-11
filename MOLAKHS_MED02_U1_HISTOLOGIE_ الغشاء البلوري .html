@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ترحيب بالمستخدم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 150, 255, 0.6);
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, top 0.3s ease-in-out;
+        }
+
+        .popup h3 {
+            color: #00aaff;
+            font-size: 22px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .input-group input {
+            width: 85%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #00aaff;
+            text-align: center;
+            font-size: 16px;
+            background-color: #222;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+        }
+
+        .gender-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .gender-buttons button {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .gender-buttons button:hover {
+            background: linear-gradient(90deg, #0056b3, #003c80);
+            transform: scale(1.05);
+        }
+
+        .gender-buttons button.selected {
+            background: #FFD700;
+            color: black;
+            font-weight: bold;
+        }
+
+        .submit-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .submit-button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            top: 50% !important;
+        }
+
+        #greeting {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 50px;
+            text-shadow: 2px 2px 10px rgba(0, 150, 255, 0.5);
+        }
+
+        #studyMessage {
+            display: none;
+            font-size: 18px;
+            margin-top: 15px;
+            color: #FFD700;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+        
+    <div id="welcomePopup" class="popup">
+        <h3>  ! السلام عليكم و أهلاً يا طبيب/طبيبة مستقبلنا ان شاء الله  </h3>
+
+        <p>من فضلك أدخل/ادخلي اسمك واختر/اختاري جنسك:</p>
+
+    
+        <div class="input-group">
+            <input type="text" id="username" placeholder="أدخل اسمك">
+        </div>
+    
+        <div class="gender-buttons">
+            <button id="maleButton" onclick="selectGender('male')">👨‍⚕️ رجل</button>
+            <button id="femaleButton" onclick="selectGender('female')">👩‍⚕️ امرأة</button>
+        </div>
+    
+        <button class="submit-button" onclick="submitInfo()">متابعة</button>
+    </div>
+    
+    <!-- يجب أن يكون خارج نافذة الإدخال حتى يظهر عند الضغط على متابعة -->
+    <div id="greetingContainer" style="display: none; flex-direction: column; align-items: center; gap: 10px; margin-top: 70px;">
+        <h2 id="welcomeMessage" style="color: #00aaff; text-align: center;"></h2>
+        <img id="doctorImage" src="" alt="صورة الطبيب" style="width: 60px; height: 60px; border-radius: 50%;">
+        <h1 id="greeting" style="margin: 0; font-size: 22px;"></h1>
+    </div>
+    <p id="studyMessage"></p>
+    <p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px;"></p>
+    
+    <script>
+        let selectedGender = "";
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            let storedName = localStorage.getItem("username");
+            let storedGender = localStorage.getItem("gender");
+            let visitCount = parseInt(localStorage.getItem("visitCount") || "0");
+    
+            visitCount += 1;
+            localStorage.setItem("visitCount", visitCount);
+    
+            if (visitCount >= 3) {
+                localStorage.removeItem("username");
+                localStorage.removeItem("gender");
+                localStorage.setItem("visitCount", "0");
+                storedName = null;
+            }
+    
+            if (storedName && storedGender) {
+                displayGreeting(storedName, storedGender);
+            } else {
+                let popup = document.getElementById('welcomePopup');
+                popup.style.display = 'block';
+                setTimeout(() => popup.classList.add('fade-in'), 50);
+            }
+        });
+    
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.getElementById("maleButton").classList.remove("selected");
+            document.getElementById("femaleButton").classList.remove("selected");
+    
+            if (gender === "male") {
+                document.getElementById("maleButton").classList.add("selected");
+            } else {
+                document.getElementById("femaleButton").classList.add("selected");
+            }
+        }
+    
+
+
+        function submitInfo() {
+    let name = document.getElementById('username').value.trim();
+    if (name === "") {
+        alert("❌ يرجى إدخال اسمك");
+        return;
+    }
+    if (!selectedGender) {
+        alert("❌ يرجى اختيار الجنس");
+        return;
+    }
+
+    console.log("🚀 إرسال الاسم:", name);
+    console.log("🚀 إرسال الجنس:", selectedGender);
+
+    localStorage.setItem("username", name);
+    localStorage.setItem("gender", selectedGender);
+    localStorage.setItem("visitCount", "0");
+
+    displayGreeting(name, selectedGender);
+
+    let popup = document.getElementById('welcomePopup');
+    popup.classList.remove('fade-in');
+    setTimeout(() => popup.style.display = 'none', 500);
+}
+
+
+
+
+
+
+function displayGreeting(name, gender) {
+    console.log("✅ تم استلام الاسم:", name);
+    console.log("✅ تم استلام الجنس:", gender);
+
+    let welcomeMessage = `السلام عليكم ومرحبًا بك يا ${name}`;  
+    
+    
+    let greetingMessage = gender === "male" 
+        ? `مرحبًا دكتور ${name}!` 
+        : `مرحبًا دكتورة ${name}!`;
+
+    let studyMessage = gender === "male" 
+        ? "ادرس جيدًا يا طبيب المسلمين إن شاء الله 📚" 
+        : "ادرسِ جيدًا يا طبيبة المسلمات إن شاء الله 📚";
+
+  
+
+        
+
+        let nationNeedsYou = 
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    " ﴾الَّذِينَ يَتَّخِذُونَ الْكَافِرِينَ أَوْلِيَاءَ مِن دُونِ الْمُؤْمِنِينَ ۚ أَيَبْتَغُونَ عِندَهُمُ الْعِزَّةَ فَإِنَّ الْعِزَّةَ لِلَّهِ جَمِيعًا ﴿\n" +
+    "[النساء: 139]\n\n" +
+    
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "﴾ لَهُ مُعَقِّبَاتٌ مِّن بَيْنِ يَدَيْهِ وَمِنْ خَلْفِهِ يَحْفَظُونَهُ مِنْ أَمْرِ اللَّهِ ۗ إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ ۗ وَإِذَا أَرَادَ اللَّهُ بِقَوْمٍ سُوءًا فَلَا مَرَدَّ لَهُ ۚ وَمَا لَهُم مِّن دُونِهِ مِن وَالٍ ﴿\n" +
+    "[الرعد: 11]\n\n" +
+
+    "أمتكم بحاجة إليكم.. كونوا عونًا لها في سبيل الله، اجعلوا علمكم طريقًا لنهضة أمتكم.. أمتكم بحاجة إليكم.\n\n" +
+    
+    "فعن السلف الصالح عمر بن الخطاب رضي الله عنه قال:\n" +
+    "\"إنَّا كنَّا أذَلَّ قومٍ، فأعزَّنا اللَّهُ بالإسلامِ، فمهما نطلُبِ العِزَّةَ بغيرِ ما أعزَّنا اللَّهُ به أذلَّنا اللَّهُ.\"";
+
+// وضع النص داخل العنصر بدون أكواد HTML ظاهرة
+document.getElementById('nationMessage').textContent = nationNeedsYou;
+
+
+
+
+
+
+    let imageSrc = gender === "male" 
+        ? "S22MCS PARTS/doctor.png" 
+        : "S22MCS PARTS/doctormuslim.png";
+
+    // تحديث العناصر في الصفحة
+    document.getElementById('welcomeMessage').innerText = welcomeMessage;
+    document.getElementById('greeting').innerText = greetingMessage;
+    document.getElementById('studyMessage').innerText = studyMessage;
+    document.getElementById('nationMessage').innerText = nationNeedsYou;
+    document.getElementById('doctorImage').src = imageSrc;
+
+    // عرض القسم بالكامل
+    document.getElementById('greetingContainer').style.display = 'flex';
+    document.getElementById('studyMessage').style.display = 'block';
+    document.getElementById('nationMessage').style.display = 'block';
+}
+
+        
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+        <html lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>التقدم في الحفظ</title>
+            <style>
+    body {
+    font-family: 'Poppins', 'Amiri', serif;
+    background-color: #121212;
+    color: white;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    padding-top: 120px; /* Add padding to prevent content from being hidden under the header */
+}
+
+/* Updated Sidebar to Header */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    height:50px; /* Adjust height as needed */
+    background-color: #333;
+    text-align: center;
+    padding: 10px 20px; /* Adjust padding as needed */
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */
+}
+
+/* Progress Bar Container */
+.progress-bar-container {
+    width: 60%; /* Adjust width as needed */
+    height: 30px;
+    background-color: #444;
+    border-radius: 15px;
+    position: relative;
+    margin: 0 auto; /* Center the progress bar */
+}
+
+/* Progress Bar */
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #00aaff;
+    border-radius: 15px;
+    transition: width 0.3s ease-in-out;
+}
+
+#proo {
+    margin-right: 10rem;
+    font-size: 2rem;
+}
+
+/* Progress Percentage */
+.progress-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Finish Button */
+.finish-button {
+    background-color: #00aaff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 3rem;
+}
+
+.finish-button:hover {
+    background-color: #0077cc;
+}
+
+/* Disabled Finish Button */
+.finish-button:disabled {
+    background-color: #ccc; /* Grayed out */
+    cursor: not-allowed; /* Show not-allowed cursor */
+    opacity: 0.7; /* Make it slightly transparent */
+}
+
+/* Lesson Container */
+.lesson-container {
+    margin-top: 20px; /* Adjust margin to account for the header */
+}
+
+/* Refresh Container */
+.refresh-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1200;
+}
+
+.refresh-button {
+    background-color: #ff6600;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: none;
+}
+
+.refresh-button:hover {
+    background-color: #e65c00;
+}
+
+/* Bubble Styles */
+.bubble {
+    background: rgba(30, 30, 30, 0.95);
+    box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+    border-left: 6px solid #00aaff;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px auto;
+    max-width: 60rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+    text-align: right;
+    direction: rtl;
+    position: relative;
+    cursor: pointer;
+}
+
+.bubble:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
+}
+
+.interact-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.interact-button:hover {
+    background-color: #0056b3;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 150, 255, 0.5);
+    text-align: center;
+}
+
+.modal h3 {
+    margin-bottom: 15px;
+    color: #00aaff;
+}
+
+.modal button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px;
+    font-size: 16px;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
+}
+
+/* End Lesson Modal */
+#end-lesson-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 600px;
+    background-color: #333;
+    padding: 30px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 6px 30px rgba(0, 150, 255, 0.5);
+}
+
+#end-lesson-modal h3 {
+    color: #00aaff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#end-lesson-modal p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#end-lesson-modal button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px;
+    font-size: 16px;
+}
+
+#end-lesson-modal button:hover {
+    background-color: #0056b3;
+}
+
+.reload-button {
+    background-color: #28a745;
+}
+
+.reload-button:hover {
+    background-color: #218838;
+}
+
+
+
+/* Vibration Animation */
+@keyframes vibrate {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
+
+.vibrate {
+    animation: vibrate 0.5s ease-in-out; /* Vibrate for 0.5 seconds */
+}
+</style>
+
+
+
+
+
+<body>
+    <div class="sidebar">
+        <button class="finish-button" onclick="finishLesson()">انتهيت من الدرس</button>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-percentage" id="progress-percentage">0%</div>
+        </div>
+        <h3 id="proo" >📊 التقدم</h3>
+    </div>
+
+    <br>
+    <div class="lesson-container">
+        <h1 class="lesson-title">الغشاء البلوري</h1>
+        <h2 class="lesson-subtitle">🔻 THE PLEURA 🔻</h2>
+        <h2 class="lesson-subtitle">🔻 LA PLEVRE 🔻</h2>
+    </div>
+
+    <div class="refresh-container"  id="ref">
+        <button class="refresh-button" onclick="location.reload();">تحديث الصفحة</button>
+    </div>
+
+    <div class="bubble">
+        <button class="interact-button"  id="inter1" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+        <h3 class="intro" style="text-align: center;">I. عامــات</h3>
+        <p><strong>الجنبة هي غشاء مصلي يتكون من وريقتين متصلتين عند سرة الرئة. تكون الوريقة الجدارية ملتصقة بالقفص الصدري، بينما تكون الوريقة الحشوية ملاصقة لسطح الرئة. تفصل بينهما التجويف الجنبي.</strong></p>
+        <p><strong>يعد هذا التجويف شبه افتراضي، حيث يحتوي بشكل طبيعي على كمية قليلة من السائل وعدد قليل من كريات الدم البيضاء. يسود داخله ضغط سلبي يسمح بتمدد الرئة أثناء الشهيق.</strong></p>
+        <br>
+        <div class="bubble" dir="ltr">
+            <h3 class="intro" style="text-align: center;">I. GENERALITIES</h3>
+            <p><strong>The pleura is a serous membrane consisting of two layers that are continuous at the pulmonary hilum. The parietal layer is applied against the rib cage, while the visceral layer is attached to the lung surface. They are separated by the pleural cavity.</strong></p>
+            <p><strong>The cavity is almost virtual and typically contains only a small amount of fluid and some white blood cells. It maintains a negative pressure that allows for lung expansion during inspiration.</strong></p>
+        </div>
+        <br>
+        <div class="bubble" dir="ltr">
+            <h3 class="intro" style="text-align: center;">I. GENERALITES</h3>
+            <p><strong>La plèvre est une membrane séreuse composée de deux feuillets en continuité au niveau du hile pulmonaire. Le feuillet pariétal est appliqué contre la cage thoracique, tandis que le feuillet viscéral est en contact avec la surface pulmonaire. Ils sont séparés par la cavité pleurale.</strong></p>
+            <p><strong>Celle-ci est presque virtuelle et ne contient normalement qu'une petite quantité de liquide et quelques globules blancs. Une pression négative y règne, ce qui permet l'expansion pulmonaire lors de l'inspiration.</strong></p>
+        </div>
+    </div>
+
+    <div class="bubble">
+        <button class="interact-button"  id="inter2" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+        <h3 class="intro" style="text-align: center;">2. الأصل الجنيني</h3>
+        <p><strong>تنشأ الجنبة من أصل ميزوبلاستي.</strong></p>
+        <p><strong>تشتق الوريقة الحشوية من الميزوبلاست المحيط ببراعم الرئة (المعروفة باسم الأحشاء الجنينية).</strong></p>
+        <p><strong>تشتق الوريقة الجدارية من الجدار الجسدي الجنيني.</strong></p>
+        <p><strong>يتشكل التجويف الجنبي نتيجة تقسيم الجوف الجنيني الداخلي، أو ما يعرف بالتجويف التاموري الجنبي البريتوني.</strong></p>
+        <br>
+        <div class="bubble">
+            <h3 class="intro" style="text-align: center;">2. Embryological Origin</h3>
+            <p><strong>The pleura is of mesoblastic origin.</strong></p>
+            <p><strong>The visceral layer derives from the mesoblast surrounding the pulmonary buds (the splanchnopleure).</strong></p>
+            <p><strong>The parietal layer derives from the somatopleure.</strong></p>
+            <p><strong>The pleural cavity originates from the partitioning of the intra-embryonic coelom, also known as the pericardio-pleuroperitoneal cavity.</strong></p>
+        </div>
+        <br>
+        <div class="bubble">
+            <h3 class="intro" style="text-align: center;">2. Origine embryologique</h3>
+            <p><strong>La plèvre est d’origine mésoblastique.</strong></p>
+            <p><strong>Le feuillet viscéral dérive du mésoblaste qui entoure les bourgeons pulmonaires (la splanchnopleure).</strong></p>
+            <p><strong>Le feuillet pariétal dérive de la somatopleure.</strong></p>
+            <p><strong>La cavité pleurale provient du cloisonnement du cœlome intra-embryonnaire, ou cavité péricardo-pleuropéritonéale.</strong></p>
+        </div>
+    </div>
+
+    <div id="end-lesson-modal">
+        <h3>أحسنت يا طبيبنا إن شاء الله!</h3>
+        <p id="lesson-summary">الوقت المستغرق: 00 دقيقة و 00 ثانية. عدد الفقاعات التي تم التفاعل معها: 0 من أصل 0.</p>
+        <button class="reload-button" onclick="reloadPage()">إعادة الحفظ</button>
+        <button onclick="goToTestsPage()">الانتقال إلى صفحة الاختبارات</button>
+    </div>
+
+    <div class="modal" id="question-modal">
+        <h3 id="modal-question">هل حفظت هذه الفقاعة؟</h3>
+        <button onclick="closeModal(true)">نعم</button>
+        <button onclick="closeModal(false)">لا</button>
+    </div>
+
+    <script>
+        let totalBubbles = 2; 
+let completedBubbles = 0; 
+let startTime = Date.now();
+let bubbleButton = null;
+
+function showQuestion() {
+    document.getElementById('question-modal').style.display = 'block';
+}
+
+function closeModal(answer) {
+    document.getElementById('question-modal').style.display = 'none';
+
+    if (answer) {
+        completedBubbles++;
+        updateProgress();
+        bubbleButton.style.backgroundColor = '#4CAF50'; 
+        bubbleButton.innerText = 'تم التفاعل'; 
+        bubbleButton.disabled = true; 
+
+        if (completedBubbles === totalBubbles) {
+            enableFinishButton();
+        }
+    } else {
+    }
+}
+
+function updateProgress() {
+    let progress = (completedBubbles / totalBubbles) * 100; 
+    document.getElementById('progress-bar').style.width = `${progress}%`;
+    document.getElementById('progress-percentage').innerText = `${Math.round(progress)}%`;
+
+    const finishButton = document.querySelector('.finish-button');
+    if (progress === 100) {
+        finishButton.disabled = false; 
+        finishButton.style.backgroundColor = '#00aaff'; 
+        finishButton.style.cursor = 'pointer'; 
+    } else {
+        finishButton.disabled = true;
+        finishButton.style.backgroundColor = '#ccc'; 
+        finishButton.style.cursor = 'not-allowed'; 
+    }
+}
+
+function markBubbleAsCompleted(button) {
+    bubbleButton = button; 
+    showQuestion(); 
+}
+
+function finishLesson() {
+    let elapsedTime = Date.now() - startTime;
+    let minutes = Math.floor(elapsedTime / 60000);
+    let seconds = Math.floor((elapsedTime % 60000) / 1000);
+    let summary = `الوقت المستغرق: ${minutes} دقيقة و ${seconds} ثانية. عدد الفقاعات التي تم التفاعل معها: ${completedBubbles} من أصل ${totalBubbles}.`;
+    document.getElementById('lesson-summary').innerText = summary;
+    document.getElementById('end-lesson-modal').style.display = 'block';
+}
+
+function reloadPage() {
+    location.reload();
+}
+
+function goToTestsPage() {
+    window.location.href = '/tests';
+}
+
+function initializeFinishButton() {
+    const finishButton = document.querySelector('.finish-button');
+    finishButton.disabled = true; 
+    finishButton.style.backgroundColor = '#ccc'; 
+    finishButton.style.cursor = 'not-allowed'; 
+}
+
+window.onload = initializeFinishButton;
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القلم الناطق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #008cff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
+            display: none;
+        }
+
+        .show-notification {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffcc00;
+            color: black;
+            font-size: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.2s;
+            z-index: 9999;
+        }
+
+        .floating-btn:hover {
+            background-color: #ffdb4d;
+            transform: scale(1.1);
+        }
+
+        .speed-control {
+            margin-top: 15px;
+        }
+
+        input[type="range"] {
+            width: 50%;
+            accent-color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>حدد أي نص لسماعه! 🎧</h1>
+    <p>هذه جملة باللغة العربية.</p>
+    <p>This is a sentence in English.</p>
+    <p>Ceci est une phrase en français.</p>
+
+    <div>
+        <label>🔹 اختر جنس الصوت:</label>
+        <select id="voiceGender">
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+        </select>
+    </div>
+
+    <div class="speed-control">
+        <label for="speedRange">🔊 سرعة الصوت:</label>
+        <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1">
+    </div>
+
+    <button class="floating-btn" onclick="toggleSpeech()">⚡</button>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let speechSynthesisInstance = window.speechSynthesis;
+        let isSpeechEnabled = false;
+        let currentUtterance = null;
+        let voices = [];
+        let speechRate = 1; 
+        let userGender = "male"; 
+
+        function showNotification(message) {
+            let notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("show-notification");
+
+            setTimeout(() => {
+                notification.classList.remove("show-notification");
+            }, 2000);
+        }
+
+        function toggleSpeech() {
+            isSpeechEnabled = !isSpeechEnabled;
+            showNotification(isSpeechEnabled ? "✅ تم تفعيل القلم الناطق!" : "⛔ تم إيقاف القلم الناطق!");
+        }
+
+        document.addEventListener('mouseup', function () {
+            if (!isSpeechEnabled) return;
+
+            let selectedText = window.getSelection().toString().trim();
+            if (selectedText.length > 0) {
+                speakText(selectedText);
+            }
+        });
+
+        function speakText(text) {
+            stopSpeech();
+
+            let utterance = new SpeechSynthesisUtterance(text);
+            let lang = detectLanguage(text);
+            utterance.lang = lang;
+            utterance.voice = getBestVoice(lang);
+            utterance.rate = speechRate;
+            utterance.volume = 1.0;
+
+            currentUtterance = utterance;
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function detectLanguage(text) {
+            if (/[\u0600-\u06FF]/.test(text)) return "ar-SA"; 
+            if (/[a-zA-Z]/.test(text)) return "en-US"; 
+            return "fr-FR"; 
+        }
+
+        function getBestVoice() {
+    voices = speechSynthesis.getVoices();
+    
+    let maleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("m"));
+    let femaleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("f"));
+
+    if (userGender === "male" && maleVoice) {
+        return maleVoice;
+    } else if (userGender === "female" && femaleVoice) {
+        return femaleVoice;
+    }
+
+    // إذا لم يتم العثور على صوت مناسب، استخدم أي صوت عربي متاح
+    return voices.find(voice => voice.lang.startsWith("ar")) || voices[0];
+}
+
+        function transliterateToEnglish(langCode, availableVoices) {
+            let transliterationMap = {
+                "ar": {
+                    "أ": "A", "ب": "B", "ت": "T", "ث": "TH", "ج": "J", "ح": "H", "خ": "KH",
+                    "د": "D", "ذ": "DH", "ر": "R", "ز": "Z", "س": "S", "ش": "SH", "ص": "S",
+                    "ض": "D", "ط": "T", "ظ": "Z", "ع": "A", "غ": "GH", "ف": "F", "ق": "Q",
+                    "ك": "K", "ل": "L", "م": "M", "ن": "N", "ه": "H", "و": "W", "ي": "Y"
+                }
+            };
+
+            let text = window.getSelection().toString();
+            let transliteratedText = text.split("").map(char => transliterationMap[langCode][char] || char).join("");
+
+            let utterance = new SpeechSynthesisUtterance(transliteratedText);
+            utterance.lang = "en-US";
+            utterance.voice = availableVoices.find(voice => voice.lang.startsWith("en")) || availableVoices[0];
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function stopSpeech() {
+            if (speechSynthesisInstance.speaking) {
+                speechSynthesisInstance.cancel();
+            }
+            currentUtterance = null;
+        }
+
+        document.getElementById("speedRange").addEventListener("input", function () {
+            speechRate = this.value;
+        });
+
+        document.getElementById("voiceGender").addEventListener("change", function () {
+            userGender = this.value;
+        });
+
+        window.onload = function() {
+            speechSynthesis.onvoiceschanged = function() {
+                voices = speechSynthesis.getVoices();
+            };
+        };
+    </script>
+
+</body>
+</html>
