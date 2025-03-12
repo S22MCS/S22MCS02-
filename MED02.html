@@ -1922,238 +1922,490 @@ function toggleLessons(id) {
 </div>
 <ul id="Cardio-VasculairePHYSIOLOGIE-lessons" class="lessons-list">
   
-     
+
+  <br>
+  <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
+<style>
+/* عزل التنسيق عن بقية الموقع */
+.lesson-container {
+display: flex;
+flex-direction: column;
+gap: 10px;
+align-items: center;
+}
+
+.custom-button {
+background: linear-gradient(145deg, #00796b, #004d40);
+color: #fff;
+font-size: 14px;
+font-family: 'Arial', sans-serif;
+border: none;
+border-radius: 20px;
+padding: 10px 20px;
+cursor: pointer;
+transition: all 0.3s ease;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+letter-spacing: 0.8px;
+width: 100%;
+max-width: 400px;
+text-align: center;
+}
+
+.custom-button:hover {
+background: linear-gradient(145deg, #004d40, #00332e);
+transform: scale(1.05);
+box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.custom-button span {
+font-weight: bold;
+}
+
+.custom-button .arabic-text {
+color: #ffeb3b;
+font-size: 16px;
+margin-top: 4px;
+}
+
+.lesson-list {
+display: none;
+padding: 0;
+margin-top: 10px;
+list-style: none;
+width: 100%;
+max-width: 400px;
+}
+
+.college-item {
+background: #f0f8ff;
+border-radius: 10px;
+padding: 10px;
+margin-bottom: 5px;
+text-align: center;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.college-item a {
+color: #00796b;
+font-weight: bold;
+text-decoration: none;
+}
+
+.college-item p {
+font-size: 12px;
+color: #555;
+margin-top: 5px;
+}
+
+@media (max-width: 600px) {
+.custom-button {
+font-size: 13px;
+padding: 8px 16px;
+}
+
+.custom-button .arabic-text {
+font-size: 14px;
+}
+
+.college-item {
+padding: 8px;
+}
+}
+</style>
 
 
-     
 
 
-<div style="display: flex; flex-direction: column; gap: 10px;">
-
-  <div>
-    <button style="background: linear-gradient(145deg, #00796b, #004d40); color: #fff; font-size: 12px; font-family: 'Arial', sans-serif; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); letter-spacing: 0.8px;" 
-    onclick="toggleLessons('AnatomieFonctionnelleduSystèmeCardio-Vasculaire-lessons')" 
-    onmouseover="this.style.background='linear-gradient(145deg, #004d40, #00332e)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 18px rgba(0, 0, 0, 0.3)';" 
-    onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.2);'">
-      <span style="font-weight: bold; font-size: 14px; letter-spacing: 0.5px;"> Anatomie Fonctionnelle du Système Cardio-Vasculaire
-      </span>
-      <span style="font-weight: bold; color: #ffeb3b; font-size: 16px; margin-left: 6px;">التشريح الوظيفي للجهاز القلبي الوعائي
-      </span>
-    </button>
-    
-    <ul id="AnatomieFonctionnelleduSystèmeCardio-Vasculaire-lessons" style="display: none; padding: 0; margin-top: 10px;">
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-HISTOLOGIE__Embryologie_de_l’appareil_urinaire__ANNABA.html">ANNABA - كلية عنابة</a>
-        <p>2024 - 2016</p>
-      </li>
 
 
-      <li class="college-item">
-        <a href="القيم الفيزيولوجية.html">SIDI BEL ABBÈS - كلية سيدي بلعباس</a>
-        <p>2024 - 2016</p>
-      </li>
+<style>
+  /* تنسيق الحاوية الرئيسية */
+  .ملخص {
+   list-style: none;
+   background-color: #1e1e1e; /* خلفية رمادية داكنة */
+   padding: 20px;
+   border-radius: 10px;
+   text-align: center;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
+   max-width: 350px;
+   margin: auto;
+   border: 1px solid #444; /* إضافة إطار رفيع */
+  }
+  
+  /* تصميم الرابط */
+  .ملخص-رابط {
+   display: inline-block;
+   padding: 12px 18px;
+   border-radius: 8px;
+   background-color: #000; /* خلفية سوداء */
+   color: #fff; /* نص أبيض */
+   font-weight: bold;
+   font-size: 18px;
+   text-decoration: none;
+   transition: background 0.3s, transform 0.2s;
+  }
+  
+  /* تأثير عند مرور الفأرة */
+  .ملخص-رابط:hover {
+   background-color: #444;
+   transform: scale(1.05);
+  }
+  
+  /* تنسيق كلمة "ملخص" */
+  .ملخص-كلمة {
+   color: #fff; /* اللون الأبيض */
+   font-size: 20px; /* حجم أكبر */
+  }
+  
+  /* تنسيق صندوق الإصدار */
+  .اصدار {
+   background-color: #333; /* خلفية داكنة */
+   color: #fff;
+   padding: 10px;
+   border-radius: 6px;
+   display: inline-block;
+   margin-top: 12px;
+   font-size: 14px;
+   font-weight: bold;
+   border: 1px solid #555; /* إطار رفيع */
+  }
+  
+  @media (max-width: 600px) {
+   .ملخص {
+     padding: 15px;
+     max-width: 300px;
+   }
+  
+   .ملخص-رابط {
+     font-size: 16px;
+     padding: 10px 14px;
+   }
+  
+   .اصدار {
+     font-size: 12px;
+   }
+  }
+  </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- المحتوى المعزول: الزر مع القائمة -->
+<div class="lesson-container">
+<!-- زر الدرس -->
+<button class="custom-button" onclick="toggleLessons('CARDIACOUTPUTLessons')">
+<span class="arabic-text"> القلب </span>
+<span>   🔻LERDIAQUE🔻  </span>  <!-- الفرنسية -->
+<span>🔻CARDIAT🔻</span> <!-- الإنجليزية -->
+</button>
+
+
+<!-- قائمة الدروس -->
+<ul id="LaPlevreLessons" class="lesson-list">
+
+<li class="college-item">
+
+
+
+<ul>
+<li class="ملخص">
+ <a href="MOLAKHS_MED02_U1_HISTOLOGIE_ الغشاء البلوري .html" class="ملخص-رابط">🔻 <span class="ملخص-كلمة">الملخص</span> 🔻</a>
+ <p class="اصدار">إصدار 12 رمضان 1446 موافق لـ 12 مارس 2025</p>
+</li>
+</ul>
+
+
+<li class="college-item">
+<a href="MED02_U1_HISTOLOGIE_الغشاء البلوري ANNABA.html">
+ ANNABA - كلية عنابة
+</a>
+<p>2024 - 2016</p>
+</li>
+<li class="college-item">
+<a href="MED02U03-APP-PLEURE-ANATOMIE__La_Plevre__SIDI-BEL-ABBAS.html">
+ SIDI BEL ABBÈS - كلية سيدي بلعباس
+</a>
+<p>2024 - 2016</p>
+</li>
+</ul>
+</div>
+
+<!-- كود الجافا سكريبت لعرض القائمة -->
+<script>
+function toggleLessons(id) {
+var list = document.getElementById(id);
+list.style.display = list.style.display === "none" || list.style.display === "" ? "block" : "none";
+}
+</script>
+
+
+
+
+         
+
+
+
+
+
+
 
    
-      <ul>
-        <li class="ملخص">
-          <a href="MOLAKHS_MED02_U1_PHYSIOLOGIE_التشريح الوظيفي للجهاز القلبي الوعائي .html" class="ملخص-رابط">🔻 الملخص 🔻</a>
-          <p class="اصدار">إصدار 04 رمضان 1446 موافق لـ 03 مارس 2025</p>
-        </li>
-      </ul>
-      
-      <style>
-        /* تنسيق الحاوية الرئيسية */
-        .ملخص {
-          list-style: none;
-          background-color: #1e1e1e; /* خلفية رمادية داكنة */
-          padding: 20px;
-          border-radius: 10px;
-          text-align: center;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
-          max-width: 350px;
-          margin: auto;
-          border: 1px solid #444; /* إضافة إطار رفيع */
-        }
-      
-        /* تصميم الرابط */
-        .ملخص-رابط {
-          display: inline-block;
-          padding: 12px 18px;
-          border-radius: 8px;
-          background-color: #000; /* خلفية سوداء */
-          color: #fff; /* نص أبيض */
-          font-weight: bold;
-          font-size: 18px;
-          text-decoration: none;
-          transition: background 0.3s, transform 0.2s;
-        }
-      
-        /* تأثير عند مرور الفأرة */
-        .ملخص-رابط:hover {
-          background-color: #444;
-          transform: scale(1.05);
-        }
-      
-        /* تنسيق صندوق الإصدار */
-        .اصدار {
-          background-color: #333; /* خلفية داكنة */
-          color: #fff;
-          padding: 10px;
-          border-radius: 6px;
-          display: inline-block;
-          margin-top: 12px;
-          font-size: 14px;
-          font-weight: bold;
-          border: 1px solid #555; /* إطار رفيع */
-        }
-      </style>
-      
+  <!-- المحتوى المعزول: الزر مع القائمة -->
+  <div class="lesson-container">
+  <!-- زر الدرس -->
+  <button class="custom-button" onclick="toggleLessons('CARDIACOUTPUTLessons')">
+  <span class="arabic-text">النتاج القلبي </span>
+  <br>
+  <span>🔻CARDIAC OUTPUT🔻</span> <!-- الإنجليزية -->
 
+  <br>
+  <span>   🔻LE DEBIT CARDIAQUE🔻  </span>  <!-- الفرنسية -->
+  </button>
+  
+  <!-- قائمة الدروس -->
+  <ul id="CARDIACOUTPUTLessons" class="lesson-list">
+  
+  <li class="college-item">
+  
+  
+  
+  <ul>
+   <li class="ملخص">
+     <a href="MOLAKHS_MED02_U1_PHYSIOLOGIE_النتاج القلبي.html" class="ملخص-رابط">🔻 <span class="ملخص-كلمة">الملخص</span> 🔻</a>
+     <p class="اصدار">إصدار 12 رمضان 1446 موافق لـ 12 مارس 2025</p>
+   </li>
+  </ul>
 
-
-    </ul>
-
-
-
-
+  
+  
+  <li class="college-item">
+  <a href="MED02_U1_PHYSIOLOGIE_النتاج القلبي ANNABA.html">
+   ANNABA - كلية عنابة
+  </a>
+  <p>2024 - 2016</p>
+  </li>
+  <li class="college-item">
+  <a href="MED02U03-APP-PLEURE-ANATOMIE__La_Plevre__SIDI-BEL-ABBAS.html">
+   SIDI BEL ABBÈS - كلية سيدي بلعباس
+  </a>
+  <p>2024 - 2016</p>
+  </li>
+  </ul>
   </div>
+  
+  
+  
+    
 
-  <div>
-    <button style="background: linear-gradient(145deg, #00796b, #004d40); color: #fff; font-size: 12px; font-family: 'Arial', sans-serif; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); letter-spacing: 0.8px;" 
-    onclick="toggleLessons('LesReinsanatomiieyrinairedsrZ-lessons')" 
-    onmouseover="this.style.background='linear-gradient(145deg, #004d40, #00332e)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 18px rgba(0, 0, 0, 0.3)';" 
-    onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.2);'">
-      <span style="font-weight: bold; font-size: 14px; letter-spacing: 0.5px;">   Electrophysiologie cardiaque
-         </span>
-      <span style="font-weight: bold; color: #ffeb3b; font-size: 16px; margin-left: 6px;"> الفيزيولوجيا الكهربائية للقلب  </span>
+
+
+
+
+
+
+
+
+
+  Anatomie Fonctionnelle du Système Cardio-Vasculaire
+  التشريح الوظيفي للجهاز القلبي الوعائي
+
+
+
+   Electrophysiologie cardiaque
+
+   الفيزيولوجيا الكهربائية للقلب  
+
+   الدورة القلبية 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+   <!-- المحتوى المعزول: الزر مع القائمة -->
+   <div class="lesson-container">
+    <!-- زر الدرس -->
+    <button class="custom-button" onclick="toggleLessons('PRARLessons')">
+    <span class="arabic-text">   ضغط الدم وتنظيمه </span>
+    <br>
+   
+    <span>🔻CARDIAC OUTPUT🔻</span> <!-- الإنجليزية -->
+
+    <span>   🔻  Pression artérielle et Régulation🔻  </span>  <!-- الفرنسية -->
     </button>
-
-    <ul id="LesReinsanatomiieyrinairedsrZ-lessons" style="display: none; padding: 0; margin-top: 10px;">
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-PHYSIOLOGIE__Débit_Sanguin_Rénal__ANNABA.html">ANNABA - كلية عنابة</a>
-        <p>2024 - 2016</p>
-      </li>
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-ANATOMIE-RIENS-SIDIBELABBAS.html">SIDI BEL ABBÈS - كلية سيدي بلعباس</a>
-        <p>2024 - 2016</p>
-      </li>
+    
+    <!-- قائمة الدروس -->
+    <ul id="PRARLessons" class="lesson-list">
+    
+    <li class="college-item">
+    
+    
+    
+    <ul>
+     <li class="ملخص">
+       <a href="MOLAKHS_MED02_U1_PHYSIOLOGIE_النتاج القلبي.html" class="ملخص-رابط">🔻 <span class="ملخص-كلمة">الملخص</span> 🔻</a>
+       <p class="اصدار">إصدار 12 رمضان 1446 موافق لـ 12 مارس 2025</p>
+     </li>
     </ul>
-  </div>
-
-  <div>
-    <button style="background: linear-gradient(145deg, #00796b, #004d40); color: #fff; font-size: 12px; font-family: 'Arial', sans-serif; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); letter-spacing: 0.8px;" 
-    onclick="toggleLessons('LesReinsanatomiieyrinairefgR-lessons')" 
-    onmouseover="this.style.background='linear-gradient(145deg, #004d40, #00332e)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 18px rgba(0, 0, 0, 0.3)';" 
-    onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.2);'">
-      <span style="font-weight: bold; font-size: 14px; letter-spacing: 0.5px;">         Cycle cardiaque 
-      </span>
-      <span style="font-weight: bold; color: #ffeb3b; font-size: 16px; margin-left: 6px;">الدورة القلبية 
-      </span>
-    </button>
-
-    <ul id="LesReinsanatomiieyrinairefgR-lessons" style="display: none; padding: 0; margin-top: 10px;">
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-HISTOLOGIE__Les_Rein__ANNABA.html">ANNABA - كلية عنابة</a>
-        <p>2024 - 2016</p>
-      </li>
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-ANATOMIE-RIENS-SIDIBELABBAS.html">SIDI BEL ABBÈS - كلية سيدي بلعباس</a>
-        <p>2024 - 2016</p>
-      </li>
+    
+  
+  <li class="college-item">
+    <a href="MED02_U1_PHYSIOLOGIE_النتاج القلبي ANNABA.html">
+     ANNABA - كلية عنابة
+    </a>
+    <p>2024 - 2016</p>
+    </li>
+    <li class="college-item">
+    <a href="MED02U03-APP-PLEURE-ANATOMIE__La_Plevre__SIDI-BEL-ABBAS.html">
+     SIDI BEL ABBÈS - كلية سيدي بلعباس
+    </a>
+    <p>2024 - 2016</p>
+    </li>
     </ul>
-  </div>
+    </div>
 
-  <div>
-    <button style="background: linear-gradient(145deg, #00796b, #004d40); color: #fff; font-size: 12px; font-family: 'Arial', sans-serif; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); letter-spacing: 0.8px;" 
-    onclick="toggleLessons('LesReinsanatomiieyrinaireMTP-lessons')" 
-    onmouseover="this.style.background='linear-gradient(145deg, #004d40, #00332e)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 18px rgba(0, 0, 0, 0.3)';" 
-    onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.2);'">
-      <span style="font-weight: bold; font-size: 14px; letter-spacing: 0.5px;">  Débit cardiaque   </span>
-      <span style="font-weight: bold; color: #ffeb3b; font-size: 16px; margin-left: 6px;">     النتاج القلبي 
 
-    <ul id="LesReinsanatomiieyrinaireMTP-lessons" style="display: none; padding: 0; margin-top: 10px;">
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-ANATOMIE-RIENS-ANNABA.html">ANNABA - كلية عنابة</a>
-        <p>2024 - 2016</p>
-      </li>
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-ANATOMIE-RIENS-SIDIBELABBAS.html">SIDI BEL ABBÈS - كلية سيدي بلعباس</a>
-        <p>2024 - 2016</p>
-      </li>
-    </ul>
-  </div>
 
 
  
 
-  
-  <div>
-    <button style="background: linear-gradient(145deg, #00796b, #004d40); color: #fff; font-size: 12px; font-family: 'Arial', sans-serif; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); letter-spacing: 0.8px;" 
-    onclick="toggleLessons('LesReinsanatomiieyrinairefgR-lessons')" 
-    onmouseover="this.style.background='linear-gradient(145deg, #004d40, #00332e)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 18px rgba(0, 0, 0, 0.3)';" 
-    onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.2);'">
-      <span style="font-weight: bold; font-size: 14px; letter-spacing: 0.5px;">   Pression artérielle et Régulation  </span>
-      <span style="font-weight: bold; color: #ffeb3b; font-size: 16px; margin-left: 6px;">ضغط الدم وتنظيمه 
-      </span>
-    </button>
 
-    <ul id="LesReinsanatomiieyrinairefgR-lessons" style="display: none; padding: 0; margin-top: 10px;">
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-HISTOLOGIE__Les_Rein__ANNABA.html">ANNABA - كلية عنابة</a>
-        <p>2024 - 2016</p>
-      </li>
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-ANATOMIE-RIENS-SIDIBELABBAS.html">SIDI BEL ABBÈS - كلية سيدي بلعباس</a>
-        <p>2024 - 2016</p>
-      </li>
-    </ul>
-  </div>
 
-  
-  <div>
-    <button style="background: linear-gradient(145deg, #00796b, #004d40); color: #fff; font-size: 12px; font-family: 'Arial', sans-serif; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); letter-spacing: 0.8px;" 
-    onclick="toggleLessons('LesReinsanatomiieyrinairefgR-lessons')" 
-    onmouseover="this.style.background='linear-gradient(145deg, #004d40, #00332e)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 18px rgba(0, 0, 0, 0.3)';" 
-    onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.2);'">
-      <span style="font-weight: bold; font-size: 14px; letter-spacing: 0.5px;">    Circulation veineuse      </span>
-      <span style="font-weight: bold; color: #ffeb3b; font-size: 16px; margin-left: 6px;">الدورة الدموية الوريدية  
-      </span>
-    </button>
 
-    <ul id="LesReinsanatomiieyrinairefgR-lessons" style="display: none; padding: 0; margin-top: 10px;">
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-HISTOLOGIE__Les_Rein__ANNABA.html">ANNABA - كلية عنابة</a>
-        <p>2024 - 2016</p>
-      </li>
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-ANATOMIE-RIENS-SIDIBELABBAS.html">SIDI BEL ABBÈS - كلية سيدي بلعباس</a>
-        <p>2024 - 2016</p>
-      </li>
-    </ul>
-  </div>
 
-  <div>
-    <button style="background: linear-gradient(145deg, #00796b, #004d40); color: #fff; font-size: 12px; font-family: 'Arial', sans-serif; border: none; border-radius: 20px; padding: 8px 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); letter-spacing: 0.8px;" 
-    onclick="toggleLessons('LesReinsanatomiieyrinairefgR-lessons')" 
-    onmouseover="this.style.background='linear-gradient(145deg, #004d40, #00332e)'; this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 18px rgba(0, 0, 0, 0.3)';" 
-    onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.2);'">
-      <span style="font-weight: bold; font-size: 14px; letter-spacing: 0.5px;">          Circulations Capillaire et Coronaire       </span>
-      <span style="font-weight: bold; color: #ffeb3b; font-size: 16px; margin-left: 6px;">الدورتان الشعرية والتاجية 
-      </span>
-    </button>
 
-    <ul id="LesReinsanatomiieyrinairefgR-lessons" style="display: none; padding: 0; margin-top: 10px;">
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-HISTOLOGIE__Les_Rein__ANNABA.html">ANNABA - كلية عنابة</a>
-        <p>2024 - 2016</p>
-      </li>
-      <li class="college-item">
-        <a href="MED02U03-APP-URINAIRE-ANATOMIE-RIENS-SIDIBELABBAS.html">SIDI BEL ABBÈS - كلية سيدي بلعباس</a>
-        <p>2024 - 2016</p>
-      </li>
-    </ul>
-  </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    Circulation veineuse  
+
+   الدورة الدموية الوريدية  
+
+
+
+
+    Circulations Capillaire et Coronaire  
+    الدورتان الشعرية والتاجية 
   
 
 
@@ -2162,21 +2414,6 @@ function toggleLessons(id) {
 
 
 
-
-
-
-
-
-
-
-  </ul>
-<script>
-function toggleLessons(id) {
-  const lessons = document.getElementById(id);
-  lessons.style.display = lessons.style.display === "none" || !lessons.style.display ? "block" : "none";
-}
-</script>
-</div>
 
 
 
@@ -2206,16 +2443,36 @@ function toggleLessons(id) {
                     
   
                   <li>
-                                                <!-- عنوان الوحدة -->
-                                             <div style="text-align: center; margin: 10px 0; padding: 10px; border: 2px solid #007BFF; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.5); background: #f0f8ff;">
-                                                 <h1 style="font-size: 24px; color: #007BFF; font-weight: bold; text-shadow: 1px 1px 3px #aaa;">
-                                                     ⚡✨ Chapitre I   (1)✨⚡
-                                                 </h1>
-                                                 <h2 style="font-size: 20px; color: #333; font-style: italic; text-shadow: 1px 1px 2px #ccc;">
-                                                     ⚡ APPAREIL CARDIO VASCULAIRE⚡
-                                                 </h2>
-                                             </div>
-                  
+                             <!-- تضمين خط "Amiri" من Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- الفصل الأول: الجهاز القلبي الوعائي -->
+<div style="text-align: center; margin: 5px auto; padding: 8px; 
+            border: 1.5px solid #007BFF; border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); 
+            background: linear-gradient(to bottom, #f8fbff, #e8f0ff); 
+            max-width: 85%; font-family: Arial, sans-serif;">
+    
+    <h1 style="font-size: 20px; color: #007BFF; font-weight: bold; margin-bottom: 6px; 
+               font-family: 'Amiri', serif; text-shadow: 0.5px 0.5px 2px #aaa;">
+        ⚡✨ الفصل الأول (1) ✨⚡
+    </h1>
+    
+    <h2 style="font-size: 18px; color: #222; font-weight: bold; font-family: 'Amiri', serif; margin-bottom: 4px;">
+        🫀 الجهاز القلبي الوعائي 🫀
+    </h2>
+    
+    <h3 style="font-size: 16px; color: #444; font-style: italic; margin-bottom: 2px;">
+        🫀 Cardiovascular System 🫀
+    </h3>
+    
+    <h3 style="font-size: 16px; color: #666; font-style: italic;">
+        🫀 Appareil Cardio-Vasculaire 🫀
+    </h3>
+</div>
+
+
+
   
   
                   
@@ -2296,6 +2553,251 @@ function toggleLessons(id) {
   
                  
   
+                  <br> <br>
+  
+  
+                  <li>
+                                                                            
+                       <!-- تضمين خط "Amiri" من Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- عنوان الفصل الثاني بثلاث لغات -->
+<div style="text-align: center; margin: 5px auto; padding: 8px; 
+            border: 1.5px solid #007BFF; border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); 
+            background: linear-gradient(to bottom, #f8fbff, #e8f0ff); 
+            max-width: 85%; font-family: Arial, sans-serif;">
+    
+    <h1 style="font-size: 20px; color: #007BFF; font-weight: bold; margin-bottom: 6px; 
+               font-family: 'Amiri', serif; text-shadow: 0.5px 0.5px 2px #aaa;">
+        ⚡✨ الفصل الثاني (2) ✨⚡
+    </h1>
+    
+    <h2 style="font-size: 18px; color: #222; font-weight: bold; font-family: 'Amiri', serif; margin-bottom: 4px;">
+        🫁 الجهاز التنفسي 🫁
+    </h2>
+    
+    <h3 style="font-size: 16px; color: #444; font-style: italic; margin-bottom: 2px;">
+        🫁 Respiratory System 🫁
+    </h3>
+    
+    <h3 style="font-size: 16px; color: #666; font-style: italic;">
+        🫁 Appareil Respiratoire 🫁
+    </h3>
+</div>
+
+             
+  
+                  <br>
+           <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
+<style>
+  /* عزل التنسيق عن بقية الموقع */
+  .lesson-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .custom-button {
+    background: linear-gradient(145deg, #00796b, #004d40);
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.8px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+
+  .custom-button:hover {
+    background: linear-gradient(145deg, #004d40, #00332e);
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  }
+
+  .custom-button span {
+    font-weight: bold;
+  }
+
+  .custom-button .arabic-text {
+    color: #ffeb3b;
+    font-size: 16px;
+    margin-top: 4px;
+  }
+
+  .lesson-list {
+    display: none;
+    padding: 0;
+    margin-top: 10px;
+    list-style: none;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .college-item {
+    background: #f0f8ff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .college-item a {
+    color: #00796b;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .college-item p {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+  }
+
+  @media (max-width: 600px) {
+    .custom-button {
+      font-size: 13px;
+      padding: 8px 16px;
+    }
+
+    .custom-button .arabic-text {
+      font-size: 14px;
+    }
+
+    .college-item {
+      padding: 8px;
+    }
+  }
+</style>
+
+<!-- المحتوى المعزول: الزر مع القائمة -->
+<div class="lesson-container">
+  <!-- زر الدرس -->
+  <button class="custom-button" onclick="toggleLessons('LaPlevreLessons')">
+    <span class="arabic-text">التجويف الجنبي</span>
+    <span>La Plèvre</span>  <!-- الفرنسية -->
+    <span>La Plevre</span> <!-- الإنجليزية -->
+  </button>
+
+  <!-- قائمة الدروس -->
+  <ul id="LaPlevreLessons" class="lesson-list">
+
+    <li class="college-item">
+
+
+
+      <ul>
+        <li class="ملخص">
+          <a href="MOLAKHS_MED02_U1_HISTOLOGIE_ الغشاء البلوري .html" class="ملخص-رابط">🔻 <span class="ملخص-كلمة">الملخص</span> 🔻</a>
+          <p class="اصدار">إصدار 12 رمضان 1446 موافق لـ 12 مارس 2025</p>
+        </li>
+      </ul>
+      
+      <style>
+        /* تنسيق الحاوية الرئيسية */
+        .ملخص {
+          list-style: none;
+          background-color: #1e1e1e; /* خلفية رمادية داكنة */
+          padding: 20px;
+          border-radius: 10px;
+          text-align: center;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
+          max-width: 350px;
+          margin: auto;
+          border: 1px solid #444; /* إضافة إطار رفيع */
+        }
+      
+        /* تصميم الرابط */
+        .ملخص-رابط {
+          display: inline-block;
+          padding: 12px 18px;
+          border-radius: 8px;
+          background-color: #000; /* خلفية سوداء */
+          color: #fff; /* نص أبيض */
+          font-weight: bold;
+          font-size: 18px;
+          text-decoration: none;
+          transition: background 0.3s, transform 0.2s;
+        }
+      
+        /* تأثير عند مرور الفأرة */
+        .ملخص-رابط:hover {
+          background-color: #444;
+          transform: scale(1.05);
+        }
+      
+        /* تنسيق كلمة "ملخص" */
+        .ملخص-كلمة {
+          color: #fff; /* اللون الأبيض */
+          font-size: 20px; /* حجم أكبر */
+        }
+      
+        /* تنسيق صندوق الإصدار */
+        .اصدار {
+          background-color: #333; /* خلفية داكنة */
+          color: #fff;
+          padding: 10px;
+          border-radius: 6px;
+          display: inline-block;
+          margin-top: 12px;
+          font-size: 14px;
+          font-weight: bold;
+          border: 1px solid #555; /* إطار رفيع */
+        }
+      
+        @media (max-width: 600px) {
+          .ملخص {
+            padding: 15px;
+            max-width: 300px;
+          }
+      
+          .ملخص-رابط {
+            font-size: 16px;
+            padding: 10px 14px;
+          }
+      
+          .اصدار {
+            font-size: 12px;
+          }
+        }
+      </style>
+      
+   
+     
+
+     
+
+    <li class="college-item">
+      <a href="MED02_U1_HISTOLOGIE_الغشاء البلوري ANNABA.html">
+        ANNABA - كلية عنابة
+      </a>
+      <p>2024 - 2016</p>
+    </li>
+    <li class="college-item">
+      <a href="MED02U03-APP-PLEURE-ANATOMIE__La_Plevre__SIDI-BEL-ABBAS.html">
+        SIDI BEL ABBÈS - كلية سيدي بلعباس
+      </a>
+      <p>2024 - 2016</p>
+    </li>
+  </ul>
+</div>
+
+<!-- كود الجافا سكريبت لعرض القائمة -->
+<script>
+  function toggleLessons(id) {
+    var list = document.getElementById(id);
+    list.style.display = list.style.display === "none" || list.style.display === "" ? "block" : "none";
+  }
+</script>
+
   
   
      
@@ -2304,53 +2806,254 @@ function toggleLessons(id) {
   
                   <li>
                                                                             
-                             <!-- عنوان الوحدة -->
-                           <div style="text-align: center; margin: 10px 0; padding: 10px; border: 2px solid #007BFF; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.5); background: #f0f8ff;">
-                               <h1 style="font-size: 24px; color: #007BFF; font-weight: bold; text-shadow: 1px 1px 3px #aaa;">
-                                   ⚡✨ Chapitre III (3) ✨⚡
-                               </h1>
-                               <h2 style="font-size: 20px; color: #333; font-style: italic; text-shadow: 1px 1px 2px #ccc;">
-                                   ⚡ ORGAN HÉMATOPOÏÉTIQUE ⚡
-                               </h2>
-                           </div>
-  
+                       <!-- تضمين خط "Amiri" من Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- عنوان الفصل الثالث بثلاث لغات -->
+<div style="text-align: center; margin: 5px auto; padding: 8px; 
+            border: 1.5px solid #007BFF; border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); 
+            background: linear-gradient(to bottom, #f8fbff, #e8f0ff); 
+            max-width: 85%; font-family: Arial, sans-serif;">
+    
+    <h1 style="font-size: 20px; color: #007BFF; font-weight: bold; margin-bottom: 6px; 
+               font-family: 'Amiri', serif; text-shadow: 0.5px 0.5px 2px #aaa;">
+        ⚡✨ الفصل الثالث (3) ✨⚡
+    </h1>
+    
+    <h2 style="font-size: 18px; color: #222; font-weight: bold; font-family: 'Amiri', serif; margin-bottom: 4px;">
+        🏥🩸 الجهاز المُكوِّن للدم 🩸🏥
+    </h2>
+    
+    <h3 style="font-size: 16px; color: #444; font-style: italic; margin-bottom: 2px;">
+        🏥🩸 Hematopoietic System 🩸🏥
+    </h3>
+    
+    <h3 style="font-size: 16px; color: #666; font-style: italic;">
+        🏥🩸 Organ Hématopoïétique 🩸🏥
+    </h3>
+</div>
+
              
   
                   <br>
-               
-                  <div>
-                      <button style="background: #007bff; color: #fff; font-size: 16px; border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer; transition: 0.3s;"
-                              onclick="toggleLessons('HistologicardiorespiratoireartereLARATE-lessons')"
-                              onmouseover="this.style.background='#0056b3'; this.style.transform='scale(1.05)';"
-                              onmouseout="this.style.background='#007bff'; this.style.transform='scale(1)';">
-                           La Rate   &nbsp; &nbsp; الطحال
-                      </button>
-                      <div>
-                    <ul id="HistologicardiorespiratoireartereLARATE-lessons" style="display: none; padding: 0; margin-top: 10px;">
-                     
-                  
-                      <li style="margin: 5px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(14, 255, 187, 0.902);">
-                          <a href="MED02_HISTOLOGIE_CARDIO_RESPIRATOIRE_LARATE_Annaba.html" style="text-decoration: none; color: #007BFF; font-weight:  bold;">كلية عنابة ANNABA </a>
-                      </li>
-                  
-                          <li style="margin: 5px 0; padding: 10px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 5px rgba(14, 255, 187, 0.902);">
-                              <a href="MED02_HISTOLOGIE_CARDIO_RESPIRATOIRE_LARATE_MED02_HISTOLOGIE_CARDIO_RESPIRATOIRE_LARATE_SidiBelAbbes.html" style="text-decoration: none; color: #007BFF; font-weight:  bold;">كلية سيدي بلعباس SIDI BEL ABBES </a>
-                          </li>
+
+
+
+
+
+
+
+                  <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
+<style>
+  /* عزل التنسيق عن بقية الموقع */
+  .lesson-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .custom-button {
+    background: linear-gradient(145deg, #00796b, #004d40);
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.8px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+
+  .custom-button:hover {
+    background: linear-gradient(145deg, #004d40, #00332e);
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  }
+
+  .custom-button span {
+    font-weight: bold;
+  }
+
+  .custom-button .arabic-text {
+    color: #ffeb3b;
+    font-size: 16px;
+    margin-top: 4px;
+  }
+
+  .lesson-list {
+    display: none;
+    padding: 0;
+    margin-top: 10px;
+    list-style: none;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .college-item {
+    background: #f0f8ff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .college-item a {
+    color: #00796b;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .college-item p {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+  }
+
+  @media (max-width: 600px) {
+    .custom-button {
+      font-size: 13px;
+      padding: 8px 16px;
+    }
+
+    .custom-button .arabic-text {
+      font-size: 14px;
+    }
+
+    .college-item {
+      padding: 8px;
+    }
+  }
+</style>
+
+<!-- المحتوى المعزول: الزر مع القائمة -->
+<div class="lesson-container">
+  <!-- زر الدرس -->
+  <button class="custom-button" onclick="toggleLessons('ThymusLessons')">
+    <span class="arabic-text">الغدة الصعترية</span>
+    <span>The Thymus</span>  <!-- الإنجليزية -->
+    <span>Le Thymus</span>  <!-- الفرنسية -->
+  </button>
+
+  <!-- قائمة الدروس -->
+  <ul id="ThymusLessons" class="lesson-list">
+    <li class="college-item">
+
+
+
+      <ul>
+        <li class="ملخص">
+          <a href="MED02_U1_HISTOLOGIE_الغشاء البلوري.html" class="ملخص-رابط">🔻 <span class="ملخص-كلمة">الملخص</span> 🔻</a>
+          <p class="اصدار">إصدار 04 رمضان 1446 موافق لـ 03 مارس 2025</p>
+        </li>
+      </ul>
       
-  
-  
-                        
-                    </ul>
-  
-                    <script>
-                      function toggleLessons(id) {
-                        const lessons = document.getElementById(id);
-                        lessons.style.display = lessons.style.display === "none" || !lessons.style.display ? "block" : "none";
-                      }
-                    </script>
-                  </div>
-  
-  
+      <style>
+        /* تنسيق الحاوية الرئيسية */
+        .ملخص {
+          list-style: none;
+          background-color: #1e1e1e; /* خلفية رمادية داكنة */
+          padding: 20px;
+          border-radius: 10px;
+          text-align: center;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
+          max-width: 350px;
+          margin: auto;
+          border: 1px solid #444; /* إضافة إطار رفيع */
+        }
+      
+        /* تصميم الرابط */
+        .ملخص-رابط {
+          display: inline-block;
+          padding: 12px 18px;
+          border-radius: 8px;
+          background-color: #000; /* خلفية سوداء */
+          color: #fff; /* نص أبيض */
+          font-weight: bold;
+          font-size: 18px;
+          text-decoration: none;
+          transition: background 0.3s, transform 0.2s;
+        }
+      
+        /* تأثير عند مرور الفأرة */
+        .ملخص-رابط:hover {
+          background-color: #444;
+          transform: scale(1.05);
+        }
+      
+        /* تنسيق كلمة "ملخص" */
+        .ملخص-كلمة {
+          color: #fff; /* اللون الأبيض */
+          font-size: 20px; /* حجم أكبر */
+        }
+      
+        /* تنسيق صندوق الإصدار */
+        .اصدار {
+          background-color: #333; /* خلفية داكنة */
+          color: #fff;
+          padding: 10px;
+          border-radius: 6px;
+          display: inline-block;
+          margin-top: 12px;
+          font-size: 14px;
+          font-weight: bold;
+          border: 1px solid #555; /* إطار رفيع */
+        }
+      
+        @media (max-width: 600px) {
+          .ملخص {
+            padding: 15px;
+            max-width: 300px;
+          }
+      
+          .ملخص-رابط {
+            font-size: 16px;
+            padding: 10px 14px;
+          }
+      
+          .اصدار {
+            font-size: 12px;
+          }
+        }
+      </style>
+      
+   
+     
+
+      <li class="college-item">
+      <a href="MED02U03-APP-THYMUS-ANATOMIE__Thymus__ANNABA.html">
+        ANNABA - كلية عنابة
+      </a>
+      <p>2024 - 2016</p>
+    </li>
+    <li class="college-item">
+      <a href="MED02U03-APP-THYMUS-ANATOMIE__Thymus__SIDI-BEL-ABBAS.html">
+        SIDI BEL ABBÈS - كلية سيدي بلعباس
+      </a>
+      <p>2024 - 2016</p>
+    </li>
+
+
+
+
+  </ul>
+</div>
+
+<!-- كود الجافا سكريبت لعرض القائمة -->
+<script>
+  function toggleLessons(id) {
+    var list = document.getElementById(id);
+    list.style.display = list.style.display === "none" || list.style.display === "" ? "block" : "none";
+  }
+</script>
+
   
                  
                     
@@ -4389,200 +5092,3 @@ onmouseout="this.style.background='linear-gradient(145deg, #00796b, #004d40)'; t
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إشعارات هامة</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .custom-modal {
-            display: flex;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-        .custom-modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        .custom-button {
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            text-align: center;
-            cursor: pointer;
-            border: none;
-            transition: background 0.3s, transform 0.2s;
-        }
-        .btn-close {
-            background-color: #d9534f;
-            color: white;
-        }
-        .btn-close:hover {
-            background-color: #c9302c;
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body>
-
-    <!-- إشعار سورة الكهف -->
-    <div id="kahfModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            <h1> فضل سورة الكهف </h1>
-            <p>من قرأ سورةَ الكهفِ يومَ الجمعةِ أضاء له النُّورُ ما بينَه و بين البيتِ العتيقِ</p>
-            <button onclick="window.location.href='سورة الكهف مكتوبة.html'" class="custom-button">انتقل إليها الآن</button>
-            <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
-        </div>
-    </div>
-    
-    <!-- إشعار صلاة الجمعة -->
-    <div id="jumaaModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            <h1> فضل صلاة الجمعة </h1>
-            <audio id="jumaaAudio">
-                <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
-                متصفحك لا يدعم تشغيل الصوت.
-            </audio>
-            <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها"
-              .   [صحيح] - [رواه مسلم] - [صحيح مسلم - 854]
-            </p>
-            <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- الإشعار العام -->
-    <div id="generalModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            <h1>
-              
-                    <a href="https://t.me/S22MCS/1888" target="_blank">(اضغط لفتحها  على التيليجرام )
-                        كلمة الحق  لكل مسلم </a>  
-
-                    </h1>
-                    <h1>
-                        <a href="https://youtu.be/5SSMT-uxINw?si=RPXsU-evAHubua7A" target="_blank">
-                            (اضغط لفتحها  على اليوتيوب  )
-                            كلمة الحق  لكل مسلم </a>  
-                        </h1>
-
-        
-            <h1>⚡ أَدَاة عِلْم ⚡</h1>
-            <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
-            <p>المزيد قادم  والتحديثات يومية ان شاء الله </p>
-            <p>  نذكركم ان التجربة على اجهزة الكمبيوتر افضل بكثير على الهواتف وسنحاول  باذم الله تحسين تجربة  على الهواتف </p>
-            <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
-        </div>
-    </div>
-    
-    <script>
-      function closeModal(modalId) {
-          document.getElementById(modalId).style.display = "none";
-      }
-  
-      function showModals() {
-          let today = new Date();
-          let dayOfWeek = today.getDay();
-          let hours = today.getHours();
-  
-          // ✅ عرض الإشعار العام فورًا
-          document.getElementById("generalModal").style.display = "flex";
-  
-          if (dayOfWeek === 5) { // الجمعة فقط
-              document.getElementById("kahfModal").style.display = "flex"; // إشعار سورة الكهف
-  
-              if (hours < 14) { // قبل 14:00 فقط
-                  document.getElementById("jumaaModal").style.display = "flex"; // إشعار صلاة الجمعة
-                  
-                  let audio = document.getElementById("jumaaAudio");
-                  if (audio && !audio.dataset.played) { // تشغيل الصوت عند ظهور الإشعار
-                      let playAudio = () => {
-                          audio.play().then(() => {
-                              audio.dataset.played = "true"; // منع التكرار
-                              console.log("تم تشغيل صوت صلاة الجمعة.");
-                          }).catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
-                      };
-  
-                      if (document.hasFocus()) {
-                          playAudio();
-                      } else {
-                          document.addEventListener("click", playAudio, { once: true });
-                          document.addEventListener("touchstart", playAudio, { once: true });
-                      }
-  
-                      audio.onended = function () {
-                          console.log("انتهى تشغيل ملف الصوت.");
-                      };
-                  }
-              }
-          }
-      }
-  
-      document.addEventListener("DOMContentLoaded", function() {
-          let today = new Date();
-          let dayOfWeek = today.getDay();
-          let hours = today.getHours();
-  
-          if (dayOfWeek === 5 && hours < 14) { // تشغيل الصوت فقط يوم الجمعة قبل 14:00
-              let audio = document.getElementById("jumaaAudio");
-              if (audio) {
-                  document.body.addEventListener("click", function() {
-                      if (audio.paused) {
-                          audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
-                      }
-                  }, { once: true });
-              }
-          }
-      });
-  
-      // ✅ تشغيل `showModals` دائمًا لإظهار الإشعار العام مباشرةً
-      window.onload = showModals;
-  </script>
-  
