@@ -591,7 +591,19 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
                 }
      
             
+@media (max-width: 768px) {
+    .progress-bar-container {
+        width: 85%; /* عرض الشريط أكبر قليلاً على الشاشات الصغيرة */
+    }
+}
 
+/* استعلام ميديا للأجهزة التي يزيد عرض شاشتها عن 480 بكسل */
+@media (max-width: 480px) {
+    .progress-bar-container {
+        width: 90%; /* شريط التقدم يشغل مساحة أكبر على الشاشات الصغيرة جدًا */
+        height: 20px; /* تقليص الارتفاع قليلاً */
+    }
+}
 
 
 
@@ -2292,15 +2304,25 @@ window.onload = initializeFinishButton;
             font-weight: bold;
         }
 
-        .font-control-container input[type="range"] {
-            width: 100%;
-            -webkit-appearance: none;
-            background: #444;
-            height: 8px;
-            border-radius: 10px;
-            outline: none;
-            cursor: pointer;
-        }
+   /* بدون -webkit-appearance */
+input[type="range"] {
+    width: 100%;
+    background: #444;
+    height: 8px;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+    background: #00aaff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
 
         .font-control-container input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
