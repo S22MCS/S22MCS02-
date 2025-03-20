@@ -2500,8 +2500,6 @@ font-size: 0.85rem;
                     </li>
                 
 
-
-                   
                     <style>
                         /* تحسين مظهر القائمة */
                         .posts-container {
@@ -2524,6 +2522,8 @@ font-size: 0.85rem;
                             border-radius: 8px;
                             transition: transform 0.2s, box-shadow 0.3s;
                             text-align: right; /* توسيط النصوص العادية إلى اليمين */
+                            word-wrap: break-word; /* لف النص في الحاويات */
+                            overflow-wrap: break-word; /* تحسين تكسير الكلمات الطويلة */
                         }
                     
                         .posts-container li.title {
@@ -2554,6 +2554,7 @@ font-size: 0.85rem;
                             font-family: 'Amiri', serif;
                             font-size: 18px;
                             color: #ffffff;
+                            line-height: 1.6; /* تحسين التباعد بين الأسطر */
                         }
                     
                         /* تنسيق النص الإنجليزي */
@@ -2563,28 +2564,45 @@ font-size: 0.85rem;
                             font-family: 'Poppins', sans-serif;
                             font-size: 16px;
                             color: #cccccc;
+                            line-height: 1.6;
                         }
-                    /* استجابة القائمة للشاشات الصغيرة */
-@media (max-width: 480px) {
-    .posts-container {
-        padding: 22px; /* زيادة التباعد */
-    }
-
-    .posts-container a {
-        font-size: 18px; /* تكبير حجم الروابط */
-    }
-
-    .post-text-ar {
-        font-size: 18px; /* زيادة حجم النص العربي */
-        line-height: 1.6; /* تحسين التباعد بين الأسطر */
-    }
-
-    .post-text-en {
-        font-size: 16px; /* زيادة حجم النص الإنجليزي */
-        line-height: 1.6;
-    }
-}
-
+                    
+                        /* استجابة القائمة للشاشات الصغيرة */
+                        @media (max-width: 480px) {
+                            .posts-container {
+                                padding: 20px; /* زيادة التباعد ليتناسب مع الشاشات الصغيرة */
+                                max-width: 100%; /* عرض كامل للشاشة */
+                            }
+                    
+                            .posts-container a {
+                                font-size: 16px; /* تقليل حجم الروابط ليتناسب مع العرض */
+                            }
+                    
+                            .post-text-ar {
+                                font-size: 16px; /* تقليل حجم النص العربي ليتناسب مع الشاشة الصغيرة */
+                                line-height: 1.4; /* تقليل المسافة بين الأسطر */
+                            }
+                    
+                            .post-text-en {
+                                font-size: 14px; /* تقليل حجم النص الإنجليزي ليتناسب مع الشاشات الصغيرة */
+                                line-height: 1.4; /* تحسين التباعد بين الأسطر */
+                            }
+                        }
+                    
+                        /* استجابة للشاشات الكبيرة */
+                        @media (min-width: 481px) {
+                            .posts-container {
+                                max-width: 900px; /* الحد الأقصى للعرض في الشاشات الكبيرة */
+                            }
+                    
+                            .post-text-ar {
+                                font-size: 18px; /* حجم النص العربي في الشاشات الكبيرة */
+                            }
+                    
+                            .post-text-en {
+                                font-size: 16px; /* حجم النص الإنجليزي في الشاشات الكبيرة */
+                            }
+                        }
                     </style>
                     
                     
