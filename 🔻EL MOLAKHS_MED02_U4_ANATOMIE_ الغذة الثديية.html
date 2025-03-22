@@ -1,0 +1,3879 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>  ملخص  الغذة الثديية </title>
+ 
+    <!-- إضافة الفافيكون بصيغة JPG -->
+    <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 150, 255, 0.6);
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, top 0.3s ease-in-out;
+        }
+
+        .popup h3 {
+            color: #00aaff;
+            font-size: 22px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .input-group input {
+            width: 85%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #00aaff;
+            text-align: center;
+            font-size: 16px;
+            background-color: #222;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+        }
+
+        .gender-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .gender-buttons button {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .gender-buttons button:hover {
+            background: linear-gradient(90deg, #0056b3, #003c80);
+            transform: scale(1.05);
+        }
+
+        .gender-buttons button.selected {
+            background: #FFD700;
+            color: black;
+            font-weight: bold;
+        }
+
+        .submit-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .submit-button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            top: 50% !important;
+        }
+
+        #greeting {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 50px;
+            text-shadow: 2px 2px 10px rgba(0, 150, 255, 0.5);
+        }
+
+        #studyMessage {
+            display: none;
+            font-size: 18px;
+            margin-top: 15px;
+            color: #FFD700;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+        
+    <div id="welcomePopup" class="popup">
+        <h3>  ! السلام عليكم و أهلاً يا طبيب/طبيبة مستقبلنا ان شاء الله  </h3>
+
+        <p>من فضلك أدخل/ادخلي اسمك واختر/اختاري جنسك:</p>
+
+    
+        <div class="input-group">
+            <input type="text" id="username" placeholder="أدخل اسمك">
+        </div>
+    
+        <div class="gender-buttons">
+            <button id="femaleButton" onclick="selectGender('female')"> امرأة</button>
+            <button id="maleButton" onclick="selectGender('male')">  رجل</button>
+           
+        </div>
+    
+        <button class="submit-button" onclick="submitInfo()">متابعة</button>
+    </div>
+    
+    <!-- يجب أن يكون خارج نافذة الإدخال حتى يظهر عند الضغط على متابعة -->
+    <div id="greetingContainer" style="display: none; flex-direction: column; align-items: center; gap: 10px; margin-top: 70px;">
+        <h2 id="welcomeMessage" style="color: #00aaff; text-align: center;"></h2>
+        <img id="doctorImage" src="" alt="صورة الطبيب" style="width: 60px; height: 60px; border-radius: 50%;">
+        <h1 id="greeting" style="margin: 0; font-size: 22px;"></h1>
+    </div>
+    <p id="studyMessage"></p>
+    <p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px;"></p>
+    
+    <script>
+        let selectedGender = "";
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            let storedName = localStorage.getItem("username");
+            let storedGender = localStorage.getItem("gender");
+            let visitCount = parseInt(localStorage.getItem("visitCount") || "0");
+    
+            visitCount += 1;
+            localStorage.setItem("visitCount", visitCount);
+    
+            if (visitCount >= 3) {
+                localStorage.removeItem("username");
+                localStorage.removeItem("gender");
+                localStorage.setItem("visitCount", "0");
+                storedName = null;
+            }
+    
+            if (storedName && storedGender) {
+                displayGreeting(storedName, storedGender);
+            } else {
+                let popup = document.getElementById('welcomePopup');
+                popup.style.display = 'block';
+                setTimeout(() => popup.classList.add('fade-in'), 50);
+            }
+        });
+    
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.getElementById("maleButton").classList.remove("selected");
+            document.getElementById("femaleButton").classList.remove("selected");
+    
+            if (gender === "male") {
+                document.getElementById("maleButton").classList.add("selected");
+            } else {
+                document.getElementById("femaleButton").classList.add("selected");
+            }
+        }
+    
+
+
+        function submitInfo() {
+    let name = document.getElementById('username').value.trim();
+    if (name === "") {
+        alert("❌ يرجى إدخال اسمك");
+        return;
+    }
+    if (!selectedGender) {
+        alert("❌ يرجى اختيار الجنس");
+        return;
+    }
+
+    console.log("🚀 إرسال الاسم:", name);
+    console.log("🚀 إرسال الجنس:", selectedGender);
+
+    localStorage.setItem("username", name);
+    localStorage.setItem("gender", selectedGender);
+    localStorage.setItem("visitCount", "0");
+
+    displayGreeting(name, selectedGender);
+
+    let popup = document.getElementById('welcomePopup');
+    popup.classList.remove('fade-in');
+    setTimeout(() => popup.style.display = 'none', 500);
+}
+
+
+
+
+
+
+function displayGreeting(name, gender) {
+    console.log("✅ تم استلام الاسم:", name);
+    console.log("✅ تم استلام الجنس:", gender);
+
+    let welcomeMessage = `السلام عليكم ومرحبًا بك يا ${name}`;  
+    
+    
+    let greetingMessage = gender === "male" 
+        ? `مرحبًا دكتور ${name}!` 
+        : `مرحبًا دكتورة ${name}!`;
+
+    let studyMessage = gender === "male" 
+        ? "ادرس جيدًا يا طبيب المسلمين إن شاء الله 📚" 
+        : "ادرسِ جيدًا يا طبيبة المسلمات إن شاء الله 📚";
+
+  
+       
+        
+
+        let nationNeedsYou = 
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "  ﴿الَّذِينَ يَتَّخِذُونَ الْكَافِرِينَ أَوْلِيَاءَ مِن دُونِ الْمُؤْمِنِينَ ۚ أَيَبْتَغُونَ عِندَهُمُ الْعِزَّةَ فَإِنَّ الْعِزَّةَ لِلَّهِ جَمِيعًا ﴾\n" +
+    "[النساء: 139]\n\n" +
+    
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "﴿ لَهُ مُعَقِّبَاتٌ مِّن بَيْنِ يَدَيْهِ وَمِنْ خَلْفِهِ يَحْفَظُونَهُ مِنْ أَمْرِ اللَّهِ ۗ إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ ۗ وَإِذَا أَرَادَ اللَّهُ بِقَوْمٍ سُوءًا فَلَا مَرَدَّ لَهُ ۚ وَمَا لَهُم مِّن دُونِهِ مِن وَالٍ ﴾\n" +
+    "[الرعد: 11]\n\n" +
+
+    "أمتكم بحاجة إليكم.. كونوا عونًا لها في سبيل الله، اجعلوا علمكم طريقًا لنهضة أمتكم.. أمتكم بحاجة إليكم.\n\n" +
+    
+    "فعن السلف الصالح عمر بن الخطاب رضي الله عنه قال:\n" +
+    "\"إنَّا كنَّا أذَلَّ قومٍ، فأعزَّنا اللَّهُ بالإسلامِ، فمهما نطلُبِ العِزَّةَ بغيرِ ما أعزَّنا اللَّهُ به أذلَّنا اللَّهُ.\"";
+
+// وضع النص داخل العنصر بدون أكواد HTML ظاهرة
+document.getElementById('nationMessage').textContent = nationNeedsYou;
+
+
+
+
+
+
+    let imageSrc = gender === "male" 
+        ? "S22MCS PARTS/doctor.png" 
+        : "S22MCS PARTS/doctormuslim.png";
+
+    // تحديث العناصر في الصفحة
+    document.getElementById('welcomeMessage').innerText = welcomeMessage;
+    document.getElementById('greeting').innerText = greetingMessage;
+    document.getElementById('studyMessage').innerText = studyMessage;
+    document.getElementById('nationMessage').innerText = nationNeedsYou;
+    document.getElementById('doctorImage').src = imageSrc;
+
+    // عرض القسم بالكامل
+    document.getElementById('greetingContainer').style.display = 'flex';
+    document.getElementById('studyMessage').style.display = 'block';
+    document.getElementById('nationMessage').style.display = 'block';
+}
+
+        
+    </script>
+    
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+        <html lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>  </title>
+            <style>
+                body {
+                    font-family: 'Poppins', 'Amiri', serif;
+                    background-color: #121212;
+                    color: white;
+                    margin: 0;
+                    padding: 20px;
+                    text-align: center;
+                    padding-top: 120px;
+                }
+            
+                /* Updated Sidebar to Header */
+                .sidebar {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height:50px;
+                    background-color: #333;
+                    text-align: center;
+                    padding: 10px 20px;
+                    z-index: 1000;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                }
+            
+                /* Progress Bar Container */
+                .progress-bar-container {
+                    width: 60%;
+                    height: 30px;
+                    background-color: #444;
+                    border-radius: 15px;
+                    position: relative;
+                    margin: 0 auto;
+                }
+            
+                /* Progress Bar */
+                .progress-bar {
+                    height: 100%;
+                    width: 0;
+                    background-color: #00aaff;
+                    border-radius: 15px;
+                    transition: width 0.3s ease-in-out;
+                }
+            
+                #proo {
+                    margin-right: 10rem;
+                    font-size: 1.8rem;
+                }
+            
+                /* Progress Percentage */
+                .progress-percentage {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+            
+                /* Finish Button */
+                .finish-button {
+                    background-color: #00aaff;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    margin-right: 3rem;
+                }
+            
+                .finish-button:hover {
+                    background-color: #0077cc;
+                }
+            
+                /* Disabled Finish Button */
+                .finish-button:disabled {
+                    background-color: #ccc;
+                    cursor: not-allowed;
+                    opacity: 0.7;
+                }
+            
+                /* Lesson Container */
+                .lesson-container {
+                    margin-top: 20px;
+                }
+            
+                /* Bubble Styles */
+                .bubble {
+                    background: rgba(30, 30, 30, 0.95);
+                    box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+                    border-left: 6px solid #00aaff;
+                    padding: 20px;
+                    border-radius: 20px;
+                    margin: 20px auto;
+                    max-width: 60rem;
+                    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+                    text-align: right;
+                    direction: rtl;
+                    position: relative;
+                    cursor: pointer;
+                }
+            
+                .bubble:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
+                }
+            
+                .interact-button {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                }
+            
+                .interact-button:hover {
+                    background-color: #0056b3;
+                }
+            
+                /* Modal Styles */
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 2000;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 90%;
+                    max-width: 400px;
+                    background: #222;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 10px rgba(0, 150, 255, 0.5);
+                    text-align: center;
+                }
+            
+                .modal h3 {
+                    margin-bottom: 15px;
+                    color: #00aaff;
+                }
+            
+                .modal button {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 15px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    margin: 10px;
+                    font-size: 16px;
+                }
+            
+                .modal button:hover {
+                    background-color: #0056b3;
+                }
+            
+                /* End Lesson Modal */
+                #end-lesson-modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 2000;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 80%;
+                    max-width: 600px;
+                    background-color: #333;
+                    padding: 30px;
+                    border-radius: 10px;
+                    color: white;
+                    text-align: center;
+                    box-shadow: 0 6px 30px rgba(0, 150, 255, 0.5);
+                }
+            
+                #end-lesson-modal h3 {
+                    color: #00aaff;
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+            
+                #end-lesson-modal p {
+                    font-size: 18px;
+                    margin-bottom: 20px;
+                }
+            
+                #end-lesson-modal button {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    margin: 10px;
+                    font-size: 16px;
+                }
+            
+                #end-lesson-modal button:hover {
+                    background-color: #0056b3;
+                }
+            
+                .reload-button {
+                    background-color: #28a745;
+                }
+            
+                .reload-button:hover {
+                    background-color: #218838;
+                }
+            
+                /* Vibration Animation */
+                @keyframes vibrate {
+                    0% { transform: translateX(0); }
+                    20% { transform: translateX(-5px); }
+                    40% { transform: translateX(5px); }
+                    60% { transform: translateX(-5px); }
+                    80% { transform: translateX(5px); }
+                    100% { transform: translateX(0); }
+                }
+            
+                .vibrate {
+                    animation: vibrate 0.5s ease-in-out;
+                }
+            
+                /* Media Queries for Small Screens */
+                @media (max-width: 768px) {
+                    body {
+                        padding-top: 80px; /* Reduce top padding */
+                    }
+            
+                    .bubble {
+                        max-width: 90%; /* Make the bubble width responsive */
+                        padding: 15px; /* Reduce padding */
+                    }
+            
+                    .interact-button {
+                        font-size: 12px; /* Reduce button font size */
+                        padding: 6px 10px; /* Adjust padding */
+                    }
+            
+                    .finish-button {
+                        font-size: 14px; /* Adjust font size */
+                        padding: 8px 16px; /* Adjust padding */
+                    }
+            
+                    .lesson-container {
+                        margin-top: 10px; /* Adjust for smaller screens */
+                    }
+                }
+            
+                @media (max-width: 480px) {
+                    body {
+                        font-size: 14px; /* Adjust font size for very small screens */
+                        padding: 10px; /* Reduce padding */
+                    }
+            
+                    .bubble {
+                        padding: 10px; /* Reduce padding */
+                        max-width: 100%; /* Full width on very small screens */
+                    }
+            
+                    .interact-button {
+                        font-size: 8px; /* Reduce button font size */
+                        padding: 4px 7px; /* Adjust padding */
+                    }
+            
+                    .finish-button {
+                        font-size: 10px; /* Reduce font size */
+                        padding: 5px 10px; /* Adjust padding */
+                    }
+                }
+     
+            
+@media (max-width: 768px) {
+    .progress-bar-container {
+        width: 85%; /* عرض الشريط أكبر قليلاً على الشاشات الصغيرة */
+    }
+}
+
+/* استعلام ميديا للأجهزة التي يزيد عرض شاشتها عن 480 بكسل */
+@media (max-width: 480px) {
+    .progress-bar-container {
+        width: 90%; /* شريط التقدم يشغل مساحة أكبر على الشاشات الصغيرة جدًا */
+        height: 20px; /* تقليص الارتفاع قليلاً */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.outside-image {
+    display: block; /* يجعل الصورة عنصرًا منفصلًا */
+    margin: 20px auto; /* يضع الصورة في المنتصف */
+    max-width: 100%; /* يضمن أن الصورة لا تتجاوز حجم الشاشة */
+    height: auto; /* يحافظ على الأبعاد الأصلية للصورة */
+}
+
+
+
+
+
+
+
+
+
+
+/* Refresh Container */
+.refresh-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.refresh-button {
+    background: linear-gradient(135deg, #1a1a1a, #333); /* ألوان داكنة مريحة */
+    color: #ffffff;
+    border: 1px solid #444;
+    padding: 10px 22px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 25px;
+    font-family: 'Poppins', Arial, sans-serif;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 160px;
+    justify-content: center;
+}
+
+.refresh-button:hover {
+    background: linear-gradient(135deg, #292929, #444);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
+}
+
+.refresh-button:active {
+    transform: scale(0.96);
+}
+
+.refresh-button::before {
+    content: "🔄"; /* أيقونة التحديث */
+    font-size: 18px;
+}
+
+/* تحسين للهواتف */
+@media (max-width: 768px) {
+    .refresh-button {
+        padding: 8px 18px;
+        font-size: 14px;
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .refresh-button {
+        padding: 7px 16px;
+        font-size: 13px;
+        min-width: 120px;
+        border-radius: 20px;
+    }
+}
+
+
+
+
+</style>
+
+
+
+
+
+<body>
+    <div class="sidebar">
+        <button class="finish-button" onclick="finishLesson()">انتهيت من الدرس</button>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-percentage" id="progress-percentage">0%</div>
+        </div>
+        <h3 id="proo" >📊 التقدم</h3>
+    </div>
+
+    <br>
+    <div class="refresh-container"  id="ref">
+        <button class="refresh-button" onclick="location.reload();">تحديث الصفحة</button>
+    </div>
+    <br>
+    <div class="lesson-container">
+        <h1 class="lesson-title"> الغُدَّةُ الثَّدْيِيَّة   </h1>
+        
+
+        <h2 class="lesson-subtitle">🔻    MAMMARY GLAND  🔻</h2>
+        <h2 class="lesson-subtitle"> 🔻   GLANDE MAMMAIRE🔻</h2>
+     </div>
+
+
+
+
+     <div class="bubble">
+        <button class="interact-button" id="introduction" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+        <h3 class="section-title" style="text-align: center;">🔹 مقدمة:</h3>
+    
+        <ul>
+            <li>الغدد الثديية هي جزء أساسي من الجهاز التناسلي الأنثوي، وتلعب دورًا رئيسيًا في إنتاج الحليب.</li>
+            <li>تخضع هذه الغدد لتغيرات هرمونية خلال مراحل الحياة المختلفة.</li>
+            <li>تتكون من نسيج غدي محاط بطبقات من الدهون والأنسجة الضامة.</li>
+            <li>يتم التحكم في وظيفة الغدد الثديية عن طريق الهرمونات مثل الأستروجين والبروجسترون والبرولاكتين.</li>
+            <li>تلعب دورًا مهمًا في الرضاعة الطبيعية وتغذية الرضيع.</li>
+        </ul>
+        
+        <br>
+    
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Introduction:</h3>
+    
+            <ul>
+                <li>The mammary glands are an essential part of the female reproductive system, playing a major role in milk production.</li>
+                <li>These glands undergo hormonal changes during different life stages.</li>
+                <li>They are composed of glandular tissue surrounded by layers of fat and connective tissue.</li>
+                <li>The function of mammary glands is regulated by hormones such as estrogen, progesterone, and prolactin.</li>
+                <li>They play a vital role in breastfeeding and infant nutrition.</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Introduction:</h3>
+    
+            <ul>
+                <li>Les glandes mammaires sont une partie essentielle du système reproducteur féminin, jouant un rôle majeur dans la production de lait.</li>
+                <li>Ces glandes subissent des changements hormonaux au cours des différentes étapes de la vie.</li>
+                <li>Elles sont composées de tissu glandulaire entouré de couches de graisse et de tissu conjonctif.</li>
+                <li>Le fonctionnement des glandes mammaires est régulé par des hormones telles que l'œstrogène, la progestérone et la prolactine.</li>
+                <li>Elles jouent un rôle vital dans l'allaitement et la nutrition infantile.</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 خطة الدرس:</h3>
+        <ul>
+            <li>1. المقدمة</li>
+            <li>2. الوضعية</li>
+            <li>3. التشريح الوصفي</li>
+            <li>4. وسائل التثبيت</li>
+            <li>5. التشريح الطبوغرافي (العلاقات)</li>
+            <li>6. التوعية الدموية</li>
+            <li>7. التعصيب</li>
+            <li>8. التطبيقات العملية</li>
+        </ul>
+        
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Course Plan:</h3>
+            <ul>
+                <li>1. Introduction</li>
+                <li>2. Situation</li>
+                <li>3. Descriptive Anatomy</li>
+                <li>4. Means of Fixation</li>
+                <li>5. Topographic Anatomy (Relations)</li>
+                <li>6. Vascularization</li>
+                <li>7. Innervation</li>
+                <li>8. Practical Applications</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Plan du Cours:</h3>
+            <ul>
+                <li>1. Introduction</li>
+                <li>2. Situation</li>
+                <li>3. Anatomie descriptive</li>
+                <li>4. Moyens de fixité</li>
+                <li>5. Anatomie topographique (Rapports)</li>
+                <li>6. Vascularisation</li>
+                <li>7. Innervation</li>
+                <li>8. Applications pratiques</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="introduction" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+        <h3 class="section-title" style="text-align: center;">🔹 مقدمة:</h3>
+    
+        <ul>
+            <li>الغدة الثديية (الثدي) =</li>
+            <ul>
+                <li>غدة زوجية</li>
+                <li>ملحقة بجدار الصدر</li>
+                <li>تمنح الصدر شكلاً متغيرًا للغاية</li>
+                <li>الثدي    مغطى بـ:  </li>
+                <ul>
+                    <li>الجلد</li>
+                    <li>تكوينات انتصاب</li>
+                   
+                </ul>
+            </ul>
+            <li>الغدة الثديية =</li>
+            <ul>
+                <li>غدة خارجية الإفراز، مفرزة للحليب وجنسية</li>
+                <li>ذات أهمية جمالية كبيرة عند المرأة</li>
+                <li>الموقع المفضل لتطور الأورام الخبيثة لدى النساء</li>
+            </ul>
+            <li>التخصص الطبي الذي يعنى بأمراض الثدي: علم أمراض الثدي (Sénologie).</li>
+        </ul>
+    
+        <br>
+    
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Introduction:</h3>
+    
+            <ul>
+                <li>The mammary gland (breast) =</li>
+                <ul>
+                    <li>Paired gland</li>
+                    <li>Attached to the thoracic wall</li>
+                    <li>Gives the chest an extremely variable shape</li>
+                    <li> The breast Covered by:</li>
+                    <ul>
+                        <li>Skin covering</li>
+                        <li>Erectile formations</li>
+                     
+                    </ul>
+                </ul>
+                <li>The mammary gland =</li>
+                <ul>
+                    <li>Exocrine, lactiferous, and sexual gland</li>
+                    <li>Of great plastic importance in women</li>
+                    <li>The preferred site for malignant processes in women</li>
+                </ul>
+                <li>The medical discipline that deals with breast diseases: Senology.</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Introduction:</h3>
+    
+            <ul>
+                <li>La glande mammaire (mamelle) =</li>
+                <ul>
+                    <li>Glande paire</li>
+                    <li>Annexée à la paroi thoracique</li>
+                    <li>Confère à la poitrine une forme extrêmement variable</li>
+                    <li>Le sein Recouverte par :</li>
+                    <ul>
+                        <li>Revêtement cutané</li>
+                        <li>Formations érectiles</li>
+                      
+                    </ul>
+                </ul>
+                <li>La glande mammaire =</li>
+                <ul>
+                    <li>Glande exocrine, lactifère et sexuelle</li>
+                    <li>D'une grande importance plastique chez la femme</li>
+                    <li>L'endroit privilégié de développement de processus malins chez la femme</li>
+                </ul>
+                <li>La discipline qui s'occupe des maladies du sein : sénologie.</li>
+            </ul>
+
+
+            <figure class="bubble">
+                <img src=" 2MED U4 ANATOMIE/A1.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+
+            <figure class="bubble">
+                <img src=" 2MED U4 ANATOMIE/A2.png" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+
+           
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="situation" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 الوضعية:</h3>
+        <ul>
+            <li>الغدة الثديية هي غدة سطحية.</li>
+            <li>ترتكز على الجدار الأمامي للصدر.</li>
+            <li>تتطور داخل النسيج الدهني تحت الجلد.</li>
+            <li>تقع فوق العضلة الصدرية الكبرى.</li>
+            <li>تمتد بين الضلع الثاني والضلع السابع.</li>
+            <li>يحدها من الأسفل السُّلَّم تحت الثديي.</li>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Situation:</h3>
+            <ul>
+                <li>The mammary gland is a superficial gland.</li>
+                <li>It rests on the anterior wall of the thorax.</li>
+                <li>It develops within the subcutaneous adipose tissue.</li>
+                <li>Located above the pectoralis major muscle.</li>
+                <li>Extends between the 2nd and 7th ribs.</li>
+                <li>Bounded inferiorly by the infra-mammary groove.</li>
+            </ul>
+        </div>
+    
+        <figure class="bubble">
+            <img src=" 2MED U4 ANATOMIE/A3.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+
+        
+        <figure class="bubble">
+            <img src=" 2MED U4 ANATOMIE/A4.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+
+
+
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Situation:</h3>
+            <ul>
+                <li>La glande mammaire est une glande superficielle.</li>
+                <li>Elle repose sur la paroi antérieure du thorax.</li>
+                <li>Elle se développe dans le pannicule adipeux sous-cutané.</li>
+                <li>Située au-dessus du muscle pectoral majeur.</li>
+                <li>S'étend entre la 2ème et la 7ème côte.</li>
+                <li>Limitée en bas par le sillon infra-mammaire.</li>
+            </ul>
+
+
+
+        </div>
+    </div>
+    
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="anatomie-descriptive" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 التشريح الوصفي:</h3>
+    
+        <h4>1) الشكل:</h4>
+        <ul>
+            <li><strong>عند الرجل:</strong> كتلة غدية صغيرة دائرية.</li>
+            <li><strong>عند المرأة البالغة:</strong></li>
+            <ul>
+                <li>كتلة نصف كروية تقريبًا.</li>
+                <li>شكل متغير من شخص لآخر.</li>
+                <li><strong>ملاحظة:</strong> يوجد تفاوت طفيف بين الغدتين.</li>
+            </ul>
+            <li>أشكال محتملة: قرصية، مخروطية، كمثرية، ذات عنق.</li>
+        </ul>
+    
+        <h4>2) القوام:</h4>
+        <ul>
+            <li>قبل الحمل والرضاعة: صلب ومرن.</li>
+            <li>بعد الحمل والرضاعة: لين ومترهل.</li>
+           
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Descriptive Anatomy:</h3>
+    
+            <h4>1) Shape:</h4>
+            <ul>
+                <li><strong>In men:</strong> A small circular glandular mass.</li>
+                <li><strong>In adult women:</strong></li>
+                <ul>
+                    <li>A roughly hemispherical mass.</li>
+                    <li>Variable shape.</li>
+                    <li><strong>Note:</strong> Slight asymmetry between the two glands.</li>
+                </ul>
+                <li>Possible shapes: Discoid, Conical, Piriform, Pedunculated.</li>
+            </ul>
+    
+            <h4>2) Consistency:</h4>
+            <ul>
+                <li>Before pregnancy and breastfeeding: Firm and elastic.</li>
+                <li>After pregnancy and breastfeeding: Soft and flaccid.</li>
+             
+            </ul>
+        </div>
+    
+
+
+        <figure class="bubble">
+            <img src=" 2MED U4 ANATOMIE/A5.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+
+        
+        <figure class="bubble">
+            <img src=" 2MED U4 ANATOMIE/A6.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+
+         <div align="center">
+            <ul>
+                <li>يتغير قوام الثديين مع تقدم العمر.</li>
+                <li>Breast consistency evolves with age.</li>
+                <li>L'évolution de la consistance des seins avec l'âge.</li>
+            </ul>
+        
+         <div>
+        
+                <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Anatomie Descriptive:</h3>
+    
+            <h4>1) Forme:</h4>
+            <ul>
+                <li><strong>Chez l'homme:</strong> Petit amas glandulaire circulaire.</li>
+                <li><strong>Chez la femme adulte:</strong></li>
+                <ul>
+                    <li>Masse grossièrement hémisphérique.</li>
+                    <li>Forme variable.</li>
+                    <li><strong>N/B:</strong> Présence d'une discrète asymétrie entre les deux glandes.</li>
+                </ul>
+                <li>Formes possibles : Discoïde, Conique, Piriforme, Pédiculé.</li>
+            </ul>
+    
+            <h4>2) Consistance:</h4>
+            <ul>
+                <li>Avant les grossesses et l'allaitement: Ferme et élastique.</li>
+                <li>Après les grossesses et l'allaitement: Molle et flasque.</li>
+ 
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="dimensions-poids" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 الأبعاد والوزن:</h3>
+    
+        <h4>3) الأبعاد:</h4>
+        <ul>
+            <li>في سن البلوغ:</li>
+            <ul>
+                <li>السُّمك: 5-6 سم.</li>
+                <li>القطر: 10-12 سم.</li>
+            </ul>
+        </ul>
+    
+        <h4>4) الوزن:</h4>
+        <ul>
+            <li>يختلف حسب عدة عوامل:</li>
+            <ul>
+                <li>عند الفتاة الصغيرة: 150-200 غرام.</li>
+                <li>عند المرأة المرضعة: 400-500 غرام.</li>
+            </ul>
+        </ul>
+    
+
+
+        <figure class="bubble">
+            <img src=" 2MED U4 ANATOMIE/A7.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A8.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+        
+        <div align="center">
+            <ul>
+                <li>تتغير مورفولوجيا الثديين مع تقدم العمر والنشاط الهرموني.</li>
+                <li>La morphologie des seins évolue avec l'âge et l'activité génitale.</li>
+                <li>Breast morphology evolves with age and genital activity.</li>
+            </ul>
+        </div> <!-- تم إغلاق div بشكل صحيح -->
+        
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A9.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+        
+        <div align="center">
+            <ul>
+                <li>قبل الحمل، أثناء الحمل وبعده.</li>
+                <li>Before, during, and after pregnancy.</li>
+                <li>Avant, pendant et après la grossesse.</li>
+            </ul>
+        </div> <!-- تم إغلاق div بشكل صحيح -->
+        
+         <div>
+        
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Dimensions & Weight:</h3>
+    
+            <h4>3) Dimensions:</h4>
+            <ul>
+                <li>At puberty:</li>
+                <ul>
+                    <li>Thickness: 5-6 cm.</li>
+                    <li>Diameter: 10-12 cm.</li>
+                </ul>
+            </ul>
+    
+            <h4>4) Weight:</h4>
+            <ul>
+                <li>Varies according to several factors:</li>
+                <ul>
+                    <li>In young girls: 150-200 g.</li>
+                    <li>In lactating women: 400-500 g.</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Dimensions & Poids:</h3>
+    
+            <h4>3) Dimensions:</h4>
+            <ul>
+                <li>À la puberté:</li>
+                <ul>
+                    <li>Épaisseur: 5-6 cm.</li>
+                    <li>Diamètre: 10-12 cm.</li>
+                </ul>
+            </ul>
+    
+            <h4>4) Poids:</h4>
+            <ul>
+                <li>Variable selon plusieurs facteurs:</li>
+                <ul>
+                    <li>Chez la jeune fille: 150-200 g.</li>
+                    <li>Chez la femme allaitante: 400-500 g.</li>
+            
+                </ul>
+            </ul>
+        </div>
+    </div>
+</div>  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="configuration-externe" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 التكوين الخارجي:</h3>
+
+    <p>يتكون سطح الثدي من ثلاث مناطق رئيسية:</p>
+    <ul>
+        <li><strong>المنطقة المحيطية:</strong> تحتوي على الدهون تحت الجلد.</li>
+        <li><strong>الحلمة:</strong> بارزة، تختلف في الحجم، وتصبح داكنة أثناء الحمل والرضاعة.</li>
+        <li><strong>الهالة:</strong> دائرية حول الحلمة، يتغير لونها مع التغيرات الهرمونية.</li>
+    </ul>
+
+    <h4>الخصائص حسب الجنس:</h4>
+    <ul>
+        <li>الرجال: تحتوي على شعر.</li>
+        <li>النساء: ملساء بدون شعر.</li>
+        <li>الأوردة تحت الجلد تكون بارزة (خاصة أثناء الحمل والإرضاع).</li>
+    </ul>
+
+
+
+    
+
+
+    <figure class="bubble">
+        <img src=" 2MED U4 ANATOMIE/A10.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+
+    
+    
+    <figure class="bubble">
+        <img src=" 2MED U4 ANATOMIE/A11.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">🔹 External Configuration:</h3>
+
+        <p>The surface of the breast consists of three main areas:</p>
+        <ul>
+            <li><strong>Peripheral zone:</strong> Contains subcutaneous fat.</li>
+            <li><strong>Nipple:</strong> Protruding, varies in size, darkens during pregnancy and lactation.</li>
+            <li><strong>Areola:</strong> Circular area around the nipple, changes color with hormonal variations.</li>
+        </ul>
+
+        <h4>Characteristics by gender:</h4>
+        <ul>
+            <li>Men: Hairy.</li>
+            <li>Women: Smooth, hairless.</li>
+            <li>Subcutaneous veins are prominent (especially during pregnancy and breastfeeding).</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">🔹 Configuration Externe:</h3>
+
+        <p>La surface du sein présente trois zones principales :</p>
+        <ul>
+            <li><strong>Zone périphérique :</strong> Contient du tissu adipeux sous-cutané.</li>
+            <li><strong>Mamelon :</strong> Proéminent, variable en taille, s’assombrit pendant la grossesse et l’allaitement.</li>
+            <li><strong>Aréole :</strong> Zone circulaire autour du mamelon, change de couleur avec les variations hormonales.</li>
+        </ul>
+
+        <h4>Caractéristiques selon le sexe :</h4>
+        <ul>
+            <li>Homme : Présence de poils.</li>
+            <li>Femme : Glabre (sans poils).</li>
+            <li>Veines sous-cutanées visibles (surtout pendant la grossesse et l’allaitement).</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="areole-nipple" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 الهالة والحلمة:</h3>
+
+    <h4>الهالة:</h4>
+    <ul>
+        <li>منطقة حلقية <strong>ذات تصبغ متفاوت</strong> بقطر يتراوح بين 30-40 ملم.</li>
+        <li>تحيط بالحلمة وتحتوي على <strong>نتوءات صغيرة تُعرف بدرنات مورغاني</strong>.</li>
+        <li>تحتوي طبقتها العميقة على <strong>عضلة الهالة</strong>.</li>
+    </ul>
+
+    <h4>الحلمة:</h4>
+    <ul>
+        <li>بارزة <strong>أسطوانية الشكل</strong>.</li>
+        <li>تقع في <strong>مركز الهالة</strong>.</li>
+        <li>مصبوغة بلون بني داكن.</li>
+        <li>الارتفاع والقطر = حوالي 10 ملم.</li>
+        <li>توجد بأشكال مختلفة:
+            <ul>
+                <li>حلمة <strong>مخروطية</strong>.</li>
+                <li>حلمة <strong>مسطحة</strong>.</li>
+                <li>حلمة <strong>منغمسة (مقلوبة)</strong>.</li>
+            </ul>
+        </li>
+    </ul>
+
+
+
+    
+
+    <figure class="bubble">
+        <img src=" 2MED U4 ANATOMIE/A12.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+
+    
+    
+    <figure class="bubble">
+        <img src=" 2MED U4 ANATOMIE/A13.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">🔹 Areola & Nipple:</h3>
+
+        <h4>Areola:</h4>
+        <ul>
+            <li>A <strong>circular pigmented area</strong> with a diameter of 30-40 mm.</li>
+            <li>Surrounds the nipple and contains <strong>small protrusions called Morgagni tubercles</strong>.</li>
+            <li>Its deep layer contains the <strong>areolar muscle</strong>.</li>
+        </ul>
+
+        <h4>Nipple:</h4>
+        <ul>
+            <li><strong>Cylindrical prominence</strong>.</li>
+            <li>Located at the <strong>center of the areola</strong>.</li>
+            <li>Brownish-pigmented.</li>
+            <li>Height and diameter ≈ 10 mm.</li>
+            <li>Different shapes:
+                <ul>
+                    <li><strong>Conical nipple</strong>.</li>
+                    <li><strong>Flat nipple</strong>.</li>
+                    <li><strong>Inverted nipple</strong>.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">🔹 Aréole & Mamelon:</h3>
+
+        <h4>Aréole:</h4>
+        <ul>
+            <li>Zone circulaire <strong>plus ou moins pigmentée</strong>, diamètre de 30-40 mm.</li>
+            <li>Entoure le mamelon et contient <strong>de petites saillies appelées tubercules de Morgagni</strong>.</li>
+            <li>Sa couche profonde contient le <strong>muscle de l’aréole</strong>.</li>
+        </ul>
+
+        <h4>Mamelon:</h4>
+        <ul>
+            <li><strong>Saillie cylindrique</strong>.</li>
+            <li>Situé au <strong>centre de l’aréole</strong>.</li>
+            <li>Pigmenté, brunâtre.</li>
+            <li>Hauteur et diamètre ≈ 10 mm.</li>
+            <li>Différentes formes :
+                <ul>
+                    <li><strong>Mamelon conique</strong>.</li>
+                    <li><strong>Mamelon plat</strong>.</li>
+                    <li><strong>Mamelon ombiliqué (inversé)</strong>.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="nipple-structure" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 تركيب الحلمة والغدة الثديية:</h3>
+
+    <h4>الحلمة:</h4>
+    <ul>
+        <li>تحتوي سطح الحلمة على <strong>فتحات قنوات الحليب (ostiums papillaires)</strong>، وهي <strong>المنافذ النهائية للقنوات اللبنية</strong>.</li>
+        <li>تحتوي طبقتها العميقة على <strong>العضلة الحلمية</strong> المسؤولة عن <strong>انتصاب الحلمة</strong>.</li>
+    </ul>
+
+    <h4>الغدة الثديية:</h4>
+    <ul>
+        <li>تتكون من <strong>وجهين</strong>:
+            <ul>
+                <li>وجه <strong>خلفي مسطح</strong>.</li>
+                <li>وجه <strong>أمامي محدب بشكل واضح</strong>، ويحتوي على سلسلة من التلال.</li>
+            </ul>
+        </li>
+        <li>يتميز <strong>محيط الغدة الثديية</strong> بأنه <strong>غير منتظم</strong> بسبب امتدادها نحو الإبط.</li>
+    </ul>
+
+
+    <figure class="bubble">
+        <img src=" 2MED U4 ANATOMIE/A14.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+
+    
+    
+    <figure class="bubble">
+        <img src=" 2MED U4 ANATOMIE/A15.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+
+    <figure class="bubble">
+        <img src=" 2MED U4 ANATOMIE/A17.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+
+    
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">🔹 Nipple & Mammary Gland Structure:</h3>
+
+        <h4>Nipple:</h4>
+        <ul>
+            <li>The nipple surface presents <strong>papillary ostia</strong>, which are <strong>the terminal openings of the lactiferous ducts</strong>.</li>
+            <li>Its deep layer contains the <strong>nipple muscle</strong>, responsible for <strong>nipple erection</strong>.</li>
+        </ul>
+
+        <h4>Mammary Gland:</h4>
+        <ul>
+            <li>It has <strong>two surfaces</strong>:
+                <ul>
+                    <li>A <strong>flat posterior surface</strong>.</li>
+                    <li>A <strong>strongly convex anterior surface</strong> with a series of ridges.</li>
+                </ul>
+            </li>
+            <li>The <strong>mammary circumference</strong> is <strong>irregular</strong> due to its axillary extension.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">🔹 Structure du mamelon et de la glande mammaire:</h3>
+
+        <h4>Mamelon:</h4>
+        <ul>
+            <li>La surface du mamelon présente les <strong>ostiums papillaires</strong>, qui sont <strong>les orifices terminaux des canaux galactophores</strong>.</li>
+            <li>Sa face profonde contient le <strong>muscle mamillaire</strong>, responsable de <strong>l’érection du mamelon</strong>.</li>
+        </ul>
+
+        <h4>Glande mammaire:</h4>
+        <ul>
+            <li>Elle présente <strong>deux faces</strong>:
+                <ul>
+                    <li>Une face <strong>postérieure plane</strong>.</li>
+                    <li>Une face <strong>antérieure fortement convexe</strong>, avec une série de crêtes.</li>
+                </ul>
+            </li>
+            <li>La <strong>circonférence mammaire</strong> est <strong>irrégulière</strong> en raison de son prolongement axillaire.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="inter2" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A16.png" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="mammary-structure" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 بنية الغدة الثديية:</h3>
+
+    <ul>
+        <li>الغدة الثديية <strong>مغطاة بالجلد</strong>.</li>
+        <li>تنمو داخل <strong>النسيج الدهني تحت الجلد</strong>.</li>
+        <li>تتكون من <strong>ثلاثة أنواع من الأنسجة:</strong>
+            <ul>
+                <li><strong>النسيج الغدي</strong> (المسؤول عن إنتاج الحليب).</li>
+                <li><strong>النسيج الدهني</strong> (يحيط بالغدة ويؤثر على حجم الثدي).</li>
+                <li><strong>النسيج الضام</strong> (يدعم بنية الغدة).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>🔸 المكونات الرئيسية:</h4>
+    <ul>
+        <li><strong>القنوات اللبنية</strong>: تنقل الحليب إلى الحلمة.</li>
+        <li><strong>الفصيصات</strong>: وحدات الغدة المنتجة للحليب.</li>
+        <li><strong>الحلمة</strong>: تحتوي على فتحات قنوات الحليب.</li>
+        <li><strong>الهالة</strong>: تحيط بالحلمة وتحتوي على غدد تفرز مواد دهنية للحماية.</li>
+        <li><strong>العضلات الصدرية</strong>: تقع خلف الغدة وتدعمها.</li>
+    </ul>
+
+
+
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A18.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+
+
+
+    
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A19.webp" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">🔹 Structure of the Mammary Gland:</h3>
+
+        <ul>
+            <li>The mammary gland is <strong>covered by the skin</strong>.</li>
+            <li>It develops within the <strong>subcutaneous adipose tissue</strong>.</li>
+            <li>It is composed of <strong>three types of tissues:</strong>
+                <ul>
+                    <li><strong>Glandular tissue</strong> (responsible for milk production).</li>
+                    <li><strong>Adipose tissue</strong> (surrounds the gland and affects breast size).</li>
+                    <li><strong>Connective tissue</strong> (provides structural support).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>🔸 Main Components:</h4>
+        <ul>
+            <li><strong>Lactiferous ducts</strong>: Transport milk to the nipple.</li>
+            <li><strong>Lobules</strong>: The milk-producing units.</li>
+            <li><strong>Nipple</strong>: Contains the openings of lactiferous ducts.</li>
+            <li><strong>Areola</strong>: Surrounds the nipple and contains protective sebaceous glands.</li>
+            <li><strong>Pectoral muscles</strong>: Located behind the gland, providing support.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">🔹 Structure de la glande mammaire:</h3>
+
+        <ul>
+            <li>La glande mammaire est <strong>recouverte par la peau</strong>.</li>
+            <li>Elle se développe dans le <strong>tissu adipeux sous-cutané</strong>.</li>
+            <li>Elle est composée de <strong>trois types de tissus:</strong>
+                <ul>
+                    <li><strong>Tissu glandulaire</strong> (responsable de la production de lait).</li>
+                    <li><strong>Tissu adipeux</strong> (entoure la glande et influence la taille des seins).</li>
+                    <li><strong>Tissu conjonctif</strong> (assure le soutien structurel).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>🔸 Composants Principaux:</h4>
+        <ul>
+            <li><strong>Canaux galactophores</strong>: Transportent le lait jusqu’au mamelon.</li>
+            <li><strong>Lobules</strong>: Unités de production de lait.</li>
+            <li><strong>Mamelon</strong>: Contient les orifices des canaux galactophores.</li>
+            <li><strong>Aréole</strong>: Entoure le mamelon et contient des glandes sébacées protectrices.</li>
+            <li><strong>Muscles pectoraux</strong>: Situés derrière la glande pour le soutien.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="glandular-tissue" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 النسيج الغدي:</h3>
+
+    <ul>
+        <li>الغدة الثديية هي <strong>غدة أنبوبية سنخية</strong> (Tubulo-alvéolaire) ذات تركيب عنقودي.</li>
+        <li>تتكون من <strong>10 إلى 20 فصًا</strong>، وكل فص يحتوي على عدة فصيصات.</li>
+        <li>الفصيصات تحتوي على <strong>الأسناخ (الحويصلات)</strong>، وهي الوحدات المسؤولة عن إنتاج الحليب.</li>
+        <li>كل فص يتم تصريفه عبر <strong>قناة لبنية (galactophore)</strong> تتلاقى باتجاه الحلمة.</li>
+        <li>القناة اللبنية تحتوي على <strong>الجيب اللبني (sinus lactifère)</strong> الذي يفتح عند مستوى الحلمة.</li>
+    </ul>
+
+    <h4>🔸 النسيج الدهني:</h4>
+    <ul>
+        <li>يرتبط ارتباطًا وثيقًا بالنسيج الغدي.</li>
+        <li>يُحدد حجم الثدي.</li>
+        <li>يتموضع في طبقتين:
+            <ul>
+                <li><strong>طبقة أمام الغدة (pré-glandulaire)</strong>.</li>
+                <li><strong>طبقة خلف الغدة (rétro-glandulaire)</strong>.</li>
+            </ul>
+        </li>
+    </ul>
+
+
+
+
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A20.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+
+
+
+    
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A21.webp" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">🔹 Glandular Tissue:</h3>
+
+        <ul>
+            <li>The mammary gland is a <strong>tubulo-alveolar gland</strong> with a cluster-like structure.</li>
+            <li>It consists of <strong>10 to 20 lobes</strong>, each containing multiple lobules.</li>
+            <li>Lobules contain <strong>alveoli (acini)</strong>, which are responsible for milk production.</li>
+            <li>Each lobe is drained by a <strong>lactiferous duct</strong> that converges towards the nipple.</li>
+            <li>The lactiferous duct includes a <strong>lactiferous sinus</strong>, which opens at the nipple.</li>
+        </ul>
+
+        <h4>🔸 Adipose Tissue:</h4>
+        <ul>
+            <li>Closely linked to the glandular tissue.</li>
+            <li>Responsible for breast volume.</li>
+            <li>Arranged in two layers:
+                <ul>
+                    <li><strong>Pre-glandular layer</strong> (in front of the gland).</li>
+                    <li><strong>Retro-glandular layer</strong> (behind the gland).</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">🔹 Tissu Glandulaire:</h3>
+
+        <ul>
+            <li>La glande mammaire est une <strong>glande tubulo-alvéolaire</strong> à structure en grappe.</li>
+            <li>Elle est composée de <strong>10 à 20 lobes</strong>, chaque lobe contenant plusieurs lobules.</li>
+            <li>Les lobules contiennent des <strong>alvéoles (acini)</strong>, responsables de la production du lait.</li>
+            <li>Chaque lobe est drainé par un <strong>canal galactophore</strong> qui converge vers le mamelon.</li>
+            <li>Le canal galactophore présente un <strong>sinus lactifère</strong>, qui s’ouvre au niveau du mamelon.</li>
+        </ul>
+
+        <h4>🔸 Tissu Adipeux:</h4>
+        <ul>
+            <li>Étroitement lié au tissu glandulaire.</li>
+            <li>Responsable du volume mammaire.</li>
+            <li>Disposé en deux couches :
+                <ul>
+                    <li><strong>Couche pré-glandulaire</strong> (devant la glande).</li>
+                    <li><strong>Couche rétro-glandulaire</strong> (derrière la glande).</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="connective-tissue" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 النسيج الضام:</h3>
+
+    <ul>
+        <li>يتكون من صفائح نسيجية ضامة تُعرف باسم <strong>أربطة كوبر (Cooper's ligaments)</strong>.</li>
+        <li>تساعد أربطة كوبر في <strong>دعم وتثبيت</strong> الغدة الثديية.</li>
+        <li>ترتبط هذه الأربطة بكل من <strong>اللفافة قبل الثديية (pré-mammaire)</strong> و<strong>اللفافة خلف الثديية (rétro-mammaire)</strong>.</li>
+    </ul>
+
+    <br>
+
+    <h3 class="section-title" style="text-align: center;">🔹 التشريح السطحي:</h3>
+
+    <ul>
+        <li>تحتل الغدة الثديية <strong>المنطقة الثديية</strong>.</li>
+        <li>يُحدد الحد السفلي لهذه المنطقة بواسطة:
+            <ul>
+                <li><strong>الطية تحت الثدي (pli infra-mammaire)</strong>.</li>
+                <li>تقريبًا عند مستوى <strong>الضلع السابع (7ème côte)</strong>.</li>
+                <li>بين الفراغين الوربيين الخامس والسابع (<strong>5ème - 7ème EIC</strong>).</li>
+            </ul>
+        </li>
+    </ul>
+
+    
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A22.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+
+
+
+
+    
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A23.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">🔹 Connective Tissue:</h3>
+
+        <ul>
+            <li>Composed of connective tissue lamellae known as <strong>Cooper's ligaments</strong>.</li>
+            <li>Cooper’s ligaments provide <strong>support and fixation</strong> to the mammary gland.</li>
+            <li>These ligaments are attached to both the <strong>pre-mammary fascia</strong> and the <strong>retro-mammary fascia</strong>.</li>
+        </ul>
+
+        <br>
+
+        <h3 class="section-title" style="text-align: center;">🔹 Surface Anatomy:</h3>
+
+        <ul>
+            <li>The mammary gland occupies the <strong>mammary region</strong>.</li>
+            <li>This region is limited inferiorly by:
+                <ul>
+                    <li>The <strong>infra-mammary fold</strong>.</li>
+                    <li>Approximately at the level of the <strong>7th rib</strong>.</li>
+                    <li>Between the <strong>5th and 7th intercostal spaces (EIC)</strong>.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">🔹 Tissu Conjonctif:</h3>
+
+        <ul>
+            <li>Représenté par des lamelles conjonctives appelées <strong>les ligaments de Cooper</strong>.</li>
+            <li>Ces ligaments assurent <strong>le soutien et la fixation</strong> de la glande mammaire.</li>
+            <li>Ils sont attachés à la <strong>fascia pré-mammaire</strong> et à la <strong>fascia rétro-mammaire</strong>.</li>
+        </ul>
+
+        <br>
+
+        <h3 class="section-title" style="text-align: center;">🔹 Anatomie de Surface:</h3>
+
+        <ul>
+            <li>La glande mammaire occupe la <strong>région mammaire</strong>.</li>
+            <li>Cette région est limitée en bas par :
+                <ul>
+                    <li><strong>Le pli infra-mammaire</strong>.</li>
+                    <li>Situé approximativement au niveau de la <strong>7ème côte</strong>.</li>
+                    <li>Entre le <strong>5ème et le 7ème espace intercostal (EIC)</strong>.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="nipple-location" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 موقع الحلمة:</h3>
+
+    <ul>
+        <li><strong>عند الرجل</strong>: تتوضع الحلمة عند مستوى <strong>الفراغ الوربي الرابع (4ème EIC)</strong>.</li>
+        <li><strong>عند المرأة</strong>: يختلف موقع الحلمة تبعًا للعوامل الفردية مثل حجم الثدي والعمر.</li>
+    </ul>
+
+    <br>
+
+    <h3 class="section-title" style="text-align: center;">🔹 التقسيم السريري للثدي:</h3>
+
+    <p>يُقسم الثدي سريريًا إلى <strong>أربعة أرباع</strong> لتسهيل الفحص الطبي:</p>
+    <ul>
+        <li><strong>الربع العلوي الخارجي (Supéro-externe SE)</strong></li>
+        <li><strong>الربع العلوي الداخلي (Supéro-interne SI)</strong></li>
+        <li><strong>الربع السفلي الخارجي (Inféro-externe IE)</strong></li>
+        <li><strong>الربع السفلي الداخلي (Inféro-interne II)</strong></li>
+    </ul>
+
+
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A24.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+
+
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A25.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+<br>
+
+<!-- العنوان بالإنجليزية -->
+<div class="bubble" dir="ltr">
+    <h3 class="section-title" style="text-align: center;">🔹 Nipple Location:</h3>
+
+    <ul>
+        <li><strong>In men</strong>: The nipple is positioned at the level of the <strong>4th intercostal space (4th EIC)</strong>.</li>
+        <li><strong>In women</strong>: Its position varies depending on factors such as breast size and age.</li>
+    </ul>
+
+    <br>
+
+    <h3 class="section-title" style="text-align: center;">🔹 Clinical Quadrant Division of the Breast:</h3>
+
+    <p>For clinical examination, the breast is divided into <strong>four quadrants</strong>:</p>
+    <ul>
+        <li><strong>Upper outer quadrant (Supéro-externe SE)</strong></li>
+        <li><strong>Upper inner quadrant (Supéro-interne SI)</strong></li>
+        <li><strong>Lower outer quadrant (Inféro-externe IE)</strong></li>
+        <li><strong>Lower inner quadrant (Inféro-interne II)</strong></li>
+    </ul>
+</div>
+
+<br>
+
+<!-- العنوان بالفرنسية -->
+<div class="bubble">
+    <h3 class="section-title" style="text-align: center;">🔹 Position du Mamelon:</h3>
+
+    <ul>
+        <li><strong>Chez l'homme</strong>: Le mamelon se situe au niveau du <strong>4ème espace intercostal (4ème EIC)</strong>.</li>
+        <li><strong>Chez la femme</strong>: Sa position varie en fonction de facteurs individuels comme la taille des seins et l’âge.</li>
+    </ul>
+
+    <br>
+
+    <h3 class="section-title" style="text-align: center;">🔹 Division Clinique du Sein en Quadrants:</h3>
+
+    <p>Cliniquement, le sein est divisé en <strong>quatre quadrants</strong> pour faciliter l'examen médical:</p>
+    <ul>
+        <li><strong>Quadrant supéro-externe (Supéro-externe SE)</strong></li>
+        <li><strong>Quadrant supéro-interne (Supéro-interne SI)</strong></li>
+        <li><strong>Quadrant inféro-externe (Inféro-externe IE)</strong></li>
+        <li><strong>Quadrant inféro-interne (Inféro-interne II)</strong></li>
+    </ul>
+</div>
+
+</div>
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="fixation-means" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 وسائل تثبيت الغدة الثديية:</h3>
+
+    <p>تعتبر الغدة الثديية <strong>غدة متحركة جدًا (+++)</strong>، حيث إن وسائل تثبيتها قليلة التطور وتشمل:</p>
+    <ul>
+        <li><strong>اللفافة السطحية (fascia superficialis)</strong></li>
+        <li><strong>الجلد الثديي</strong></li>
+        <li><strong>الثلم تحت الثدي (sillon sous-mammaire)</strong></li>
+        <li><strong>أربطة كوبر (ligaments de Cooper)</strong></li>
+    </ul>
+    <br>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 التشريح الطبوغرافي للغدة الثديية:</h3>
+
+    <p>🔹 تقع الغدة الثديية داخل <strong>انقسام اللفافة السطحية (fascia superficialis)</strong>.</p>
+    <p>🔹 هذا الموقع يجعلها <strong>غدة متحركة</strong> تتكيف مع تغيرات الوضعية الجسدية.</p>
+
+
+
+    <br>
+
+    <h3 class="section-title" style="text-align: center;">🔹 العلاقات التشريحية للغدة الثديية:</h3>
+
+    <h4>1️⃣ العلاقات الأمامية:</h4>
+    <p>الغدة الثديية <strong>على اتصال مباشر مع الجلد</strong>.</p>
+
+    <h4>2️⃣ العلاقات الخلفية:</h4>
+    <p>تقع الغدة الثديية داخل <strong>انقسام اللفافة السطحية</strong>، وترتبط بـ:</p>
+    <ul>
+        <li><strong>المساحة خلف الثدي</strong> (espace rétro-mammaire)</li>
+        <li><strong>العضلة الصدرية الكبرى</strong> (muscle pectoral majeur)</li>
+        <li><strong>العضلة الصدرية الصغرى</strong> (muscle pectoral mineur)</li>
+        <li><strong>القفص الصدري</strong> (gril costal)</li>
+    </ul>
+
+
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A26.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+
+
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A27.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A28.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+
+
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A29.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+<br>
+
+
+<div class="bubble" dir="ltr">
+    <h3 class="section-title" style="text-align: center;">🔹 Means of Breast Fixation:</h3>
+
+    <p>The mammary gland is <strong>highly mobile (+++)</strong> due to its weak fixation means, which include:</p>
+    <ul>
+        <li><strong>Superficial fascia (fascia superficialis)</strong></li>
+        <li><strong>Breast skin</strong></li>
+        <li><strong>Sub-mammary groove (sillon sous-mammaire)</strong></li>
+        <li><strong>Cooper’s ligaments (ligaments de Cooper)</strong></li>
+    </ul>
+    <br>
+
+        <h3 class="section-title" style="text-align: center;">🔹 Topographic Anatomy of the Mammary Gland:</h3>
+    
+        <p>🔹 The mammary gland is contained within <strong>a division of the superficial fascia (fascia superficialis)</strong>.</p>
+        <p>
+    <br>
+
+    <h3 class="section-title" style="text-align: center;">🔹 Anatomical Relationships of the Breast:</h3>
+
+    <h4>1️⃣ Anterior Relations:</h4>
+    <p>The mammary gland is <strong>directly connected to the skin</strong>.</p>
+
+    <h4>2️⃣ Posterior Relations:</h4>
+    <p>The gland is contained within <strong>a division of the superficial fascia</strong> and is related to:</p>
+    <ul>
+        <li><strong>Retro-mammary space</strong> (espace rétro-mammaire)</li>
+        <li><strong>Pectoralis major muscle</strong> (muscle pectoral majeur)</li>
+        <li><strong>Pectoralis minor muscle</strong> (muscle pectoral mineur)</li>
+        <li><strong>Rib cage</strong> (gril costal)</li>
+    </ul>
+</div>
+
+<br>
+
+
+<div class="bubble">
+    <h3 class="section-title" style="text-align: center;">🔹 Moyens de Fixité du Sein:</h3>
+
+    <p>La glande mammaire est <strong>très mobile (+++)</strong> en raison du faible développement de ses moyens de fixation, qui incluent:</p>
+    <ul>
+        <li><strong>Le fascia superficialis</strong></li>
+        <li><strong>La peau mammaire</strong></li>
+        <li><strong>Le sillon sous-mammaire</strong></li>
+        <li><strong>Les ligaments de Cooper</strong></li>
+    </ul>
+    <br>
+
+  
+        <h3 class="section-title" style="text-align: center;">🔹 Anatomie Topographique de la Glande Mammaire:</h3>
+    
+        <p>🔹 La glande mammaire est contenue dans <strong>le dédoublement du fascia superficialis</strong>.</p>
+        <p>🔹 Cette position lui confère <strong>une grande mobilité</strong> qui s'adapte aux changements de posture du corps.</p>
+    
+    <br>
+
+    <h3 class="section-title" style="text-align: center;">🔹 Rapports Anatomiques du Sein:</h3>
+
+    <h4>1️⃣ Rapports Antérieurs:</h4>
+    <p>La glande mammaire est <strong>en contact direct avec la peau</strong>.</p>
+
+    <h4>2️⃣ Rapports Postérieurs:</h4>
+    <p>Elle est contenue dans <strong>le dédoublement du fascia superficialis</strong> et est en rapport avec:</p>
+    <ul>
+        <li><strong>L’espace rétro-mammaire</strong></li>
+        <li><strong>Le muscle pectoral majeur</strong></li>
+        <li><strong>Le muscle pectoral mineur</strong></li>
+        <li><strong>Le grill costal</strong></li>
+    </ul>
+</div>
+</div>
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="inter2" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A30.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="vascularisation" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 التروية الدموية للغدة الثديية:</h3>
+
+    <h4>1️⃣ التروية الشريانية:</h4>
+    <p>تتم التروية الشريانية عبر **ثلاثة أنواع من الشرايين**:</p>
+    <ul>
+        <li><strong>الشريان الإبطي (Artère axillaire)</strong></li>
+        <li><strong>الشرايين الوربية (Artères intercostales)</strong> (7، 8، 9)</li>
+        <li><strong>الشريان الصدري الداخلي (Artère thoracique interne)</strong></li>
+    </ul>
+
+    <h4>2️⃣ التصريف الوريدي:</h4>
+    <p>يتم التصريف عبر **شبكتين مترابطتين**:</p>
+    <ul>
+        <li><strong>شبكة وريدية سطحية</strong> (Péri-aréolaire et péri-mamelonnaire) تُعرف بـ <strong>شبكة هالر (réseau de Haller)</strong></li>
+        <li><strong>شبكة وريدية عميقة</strong></li>
+    </ul>
+    <p>تُصرّف الأوردة إلى:</p>
+    <ul>
+        <li><strong>الوريد الصدري الداخلي</strong> (Veine thoracique interne)</li>
+        <li><strong>الوريد الإبطي</strong> (Veine axillaire)</li>
+        <li><strong>الأوردة الوربية</strong> (Veines intercostales)</li>
+    </ul>
+
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A31.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A32.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A33.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A34.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+<br>
+
+<!-- العنوان بالإنجليزية -->
+<div class="bubble" dir="ltr">
+    <h3 class="section-title" style="text-align: center;">🔹 Vascularization of the Mammary Gland:</h3>
+
+    <h4>1️⃣ Arterial Supply:</h4>
+    <p>The mammary gland receives its arterial supply from **three main types of arteries**:</p>
+    <ul>
+        <li><strong>Axillary artery (Artère axillaire)</strong></li>
+        <li><strong>Intercostal arteries (Artères intercostales)</strong> (7th, 8th, and 9th)</li>
+        <li><strong>Internal thoracic artery (Artère thoracique interne)</strong></li>
+    </ul>
+
+    <h4>2️⃣ Venous Drainage:</h4>
+    <p>It occurs through **two interconnected networks**:</p>
+    <ul>
+        <li><strong>Superficial venous network</strong> (Péri-aréolaire et péri-mamelonnaire), also called **Haller’s network**</li>
+        <li><strong>Deep venous network</strong></li>
+    </ul>
+    <p>Drainage flows into:</p>
+    <ul>
+        <li><strong>Internal thoracic vein</strong> (Veine thoracique interne)</li>
+        <li><strong>Axillary vein</strong> (Veine axillaire)</li>
+        <li><strong>Intercostal veins</strong> (Veines intercostales)</li>
+    </ul>
+</div>
+
+<br>
+
+<!-- العنوان بالفرنسية -->
+<div class="bubble">
+    <h3 class="section-title" style="text-align: center;">🔹 Vascularisation de la Glande Mammaire:</h3>
+
+    <h4>1️⃣ Vascularisation Artérielle:</h4>
+    <p>Elle est assurée par **trois types d’artères**:</p>
+    <ul>
+        <li><strong>L'artère axillaire</strong> (Artère axillaire)</li>
+        <li><strong>Les artères intercostales</strong> (7ème, 8ème et 9ème)</li>
+        <li><strong>L'artère thoracique interne</strong> (Artère thoracique interne)</li>
+    </ul>
+
+    <h4>2️⃣ Drainage Veineux:</h4>
+    <p>Il est assuré par **deux réseaux anastomosés**:</p>
+    <ul>
+        <li><strong>Réseau veineux superficiel</strong> (Péri-aréolaire et péri-mamelonnaire), aussi appelé **réseau de Haller**</li>
+        <li><strong>Réseau veineux profond</strong></li>
+    </ul>
+    <p>Le drainage veineux s’effectue vers:</p>
+    <ul>
+        <li><strong>La veine thoracique interne</strong> (Veine thoracique interne)</li>
+        <li><strong>La veine axillaire</strong> (Veine axillaire)</li>
+        <li><strong>Les veines intercostales</strong> (Veines intercostales)</li>
+    </ul>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="drainage-lymphatique" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 التصريف اللمفاوي للغدة الثديية:</h3>
+
+    <p>يتم التصريف اللمفاوي من الغدة الثديية عبر **شبكتين لمفاويتين**:</p>
+    <ul>
+        <li><strong>شبكة لمفاوية سطحية جلدية</strong></li>
+        <li><strong>شبكة لمفاوية عميقة غدّية</strong></li>
+    </ul>
+
+    <p>تتجمع اللمف في **العُقَد اللمفاوية** التالية:</p>
+    <ul>
+        <li><strong>العقد اللمفاوية الإبطية</strong></li>
+        <li><strong>العقد اللمفاوية فوق الترقوية</strong></li>
+        <li><strong>العقد اللمفاوية لسلسلة الصدرية الداخلية</strong></li>
+    </ul>
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A35.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A36.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+<br>
+
+<!-- العنوان بالإنجليزية -->
+<div class="bubble" dir="ltr">
+    <h3 class="section-title" style="text-align: center;">🔹 Lymphatic Drainage of the Mammary Gland:</h3>
+
+    <p>The lymphatic drainage of the mammary gland is ensured through **two lymphatic networks**:</p>
+    <ul>
+        <li><strong>Superficial cutaneous lymphatic network</strong></li>
+        <li><strong>Deep glandular lymphatic network</strong></li>
+    </ul>
+
+    <p>The lymph drains into the following **lymph nodes**:</p>
+    <ul>
+        <li><strong>Axillary lymph nodes</strong></li>
+        <li><strong>Supraclavicular lymph nodes</strong></li>
+        <li><strong>Lymph nodes of the internal thoracic chain</strong></li>
+    </ul>
+</div>
+
+<br>
+
+<!-- العنوان بالفرنسية -->
+<div class="bubble">
+    <h3 class="section-title" style="text-align: center;">🔹 Drainage Lymphatique de la Glande Mammaire:</h3>
+
+    <p>Le drainage lymphatique de la glande mammaire est assuré par **deux réseaux lymphatiques**:</p>
+    <ul>
+        <li><strong>Réseau lymphatique superficiel cutané</strong></li>
+        <li><strong>Réseau lymphatique profond glandulaire</strong></li>
+    </ul>
+
+    <p>Le lymphocène se draine dans les **ganglions lymphatiques suivants**:</p>
+    <ul>
+        <li><strong>Les ganglions lymphatiques axillaires</strong></li>
+        <li><strong>Les ganglions lymphatiques sus-claviculaires</strong></li>
+        <li><strong>Les ganglions lymphatiques de la chaîne thoracique interne</strong></li>
+    </ul>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="innervation" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 التروية العصبية للغدة الثديية:</h3>
+
+    <p>الغدة الثديية تحتوي على العديد من المستقبلات العصبية (خاصة في المنطقة المحيطية حول الأريولا والماميلون).</p>
+    <p>تتولى التروية العصبية للغدة الثديية الأعصاب التالية:</p>
+    <ul>
+        <li><strong>الأعصاب بين الأضلاع:</strong  (الأنواع 3، 4، 5).</li>
+        <li><strong>السلسلة العصبية العنقية:</strong  جزء من العصبية الودية العنقية.</li>
+        <li><strong>السلسلة العصبية الصدرية:</strong  التفرعات من الأعصاب الودية الصدرية.</li>
+    </ul>
+    <p>وتتغذى الأعصاب عبر الأعصاب المقطعية الجانبية والأمامية للأعصاب بين الأضلاع.</p>
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A37.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+<br>
+
+<!-- العنوان بالإنجليزية -->
+<div class="bubble" dir="ltr">
+    <h3 class="section-title" style="text-align: center;">🔹 Innervation of the Mammary Gland:</h3>
+
+    <p>The mammary gland contains numerous neural receptors (especially around the areola and nipple).</p>
+    <p>The innervation of the mammary gland is provided by the following nerves:</p>
+    <ul>
+        <li><strong>Intercostal nerves:</strong> (3rd, 4th, and 5th intercostal nerves).</li>
+        <li><strong>Cervical sympathetic chain:</strong> part of the superficial cervical plexus.</li>
+        <li><strong>Thoracic sympathetic chain:</strong> branches from the thoracic sympathetic nerves.</li>
+    </ul>
+    <p>Innervation is achieved through perforating intercostal nerves (lateral and anterior cutaneous branches).</p>
+</div>
+
+<br>
+
+<!-- العنوان بالفرنسية -->
+<div class="bubble">
+    <h3 class="section-title" style="text-align: center;">🔹 Innervation de la Glande Mammaire:</h3>
+
+    <p>La glande mammaire contient de nombreux récepteurs neuronaux (surtout dans la région autour de l'aréole et du mamelon).</p>
+    <p>L'innervation de la glande mammaire est assurée par les nerfs suivants:</p>
+    <ul>
+        <li><strong>Nerfs intercostaux:</strong> (3ème, 4ème et 5ème nerfs intercostaux).</li>
+        <li><strong>Chaîne sympathique cervicale:</strong> partie du plexus cervical superficiel.</li>
+        <li><strong>Chaîne sympathique thoracique:</strong> branches des nerfs sympathiques thoraciques.</li>
+    </ul>
+    <p>L'innervation se fait via des nerfs perforants intercostaux (branches cutanées latérales et antérieures).</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="applications" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 التطبيقات العملية:</h3>
+
+    <p>الغدة الثديية هي غدة سطحية، يمكن فحصها بسهولة عن طريق الجس (التحسس).</p>
+    <p>تتمثل طرق الفحص الإشعاعي للغدة الثديية في:</p>
+    <ul>
+        <li><strong>الأشعة فوق الصوتية للثدي:</strong> تُستخدم لفحص الأنسجة الرخوة.</li>
+        <li><strong>تصوير الثدي بالأشعة (الماموغرافي):</strong> يُستخدم لاكتشاف التغيرات الصغيرة.</li>
+        <li><strong>الرنين المغناطيسي للثدي (MRI):</strong> يُستخدم للفحص الأكثر دقة والبحث عن الأورام.</li>
+    </ul>
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A38.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+<br>
+
+<!-- العنوان بالإنجليزية -->
+<div class="bubble" dir="ltr">
+    <h3 class="section-title" style="text-align: center;">🔹 Practical Applications:</h3>
+
+    <p>The mammary gland is a superficial gland, easily examined through palpation.</p>
+    <p>The radiological exploration of the mammary gland is performed through:</p>
+    <ul>
+        <li><strong>Breast Ultrasound:</strong> Used for examining soft tissues.</li>
+        <li><strong>Mammography:</strong> Used to detect small changes or abnormalities.</li>
+        <li><strong>Breast MRI:</strong> Provides a more precise examination, often used for detecting tumors.</li>
+    </ul>
+</div>
+
+<br>
+
+<!-- العنوان بالفرنسية -->
+<div class="bubble">
+    <h3 class="section-title" style="text-align: center;">🔹 Applications Pratiques:</h3>
+
+    <p>La glande mammaire est une glande superficielle, facilement examinée par la palpation.</p>
+    <p>Elle peut être explorée radiologiquement par :</p>
+    <ul>
+        <li><strong>Échographie mammaire:</strong> utilisée pour examiner les tissus mous.</li>
+        <li><strong>Mammographie:</strong> utilisée pour détecter les petites anomalies.</li>
+        <li><strong>IRM mammaire:</strong> utilisée pour un examen plus précis, notamment pour rechercher les tumeurs.</li>
+    </ul>
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="pathologies" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 أمراض الغدة الثديية:</h3>
+
+    <ul>
+        <li><strong>التهاب الثدي (Mastite):</strong> هو التهاب يصيب الأنسجة الثديية غالبًا بسبب العدوى.</li>
+        <li><strong>ألم الثدي (Mastodynie):</strong> هو الشعور بالألم في منطقة الثدي.</li>
+        <li><strong>الأورام الحميدة:</strong> تشمل الأدينوفيبرومات والأكياس، وهي الأكثر شيوعًا.</li>
+        <li><strong>التشخيص:</strong> يتم عبر الفحص السريري والفحوصات الإشعاعية مثل الماموغرافي والأشعة فوق الصوتية.</li>
+    </ul>
+
+
+<br>
+
+<!-- العنوان بالإنجليزية -->
+<div class="bubble" dir="ltr">
+    <h3 class="section-title" style="text-align: center;">🔹 Breast Pathologies:</h3>
+
+    <ul>
+        <li><strong>Mastitis:</strong> Inflammation of the breast tissue, usually caused by infection.</li>
+        <li><strong>Mastodynia:</strong> Pain in the breast area.</li>
+        <li><strong>Benign Tumors:</strong> Include fibroadenomas and cysts, which are the most common.</li>
+        <li><strong>Diagnosis:</strong> Performed through clinical examination and imaging tests like mammography and ultrasound.</li>
+    </ul>
+</div>
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A39.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+<br>
+
+<!-- العنوان بالفرنسية -->
+<div class="bubble">
+    <h3 class="section-title" style="text-align: center;">🔹 Pathologies Mammaires:</h3>
+
+    <ul>
+        <li><strong>Mastite:</strong> Inflammation des tissus mammaires, généralement causée par une infection.</li>
+        <li><strong>Mastodynie:</strong> Douleur au niveau du sein.</li>
+        <li><strong>Tumeurs bénignes:</strong> Incluent les adénofibromes et les kystes, qui sont les plus fréquents.</li>
+        <li><strong>Diagnostic:</strong> Effectué par un examen clinique et des tests d'imagerie comme la mammographie et l'échographie.</li>
+    </ul>
+</div>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="malignant-process" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">🔹 الأمراض الخبيثة للغدة الثديية:</h3>
+
+    <ul>
+        <li><strong>الأورام الخبيثة:</strong> سرطان الثدي هو أحد أكثر الأورام شيوعًا بين النساء.</li>
+        <li><strong>العلاج الجراحي:</strong> يتضمن استئصال الثدي (الماستكتومي) في بعض الحالات.</li>
+        <li><strong>التشخيص المبكر:</strong> يساعد في زيادة فرص الشفاء من خلال فحص الثدي المنتظم.</li>
+        <li><strong>العلاج:</strong> قد يشمل العلاج الكيميائي والعلاج الإشعاعي بعد الجراحة.</li>
+    </ul>
+
+
+
+
+<figure class="bubble">
+    <img src="2MED U4 ANATOMIE/A40.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+</figure>
+<br>
+
+<!-- العنوان بالإنجليزية -->
+<div class="bubble" dir="ltr">
+    <h3 class="section-title" style="text-align: center;">🔹 Malignant Breast Conditions:</h3>
+
+    <ul>
+        <li><strong>Malignant Tumors:</strong> Breast cancer is one of the most common cancers in women.</li>
+        <li><strong>Surgical Treatment:</strong> In some cases, mastectomy (breast removal) is required.</li>
+        <li><strong>Early Diagnosis:</strong> Helps improve the chances of recovery through regular breast examinations.</li>
+        <li><strong>Treatment:</strong> May involve chemotherapy and radiation therapy following surgery.</li>
+    </ul>
+</div>
+
+<br>
+
+<!-- العنوان بالفرنسية -->
+<div class="bubble">
+    <h3 class="section-title" style="text-align: center;">🔹 Pathologies Malignes Mammaires:</h3>
+
+    <ul>
+        <li><strong>Tumeurs Malignes:</strong> Le cancer du sein est l'une des tumeurs les plus courantes chez les femmes.</li>
+        <li><strong>Traitement Chirurgical:</strong> L'ablation du sein (mastectomie) est parfois nécessaire.</li>
+        <li><strong>Diagnostic Précoce:</strong> Il permet d'améliorer les chances de guérison grâce à des examens réguliers des seins.</li>
+        <li><strong>Traitement:</strong> Peut inclure une chimiothérapie et une radiothérapie après la chirurgie.</li>
+    </ul>
+</div>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="inter2" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A41.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="inter2" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A42.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="inter2" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A43.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="end-lesson-modal">
+        <h3>أحسنت يا طبيبنا إن شاء الله!</h3>
+        <p id="lesson-summary">الوقت المستغرق: 00 دقيقة و 00 ثانية. عدد الفقاعات التي تم التفاعل معها: 0 من أصل 0.</p>
+        <button class="reload-button" onclick="reloadPage()">إعادة الحفظ</button>
+        <button onclick="goToTestsPage()">الانتقال إلى صفحة الاختبارات</button>
+    </div>
+
+    <div class="modal" id="question-modal">
+        <h3 id="modal-question">هل حفظت هذه الفقاعة؟</h3>
+        <button onclick="closeModal(true)">نعم</button>
+        <button onclick="closeModal(false)">لا</button>
+    </div>
+
+    <script>
+        let totalBubbles = 21; 
+let completedBubbles = 0; 
+let startTime = Date.now();
+let bubbleButton = null;
+
+function showQuestion() {
+    document.getElementById('question-modal').style.display = 'block';
+}
+
+function closeModal(answer) {
+    document.getElementById('question-modal').style.display = 'none';
+
+    if (answer) {
+        completedBubbles++;
+        updateProgress();
+        bubbleButton.style.backgroundColor = '#4CAF50'; 
+        bubbleButton.innerText = 'تم التفاعل'; 
+        bubbleButton.disabled = true; 
+
+        if (completedBubbles === totalBubbles) {
+            enableFinishButton();
+        }
+    } else {
+    }
+}
+
+function updateProgress() {
+    let progress = (completedBubbles / totalBubbles) * 100; 
+    document.getElementById('progress-bar').style.width = `${progress}%`;
+    document.getElementById('progress-percentage').innerText = `${Math.round(progress)}%`;
+
+    const finishButton = document.querySelector('.finish-button');
+    if (progress === 100) {
+        finishButton.disabled = false; 
+        finishButton.style.backgroundColor = '#00aaff'; 
+        finishButton.style.cursor = 'pointer'; 
+    } else {
+        finishButton.disabled = true;
+        finishButton.style.backgroundColor = '#ccc'; 
+        finishButton.style.cursor = 'not-allowed'; 
+    }
+}
+
+function markBubbleAsCompleted(button) {
+    bubbleButton = button; 
+    showQuestion(); 
+}
+
+function finishLesson() {
+    let elapsedTime = Date.now() - startTime;
+    let minutes = Math.floor(elapsedTime / 60000);
+    let seconds = Math.floor((elapsedTime % 60000) / 1000);
+    let summary = `الوقت المستغرق: ${minutes} دقيقة و ${seconds} ثانية. عدد الفقاعات التي تم التفاعل معها: ${completedBubbles} من أصل ${totalBubbles}.`;
+    document.getElementById('lesson-summary').innerText = summary;
+    document.getElementById('end-lesson-modal').style.display = 'block';
+}
+
+function reloadPage() {
+    location.reload();
+}
+function goToTestsPage() {
+    window.location.href = 'MED02.html';
+}
+
+function initializeFinishButton() {
+    const finishButton = document.querySelector('.finish-button');
+    finishButton.disabled = true; 
+    finishButton.style.backgroundColor = '#ccc'; 
+    finishButton.style.cursor = 'not-allowed'; 
+}
+
+window.onload = initializeFinishButton;
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أزرار للانتقال</title>
+    <style>
+        /* الزر العائم */
+        .floating-buttons {
+            position: fixed;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            left: 20px;  /* وضع الزر في الجهة اليسرى */
+            bottom: 20px;
+        }
+
+        /* زر الفلاش كارد */
+        .flashcard-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 22px;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* التأثير عند التمرير على الزر */
+        .flashcard-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1); /* زيادة الحجم عند التمرير */
+        }
+
+        /* قسم بطاقات الفلاش */
+        #flashcard-section {
+            margin-top: 100px;  /* إعطاء بعض المسافة من الأعلى */
+            padding: 20px;
+            background-color: #1000f1;
+        }
+
+        /* تحسين العرض على الأجهزة الصغيرة */
+        @media (max-width: 768px) {
+            .floating-buttons {
+                left: 10px;  /* جعل الزر أقرب قليلاً على الشاشات الصغيرة */
+                bottom: 10px;
+            }
+
+            .flashcard-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+ 
+
+    <!-- الأزرار العائمة -->
+    <div class="floating-buttons">
+        <!-- زر للانتقال إلى الفلاش كارد -->
+        <button class="flashcard-button" onclick="goToFlashCard()">🎴</button>
+    </div>
+
+    <script>
+        // وظيفة للانتقال إلى بطاقات الفلاش داخل نفس الصفحة
+        function goToFlashCard() {
+            // هنا نقوم بالانتقال مباشرة إلى قسم بطاقات الفلاش
+            document.getElementById('flashcard-section').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br>
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 بطاقات فلاش تفاعلية</title>
+    <style>
+        body {
+            font-family: 'Amiri', serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            direction: rtl;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .front {
+            background-color: #1e1e1e;
+        }
+
+        .back {
+            background-color: #2c2c2c;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-image {
+            width: 40%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcard-image img {
+            max-width: 100%;
+            max-height: 100%;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .flashcard-image img.expanded {
+            transform: scale(1.5);
+        }
+
+        .flashcard-content {
+            width: 65%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: right;
+            direction: rtl;
+            overflow-y: auto;
+            max-height: 150px;
+            white-space: normal;
+            word-wrap: break-word;
+            position: relative;
+        }
+        .hint-container {
+    position: fixed; /* استخدم fixed لجعل التلميح ثابتًا في المكان */
+    top: -190px; /* 20px من أعلى الصفحة */
+    left: 50%;
+    transform: translateX(-50%); /* لتوسيط التلميح بشكل أفقي */
+    width: 80%; /* عرض التلميح */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #f1c40f;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+}
+
+        /* عند إظهار التلميح */
+        .hint-container.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .arrow {
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .arrow:hover {
+            color: #00aaff;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 480px) {
+            .flashcard {
+                height: 230px;
+            }
+
+            .flashcard-image {
+                width: 40%;
+                max-height: 150px;
+            }
+
+            .flashcard-content {
+                font-size: 14px;
+                padding: 10px;
+                max-height: 120px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body><br><br><br><br><br><br><br>
+    <h2 id="flashcard-section">📚 بطاقات فلاش تفاعلية</h2>
+    <br><br><br><br><br><br><br><br><br>
+    <div class="flashcard-container" onclick="flipCard(event)">
+        <div class="flashcard" id="flashcard">
+            <div class="flashcard-side front">
+                <div class="flashcard-image">
+                    <img id="cardImageFront" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3 id="question"></h3>
+                    <!-- حاوية التلميح -->
+                    <div id="hintContainer" class="hint-container">
+                        <p id="hint" class="hint"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flashcard-side back">
+                <div class="flashcard-image">
+                    <img id="cardImageBack" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3>الإجابة:</h3>
+                    <p id="answer"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="buttons">
+        <button onclick="showHint()">🔍 تلميح</button>
+        <button onclick="shuffleCards()">🔀 خلط البطاقات</button>
+    </div>
+
+    <br>
+    <div class="navigation">
+        <span class="arrow" onclick="nextCard()">➡️</span>
+        <span id="cardNumber">1 / 3</span>
+        <span class="arrow" onclick="prevCard()">⬅️</span>
+    </div>
+
+    <script>
+        const flashcards = [
+            {
+                question : "خمن البيانات والعنوان:<br>🔹 باللغة العربية (AR): خمن البيانات والعنوان<br>🔹 باللغة الإنجليزية (EN): Guess the data and the title<br>🔹 باللغة الفرنسية (FR): Devinez les données et le titre",
+                hint : "🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5 (AR)<br>🔍 In English (EN): Axial slice from a CT scan / TDM of the chest at the Th5 level<br>🔍 En français (FR): Coupe axiale d'un scanner TDM du thorax au niveau Th5",
+                answer: `
+                    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                        <li><b>  العنوان:</b><br>
+                            🔹 <b>شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5.  (AR):</b><br>
+                            🔹 <b>Axial slice of a CT scan / TDM of the thorax at the Th5 level.  (EN):</b><br>
+                            🔹 <b> Coupe axiale d'un scanner / TDM thoracique au niveau Th5 (FR):</b>
+               
+                        </li><br>
+                        <span style="font-size: 20px; font-weight: bold;">🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5:</span><br>
+                        <ol style="padding-right: 20px; text-align: right;">
+                            <li>1️⃣ : الرئة اليمنى (Right Lung) - <i>Poumon droit</i></li><br>
+                            <li>2️⃣ : الرئة اليسرى (Left Lung) - <i>Poumon gauche</i></li><br>
+                            <li>3️⃣ : الجذع الرئوي (Pulmonary Trunk) - <i>Tronc pulmonaire</i></li><br>
+                            <li>4️⃣ : الشريان الرئوي الأيمن (Right Pulmonary Artery) - <i>Artère pulmonaire droite</i></li><br>
+                            <li>5️⃣ : الشريان الرئوي الأيسر (Left Pulmonary Artery) - <i>Artère pulmonaire gauche</i></li><br>
+                            <li>6️⃣ : الوريد الأجوف العلوي (Superior Vena Cava) - <i>Veine cave supérieure</i></li><br>
+                            <li>7️⃣ : الأبهر الصدري الصاعد (Ascending Thoracic Aorta) - <i>Aorte thoracique ascendante</i></li><br>
+                            <li>8️⃣ : الأبهر الصدري النازل (Descending Thoracic Aorta) - <i>Aorte thoracique descendante</i></li><br>
+                            <li>9️⃣ : الوريد الرئوي الأيسر (Left Pulmonary Vein) - <i>Veine pulmonaire gauche</i></li><br>
+                            <li>🔟 : الكتف الأيسر (Left Scapula) - <i>Scapula gauche</i></li><br>
+                        </ol>
+                    </ul>
+                `,
+                image: "2MEDU1ANATOMIE/A101.png",
+                isHtml: true
+            }
+        ];
+
+        let currentIndex = 0;
+        let flipped = false;
+        let hintTimeout;
+
+        function updateCard() {
+            const card = flashcards[currentIndex];
+
+            document.getElementById("question").innerHTML = card.question;
+            document.getElementById("hint").innerHTML = "🔍 تلميح: " + card.hint;
+
+            // ضبط عرض الإجابة مع الاتجاه الصحيح والترقيم
+            document.getElementById("answer").innerHTML = card.answer;
+
+            document.getElementById("cardImageFront").src = card.image;
+            document.getElementById("cardImageBack").src = card.image;
+            document.getElementById("cardNumber").textContent = `${currentIndex + 1} / ${flashcards.length}`;
+        }
+
+        function flipCard(event) {
+            event.stopPropagation();
+            flipped = !flipped;
+            document.getElementById("flashcard").classList.toggle("flipped", flipped);
+        }
+
+        function showHint() {
+            const hintContainer = document.getElementById("hintContainer");
+            hintContainer.classList.add("show");
+
+            // إخفاء التلميح بعد 10 ثوانٍ
+            clearTimeout(hintTimeout);
+            hintTimeout = setTimeout(function() {
+                hintContainer.classList.remove("show");
+            }, 10000);
+        }
+
+        function shuffleCards() {
+            flashcards.sort(() => Math.random() - 0.5);
+            currentIndex = 0;
+            flipped = false;
+            document.getElementById("flashcard").classList.remove("flipped");
+            updateCard();
+        }
+
+        function nextCard() {
+            if (currentIndex < flashcards.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0;
+            }
+            flipped = false;
+            document.getElementById("flashcard").classList.remove("flipped");
+            updateCard();
+        }
+
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = flashcards.length - 1;
+            }
+            flipped = false;
+            document.getElementById("flashcard").classList.remove("flipped");
+            updateCard();
+        }
+
+        updateCard();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br>
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القلم الناطق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #008cff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
+            display: none;
+        }
+
+        .show-notification {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffcc00;
+            color: black;
+            font-size: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.2s;
+            z-index: 9999;
+        }
+
+        .floating-btn:hover {
+            background-color: #ffdb4d;
+            transform: scale(1.1);
+        }
+
+        .speed-control {
+            margin-top: 15px;
+        }
+
+        input[type="range"] {
+            width: 50%;
+            accent-color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>حدد أي نص لسماعه! 🎧</h1>
+    <p>هذه جملة باللغة العربية.</p>
+    <p>This is a sentence in English.</p>
+    <p>Ceci est une phrase en français.</p>
+
+    <div>
+        <label>🔹 اختر جنس الصوت:</label>
+        <select id="voiceGender">
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+        </select>
+    </div>
+
+    <div class="speed-control">
+        <label for="speedRange">🔊 سرعة الصوت:</label>
+        <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1">
+    </div>
+
+    <button class="floating-btn" onclick="toggleSpeech()">⚡</button>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let speechSynthesisInstance = window.speechSynthesis;
+        let isSpeechEnabled = false;
+        let currentUtterance = null;
+        let voices = [];
+        let speechRate = 1; 
+        let userGender = "male"; 
+
+        function showNotification(message) {
+            let notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("show-notification");
+
+            setTimeout(() => {
+                notification.classList.remove("show-notification");
+            }, 2000);
+        }
+
+        function toggleSpeech() {
+            isSpeechEnabled = !isSpeechEnabled;
+            showNotification(isSpeechEnabled ? "✅ تم تفعيل القلم الناطق!" : "⛔ تم إيقاف القلم الناطق!");
+        }
+
+        document.addEventListener('mouseup', function () {
+            if (!isSpeechEnabled) return;
+
+            let selectedText = window.getSelection().toString().trim();
+            if (selectedText.length > 0) {
+                speakText(selectedText);
+            }
+        });
+
+        function speakText(text) {
+            stopSpeech();
+
+            let utterance = new SpeechSynthesisUtterance(text);
+            let lang = detectLanguage(text);
+            utterance.lang = lang;
+            utterance.voice = getBestVoice(lang);
+            utterance.rate = speechRate;
+            utterance.volume = 1.0;
+
+            currentUtterance = utterance;
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function detectLanguage(text) {
+            if (/[\u0600-\u06FF]/.test(text)) return "ar-SA"; 
+            if (/[a-zA-Z]/.test(text)) return "en-US"; 
+            return "fr-FR"; 
+        }
+
+        function getBestVoice() {
+    voices = speechSynthesis.getVoices();
+    
+    let maleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("m"));
+    let femaleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("f"));
+
+    if (userGender === "male" && maleVoice) {
+        return maleVoice;
+    } else if (userGender === "female" && femaleVoice) {
+        return femaleVoice;
+    }
+
+    // إذا لم يتم العثور على صوت مناسب، استخدم أي صوت عربي متاح
+    return voices.find(voice => voice.lang.startsWith("ar")) || voices[0];
+}
+
+        function transliterateToEnglish(langCode, availableVoices) {
+            let transliterationMap = {
+                "ar": {
+                    "أ": "A", "ب": "B", "ت": "T", "ث": "TH", "ج": "J", "ح": "H", "خ": "KH",
+                    "د": "D", "ذ": "DH", "ر": "R", "ز": "Z", "س": "S", "ش": "SH", "ص": "S",
+                    "ض": "D", "ط": "T", "ظ": "Z", "ع": "A", "غ": "GH", "ف": "F", "ق": "Q",
+                    "ك": "K", "ل": "L", "م": "M", "ن": "N", "ه": "H", "و": "W", "ي": "Y"
+                }
+            };
+
+            let text = window.getSelection().toString();
+            let transliteratedText = text.split("").map(char => transliterationMap[langCode][char] || char).join("");
+
+            let utterance = new SpeechSynthesisUtterance(transliteratedText);
+            utterance.lang = "en-US";
+            utterance.voice = availableVoices.find(voice => voice.lang.startsWith("en")) || availableVoices[0];
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function stopSpeech() {
+            if (speechSynthesisInstance.speaking) {
+                speechSynthesisInstance.cancel();
+            }
+            currentUtterance = null;
+        }
+
+        document.getElementById("speedRange").addEventListener("input", function () {
+            speechRate = this.value;
+        });
+
+        document.getElementById("voiceGender").addEventListener("change", function () {
+            userGender = this.value;
+        });
+
+        window.onload = function() {
+            speechSynthesis.onvoiceschanged = function() {
+                voices = speechSynthesis.getVoices();
+            };
+        };
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
