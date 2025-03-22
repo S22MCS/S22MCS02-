@@ -856,828 +856,310 @@
 
 
 
-                      <style>
-/* ضبط الخطوط والألوان الأساسية */
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #f3f4f6;
-    text-align: center;
-    height: 100%;
-    box-sizing: border-box;
-}
-
-/* الحاوية الرئيسية */
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* شبكة الأزرار */
-.buttons-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 أزرار في السطر */
-    gap: 15px;
-    width: 100%;
-    max-width: 1200px;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-/* عند تصغير الشاشة أقل من 570px، يتم عرض 2 أزرار في كل صف */
-@media (max-width: 570px) {
-    .buttons-container {
-        grid-template-columns: repeat(2, 1fr); /* 2 أزرار في السطر */
-    }
-}
-
-/* عند تصغير الشاشة أقل من 400px، يتم عرض زر واحد في كل صف */
-@media (max-width: 400px) {
-    .buttons-container {
-        grid-template-columns: repeat(2, 1fr); /* 2 أزرار في السطر */
-    }
-}
-
-/* تصميم الأزرار */
-.btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-weight: bold;
-    color: white;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 14px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-    min-height: 80px;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-/* تأثير الأزرار عند التحويل */
-.btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* ألوان الأزرار */
-.btn-cardio { background: linear-gradient(145deg, #00897b, #004d40); }
-.btn-digestif { background: linear-gradient(135deg, #d32f2f, #ff9800); }
-.btn-urinaire { background: linear-gradient(135deg, #0077b6, #00a896); }
-.btn-endocrine { background: linear-gradient(135deg, #6a1b9a, #311b92); }
-.btn-nervous { background: linear-gradient(135deg, #1e3a8a, #0a0a0a); }
-
-/* زر عائم مع GIF */
-.floating-btn {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 50%;
-    background: url('adatealm/shelves.gif') center/cover no-repeat;
-    background-color: transparent;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-    z-index: 1000;
-}
-
-.floating-btn:hover {
-    transform: scale(1.1) rotate(5deg);
-}
-
-.floating-btn:active {
-    transform: scale(0.95);
-}
-
+                      <style>/* ضبط الخطوط والألوان الأساسية */
+                        html, body {
+                            margin: 0;
+                            padding: 0;
+                            font-family: 'Poppins', sans-serif;
+                            background-color: #f3f4f6;
+                            text-align: center;
+                            height: 100%;
+                            box-sizing: border-box;
+                            overflow-x: hidden; /* لمنع التمرير الأفقي */
+                        }
+                        
+                        /* الحاوية الرئيسية التي تحتوي على جميع العناصر */
+                        .main-container {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            min-height: 100vh;
+                            padding: 20px;
+                            width: 100%;
+                            box-sizing: border-box;
+                        }
+                        
+                        /* الحاوية الخاصة بالأزرار */
+                        .button-grid {
+                            display: grid;
+                            grid-template-columns: repeat(4, 1fr); /* 4 أزرار في السطر */
+                            gap: 15px;
+                            width: 100%;
+                            max-width: 1200px;
+                            padding: 10px;
+                            box-sizing: border-box;
+                        }
+                        
+                        /* عند تصغير الشاشة أقل من 570px، يتم عرض 2 أزرار في كل صف */
+                        @media (max-width: 570px) {
+                            .button-grid {
+                                grid-template-columns: repeat(2, 1fr); /* 2 أزرار في السطر */
+                            }
+                        }
+                        
+                        /* عند تصغير الشاشة أقل من 400px، يتم عرض زر واحد في كل صف */
+                        @media (max-width: 400px) {
+                            .button-grid {
+                                grid-template-columns: repeat(2, 1fr); /* 2 أزرار في السطر */
+                            }
+                        }
+                        
+                        /* عند تصغير الشاشة أقل من 320px، يتم عرض زر واحد في كل صف */
+                        @media (max-width: 320px) {
+                            .button-grid {
+                                grid-template-columns: 1fr; /* زر واحد في السطر */
+                                padding: 5px; /* تقليل المسافة بين الأزرار */
+                            }
+                        
+                            .action-button {
+                                padding: 10px; /* تقليل حجم الأزرار */
+                                font-size: 12px; /* تصغير الخط */
+                                min-height: 60px; /* تقليل ارتفاع الأزرار */
+                            }
+                        
+                            /* تقليل حجم زر الفلوات */
+                            .floating-button {
+                                width: 50px;
+                                height: 50px;
+                                bottom: 15px;
+                                left: 15px;
+                            }
+                        }
+                        
+                        /* تصميم الأزرار */
+                        .action-button {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            text-decoration: none;
+                            font-weight: bold;
+                            color: white;
+                            padding: 15px;
+                            border-radius: 12px;
+                            text-align: center;
+                            font-size: 14px;
+                            transition: transform 0.3s ease, box-shadow 0.3s ease;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+                            cursor: pointer;
+                            min-height: 80px;
+                            max-width: 100%;
+                            box-sizing: border-box;
+                        }
+                        
+                        /* تأثير الأزرار عند التحويل */
+                        .action-button:hover {
+                            transform: scale(1.05);
+                            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+                        }
+                        
+                        /* ألوان الأزرار */
+                        .button-cardio { background: linear-gradient(145deg, #00897b, #004d40); }
+                        .button-digestif { background: linear-gradient(135deg, #d32f2f, #ff9800); }
+                        .button-urinaire { background: linear-gradient(135deg, #0077b6, #00a896); }
+                        .button-endocrine { background: linear-gradient(135deg, #6a1b9a, #311b92); }
+                        .button-nervous { background: linear-gradient(135deg, #1e3a8a, #0a0a0a); }
+                        
+                        /* زر عائم مع GIF */
+                        .floating-button {
+                            position: fixed;
+                            bottom: 20px;
+                            left: 20px;
+                            width: 60px;
+                            height: 60px;
+                            border: none;
+                            border-radius: 50%;
+                            background: url('adatealm/shelves.gif') center/cover no-repeat;
+                            background-color: transparent;
+                            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+                            cursor: pointer;
+                            transition: 0.3s ease-in-out;
+                            z-index: 1000;
+                        }
+                        
+                        .floating-button:hover {
+                            transform: scale(1.1) rotate(5deg);
+                        }
+                        
+                        .floating-button:active {
+                            transform: scale(0.95);
+                        }
+                        
                     </style>
           </head>
+
+
+
+
+          
+          
+          
+          
           <body>
           
-              <!-- زر عائم مع GIF -->
-              <button class="floating-btn" onclick="scrollToTop()"></button>
           
-              <div class="container">
-                  <div class="buttons-container">
           
-                      <!-- ازرار وحدة الجهاز القلبي التنفسي -->
-              
-          
-                      <a href="#histologie" class="btn btn-cardio" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  A N A T O M I E 
-          
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
-          
-                                      <span style="white-space: nowrap;">
-                                          <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                          <br>
-                                          اَلْقَلْبُ  وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
-                                          <br>
-                                          <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                      
-                                      </span>
-                                  <br> <br> 
-                                  <span style="white-space: nowrap;">🦴 اَلتَّشْرِيحُ 🦴</span>
-                              </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  A N A T O M Y 
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                 
-          
-                      <a href="#histologie" class="btn btn-cardio" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  P H Y S I O L O G I E
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                          <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                          <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
-                              <span style="white-space: nowrap;">
-                                  <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                  <br>
-                                  اَلْقَلْبُ  وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
-                                  <br>
-                                  <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                              </span>
-                          <br> <br> 
-                              <span style="white-space: nowrap;">🌬️عِلْمُ الوَظَائِفِ🌬️</span>
-                          </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  P H Y S I O L O G Y 
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-          
-          
-                      <a href="#histologie" class="btn btn-cardio" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  H I S T O L O G I E
-          
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                          <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                          <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
-                              <span style="white-space: nowrap;">
-                                  <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                  <br>
-                                  اَلْقَلْبُ  وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
-                                  <br>
-                                  <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                              </span>
-                          <br> <br> 
-                              <span style="white-space: nowrap;">🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-                          </span>
-                         
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  H I S T O L O G Y
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                      
-          
-                      <a href="#histologie" class=" btn btn-cardio" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  B I O P H Y S I Q U E
-                          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                        <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                        <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
-                          <span style="white-space: nowrap;">
-                              <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                              <br>
-                              اَلْقَلْبُ  وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
-                              <br>
-                              <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-          
-                          </span>
-                      <br> <br> 
-                          <span style="white-space: nowrap;">⚛️ الفِيزْيَاءِ الحَيَوِيَّةِ ⚛️ </span>
-                      </span>
-                     
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  B I O P H Y S I C S
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-                      
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-                      <!-- ازرار وحدة الجهاز الهضمي -->
-          
-          
-          
-                      <a href="#histologie" class="btn btn-digestif" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  A N A T O M I E 
-                              
-                                 <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-          
-          
-          
-          
-          
-          
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #FFD700;">
-                                 
-                              <span style="white-space: nowrap;">
-                                  <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                  
-                                  اَلْجِهَازُ اَلْهَضْمِيُّ
-                                  
-                                  <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                              </span>
-                          <br> <br> 
-                          <span style="white-space: nowrap;">🦴 اَلتَّشْرِيحُ 🦴</span>
-                      </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  A N A T O M Y 
-                            <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                      
-          
-                      <a href="#histologie" class="btn btn-digestif" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  P H Y S I O L O G I E
-                              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #FFD700;">
-                                  
-                              <span style="white-space: nowrap;">
-                                  <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                  
-                                  اَلْجِهَازُ اَلْهَضْمِيُّ
-                                  
-                                  <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                              </span>
-                          <br> <br> 
-                          <span style="white-space: nowrap;">عِلْمُ الوَظَائِفِ</span>
-                      </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          
-                                  P H Y S I O L O G Y 
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                      
-          
-                      <a href="#histologie" class="btn btn-digestif" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  H I S T O L O G I E
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #FFD700;">
-                                  
-                              <span style="white-space: nowrap;">
-                                  <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                  
-                                  اَلْجِهَازُ اَلْهَضْمِيُّ
-                                  
-                                  <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                              </span>
-                          <br> <br> 
-                                  <span style="white-space: nowrap;">🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-                              </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  
-                                  H I S T O L O G Y
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                      
-          
-                      <a href="#histologie" class="btn btn-digestif" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  B I O C H I M I E
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #FFD700;">
-                                 
-                              <span style="white-space: nowrap;">
-                                  <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                 
-                                  اَلْجِهَازُ اَلْهَضْمِيُّ
-                                  
-                                  <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                              </span>
-                          <br> <br> 
-                                  <span style="white-space: nowrap;">🧪 اَلْكِيمْيَاءِ اَلْحَيَوِيَّةِ 🧪</span>
-                              </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  B I O C H E M I S T R Y
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-                      
-          
-          
-          
-                      <!--  ازرار وحده الجهاز البولي    -->
-          
-          
-                      <a href="#histologie" class="btn btn-urinaire" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  A N A T O M I E 
-          
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
-          
-                                      <span style="white-space: nowrap;">
-                                          <img src="adatealm/urinary-tract-infection.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                          الجِهَازُ البَوْلِيُّ
-                                          <img src="adatealm/urinary-tract-infection.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                      
-                                      </span>
-                                  <br> <br> 
-                                  <span style="white-space: nowrap;">🦴 اَلتَّشْرِيحُ 🦴</span>
-                              </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  A N A T O M Y 
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                 
-          
-                      <a href="#histologie" class="btn btn-urinaire"  style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  P H Y S I O L O G I E
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                          <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                          <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
-                              <span style="white-space: nowrap;">
-                                  <img src="adatealm/urinary-tract-infection.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                  الجِهَازُ البَوْلِيُّ
-                                  <img src="adatealm/urinary-tract-infection.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                              </span>
-                          <br> <br> 
-                              <span style="white-space: nowrap;">🌬️عِلْمُ الوَظَائِفِ🌬️</span>
-                          </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  P H Y S I O L O G Y 
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                      
-          
-                      <a href="#histologie" class="btn btn-urinaire"  style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  H I S T O L O G I E
-          
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                          <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                          <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
-                              <span style="white-space: nowrap;">
-                                  <img src="adatealm/urinary-tract-infection.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                
-                                  الجِهَازُ البَوْلِيُّ               
-                                  <img src="adatealm/urinary-tract-infection.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                              </span>
-                          <br> <br> 
-                              <span style="white-space: nowrap;">🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-                          </span>
-                         
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  H I S T O L O G Y
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                      
-          
-                      <a href="#histologie" class="btn btn-urinaire"  style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  B I O C H I M I E
-                          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                        <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                        <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
-                          <span style="white-space: nowrap;">
-                              <img src="adatealm/urinary-tract-infection.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                       
-                              الجِهَازُ البَوْلِيُّ
-                              
-                              <img src="adatealm/urinary-tract-infection.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-          
-                          </span>
-                      <br> <br> 
-                       
-                     
-                      <span style="white-space: nowrap;">🧪 اَلْكِيمْيَاءِ اَلْحَيَوِيَّةِ 🧪</span>
-                  </span>
-          
-                  <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                  <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                      <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                      B I O C H E M I S T R Y
-                      <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                  </span>
-          
-                      
-                          </div>
-                      </a>
-                      
-          
-          
-          
-          
-          
-          
-          
-          
-          
-                      <!-- ازؤاؤ وحدة الجهاز الصماوي والتناسلي  -->
-                   
-          
-                      <a href="#histologie" class="btn btn-endocrine" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  A N A T O M I E 
-                              
-                                 <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-          
-          
-          
-          
-          
-          
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #FFD700;">
-                                 
-                                  <span style="white-space: nowrap;">
-          
-                                      <img src="adatealm/endocrine-system.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                                      <img src="adatealm/lavatory.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                     
-                                   
-                                      <br>   الجِهَازُ الصُّمَّاوِيُّ 
-                                      <br>
-                                      وَالأَعْضَاءُ التَّنَاسُلِيَّةُ <br> 
-                  
-              
-                                      <img src="adatealm/lavatory.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                                      <img src="adatealm/endocrine-system.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                                  </span>
-                          <br> <br> 
-                          <span style="white-space: nowrap;">🦴 اَلتَّشْرِيحُ 🦴</span>
-                      </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  A N A T O M Y 
-                            <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                      
-          
-                      <a href="#histologie"class="btn btn-endocrine" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  P H Y S I O L O G I E
-                              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #FFD700;">
-                                  
-                                  <span style="white-space: nowrap;">
-          
-                                      <img src="adatealm/endocrine-system.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                                      <img src="adatealm/gender.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                     
-                                   
-                                      <br>   الجِهَازُ الصُّمَّاوِيُّ 
-                                      <br>
-                                      وَالأَعْضَاءُ التَّنَاسُلِيَّةُ <br> 
-                  
-              
-                                      <img src="adatealm/gender.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                                      <img src="adatealm/endocrine-system.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                                  </span>
-                          <br> <br> 
-                          <span style="white-space: nowrap;">عِلْمُ الوَظَائِفِ</span>
-          
-                              </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          
-                                  P H Y S I O L O G Y 
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                      
-          
-                      <a href="#histologie" class="btn btn-endocrine" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  H I S T O L O G I E
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #FFD700;">
-                                  
-                                  <span style="white-space: nowrap;">
-          
-                                      <img src="adatealm/endocrine-system.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                                      <img src="adatealm/gender.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                     
-                                   
-                                      <br>   الجِهَازُ الصُّمَّاوِيُّ 
-                                      <br>
-                                      وَالأَعْضَاءُ التَّنَاسُلِيَّةُ <br> 
-                  
-              
-                                      <img src="adatealm/gender.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                                      <img src="adatealm/endocrine-system.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-              
-                                  </span>
-                          <br> <br> 
-                                  <span style="white-space: nowrap;">🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-                              </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  
-                                  H I S T O L O G Y
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-          
-                      
-          
-                      <a href="#histologie" class="btn btn-endocrine" style="text-decoration: none;">
-                          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                      
-                              <!-- الفرنسية على اليسار بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  B I O C H I M I E
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                              <!-- النص العربي في المنتصف بخط كوفي أنيق ولون فضي متألق -->
-                              <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #FFD700;">
-                                 
-                              <span style="white-space: nowrap;">
-          
-                                  <img src="adatealm/endocrine-system.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-          
-                                  <img src="adatealm/gender.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-                                 
-                               
-                                  <br>   الجِهَازُ الصُّمَّاوِيُّ 
-                                  <br>
-                                  وَالأَعْضَاءُ التَّنَاسُلِيَّةُ <br> 
-              
-          
-                                  <img src="adatealm/gender.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-          
-                                  <img src="adatealm/endocrine-system.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
-          
-                              </span>
-                          <br> <br> 
-                          <span style="white-space: nowrap;">🧪 اَلْكِيمْيَاءِ اَلْحَيَوِيَّةِ 🧪</span>
-          
-          
-                      </span>
-                      
-                              <!-- الإنجليزية على اليمين بحروف عمودية مع قلب اتجاه المثلث -->
-                              <span style="font-size: 11px; text-align: center; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                                  B I O C H E M I S T R Y
-                                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                              </span>
-                      
-                          </div>
-                      </a>
-                      
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-                  </div>
-              </div>
-          
-              <script>
-                  function scrollToTop() {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }
-              </script>
-          
-          </body>
-          </html>
-          
-          
-          
-          
-          
+          <!-- زر عائم مع GIF -->
+<button class="floating-button" onclick="scrollToTop()"></button>
+
+<div class="main-container">
+    <div class="button-grid">
+    
+        <!-- أزرار وحدة الجهاز القلبي التنفسي -->
+
+
+
+        <a href="#histologie" class="action-button button-cardio">
+         
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
+         
+            <!-- الإنجليزية -->
+            <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
+              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+              A N A T O M Y
+              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+          </span>
+          
+                <!-- النص العربي -->
+                <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
+                    <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
+                    <br>
+                    اَلْقَلْبُ وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
+                    <br>
+                    <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
+                    <br> <br> 
+                    <span>🦴 اَلتَّشْرِيحُ 🦴</span>
+                </span>
+<!-- الفرنسية معكوسة نحو الخارج -->
+<span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg);  font-weight: bold; color: #6A6A6A;">
+  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+  A N A T O M I E
+  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+</span>
+
+
+
+            </div>
+        </a>
+
+        <!-- يمكن إضافة المزيد من الأزرار هنا بنفس الشكل -->
+
+
+
+
+        
+
+
+        <a href="#histologie" class="action-button button-cardio">
+         
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
+         
+            <!-- الإنجليزية -->
+            <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
+              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+              A N A T O M Y
+              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+          </span>
+          
+                <!-- النص العربي -->
+                <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
+                    <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
+                    <br>
+                    اَلْقَلْبُ وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
+                    <br>
+                    <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
+                    <br> <br> 
+                    <span>🦴 اَلتَّشْرِيحُ 🦴</span>
+                </span>
+<!-- الفرنسية معكوسة نحو الخارج -->
+<span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg);  font-weight: bold; color: #6A6A6A;">
+  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+  A N A T O M I E
+  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+</span>
+
+
+
+            </div>
+        </a>
+
+
+
+        
+
+
+        <a href="#histologie" class="action-button button-cardio">
+         
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
+         
+            <!-- الإنجليزية -->
+            <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
+              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+              A N A T O M Y
+              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+          </span>
+          
+                <!-- النص العربي -->
+                <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
+                    <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
+                    <br>
+                    اَلْقَلْبُ وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
+                    <br>
+                    <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
+                    <br> <br> 
+                    <span>🦴 اَلتَّشْرِيحُ 🦴</span>
+                </span>
+<!-- الفرنسية معكوسة نحو الخارج -->
+<span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg);  font-weight: bold; color: #6A6A6A;">
+  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+  A N A T O M I E
+  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+</span>
+
+
+
+            </div>
+        </a>
+
+
+
+        
+
+
+        <a href="#histologie" class="action-button button-cardio">
+         
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
+         
+            <!-- الإنجليزية -->
+            <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
+              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+              A N A T O M Y
+              <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+          </span>
+          
+                <!-- النص العربي -->
+                <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; text-align: center; direction: rtl; color: #ffffff;">
+                    <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
+                    <br>
+                    اَلْقَلْبُ وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
+                    <br>
+                    <img src="adatealm/CARDIO.png" alt="الجهاز الهضمي" style="width: 28px; height: 28px; vertical-align: middle;">
+                    <br> <br> 
+                    <span>🦴 اَلتَّشْرِيحُ 🦴</span>
+                </span>
+<!-- الفرنسية معكوسة نحو الخارج -->
+<span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg);  font-weight: bold; color: #6A6A6A;">
+  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+  A N A T O M I E
+  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
+</span>
+
+
+
+            </div>
+        </a>
+    </div>
+</div>
 
 
 
