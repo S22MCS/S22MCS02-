@@ -2125,10 +2125,6 @@ font-size: 0.85rem;
 
 
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -2138,35 +2134,42 @@ font-size: 0.85rem;
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
 
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Amiri', serif;
             background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
             text-align: center;
+            direction: rtl;
+            line-height: 1.6;
         }
 
-        /* نافذة منبثقة */
-        .custom-modal {
+        /* Modal container - fixed position covers the whole screen */
+        .modal {
             display: none;
             position: fixed;
             z-index: 1000;
             left: 0;
-            top: 5%;
+            top: 0;
             width: 100%;
-            height: 95%;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
+            overflow: auto;
             justify-content: center;
             align-items: center;
             padding: 15px;
             animation: fadeIn 0.4s ease-in-out;
         }
 
-        /* محتوى النافذة */
-        .custom-modal-content {
+        /* Modal content container */
+        .modal-content {
             background: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 20px;
             width: 90%;
             max-width: 500px;
@@ -2177,16 +2180,195 @@ font-size: 0.85rem;
             flex-direction: column;
             max-height: 85vh;
             overflow: hidden;
+            margin: auto;
+        }
+
+        #taraweehModal .modal-content {
             border: 4px solid #007bff;
         }
 
-        /* زر الإغلاق */
+        #secondModal .modal-content {
+            border: 4px solid #ffa500;
+        }
+
+        /* Greeting section */
+        .greeting {
+            font-size: 20px;
+            font-weight: bold;
+            background: black;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        /* Main heading */
+        .modal-title {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        /* Highlight text */
+        .highlight-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+            margin: 10px 0;
+        }
+
+        /* Scrollable content area */
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            max-height: 55vh;
+            text-align: right;
+            line-height: 1.8;
+            font-weight: bold;
+            color: #222;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            background: #f9f9f9;
+            margin: 10px 0;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+
+        /* Quran text styling */
+        .quran-text {
+            font-size: 18px;
+            color: #0056b3;
+            font-weight: bold;
+            background: #fff8dc;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .quran-verse {
+            color: darkgreen;
+            display: block;
+            margin: 15px 0;
+            text-wrap: wrap;
+            word-break: break-word;
+        }
+
+        /* Hadith box styling */
+        .hadith-box {
+            background: black;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+
+        .hadith-text {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            color: #ffcc00;
+            text-wrap: wrap;
+            word-break: break-word;
+        }
+
+        /* Knowledge box */
+        .knowledge-box {
+            text-align: center;
+            background-color: black;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 15px auto;
+            border-radius: 8px;
+        }
+
+        .knowledge-text {
+            font-family: 'Amiri', serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 3px 3px 5px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Posts container */
+        .posts-container {
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 100%;
+            background: #1c1c1c;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 150, 255, 0.4);
+            text-align: center;
+        }
+
+        .posts-container li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.3s;
+            text-align: right;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .posts-container li.title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00aaff;
+            text-align: center;
+        }
+
+        .posts-container a {
+            color: #00aaff;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            font-size: 18px;
+            margin: 0 5px;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .posts-container a:hover {
+            text-decoration: underline;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .post-text-ar {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .link-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        /* Close button */
         .btn-close {
             background-color: #ff4d4d;
             color: white;
             border: none;
-            width: 55px;
-            height: 55px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             font-size: 22px;
             cursor: pointer;
@@ -2197,6 +2379,7 @@ font-size: 0.85rem;
             justify-content: center;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
             margin: 20px auto 5px;
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
         }
 
         .btn-close:hover {
@@ -2204,87 +2387,35 @@ font-size: 0.85rem;
             transform: scale(1.15);
         }
 
-        /* منطقة التمرير */
-        .modal-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            max-height: 55vh;
-            text-align: right;
-            line-height: 1.8;
+        /* Glowing text effect */
+        .glowing-text {
+            color: red;
             font-weight: bold;
-            color: #222;
-            border-radius: 10px;
-            border: 2px solid #ddd;
-            background: #f9f9f9;
+            font-size: 20px;
+            text-decoration: none;
+            transition: text-shadow 0.4s ease-in-out, color 0.4s ease-in-out;
+            display: inline-block;
+            padding: 5px 10px;
         }
 
-        /* عبارة السلام عليكم */
-        .greeting {
-            font-size: 22px;
-            font-weight: bold;
-            background: black;
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
+        .glowing-text:hover {
+            color: #ff0000;
+            text-shadow: 0px 0px 15px rgba(255, 0, 0, 0.9), 0px 0px 30px rgba(255, 0, 0, 0.6);
+        }
+
+        /* Bullet points */
+        .bullet-list {
+            text-align: right;
+            padding-right: 25px;
+            margin: 15px 0;
+            list-style-position: outside;
+        }
+
+        .bullet-list li {
             margin-bottom: 10px;
         }
 
-        /* عبارة "يا رجل أنت أولى بها" */
-        .man-text {
-            font-size: 22px;
-            font-weight: bold;
-            color: red;
-            margin-top: 10px;
-        }
-
-        /* نص القرآن الكريم */
-        .quran-text {
-            font-size: 18px;
-            color: #0056b3;
-            font-weight: bold;
-            background: #fff8dc;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #ddd;
-            margin-top: 15px;
-        }
-
-        /* إشعار ثاني */
-        .second-notification {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 5%;
-            width: 100%;
-            height: 95%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        /* محتوى الإشعار الثاني */
-        .second-notification-content {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            max-height: 85vh;
-            overflow: hidden;
-            border: 4px solid #ffa500;
-        }
-
-        /* تأثير الدخول */
+        /* Fade in animation */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -2296,466 +2427,320 @@ font-size: 0.85rem;
             }
         }
 
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 15px 10px;
+                width: 95%;
+                max-height: 90vh;
+            }
+
+            .modal-title {
+                font-size: 20px;
+            }
+
+            .greeting {
+                font-size: 16px;
+                padding: 8px;
+            }
+
+            .highlight-text {
+                font-size: 16px;
+            }
+
+            .modal-body {
+                padding: 10px;
+                max-height: 60vh;
+            }
+
+            .quran-text {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            .quran-verse {
+                font-size: 16px;
+            }
+
+            .hadith-text {
+                font-size: 16px;
+            }
+
+            .hadith-box {
+                padding: 10px;
+            }
+
+            .knowledge-text {
+                font-size: 18px;
+            }
+
+            .posts-container {
+                padding: 10px;
+            }
+
+            .posts-container li.title {
+                font-size: 16px;
+            }
+
+            .posts-container a {
+                font-size: 14px;
+                margin: 3px;
+            }
+
+            .post-text-ar {
+                font-size: 14px;
+            }
+
+            .link-container {
+                gap: 8px;
+            }
+
+            .btn-close {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+
+        /* Additional responsive fixes for very small screens */
+        @media (max-width: 320px) {
+            .modal-content {
+                padding: 10px 5px;
+            }
+
+            .modal-title {
+                font-size: 18px;
+            }
+
+            .greeting {
+                font-size: 14px;
+            }
+
+            .quran-verse {
+                font-size: 14px;
+            }
+
+            .hadith-text {
+                font-size: 14px;
+            }
+
+            .knowledge-text {
+                font-size: 16px;
+            }
+
+            .post-text-ar {
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <!-- إشعار فضل صلاة التراويح -->
-    <div id="taraweehModal" class="custom-modal">
-        <div class="custom-modal-content">
+    <div id="taraweehModal" class="modal">
+        <div class="modal-content">
             <p class="greeting">السلام عليكم ورحمة الله تعالى وبركاته</p>
-            <h1>فضل صلاة التراويح</h1>
-            <p class="man-text">يا رجل، أنت أولى بها</p>
+            <h1 class="modal-title">فضل صلاة التراويح</h1>
+            <p class="highlight-text">يا رجل، أنت أولى بها</p>
 
             <div class="modal-body">
                 <div class="quran-text">
-
                     <div style="text-align: center;">
-
-                        <p>    يقول الله تعالى في كتابه العزيز القرآن الكريم:  </p>
+                        <p>يقول الله تعالى في كتابه العزيز القرآن الكريم:</p>
                     </div>
-                 <br>
-                  
-
+                    <br>
                     <div style="text-align: center;">
-
-                        <p>    <strong>بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ</strong><br>  </p>
+                        <p><strong>بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ</strong><br></p>
                     </div>
-                    <span style="color: darkgreen;">﴿ 
-                        ﴿ الرِّجَالُ قَوَّامُونَ عَلَى النِّسَاءِ بِمَا فَضَّلَ اللَّهُ بَعْضَهُمْ عَلَىٰ بَعْضٍ وَبِمَا أَنفَقُوا مِنْ أَمْوَالِهِمْ ۚ فَالصَّالِحَاتُ قَانِتَاتٌ حَافِظَاتٌ لِّلْغَيْبِ بِمَا حَفِظَ اللَّهُ ۚ وَاللَّاتِي تَخَافُونَ نُشُوزَهُنَّ فَعِظُوهُنَّ وَاهْجُرُوهُنَّ فِي الْمَضَاجِعِ وَاضْرِبُوهُنَّ ۖ فَإِنْ أَطَعْنَكُمْ فَلَا تَبْغُوا عَلَيْهِنَّ سَبِيلًا ۗ إِنَّ اللَّهَ كَانَ عَلِيًّا كَبِيرًا﴾
-                        [ النساء: 34]
-                         ﴾</span>
+                    <span class="quran-verse">﴿ الرِّجَالُ قَوَّامُونَ عَلَى النِّسَاءِ بِمَا فَضَّلَ اللَّهُ بَعْضَهُمْ عَلَىٰ بَعْضٍ وَبِمَا أَنفَقُوا مِنْ أَمْوَالِهِمْ ۚ فَالصَّالِحَاتُ قَانِتَاتٌ حَافِظَاتٌ لِّلْغَيْبِ بِمَا حَفِظَ اللَّهُ ۚ وَاللَّاتِي تَخَافُونَ نُشُوزَهُنَّ فَعِظُوهُنَّ وَاهْجُرُوهُنَّ فِي الْمَضَاجِعِ وَاضْرِبُوهُنَّ ۖ فَإِنْ أَطَعْنَكُمْ فَلَا تَبْغُوا عَلَيْهِنَّ سَبِيلًا ۗ إِنَّ اللَّهَ كَانَ عَلِيًّا كَبِيرًا﴾
+                    [ النساء: 34]</span>
                    
-                   
-            <br> <br> <br>
-                         <div style="text-align: center;">
-
-                            <p>فابحث في تفاسير الآية</p>
-                        </div>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <p>فابحث في تفاسير الآية</p>
+                    </div>
                         
-                    <br>فمنها  
+                    <p style="margin-bottom: 10px;">فمنها</p>
 
-                    التفسير: الرجال قوَّامون على توجيه النساء ورعايتهن، بما خصهم الله به من خصائص القِوامَة والتفضيل، وبما أعطوهن من المهور والنفقات. فالصالحات المستقيمات على شرع الله منهن، مطيعات لله تعالى ولأزواجهن، حافظات لكل ما غاب عن علم أزواجهن بما اؤتمنَّ عليه بحفظ الله وتوفيقه، واللاتي تخشون منهن ترفُّعهن عن طاعتكم، فانصحوهن بالكلمة الطيبة، فإن لم تثمر معهن الكلمة الطيبة، فاهجروهن في الفراش، ولا تقربوهن، فإن لم يؤثر فعل الهِجْران فيهن، فاضربوهن ضربًا لا ضرر فيه، فإن أطعنكم فاحذروا ظلمهن، فإن الله العليَّ الكبير وليُّهن، وهو منتقم ممَّن ظلمهنَّ وبغى عليهن.
+                    <p style="margin-bottom: 20px;">
+                        التفسير: الرجال قوَّامون على توجيه النساء ورعايتهن، بما خصهم الله به من خصائص القِوامَة والتفضيل، وبما أعطوهن من المهور والنفقات. فالصالحات المستقيمات على شرع الله منهن، مطيعات لله تعالى ولأزواجهن، حافظات لكل ما غاب عن علم أزواجهن بما اؤتمنَّ عليه بحفظ الله وتوفيقه، واللاتي تخشون منهن ترفُّعهن عن طاعتكم، فانصحوهن بالكلمة الطيبة، فإن لم تثمر معهن الكلمة الطيبة، فاهجروهن في الفراش، ولا تقربوهن، فإن لم يؤثر فعل الهِجْران فيهن، فاضربوهن ضربًا لا ضرر فيه، فإن أطعنكم فاحذروا ظلمهن، فإن الله العليَّ الكبير وليُّهن، وهو منتقم ممَّن ظلمهنَّ وبغى عليهن.
+                    </p>
                 </div>
-<br> <br>
-      
 
+                <div class="hadith-box">
+                    <p><strong>أولًا:</strong> ما رواه البخاري ومسلم عن أبي هريرة أن رسول الله ﷺ قال:</p>
+                    <p class="hadith-text">"مَنْ قَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ"</p>
+                </div>
 
+                <div class="hadith-box">
+                    <p><strong>ثانيًا:</strong> قال النووي رحمه الله:</p>
+                    <p class="hadith-text">"اتَّفَقَ الْعُلَمَاء عَلَى اِسْتِحْبَاب صَلاة التَّرَاوِيح، وَاخْتَلَفُوا فِي أَنَّ الأَفْضَل صَلاتهَا مُنْفَرِدًا فِي بَيْته أَمْ فِي جَمَاعَة فِي الْمَسْجِد؟ فَقَالَ الشَّافِعِيّ وَجُمْهُور أَصْحَابه وَأَبُو حَنِيفَة وَأَحْمَد وَبَعْض الْمَالِكِيَّة وَغَيْرهمْ: الأَفْضَل صَلاتهَا جَمَاعَة كَمَا فَعَلَهُ عُمَر بْن الْخَطَّاب وَالصَّحَابَة رَضِيَ اللَّه عَنْهُمْ، وَاسْتَمَرَّ عَمَل الْمُسْلِمِينَ عَلَيْهِ."</p>
+                </div>
 
+                <div class="hadith-box">
+                    <p><strong>ثالثًا:</strong> وروى الترمذي (806) عَنْ أَبِي ذَرٍّ قَالَ:</p>
+                    <p class="hadith-text">قال رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ:<br>
+                    "مَنْ قَامَ مَعَ الْإِمَامِ حَتَّى يَنْصَرِفَ كُتِبَ لَهُ قِيَامُ لَيْلَةٍ"  
+                    <br><span style="font-size: 16px;">- وصححه الألباني في صحيح الترمذي -</span></p>
+                </div>
 
-
-
-
-    
-<div class="hadith-box">
-    <p><strong>أولًا:</strong> ما رواه البخاري ومسلم عن أبي هريرة أن رسول الله ﷺ قال:</p>
-    <p class="hadith-text">"مَنْ قَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ"</p>
-</div>
-
-<style>
-.hadith-box {
-    background: black;
-    color: white;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 1.8;
-    margin: 15px 0;
-}
-
-.hadith-text {
-    font-family: 'Amiri', serif;
-    font-size: 24px;
-    color: #ffcc00;
-}
-</style>
-
-
-
-
-<div class="hadith-box">
-    <p><strong>ثانيًا:</strong> قال النووي رحمه الله:</p>
-    <p class="hadith-text">"اتَّفَقَ الْعُلَمَاء عَلَى اِسْتِحْبَاب صَلاة التَّرَاوِيح، وَاخْتَلَفُوا فِي أَنَّ الأَفْضَل صَلاتهَا مُنْفَرِدًا فِي بَيْته أَمْ فِي جَمَاعَة فِي الْمَسْجِد؟  
-    فَقَالَ الشَّافِعِيّ وَجُمْهُور أَصْحَابه وَأَبُو حَنِيفَة وَأَحْمَد وَبَعْض الْمَالِكِيَّة وَغَيْرهمْ: الأَفْضَل صَلاتهَا جَمَاعَة كَمَا فَعَلَهُ عُمَر بْن الْخَطَّاب وَالصَّحَابَة رَضِيَ اللَّه عَنْهُمْ،  
-    وَاسْتَمَرَّ عَمَل الْمُسْلِمِينَ عَلَيْهِ."</p>
-</div>
-
-<style>
-.hadith-box {
-    background: black;
-    color: white;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 1.8;
-    margin: 15px 0;
-}
-
-.hadith-text {
-    font-family: 'Amiri', serif;
-    font-size: 24px;
-    color: #ffcc00;
-}
-</style>
-
-
-
-
-
-
-
-
-
-
-
-<div class="hadith-box">
-    <p><strong>ثالثًا:</strong> وروى الترمذي (806) عَنْ أَبِي ذَرٍّ قَالَ:</p>
-    <p class="hadith-text">قال رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ:<br>
-    "مَنْ قَامَ مَعَ الْإِمَامِ حَتَّى يَنْصَرِفَ كُتِبَ لَهُ قِيَامُ لَيْلَةٍ"  
-    <br><span style="font-size: 18px;">- وصححه الألباني في صحيح الترمذي -</span></p>
-</div>
-
-<style>
-.hadith-box {
-    background: black;
-    color: white;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 1.8;
-    margin: 15px 0;
-}
-
-.hadith-text {
-    font-family: 'Amiri', serif;
-    font-size: 24px;
-    color: #ffcc00;
-}
-</style>
-
-
-
-
-<div class="knowledge-box">
-    <p class="knowledge-text">وَاللَّهُ أَعْلَمُ</p>
-</div>
-
-<style>
-.knowledge-box {
-    text-align: center; /* توسيط النص داخل العنصر */
-    background-color: black; /* خلفية سوداء */
-    padding: 10px 20px;
-    display: block; /* جعل العنصر بلوك */
-    width: fit-content; /* جعله بحجم المحتوى فقط */
-    margin: 0 auto; /* توسيط العنصر أفقيًا */
-}
-
-.knowledge-text {
-    font-family: 'Amiri', serif;
-    font-size: 32px;
-    font-weight: bold;
-    color: #FFD700; /* لون أصفر ذهبي */
-    text-shadow: 3px 3px 5px rgba(255, 255, 255, 0.2);
-}
-</style>
-
-
-
-
-
-
-
-
-
+                <div style="text-align: center;">
+                    <div class="knowledge-box">
+                        <p class="knowledge-text">وَاللَّهُ أَعْلَمُ</p>
+                    </div>
+                </div>
             </div>
             <button class="btn-close" onclick="closeFirstModal()">×</button>
         </div>
     </div>
-
-
     
     <!-- إشعار فقرات أداة علم الرمضانية -->
-    <div id="secondModal" class="second-notification">
-        <div class="second-notification-content">
-            <h1>فقرات أداة علم الرمضانية</h1>
+    <div id="secondModal" class="modal">
+        <div class="modal-content">
+            <h1 class="modal-title">فقرات أداة علم الرمضانية</h1>
             <div class="modal-body">
-                <p style="text-align: center;">                في رمضان هذا العام 1446هـ - 2025م، تقدم أداة علم فقرات مميزة:                </p>
+                <p style="text-align: center;">في رمضان هذا العام 1446هـ - 2025م، تقدم أداة علم فقرات مميزة:</p>
 
-                <ul>
-                    <li> فقرة ختم القران ان شاء الله  حيث سيتم رفع  عدد صفحات يومية او بعد دبر كل  صلاة </li>
-                
-
-                    <li>        فقرة علماء  مسلمون  سيتم تعويضها بمنشورات 
-                        S22MCS
-                     اليومية
-                         
-
-
-                 
-                 
-                    </li>
-                
-
-                    <style>
-                        /* تحسين مظهر القائمة */
-                        .posts-container {
-                            list-style: none;
-                            padding: 0;
-                            margin: 20px auto;
-                            max-width: 600px;
-                            background: #1c1c1c; /* لون خلفية غامق */
-                            padding: 15px;
-                            border-radius: 10px;
-                            box-shadow: 0 4px 10px rgba(0, 150, 255, 0.4);
-                            text-align: center; /* توسيط جميع العناصر داخل القائمة */
-                        }
-                    
-                        /* تحسين مظهر كل عنصر في القائمة */
-                        .posts-container li {
-                            background: rgba(255, 255, 255, 0.1);
-                            padding: 12px;
-                            margin: 10px 0;
-                            border-radius: 8px;
-                            transition: transform 0.2s, box-shadow 0.3s;
-                            text-align: right; /* توسيط النصوص العادية إلى اليمين */
-                            word-wrap: break-word; /* لف النص في الحاويات */
-                            overflow-wrap: break-word; /* تحسين تكسير الكلمات الطويلة */
-                        }
-                    
-                        .posts-container li.title {
-                            font-size: 22px;
-                            font-weight: bold;
-                            color: #00aaff;
-                            text-align: center; /* توسيط العنوان */
-                        }
-                    
-                        /* تحسين مظهر الروابط */
-                        .posts-container a {
-                            color: #00aaff;
-                            text-decoration: none;
-                            font-weight: bold;
-                            display: block;
-                            font-size: 18px;
-                            margin-bottom: 5px;
-                        }
-                    
-                        .posts-container a:hover {
-                            text-decoration: underline;
-                        }
-                    
-                        /* تنسيق النص العربي */
-                        .post-text-ar {
-                            direction: rtl;
-                            text-align: right;
-                            font-family: 'Amiri', serif;
-                            font-size: 18px;
-                            color: #ffffff;
-                            line-height: 1.6; /* تحسين التباعد بين الأسطر */
-                        }
-                    
-                        /* تنسيق النص الإنجليزي */
-                        .post-text-en {
-                            direction: ltr;
-                            text-align: left;
-                            font-family: 'Poppins', sans-serif;
-                            font-size: 16px;
-                            color: #cccccc;
-                            line-height: 1.6;
-                        }
-                    
-                        /* استجابة القائمة للشاشات الصغيرة */
-                        @media (max-width: 480px) {
-                            .posts-container {
-                                padding: 20px; /* زيادة التباعد ليتناسب مع الشاشات الصغيرة */
-                                max-width: 100%; /* عرض كامل للشاشة */
-                            }
-                    
-                            .posts-container a {
-                                font-size: 16px; /* تقليل حجم الروابط ليتناسب مع العرض */
-                            }
-                    
-                            .post-text-ar {
-                                font-size: 16px; /* تقليل حجم النص العربي ليتناسب مع الشاشة الصغيرة */
-                                line-height: 1.4; /* تقليل المسافة بين الأسطر */
-                            }
-                    
-                            .post-text-en {
-                                font-size: 14px; /* تقليل حجم النص الإنجليزي ليتناسب مع الشاشات الصغيرة */
-                                line-height: 1.4; /* تحسين التباعد بين الأسطر */
-                            }
-                        }
-                    
-                        /* استجابة للشاشات الكبيرة */
-                        @media (min-width: 481px) {
-                            .posts-container {
-                                max-width: 900px; /* الحد الأقصى للعرض في الشاشات الكبيرة */
-                            }
-                    
-                            .post-text-ar {
-                                font-size: 18px; /* حجم النص العربي في الشاشات الكبيرة */
-                            }
-                    
-                            .post-text-en {
-                                font-size: 16px; /* حجم النص الإنجليزي في الشاشات الكبيرة */
-                            }
-                        }
-                    </style>
-                    
-                    
-                    
-                    <!-- قائمة المنشورات -->
-                    <ul class="posts-container">
-                        <li class="title">📢 منشورات اليوم:</li>
-                    
-
-
-                        <li>
-                            <a href="https://t.me/S22MCS/1952?single"  style="text-align: center;" target="_blank">📌 أول منشور</a>  
-                           بعد تقييد الوصول لقنوات  
-                           <style>
-                            .glowing-text {
-                                color: red;
-                                font-weight: bold;
-                                font-size: 20px;
-                                text-decoration: none;
-                                transition: text-shadow 0.4s ease-in-out, color 0.4s ease-in-out;
-                            }
-                        
-                            .glowing-text:hover {
-                                color: #ff0000;
-                                text-shadow: 0px 0px 15px rgba(255, 0, 0, 0.9), 0px 0px 30px rgba(255, 0, 0, 0.6);
-                            }
-                        </style>
-                        
-                        <p class="post-text-ar" style="text-align: center;">
-                            <a href="https://t.me/S22MCS/1945" target="_blank" class="glowing-text">🔻 المقاومة الفلسطينية 🔻</a>
-                        </p>
-                        
-                        
-                        <a href="https://t.me/S22MCS/1952"   style="text-align: center;" target="_blank">   افتح عبر تيليجرام    </a> 
-                    
-                    </p>
-
-                            
-                            ✅ جمهور كتائب القسام الكريم:
-نأمل حرصكم على مشاركة هذا المنشور وتعميمه لأوسع نطاق ممكن.
-                            <p class="post-text-ar">
-
-                                قال رسول الله (ﷺ) : "مَنْ جهَّزَ غَازِيًا في سبيلِ اللَّهِ فَقَدْ غَزَا، ومنْ خَلَفَ غَازيًا في أَهْلِهِ بخَيْر فَقَدْ غزَا"
-                            </p>
-
-   </li>
-                    
-
-
-  
-
-
-   <li>
-    <p class="post-text-ar"  style="text-align: center;">📌 <strong>المنشور الثاني   :</strong>  تريد فتحه على    </p>
-
-    <a href="https://t.me/S22MCS/1926" target="_blank">تيليجرام</a> 
-        <a href="https://youtu.be/5bnh7wRS-a4?si=2S-JwOJkJsqE1rWq" target="_blank">يوتيوب</a>
-    </p>
-    <p class="post-text-ar">
-        <strong>عبدالله الشريف | حلقة 35 | النطف المحررة | الموسم الخامس</strong>
-    </p>
-    
-</li>
-
-
-   <li>
-    <p class="post-text-ar"  style="text-align: center;">📌 <strong>المنشور الثالث    :</strong>  تريد فتحه على    </p>
-        <a href="https://t.me/S22MCS/1937" target="_blank">تيليجرام</a> 
-        <a href="https://youtu.be/QZsNAHn7hUY?si=rM-wIzk-fnKcMuZ4" target="_blank">يوتيوب</a>
-    </p>
-    <p class="post-text-ar">
-        <strong>رحلة اليقين ٤٨: هل الدحيح ينشر العلم أم الإلحاد والخرافات؟</strong>
-    </p>
-</li>
-
-
-<li>
-    <p class="post-text-ar"  style="text-align: center;">📌 <strong>المنشور الرابع   :</strong>  تريد فتحه على    </p>
-
-        <a href="https://t.me/S22MCS/1937" target="_blank">تيليجرام</a> 
-        <a href="https://youtu.be/ZjuROXsiNFY?si=IT-VoB420AQ1yBuc" target="_blank">يوتيوب</a>
-    </p>
-    <p class="post-text-ar">
-        <strong>الدحيح والكلام الإلحادي الأبيح ؟ | حلقة: تاريخ جهنم | 6 فضائح علمية في حلقة واحدة #هيثم_طلعت        </strong>
-    </p>
-</li>
-
-
-
-
-
-
-<li>
-    <p class="post-text-ar"  style="text-align: center;">📌 <strong>المنشور الخامس    :</strong>  تريد فتحه على    </p>
-
-        <a href="https://t.me/S22MCS/1947" target="_blank">تيليجرام</a> 
-        <a href="https://youtu.be/_8_6n04mi-I?si=2RlaiW_nu9wSMsvw" target="_blank">يوتيوب</a>
-    </p>
-    <p class="post-text-ar">
-        <strong>إنكار السنة هو أخطر موجات إلحاد آخر الزمان كما أخبر القرآن #قرآنيون #إلحاد       </strong>
-    </p>
-</li>
-
-
-
-
-
-
-<li>
-    <p class="post-text-ar"  style="text-align: center;">📌 <strong>المنشور السادس    :</strong>  تريد فتحه على    </p>
-
-        <a href="https://t.me/S22MCS/1706" target="_blank">تيليجرام</a> 
-        <a href="https://youtu.be/onxqPZMeOjs?si=x4Ol1nL51tW6F5tU" target="_blank">يوتيوب</a>
-    </p>
-    <p class="post-text-ar">
-        <strong>الواجبات التي يجب أن يقوم بها المسلم تجاه دينه حازم صلاح أبو اسماعيل     </strong>
-    </p>
-</li>
-
-
-
-                
-
-
-                    </ul>
-                         <br>
-
-
-
-                    <li>      فقرة علماء  مسلمون  حيث سنعرض باختصار سيرة ومواقف وما قدمه الملسمون على علماء  العلوم الدنيوية وفضلهم على  مر العصور الذين  نجهلهم ويتم تغيبهم عنا       </li>
-                    <br>
+                <ul class="bullet-list">
+                    <li>فقرة ختم القران ان شاء الله حيث سيتم رفع عدد صفحات يومية او بعد دبر كل صلاة</li>
+                    <li>فقرة علماء مسلمون سيتم تعويضها بمنشورات S22MCS اليومية</li>
                 </ul>
-                <p style="text-align: center;">لا تفوتوا متابعة هذه الفقرات والاستفادة من أجواء رمضان المباركة    !   </p>
+
+                <!-- قائمة المنشورات -->
+                <ul class="posts-container">
+                    <li class="title">📢 منشورات اليوم:</li>
+                
+      
+
+
+
+<li>
+    <p style="text-align: center;">📌 أول منشور</p>
+    <p>بعد تقييد الوصول لقنوات المحتوى فلسطيني حمل تيليجرام من موقع الرسمي</p>
+    <p class="post-text-ar" style="text-align: center;">
+        <a  href="https://t.me/S22MCS/1945"  class="glowing-text">🔻 المقاومة الفلسطينية 🔻</a>
+    </p>
+
+    <div class="link-container">
+        <a href="https://t.me/S22MCS/1952" target="_blank" rel="noopener">  افتحه على التيليجرام </a> 
+    </div>
+
+
+      <P> 
+        ✅ جمهور كتائب القسام الكريم:
+     نأمل حرصكم على مشاركة هذا المنشور وتعميمه لأوسع نطاق ممكن.
+     </p>
+    <p class="post-text-ar">
+   
+        <strong>
+            قال رسول الله (ﷺ) : "مَنْ جهَّزَ غَازِيًا في سبيلِ اللَّهِ فَقَدْ غَزَا، ومنْ خَلَفَ غَازيًا في أَهْلِهِ بخَيْر فَقَدْ غزَا"
+
+        </strong>
+    </p>
+</li>
+
+
+                    <li>
+                        <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور الثاني:</strong> تريد فتحه على</p>
+                        <div class="link-container">
+                            <a href="https://t.me/S22MCS/1926" target="_blank" rel="noopener">تيليجرام</a> 
+                            <a href="https://youtu.be/5bnh7wRS-a4?si=2S-JwOJkJsqE1rWq" target="_blank" rel="noopener">يوتيوب</a>
+                        </div>
+                        <p class="post-text-ar">
+                            <strong>عبدالله الشريف | حلقة 35 | النطف المحررة | الموسم الخامس</strong>
+                        </p>
+                    </li>
+
+                    <li>
+                        <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور الثالث:</strong> تريد فتحه على</p>
+                        <div class="link-container">
+                            <a href="https://t.me/S22MCS/1937" target="_blank" rel="noopener">تيليجرام</a> 
+                            <a href="https://youtu.be/QZsNAHn7hUY?si=rM-wIzk-fnKcMuZ4" target="_blank" rel="noopener">يوتيوب</a>
+                        </div>
+                        <p class="post-text-ar">
+                            <strong>رحلة اليقين ٤٨: هل الدحيح ينشر العلم أم الإلحاد والخرافات؟</strong>
+                        </p>
+                    </li>
+
+                    <li>
+                        <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور الرابع:</strong> تريد فتحه على</p>
+                        <div class="link-container">
+                            <a href="https://t.me/S22MCS/1937" target="_blank" rel="noopener">تيليجرام</a> 
+                            <a href="https://youtu.be/ZjuROXsiNFY?si=IT-VoB420AQ1yBuc" target="_blank" rel="noopener">يوتيوب</a>
+                        </div>
+                        <p class="post-text-ar">
+                            <strong>الدحيح والكلام الإلحادي الأبيح ؟ | حلقة: تاريخ جهنم | 6 فضائح علمية في حلقة واحدة #هيثم_طلعت</strong>
+                        </p>
+                    </li>
+
+                    <li>
+                        <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور الخامس:</strong> تريد فتحه على</p>
+                        <div class="link-container">
+                            <a href="https://t.me/S22MCS/1947" target="_blank" rel="noopener">تيليجرام</a> 
+                            <a href="https://youtu.be/_8_6n04mi-I?si=2RlaiW_nu9wSMsvw" target="_blank" rel="noopener">يوتيوب</a>
+                        </div>
+                        <p class="post-text-ar">
+                            <strong>إنكار السنة هو أخطر موجات إلحاد آخر الزمان كما أخبر القرآن #قرآنيون #إلحاد</strong>
+                        </p>
+                    </li>
+
+                    <li>
+                        <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور السادس:</strong> تريد فتحه على</p>
+                        <div class="link-container">
+                            <a href="https://t.me/S22MCS/1706" target="_blank" rel="noopener">تيليجرام</a> 
+                            <a href="https://youtu.be/onxqPZMeOjs?si=x4Ol1nL51tW6F5tU" target="_blank" rel="noopener">يوتيوب</a>
+                        </div>
+                        <p class="post-text-ar">
+                            <strong>الواجبات التي يجب أن يقوم بها المسلم تجاه دينه حازم صلاح أبو اسماعيل</strong>
+                        </p>
+                    </li>
+                </ul>
+
+                <ul class="bullet-list">
+                    <li>فقرة علماء مسلمون حيث سنعرض باختصار سيرة ومواقف وما قدمه الملسمون على علماء العلوم الدنيوية وفضلهم على مر العصور الذين نجهلهم ويتم تغيبهم عنا</li>
+                </ul>
+                
+                <p style="text-align: center; margin-top: 20px;">لا تفوتوا متابعة هذه الفقرات والاستفادة من أجواء رمضان المباركة!</p>
             </div>
             <button class="btn-close" onclick="closeSecondModal()">×</button>
         </div>
     </div>
 
     <script>
+        // Show first modal on page load with a slight delay for better performance
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.getElementById("taraweehModal").style.display = "flex";
+            }, 100);
+        });
+
+        // Close first modal and show second
         function closeFirstModal() {
             document.getElementById("taraweehModal").style.display = "none";
-            document.getElementById("secondModal").style.display = "flex";
+            setTimeout(function() {
+                document.getElementById("secondModal").style.display = "flex";
+            }, 50);
         }
 
+        // Close second modal
         function closeSecondModal() {
             document.getElementById("secondModal").style.display = "none";
         }
 
-        window.onload = function() {
-            document.getElementById("taraweehModal").style.display = "flex";
-        };
+        // Add touch event listeners for better mobile experience
+        document.querySelectorAll('.btn-close').forEach(function(button) {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            button.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Prevent zooming on double tap for iOS
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
     </script>
 
 </body>
