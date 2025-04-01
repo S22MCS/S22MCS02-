@@ -1,0 +1,4922 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>  ملخص  الجهاز التناسلي الذكري  </title>
+ 
+    <!-- إضافة الفافيكون بصيغة JPG -->
+    <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 150, 255, 0.6);
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, top 0.3s ease-in-out;
+        }
+
+        .popup h3 {
+            color: #00aaff;
+            font-size: 22px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .input-group input {
+            width: 85%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #00aaff;
+            text-align: center;
+            font-size: 16px;
+            background-color: #222;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+        }
+
+        .gender-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .gender-buttons button {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .gender-buttons button:hover {
+            background: linear-gradient(90deg, #0056b3, #003c80);
+            transform: scale(1.05);
+        }
+
+        .gender-buttons button.selected {
+            background: #FFD700;
+            color: black;
+            font-weight: bold;
+        }
+
+        .submit-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .submit-button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            top: 50% !important;
+        }
+
+        #greeting {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 50px;
+            text-shadow: 2px 2px 10px rgba(0, 150, 255, 0.5);
+        }
+
+        #studyMessage {
+            display: none;
+            font-size: 18px;
+            margin-top: 15px;
+            color: #FFD700;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+        
+    <div id="welcomePopup" class="popup">
+        <h3>  ! السلام عليكم و أهلاً يا طبيب/طبيبة مستقبلنا ان شاء الله  </h3>
+
+        <p>من فضلك أدخل/ادخلي اسمك واختر/اختاري جنسك:</p>
+
+    
+        <div class="input-group">
+            <input type="text" id="username" placeholder="أدخل اسمك">
+        </div>
+    
+        <div class="gender-buttons">
+            <button id="femaleButton" onclick="selectGender('female')"> امرأة</button>
+            <button id="maleButton" onclick="selectGender('male')">  رجل</button>
+           
+        </div>
+    
+        <button class="submit-button" onclick="submitInfo()">متابعة</button>
+    </div>
+    
+    <!-- يجب أن يكون خارج نافذة الإدخال حتى يظهر عند الضغط على متابعة -->
+    <div id="greetingContainer" style="display: none; flex-direction: column; align-items: center; gap: 10px; margin-top: 70px;">
+        <h2 id="welcomeMessage" style="color: #00aaff; text-align: center;"></h2>
+        <img id="doctorImage" src="" alt="صورة الطبيب" style="width: 60px; height: 60px; border-radius: 50%;">
+        <h1 id="greeting" style="margin: 0; font-size: 22px;"></h1>
+    </div>
+    <p id="studyMessage"></p>
+    <p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px;"></p>
+    
+    <script>
+        let selectedGender = "";
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            let storedName = localStorage.getItem("username");
+            let storedGender = localStorage.getItem("gender");
+            let visitCount = parseInt(localStorage.getItem("visitCount") || "0");
+    
+            visitCount += 1;
+            localStorage.setItem("visitCount", visitCount);
+    
+            if (visitCount >= 3) {
+                localStorage.removeItem("username");
+                localStorage.removeItem("gender");
+                localStorage.setItem("visitCount", "0");
+                storedName = null;
+            }
+    
+            if (storedName && storedGender) {
+                displayGreeting(storedName, storedGender);
+            } else {
+                let popup = document.getElementById('welcomePopup');
+                popup.style.display = 'block';
+                setTimeout(() => popup.classList.add('fade-in'), 50);
+            }
+        });
+    
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.getElementById("maleButton").classList.remove("selected");
+            document.getElementById("femaleButton").classList.remove("selected");
+    
+            if (gender === "male") {
+                document.getElementById("maleButton").classList.add("selected");
+            } else {
+                document.getElementById("femaleButton").classList.add("selected");
+            }
+        }
+    
+
+
+        function submitInfo() {
+    let name = document.getElementById('username').value.trim();
+    if (name === "") {
+        alert("❌ يرجى إدخال اسمك");
+        return;
+    }
+    if (!selectedGender) {
+        alert("❌ يرجى اختيار الجنس");
+        return;
+    }
+
+    console.log("🚀 إرسال الاسم:", name);
+    console.log("🚀 إرسال الجنس:", selectedGender);
+
+    localStorage.setItem("username", name);
+    localStorage.setItem("gender", selectedGender);
+    localStorage.setItem("visitCount", "0");
+
+    displayGreeting(name, selectedGender);
+
+    let popup = document.getElementById('welcomePopup');
+    popup.classList.remove('fade-in');
+    setTimeout(() => popup.style.display = 'none', 500);
+}
+
+
+
+
+
+
+function displayGreeting(name, gender) {
+    console.log("✅ تم استلام الاسم:", name);
+    console.log("✅ تم استلام الجنس:", gender);
+
+    let welcomeMessage = `السلام عليكم ومرحبًا بك يا ${name}`;  
+    
+    
+    let greetingMessage = gender === "male" 
+        ? `مرحبًا دكتور ${name}!` 
+        : `مرحبًا دكتورة ${name}!`;
+
+    let studyMessage = gender === "male" 
+        ? "ادرس جيدًا يا طبيب المسلمين إن شاء الله 📚" 
+        : "ادرسِ جيدًا يا طبيبة المسلمات إن شاء الله 📚";
+
+  
+       
+        
+
+        let nationNeedsYou = 
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "  ﴿الَّذِينَ يَتَّخِذُونَ الْكَافِرِينَ أَوْلِيَاءَ مِن دُونِ الْمُؤْمِنِينَ ۚ أَيَبْتَغُونَ عِندَهُمُ الْعِزَّةَ فَإِنَّ الْعِزَّةَ لِلَّهِ جَمِيعًا ﴾\n" +
+    "[النساء: 139]\n\n" +
+    
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "﴿ لَهُ مُعَقِّبَاتٌ مِّن بَيْنِ يَدَيْهِ وَمِنْ خَلْفِهِ يَحْفَظُونَهُ مِنْ أَمْرِ اللَّهِ ۗ إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ ۗ وَإِذَا أَرَادَ اللَّهُ بِقَوْمٍ سُوءًا فَلَا مَرَدَّ لَهُ ۚ وَمَا لَهُم مِّن دُونِهِ مِن وَالٍ ﴾\n" +
+    "[الرعد: 11]\n\n" +
+
+    "أمتكم بحاجة إليكم.. كونوا عونًا لها في سبيل الله، اجعلوا علمكم طريقًا لنهضة أمتكم.. أمتكم بحاجة إليكم.\n\n" +
+    
+    "فعن السلف الصالح عمر بن الخطاب رضي الله عنه قال:\n" +
+    "\"إنَّا كنَّا أذَلَّ قومٍ، فأعزَّنا اللَّهُ بالإسلامِ، فمهما نطلُبِ العِزَّةَ بغيرِ ما أعزَّنا اللَّهُ به أذلَّنا اللَّهُ.\"";
+
+// وضع النص داخل العنصر بدون أكواد HTML ظاهرة
+document.getElementById('nationMessage').textContent = nationNeedsYou;
+
+
+
+
+
+
+    let imageSrc = gender === "male" 
+        ? "S22MCS PARTS/doctor.png" 
+        : "S22MCS PARTS/doctormuslim.png";
+
+    // تحديث العناصر في الصفحة
+    document.getElementById('welcomeMessage').innerText = welcomeMessage;
+    document.getElementById('greeting').innerText = greetingMessage;
+    document.getElementById('studyMessage').innerText = studyMessage;
+    document.getElementById('nationMessage').innerText = nationNeedsYou;
+    document.getElementById('doctorImage').src = imageSrc;
+
+    // عرض القسم بالكامل
+    document.getElementById('greetingContainer').style.display = 'flex';
+    document.getElementById('studyMessage').style.display = 'block';
+    document.getElementById('nationMessage').style.display = 'block';
+}
+
+        
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+
+<!DOCTYPE html>
+        <html lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>  </title>
+            <style>
+                body {
+                    font-family: 'Poppins', 'Amiri', serif;
+                    background-color: #121212;
+                    color: white;
+                    margin: 0;
+                    padding: 20px;
+                    text-align: center;
+                    padding-top: 120px;
+                }
+            
+                /* Updated Sidebar to Header */
+                .sidebar {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height:50px;
+                    background-color: #333;
+                    text-align: center;
+                    padding: 10px 20px;
+                    z-index: 1000;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                }
+            
+                /* Progress Bar Container */
+                .progress-bar-container {
+                    width: 60%;
+                    height: 35px;
+                    background-color: #444;
+                    border-radius: 15px;
+                    position: relative;
+                    margin: 0 auto;
+                }
+            
+           /* Progress Bar */
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #00aaff;
+    border-radius: 15px;
+    transition: width 0.3s ease-in-out;
+    margin-left: 500px; /* تحريك الشريط قليلًا إلى اليسار */
+}
+
+
+            
+#proo {
+    display: flex;
+    align-items: center; /* محاذاة الإيموجي والنص أفقيًا */
+    gap: 5px; /* مسافة صغيرة بين الإيموجي والنص */
+    margin-left: 8rem; /* تحريكه لليمين */
+    font-size: 1.7rem;
+}
+
+
+                /* Progress Percentage */
+                .progress-percentage {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+            
+                /* Finish Button */
+                .finish-button {
+                    background-color: #00aaff;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    margin-right: 3rem;
+                }
+            
+                .finish-button:hover {
+                    background-color: #0077cc;
+                }
+            
+                /* Disabled Finish Button */
+                .finish-button:disabled {
+                    background-color: #ccc;
+                    cursor: not-allowed;
+                    opacity: 0.7;
+                }
+            
+                /* Lesson Container */
+                .lesson-container {
+                    margin-top: 20px;
+                }
+            
+                /* Bubble Styles */
+                .bubble {
+                    background: rgba(30, 30, 30, 0.95);
+                    box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+                    border-left: 6px solid #00aaff;
+                    padding: 20px;
+                    border-radius: 20px;
+                    margin: 20px auto;
+                    max-width: 60rem;
+                    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+                    text-align: right;
+                    direction: rtl;
+                    position: relative;
+                    cursor: pointer;
+
+
+
+                    margin-bottom: 70px; /* إضافة مسافة فارغة أسفل كل فقاعة */
+
+                }
+            
+                .bubble:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
+                }
+            
+                .interact-button {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                }
+            
+                .interact-button:hover {
+                    background-color: #0056b3;
+                }
+            
+                /* Modal Styles */
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 2000;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 90%;
+                    max-width: 400px;
+                    background: #222;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 10px rgba(0, 150, 255, 0.5);
+                    text-align: center;
+                }
+            
+                .modal h3 {
+                    margin-bottom: 15px;
+                    color: #00aaff;
+                }
+            
+                .modal button {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 15px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    margin: 10px;
+                    font-size: 16px;
+                }
+            
+                .modal button:hover {
+                    background-color: #0056b3;
+                }
+            
+                /* End Lesson Modal */
+                #end-lesson-modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 2000;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 80%;
+                    max-width: 600px;
+                    background-color: #333;
+                    padding: 30px;
+                    border-radius: 10px;
+                    color: white;
+                    text-align: center;
+                    box-shadow: 0 6px 30px rgba(0, 150, 255, 0.5);
+                }
+            
+                #end-lesson-modal h3 {
+                    color: #00aaff;
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+            
+                #end-lesson-modal p {
+                    font-size: 18px;
+                    margin-bottom: 20px;
+                }
+            
+                #end-lesson-modal button {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    margin: 10px;
+                    font-size: 16px;
+                }
+            
+                #end-lesson-modal button:hover {
+                    background-color: #0056b3;
+                }
+            
+                .reload-button {
+                    background-color: #28a745;
+                }
+            
+                .reload-button:hover {
+                    background-color: #218838;
+                }
+            
+                /* Vibration Animation */
+                @keyframes vibrate {
+                    0% { transform: translateX(0); }
+                    20% { transform: translateX(-5px); }
+                    40% { transform: translateX(5px); }
+                    60% { transform: translateX(-5px); }
+                    80% { transform: translateX(5px); }
+                    100% { transform: translateX(0); }
+                }
+            
+                .vibrate {
+                    animation: vibrate 0.5s ease-in-out;
+                }
+            
+                /* Media Queries for Small Screens */
+                @media (max-width: 768px) {
+                    body {
+                        padding-top: 80px; /* Reduce top padding */
+                    }
+            
+                    .bubble {
+                        max-width: 90%; /* Make the bubble width responsive */
+                        padding: 15px; /* Reduce padding */
+                    }
+            
+                    .interact-button {
+                        font-size: 12px; /* Reduce button font size */
+                        padding: 6px 10px; /* Adjust padding */
+                    }
+            
+                    .finish-button {
+                        font-size: 12px; /* Adjust font size */
+                        padding: 8px 13px; /* Adjust padding */
+                    }
+            
+                    .lesson-container {
+                        margin-top: 10px; /* Adjust for smaller screens */
+                    }
+                }
+            
+                @media (max-width: 480px) {
+                    body {
+                        font-size: 14px; /* Adjust font size for very small screens */
+                        padding: 10px; /* Reduce padding */
+                    }
+            
+                    .bubble {
+                        padding: 10px; /* Reduce padding */
+                        max-width: 100%; /* Full width on very small screens */
+                    }
+            
+                    .interact-button {
+                        font-size: 8px; /* Reduce button font size */
+                        padding: 4px 7px; /* Adjust padding */
+                    }
+            
+                    .finish-button {
+                        font-size: 10px; /* Reduce font size */
+                        padding: 5px 10px; /* Adjust padding */
+                    }
+                }
+     
+            
+@media (max-width: 768px) {
+    .progress-bar-container {
+        width: 85%; /* عرض الشريط أكبر قليلاً على الشاشات الصغيرة */
+    }
+}
+
+/* استعلام ميديا للأجهزة التي يزيد عرض شاشتها عن 480 بكسل */
+@media (max-width: 480px) {
+    .progress-bar-container {
+        width: 90%; /* شريط التقدم يشغل مساحة أكبر على الشاشات الصغيرة جدًا */
+        height: 20px; /* تقليص الارتفاع قليلاً */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.outside-image {
+    display: block; /* يجعل الصورة عنصرًا منفصلًا */
+    margin: 20px auto; /* يضع الصورة في المنتصف */
+    max-width: 100%; /* يضمن أن الصورة لا تتجاوز حجم الشاشة */
+    height: auto; /* يحافظ على الأبعاد الأصلية للصورة */
+}
+
+
+
+
+
+
+
+
+
+
+/* Refresh Container */
+.refresh-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.refresh-button {
+    background: linear-gradient(135deg, #1a1a1a, #333); /* ألوان داكنة مريحة */
+    color: #ffffff;
+    border: 1px solid #444;
+    padding: 10px 22px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 25px;
+    font-family: 'Poppins', Arial, sans-serif;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 160px;
+    justify-content: center;
+}
+
+.refresh-button:hover {
+    background: linear-gradient(135deg, #292929, #444);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
+}
+
+.refresh-button:active {
+    transform: scale(0.96);
+}
+
+.refresh-button::before {
+    content: "🔄"; /* أيقونة التحديث */
+    font-size: 18px;
+}
+
+/* تحسين للهواتف */
+@media (max-width: 768px) {
+    .refresh-button {
+        padding: 8px 18px;
+        font-size: 14px;
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .refresh-button {
+        padding: 7px 16px;
+        font-size: 13px;
+        min-width: 120px;
+        border-radius: 20px;
+    }
+}
+
+
+
+
+</style>
+
+
+
+
+
+<body>
+ 
+  
+    <div class="sidebar">
+   
+        <button class="finish-button" onclick="finishLesson()" 
+        style="font-size: 15px; padding: 6px 10px; position: relative; right: -20px;">
+        ✅ انتهيت من الدرس
+    </button>
+     
+    
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-percentage" id="progress-percentage">0%</div>
+        </div>
+
+        <h3 id="proo">📊 <span>التقدم</span></h3>
+
+      
+
+    <button onclick="goToUncompletedBubble()" class="uncompleted-button" style="font-size: 14px; padding: 6px 10px;">🔍 الفقاعات غير المكتملة</button>
+    
+
+</div>
+    
+    
+
+    <br>
+    <div class="refresh-container"  id="ref">
+        <button class="refresh-button" onclick="location.reload();">تحديث الصفحة</button>
+    </div>
+    <br>
+    <div class="lesson-container">
+        <h1 class="lesson-title"> الجهاز التناسلي الذكري  </h1>
+        
+
+        <h2 class="lesson-subtitle">🔻    MALE REPRODUCTIVE SYSTEM  🔻</h2>
+        <h2 class="lesson-subtitle"> 🔻    APPAREIL GENITAL MASCULIN  🔻</h2>
+     </div>
+
+     
+
+
+     
+
+     <!DOCTYPE html>
+     <html lang="ar">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>تم عبر برنامج 2019 الطب الجزائري</title>
+     
+         <style>
+         body {
+             font-family: 'Poppins', 'Amiri', serif;
+             direction: rtl;
+             text-align: right;
+             background-color: #121212;
+             color: white;
+             margin: 0;
+             padding: 20px;
+         }
+         
+         .container {
+             max-width: 600px;
+             margin: auto;
+             background: #1e1e1e;
+             padding: 20px;
+             border-radius: 10px;
+             box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+         }
+         
+         h2 {
+             text-align: center;
+             color: #00aaff;
+         }
+         
+         .lesson {
+             display: flex;
+             align-items: center;
+             justify-content: space-between;
+             padding: 15px;
+             border-bottom: 1px solid #444;
+             flex-direction: column;
+             background: rgba(30, 30, 30, 0.9);
+             border-radius: 10px;
+             margin-bottom: 10px;
+             transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+         }
+         
+         .lesson:hover {
+             transform: translateY(-3px);
+             box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
+         }
+         
+         .lesson input {
+             transform: scale(1.3);
+             accent-color: #00aaff;
+         }
+         
+         .lesson span {
+             flex-grow: 1;
+             margin-right: 10px;
+         }
+         
+         .translation {
+             font-size: 12px;
+             color: #bbb;
+             margin-top: 5px;
+         }
+         
+         .progress-bar {
+             width: 100%;
+             background: #444;
+             height: 12px;
+             border-radius: 6px;
+             margin: 10px 0;
+             overflow: hidden;
+         }
+         
+         .progress {
+             height: 100%;
+             background: #00aaff;
+             width: 0%;
+             transition: width 0.3s;
+         }
+         
+         .btn {
+             display: block;
+             width: 100%;
+             padding: 12px;
+             background: #00aaff;
+             color: white;
+             text-align: center;
+             border: none;
+             border-radius: 6px;
+             cursor: pointer;
+             font-size: 16px;
+             margin-top: 10px;
+             transition: background 0.3s ease-in-out;
+         }
+         
+         .btn:hover {
+             background: #0077cc;
+         }
+         
+         .lang {
+             text-align: center;
+             color: #bbb;
+             font-size: 14px;
+             margin-top: 20px;
+         }
+     </style>    
+     </head>
+     <body>
+         <div class="container">
+             <h2>الأهداف الخاصة في درس الأعضاء التناسلية الذكرية</h2>
+             <div class="progress-bar"><div class="progress"></div></div>
+             <div id="lessonList"></div>
+             <button class="btn" onclick="completeAll()">إكمال الكل</button>
+             <div class="lang">
+                
+                
+              
+                العربية
+
+                <br>
+            English | Français 
+            </div>
+         </div>
+     
+         <script>
+             const lessons = [
+                 { ar: "تعريف ووصف البروستاتا", en: "Define and describe the prostate", fr: "Définir et décrire la prostate" },
+                 { ar: "وصف التكوين الداخلي للبروستاتا", en: "Describe the internal morphology of the prostate", fr: "Décrire la morphologie interne de la prostate" },
+                 { ar: "دراسة العلاقات البروستاتية", en: "Study the relationships of the prostate", fr: "Étudier les rapports de la prostate" },
+                 { ar: "تعريف ووصف الخصيتين", en: "Define and describe the testicles", fr: "Définir et décrire les testicules" },
+                 { ar: "تحديد الأغلفة المحيطة بالخصية", en: "Identify the coverings of the testicle", fr: "Identifier les enveloppes du testicule" },
+                 { ar: "تعريف ووصف السبل المنوية", en: "Define and describe the spermatic ducts", fr: "Définir et décrire les voies spermatiques" },
+                 { ar: "دراسة أجزاء القناة المنوية المختلفة وعلاقتها، خاصة في مستوى القناة الإربية", en: "Study the different portions of the vas deferens and their relationship, especially at the inguinal canal", fr: "Étudier les différentes portions du canal déférent et leur rapport, notamment au niveau du canal inguinal" },
+                 { ar: "تعريف ووصف العضو الذكري", en: "Define and describe the penis", fr: "Définir et décrire la verge" }
+             ];
+     
+             const lessonList = document.getElementById("lessonList");
+             lessons.forEach((lesson, index) => {
+                 const div = document.createElement("div");
+                 div.className = "lesson";
+                 div.innerHTML = `
+                     <input type="checkbox" onchange="updateProgress()" id="lesson${index}">
+                     <span>${lesson.ar}</span>
+                     <div class="translation">${lesson.en}</div>
+                     <div class="translation">${lesson.fr}</div>
+                 `;
+                 lessonList.appendChild(div);
+             });
+     
+             function updateProgress() {
+                 const checkboxes = document.querySelectorAll("input[type=checkbox]");
+                 let completed = 0;
+                 checkboxes.forEach(cb => { if (cb.checked) completed++; });
+                 document.querySelector(".progress").style.width = (completed / lessons.length * 100) + "%";
+             }
+     
+             function completeAll() {
+                 document.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
+                 updateProgress();
+             }
+         </script>
+     </body>
+     </html>
+ <br>    <br>   <br>    
+
+
+
+
+     <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 خطة الدرس:</h3>
+        <ul>
+            <li>I. المقدمة</li>
+            <li>II. التشريح الوصفي
+                <ul>
+                    <li>A. الخصيتين</li>
+                    <li>B. القنوات المنوية</li>
+                    <li>C. العضو الذكري</li>
+                </ul>
+            </li>
+            <li>III. الغدد المساعدة</li>
+            <li>IV. التشريح الشعاعي</li>
+            <li>V. الأهمية العملية</li>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Course Plan:</h3>
+            <ul>
+                <li>I. Introduction</li>
+                <li>II. Descriptive Anatomy
+                    <ul>
+                        <li>A. Testicles</li>
+                        <li>B. Spermatic Ducts</li>
+                        <li>C. Penis</li>
+                    </ul>
+                </li>
+                <li>III. Accessory Glands</li>
+                <li>IV. Radio-anatomy</li>
+                <li>V. Practical Relevance</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Plan du Cours:</h3>
+            <ul>
+                <li>I. Introduction</li>
+                <li>II. Anatomie descriptive
+                    <ul>
+                        <li>A. Testicules</li>
+                        <li>B. Voies spermatiques</li>
+                        <li>C. Verge</li>
+                    </ul>
+                </li>
+                <li>III. Glandes annexes</li>
+                <li>IV. Radio-anatomie</li>
+                <li>V. Intérêt pratique</li>
+            </ul>
+        </div>
+    </div>
+
+    
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 قليل من الإتيمولوجيا:</h3>
+        <ul>
+            <li>▪ الخصية: من اللاتينية "testiculus"، المشتقة من "testis" وتعني "الشاهد".</li>
+            <li>▪ العضو الذكري: من اللاتينية "virga" وتعني "الغصن".</li>
+            <li>▪ البروستاتا: مشتقة من اليونانية "prostatês" وتعني "الذي يقف أمامًا".</li>
+        </ul>
+    
+        <br>
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A57.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A58.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        
+            <img src="2MED U4 ANATOMIE/A59.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 A Bit of Etymology:</h3>
+            <ul>
+                <li>▪ Testicle: From Latin "testiculus," derived from "testis" meaning "witness."</li>
+                <li>▪ Penis: From Latin "virga," meaning "branch."</li>
+                <li>▪ Prostate: Borrowed from Greek "prostatês," meaning "one who stands in front."</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Un peu d’étymologie :</h3>
+            <ul>
+                <li>▪ Testicule : Du latin "testiculus", dérivé de "testis" signifiant "témoin".</li>
+                <li>▪ Verge : Du latin "virga", signifiant "branche".</li>
+                <li>▪ Prostate : Emprunté du grec "prostatês", signifiant "qui se tient en avant".</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 الجهاز التناسلي الذكري:</h3>
+        <ul>
+            <li>يتكون من مجموعة من العناصر التشريحية، حيث يؤدي كل منها دورًا محددًا:</li>
+            <li>1. الأعضاء المنتجة:
+                <ul>
+                    <li>- الخصيتين -</li>
+                </ul>
+            </li>
+            <li>2. القنوات للتخزين والنقل:
+                <ul>
+                    <li>- القنوات المنوية -</li>
+                </ul>
+            </li>
+            <li>3. العضو الذكري (القضيب):
+                <ul>
+                    <li>عضو الاتصال الجنسي</li>
+                </ul>
+            </li>
+            <li>4. الغدد المساعدة</li>
+        </ul>
+    
+        <br>
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A61.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Male Genital Apparatus:</h3>
+            <ul>
+                <li>It is composed of a set of anatomical elements, each with a specific role:</li>
+                <li>1. Organs of production:
+                    <ul>
+                        <li>- Testicles -</li>
+                    </ul>
+                </li>
+                <li>2. Ducts for storage and transport:
+                    <ul>
+                        <li>- Spermatic Ducts -</li>
+                    </ul>
+                </li>
+                <li>3. Penis:
+                    <ul>
+                        <li>Copulation organ</li>
+                    </ul>
+                </li>
+                <li>4. Accessory glands</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 L’appareil génital masculin :</h3>
+            <ul>
+                <li>L’appareil génital masculin est constitué par un ensemble d’éléments anatomiques ayant chacun un rôle précis :</li>
+                <li>1. Organes de production :
+                    <ul>
+                        <li>- Les testicules -</li>
+                    </ul>
+                </li>
+                <li>2. Conduits de stockage et de transport :
+                    <ul>
+                        <li>- Voies spermatiques -</li>
+                    </ul>
+                </li>
+                <li>3. La verge (pénis) :
+                    <ul>
+                        <li>Organe de copulation</li>
+                    </ul>
+                </li>
+                <li>4. Les glandes annexes</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 الوضعية:</h3>
+        <ul>
+            <li>تقع الخصيتان في:</li>
+            <ul>
+                <li>- تحت العضو الذكري.</li>
+                <li>- خارج تجويف البطن.</li>
+                <li>- في كيس جلدي يُسمى: كيس الصفن.</li>
+                <li>- الخصية اليسرى تقع في مكان أدنى من الخصية اليمنى.</li>
+            </ul>
+        </ul>
+    
+
+
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A61.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Situation:</h3>
+            <ul>
+                <li>The testicles are located:</li>
+                <ul>
+                    <li>- Below the penis.</li>
+                    <li>- Outside the abdominal cavity.</li>
+                    <li>- In a skin pouch called: Scrotum.</li>
+                    <li>- The left testicle is positioned lower than the right one.</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Situation :</h3>
+            <ul>
+                <li>Les testicules sont situés :</li>
+                <ul>
+                    <li>- Sous la verge.</li>
+                    <li>- À l’extérieur de la cavité abdominale.</li>
+                    <li>- Dans une poche cutanée appelée : Bourse.</li>
+                    <li>- Le testicule gauche est plus bas situé que le droit.</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 الهجرة الخصوية:</h3>
+        <ul>
+            <li>في البداية، تكون الخصيتان في اتصال مع الكلى. ثم، يهاجران نحو كيس الصفن.</li>
+            <li>أثناء عبورهما للطريق الإربي وهبوطهما إلى الكيس، يشكل كل من الخصيتين جيبًا بريتونياً يسمى: القناة البريتونو-مبيضية.</li>
+            <li>الجزء البعيد من هذه القناة سيشكل الغلاف المبيضي (الغلاف السيري المحيط بالخصية).</li>
+        </ul>
+    
+
+        
+
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A62.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Testicular Migration:</h3>
+            <ul>
+                <li>Initially, the testicles are in contact with the kidneys. Then, they migrate toward the scrotum.</li>
+                <li>During their passage through the inguinal canal and their descent into the scrotum, each testicle forms a peritoneal diverticulum called the peritoneo-vaginal canal.</li>
+                <li>The distal part of this canal will form the vaginal layer (serous membrane surrounding the testicle).</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 La Migration Testiculaire :</h3>
+            <ul>
+                <li>Au début, les testicules se situent au contact du rein. Puis, ils migrent vers les bourses.</li>
+                <li>Dans sa traversée du trajet inguinal et sa descente dans les bourses, le testicule forme un diverticule péritonéal : le canal péritonéo-vaginal.</li>
+                <li>La partie distale de ce canal formera la vaginale (enveloppe séreuse entourant le testicule).</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 الشكل والمظهر:</h3>
+        <ul>
+            <li>الخصية: 
+                <ul>
+                    <li>تأخذ شكل بيضاوي.</li>
+                    <li>مفلطحة عرضيًا.</li>
+                    <li>ذات محور طويل مائل إلى الأسفل والخلف.</li>
+                    <li>تتميز بصلابة عند الجس.</li>
+                    <li>مؤلمة عند الضغط.</li>
+                </ul>
+            </li>
+            <li>الخصية تحتوي على وصف يشمل: 
+                <ul>
+                    <li>قطب علوي</li>
+                    <li>قطب سفلي</li>
+                    <li>الوجه الوسطي</li>
+                    <li>الوجه الجانبي</li>
+                    <li>الحافة الأمامية</li>
+                    <li>الحافة الخلفية</li>
+                </ul>
+            </li>
+            <li>الخصية لها سطح أملس.</li>
+            <li>الخصية ذات لون أبيض مزرق.</li>
+        </ul>
+    
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A63.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A64.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Shape and Appearance:</h3>
+            <ul>
+                <li>The testicle: 
+                    <ul>
+                        <li>Has an ovoid shape.</li>
+                        <li>Flattened transversely.</li>
+                        <li>With a long axis oblique, downward and backward.</li>
+                        <li>Firm on palpation.</li>
+                        <li>Painful when pressed.</li>
+                    </ul>
+                </li>
+                <li>The testicle presents the following features: 
+                    <ul>
+                        <li>Superior pole</li>
+                        <li>Inferior pole</li>
+                        <li>Medial face</li>
+                        <li>Lateral face</li>
+                        <li>Anterior border</li>
+                        <li>Posterior border</li>
+                    </ul>
+                </li>
+                <li>The testicle has a smooth surface.</li>
+                <li>The testicle has a bluish-white color.</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Forme et Aspect :</h3>
+            <ul>
+                <li>Le testicule : 
+                    <ul>
+                        <li>A une forme ovoïde.</li>
+                        <li>Aplati transversalement.</li>
+                        <li>A grand axe oblique, en bas et en arrière.</li>
+                        <li>Sa consistance est ferme à la palpation.</li>
+                        <li>Douloureuse à la pression.</li>
+                    </ul>
+                </li>
+                <li>Le testicule présente à décrire : 
+                    <ul>
+                        <li>Un pôle supérieur</li>
+                        <li>Un pôle inférieur</li>
+                        <li>Une face médiale</li>
+                        <li>Une face latérale</li>
+                        <li>Un bord antérieur</li>
+                        <li>Un bord postérieur</li>
+                    </ul>
+                </li>
+                <li>Le testicule a une surface lisse.</li>
+                <li>Le testicule a une couleur blanc bleuté.</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="inter11" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A65.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 الأبعاد:</h3>
+        <ul>
+            <li>الخصية تقيس حوالي 4 سم في الطول.</li>
+            <li>2.5 سم في السمك.</li>
+            <li>3 سم في القطر الأمامي الخلفي.</li>
+            <li>تزن بين 14 إلى 20 جرامًا.</li>
+            <li>تتغير أبعادها مع تقدم العمر.</li>
+        </ul>
+    
+
+
+
+        <div class="bubble">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A66.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Dimensions:</h3>
+            <ul>
+                <li>The testicle measures approximately 4 cm in length.</li>
+                <li>2.5 cm in thickness.</li>
+                <li>3 cm in antero-posterior diameter.</li>
+                <li>It weighs between 14 and 20 grams.</li>
+                <li>Its dimensions change with age.</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Dimensions :</h3>
+            <ul>
+                <li>Le testicule mesure environ 4 cm de longueur.</li>
+                <li>2,5 cm d'épaisseur.</li>
+                <li>3 cm de diamètre antéro-postérieur.</li>
+                <li>Il pèse de 14 à 20g.</li>
+                <li>Ses dimensions évoluent avec l’âge.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <br>
+    
+    <div class="bubble">
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 التركيب الداخلي للخصية:</h3>
+        <ul>
+            <li>الخصية محاطة بغشاء ليفي مقاوم يُسمى الغشاء الأبيض للخصية (الـ "ألبوجينيا").</li>
+            <li>يزداد سمكه عند القطب العلوي، مكونًا "ميدياستينم تيستيس" (جسم هايمور).</li>
+            <li>من ميدياستينم تيستيس تنبع الحواجز التي تقسم الخصية إلى فصيصات.</li>
+            <li>يوجد حوالي 250 إلى 300 فصيصة.</li>
+            <li>كل فصيصة تصرف القنوات المنوية (من 1 إلى 4).</li>
+        </ul>
+    
+        <div class="bubble">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A67.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Internal Structure of the Testicle:</h3>
+            <ul>
+                <li>The testicle is surrounded by a fibrous, resistant membrane called the testicular albuginea.</li>
+                <li>It thickens at the superior pole, forming the mediastinum testis (Highmore's body).</li>
+                <li>From the mediastinum testis, septa arise, dividing the testicle into lobules.</li>
+                <li>There are approximately 250 to 300 lobules.</li>
+                <li>Each lobule drains the seminiferous tubules (from 1 to 4).</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Structure interne du testicule :</h3>
+            <ul>
+                <li>Le testicule est entouré par une membrane fibreuse, résistante, l'albuginée testiculaire.</li>
+                <li>Elle augmente d'épaisseur au niveau du pôle supérieur, formant le médiastinum testis (corps d'Highmore).</li>
+                <li>Du médiastinum testis partent des cloisons qui divisent le testicule en lobules.</li>
+                <li>Il existe 250 à 300 lobules.</li>
+                <li>Chaque lobule draine les canalicules séminipares (de 1 à 4).</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 أغشية الخصية:</h3>
+        <ul>
+            <li>تتكون أكياس الصفن من بروز جدار البطن.</li>
+            <li>لذلك، نجد جميع العناصر المكونة لهذا الجدار من العمق إلى السطح.</li>
+            <li>الخصية تتكون من 7 أغشية:</li>
+            <ul>
+                <li>1. الغشاء المهبلي للخصية: 
+                    <ul>
+                        <li>ينبع من الصفاق البطني، ويحيط جزئيًا بالخصية والبربخ مكونًا مساحة مصلية.</li>
+                    </ul>
+                </li>
+                <li>2. اللفافة المنوية الداخلية: 
+                    <ul>
+                        <li>امتداد لللفافة المستعرضة.</li>
+                    </ul>
+                </li>
+                <li>3. العضلة الرافعة للخصية: 
+                    <ul>
+                        <li>مستمدة من العضلة المائلة الداخلية والعضلة المستعرضة.</li>
+                    </ul>
+                </li>
+                <li>4. اللفافة المنوية الخارجية: 
+                    <ul>
+                        <li>رقيقة، امتداد للعضلة المائلة الخارجية.</li>
+                    </ul>
+                </li>
+                <li>5. الأنسجة الخلوية تحت الجلد.</li>
+                <li>6. الجلد: 
+                    <ul>
+                        <li>رقيق ومجعد، يُسمى كيس الصفن، ويُغطيه عضلة جلدية تُسمى دارطوس.</li>
+                    </ul>
+                </li>
+            </ul>
+        </ul>
+
+
+        <div class="bubble">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A68.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+    
+
+        
+        <div class="bubble">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A69.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+    
+
+        
+        <div class="bubble">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A70.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+    
+
+        
+        <div class="bubble">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A71.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+    
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Testicular Envelopes:</h3>
+            <ul>
+                <li>The scrotum is formed by an evagination of the abdominal wall.</li>
+                <li>Therefore, we find all the components of this wall from deep to superficial.</li>
+                <li>The testicle consists of 7 envelopes:</li>
+                <ul>
+                    <li>1. The vaginal membrane of the testicle:
+                        <ul>
+                            <li>Originates from the abdominal peritoneum, partially surrounding the testicle and epididymis, forming a serous space.</li>
+                        </ul>
+                    </li>
+                    <li>2. The internal spermatic fascia:
+                        <ul>
+                            <li>Expansion of the transversalis fascia.</li>
+                        </ul>
+                    </li>
+                    <li>3. The cremaster muscle:
+                        <ul>
+                            <li>Derived from the internal oblique and transverse muscles.</li>
+                        </ul>
+                    </li>
+                    <li>4. The external spermatic fascia:
+                        <ul>
+                            <li>Thin, expansion of the external oblique muscle.</li>
+                        </ul>
+                    </li>
+                    <li>5. Subcutaneous connective tissue.</li>
+                    <li>6. The skin:
+                        <ul>
+                            <li>Thin and wrinkled, called the scrotum, covered by a skin muscle called Dartos.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Enveloppes du testicule :</h3>
+            <ul>
+                <li>Les bourses sont constituées par une évagination de la paroi abdominale.</li>
+                <li>On va donc retrouver tous les éléments constitutifs de cette paroi de la profondeur à la superficie.</li>
+                <li>Le testicule est constitué de 7 enveloppes :</li>
+                <ul>
+                    <li>1. La vaginale du testicule :
+                        <ul>
+                            <li>Provient du péritoine abdominal, entoure en partie le testicule et l’épididyme, constituant un espace séreux.</li>
+                        </ul>
+                    </li>
+                    <li>2. Le fascia spermatique interne :
+                        <ul>
+                            <li>Expansion du fascia transversalis.</li>
+                        </ul>
+                    </li>
+                    <li>3. Le muscle crémaster :
+                        <ul>
+                            <li>Dépendant de l'oblique interne et du transverse.</li>
+                        </ul>
+                    </li>
+                    <li>4. Le fascia spermatique externe :
+                        <ul>
+                            <li>Minime, expansion du muscle oblique externe.</li>
+                        </ul>
+                    </li>
+                    <li>5. Tissu cellulaire sous-cutané.</li>
+                    <li>6. La peau :
+                        <ul>
+                            <li>Fine et plissée, appelée scrotum, doublée par un muscle peaucier, le Dartos.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+        
+    <div class="bubble">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A72.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+
+        
+    <div class="bubble">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A73.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+
+
+        
+    <div class="bubble">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A74.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+    
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 القنوات المنوية:</h3>
+        <ul>
+            <li>القنوات المنوية هي مسالك إخراج المني.</li>
+            <li>تمتد من الأنابيب المنوية إلى الإحليل.</li>
+            <li>نميز بين: </li>
+            <ul>
+                <li>1. القنوات المنوية داخل الخصية:
+                    <ul>
+                        <li>الأنابيب المستقيمة.</li>
+                        <li>الشبكة الخصوية (ريتي تيستيس).</li>
+                        <li>القنوات (المخاريط) المؤدية.</li>
+                    </ul>
+                </li>
+                <li>2. القنوات المنوية خارج الخصية:
+                    <ul>
+                        <li>البربخ.</li>
+                        <li>القنوات الناقلة.</li>
+                        <li>القنوات القاذفة.</li>
+                    </ul>
+                </li>
+            </ul>
+        </ul>
+    
+
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A75.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A76.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Spermatic Pathways:</h3>
+            <ul>
+                <li>The spermatic pathways are the excretory pathways of sperm.</li>
+                <li>They extend from the seminiferous tubules to the urethra.</li>
+                <li>We distinguish between:</li>
+                <ul>
+                    <li>1. Intra-testicular spermatic pathways:
+                        <ul>
+                            <li>Straight tubules.</li>
+                            <li>Testicular network (rete testis).</li>
+                            <li>Afferent (conical) ducts.</li>
+                        </ul>
+                    </li>
+                    <li>2. Extra-testicular spermatic pathways:
+                        <ul>
+                            <li>Epididymis.</li>
+                            <li>Vas deferens.</li>
+                            <li>Ejaculatory ducts.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Les Voies Spermatiques :</h3>
+            <ul>
+                <li>Les voies spermatiques sont les voies d’excrétion du sperme.</li>
+                <li>Elles s'étendent des tubes séminipares à l'urètre.</li>
+                <li>On distingue :</li>
+                <ul>
+                    <li>1. Voies spermatiques intra-testiculaires :
+                        <ul>
+                            <li>Tubes droits.</li>
+                            <li>Réseau testiculaire (rete testis).</li>
+                            <li>Canaux (cônes) efférents.</li>
+                        </ul>
+                    </li>
+                    <li>2. Voies spermatiques extra-testiculaires :
+                        <ul>
+                            <li>Épididyme.</li>
+                            <li>Canaux déférents.</li>
+                            <li>Canaux éjaculateurs.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+    <br>
+    
+    <div class="bubble">
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 القنوات المنوية داخل الخصية:</h3>
+        <ul>
+            <li>الأنابيب المستقيمة:
+                <ul>
+                    <li>هي القنوات التي تفرغ فصيصات الخصية.</li>
+                    <li>الأنابيب المنوية في نفس الفصيص تتجمع في قناة واحدة جامعة.</li>
+                    <li>قناة قصيرة، ضيقة ومستقيمة، تقع في الطرف العلوي للفصيص: الأنابيب المستقيمة.</li>
+                </ul>
+            </li>
+        </ul>
+    
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A77.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Intra-Testicular Spermatic Pathways:</h3>
+            <ul>
+                <li>Straight Tubules:
+                    <ul>
+                        <li>These are the excretory ducts of the lobules of the testicle.</li>
+                        <li>The seminiferous tubules of the same lobule come together into a single collecting duct.</li>
+                        <li>It is short, narrow, and straight, located at the superior end of the lobule: the straight tubule.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Voies Spermatiques Intra-Testiculaires :</h3>
+            <ul>
+                <li>TUBES DROITS :
+                    <ul>
+                        <li>Ce sont les canaux excréteurs des lobules du testicule.</li>
+                        <li>Les tubes séminipares d'un même lobule se réunissent en un seul conduit collecteur.</li>
+                        <li>Court, étroit et rectiligne, situé à l'extrémité supérieure du lobule : le tube droit.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 الشبكة الخصوية:</h3>
+        <ul>
+            <li>تتكون من قنوات صغيرة تشكل شبكة متشابكة (ريتي تيستيس).</li>
+            <li>توجد في سماكة النسيج الضام على الحافة الأمامية العلوية للخصية.</li>
+        </ul>
+    
+        
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A78.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <h3 class="section-title" style="text-align: center;">🔹 الأقماع الموصلة أو القنوات الموصلة:</h3>
+        <ul>
+            <li>قنوات دقيقة تربط الشبكة الخصوية بقناة البربخ.</li>
+            <li>تأخذ شكلًا مخروطيًا وعددها بين 9 إلى 12.</li>
+            <li>ملتفّة بشكل حلزوني.</li>
+        </ul>
+    
+        
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A79.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <h3 class="section-title" style="text-align: center;">🔹 القنوات المنوية خارج الخصية:</h3>
+        <ul>
+            <li><strong>البربخ:</strong>
+                <ul>
+                    <li>يمثل بداية القنوات المنوية.</li>
+                    <li>دوره الأساسي هو تخزين الحيوانات المنوية ونضجها بعد تكوّنها.</li>
+                </ul>
+            </li>
+        </ul>
+    
+        
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A80.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 The Testicular Network:</h3>
+            <ul>
+                <li>Composed of small ducts forming an anastomosed network (rete testis).</li>
+                <li>Located in the thickening of the connective tissue at the anterosuperior border of the testicle.</li>
+            </ul>
+    
+            <h3 class="section-title" style="text-align: center;">🔹 The Efferent Cones or Efferent Ducts:</h3>
+            <ul>
+                <li>Thin ducts connecting the rete testis to the epididymal duct.</li>
+                <li>Conical structures numbering between 9 and 12.</li>
+                <li>Arranged in a spiral shape.</li>
+            </ul>
+    
+            <h3 class="section-title" style="text-align: center;">🔹 Extra-Testicular Spermatic Pathways:</h3>
+            <ul>
+                <li><strong>The Epididymis:</strong>
+                    <ul>
+                        <li>The epididymis marks the beginning of the spermatic ducts.</li>
+                        <li>Its primary role is the storage and maturation of newly formed sperm cells.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Le Réseau Testiculaire:</h3>
+            <ul>
+                <li>Composé de canalicules formant un réseau anastomosé (rete testis).</li>
+                <li>Situé dans un épaississement conjonctif au bord antérosupérieur du testicule.</li>
+            </ul>
+    
+            <h3 class="section-title" style="text-align: center;">🔹 Les Cônes Efférents ou Canaux Efférents:</h3>
+            <ul>
+                <li>Fins canaux reliant le rete testis au canal de l'épididyme.</li>
+                <li>Structures coniques au nombre de 9 à 12.</li>
+                <li>Enroulés en spirales.</li>
+            </ul>
+    
+            <h3 class="section-title" style="text-align: center;">🔹 Voies Spermatiques Extra-Testiculaires:</h3>
+            <ul>
+                <li><strong>L'Épididyme:</strong>
+                    <ul>
+                        <li>L'épididyme constitue le début des conduits spermatiques.</li>
+                        <li>Son rôle est essentiellement le stockage et la maturation des spermatozoïdes nouvellement formés.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 شكل وأبعاد البربخ:</h3>
+        <ul>
+            <li>يأخذ شكل فاصلة كبيرة.</li>
+            <li>يتكون من ثلاثة أجزاء:</li>
+            <ul>
+                <li><strong>الرأس:</strong> يستقر فوق القطب العلوي للخصية.</li>
+                <li><strong>الجسم:</strong> يمتد على الحافة الخلفية للخصية.</li>
+                <li><strong>الذيل:</strong> يستمر ليشكل القناة الناقلة للمني.</li>
+            </ul>
+        </ul>
+    
+
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A81.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Shape and Dimensions of the Epididymis:</h3>
+            <ul>
+                <li>It has the shape of a large comma.</li>
+                <li>It consists of three segments:</li>
+                <ul>
+                    <li><strong>Head:</strong> Rests on the superior pole of the testicle.</li>
+                    <li><strong>Body:</strong> Extends along the posterior border of the testicle.</li>
+                    <li><strong>Tail:</strong> Continues as the vas deferens.</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Forme et Dimensions de l’Épididyme:</h3>
+            <ul>
+                <li>Il a une forme de grosse virgule.</li>
+                <li>Il présente trois segments :</li>
+                <ul>
+                    <li><strong>Tête :</strong> Repose sur le pôle supérieur du testicule.</li>
+                    <li><strong>Corps :</strong> S’étale sur le bord postérieur du testicule.</li>
+                    <li><strong>Queue :</strong> Se continue par le canal déférent.</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">🔹 طول البربخ:</h3>
+        <ul>
+            <li>يبلغ طوله من 4 إلى 6 أمتار.</li>
+            <li>يشكل انحناءات متراكمة فوق بعضها البعض، خاصة عند مستوى الرأس والجسم.</li>
+        </ul>
+    
+
+
+        
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A82.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">🔹 Length of the Epididymis:</h3>
+            <ul>
+                <li>It is 4 to 6 meters long.</li>
+                <li>It forms tightly packed convolutions, especially at the head and body levels.</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Longueur de l’Épididyme:</h3>
+            <ul>
+                <li>Long de 4 à 6 mètres.</li>
+                <li>Il forme des sinuosités tassées les unes sur les autres, au niveau de la tête et du corps.</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">قناة الدفران</h3>
+        <ul>
+            <li>القناة الدفرانية تأتي بعد القناة الإِبِيدِيدِيمِيَّة، على مستوى ذيل الإِبِيدِيدِيم.</li>
+            <li>تنتهي في البروستاتا، حيث تتصل مع قناة الغدة السِّبَاقِيَّة لتكوين القناة القاذفة.</li>
+            <li>تنقل وتخزن الحيوانات المنوية خلال فترات القذف.</li>
+            <li>طولها: 40 سم.</li>
+            <li>شكلها: أسطواني.</li>
+            <li>قوية وصلبة.</li>
+            <li>يمكن تحسسها.</li>
+            <li>تتكون القناة الدفرانية من 5 أجزاء:</li>
+            <ul>
+                <li>إبِيدِيدِيمِي-تِسْتِيكُولَارِي (1)</li>
+                <li>فُنِيكُولَارِي (2)</li>
+                <li>إِنْغُويِنَالِي (3)</li>
+                <li>إِلِيَاكِي (4)</li>
+                <li>بِيلْفِيَنِي (5)</li>
+            </ul>
+        </ul>
+    
+          
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A83.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+
+          
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A84.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+
+          
+        
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">Vas Deferens</h3>
+            <ul>
+                <li>The vas deferens follows the epididymal duct at the level of the tail of the epididymis.</li>
+                <li>It terminates in the prostate, anastomosing with the duct of the seminal vesicle to form the ejaculatory duct.</li>
+                <li>Transports and stores sperm cells between ejaculations.</li>
+                <li>Length: 40 cm.</li>
+                <li>Shape: cylindrical.</li>
+                <li>Firm texture.</li>
+                <li>Palpable.</li>
+                <li>The vas deferens consists of 5 segments:</li>
+                <ul>
+                    <li>EPIDIDYMO-TESTICULAR (1)</li>
+                    <li>FUNICULAR (2)</li>
+                    <li>INGUINAL (3)</li>
+                    <li>ILIAC (4)</li>
+                    <li>PELVIC (5)</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Canal Déférent :</h3>
+            <ul>
+                <li>Longueur : 40 cm.</li>
+                <li>Forme : cylindrique.</li>
+                <li>Texture : ferme.</li>
+                <li>Palpable.</li>
+                <li>Le canal déférent se divise en 5 segments au cours de son trajet :</li>
+                <ul>
+                    <li>ÉPIDIDYMO-TESTICULAIRE (1)</li>
+                    <li>FUNICULAIRE (2)</li>
+                    <li>INGUINALE (3)</li>
+                    <li>ILIAQUE (4)</li>
+                    <li>PELVIENNE (5)</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">قناة الدفران</h3>
+        <ul>
+            <li>القناة الدفرانية تأتي بعد القناة الإِبِيدِيدِيمِيَّة، على مستوى ذيل الإِبِيدِيدِيم.</li>
+            <li>تنتهي في البروستاتا، حيث تتصل مع قناة الغدة السِّبَاقِيَّة لتكوين القناة القاذفة.</li>
+            <li>تنقل وتخزن الحيوانات المنوية خلال فترات القذف.</li>
+            <li>طولها: 40 سم.</li>
+            <li>شكلها: أسطواني.</li>
+            <li>قوية وصلبة.</li>
+            <li>يمكن تحسسها.</li>
+            <li>تتكون القناة الدفرانية من 5 أجزاء:</li>
+            <ul>
+                <li>إبِيدِيدِيمِي-تِسْتِيكُولَارِي (1)</li>
+                <li>فُنِيكُولَارِي (2)</li>
+                <li>إِنْغُويِنَالِي (3)</li>
+                <li>إِلِيَاكِي (4)</li>
+                <li>بِيلْفِيَنِي (5)</li>
+            </ul>
+            <li>ينتهي القناة الدفرانية بتوسعة تُسمى "أمبولة دفرانية".</li>
+            <li>المكونات المحيطة: المثانة، الحالب، غدة كوبر، وغيرها.</li>
+        </ul>
+    
+
+          
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A85.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">Vas Deferens</h3>
+            <ul>
+                <li>The vas deferens follows the epididymal duct at the level of the tail of the epididymis.</li>
+                <li>It terminates in the prostate, anastomosing with the duct of the seminal vesicle to form the ejaculatory duct.</li>
+                <li>Transports and stores sperm cells between ejaculations.</li>
+                <li>Length: 40 cm.</li>
+                <li>Shape: cylindrical.</li>
+                <li>Firm texture.</li>
+                <li>Palpable.</li>
+                <li>The vas deferens consists of 5 segments:</li>
+                <ul>
+                    <li>EPIDIDYMO-TESTICULAR (1)</li>
+                    <li>FUNICULAR (2)</li>
+                    <li>INGUINAL (3)</li>
+                    <li>ILIAC (4)</li>
+                    <li>PELVIC (5)</li>
+                </ul>
+                <li>The vas deferens terminates in a dilation called the "Vas deferens ampoule".</li>
+                <li>Nearby structures include the bladder, ureter, Cowper's glands, and others.</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Canal Déférent :</h3>
+            <ul>
+                <li>Longueur : 40 cm.</li>
+                <li>Forme : cylindrique.</li>
+                <li>Texture : ferme.</li>
+                <li>Palpable.</li>
+                <li>Le canal déférent se divise en 5 segments au cours de son trajet :</li>
+                <ul>
+                    <li>ÉPIDIDYMO-TESTICULAIRE (1)</li>
+                    <li>FUNICULAIRE (2)</li>
+                    <li>INGUINALE (3)</li>
+                    <li>ILIAQUE (4)</li>
+                    <li>PELVIENNE (5)</li>
+                </ul>
+                <li>Le canal déférent se termine par une dilatation appelée "Ampoule Déférentielle".</li>
+                <li>Les structures environnantes comprennent la vessie, l'uretère, les glandes de Cowper, et d'autres.</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">الحبل المنوي</h3>
+        <ul>
+            <li>يحمل الخصية والإِبِيدِيدِيم في غشاء ليفي.</li>
+            <li>يحتوي على القناة الدفرانية، والأوعية الدموية الخاصة بالخصية والإِبِيدِيدِيم.</li>
+            <li>يتركز فيه بقايا العملية المهبلية.</li>
+        </ul>
+    
+
+        
+          
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A86.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">Spermatic Cord</h3>
+            <ul>
+                <li>Suspends the testicle and epididymis, contained in a fibrous sheath.</li>
+                <li>Contains the vas deferens, blood vessels of the testicle and epididymis.</li>
+                <li>It is centered around the vestige of the vaginal process.</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Cordon Spermatiques :</h3>
+            <ul>
+                <li>Il suspend le testicule et l'épididyme, contenu dans une tunique fibreuse.</li>
+                <li>Contient le conduit déférent, les vaisseaux du testicule et de l'épididyme.</li>
+                <li>Il est centré par le vestige du processus vaginal.</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">الحبل المنوي</h3>
+        <ul>
+            <li>يحمل الخصية والإِبِيدِيدِيم في غشاء ليفي.</li>
+            <li>يحتوي على القناة الدفرانية، والأوعية الدموية الخاصة بالخصية والإِبِيدِيدِيم.</li>
+            <li>يتركز فيه بقايا العملية المهبلية.</li>
+            <li>يحتوي من الأمام إلى الخلف على:</li>
+            <ul>
+                <li>الشريان المنوي</li>
+                <li>الضفيرة الوريدية المنوية الأمامية</li>
+                <li>رباط كلوي</li>
+                <li>الشريان الدفراني</li>
+                <li>القناة الدفرانية</li>
+                <li>الضفيرة الوريدية المنوية الخلفية</li>
+            </ul>
+        </ul>
+    
+        
+          
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A87.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">Spermatic Cord</h3>
+            <ul>
+                <li>Suspends the testicle and epididymis, contained in a fibrous sheath.</li>
+                <li>Contains the vas deferens, blood vessels of the testicle and epididymis.</li>
+                <li>It is centered around the vestige of the vaginal process.</li>
+                <li>Contains from front to back:</li>
+                <ul>
+                    <li>Spermatic artery</li>
+                    <li>Anterior spermatic venous plexus</li>
+                    <li>Cloquet ligament</li>
+                    <li>Deferential artery</li>
+                    <li>Vas deferens</li>
+                    <li>Posterior spermatic venous plexus</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">🔹 Cordon Spermatiques :</h3>
+            <ul>
+                <li>Il suspend le testicule et l'épididyme, contenu dans une tunique fibreuse.</li>
+                <li>Contient le conduit déférent, les vaisseaux du testicule et de l'épididyme.</li>
+                <li>Il est centré par le vestige du processus vaginal.</li>
+                <li>Contient d’avant en arrière :</li>
+                <ul>
+                    <li>Artère spermatique</li>
+                    <li>Plexus veineux spermatique antérieur</li>
+                    <li>Ligament de Cloquet</li>
+                    <li>Artère déférentielle</li>
+                    <li>Canal déférent</li>
+                    <li>Plexus veineux spermatique postérieur</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">القناة القاذفة</h3>
+    <ul>
+        <li>تنشأ القناة القاذفة من اتحاد أمبولة القناة الدفرانية مع قناة الغدة السِّبَاقِيَّة.</li>
+        <li>طولها حوالي 25 مم.</li>
+        <li>تنحدر بشكل مائل، إلى الأمام وفي اتجاه الوسط عبر البروستاتا.</li>
+        <li>تنتهي في الإحليل البروستاتي.</li>
+    </ul>
+
+    
+          
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A88.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Ejaculatory Duct</h3>
+        <ul>
+            <li>The ejaculatory duct is formed by the fusion of the ampulla of a vas deferens and a seminal vesicle duct.</li>
+            <li>Its length is approximately 25 mm.</li>
+            <li>It descends obliquely, forward and medially through the prostate.</li>
+            <li>It terminates in the prostatic urethra.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">🔹 Canal Éjaculateur :</h3>
+        <ul>
+            <li>Le conduit éjaculateur naît de la fusion de l'ampoule d’un conduit déférent et d’un conduit de la vésicule séminale.</li>
+            <li>Sa longueur est d'environ 25 mm.</li>
+            <li>Il descend obliquement, en avant et médialement à travers la prostate.</li>
+            <li>Il se termine dans l'urètre prostatique.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">العضو الذكري</h3>
+    <ul>
+        <li>عضو التناسل والتبول لدى الرجل.</li>
+    </ul>
+
+    <p><strong>التعريف :</strong></p>
+    <p>العضو الذكري هو عضو التناسل والتبول لدى الرجل. يمر من خلاله السائل المنوي أثناء القذف، والبول أثناء التبول.</p>
+
+    <p><strong>الموقع :</strong></p>
+    <ul>
+        <li>يقع أمام العانة، فوق وأمام الخصيتين.</li>
+        <li>يمتد في اتجاه العجان.</li>
+    </ul>
+
+    <p><strong>الأبعاد :</strong></p>
+    <p>يختلف حجم العضو الذكري حسب حالة الارتخاء أو الانتصاب.</p>
+    <ul>
+        <li>في حالة الارتخاء: يتراوح طوله من 10 إلى 12 سم، وقطره من 8 إلى 9 سم.</li>
+        <li>في حالة الانتصاب: يتراوح طوله من 16 إلى 18 سم، وقطره من 11 إلى 12 سم.</li>
+    </ul>
+
+
+     
+
+
+
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A89.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A90.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+
+
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Penis</h3>
+        <ul>
+            <li>Organ of copulation and urination in men.</li>
+        </ul>
+
+        <p><strong>Definition:</strong></p>
+        <p>The penis is the organ of copulation and urination in men. It serves as the conduit for semen during ejaculation and urine during urination.</p>
+
+        <p><strong>Location:</strong></p>
+        <ul>
+            <li>It is located in front of the pubic symphysis, above and in front of the testicles.</li>
+            <li>It extends towards the perineum.</li>
+        </ul>
+
+        <p><strong>Dimensions:</strong></p>
+        <p>The size of the penis varies depending on the state of flaccidity or erection.</p>
+        <ul>
+            <li>In flaccidity: its length ranges from 10 to 12 cm, and its diameter from 8 to 9 cm.</li>
+            <li>In erection: its length ranges from 16 to 18 cm, and its diameter from 11 to 12 cm.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Pénis</h3>
+        <ul>
+            <li>Organe de la copulation et de la miction chez l'homme.</li>
+        </ul>
+
+        <p><strong>Définition :</strong></p>
+        <p>Le pénis est l'organe de la copulation et de la miction chez l'homme. Il sert de conduit pour le sperme lors de l'éjaculation et pour l'urine lors de la miction.</p>
+
+        <p><strong>Situation :</strong></p>
+        <ul>
+            <li>Il se situe devant la symphyse pubienne, au-dessus et en avant des testicules.</li>
+            <li>Il s'étend vers le périnée.</li>
+        </ul>
+
+        <p><strong>Dimensions :</strong></p>
+        <p>La taille du pénis varie selon l'état de flaccidité ou d'érection.</p>
+        <ul>
+            <li>Au repos : sa longueur varie de 10 à 12 cm, et son diamètre de 8 à 9 cm.</li>
+            <li>En érection : sa longueur varie de 16 à 18 cm, et son diamètre de 11 à 12 cm.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+          
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A91.png" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">الأعضاء الانتصابية</h3>
+    <ul>
+        <li>العضو الذكري يتكون من:</li>
+        <li>جسمين كهفيين (2).</li>
+        <li>جسم إسفنجي واحد (1).</li>
+    </ul>
+
+    <p>تتكون الأنسجة من نسيج خلايا هوائية، وعند امتلائها بالدم تؤدي إلى الانتصاب.</p>
+
+
+   
+          
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A93.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+    
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Erectile Organs</h3>
+        <ul>
+            <li>The penis is composed of:</li>
+            <li>Two cavernous bodies (2).</li>
+            <li>One spongy body (1).</li>
+        </ul>
+
+        <p>They are formed by areolar tissue, which, when filled with blood, leads to erection.</p>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Organes Érectiles</h3>
+        <ul>
+            <li>La verge est constituée de :</li>
+            <li>Deux corps caverneux (2).</li>
+            <li>Un corps spongieux (1).</li>
+        </ul>
+
+        <p>Formés par du tissu aréolaire qui, lorsqu'il se remplit de sang, entraîne l'érection.</p>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">أ - الجسم الكهفي</h3>
+    <ul>
+        <li>جانبي، متماثل ومزدوج.</li>
+        <li>في البداية مفصولان عند أصولهما، ثم يلتقيان لتشكيل أخدود بطني يتواجد فيه الجسم الإسفنجي.</li>
+        <li>يتكون من: 
+            <ul>
+                <li>جسم واحد.</li>
+                <li>جذر واحد.</li>
+            </ul>
+        </li>
+        <li>عند الالتحام، يشكلان أخدودين: 
+            <ul>
+                <li>علوي.</li>
+                <li>سفلي.</li>
+            </ul>
+        </li>
+        <li>يحتوي على الجسم الإسفنجي والإحليل.</li>
+    </ul>
+
+
+
+
+            
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A94.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">A - CAVERNOUS BODIES</h3>
+        <ul>
+            <li>Lateral, paired, and symmetrical.</li>
+            <li>Initially separate at their origin, they join to form a ventral groove where the spongy body resides.</li>
+            <li>Composed of: 
+                <ul>
+                    <li>One body.</li>
+                    <li>One root.</li>
+                </ul>
+            </li>
+            <li>Upon fusion, they form two grooves:
+                <ul>
+                    <li>Superior.</li>
+                    <li>Inferior.</li>
+                </ul>
+            </li>
+            <li>Contains the spongy body and the urethra.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">A - CORPS CAVERNEUX</h3>
+        <ul>
+            <li>Latéraux, paires et symétriques.</li>
+            <li>D’abord séparés à leur origine, ils se rejoignent pour former une gouttière ventrale où se loge le corps spongieux.</li>
+            <li>Formé par : 
+                <ul>
+                    <li>UN CORPS.</li>
+                    <li>UNE RACINE.</li>
+                </ul>
+            </li>
+            <li>En fusionnant, ils forment deux gouttières :
+                <ul>
+                    <li>SUPÉRIEURE.</li>
+                    <li>INFÉRIEURE.</li>
+                </ul>
+            </li>
+            <li>Contient le corps spongieux et l'urètre.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">ب – الجسم الإسفنجي</h3>
+    <ul>
+        <li>هو جسم متمركز في المنتصف.</li>
+        <li>يحتوي على انتفاخ خلفي يعرف بالـ <strong>التحبب</strong>.</li>
+        <li>يحيط بالإحليل الإسفنجي.</li>
+        <li>ينتهي بالغدة.</li>
+    </ul>
+
+    <p><strong>ج – الغدة:</strong></p>
+    <ul>
+        <li>النهاية المنتفخة الملساء للعضو الذكري.</li>
+        <li>القطاع الطرفي للعضو الذكري.</li>
+        <li>الشكل المخروطي.</li>
+        <li>يفتح في قمته الفتحة الإحليلية.</li>
+        <li>محيط بها طية جلدية دائرية: <strong>القلفة</strong>.</li>
+    </ul>
+
+
+
+
+
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A95.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A96.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A97.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">B - SPONGY BODY</h3>
+        <ul>
+            <li>It is median.</li>
+            <li>It presents a posterior enlargement: <strong>the bulb.</strong></li>
+            <li>It surrounds the spongy urethra.</li>
+            <li>It ends in the glans.</li>
+        </ul>
+
+        <p><strong>C - GLANS:</strong></p>
+        <ul>
+            <li>The swollen, smooth tip of the penis.</li>
+            <li>The terminal segment of the penis.</li>
+            <li>Conical shape.</li>
+            <li>The urethral meatus opens at its tip.</li>
+            <li>Surrounded by a circular skin fold: <strong>the foreskin.</strong></li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">B - CORPS SPONGIEUX</h3>
+        <ul>
+            <li>Il est médian.</li>
+            <li>Présente un renflement postérieur : <strong>le bulbe.</strong></li>
+            <li>Entoure l’urètre spongieux.</li>
+            <li>Se termine par le <strong>gland.</strong></li>
+        </ul>
+
+        <p><strong>C - GLAND :</strong></p>
+        <ul>
+            <li>Extrémité ronflée et lisse de la verge.</li>
+            <li>Segment terminal de la verge.</li>
+            <li>Forme <strong>conique</strong>.</li>
+            <li>S’ouvre à son sommet le méat urétral.</li>
+            <li>Entouré d’un repli cutané annulaire : <strong>le prépuce.</strong></li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">الغدد الملحقة</h3>
+    <ul>
+        <li>تشمل: 
+            <ul>
+                <li>الحويصلات المنوية (اثنان).</li>
+                <li>البروستاتا.</li>
+                <li>الغدد البصلية الإحليلية.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><strong>الدور:</strong></p>
+    <ul>
+        <li>الإفرازات التي تفرزها هذه الغدد تشكل الجزء الأكبر من السائل المنوي.</li>
+        <li>تساعد في تغذية ونقل الحيوانات المنوية.</li>
+    </ul>
+
+
+
+    
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A98.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A99.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Accessory Glands</h3>
+        <ul>
+            <li>They include:
+                <ul>
+                    <li>The two seminal vesicles.</li>
+                    <li>The prostate.</li>
+                    <li>The bulbourethral glands.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <p><strong>Role:</strong></p>
+        <ul>
+            <li>Their secretions make up the major part of the seminal fluid.</li>
+            <li>They serve to nourish and transport spermatozoa.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Glandes Annexes</h3>
+        <ul>
+            <li>Qui sont :
+                <ul>
+                    <li>Les deux vésicules séminales.</li>
+                    <li>La prostate.</li>
+                    <li>Les glandes bulbo-urétrales.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <p><strong>Rôle :</strong></p>
+        <ul>
+            <li>Leurs sécrétions qui constituent la majeure partie du liquide spermatique.</li>
+            <li>Servent à la nutrition et au transport des spermatozoïdes.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">أ - الحويصلة المنوية</h3>
+    <ul>
+        <li>أو الغدد الحويصلية.</li>
+        <li>تكوينان كيسيان.</li>
+        <li>طويلة عرضيًا، متموجة.</li>
+        <li>طولها من 5 إلى 6 سم.</li>
+        <li>تقع في الجهة الخلفية للمثانة.</li>
+    </ul>
+
+    <p>تشمل الأجزاء التالية:</p>
+    <ul>
+        <li>القاع</li>
+        <li>الجسم</li>
+        <li>العنق</li>
+    </ul>
+
+
+    
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A100.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">A - Seminal Vesicle</h3>
+        <ul>
+            <li>Also known as vesicular glands.</li>
+            <li>Two sac-like formations.</li>
+            <li>Transversely elongated, lobulated.</li>
+            <li>Measuring 5 to 6 cm.</li>
+            <li>Located on the posterior side of the bladder.</li>
+        </ul>
+
+        <p>It can be described as having the following parts:</p>
+        <ul>
+            <li>Fundus</li>
+            <li>Body</li>
+            <li>Cervix</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">A - Vésicule Séminale</h3>
+        <ul>
+            <li>Ou glandes vésiculeuses.</li>
+            <li>Deux formations sacculaires.</li>
+            <li>Allongées transversalement, bosselées.</li>
+            <li>Mesurant 5 à 6 cm.</li>
+            <li>Situées au niveau de la face postérieure de la vessie.</li>
+        </ul>
+
+        <p>Présente à décrire :</p>
+        <ul>
+            <li>Fond</li>
+            <li>Corps</li>
+            <li>Col</li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">ب - الغدد البصلية الإحليلية (غدد كاوبير)</h3>
+    <ul>
+        <li>هي غدتان صغيرتان، تقعان على جانبي البصلة الإسفنجية.</li>
+        <li>توجدان داخل العضلة العاصرة للإحليل المخططة.</li>
+        <li>تعبران البصلة عن طريق قناة ليفية لفتحها في الإحليل.</li>
+        <li>تلعب دورًا في الإفراز وتنتجان سائلًا شفافًا لزجًا يساعد في تليين الإحليل.</li>
+        <li>يقلل هذا السائل من حموضة الإحليل عن طريق تغليف الحيوانات المنوية بهذا السائل الواقي.</li>
+    </ul>
+
+
+    
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A101.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A102.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">B - Bulbourethral Glands (Cowper's Glands)</h3>
+        <ul>
+            <li>These are two small glands, located on either side of the spongy bulb.</li>
+            <li>They are embedded in the striated sphincter of the urethra.</li>
+            <li>They pass through the bulb via a duct and open into the urethra.</li>
+            <li>They have a secretion role and produce a clear, viscous fluid that serves to lubricate the urethra.</li>
+            <li>This fluid reduces the acidity of the urethra by enveloping the sperm in this protective fluid.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">B - Glandes Bulbo-Urétrales (De Cowper)</h3>
+        <ul>
+            <li>Il s’agit de deux petites glandes, situées de part et d'autre du bulbe spongieux.</li>
+            <li>Se trouvent enchâssées dans le sphincter strié de l’urètre.</li>
+            <li>Traversent le bulbe par l’intermédiaire d’un canal pour s’ouvrir dans l’urètre.</li>
+            <li>Ont un rôle de sécrétion et produisent un liquide clair et visqueux qui sert à lubrifier l'urètre.</li>
+            <li>Ce liquide réduit l'acidité de l'urètre en enveloppant les spermatozoïdes de ce liquide protecteur.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">ج - البروستاتا</h3>
+    <ul>
+        <li>غدة تناسلية.</li>
+        <li>غدة خارجية الإفراز.</li>
+        <li>غير مزدوجة (فريدة).</li>
+        <li>تقع أسفل المثانة.</li>
+        <li>تحيط بالجزء الأولي من الإحليل.</li>
+    </ul>
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A103.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">C - Prostate</h3>
+        <ul>
+            <li>Genital gland.</li>
+            <li>Exocrine gland.</li>
+            <li>Unpaired.</li>
+            <li>Located below the bladder.</li>
+            <li>Surrounds the initial part of the urethra.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">C - Prostate</h3>
+        <ul>
+            <li>Glande génitale.</li>
+            <li>Exocrine.</li>
+            <li>Impaire.</li>
+            <li>Située au-dessous de la vessie.</li>
+            <li>Entoure la partie initiale de l’urètre.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">دور البروستاتا</h3>
+    <ul>
+        <li>تنتج إفرازات قلوية تشكل جزءًا من السائل المنوي.</li>
+        <li>تعمل هذه الإفرازات على تقليل حموضة الإفرازات المهبلية.</li>
+        <li>تشكل ثلث (1/3) السائل المنوي أثناء القذف.</li>
+    </ul>
+
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A103.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Role of the Prostate</h3>
+        <ul>
+            <li>It produces alkaline secretions that constitute part of the seminal fluid.</li>
+            <li>These secretions reduce the acidity of vaginal secretions.</li>
+            <li>It constitutes one-third (1/3) of the ejaculate.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Rôle de la Prostate</h3>
+        <ul>
+            <li>Produit des sécrétions alcalines qui constituent une partie du liquide séminal.</li>
+            <li>Ces sécrétions réduisent l’acidité des sécrétions vaginales.</li>
+            <li>Constitue un 1/3 de l’éjaculat.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">دور البروستاتا</h3>
+    <ul>
+        <li>تنتج إفرازات قلوية تشكل جزءًا من السائل المنوي.</li>
+        <li>تعمل هذه الإفرازات على تقليل حموضة الإفرازات المهبلية.</li>
+        <li>تشكل ثلث (1/3) السائل المنوي أثناء القذف.</li>
+    </ul>
+
+
+    
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A104.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Role of the Prostate</h3>
+        <ul>
+            <li>It produces alkaline secretions that constitute part of the seminal fluid.</li>
+            <li>These secretions reduce the acidity of vaginal secretions.</li>
+            <li>It constitutes one-third (1/3) of the ejaculate.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Rôle de la Prostate</h3>
+        <ul>
+            <li>Produit des sécrétions alcalines qui constituent une partie du liquide séminal.</li>
+            <li>Ces sécrétions réduisent l’acidité des sécrétions vaginales.</li>
+            <li>Constitue un 1/3 de l’éjaculat.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">الشكل والأبعاد</h3>
+    <ul>
+        <li>يشبه شكلها ثمرة الكستناء.</li>
+        <li>الارتفاع: 3 سم.</li>
+        <li>القطر العرضي: 4 سم.</li>
+        <li>القطر الأمامي-الخلفي: 2.5 سم.</li>
+        <li>الوزن: 20 جرام.</li>
+    </ul>
+
+      
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A105.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Shape and Dimensions</h3>
+        <ul>
+            <li>It resembles a chestnut.</li>
+            <li>Height: 3 cm.</li>
+            <li>Transverse diameter: 4 cm.</li>
+            <li>Anteroposterior diameter: 2.5 cm.</li>
+            <li>Weight: 20 grams.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Forme et Dimensions</h3>
+        <ul>
+            <li>Ressemble à une châtaigne.</li>
+            <li>Hauteur : 3 cm.</li>
+            <li>Diamètre transversal : 4 cm.</li>
+            <li>Diamètre antéro-postérieur : 2,5 cm.</li>
+            <li>Poids : 20 grammes.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">التكوين الخارجي</h3>
+    <ul>
+        <li>له شكل مخروطي.</li>
+        <li>يتكون من: قاعدة علوية.</li>
+        <li>مقسمة بواسطة حافة عرضية إلى قسمين:</li>
+        <ul>
+            <li>القسم الأمامي: يحتوي على الفتحة الإحليلية.</li>
+            <li>القسم الخلفي: يحتوي على القنوات القاذفة.</li>
+        </ul>
+        <li>قمة سفلية.</li>
+        <li>سطح أمامي.</li>
+        <li>سطح خلفي: مقسوم بواسطة شق مركزي إلى حافتين جانبيتين.</li>
+        <li>وجهان جانبيان.</li>
+    </ul>
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A106.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">External Configuration</h3>
+        <ul>
+            <li>It has a conical shape.</li>
+            <li>It consists of: an upper base.</li>
+            <li>Divided by a transverse ridge into two slopes:</li>
+            <ul>
+                <li>Anterior: occupied by the urethral opening.</li>
+                <li>Posterior: occupied by the ejaculatory ducts.</li>
+            </ul>
+            <li>An inferior apex.</li>
+            <li>An anterior face.</li>
+            <li>A posterior face: divided by a median groove into two lateral ridges.</li>
+            <li>Two lateral faces.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Configuration Externe</h3>
+        <ul>
+            <li>Ayant une forme conique.</li>
+            <li>Avec : une BASE, supérieure.</li>
+            <li>Divisée par un bourrelet transversal en deux versants :</li>
+            <ul>
+                <li>Antérieur : occupé par l’orifice urétral.</li>
+                <li>Postérieur : occupé par les canaux éjaculateurs.</li>
+            </ul>
+            <li>Un apex : inférieur.</li>
+            <li>Une face antérieure.</li>
+            <li>Une face postérieure : Divisée par un sillon médian en deux bourrelets latéraux.</li>
+            <li>Deux faces latérales.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">التكوين الداخلي</h3>
+    <ul>
+        <li>كبسولة ليفية.</li>
+        <li>من 30 إلى 40 غدة بروستاتية، تفتح في الإحليل البروستاتي.</li>
+        <li>ستروما ليفية عضلية.</li>
+    </ul>
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A107.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Internal Configuration</h3>
+        <ul>
+            <li>Fibrous capsule.</li>
+            <li>30 to 40 prostatic glands open into the prostatic urethra.</li>
+            <li>Fibromuscular stroma.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Configuration Interne</h3>
+        <ul>
+            <li>Capsule conjonctive.</li>
+            <li>30 à 40 glandes prostatiques, s’ouvrent dans l’urètre prostatique.</li>
+            <li>Stroma fibro-musculaire.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">عناصر أخرى مدمجة في البروستاتا</h3>
+    <ul>
+        <li>الإحليل البروستاتي.</li>
+        <li>القنوات القاذفة.</li>
+        <li>العضلة العاصرة الملساء.</li>
+        <li>العضلة العاصرة المخططة.</li>
+        <li>الرحم البروستاتي.</li>
+    </ul>
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A108.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Other Elements Incorporated in the Prostate</h3>
+        <ul>
+            <li>Prostatic urethra.</li>
+            <li>Ejaculatory ducts.</li>
+            <li>Smooth sphincter.</li>
+            <li>Striated sphincter.</li>
+            <li>Prostatic utricle.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Autres éléments incorporés dans la Prostate</h3>
+        <ul>
+            <li>Urètre prostatique.</li>
+            <li>Canaux éjaculateurs.</li>
+            <li>Sphincter lisse.</li>
+            <li>Sphincter strié.</li>
+            <li>Utricule prostatique.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A109.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A110.avif" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">النظامية</h3>
+    <ul>
+        <li>المرج.</li>
+        <li>الفص المتوسط.</li>
+        <li>الفصوص الجانبية اليمنى واليسرى.</li>
+    </ul>
+
+    
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A111.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Systematization</h3>
+        <ul>
+            <li>Isthmus.</li>
+            <li>Middle lobe.</li>
+            <li>Right and left lateral lobes.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Systématisation</h3>
+        <ul>
+            <li>Isthme.</li>
+            <li>Lobe moyen.</li>
+            <li>Lobes latéraux droit et gauche.</li>
+        </ul>
+    </div>
+</div>
+
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A112.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">الأشعة والتشريح</h3>
+    <ul>
+        <li>الأشعة فوق الصوتية للاختبار الكيسي.</li>
+        <li>إيكو-دوبلر للقنوات المنوية.</li>
+        <li>التصوير بالرنين المغناطيسي للبروستاتا.</li>
+    </ul>
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A113.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+    
+    
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Radio Anatomy</h3>
+        <ul>
+            <li>Testicular ultrasound.</li>
+            <li>Echo-Doppler of spermatic ducts.</li>
+            <li>Prostate MRI.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">RADIO ANATOMIE</h3>
+        <ul>
+            <li>Echographie testiculaire.</li>
+            <li>Echo-Doppler des voies spermatiques.</li>
+            <li>IRM de la prostate.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">الاهتمام العملي</h3>
+    <ul>
+        <li>الاعتلالات الكيسية:</li>
+        <ul>
+            <li>الخصية الهاجرة.</li>
+            <li>التموضع الخاطئ للإحليل.</li>
+            <li>التواء الخصية.</li>
+            <li>سرطان الخصية.</li>
+        </ul>
+    </ul>
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A114.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Practical Interest</h3>
+        <ul>
+            <li>Testicular pathologies:</li>
+            <ul>
+                <li>Cryptorchidism.</li>
+                <li>Hypospadias.</li>
+                <li>Testicular torsion.</li>
+                <li>Testicular cancer.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">INTÉRÊT PRATIQUE</h3>
+        <ul>
+            <li>Pathologies testiculaires :</li>
+            <ul>
+                <li>Cryptorchidie.</li>
+                <li>Hypospadias.</li>
+                <li>Torsion testiculaire.</li>
+                <li>Cancer du testicule.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A115.webp" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">أمراض القنوات المنوية</h3>
+    <ul>
+        <li>التهاب البربخ.</li>
+    </ul>
+
+
+    
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A115.webp" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Pathologies of Spermatic Ducts</h3>
+        <ul>
+            <li>Epididymitis.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Pathologies des Voies Spermatiques</h3>
+        <ul>
+            <li>Épididymite.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <h3 class="section-title" style="text-align: center;">أمراض الغدد الملحقة</h3>
+    <ul>
+        <li>سرطان البروستاتا.</li>
+        <li>تضخم البروستاتا الحميد.</li>
+    </ul>
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A116.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A117.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A118.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <h3 class="section-title" style="text-align: center;">Pathologies of Accessory Glands</h3>
+        <ul>
+            <li>Prostate cancer.</li>
+            <li>Benign prostatic hyperplasia.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <h3 class="section-title" style="text-align: center;">Pathologies des Glandes Annexes</h3>
+        <ul>
+            <li>Cancer de la prostate.</li>
+            <li>Hypertrophie bénigne de la prostate.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A119.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="end-lesson-modal">
+        <h3>أحسنت يا طبيبنا إن شاء الله!</h3>
+        <p id="lesson-summary">الوقت المستغرق: 00 دقيقة و 00 ثانية. عدد الفقاعات التي تم التفاعل معها: 0 من أصل 0.</p>
+        <button class="reload-button" onclick="reloadPage()">إعادة الحفظ</button>
+        <button onclick="goToTestsPage()">الانتقال إلى صفحة الاختبارات</button>
+    </div>
+
+    <div class="modal" id="question-modal">
+        <h3 id="modal-question">هل حفظت هذه الفقاعة؟</h3>
+        <button onclick="closeModal(true)">نعم</button>
+        <button onclick="closeModal(false)">لا</button>
+    </div>
+
+    <script>
+        let totalBubbles = 38; 
+
+let completedBubbles = 0; 
+    let startTime = Date.now();
+    let bubbleButton = null;
+    
+    function showQuestion() {
+        document.getElementById('question-modal').style.display = 'block';
+    }
+    
+    function closeModal(answer) {
+        document.getElementById('question-modal').style.display = 'none';
+    
+        if (answer) {
+            completedBubbles++;
+            updateProgress();
+            bubbleButton.style.backgroundColor = '#4CAF50'; 
+            bubbleButton.innerText = 'تم التفاعل'; 
+            bubbleButton.disabled = true; 
+    
+            if (completedBubbles === totalBubbles) {
+                enableFinishButton();
+            }
+        }
+    }
+    
+    function updateProgress() {
+        let progress = (completedBubbles / totalBubbles) * 100; 
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+        document.getElementById('progress-percentage').innerText = `${Math.round(progress)}%`;
+    
+        const finishButton = document.querySelector('.finish-button');
+        if (progress === 100) {
+            finishButton.disabled = false; 
+            finishButton.style.backgroundColor = '#00aaff'; 
+            finishButton.style.cursor = 'pointer'; 
+        } else {
+            finishButton.disabled = true;
+            finishButton.style.backgroundColor = '#ccc'; 
+            finishButton.style.cursor = 'not-allowed'; 
+        }
+    }
+    
+    function markBubbleAsCompleted(button) {
+        bubbleButton = button; 
+        showQuestion(); 
+    }
+    
+    function finishLesson() {
+        let elapsedTime = Date.now() - startTime;
+        let minutes = Math.floor(elapsedTime / 60000);
+        let seconds = Math.floor((elapsedTime % 60000) / 1000);
+        let summary = `الوقت المستغرق: ${minutes} دقيقة و ${seconds} ثانية. عدد الفقاعات التي تم التفاعل معها: ${completedBubbles} من أصل ${totalBubbles}.`;
+        document.getElementById('lesson-summary').innerText = summary;
+        document.getElementById('end-lesson-modal').style.display = 'block';
+    }
+    
+    function reloadPage() {
+        location.reload();
+    }
+    
+    function goToTestsPage() {
+        window.location.href = 'MED02.html';
+    }
+    
+    function initializeFinishButton() {
+        const finishButton = document.querySelector('.finish-button');
+        finishButton.disabled = true; 
+        finishButton.style.backgroundColor = '#ccc'; 
+        finishButton.style.cursor = 'not-allowed'; 
+    }
+    
+    window.onload = initializeFinishButton;
+    
+    // وظيفة للانتقال إلى أول فقاعة غير مكتملة
+    function goToUncompletedBubble() {
+        let bubbles = document.querySelectorAll('.interact-button');
+        for (let bubble of bubbles) {
+            if (!bubble.disabled) { // تعني أن الفقاعة لم يتم التفاعل معها
+                bubble.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                bubble.style.border = "3px solid red"; // تمييزها باللون الأحمر
+                break;
+            }
+        }
+    }
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أزرار للانتقال</title>
+    <style>
+        /* الزر العائم */
+        .floating-buttons {
+            position: fixed;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            left: 20px;  /* وضع الزر في الجهة اليسرى */
+            bottom: 20px;
+        }
+
+        /* زر الفلاش كارد */
+        .flashcard-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 22px;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* التأثير عند التمرير على الزر */
+        .flashcard-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1); /* زيادة الحجم عند التمرير */
+        }
+
+        /* قسم بطاقات الفلاش */
+        #flashcard-section {
+            margin-top: 100px;  /* إعطاء بعض المسافة من الأعلى */
+            padding: 20px;
+            background-color: #1000f1;
+        }
+
+        /* تحسين العرض على الأجهزة الصغيرة */
+        @media (max-width: 768px) {
+            .floating-buttons {
+                left: 10px;  /* جعل الزر أقرب قليلاً على الشاشات الصغيرة */
+                bottom: 10px;
+            }
+
+            .flashcard-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+ 
+
+    <!-- الأزرار العائمة -->
+    <div class="floating-buttons">
+        <!-- زر للانتقال إلى الفلاش كارد -->
+        <button class="flashcard-button" onclick="goToFlashCard()">🎴</button>
+    </div>
+
+    <script>
+        // وظيفة للانتقال إلى بطاقات الفلاش داخل نفس الصفحة
+        function goToFlashCard() {
+            // هنا نقوم بالانتقال مباشرة إلى قسم بطاقات الفلاش
+            document.getElementById('flashcard-section').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br>
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 بطاقات فلاش تفاعلية</title>
+    <style>
+        body {
+            font-family: 'Amiri', serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            direction: rtl;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .front {
+            background-color: #1e1e1e;
+        }
+
+        .back {
+            background-color: #2c2c2c;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-image {
+            width: 40%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcard-image img {
+            max-width: 100%;
+            max-height: 100%;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .flashcard-image img.expanded {
+            transform: scale(1.5);
+        }
+
+        .flashcard-content {
+            width: 65%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: right;
+            direction: rtl;
+            overflow-y: auto;
+            max-height: 150px;
+            white-space: normal;
+            word-wrap: break-word;
+            position: relative;
+        }
+        .hint-container {
+    position: fixed; /* استخدم fixed لجعل التلميح ثابتًا في المكان */
+    top: -190px; /* 20px من أعلى الصفحة */
+    left: 50%;
+    transform: translateX(-50%); /* لتوسيط التلميح بشكل أفقي */
+    width: 80%; /* عرض التلميح */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #f1c40f;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+}
+
+        /* عند إظهار التلميح */
+        .hint-container.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .arrow {
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .arrow:hover {
+            color: #00aaff;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 480px) {
+            .flashcard {
+                height: 230px;
+            }
+
+            .flashcard-image {
+                width: 40%;
+                max-height: 150px;
+            }
+
+            .flashcard-content {
+                font-size: 14px;
+                padding: 10px;
+                max-height: 120px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body><br><br><br><br><br><br><br>
+    <h2 id="flashcard-section">📚 بطاقات فلاش تفاعلية</h2>
+    <br><br><br><br><br><br><br><br><br>
+    <div class="flashcard-container" onclick="flipCard(event)">
+        <div class="flashcard" id="flashcard">
+            <div class="flashcard-side front">
+                <div class="flashcard-image">
+                    <img id="cardImageFront" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3 id="question"></h3>
+                    <!-- حاوية التلميح -->
+                    <div id="hintContainer" class="hint-container">
+                        <p id="hint" class="hint"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flashcard-side back">
+                <div class="flashcard-image">
+                    <img id="cardImageBack" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3>الإجابة:</h3>
+                    <p id="answer"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="buttons">
+        <button onclick="showHint()">🔍 تلميح</button>
+        <button onclick="shuffleCards()">🔀 خلط البطاقات</button>
+    </div>
+
+    <br>
+    <div class="navigation">
+        <span class="arrow" onclick="nextCard()">➡️</span>
+        <span id="cardNumber">1 / 3</span>
+        <span class="arrow" onclick="prevCard()">⬅️</span>
+    </div>
+
+    <script>
+        const flashcards = [
+            {
+                question : "خمن البيانات والعنوان:<br>🔹 باللغة العربية (AR): خمن البيانات والعنوان<br>🔹 باللغة الإنجليزية (EN): Guess the data and the title<br>🔹 باللغة الفرنسية (FR): Devinez les données et le titre",
+                hint : "🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5 (AR)<br>🔍 In English (EN): Axial slice from a CT scan / TDM of the chest at the Th5 level<br>🔍 En français (FR): Coupe axiale d'un scanner TDM du thorax au niveau Th5",
+                answer: `
+                    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                        <li><b>  العنوان:</b><br>
+                            🔹 <b>شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5.  (AR):</b><br>
+                            🔹 <b>Axial slice of a CT scan / TDM of the thorax at the Th5 level.  (EN):</b><br>
+                            🔹 <b> Coupe axiale d'un scanner / TDM thoracique au niveau Th5 (FR):</b>
+               
+                        </li><br>
+                        <span style="font-size: 20px; font-weight: bold;">🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5:</span><br>
+                        <ol style="padding-right: 20px; text-align: right;">
+                            <li>1️⃣ : الرئة اليمنى (Right Lung) - <i>Poumon droit</i></li><br>
+                            <li>2️⃣ : الرئة اليسرى (Left Lung) - <i>Poumon gauche</i></li><br>
+                            <li>3️⃣ : الجذع الرئوي (Pulmonary Trunk) - <i>Tronc pulmonaire</i></li><br>
+                            <li>4️⃣ : الشريان الرئوي الأيمن (Right Pulmonary Artery) - <i>Artère pulmonaire droite</i></li><br>
+                            <li>5️⃣ : الشريان الرئوي الأيسر (Left Pulmonary Artery) - <i>Artère pulmonaire gauche</i></li><br>
+                            <li>6️⃣ : الوريد الأجوف العلوي (Superior Vena Cava) - <i>Veine cave supérieure</i></li><br>
+                            <li>7️⃣ : الأبهر الصدري الصاعد (Ascending Thoracic Aorta) - <i>Aorte thoracique ascendante</i></li><br>
+                            <li>8️⃣ : الأبهر الصدري النازل (Descending Thoracic Aorta) - <i>Aorte thoracique descendante</i></li><br>
+                            <li>9️⃣ : الوريد الرئوي الأيسر (Left Pulmonary Vein) - <i>Veine pulmonaire gauche</i></li><br>
+                            <li>🔟 : الكتف الأيسر (Left Scapula) - <i>Scapula gauche</i></li><br>
+                        </ol>
+                    </ul>
+                `,
+                imageFront: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الخلفية
+                isHtml: true
+            },
+    {
+        question: `🔹 <b>  خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.   </b> 🔹<br>
+        🔹 <b>باللغة العربية (AR):</b> خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.  br>
+        🔹 <b>In English (EN):</b> Guess the intercostal arteries that supply the mammary gland<br>
+        🔹 <b>En français (FR):</b> Devinez les artères intercostales qui irriguent la glande mammaire`,
+        
+        hint: `🔍 <b>تلميح / Hint / Indice</b><br>
+        🔴 <b>باللغة العربية (AR):</b> عددها ثلاثة بالترتيب.<br>
+        🔵 <b>In English (EN):</b> They are three in order.<br>
+        ⚪ <b>En français (FR):</b> Ils sont au nombre de trois dans l'ordre.`,
+        
+        answer: `
+            <div style="text-align: center;">
+                <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                    <li>2️⃣ <b>الشريان الوربي الثاني</b> (Intercostal Artery 2) - <i>Deuxième artère intercostale</i></li><br>
+                    <li>3️⃣ <b>الشريان الوربي الثالث</b> (Intercostal Artery 3) - <i>Troisième artère intercostale</i></li><br>
+                    <li>4️⃣ <b>الشريان الوربي الرابع</b> (Intercostal Artery 4) - <i>Quatrième artère intercostale</i></li><br>
+                </ul>
+            </div>
+        `,
+        imageFront: "/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MED U4 ANATOMIE/A47.jpg", // صورة الجهة الخلفية
+                isHtml: true
+    }
+
+
+
+    ];
+
+let currentIndex = 0;
+let flipped = false;
+
+function updateCard() {
+    const card = flashcards[currentIndex];
+    document.getElementById("question").innerHTML = card.question;
+    document.getElementById("answer").innerHTML = card.answer;
+    document.getElementById("cardImageFront").src = card.imageFront;
+    document.getElementById("cardImageBack").src = card.imageBack;
+    document.getElementById("cardNumber").textContent = `${currentIndex + 1} / ${flashcards.length}`;
+}
+
+function flipCard(event) {
+    event.stopPropagation();
+    flipped = !flipped;
+    document.getElementById("flashcard").classList.toggle("flipped", flipped);
+}
+
+function nextCard() {
+    currentIndex = (currentIndex + 1) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+function prevCard() {
+    currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+updateCard();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br>
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القلم الناطق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #008cff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
+            display: none;
+        }
+
+        .show-notification {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffcc00;
+            color: black;
+            font-size: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.2s;
+            z-index: 9999;
+        }
+
+        .floating-btn:hover {
+            background-color: #ffdb4d;
+            transform: scale(1.1);
+        }
+
+        .speed-control {
+            margin-top: 15px;
+        }
+
+        input[type="range"] {
+            width: 50%;
+            accent-color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>حدد أي نص لسماعه! 🎧</h1>
+    <p>هذه جملة باللغة العربية.</p>
+    <p>This is a sentence in English.</p>
+    <p>Ceci est une phrase en français.</p>
+
+    <div>
+        <label>🔹 اختر جنس الصوت:</label>
+        <select id="voiceGender">
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+        </select>
+    </div>
+
+    <div class="speed-control">
+        <label for="speedRange">🔊 سرعة الصوت:</label>
+        <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1">
+    </div>
+
+    <button class="floating-btn" onclick="toggleSpeech()">⚡</button>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let speechSynthesisInstance = window.speechSynthesis;
+        let isSpeechEnabled = false;
+        let currentUtterance = null;
+        let voices = [];
+        let speechRate = 1; 
+        let userGender = "male"; 
+
+        function showNotification(message) {
+            let notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("show-notification");
+
+            setTimeout(() => {
+                notification.classList.remove("show-notification");
+            }, 2000);
+        }
+
+        function toggleSpeech() {
+            isSpeechEnabled = !isSpeechEnabled;
+            showNotification(isSpeechEnabled ? "✅ تم تفعيل القلم الناطق!" : "⛔ تم إيقاف القلم الناطق!");
+        }
+
+        document.addEventListener('mouseup', function () {
+            if (!isSpeechEnabled) return;
+
+            let selectedText = window.getSelection().toString().trim();
+            if (selectedText.length > 0) {
+                speakText(selectedText);
+            }
+        });
+
+        function speakText(text) {
+            stopSpeech();
+
+            let utterance = new SpeechSynthesisUtterance(text);
+            let lang = detectLanguage(text);
+            utterance.lang = lang;
+            utterance.voice = getBestVoice(lang);
+            utterance.rate = speechRate;
+            utterance.volume = 1.0;
+
+            currentUtterance = utterance;
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function detectLanguage(text) {
+            if (/[\u0600-\u06FF]/.test(text)) return "ar-SA"; 
+            if (/[a-zA-Z]/.test(text)) return "en-US"; 
+            return "fr-FR"; 
+        }
+
+        function getBestVoice() {
+    voices = speechSynthesis.getVoices();
+    
+    let maleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("m"));
+    let femaleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("f"));
+
+    if (userGender === "male" && maleVoice) {
+        return maleVoice;
+    } else if (userGender === "female" && femaleVoice) {
+        return femaleVoice;
+    }
+
+    // إذا لم يتم العثور على صوت مناسب، استخدم أي صوت عربي متاح
+    return voices.find(voice => voice.lang.startsWith("ar")) || voices[0];
+}
+
+        function transliterateToEnglish(langCode, availableVoices) {
+            let transliterationMap = {
+                "ar": {
+                    "أ": "A", "ب": "B", "ت": "T", "ث": "TH", "ج": "J", "ح": "H", "خ": "KH",
+                    "د": "D", "ذ": "DH", "ر": "R", "ز": "Z", "س": "S", "ش": "SH", "ص": "S",
+                    "ض": "D", "ط": "T", "ظ": "Z", "ع": "A", "غ": "GH", "ف": "F", "ق": "Q",
+                    "ك": "K", "ل": "L", "م": "M", "ن": "N", "ه": "H", "و": "W", "ي": "Y"
+                }
+            };
+
+            let text = window.getSelection().toString();
+            let transliteratedText = text.split("").map(char => transliterationMap[langCode][char] || char).join("");
+
+            let utterance = new SpeechSynthesisUtterance(transliteratedText);
+            utterance.lang = "en-US";
+            utterance.voice = availableVoices.find(voice => voice.lang.startsWith("en")) || availableVoices[0];
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function stopSpeech() {
+            if (speechSynthesisInstance.speaking) {
+                speechSynthesisInstance.cancel();
+            }
+            currentUtterance = null;
+        }
+
+        document.getElementById("speedRange").addEventListener("input", function () {
+            speechRate = this.value;
+        });
+
+        document.getElementById("voiceGender").addEventListener("change", function () {
+            userGender = this.value;
+        });
+
+        window.onload = function() {
+            speechSynthesis.onvoiceschanged = function() {
+                voices = speechSynthesis.getVoices();
+            };
+        };
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,3377 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>  ملخص      تشريح الغدد الدرقية والجارات الدرقية    </title>
+
+    
+    <!-- إضافة الفافيكون بصيغة JPG -->
+    <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 150, 255, 0.6);
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, top 0.3s ease-in-out;
+        }
+
+        .popup h3 {
+            color: #00aaff;
+            font-size: 22px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .input-group input {
+            width: 85%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #00aaff;
+            text-align: center;
+            font-size: 16px;
+            background-color: #222;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+        }
+
+        .gender-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .gender-buttons button {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .gender-buttons button:hover {
+            background: linear-gradient(90deg, #0056b3, #003c80);
+            transform: scale(1.05);
+        }
+
+        .gender-buttons button.selected {
+            background: #FFD700;
+            color: black;
+            font-weight: bold;
+        }
+
+        .submit-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .submit-button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            top: 50% !important;
+        }
+
+        #greeting {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 50px;
+            text-shadow: 2px 2px 10px rgba(0, 150, 255, 0.5);
+        }
+
+        #studyMessage {
+            display: none;
+            font-size: 18px;
+            margin-top: 15px;
+            color: #FFD700;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+        
+    <div id="welcomePopup" class="popup">
+        <h3>  ! السلام عليكم و أهلاً يا طبيب/طبيبة مستقبلنا ان شاء الله  </h3>
+
+        <p>من فضلك أدخل/ادخلي اسمك واختر/اختاري جنسك:</p>
+
+    
+        <div class="input-group">
+            <input type="text" id="username" placeholder="أدخل اسمك">
+        </div>
+    
+        <div class="gender-buttons">
+            <button id="femaleButton" onclick="selectGender('female')"> امرأة</button>
+            <button id="maleButton" onclick="selectGender('male')">  رجل</button>
+           
+        </div>
+    
+        <button class="submit-button" onclick="submitInfo()">متابعة</button>
+    </div>
+    
+    <!-- يجب أن يكون خارج نافذة الإدخال حتى يظهر عند الضغط على متابعة -->
+    <div id="greetingContainer" style="display: none; flex-direction: column; align-items: center; gap: 10px; margin-top: 70px;">
+        <h2 id="welcomeMessage" style="color: #00aaff; text-align: center;"></h2>
+        <img id="doctorImage" src="" alt="صورة الطبيب" style="width: 60px; height: 60px; border-radius: 50%;">
+        <h1 id="greeting" style="margin: 0; font-size: 22px;"></h1>
+    </div>
+    <p id="studyMessage"></p>
+    <p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px;"></p>
+    
+    <script>
+        let selectedGender = "";
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            let storedName = localStorage.getItem("username");
+            let storedGender = localStorage.getItem("gender");
+            let visitCount = parseInt(localStorage.getItem("visitCount") || "0");
+    
+            visitCount += 1;
+            localStorage.setItem("visitCount", visitCount);
+    
+            if (visitCount >= 3) {
+                localStorage.removeItem("username");
+                localStorage.removeItem("gender");
+                localStorage.setItem("visitCount", "0");
+                storedName = null;
+            }
+    
+            if (storedName && storedGender) {
+                displayGreeting(storedName, storedGender);
+            } else {
+                let popup = document.getElementById('welcomePopup');
+                popup.style.display = 'block';
+                setTimeout(() => popup.classList.add('fade-in'), 50);
+            }
+        });
+    
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.getElementById("maleButton").classList.remove("selected");
+            document.getElementById("femaleButton").classList.remove("selected");
+    
+            if (gender === "male") {
+                document.getElementById("maleButton").classList.add("selected");
+            } else {
+                document.getElementById("femaleButton").classList.add("selected");
+            }
+        }
+    
+
+
+        function submitInfo() {
+    let name = document.getElementById('username').value.trim();
+    if (name === "") {
+        alert("❌ يرجى إدخال اسمك");
+        return;
+    }
+    if (!selectedGender) {
+        alert("❌ يرجى اختيار الجنس");
+        return;
+    }
+
+    console.log("🚀 إرسال الاسم:", name);
+    console.log("🚀 إرسال الجنس:", selectedGender);
+
+    localStorage.setItem("username", name);
+    localStorage.setItem("gender", selectedGender);
+    localStorage.setItem("visitCount", "0");
+
+    displayGreeting(name, selectedGender);
+
+    let popup = document.getElementById('welcomePopup');
+    popup.classList.remove('fade-in');
+    setTimeout(() => popup.style.display = 'none', 500);
+}
+
+
+
+
+
+
+function displayGreeting(name, gender) {
+    console.log("✅ تم استلام الاسم:", name);
+    console.log("✅ تم استلام الجنس:", gender);
+
+    let welcomeMessage = `السلام عليكم ومرحبًا بك يا ${name}`;  
+    
+    
+    let greetingMessage = gender === "male" 
+        ? `مرحبًا دكتور ${name}!` 
+        : `مرحبًا دكتورة ${name}!`;
+
+    let studyMessage = gender === "male" 
+        ? "ادرس جيدًا يا طبيب المسلمين إن شاء الله 📚" 
+        : "ادرسِ جيدًا يا طبيبة المسلمات إن شاء الله 📚";
+
+  
+       
+        
+
+        let nationNeedsYou = 
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "  ﴿الَّذِينَ يَتَّخِذُونَ الْكَافِرِينَ أَوْلِيَاءَ مِن دُونِ الْمُؤْمِنِينَ ۚ أَيَبْتَغُونَ عِندَهُمُ الْعِزَّةَ فَإِنَّ الْعِزَّةَ لِلَّهِ جَمِيعًا ﴾\n" +
+    "[النساء: 139]\n\n" +
+    
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "﴿ لَهُ مُعَقِّبَاتٌ مِّن بَيْنِ يَدَيْهِ وَمِنْ خَلْفِهِ يَحْفَظُونَهُ مِنْ أَمْرِ اللَّهِ ۗ إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ ۗ وَإِذَا أَرَادَ اللَّهُ بِقَوْمٍ سُوءًا فَلَا مَرَدَّ لَهُ ۚ وَمَا لَهُم مِّن دُونِهِ مِن وَالٍ ﴾\n" +
+    "[الرعد: 11]\n\n" +
+
+    "أمتكم بحاجة إليكم.. كونوا عونًا لها في سبيل الله، اجعلوا علمكم طريقًا لنهضة أمتكم.. أمتكم بحاجة إليكم.\n\n" +
+    
+    "فعن السلف الصالح عمر بن الخطاب رضي الله عنه قال:\n" +
+    "\"إنَّا كنَّا أذَلَّ قومٍ، فأعزَّنا اللَّهُ بالإسلامِ، فمهما نطلُبِ العِزَّةَ بغيرِ ما أعزَّنا اللَّهُ به أذلَّنا اللَّهُ.\"";
+
+// وضع النص داخل العنصر بدون أكواد HTML ظاهرة
+document.getElementById('nationMessage').textContent = nationNeedsYou;
+
+
+
+
+
+
+    let imageSrc = gender === "male" 
+        ? "S22MCS PARTS/doctor.png" 
+        : "S22MCS PARTS/doctormuslim.png";
+
+    // تحديث العناصر في الصفحة
+    document.getElementById('welcomeMessage').innerText = welcomeMessage;
+    document.getElementById('greeting').innerText = greetingMessage;
+    document.getElementById('studyMessage').innerText = studyMessage;
+    document.getElementById('nationMessage').innerText = nationNeedsYou;
+    document.getElementById('doctorImage').src = imageSrc;
+
+    // عرض القسم بالكامل
+    document.getElementById('greetingContainer').style.display = 'flex';
+    document.getElementById('studyMessage').style.display = 'block';
+    document.getElementById('nationMessage').style.display = 'block';
+}
+
+        
+    </script>
+    
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+        <html lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>  </title>
+            <style>
+                body {
+                    font-family: 'Poppins', 'Amiri', serif;
+                    background-color: #121212;
+                    color: white;
+                    margin: 0;
+                    padding: 20px;
+                    text-align: center;
+                    padding-top: 120px;
+                }
+            
+                /* Updated Sidebar to Header */
+                .sidebar {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height:50px;
+                    background-color: #333;
+                    text-align: center;
+                    padding: 10px 20px;
+                    z-index: 1000;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                }
+            
+                /* Progress Bar Container */
+                .progress-bar-container {
+                    width: 60%;
+                    height: 35px;
+                    background-color: #444;
+                    border-radius: 15px;
+                    position: relative;
+                    margin: 0 auto;
+                }
+            
+           /* Progress Bar */
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #00aaff;
+    border-radius: 15px;
+    transition: width 0.3s ease-in-out;
+    margin-left: 500px; /* تحريك الشريط قليلًا إلى اليسار */
+}
+
+
+            
+#proo {
+    display: flex;
+    align-items: center; /* محاذاة الإيموجي والنص أفقيًا */
+    gap: 5px; /* مسافة صغيرة بين الإيموجي والنص */
+    margin-left: 8rem; /* تحريكه لليمين */
+    font-size: 1.7rem;
+}
+
+
+                /* Progress Percentage */
+                .progress-percentage {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+            
+                /* Finish Button */
+                .finish-button {
+                    background-color: #00aaff;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    margin-right: 3rem;
+                }
+            
+                .finish-button:hover {
+                    background-color: #0077cc;
+                }
+            
+                /* Disabled Finish Button */
+                .finish-button:disabled {
+                    background-color: #ccc;
+                    cursor: not-allowed;
+                    opacity: 0.7;
+                }
+            
+                /* Lesson Container */
+                .lesson-container {
+                    margin-top: 20px;
+                }
+            
+                /* Bubble Styles */
+                .bubble {
+                    background: rgba(30, 30, 30, 0.95);
+                    box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+                    border-left: 6px solid #00aaff;
+                    padding: 20px;
+                    border-radius: 20px;
+                    margin: 20px auto;
+                    max-width: 60rem;
+                    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+                    text-align: right;
+                    direction: rtl;
+                    position: relative;
+                    cursor: pointer;
+
+
+
+                    margin-bottom: 70px; /* إضافة مسافة فارغة أسفل كل فقاعة */
+
+                }
+            
+                .bubble:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
+                }
+            
+                .interact-button {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                }
+            
+                .interact-button:hover {
+                    background-color: #0056b3;
+                }
+            
+                /* Modal Styles */
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 2000;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 90%;
+                    max-width: 400px;
+                    background: #222;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 10px rgba(0, 150, 255, 0.5);
+                    text-align: center;
+                }
+            
+                .modal h3 {
+                    margin-bottom: 15px;
+                    color: #00aaff;
+                }
+            
+                .modal button {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 15px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    margin: 10px;
+                    font-size: 16px;
+                }
+            
+                .modal button:hover {
+                    background-color: #0056b3;
+                }
+            
+                /* End Lesson Modal */
+                #end-lesson-modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 2000;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 80%;
+                    max-width: 600px;
+                    background-color: #333;
+                    padding: 30px;
+                    border-radius: 10px;
+                    color: white;
+                    text-align: center;
+                    box-shadow: 0 6px 30px rgba(0, 150, 255, 0.5);
+                }
+            
+                #end-lesson-modal h3 {
+                    color: #00aaff;
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+            
+                #end-lesson-modal p {
+                    font-size: 18px;
+                    margin-bottom: 20px;
+                }
+            
+                #end-lesson-modal button {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    margin: 10px;
+                    font-size: 16px;
+                }
+            
+                #end-lesson-modal button:hover {
+                    background-color: #0056b3;
+                }
+            
+                .reload-button {
+                    background-color: #28a745;
+                }
+            
+                .reload-button:hover {
+                    background-color: #218838;
+                }
+            
+                /* Vibration Animation */
+                @keyframes vibrate {
+                    0% { transform: translateX(0); }
+                    20% { transform: translateX(-5px); }
+                    40% { transform: translateX(5px); }
+                    60% { transform: translateX(-5px); }
+                    80% { transform: translateX(5px); }
+                    100% { transform: translateX(0); }
+                }
+            
+                .vibrate {
+                    animation: vibrate 0.5s ease-in-out;
+                }
+            
+                /* Media Queries for Small Screens */
+                @media (max-width: 768px) {
+                    body {
+                        padding-top: 80px; /* Reduce top padding */
+                    }
+            
+                    .bubble {
+                        max-width: 90%; /* Make the bubble width responsive */
+                        padding: 15px; /* Reduce padding */
+                    }
+            
+                    .interact-button {
+                        font-size: 12px; /* Reduce button font size */
+                        padding: 6px 10px; /* Adjust padding */
+                    }
+            
+                    .finish-button {
+                        font-size: 12px; /* Adjust font size */
+                        padding: 8px 13px; /* Adjust padding */
+                    }
+            
+                    .lesson-container {
+                        margin-top: 10px; /* Adjust for smaller screens */
+                    }
+                }
+            
+                @media (max-width: 480px) {
+                    body {
+                        font-size: 14px; /* Adjust font size for very small screens */
+                        padding: 10px; /* Reduce padding */
+                    }
+            
+                    .bubble {
+                        padding: 10px; /* Reduce padding */
+                        max-width: 100%; /* Full width on very small screens */
+                    }
+            
+                    .interact-button {
+                        font-size: 8px; /* Reduce button font size */
+                        padding: 4px 7px; /* Adjust padding */
+                    }
+            
+                    .finish-button {
+                        font-size: 10px; /* Reduce font size */
+                        padding: 5px 10px; /* Adjust padding */
+                    }
+                }
+     
+            
+@media (max-width: 768px) {
+    .progress-bar-container {
+        width: 85%; /* عرض الشريط أكبر قليلاً على الشاشات الصغيرة */
+    }
+}
+
+/* استعلام ميديا للأجهزة التي يزيد عرض شاشتها عن 480 بكسل */
+@media (max-width: 480px) {
+    .progress-bar-container {
+        width: 90%; /* شريط التقدم يشغل مساحة أكبر على الشاشات الصغيرة جدًا */
+        height: 20px; /* تقليص الارتفاع قليلاً */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.outside-image {
+    display: block; /* يجعل الصورة عنصرًا منفصلًا */
+    margin: 20px auto; /* يضع الصورة في المنتصف */
+    max-width: 100%; /* يضمن أن الصورة لا تتجاوز حجم الشاشة */
+    height: auto; /* يحافظ على الأبعاد الأصلية للصورة */
+}
+
+
+
+
+
+
+
+
+
+
+/* Refresh Container */
+.refresh-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.refresh-button {
+    background: linear-gradient(135deg, #1a1a1a, #333); /* ألوان داكنة مريحة */
+    color: #ffffff;
+    border: 1px solid #444;
+    padding: 10px 22px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 25px;
+    font-family: 'Poppins', Arial, sans-serif;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 160px;
+    justify-content: center;
+}
+
+.refresh-button:hover {
+    background: linear-gradient(135deg, #292929, #444);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
+}
+
+.refresh-button:active {
+    transform: scale(0.96);
+}
+
+.refresh-button::before {
+    content: "🔄"; /* أيقونة التحديث */
+    font-size: 18px;
+}
+
+/* تحسين للهواتف */
+@media (max-width: 768px) {
+    .refresh-button {
+        padding: 8px 18px;
+        font-size: 14px;
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .refresh-button {
+        padding: 7px 16px;
+        font-size: 13px;
+        min-width: 120px;
+        border-radius: 20px;
+    }
+}
+
+
+
+
+</style>
+
+
+
+
+
+<body>
+ 
+  
+    <div class="sidebar">
+   
+        <button class="finish-button" onclick="finishLesson()" 
+        style="font-size: 15px; padding: 6px 10px; position: relative; right: -20px;">
+        ✅ انتهيت من الدرس
+    </button>
+     
+    
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-percentage" id="progress-percentage">0%</div>
+        </div>
+
+        <h3 id="proo">📊 <span>التقدم</span></h3>
+
+      
+
+    <button onclick="goToUncompletedBubble()" class="uncompleted-button" style="font-size: 14px; padding: 6px 10px;">🔍 الفقاعات غير المكتملة</button>
+    
+
+</div>
+    
+    
+
+
+    <br>
+    <div class="refresh-container"  id="ref">
+        <button class="refresh-button" onclick="location.reload();">تحديث الصفحة</button>
+    </div>
+    <br>
+    <div class="lesson-container">
+        <h1 class="lesson-title">     تشريح الغدد الدرقية والجارات الدرقية        </h1>
+        
+        <h2 class="lesson-subtitle">🔻 ANATOMY OF THE THYROID AND PARATHYROID GLANDS 🔻</h2>
+        <h2 class="lesson-subtitle"> 🔻   ANATOMIE DES GLANDES THYROÏDE ET PARATHYROÏDES 🔻</h2>
+     </div>
+
+     
+
+
+
+
+
+
+     <!DOCTYPE html>
+     <html lang="ar">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>تم عبر برنامج 2019 الطب الجزائري</title>
+     
+         <style>
+         body {
+             font-family: 'Poppins', 'Amiri', serif;
+             direction: rtl;
+             text-align: right;
+             background-color: #121212;
+             color: white;
+             margin: 0;
+             padding: 20px;
+         }
+         
+         .container {
+             max-width: 600px;
+             margin: auto;
+             background: #1e1e1e;
+             padding: 20px;
+             border-radius: 10px;
+             box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+         }
+         
+         h2 {
+             text-align: center;
+             color: #00aaff;
+         }
+         
+         .lesson {
+             display: flex;
+             align-items: center;
+             justify-content: space-between;
+             padding: 15px;
+             border-bottom: 1px solid #444;
+             flex-direction: column;
+             background: rgba(30, 30, 30, 0.9);
+             border-radius: 10px;
+             margin-bottom: 10px;
+             transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+         }
+         
+         .lesson:hover {
+             transform: translateY(-3px);
+             box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
+         }
+         
+         .lesson input {
+             transform: scale(1.3);
+             accent-color: #00aaff;
+         }
+         
+         .lesson span {
+             flex-grow: 1;
+             margin-right: 10px;
+         }
+         
+         .translation {
+             font-size: 12px;
+             color: #bbb;
+             margin-top: 5px;
+         }
+         
+         .progress-bar {
+             width: 100%;
+             background: #444;
+             height: 12px;
+             border-radius: 6px;
+             margin: 10px 0;
+             overflow: hidden;
+         }
+         
+         .progress {
+             height: 100%;
+             background: #00aaff;
+             width: 0%;
+             transition: width 0.3s;
+         }
+         
+         .btn {
+             display: block;
+             width: 100%;
+             padding: 12px;
+             background: #00aaff;
+             color: white;
+             text-align: center;
+             border: none;
+             border-radius: 6px;
+             cursor: pointer;
+             font-size: 16px;
+             margin-top: 10px;
+             transition: background 0.3s ease-in-out;
+         }
+         
+         .btn:hover {
+             background: #0077cc;
+         }
+         
+         .lang {
+             text-align: center;
+             color: #bbb;
+             font-size: 14px;
+             margin-top: 20px;
+         }
+     </style>    
+     </head>
+     <body>
+         <div class="container">
+             <h2>الأهداف العامة والخاصة في الدرس</h2>
+             <div class="progress-bar"><div class="progress"></div></div>
+             <div id="lessonList"></div>
+             <button class="btn" onclick="completeAll()">إكمال الكل</button>
+             <div class="lang">
+                
+                العربية
+
+                <br>
+            English | Français 
+            </div>
+         </div>
+     
+         <script>
+             const lessons = [
+                 { ar: "التعرف على الغدد الصماء", en: "Identify the endocrine glands", fr: "Identifier les glandes endocrines" },
+                 { ar: "تحديد موقع الغدة الدرقية والجار درقية", en: "Locate the thyroid and parathyroid glands", fr: "Situer la glande thyroïde et parathyroïde" },
+                 { ar: "وصف التكوين الخارجي والداخلي لها", en: "Describe their external and internal configuration", fr: "Décrire leur configuration externe et interne" },
+                 { ar: "تحديد الأعضاء المرتبطة بها", en: "Locate the organs in relation to them", fr: "Situer les organes en rapports" },
+                 { ar: "وصف التروية الشريانية، والصرف الوريدي واللمفاوي وتعصيبها", en: "Describe their arterial vascularization, venous and lymphatic drainage, and innervation", fr: "Décrire la vascularisation artérielle, le drainage veineux et lymphatique ainsi que son innervation" }
+             ];
+     
+             const lessonList = document.getElementById("lessonList");
+             lessons.forEach((lesson, index) => {
+                 const div = document.createElement("div");
+                 div.className = "lesson";
+                 div.innerHTML = `
+                     <input type="checkbox" onchange="updateProgress()" id="lesson${index}">
+                     <span>${lesson.ar}</span>
+                     <div class="translation">${lesson.en}</div>
+                     <div class="translation">${lesson.fr}</div>
+                 `;
+                 lessonList.appendChild(div);
+             });
+     
+             function updateProgress() {
+                 const checkboxes = document.querySelectorAll("input[type=checkbox]");
+                 let completed = 0;
+                 checkboxes.forEach(cb => { if (cb.checked) completed++; });
+                 document.querySelector(".progress").style.width = (completed / lessons.length * 100) + "%";
+             }
+     
+             function completeAll() {
+                 document.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
+                 updateProgress();
+             }
+         </script>
+     </body>
+     </html>
+     
+
+     <br><br>
+
+
+     <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">تشريح الغدة الدرقية</h3>
+        <ul>
+            <li><strong>I) التعريف</strong></li>
+            <li><strong>II) التشريح الوصفي</strong></li>
+            <ul>
+                <li><strong>A)</strong> الموقع</li>
+                <li><strong>B)</strong> الشكل</li>
+                <li><strong>C)</strong> الأبعاد</li>
+                <li><strong>D)</strong> القوام</li>
+                <li><strong>E)</strong> اللون</li>
+                <li><strong>F)</strong> وسائل التثبيت</li>
+            </ul>
+            <li><strong>III) علاقات الغدة الدرقية</strong></li>
+            <li><strong>IV) التروية العصبية والوعائية للغدة الدرقية</strong></li>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">Anatomy of the Thyroid Gland</h3>
+            <ul>
+                <li><strong>I) Definition</strong></li>
+                <li><strong>II) Descriptive Anatomy</strong></li>
+                <ul>
+                    <li><strong>A)</strong> Location</li>
+                    <li><strong>B)</strong> Shape</li>
+                    <li><strong>C)</strong> Dimensions</li>
+                    <li><strong>D)</strong> Consistency</li>
+                    <li><strong>E)</strong> Coloration</li>
+                    <li><strong>F)</strong> Means of Fixation</li>
+                </ul>
+                <li><strong>III) Thyroid Relationships</strong></li>
+                <li><strong>IV) Vascularization and Innervation of the Thyroid</strong></li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">Anatomie de la Glande Thyroïde</h3>
+            <ul>
+                <li><strong>I) Définition</strong></li>
+                <li><strong>II) Anatomie Descriptive</strong></li>
+                <ul>
+                    <li><strong>A)</strong> Situation</li>
+                    <li><strong>B)</strong> Forme</li>
+                    <li><strong>C)</strong> Dimension</li>
+                    <li><strong>D)</strong> Consistance</li>
+                    <li><strong>E)</strong> Coloration</li>
+                    <li><strong>F)</strong> Moyens de Fixité</li>
+                </ul>
+                <li><strong>III) Rapports de la Thyroïde</strong></li>
+                <li><strong>IV) Vascularisation et Innervation de la Thyroïde</strong></li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A219.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+ 
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">التعريف</h3>
+        <ul>
+            <li>الغدة الدرقية هي غدة صماء فردية، متوسطة، ومتناسقة.</li>
+            <li>تقع في الجزء الأمامي الجانبي من الرقبة.</li>
+            <li>يُكسبها انتشار أمراضها وأهمية علاقاتها التشريحية أهمية جراحية خاصة.</li>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">Definition</h3>
+            <ul>
+                <li>The thyroid is an unpaired, median, and symmetrical endocrine gland.</li>
+                <li>Located in the anterolateral part of the neck.</li>
+                <li>The frequency of its pathologies and the importance of its anatomical relationships give it a particular surgical interest.</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">Définition</h3>
+            <ul>
+                <li>La thyroïde est une glande endocrine impaire, médiane et symétrique.</li>
+                <li>Située à la partie antérolatérale du cou.</li>
+                <li>La fréquence de ses pathologies, l’importance de ses rapports donnent à son étude anatomique un intérêt chirurgical particulier.</li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">التشريح الوصفي</h3>
+        <ul>
+            <li><strong>المناطق التشريحية:</strong></li>
+            <ul>
+                <li>المنطقة فوق اللامية</li>
+                <li>المنطقة تحت اللامية</li>
+                <li>المنطقة السباتية</li>
+                <li>الحفرة فوق الترقوية</li>
+            </ul>
+            <div style="display: flex; gap: 10px;">
+                <figure class="bubble">
+                    <img src="2MED U4 ANATOMIE/A220.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+                </figure>
+            </div>
+            <br>
+    
+            <li><strong>الرؤية الأمامية:</strong></li>
+            <ul>
+                <li>الحنجرة</li>
+                <li>الغدة الدرقية</li>
+                <li>القصبة الهوائية</li>
+            </ul>
+    
+            <div style="display: flex; gap: 10px;">
+                <figure class="bubble">
+                    <img src="2MED U4 ANATOMIE/A221.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+                </figure>
+            </div>
+            <br>
+    
+            <li><strong>الرؤية الأمامية التفصيلية:</strong></li>
+            <ul>
+                <li>الفصوص الجانبية</li>
+                <li>البرزخ الدرقي</li>
+                <li>الفص الهرمي</li>
+            </ul>
+        </ul>
+    
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A222.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">Descriptive Anatomy</h3>
+            <ul>
+                <li><strong>Anatomical Regions:</strong></li>
+                <ul>
+                    <li>Supra-hyoid region</li>
+                    <li>Infra-hyoid region</li>
+                    <li>Carotid region</li>
+                    <li>Supraclavicular fossa</li>
+                </ul>
+    
+                <br>
+    
+                <li><strong>Frontal View:</strong></li>
+                <ul>
+                    <li>Larynx</li>
+                    <li>Thyroid</li>
+                    <li>Trachea</li>
+                </ul>
+    
+                <br>
+    
+                <li><strong>Anterior View:</strong></li>
+                <ul>
+                    <li>Lateral lobes</li>
+                    <li>Thyroid isthmus</li>
+                    <li>Pyramidal lobe</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">Anatomie Descriptive</h3>
+            <ul>
+                <li><strong>Régions anatomiques:</strong></li>
+                <ul>
+                    <li>Région supra-hyoïdienne</li>
+                    <li>Région infra-hyoïdienne</li>
+                    <li>Région carotidienne</li>
+                    <li>Creux supra-claviculaire</li>
+                </ul>
+    
+                <br>
+    
+                <li><strong>Vue de face:</strong></li>
+                <ul>
+                    <li>Larynx</li>
+                    <li>Thyroïde</li>
+                    <li>Trachée</li>
+                </ul>
+    
+                <br>
+    
+                <li><strong>Vue antérieure:</strong></li>
+                <ul>
+                    <li>Les lobes latéraux</li>
+                    <li>L’isthme thyroïdien</li>
+                    <li>Le lobe pyramidal</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A223.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">تشريح الغدة الدرقية</h3>
+        <ul>
+            <li><strong>C)</strong> الأبعاد: العرض: 6 سم، الارتفاع: 6 سم، الوزن حوالي 30 جرام.</li>
+            <li><strong>D)</strong> القوام: صلب لكن قابل للتفتت.</li>
+            <li><strong>E)</strong> اللون: وردي غامق وسطحه محزز قليلاً.</li>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">Anatomy of the Thyroid Gland</h3>
+            <ul>
+                <li><strong>C)</strong> DIMENSION: width: 6cm, height: 6cm, weight is approximately 30g.</li>
+                <li><strong>D)</strong> CONSISTENCY: firm but friable.</li>
+                <li><strong>E)</strong> COLORATION: dark pink with a slightly lobulated surface.</li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">Anatomie de la Glande Thyroïde</h3>
+            <ul>
+                <li><strong>C)</strong> DIMENSION: largeur: 6cm, hauteur: 6cm, poids est d’environ 30g.</li>
+                <li><strong>D)</strong> CONSISTANCE: ferme mais friable.</li>
+                <li><strong>E)</strong> COLORATION: rose foncé et de surface légèrement lobulée.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <h3 class="section-title" style="text-align: center;">تشريح الغدة الدرقية</h3>
+        <ul>
+            <li><strong>الرباط الوسطي لغروبر</strong></li>
+            <li><strong>الأربطة الجانبية الداخلية لغروبر</strong></li>
+            <li><strong>الغشاء الحشوي للرقبة</strong></li>
+            <li><strong>مقطع أفقي للرقبة يمر عبر C7</strong></li>
+        </ul>
+    
+
+        
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A224.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <h3 class="section-title" style="text-align: center;">Anatomy of the Thyroid Gland</h3>
+            <ul>
+                <li><strong>Gruber's Median Ligament</strong></li>
+                <li><strong>Gruber's Internal Lateral Ligaments</strong></li>
+                <li><strong>Visceral Sheath of the Neck</strong></li>
+                <li><strong>Horizontal Section of the Neck Passing through C7</strong></li>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <h3 class="section-title" style="text-align: center;">Anatomie de la Glande Thyroïde</h3>
+            <ul>
+                <li><strong>Le ligament médian de Gruber</strong></li>
+                <li><strong>Les ligaments latéraux internes de Gruber</strong></li>
+                <li><strong>La gaine viscérale du cou</strong></li>
+                <li><strong>COUPE HORIZONTALE DU COU PASSANT PAR LA C7</strong></li>
+            </ul>
+        </div>
+    </div>
+        
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>F) وسائل التثبيت للغدة الدرقية:</strong></li>
+            <li>الغدة الدرقية متثبتة بشكل قوي على المحور التراخي-الحلقي، حيث تتبع حركاته أثناء البلع؛ وهذا يتم من خلال:</li>
+            <ul>
+                <li><strong>1) الرباط الوسطي لغروبر:</strong> يثبت الوجه الخلفي للجزء المعلق إلى الوجه الأمامي للقصبة الهوائية.</li>
+                <li><strong>2) الأربطة الجانبية الداخلية لغروبر:</strong> تثبت الفصوص الجانبية على القصبة الهوائية.</li>
+                <li><strong>3) الغشاء الحشوي للرقبة</strong></li>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>F) Means of Fixation of the Thyroid:</strong></li>
+                <li>The thyroid gland is firmly fixed to the tracheo-laryngeal axis, following its movements during swallowing; this is ensured by:</li>
+                <ul>
+                    <li><strong>1) Gruber's Median Ligament:</strong> Fixes the posterior surface of the isthmus to the anterior surface of the trachea.</li>
+                    <li><strong>2) Gruber's Internal Lateral Ligaments:</strong> Fix the lateral lobes to the trachea.</li>
+                    <li><strong>3) Visceral Sheath of the Neck</strong></li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>F) MOYENS DE FIXITE DE LA THYROÏDE :</strong></li>
+                <li>La glande thyroïde est solidement fixée à l’axe trachéo-laryngé dont elle suit les mouvements lors de la déglutition; ceci est assuré par :</li>
+                <ul>
+                    <li><strong>1) Le ligament médian de Gruber :</strong> fixe la face postérieure de l’isthme à la face antérieure de la trachée.</li>
+                    <li><strong>2) Les ligaments latéraux internes de Gruber :</strong> fixent les lobes latéraux à la trachée.</li>
+                    <li><strong>3) La gaine viscérale du cou</strong></li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A224.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A226.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>مقطع أفقي للرقبة من C7</strong></li>
+            <li><strong>العلاقات السطحية للغدة الدرقية:</strong></li>
+            <li>نجد:</li>
+            <ul>
+                <li><strong>اللفافة العنقية السطحية</strong></li>
+                <li><strong>اللفافة العنقية المتوسطة</strong></li>
+                <li><strong>اللفافة الدرقيّة</strong></li>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Horizontal Section of the Neck Passing through C7</strong></li>
+                <li><strong>Superficial Thyroid Relationships:</strong></li>
+                <li>We find:</li>
+                <ul>
+                    <li><strong>Superficial Cervical Aponeurosis</strong></li>
+                    <li><strong>Middle Cervical Aponeurosis</strong></li>
+                    <li><strong>Thyroid Fascia</strong></li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>COUPE HORIZONTALE DU COU PASSANT PAR LA C7</strong></li>
+                <li><strong>RAPPORTS SUPERFICIELS DE LA THYROÏDE :</strong></li>
+                <li>ON TROUVE :</li>
+                <ul>
+                    <li><strong>L'aponévrose cervicale superficielle</strong></li>
+                    <li><strong>L'aponévrose cervicale moyenne</strong></li>
+                    <li><strong>Le fascia thyroïdien</strong></li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A227.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>III) علاقات الغدة الدرقية</strong></li>
+            <li><strong>A) العلاقات العميقة للغدة الدرقية</strong></li>
+            <ul>
+                <li><strong>1) الإسطمبة الدرقيّة:</strong> تتصل من خلال وجهها الخلفي مع الوجه الأمامي للقصبة الهوائية. حافتها السفلية تبعد عن الشُعاع الصدري بمقدار 2 إلى 3 سم.</li>
+                <li><strong>2) الفصوص الجانبية:</strong></li>
+                <ul>
+                    <li><strong>*) وجهها الخلفي الجانبي:</strong> يتصل مع الحزمة الوعائية العصبية للرقبة الموجودة في الغشاء الوعائي للرقبة، الذي يتكون من:</li>
+                    <ul>
+                        <li><strong>- الشريان السباتي الأساسي.</strong></li>
+                        <li><strong>- الوريد الوداجي الداخلي.</strong></li>
+                        <li><strong>- العصب المبهم.</strong></li>
+                        <li><strong>- العقد اللمفاوية في السلسلة الوداجية السباتية.</strong></li>
+                    </ul>
+                    <li><strong>*) وجهها الخلفي الإنسي:</strong> يتصل مع الوجه الجانبي للقصبة الهوائية، والوجوه الجانبية للغضروف الحلقي وجزء من الغضروف الدرقي السفلي.</li>
+                </ul>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>III) Thyroid Relationships</strong></li>
+                <li><strong>A) Deep Thyroid Relationships</strong></li>
+                <ul>
+                    <li><strong>1) Thyroid Isthmus:</strong> It is in contact with the anterior surface of the trachea through its posterior surface. Its inferior border is 2 to 3 cm away from the sternal notch.</li>
+                    <li><strong>2) Lateral Lobes:</strong></li>
+                    <ul>
+                        <li><strong>*) Posterolateral Surface:</strong> It is in contact with the vascular-nerve bundle of the neck contained in the vascular sheath of the neck, which consists of:</li>
+                        <ul>
+                            <li><strong>- Common Carotid Artery.</strong></li>
+                            <li><strong>- Internal Jugular Vein.</strong></li>
+                            <li><strong>- Vagus Nerve.</strong></li>
+                            <li><strong>- Lymph Nodes of the Jugulo-carotid Chain.</strong></li>
+                        </ul>
+                        <li><strong>*) Posteromedial Surface:</strong> It is in contact with the lateral surface of the trachea, the lateral faces of the cricoid cartilage, and the lower part of the thyroid cartilage.</li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>III) RAPPORTS DE LA THYROÏDE</strong></li>
+                <li><strong>A) RAPPORTS PROFONDS DE LA THYROÏDE</strong></li>
+                <ul>
+                    <li><strong>1) L’isthme thyroïdien:</strong> entre en rapport par sa face postérieure avec la face antérieure de la trachée. Son bord inférieur est distant de 2 à 3 cm de la fourchette sternale.</li>
+                    <li><strong>2) Les lobes latéraux:</strong></li>
+                    <ul>
+                        <li><strong>*) Leur face postéro-latérale:</strong> répond au paquet vasculo-nerveux du cou contenu dans la gaine vasculaire du cou, constitué par :</li>
+                        <ul>
+                            <li><strong>- La carotide primitive.</strong></li>
+                            <li><strong>- La jugulaire interne.</strong></li>
+                            <li><strong>- Le vague.</strong></li>
+                            <li><strong>- Les nœuds lymphatiques de la chaîne jugulo-carotidienne.</strong></li>
+                        </ul>
+                        <li><strong>*) Leur face postéro-médiale:</strong> répond à la face latérale de la trachée, aux faces latérales du cartilage cricoïde et à la partie inférieure du cartilage thyroïde.</li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>المريء العنقي والجزء السفلي من البلعوم:</strong></li>
+            <li>العصب الراجع الذي يسير على الجهة اليسرى في الزاوية بين القصبة الهوائية والمريء؛ وعلى الجهة اليمنى على الحافة الجانبية للمريء.</li>
+            <li><strong>B) العلاقات السطحية للغدة الدرقية:</strong></li>
+            <li>الوجه الأمامي للغدة الدرقية يرتبط مع الطبقات السطحية للمنطقة تحت اللسانية، المكونة من العمق إلى السطح بواسطة:</li>
+            <ul>
+                <li><strong>اللفافة الدرقيّة</strong></li>
+                <li><strong>اللفافة العنقية المتوسطة</strong></li>
+                <li><strong>اللفافة العنقية السطحية على الخط الوسطي</strong></li>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Cervical Esophagus and Lower Part of the Pharynx:</strong></li>
+                <li>The recurrent nerve on the left passes in the tracheoesophageal angle; on the right, it follows the lateral border of the esophagus.</li>
+                <li><strong>B) Superficial Thyroid Relationships:</strong></li>
+                <li>The anterior surface of the thyroid gland is in contact with the superficial layers of the infrahyoid region, which are formed from deep to superficial by:</li>
+                <ul>
+                    <li><strong>Thyroid Fascia</strong></li>
+                    <li><strong>Middle Cervical Aponeurosis</strong></li>
+                    <li><strong>Superficial Cervical Aponeurosis along the Midline</strong></li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>L’œsophage cervical et la partie inférieure du pharynx :</strong></li>
+                <li>Le nerf récurrent qui à gauche chemine dans l’angle trachéo-œsophagien ; à droite sur le bord latéral de l’œsophage.</li>
+                <li><strong>B) RAPPORTS SUPERFICIELS DE LA THYROÏDE :</strong></li>
+                <li>La face antérieure de la glande thyroïde est en rapport avec les plans superficiels de la région infra-hyoïdienne, formée de la profondeur à la superficie par :</li>
+                <ul>
+                    <li><strong>Le fascia thyroïdien</strong></li>
+                    <li><strong>L’aponévrose cervicale moyenne</strong></li>
+                    <li><strong>L’aponévrose cervicale superficielle sur la ligne médiane</strong></li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>التغذية الشريانية للغدة الدرقية</strong></li>
+            <li><strong>الرؤية الأمامية تشمل:</strong></li>
+            <ul>
+                <li>الشريان الحنجري العلوي</li>
+                <li>الشريان الحنجري السفلي</li>
+                <li>الفرع الوسطي للشريان الدرقي العلوي</li>
+                <li>القوس فوق الإسطمبة</li>
+                <li>الفرع الوسطي للشريان الدرقي السفلي</li>
+                <li>الفرع السفلي للشريان الدرقي السفلي</li>
+                <li>الشريان الدرقي الأوسط</li>
+                <li>قوس الأبهر</li>
+                <li>الشريان السباتي الخارجي</li>
+                <li>الجزء الدرقي العلوي</li>
+                <li>الفرع الجانبي للشريان الدرقي العلوي</li>
+                <li>الفرع الخلفي للشريان الدرقي العلوي</li>
+                <li>الفرع الخلفي للشريان الدرقي السفلي</li>
+                <li>الشريان الدرقي السفلي</li>
+                <li>الفرع المشترك للشريان الدرقي-الرقبي-الكتفي</li>
+                <li>الشريان تحت الترقوة الأيمن</li>
+                <li>الشريان السباتي الأساسي</li>
+            </ul>
+        </ul>
+    
+        
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A228.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Arterial Vascularization of the Thyroid</strong></li>
+                <li><strong>Anterior View Includes:</strong></li>
+                <ul>
+                    <li>Superior Laryngeal Artery</li>
+                    <li>Inferior Laryngeal Artery</li>
+                    <li>Medial Branch of the Superior Thyroid Artery</li>
+                    <li>Su-isthmic Arcade</li>
+                    <li>Medial Branch of the Inferior Thyroid Artery</li>
+                    <li>Inferior Branch of the Inferior Thyroid Artery</li>
+                    <li>Middle Thyroid Artery</li>
+                    <li>Aortic Arch</li>
+                    <li>External Carotid Artery</li>
+                    <li>Superior Thyroid Part</li>
+                    <li>Lateral Branch of the Superior Thyroid Artery</li>
+                    <li>Posterior Branch of the Superior Thyroid Artery</li>
+                    <li>Posterior Branch of the Inferior Thyroid Artery</li>
+                    <li>Inferior Thyroid Artery</li>
+                    <li>Thyro-bicervico-scapular Trunk</li>
+                    <li>Right Subclavian Artery</li>
+                    <li>Common Carotid Artery</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>VASCULARISATION ARTERIELLE DE LA THYROÏDE</strong></li>
+                <li><strong>VUE ANTERIEURE CONTIENT:</strong></li>
+                <ul>
+                    <li>art laryngée sup</li>
+                    <li>art laryngée inf</li>
+                    <li>branche médiale de la thyr sup</li>
+                    <li>arcade sus-isthmique</li>
+                    <li>branche médiale de la thyr inf</li>
+                    <li>branche inf de la thyr inf</li>
+                    <li>art thyroïdienne moyenne</li>
+                    <li>crosse aortique</li>
+                    <li>art carotide externe</li>
+                    <li>Part thyroïdienne sup</li>
+                    <li>branche latérale de la thyr sup</li>
+                    <li>branche post de la thyr sup</li>
+                    <li>branche post de la thyr inf</li>
+                    <li>art thyroïdienne inf</li>
+                    <li>tronc thyro-bicervico-scapulaire</li>
+                    <li>art subclavière droite</li>
+                    <li>art carotide primitive</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>التصريف الوريدي والتغذية العصبية للغدة الدرقية</strong></li>
+            <li><strong>يتضمن:</strong></li>
+            <ul>
+                <li>الوريد الوداجي الداخلي</li>
+                <li>الجذع الوريدي الدرقي-اللغوي-الوجهي</li>
+                <li>الوريد الدرقي العلوي</li>
+                <li>الوريد الدرقي الأوسط</li>
+                <li>الوريد الدرقي السفلي</li>
+                <li>الوريد الدرقي الأمامي</li>
+                <li>الجذع الوريدي البراكيوا-cephali الأيسر</li>
+                <li>الشريان السباتي الداخلي</li>
+                <li>العصب المبهم الأيسر</li>
+                <li>العصب الراجع الأيسر</li>
+                <li>قوس الأبهر</li>
+                <li>العصب المبهم الأيمن</li>
+            </ul>
+        </ul>
+    
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A230.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Venous Drainage and Innervation of the Thyroid</strong></li>
+                <li><strong>Includes:</strong></li>
+                <ul>
+                    <li>Internal Jugular Vein</li>
+                    <li>Thyro-lingual-facial Venous Trunk</li>
+                    <li>Superior Thyroid Vein</li>
+                    <li>Middle Thyroid Vein</li>
+                    <li>Inferior Thyroid Vein</li>
+                    <li>Anterior Thyroid Vein</li>
+                    <li>Left Brachiocephalic Venous Trunk</li>
+                    <li>Internal Carotid Artery</li>
+                    <li>Left Vagus Nerve</li>
+                    <li>Left Recurrent Nerve</li>
+                    <li>Aortic Arch</li>
+                    <li>Right Vagus Nerve</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>DAINAGE VEINEUX ET INNERVATION DE LA THYROÏDE</strong></li>
+                <li><strong>CONTIENT :</strong></li>
+                <ul>
+                    <li>veine jugulaire interne</li>
+                    <li>tronc veineux thyro-linguo-facial</li>
+                    <li>veine thyroïdienne supérieure</li>
+                    <li>veine thyroïdienne moyenne</li>
+                    <li>veine thyroïdienne inférieure</li>
+                    <li>veine thyroïdienne antérieure</li>
+                    <li>tronc veineux brachio-céphalique gauche</li>
+                    <li>artère carotide interne</li>
+                    <li>nerf vague gauche</li>
+                    <li>nerf récurrent gauche</li>
+                    <li>crosse aortique</li>
+                    <li>nerf vague droit</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>العقد اللمفاوية لسلسلة العنق</strong></li>
+            <ul>
+                <li>العقد اللمفاوية الوداجية</li>
+                <li>العقد اللمفاوية فوق الحنجرة</li>
+                <li>العقد اللمفاوية تحت الحنجرة</li>
+                <li>العقد اللمفاوية الراجعة</li>
+            </ul>
+        </ul>
+    
+         
+
+    <div style="display: flex; gap: 10px;">
+        <figure class="bubble">
+            <img src="2MED U4 ANATOMIE/A229.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+        </figure>
+    </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Lymph Nodes of the Jugular Chain</strong></li>
+                <ul>
+                    <li>Jugular Lymph Nodes</li>
+                    <li>Prelaryngeal Lymph Nodes</li>
+                    <li>Pretracheal Lymph Nodes</li>
+                    <li>Recurrent Lymph Nodes</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>LYMPHONOEUFS DE LA CHAINE JUGULAIRE</strong></li>
+                <ul>
+                    <li>lymphonoeuds de la chaine jugulaire</li>
+                    <li>lymphonoeuds prélaryngés</li>
+                    <li>lymphonoeuds prétrachéaux</li>
+                    <li>lymphonoeuds récurrentiels</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+   
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>IV) التغذية الشريانية والعصبية للغدة الدرقية</strong></li>
+            <li><strong>التغذية الشريانية للغدة الدرقية:</strong></li>
+            <ul>
+                <li>التغذية الشريانية للغدة الدرقية تأمنها:</li>
+                <ul>
+                    <li>الشريان الدرقي العلوي</li>
+                    <li>الشريان الدرقي السفلي</li>
+                    <li>الشريان الدرقي الأوسط</li>
+                </ul>
+            </ul>
+            <li><strong>التغذية الوريدية للغدة الدرقية:</strong></li>
+            <ul>
+                <li>التغذية الوريدية للغدة الدرقية ليست متماثلة مع التغذية الشريانية.</li>
+                <li>تشكّل الأوردة الدرقيّة شبكة غنية من الأوردة ما قبل الغدة التي تصرف في الوريد الوداجي الداخلي والجذع الوريدي البراكيوا-رأسي الأيسر.</li>
+            </ul>
+            <li><strong>التصريف اللمفاوي للغدة الدرقية:</strong></li>
+            <ul>
+                <li>تتصرف القنوات اللمفاوية للغدة الدرقية نحو:</li>
+                <ul>
+                    <li>أعلى: العقد اللمفاوية فوق الحنجرة</li>
+                    <li>أسفل: العقد اللمفاوية تحت الحنجرة</li>
+                    <li>جانبيًا: العقد اللمفاوية العميقة العنقية</li>
+                </ul>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>IV) Thyroid Vascularization and Innervation</strong></li>
+                <li><strong>Arterial Vascularization of the Thyroid:</strong></li>
+                <ul>
+                    <li>The arterial vascularization of the thyroid is ensured by:</li>
+                    <ul>
+                        <li>Superior Thyroid Artery</li>
+                        <li>Inferior Thyroid Artery</li>
+                        <li>Middle Thyroid Artery</li>
+                    </ul>
+                </ul>
+                <li><strong>Venous Vascularization of the Thyroid:</strong></li>
+                <ul>
+                    <li>The venous vascularization of the thyroid is not mirrored by its arterial vascularization.</li>
+                    <li>The thyroid veins form a rich pre-glandular plexus draining into the internal jugular vein and the left brachiocephalic venous trunk.</li>
+                </ul>
+                <li><strong>Lymphatic Drainage of the Thyroid:</strong></li>
+                <ul>
+                    <li>The lymphatic collectors of the thyroid drain into:</li>
+                    <ul>
+                        <li>Superiorly: Prelaryngeal Lymph Nodes</li>
+                        <li>Inferiorly: Pretracheal Lymph Nodes</li>
+                        <li>Laterally: Deep Cervical Lymph Nodes</li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>IV) VASCULARISATION ET INNERVATION DE LA THYROÏDE</strong></li>
+                <li><strong>VASCULARISATION ARTERIELLE DE LA THYROÏDE :</strong></li>
+                <ul>
+                    <li>La vascularisation artérielle de la thyroïde est assurée par :</li>
+                    <ul>
+                        <li>La thyroïdienne supérieure</li>
+                        <li>La thyroïdienne inférieure</li>
+                        <li>La thyroïdienne moyenne</li>
+                    </ul>
+                </ul>
+                <li><strong>VASCULARISATION VEINEUSE DE LA THYROÏDE :</strong></li>
+                <ul>
+                    <li>La vascularisation veineuse de la thyroïde n’est pas calquée sur la vascularisation artérielle.</li>
+                    <li>Les veines thyroïdiennes forment un riche plexus pré-glandulaire qui se draine dans la veine jugulaire interne et le tronc veineux brachio-céphalique gauche.</li>
+                </ul>
+                <li><strong>DRAINAGE LYMPHATIQUE DE LA THYROÏDE :</strong></li>
+                <ul>
+                    <li>Les collecteurs lymphatiques thyroïdiens se drainent vers :</li>
+                    <ul>
+                        <li>En haut : les lymphonoeuds prélaryngés</li>
+                        <li>En bas : les lymphonoeuds prétrachéaux</li>
+                        <li>Latéralement : les lymphonoeuds cervicaux profonds</li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>D) التروية العصبية للغدة الدرقية:</strong></li>
+            <ul>
+                <li>التروية العصبية للغدة الدرقية تتأمن بواسطة العصب السمبثاوي العنقي والعصب المبهم، حيث يشكلان جذعين عصبيين:</li>
+                <ul>
+                    <li><strong>جذع علوي:</strong> يقترب من القطب العلوي للغدة ويأتي من:</li>
+                    <ul>
+                        <li>العقدة العنقية العليا</li>
+                        <li>العصب الحنجري العلوي</li>
+                        <li>العصب الحنجري الخارجي</li>
+                    </ul>
+                    <li><strong>جذع سفلي:</strong> يسير أمام الشريان الدرقي السفلي ويأتي من:</li>
+                    <ul>
+                        <li>العقدة العنقية الوسطى</li>
+                        <li>العصب الراجع</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>D) Thyroid Innervation:</strong></li>
+                <ul>
+                    <li>The innervation of the thyroid is ensured by the cervical sympathetic and the vagus nerve, forming two nerve pedicles:</li>
+                    <ul>
+                        <li><strong>Superior Pedicle:</strong> Approaches the upper pole of the gland and comes from:</li>
+                        <ul>
+                            <li>Cervical Ganglion Superior</li>
+                            <li>Superior Laryngeal Nerve</li>
+                            <li>External Laryngeal Nerve</li>
+                        </ul>
+                        <li><strong>Inferior Pedicle:</strong> Travels in front of the inferior thyroid artery and comes from:</li>
+                        <ul>
+                            <li>Cervical Ganglion Middle</li>
+                            <li>Recurrent Nerve</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>D) INNERVATION DE LA THYROÏDE :</strong></li>
+                <ul>
+                    <li>L’innervation de la thyroïde est assurée par le sympathique cervical et le vague qui formeront deux pédicules :</li>
+                    <ul>
+                        <li><strong>Pédicule supérieur :</strong> Aborde le pôle supérieur de la glande et provient du :</li>
+                        <ul>
+                            <li>Ganglion cervical supérieur</li>
+                            <li>Nerf laryngé supérieur</li>
+                            <li>Nerf laryngé externe</li>
+                        </ul>
+                        <li><strong>Pédicule inférieur :</strong> Chemine en avant de l’artère thyroïdienne inférieure et provient du :</li>
+                        <ul>
+                            <li>Ganglion cervical moyen</li>
+                            <li>Du nerf récurrent</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>تشريح الغدد الجار درقية</strong></li>
+            <ul>
+                <li>الوجه الخلفي:</li>
+                <ul>
+                    <li>الغدة الدرقية</li>
+                    <li>الغدة الجار درقية</li>
+                </ul>
+            </ul>
+        </ul>
+    
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A231.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>ANATOMY OF THE PARATHYROID GLANDS</strong></li>
+                <ul>
+                    <li>Posterior View:</li>
+                    <ul>
+                        <li>Thyroid Gland</li>
+                        <li>Parathyroid Gland</li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>ANATOMIE DES GLANDES PARATHYROIDES</strong></li>
+                <ul>
+                    <li>Vue arrière :</li>
+                    <ul>
+                        <li>Glande thyroïde</li>
+                        <li>Glande parathyroïde</li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>أنواع الغدد الجار درقية</strong></li>
+            <ul>
+                <li>بيضاوي الشكل</li>
+                <li>ثنائي الفصوص</li>
+                <li>ثلاثي الفصوص</li>
+            </ul>
+        </ul>
+    
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 ANATOMIE/A232.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>DIFFERENT TYPES OF PARATHYROID GLANDS</strong></li>
+                <ul>
+                    <li>Piriform</li>
+                    <li>Bi-lobular</li>
+                    <li>Tri-lobular</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>DIFFERENTS TYPES DES GLANDES PARATHYROIDES</strong></li>
+                <ul>
+                    <li>Piriforme</li>
+                    <li>Bi-lobulé</li>
+                    <li>Tri-lobulé</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>A) التعريف:</strong></li>
+            <ul>
+                <li>هي غدد صماء تقع على السطح الخلفي الداخلي للأقسام الجانبية للغدة الدرقية.</li>
+                <li>تتميز بتنوع كبير في العدد، الشكل، الأبعاد والعلاقات.</li>
+            </ul>
+    
+            <li><strong>B) العدد:</strong></li>
+            <ul>
+                <li>متغير؛ عادة ما تكون أربعة غدد:</li>
+                <ul>
+                    <li>غدتين علويتين</li>
+                    <li>غدتين سفليتين</li>
+                </ul>
+            </ul>
+    
+            <li><strong>C) الشكل:</strong></li>
+            <ul>
+                <li>يمكن أن تكون: بيضاوي، على شكل كمثرى، ثنائي أو ثلاثي الفصوص</li>
+            </ul>
+    
+            <li><strong>D) الأبعاد:</strong></li>
+            <ul>
+                <li>الطول: 8 مم</li>
+                <li>العرض: 4 مم</li>
+                <li>السمك: 2 مم</li>
+                <li>الوزن: 40 مجم</li>
+            </ul>
+    
+            <li><strong>E) الموقع:</strong></li>
+            <ul>
+                <li>تقع الغدد الجار درقية على السطح الخلفي الداخلي للكبسولة الدرقية، وتغطى باللفافة الدرقية.</li>
+                <li>يمكن أن تقع على السطح الجانبي للغدة الدرقية (في 5% من الحالات).</li>
+                <li>أو على الجدار الأمامي الجانبي للمريء (في 10% من الحالات).</li>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>A) DEFINITION:</strong></li>
+                <ul>
+                    <li>Endocrine glands located on the posterior-medial surface of the thyroid lobes.</li>
+                    <li>Characterized by a large variability in number, shape, size, and relationships.</li>
+                </ul>
+    
+                <li><strong>B) NUMBER:</strong></li>
+                <ul>
+                    <li>Variable; generally, there are four:</li>
+                    <ul>
+                        <li>Two superior</li>
+                        <li>Two inferior</li>
+                    </ul>
+                </ul>
+    
+                <li><strong>C) SHAPE:</strong></li>
+                <ul>
+                    <li>It can be: ovoid, piriform, bi-lobular, or tri-lobular.</li>
+                </ul>
+    
+                <li><strong>D) DIMENSIONS:</strong></li>
+                <ul>
+                    <li>Length: 8 mm</li>
+                    <li>Width: 4 mm</li>
+                    <li>Thickness: 2 mm</li>
+                    <li>Weight: 40 mg</li>
+                </ul>
+    
+                <li><strong>E) SITUATION:</strong></li>
+                <ul>
+                    <li>The parathyroid glands are located on the posterior-medial surface of the thyroid capsule and are covered by the thyroid fascia.</li>
+                    <li>They may be located on the lateral surface of the thyroid (5% of cases).</li>
+                    <li>Or on the anterolateral wall of the esophagus (10% of cases).</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>A) DEFINITION :</strong></li>
+                <ul>
+                    <li>Sont des glandes endocrines situées à la face postéro-médiale des lobes thyroïdiens.</li>
+                    <li>Caractérisées par une grande variabilité de nombre, forme, dimensions et rapports.</li>
+                </ul>
+    
+                <li><strong>B) NOMBRE :</strong></li>
+                <ul>
+                    <li>Variable ; généralement elles sont au nombre de 4 :</li>
+                    <ul>
+                        <li>Deux supérieures</li>
+                        <li>Deux inférieures</li>
+                    </ul>
+                </ul>
+    
+                <li><strong>C) FORME :</strong></li>
+                <ul>
+                    <li>Peut être : ovoïde, piriforme, bi ou tri lobulé.</li>
+                </ul>
+    
+                <li><strong>D) DIMENSIONS :</strong></li>
+                <ul>
+                    <li>Longueur : 8 mm</li>
+                    <li>Largeur : 4 mm</li>
+                    <li>Épaisseur : 2 mm</li>
+                    <li>Poids : 40 mg</li>
+                </ul>
+    
+                <li><strong>E) SITUATION :</strong></li>
+                <ul>
+                    <li>Les glandes parathyroïdes sont situées à la face postéro-médiale de la capsule thyroïdienne et recouvertes du fascia thyroïdien.</li>
+                    <li>Elle peuvent se localiser sur la face latérale de la thyroïde (5% des cas).</li>
+                    <li>Ou la paroi antérolatérale de l’œsophage (10% des cas).</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+    <div class="bubble">
+        <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
+        <ul>
+            <li><strong>E) التروية الدموية والتغذية العصبية:</strong></li>
+            <ul>
+                <li><strong>التروية الشريانية:</strong> تتأمن عن طريق فرع من:</li>
+                <ul>
+                    <li>الشريان الدرقي العلوي للغدد الجار درقية العلوية.</li>
+                    <li>الشريان الدرقي السفلي للغدد الجار درقية السفلية.</li>
+                </ul>
+    
+                <li><strong>التروية الوريدية:</strong> غالبًا ما تكون بواسطة جذع وريدي واحد يصب في إحدى الأوردة الدرقية.</li>
+    
+                <li><strong>التصريف اللمفاوي:</strong> يصل بسرعة إلى الأوعية اللمفاوية الدرقية.</li>
+    
+                <li><strong>التغذية العصبية:</strong> تأتي من الأعصاب الودية العنقية والعصب المتكرر.</li>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>E) VASCULARIZATION AND INNERVATION:</strong></li>
+                <ul>
+                    <li><strong>Arterial Vascularization:</strong> is provided by a branch of:</li>
+                    <ul>
+                        <li>The superior thyroid artery for the superior parathyroid glands.</li>
+                        <li>The inferior thyroid artery for the inferior parathyroid glands.</li>
+                    </ul>
+    
+                    <li><strong>Venous Vascularization:</strong> Often represented by a single venous trunk draining into one of the thyroid veins.</li>
+    
+                    <li><strong>Lymphatic Drainage:</strong> Rapidly drains into the thyroid lymphatic vessels.</li>
+    
+                    <li><strong>Innervation:</strong> Comes from the cervical sympathetic and recurrent nerves.</li>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>E) VASCULARISATION ET INNERVATION :</strong></li>
+                <ul>
+                    <li><strong>Vascularisation artérielle :</strong> est assurée par une branche de :</li>
+                    <ul>
+                        <li>La thyroïdienne supérieure pour les parathyroïdes supérieures.</li>
+                        <li>La thyroïdienne inférieure pour les parathyroïdes inférieures.</li>
+                    </ul>
+    
+                    <li><strong>Vascularisation veineuse :</strong> représentée souvent par un tronc veineux unique qui se jette dans l’une des veines thyroïdiennes.</li>
+    
+                    <li><strong>Drainage lymphatique :</strong> rejoint rapidement les lymphatiques thyroïdiens.</li>
+    
+                    <li><strong>Innervation :</strong> provient du sympathique cervical et du récurrent.</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+
+
+    <div id="end-lesson-modal">
+        <h3>أحسنت يا طبيبنا إن شاء الله!</h3>
+        <p id="lesson-summary">الوقت المستغرق: 00 دقيقة و 00 ثانية. عدد الفقاعات التي تم التفاعل معها: 0 من أصل 0.</p>
+        <button class="reload-button" onclick="reloadPage()">إعادة الحفظ</button>
+        <button onclick="goToTestsPage()">الانتقال إلى صفحة الاختبارات</button>
+    </div>
+
+    <div class="modal" id="question-modal">
+        <h3 id="modal-question">هل حفظت هذه الفقاعة؟</h3>
+        <button onclick="closeModal(true)">نعم</button>
+        <button onclick="closeModal(false)">لا</button>
+    </div>
+
+    <script>
+    let totalBubbles = 19; 
+    let completedBubbles = 0; 
+    let startTime = Date.now();
+    let bubbleButton = null;
+    
+    function showQuestion() {
+        document.getElementById('question-modal').style.display = 'block';
+    }
+    
+    function closeModal(answer) {
+        document.getElementById('question-modal').style.display = 'none';
+    
+        if (answer) {
+            completedBubbles++;
+            updateProgress();
+            bubbleButton.style.backgroundColor = '#4CAF50'; 
+            bubbleButton.innerText = 'تم التفاعل'; 
+            bubbleButton.disabled = true; 
+    
+            if (completedBubbles === totalBubbles) {
+                enableFinishButton();
+            }
+        }
+    }
+    
+    function updateProgress() {
+        let progress = (completedBubbles / totalBubbles) * 100; 
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+        document.getElementById('progress-percentage').innerText = `${Math.round(progress)}%`;
+    
+        const finishButton = document.querySelector('.finish-button');
+        if (progress === 100) {
+            finishButton.disabled = false; 
+            finishButton.style.backgroundColor = '#00aaff'; 
+            finishButton.style.cursor = 'pointer'; 
+        } else {
+            finishButton.disabled = true;
+            finishButton.style.backgroundColor = '#ccc'; 
+            finishButton.style.cursor = 'not-allowed'; 
+        }
+    }
+    
+    function markBubbleAsCompleted(button) {
+        bubbleButton = button; 
+        showQuestion(); 
+    }
+    
+    function finishLesson() {
+        let elapsedTime = Date.now() - startTime;
+        let minutes = Math.floor(elapsedTime / 60000);
+        let seconds = Math.floor((elapsedTime % 60000) / 1000);
+        let summary = `الوقت المستغرق: ${minutes} دقيقة و ${seconds} ثانية. عدد الفقاعات التي تم التفاعل معها: ${completedBubbles} من أصل ${totalBubbles}.`;
+        document.getElementById('lesson-summary').innerText = summary;
+        document.getElementById('end-lesson-modal').style.display = 'block';
+    }
+    
+    function reloadPage() {
+        location.reload();
+    }
+    
+    function goToTestsPage() {
+        window.location.href = 'MED02.html';
+    }
+    
+    function initializeFinishButton() {
+        const finishButton = document.querySelector('.finish-button');
+        finishButton.disabled = true; 
+        finishButton.style.backgroundColor = '#ccc'; 
+        finishButton.style.cursor = 'not-allowed'; 
+    }
+    
+    window.onload = initializeFinishButton;
+    
+    // وظيفة للانتقال إلى أول فقاعة غير مكتملة
+    function goToUncompletedBubble() {
+        let bubbles = document.querySelectorAll('.interact-button');
+        for (let bubble of bubbles) {
+            if (!bubble.disabled) { // تعني أن الفقاعة لم يتم التفاعل معها
+                bubble.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                bubble.style.border = "3px solid red"; // تمييزها باللون الأحمر
+                break;
+            }
+        }
+    }
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أزرار للانتقال</title>
+    <style>
+        /* الزر العائم */
+        .floating-buttons {
+            position: fixed;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            left: 20px;  /* وضع الزر في الجهة اليسرى */
+            bottom: 20px;
+        }
+
+        /* زر الفلاش كارد */
+        .flashcard-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 22px;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* التأثير عند التمرير على الزر */
+        .flashcard-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1); /* زيادة الحجم عند التمرير */
+        }
+
+        /* قسم بطاقات الفلاش */
+        #flashcard-section {
+            margin-top: 100px;  /* إعطاء بعض المسافة من الأعلى */
+            padding: 20px;
+            background-color: #1000f1;
+        }
+
+        /* تحسين العرض على الأجهزة الصغيرة */
+        @media (max-width: 768px) {
+            .floating-buttons {
+                left: 10px;  /* جعل الزر أقرب قليلاً على الشاشات الصغيرة */
+                bottom: 10px;
+            }
+
+            .flashcard-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+ 
+
+    <!-- الأزرار العائمة -->
+    <div class="floating-buttons">
+        <!-- زر للانتقال إلى الفلاش كارد -->
+        <button class="flashcard-button" onclick="goToFlashCard()">🎴</button>
+    </div>
+
+    <script>
+        // وظيفة للانتقال إلى بطاقات الفلاش داخل نفس الصفحة
+        function goToFlashCard() {
+            // هنا نقوم بالانتقال مباشرة إلى قسم بطاقات الفلاش
+            document.getElementById('flashcard-section').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br>
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 بطاقات فلاش تفاعلية</title>
+    <style>
+        body {
+            font-family: 'Amiri', serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            direction: rtl;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .front {
+            background-color: #1e1e1e;
+        }
+
+        .back {
+            background-color: #2c2c2c;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-image {
+            width: 40%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcard-image img {
+            max-width: 100%;
+            max-height: 100%;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .flashcard-image img.expanded {
+            transform: scale(1.5);
+        }
+
+        .flashcard-content {
+            width: 65%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: right;
+            direction: rtl;
+            overflow-y: auto;
+            max-height: 150px;
+            white-space: normal;
+            word-wrap: break-word;
+            position: relative;
+        }
+        .hint-container {
+    position: fixed; /* استخدم fixed لجعل التلميح ثابتًا في المكان */
+    top: -190px; /* 20px من أعلى الصفحة */
+    left: 50%;
+    transform: translateX(-50%); /* لتوسيط التلميح بشكل أفقي */
+    width: 80%; /* عرض التلميح */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #f1c40f;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+}
+
+        /* عند إظهار التلميح */
+        .hint-container.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .arrow {
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .arrow:hover {
+            color: #00aaff;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 480px) {
+            .flashcard {
+                height: 230px;
+            }
+
+            .flashcard-image {
+                width: 40%;
+                max-height: 150px;
+            }
+
+            .flashcard-content {
+                font-size: 14px;
+                padding: 10px;
+                max-height: 120px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body><br><br><br><br><br><br><br>
+    <h2 id="flashcard-section">📚 بطاقات فلاش تفاعلية</h2>
+    <br><br><br><br><br><br><br><br><br>
+    <div class="flashcard-container" onclick="flipCard(event)">
+        <div class="flashcard" id="flashcard">
+            <div class="flashcard-side front">
+                <div class="flashcard-image">
+                    <img id="cardImageFront" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3 id="question"></h3>
+                    <!-- حاوية التلميح -->
+                    <div id="hintContainer" class="hint-container">
+                        <p id="hint" class="hint"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flashcard-side back">
+                <div class="flashcard-image">
+                    <img id="cardImageBack" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3>الإجابة:</h3>
+                    <p id="answer"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="buttons">
+        <button onclick="showHint()">🔍 تلميح</button>
+        <button onclick="shuffleCards()">🔀 خلط البطاقات</button>
+    </div>
+
+    <br>
+    <div class="navigation">
+        <span class="arrow" onclick="nextCard()">➡️</span>
+        <span id="cardNumber">1 / 3</span>
+        <span class="arrow" onclick="prevCard()">⬅️</span>
+    </div>
+
+    <script>
+        const flashcards = [
+            {
+                question : "خمن البيانات والعنوان:<br>🔹 باللغة العربية (AR): خمن البيانات والعنوان<br>🔹 باللغة الإنجليزية (EN): Guess the data and the title<br>🔹 باللغة الفرنسية (FR): Devinez les données et le titre",
+                hint : "🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5 (AR)<br>🔍 In English (EN): Axial slice from a CT scan / TDM of the chest at the Th5 level<br>🔍 En français (FR): Coupe axiale d'un scanner TDM du thorax au niveau Th5",
+                answer: `
+                    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                        <li><b>  العنوان:</b><br>
+                            🔹 <b>شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5.  (AR):</b><br>
+                            🔹 <b>Axial slice of a CT scan / TDM of the thorax at the Th5 level.  (EN):</b><br>
+                            🔹 <b> Coupe axiale d'un scanner / TDM thoracique au niveau Th5 (FR):</b>
+               
+                        </li><br>
+                        <span style="font-size: 20px; font-weight: bold;">🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5:</span><br>
+                        <ol style="padding-right: 20px; text-align: right;">
+                            <li>1️⃣ : الرئة اليمنى (Right Lung) - <i>Poumon droit</i></li><br>
+                            <li>2️⃣ : الرئة اليسرى (Left Lung) - <i>Poumon gauche</i></li><br>
+                            <li>3️⃣ : الجذع الرئوي (Pulmonary Trunk) - <i>Tronc pulmonaire</i></li><br>
+                            <li>4️⃣ : الشريان الرئوي الأيمن (Right Pulmonary Artery) - <i>Artère pulmonaire droite</i></li><br>
+                            <li>5️⃣ : الشريان الرئوي الأيسر (Left Pulmonary Artery) - <i>Artère pulmonaire gauche</i></li><br>
+                            <li>6️⃣ : الوريد الأجوف العلوي (Superior Vena Cava) - <i>Veine cave supérieure</i></li><br>
+                            <li>7️⃣ : الأبهر الصدري الصاعد (Ascending Thoracic Aorta) - <i>Aorte thoracique ascendante</i></li><br>
+                            <li>8️⃣ : الأبهر الصدري النازل (Descending Thoracic Aorta) - <i>Aorte thoracique descendante</i></li><br>
+                            <li>9️⃣ : الوريد الرئوي الأيسر (Left Pulmonary Vein) - <i>Veine pulmonaire gauche</i></li><br>
+                            <li>🔟 : الكتف الأيسر (Left Scapula) - <i>Scapula gauche</i></li><br>
+                        </ol>
+                    </ul>
+                `,
+                imageFront: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الخلفية
+                isHtml: true
+            },
+    {
+        question: `🔹 <b>  خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.   </b> 🔹<br>
+        🔹 <b>باللغة العربية (AR):</b> خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.  br>
+        🔹 <b>In English (EN):</b> Guess the intercostal arteries that supply the mammary gland<br>
+        🔹 <b>En français (FR):</b> Devinez les artères intercostales qui irriguent la glande mammaire`,
+        
+        hint: `🔍 <b>تلميح / Hint / Indice</b><br>
+        🔴 <b>باللغة العربية (AR):</b> عددها ثلاثة بالترتيب.<br>
+        🔵 <b>In English (EN):</b> They are three in order.<br>
+        ⚪ <b>En français (FR):</b> Ils sont au nombre de trois dans l'ordre.`,
+        
+        answer: `
+            <div style="text-align: center;">
+                <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                    <li>2️⃣ <b>الشريان الوربي الثاني</b> (Intercostal Artery 2) - <i>Deuxième artère intercostale</i></li><br>
+                    <li>3️⃣ <b>الشريان الوربي الثالث</b> (Intercostal Artery 3) - <i>Troisième artère intercostale</i></li><br>
+                    <li>4️⃣ <b>الشريان الوربي الرابع</b> (Intercostal Artery 4) - <i>Quatrième artère intercostale</i></li><br>
+                </ul>
+            </div>
+        `,
+        imageFront: "/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MED U4 ANATOMIE/A47.jpg", // صورة الجهة الخلفية
+                isHtml: true
+    }
+
+
+
+    ];
+
+let currentIndex = 0;
+let flipped = false;
+
+function updateCard() {
+    const card = flashcards[currentIndex];
+    document.getElementById("question").innerHTML = card.question;
+    document.getElementById("answer").innerHTML = card.answer;
+    document.getElementById("cardImageFront").src = card.imageFront;
+    document.getElementById("cardImageBack").src = card.imageBack;
+    document.getElementById("cardNumber").textContent = `${currentIndex + 1} / ${flashcards.length}`;
+}
+
+function flipCard(event) {
+    event.stopPropagation();
+    flipped = !flipped;
+    document.getElementById("flashcard").classList.toggle("flipped", flipped);
+}
+
+function nextCard() {
+    currentIndex = (currentIndex + 1) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+function prevCard() {
+    currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+updateCard();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br>
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القلم الناطق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #008cff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
+            display: none;
+        }
+
+        .show-notification {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffcc00;
+            color: black;
+            font-size: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.2s;
+            z-index: 9999;
+        }
+
+        .floating-btn:hover {
+            background-color: #ffdb4d;
+            transform: scale(1.1);
+        }
+
+        .speed-control {
+            margin-top: 15px;
+        }
+
+        input[type="range"] {
+            width: 50%;
+            accent-color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>حدد أي نص لسماعه! 🎧</h1>
+    <p>هذه جملة باللغة العربية.</p>
+    <p>This is a sentence in English.</p>
+    <p>Ceci est une phrase en français.</p>
+
+    <div>
+        <label>🔹 اختر جنس الصوت:</label>
+        <select id="voiceGender">
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+        </select>
+    </div>
+
+    <div class="speed-control">
+        <label for="speedRange">🔊 سرعة الصوت:</label>
+        <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1">
+    </div>
+
+    <button class="floating-btn" onclick="toggleSpeech()">⚡</button>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let speechSynthesisInstance = window.speechSynthesis;
+        let isSpeechEnabled = false;
+        let currentUtterance = null;
+        let voices = [];
+        let speechRate = 1; 
+        let userGender = "male"; 
+
+        function showNotification(message) {
+            let notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("show-notification");
+
+            setTimeout(() => {
+                notification.classList.remove("show-notification");
+            }, 2000);
+        }
+
+        function toggleSpeech() {
+            isSpeechEnabled = !isSpeechEnabled;
+            showNotification(isSpeechEnabled ? "✅ تم تفعيل القلم الناطق!" : "⛔ تم إيقاف القلم الناطق!");
+        }
+
+        document.addEventListener('mouseup', function () {
+            if (!isSpeechEnabled) return;
+
+            let selectedText = window.getSelection().toString().trim();
+            if (selectedText.length > 0) {
+                speakText(selectedText);
+            }
+        });
+
+        function speakText(text) {
+            stopSpeech();
+
+            let utterance = new SpeechSynthesisUtterance(text);
+            let lang = detectLanguage(text);
+            utterance.lang = lang;
+            utterance.voice = getBestVoice(lang);
+            utterance.rate = speechRate;
+            utterance.volume = 1.0;
+
+            currentUtterance = utterance;
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function detectLanguage(text) {
+            if (/[\u0600-\u06FF]/.test(text)) return "ar-SA"; 
+            if (/[a-zA-Z]/.test(text)) return "en-US"; 
+            return "fr-FR"; 
+        }
+
+        function getBestVoice() {
+    voices = speechSynthesis.getVoices();
+    
+    let maleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("m"));
+    let femaleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("f"));
+
+    if (userGender === "male" && maleVoice) {
+        return maleVoice;
+    } else if (userGender === "female" && femaleVoice) {
+        return femaleVoice;
+    }
+
+    // إذا لم يتم العثور على صوت مناسب، استخدم أي صوت عربي متاح
+    return voices.find(voice => voice.lang.startsWith("ar")) || voices[0];
+}
+
+        function transliterateToEnglish(langCode, availableVoices) {
+            let transliterationMap = {
+                "ar": {
+                    "أ": "A", "ب": "B", "ت": "T", "ث": "TH", "ج": "J", "ح": "H", "خ": "KH",
+                    "د": "D", "ذ": "DH", "ر": "R", "ز": "Z", "س": "S", "ش": "SH", "ص": "S",
+                    "ض": "D", "ط": "T", "ظ": "Z", "ع": "A", "غ": "GH", "ف": "F", "ق": "Q",
+                    "ك": "K", "ل": "L", "م": "M", "ن": "N", "ه": "H", "و": "W", "ي": "Y"
+                }
+            };
+
+            let text = window.getSelection().toString();
+            let transliteratedText = text.split("").map(char => transliterationMap[langCode][char] || char).join("");
+
+            let utterance = new SpeechSynthesisUtterance(transliteratedText);
+            utterance.lang = "en-US";
+            utterance.voice = availableVoices.find(voice => voice.lang.startsWith("en")) || availableVoices[0];
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function stopSpeech() {
+            if (speechSynthesisInstance.speaking) {
+                speechSynthesisInstance.cancel();
+            }
+            currentUtterance = null;
+        }
+
+        document.getElementById("speedRange").addEventListener("input", function () {
+            speechRate = this.value;
+        });
+
+        document.getElementById("voiceGender").addEventListener("change", function () {
+            userGender = this.value;
+        });
+
+        window.onload = function() {
+            speechSynthesis.onvoiceschanged = function() {
+                voices = speechSynthesis.getVoices();
+            };
+        };
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

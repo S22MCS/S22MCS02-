@@ -303,6 +303,7 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
+
 <!DOCTYPE html>
         <html lang="ar">
         <head>
@@ -340,27 +341,34 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
                 /* Progress Bar Container */
                 .progress-bar-container {
                     width: 60%;
-                    height: 30px;
+                    height: 35px;
                     background-color: #444;
                     border-radius: 15px;
                     position: relative;
                     margin: 0 auto;
                 }
             
-                /* Progress Bar */
-                .progress-bar {
-                    height: 100%;
-                    width: 0;
-                    background-color: #00aaff;
-                    border-radius: 15px;
-                    transition: width 0.3s ease-in-out;
-                }
+           /* Progress Bar */
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #00aaff;
+    border-radius: 15px;
+    transition: width 0.3s ease-in-out;
+    margin-left: 500px; /* تحريك الشريط قليلًا إلى اليسار */
+}
+
+
             
-                #proo {
-                    margin-right: 10rem;
-                    font-size: 1.8rem;
-                }
-            
+#proo {
+    display: flex;
+    align-items: center; /* محاذاة الإيموجي والنص أفقيًا */
+    gap: 5px; /* مسافة صغيرة بين الإيموجي والنص */
+    margin-left: 8rem; /* تحريكه لليمين */
+    font-size: 1.7rem;
+}
+
+
                 /* Progress Percentage */
                 .progress-percentage {
                     position: absolute;
@@ -414,6 +422,11 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
                     direction: rtl;
                     position: relative;
                     cursor: pointer;
+
+
+
+                    margin-bottom: 70px; /* إضافة مسافة فارغة أسفل كل فقاعة */
+
                 }
             
                 .bubble:hover {
@@ -559,8 +572,8 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
                     }
             
                     .finish-button {
-                        font-size: 14px; /* Adjust font size */
-                        padding: 8px 16px; /* Adjust padding */
+                        font-size: 12px; /* Adjust font size */
+                        padding: 8px 13px; /* Adjust padding */
                     }
             
                     .lesson-container {
@@ -701,15 +714,31 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 <body>
+ 
+  
     <div class="sidebar">
-        <button class="finish-button" onclick="finishLesson()">انتهيت من الدرس</button>
+   
+        <button class="finish-button" onclick="finishLesson()" 
+        style="font-size: 15px; padding: 6px 10px; position: relative; right: -20px;">
+        ✅ انتهيت من الدرس
+    </button>
+     
+    
         <div class="progress-bar-container">
             <div class="progress-bar" id="progress-bar"></div>
             <div class="progress-percentage" id="progress-percentage">0%</div>
         </div>
-        <h3 id="proo" >📊 التقدم</h3>
-    </div>
 
+        <h3 id="proo">📊 <span>التقدم</span></h3>
+
+      
+
+    <button onclick="goToUncompletedBubble()" class="uncompleted-button" style="font-size: 14px; padding: 6px 10px;">🔍 الفقاعات غير المكتملة</button>
+    
+
+</div>
+    
+    
     <br>
     <div class="refresh-container"  id="ref">
         <button class="refresh-button" onclick="location.reload();">تحديث الصفحة</button>
@@ -723,6 +752,170 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
         <h2 class="lesson-subtitle"> 🔻   GLANDE MAMMAIRE🔻</h2>
      </div>
 
+     
+
+
+     <!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تم عبر برنامج 2019 الطب الجزائري</title>
+
+    <style>
+    body {
+        font-family: 'Poppins', 'Amiri', serif;
+        direction: rtl;
+        text-align: right;
+        background-color: #121212;
+        color: white;
+        margin: 0;
+        padding: 20px;
+    }
+    
+    .container {
+        max-width: 600px;
+        margin: auto;
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+    }
+    
+    h2 {
+        text-align: center;
+        color: #00aaff;
+    }
+    
+    .lesson {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        border-bottom: 1px solid #444;
+        flex-direction: column;
+        background: rgba(30, 30, 30, 0.9);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    
+    .lesson:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
+    }
+    
+    .lesson input {
+        transform: scale(1.3);
+        accent-color: #00aaff;
+    }
+    
+    .lesson span {
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+    
+    .translation {
+        font-size: 12px;
+        color: #bbb;
+        margin-top: 5px;
+    }
+    
+    .progress-bar {
+        width: 100%;
+        background: #444;
+        height: 12px;
+        border-radius: 6px;
+        margin: 10px 0;
+        overflow: hidden;
+    }
+    
+    .progress {
+        height: 100%;
+        background: #00aaff;
+        width: 0%;
+        transition: width 0.3s;
+    }
+    
+    .btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background: #00aaff;
+        color: white;
+        text-align: center;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        transition: background 0.3s ease-in-out;
+    }
+    
+    .btn:hover {
+        background: #0077cc;
+    }
+    
+    .lang {
+        text-align: center;
+        color: #bbb;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+</style>    
+</head>
+<body>
+    <div class="container">
+        <h2>الأهداف الخاصة في درس الثدي</h2>
+        <div class="progress-bar"><div class="progress"></div></div>
+        <div id="lessonList"></div>
+        <button class="btn" onclick="completeAll()">إكمال الكل</button>
+        <div class="lang">
+
+              
+            العربية
+
+            <br>
+        English | Français 
+        </div>
+    </div>
+
+    <script>
+        const lessons = [
+            { ar: "التعرف على الغدد الصماء", en: "Identify the endocrine glands", fr: "Identifier les glandes endocrines" },
+            { ar: "وصف التكوين الخارجي للثدي", en: "Describe the external configuration of the breast", fr: "Décrire la configuration externe du sein" },
+            { ar: "وصف التكوين الداخلي للثدي", en: "Describe the internal configuration of the breast", fr: "Décrire la configuration interne du sein" },
+            { ar: "ذكر وسائل تثبيت الثدي", en: "Cite the means of fixation of the breast", fr: "Citer les moyens de fixité du sein" },
+            { ar: "وصف التروية الشريانية، الصرف الوريدي واللمفاوي وتعصيب الثدي", en: "Describe the arterial vascularization, venous and lymphatic drainage, and innervation of the breast", fr: "Décrire la vascularisation artérielle, le drainage veineux et lymphatique ainsi que son innervation" }
+        ];
+
+        const lessonList = document.getElementById("lessonList");
+        lessons.forEach((lesson, index) => {
+            const div = document.createElement("div");
+            div.className = "lesson";
+            div.innerHTML = `
+                <input type="checkbox" onchange="updateProgress()" id="lesson${index}">
+                <span>${lesson.ar}</span>
+                <div class="translation">${lesson.en}</div>
+                <div class="translation">${lesson.fr}</div>
+            `;
+            lessonList.appendChild(div);
+        });
+
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll("input[type=checkbox]");
+            let completed = 0;
+            checkboxes.forEach(cb => { if (cb.checked) completed++; });
+            document.querySelector(".progress").style.width = (completed / lessons.length * 100) + "%";
+        }
+
+        function completeAll() {
+            document.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
+            updateProgress();
+        }
+    </script>
+</body>
+</html>
 
 
 
@@ -2563,6 +2756,37 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
+<div class="bubble">
+    <button class="interact-button" id="inter2" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A44.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+
+
+
+<div class="bubble" style="display: flex; flex-direction: column; align-items: center; background: #f9f9f9; padding: 15px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; text-align: center; margin: auto;">
+    <button id="inter2" onclick="markBubbleAsCompleted(this)" 
+        style="background-color: #4CAF50; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: 0.3s; width: 100%; max-width: 200px;">
+        ✅ تفاعل
+    </button>
+    <figure class="bubble-content" style="margin-top: 10px; width: 100%;">
+        <img src="2MED U4 ANATOMIE/A45.png" alt="شرح الاختصارات الطبية" 
+            style="width: 100%; max-width: 300px; border-radius: 10px; margin-bottom: 10px;">
+        <figcaption style="font-size: 14px; color: #333; line-height: 1.6;">
+            <strong>الثدي:</strong> شكل تخطيطي للثدي.<br>
+            <span style="display: inline-block; background: #eee; padding: 5px 8px; border-radius: 5px; margin: 2px;">1. جدار الصدر</span>
+            <span style="display: inline-block; background: #eee; padding: 5px 8px; border-radius: 5px; margin: 2px;">2. عضلة صدرية كبيرة</span>
+            <span style="display: inline-block; background: #eee; padding: 5px 8px; border-radius: 5px; margin: 2px;">3. فصيصات</span>
+            <span style="display: inline-block; background: #eee; padding: 5px 8px; border-radius: 5px; margin: 2px;">4. حلمة</span>
+            <span style="display: inline-block; background: #eee; padding: 5px 8px; border-radius: 5px; margin: 2px;">5. هالة</span>
+            <span style="display: inline-block; background: #eee; padding: 5px 8px; border-radius: 5px; margin: 2px;">6. قناة حليبية</span>
+            <span style="display: inline-block; background: #eee; padding: 5px 8px; border-radius: 5px; margin: 2px;">7. نسيج شحمي</span>
+            <span style="display: inline-block; background: #eee; padding: 5px 8px; border-radius: 5px; margin: 2px;">8. الجلد</span>
+        </figcaption>
+    </figure>
+</div>
 
 
 
@@ -2571,13 +2795,94 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
+<div class="bubble" style="display: flex; flex-direction: column; align-items: center; background: #f9f9f9; padding: 15px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; text-align: center; margin: auto;">
+    <button id="inter2" onclick="markBubbleAsCompleted(this)" 
+        style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: 0.3s; width: 100%; max-width: 200px; margin-bottom: 10px;">
+        ✅ تفاعل
+    </button>
+    <figure class="bubble-content" style="margin: 0; width: 100%;">
+        <img src="2MED U4 ANATOMIE/A46.png" alt="شرح الاختصارات الطبية" 
+            style="width: 100%; max-width: 350px; border-radius: 10px; margin-bottom: 10px;">
+        <figcaption style="font-size: 14px; color: #333; line-height: 1.6; background: #f1f1f1; padding: 10px; border-radius: 8px;">
+            <strong>🔍 مُخطط لثدي الأنثى:</strong><br>
+            يظهر فيه فُصوص الغدد الثديية والقنوات الناقلة للبن.
+        </figcaption>
+    </figure>
+</div>
 
 
 
 
 
+<div class="bubble">
+    <button class="interact-button" id="inter2" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A47.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
 
+<div class="bubble">
+    <button class="interact-button" id="inter3" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A48.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
 
+<div class="bubble">
+    <button class="interact-button" id="inter4" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A49.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="inter5" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A50.avif" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="inter6" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A51.avif" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="inter7" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A52.avif" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="inter8" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A53.avif" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="inter9" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A54.avif" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="inter10" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A55.avif" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="inter11" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <figure class="bubble">
+        <img src="2MED U4 ANATOMIE/A56.avif" alt="شرح الاختصارات الطبية" class="outside-image">
+    </figure>
+</div>
 
 
 
@@ -2629,78 +2934,91 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
     <script>
         let totalBubbles = 21; 
-let completedBubbles = 0; 
-let startTime = Date.now();
-let bubbleButton = null;
-
-function showQuestion() {
-    document.getElementById('question-modal').style.display = 'block';
-}
-
-function closeModal(answer) {
-    document.getElementById('question-modal').style.display = 'none';
-
-    if (answer) {
-        completedBubbles++;
-        updateProgress();
-        bubbleButton.style.backgroundColor = '#4CAF50'; 
-        bubbleButton.innerText = 'تم التفاعل'; 
-        bubbleButton.disabled = true; 
-
-        if (completedBubbles === totalBubbles) {
-            enableFinishButton();
-        }
-    } else {
+        let completedBubbles = 0; 
+    let startTime = Date.now();
+    let bubbleButton = null;
+    
+    function showQuestion() {
+        document.getElementById('question-modal').style.display = 'block';
     }
-}
-
-function updateProgress() {
-    let progress = (completedBubbles / totalBubbles) * 100; 
-    document.getElementById('progress-bar').style.width = `${progress}%`;
-    document.getElementById('progress-percentage').innerText = `${Math.round(progress)}%`;
-
-    const finishButton = document.querySelector('.finish-button');
-    if (progress === 100) {
-        finishButton.disabled = false; 
-        finishButton.style.backgroundColor = '#00aaff'; 
-        finishButton.style.cursor = 'pointer'; 
-    } else {
-        finishButton.disabled = true;
+    
+    function closeModal(answer) {
+        document.getElementById('question-modal').style.display = 'none';
+    
+        if (answer) {
+            completedBubbles++;
+            updateProgress();
+            bubbleButton.style.backgroundColor = '#4CAF50'; 
+            bubbleButton.innerText = 'تم التفاعل'; 
+            bubbleButton.disabled = true; 
+    
+            if (completedBubbles === totalBubbles) {
+                enableFinishButton();
+            }
+        }
+    }
+    
+    function updateProgress() {
+        let progress = (completedBubbles / totalBubbles) * 100; 
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+        document.getElementById('progress-percentage').innerText = `${Math.round(progress)}%`;
+    
+        const finishButton = document.querySelector('.finish-button');
+        if (progress === 100) {
+            finishButton.disabled = false; 
+            finishButton.style.backgroundColor = '#00aaff'; 
+            finishButton.style.cursor = 'pointer'; 
+        } else {
+            finishButton.disabled = true;
+            finishButton.style.backgroundColor = '#ccc'; 
+            finishButton.style.cursor = 'not-allowed'; 
+        }
+    }
+    
+    function markBubbleAsCompleted(button) {
+        bubbleButton = button; 
+        showQuestion(); 
+    }
+    
+    function finishLesson() {
+        let elapsedTime = Date.now() - startTime;
+        let minutes = Math.floor(elapsedTime / 60000);
+        let seconds = Math.floor((elapsedTime % 60000) / 1000);
+        let summary = `الوقت المستغرق: ${minutes} دقيقة و ${seconds} ثانية. عدد الفقاعات التي تم التفاعل معها: ${completedBubbles} من أصل ${totalBubbles}.`;
+        document.getElementById('lesson-summary').innerText = summary;
+        document.getElementById('end-lesson-modal').style.display = 'block';
+    }
+    
+    function reloadPage() {
+        location.reload();
+    }
+    
+    function goToTestsPage() {
+        window.location.href = 'MED02.html';
+    }
+    
+    function initializeFinishButton() {
+        const finishButton = document.querySelector('.finish-button');
+        finishButton.disabled = true; 
         finishButton.style.backgroundColor = '#ccc'; 
         finishButton.style.cursor = 'not-allowed'; 
     }
-}
-
-function markBubbleAsCompleted(button) {
-    bubbleButton = button; 
-    showQuestion(); 
-}
-
-function finishLesson() {
-    let elapsedTime = Date.now() - startTime;
-    let minutes = Math.floor(elapsedTime / 60000);
-    let seconds = Math.floor((elapsedTime % 60000) / 1000);
-    let summary = `الوقت المستغرق: ${minutes} دقيقة و ${seconds} ثانية. عدد الفقاعات التي تم التفاعل معها: ${completedBubbles} من أصل ${totalBubbles}.`;
-    document.getElementById('lesson-summary').innerText = summary;
-    document.getElementById('end-lesson-modal').style.display = 'block';
-}
-
-function reloadPage() {
-    location.reload();
-}
-function goToTestsPage() {
-    window.location.href = 'MED02.html';
-}
-
-function initializeFinishButton() {
-    const finishButton = document.querySelector('.finish-button');
-    finishButton.disabled = true; 
-    finishButton.style.backgroundColor = '#ccc'; 
-    finishButton.style.cursor = 'not-allowed'; 
-}
-
-window.onload = initializeFinishButton;
+    
+    window.onload = initializeFinishButton;
+    
+    // وظيفة للانتقال إلى أول فقاعة غير مكتملة
+    function goToUncompletedBubble() {
+        let bubbles = document.querySelectorAll('.interact-button');
+        for (let bubble of bubbles) {
+            if (!bubble.disabled) { // تعني أن الفقاعة لم يتم التفاعل معها
+                bubble.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                bubble.style.border = "3px solid red"; // تمييزها باللون الأحمر
+                break;
+            }
+        }
+    }
     </script>
+    
 </body>
 </html>
 
@@ -3163,220 +3481,73 @@ window.onload = initializeFinishButton;
                         </ol>
                     </ul>
                 `,
-                image: "2MEDU1ANATOMIE/A101.png",
+                imageFront: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الخلفية
                 isHtml: true
-            }
-        ];
-
-        let currentIndex = 0;
-        let flipped = false;
-        let hintTimeout;
-
-        function updateCard() {
-            const card = flashcards[currentIndex];
-
-            document.getElementById("question").innerHTML = card.question;
-            document.getElementById("hint").innerHTML = "🔍 تلميح: " + card.hint;
-
-            // ضبط عرض الإجابة مع الاتجاه الصحيح والترقيم
-            document.getElementById("answer").innerHTML = card.answer;
-
-            document.getElementById("cardImageFront").src = card.image;
-            document.getElementById("cardImageBack").src = card.image;
-            document.getElementById("cardNumber").textContent = `${currentIndex + 1} / ${flashcards.length}`;
-        }
-
-        function flipCard(event) {
-            event.stopPropagation();
-            flipped = !flipped;
-            document.getElementById("flashcard").classList.toggle("flipped", flipped);
-        }
-
-        function showHint() {
-            const hintContainer = document.getElementById("hintContainer");
-            hintContainer.classList.add("show");
-
-            // إخفاء التلميح بعد 10 ثوانٍ
-            clearTimeout(hintTimeout);
-            hintTimeout = setTimeout(function() {
-                hintContainer.classList.remove("show");
-            }, 10000);
-        }
-
-        function shuffleCards() {
-            flashcards.sort(() => Math.random() - 0.5);
-            currentIndex = 0;
-            flipped = false;
-            document.getElementById("flashcard").classList.remove("flipped");
-            updateCard();
-        }
-
-        function nextCard() {
-            if (currentIndex < flashcards.length - 1) {
-                currentIndex++;
-            } else {
-                currentIndex = 0;
-            }
-            flipped = false;
-            document.getElementById("flashcard").classList.remove("flipped");
-            updateCard();
-        }
-
-        function prevCard() {
-            if (currentIndex > 0) {
-                currentIndex--;
-            } else {
-                currentIndex = flashcards.length - 1;
-            }
-            flipped = false;
-            document.getElementById("flashcard").classList.remove("flipped");
-            updateCard();
-        }
-
-        updateCard();
-    </script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            },
+    {
+        question: `🔹 <b>  خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.   </b> 🔹<br>
+        🔹 <b>باللغة العربية (AR):</b> خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.  br>
+        🔹 <b>In English (EN):</b> Guess the intercostal arteries that supply the mammary gland<br>
+        🔹 <b>En français (FR):</b> Devinez les artères intercostales qui irriguent la glande mammaire`,
+        
+        hint: `🔍 <b>تلميح / Hint / Indice</b><br>
+        🔴 <b>باللغة العربية (AR):</b> عددها ثلاثة بالترتيب.<br>
+        🔵 <b>In English (EN):</b> They are three in order.<br>
+        ⚪ <b>En français (FR):</b> Ils sont au nombre de trois dans l'ordre.`,
+        
+        answer: `
+            <div style="text-align: center;">
+                <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                    <li>2️⃣ <b>الشريان الوربي الثاني</b> (Intercostal Artery 2) - <i>Deuxième artère intercostale</i></li><br>
+                    <li>3️⃣ <b>الشريان الوربي الثالث</b> (Intercostal Artery 3) - <i>Troisième artère intercostale</i></li><br>
+                    <li>4️⃣ <b>الشريان الوربي الرابع</b> (Intercostal Artery 4) - <i>Quatrième artère intercostale</i></li><br>
+                </ul>
+            </div>
+        `,
+        imageFront: "/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MED U4 ANATOMIE/A47.jpg", // صورة الجهة الخلفية
+                isHtml: true
+    }
+
+
+
+    ];
+
+let currentIndex = 0;
+let flipped = false;
+
+function updateCard() {
+    const card = flashcards[currentIndex];
+    document.getElementById("question").innerHTML = card.question;
+    document.getElementById("answer").innerHTML = card.answer;
+    document.getElementById("cardImageFront").src = card.imageFront;
+    document.getElementById("cardImageBack").src = card.imageBack;
+    document.getElementById("cardNumber").textContent = `${currentIndex + 1} / ${flashcards.length}`;
+}
+
+function flipCard(event) {
+    event.stopPropagation();
+    flipped = !flipped;
+    document.getElementById("flashcard").classList.toggle("flipped", flipped);
+}
+
+function nextCard() {
+    currentIndex = (currentIndex + 1) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+function prevCard() {
+    currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+updateCard();
+</script>
 
 
 
