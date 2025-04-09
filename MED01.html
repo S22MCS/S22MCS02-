@@ -802,293 +802,224 @@
  <section>
 
 
-          <!DOCTYPE html>
-          <html lang="ar">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>تصميم متجاوب مع أزرار تفاعلية</title>
+  <!DOCTYPE html>
+  <html lang="ar" dir="rtl">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>تصميم متجاوب مع أزرار تفاعلية</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+      
+      <style>
+          /* ضبط الخطوط والألوان الأساسية */
+          html, body {
+              margin: 0;
+              padding: 0;
+              font-family: 'Poppins', sans-serif;
+              background-color: #f3f4f6;
+              text-align: center;
+              height: 100%;
+              box-sizing: border-box;
+              overflow-x: hidden;
+          }
+          
+          /* الحاوية الرئيسية */
+          .main-container {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              min-height: 100vh;
+              padding: 15px;
+              width: 100%;
+              box-sizing: border-box;
+          }
+          
+          /* الحاوية الخاصة بالأزرار */
+          .button-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+              gap: 12px;
+              width: 100%;
+              max-width: 1200px;
+              padding: 10px;
+              box-sizing: border-box;
+          }
+          
+          /* تصميم الأزرار */
+          .action-button {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              text-decoration: none;
+              font-weight: bold;
+              color: white;
+              padding: 12px;
+              border-radius: 10px;
+              text-align: center;
+              font-size: 14px;
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+              cursor: pointer;
+              min-height: 70px;
+              max-width: 100%;
+              box-sizing: border-box;
+              word-break: keep-all;
+          }
+          
+          /* تأثير الأزرار عند التحويل */
+          .action-button:hover {
+              transform: scale(1.03);
+              box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+          }
+          
+          /* ألوان الأزرار */
+          .button-cardio { background: linear-gradient(145deg, #00897b, #004d40); }
+          .button-digestif { background: linear-gradient(135deg, #d32f2f, #ff9800); }
+          .button-urinaire { background: linear-gradient(135deg, #0077b6, #00a896); }
+          .button-endocrine { background: linear-gradient(135deg, #6a1b9a, #311b92); }
+          .button-nervous { background: linear-gradient(135deg, #1e3a8a, #0a0a0a); }
+          
+          /* زر عائم مع GIF */
+          .floating-button {
+              position: fixed;
+              bottom: 15px;
+              left: 15px;
+              width: 50px;
+              height: 50px;
+              border: none;
+              border-radius: 50%;
+              background: url('adatealm/shelves.gif') center/cover no-repeat;
+              background-color: transparent;
+              box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+              cursor: pointer;
+              transition: 0.3s ease-in-out;
+              z-index: 1000;
+          }
+          
+          .floating-button:hover {
+              transform: scale(1.1) rotate(5deg);
+          }
+          
+          .floating-button:active {
+              transform: scale(0.95);
+          }
+          
+          /* تحسينات للهواتف الصغيرة جدًا */
+          @media (max-width: 480px) {
+              .button-grid {
+                  grid-template-columns: 1fr;
+                  gap: 10px;
+              }
               
-
-
-
-                      <style>/* ضبط الخطوط والألوان الأساسية */
-                        html, body {
-                            margin: 0;
-                            padding: 0;
-                            font-family: 'Poppins', sans-serif;
-                            background-color: #f3f4f6;
-                            text-align: center;
-                            height: 100%;
-                            box-sizing: border-box;
-                            overflow-x: hidden; /* لمنع التمرير الأفقي */
-                        }
-                        
-                        /* الحاوية الرئيسية التي تحتوي على جميع العناصر */
-                        .main-container {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            min-height: 100vh;
-                            padding: 20px;
-                            width: 100%;
-                            box-sizing: border-box;
-                        }
-                        
-                        /* الحاوية الخاصة بالأزرار */
-                        .button-grid {
-                            display: grid;
-                            grid-template-columns: repeat(4, 1fr); /* 4 أزرار في السطر */
-                            gap: 15px;
-                            width: 100%;
-                            max-width: 1200px;
-                            padding: 10px;
-                            box-sizing: border-box;
-                        }
-                        
-                        /* عند تصغير الشاشة أقل من 570px، يتم عرض 2 أزرار في كل صف */
-                        @media (max-width: 570px) {
-                            .button-grid {
-                                grid-template-columns: repeat(2, 1fr); /* 2 أزرار في السطر */
-                            }
-                        }
-                        
-                        /* عند تصغير الشاشة أقل من 400px، يتم عرض زر واحد في كل صف */
-                        @media (max-width: 400px) {
-                            .button-grid {
-                                grid-template-columns: repeat(2, 1fr); /* 2 أزرار في السطر */
-                            }
-                        }
-                        
-                        /* عند تصغير الشاشة أقل من 320px، يتم عرض زر واحد في كل صف */
-                        @media (max-width: 320px) {
-                            .button-grid {
-                                grid-template-columns: 1fr; /* زر واحد في السطر */
-                                padding: 5px; /* تقليل المسافة بين الأزرار */
-                            }
-                        
-                            .action-button {
-                                padding: 10px; /* تقليل حجم الأزرار */
-                                font-size: 12px; /* تصغير الخط */
-                                min-height: 60px; /* تقليل ارتفاع الأزرار */
-                            }
-                        
-                            /* تقليل حجم زر الفلوات */
-                            .floating-button {
-                                width: 50px;
-                                height: 50px;
-                                bottom: 15px;
-                                left: 15px;
-                            }
-                        }
-                        
-                        /* تصميم الأزرار */
-                        .action-button {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            text-decoration: none;
-                            font-weight: bold;
-                            color: white;
-                            padding: 15px;
-                            border-radius: 12px;
-                            text-align: center;
-                            font-size: 14px;
-                            transition: transform 0.3s ease, box-shadow 0.3s ease;
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-                            cursor: pointer;
-                            min-height: 80px;
-                            max-width: 100%;
-                            box-sizing: border-box;
-                        }
-                        
-                        /* تأثير الأزرار عند التحويل */
-                        .action-button:hover {
-                            transform: scale(1.05);
-                            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-                        }
-                        
-                        /* ألوان الأزرار */
-                        .button-cardio { background: linear-gradient(145deg, #00897b, #004d40); }
-                        .button-digestif { background: linear-gradient(135deg, #d32f2f, #ff9800); }
-                        .button-urinaire { background: linear-gradient(135deg, #0077b6, #00a896); }
-                        .button-endocrine { background: linear-gradient(135deg, #6a1b9a, #311b92); }
-                        .button-nervous { background: linear-gradient(135deg, #1e3a8a, #0a0a0a); }
-                        
-                        /* زر عائم مع GIF */
-                        .floating-button {
-                            position: fixed;
-                            bottom: 20px;
-                            left: 20px;
-                            width: 60px;
-                            height: 60px;
-                            border: none;
-                            border-radius: 50%;
-                            background: url('adatealm/shelves.gif') center/cover no-repeat;
-                            background-color: transparent;
-                            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-                            cursor: pointer;
-                            transition: 0.3s ease-in-out;
-                            z-index: 1000;
-                        }
-                        
-                        .floating-button:hover {
-                            transform: scale(1.1) rotate(5deg);
-                        }
-                        
-                        .floating-button:active {
-                            transform: scale(0.95);
-                        }
-                        
-                    </style>
-          </head>
-
-
-
-
+              .action-button {
+                  padding: 10px;
+                  min-height: 60px;
+                  font-size: 13px;
+              }
+              
+              .floating-button {
+                  width: 40px;
+                  height: 40px;
+                  bottom: 10px;
+                  left: 10px;
+              }
+          }
           
+          /* تحسينات للنصوص العربية */
+          .arabic-text {
+              font-family: 'Amiri', serif;
+              font-weight: bold;
+              font-size: 18px;
+              color: #ffffff;
+              text-align: center;
+              margin: 5px 0;
+          }
           
+          .english-text, .french-text {
+              font-size: 10px;
+              font-weight: bold;
+              color: #e0e0e0;
+              letter-spacing: 1px;
+              margin: 2px 0;
+          }
           
-          
-          <body>
-          
-          
-          
-          <!-- زر عائم مع GIF -->
+          /* تحسينات للهواتف الأفقية */
+          @media (max-height: 500px) {
+              .main-container {
+                  min-height: auto;
+                  padding: 10px 0;
+              }
+              
+              .button-grid {
+                  grid-template-columns: repeat(3, 1fr);
+              }
+          }
+      </style>
+  </head>
+  
+  <body>
       <!-- زر عائم مع GIF -->
-<button class="floating-button" onclick="scrollToSection('main-container')">
-
-</button>
-
-            
-<div class="main-container">
-    <div class="button-grid">
-    
-     
-
-
-  <!-- ازرار وحدة     -->
-<!-- زر: التشريح -->
-<a href="#تشريحوحدةالجخاز الصماويوالتناسلي" class="action-button button-urinaire">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-        🔻<br>A N A T O M Y<br>🔻
-      </span>
-      <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; color: #ffffff; text-align: center; direction: rtl;">
-      🦴 اَلتَّشْرِيحُ 🦴
-      </span>
-      <span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-        🔻<br>A N A T O M I E<br>🔻
-      </span>
-    </div>
-  </a>
-  
-  <!-- زر: علم الوظائف -->
-  <a href="#physiologie" class="action-button button-urinaire">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-        🔻<br>P H Y S I O L O G Y<br>🔻
-      </span>
-      <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; color: #ffffff; text-align: center; direction: rtl;">
-       🌬️عِلْمُ الوَظَائِفِ🌬️
-      </span>
-      <span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-        🔻<br>P H Y S I O L O G I E<br>🔻
-      </span>
-    </div>
-  </a>
-  
-  <!-- زر: علم الأنسجة -->
-  <a href="#histologie" class="action-button button-urinaire">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-        🔻<br>H I S T O L O G Y<br>🔻
-      </span>
-      <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; color: #ffffff; text-align: center; direction: rtl;">
-        🔬عِلْمُ اَلْأَنْسِجَةِ🔬
-      </span>
-      <span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-        🔻<br>H I S T O L O G I E<br>🔻
-      </span>
-    </div>
-  </a>
-  
-  <!-- زر: الكيمياء الحيوية -->
-  <a href="#biochimie" class="action-button button-urinaire">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-        🔻<br>B I O C H E M I S T R Y<br>🔻
-      </span>
-      <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; color: #ffffff; text-align: center; direction: rtl;">
-🧪
-
-<span>اَلْكِيمْيَاءُ اَلْحَيَوِيَّة</span>
-🧪
-      </span>
-      <span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-        🔻<br>B I O C H I M I E<br>🔻
-      </span>
-    </div>
-  </a>
-  
-  <!-- زر: علم الخلية -->
-  <a href="#cytologie" class="action-button button-urinaire">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-        🔻<br>C Y T O L O G Y<br>🔻
-      </span>
-      <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; color: #ffffff; text-align: center; direction: rtl;">
-        🔬
+      <button class="floating-button" onclick="scrollToSection('main-container')"></button>
       
-        <span>  عِلْمُ الخَلِيَّةِ</span>
-        🔬
-      </span>
-      <span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-        🔻<br>C Y T O L O G I E<br>🔻
-      </span>
-    </div>
-  </a>
+      <div class="main-container">
+          <div class="button-grid">
+              <!-- زر: التشريح -->
+              <a href="#ANATOMIE" class="action-button button-urinaire">
+                  <span class="english-text">A N A T O M Y</span>
+                  <span class="arabic-text">🦴 اَلتَّشْرِيحُ 🦴</span>
+                  <span class="french-text">A N A T O M I E</span>
+              </a>
+              
+              <!-- زر: علم الوظائف -->
+              <a href="#physiologie" class="action-button button-urinaire">
+                  <span class="english-text">P H Y S I O L O G Y</span>
+                  <span class="arabic-text">🌬️ عِلْمُ الوَظَائِفِ 🌬️</span>
+                  <span class="french-text">P H Y S I O L O G I E</span>
+              </a>
+              
+              <!-- زر: علم الأنسجة -->
+              <a href="#histologie" class="action-button button-urinaire">
+                  <span class="english-text">H I S T O L O G Y</span>
+                  <span class="arabic-text">🔬 عِلْمُ اَلْأَنْسِجَةِ 🔬</span>
+                  <span class="french-text">H I S T O L O G I E</span>
+              </a>
+              
+              <!-- زر: الكيمياء الحيوية -->
+              <a href="#biochimie" class="action-button button-urinaire">
+                  <span class="english-text">B I O C H E M I S T R Y</span>
+                  <span class="arabic-text">🧪 اَلْكِيمْيَاءُ اَلْحَيَوِيَّة 🧪</span>
+                  <span class="french-text">B I O C H I M I E</span>
+              </a>
+              
+              <!-- زر: علم الخلية -->
+              <a href="#cytologie" class="action-button button-urinaire">
+                  <span class="english-text">C Y T O L O G Y</span>
+                  <span class="arabic-text">🔬 عِلْمُ الخَلِيَّةِ 🔬</span>
+                  <span class="french-text">C Y T O L O G I E</span>
+              </a>
+              
+              <!-- زر: الفيزياء الحيوية -->
+              <a href="#BIOPHYSIQUE" class="action-button button-urinaire">
+                  <span class="english-text">B I O P H Y S I C S</span>
+                  <span class="arabic-text">🔭 اَلْفِيزْيَاءُ اَلْحَيَوِيَّة 🔭</span>
+                  <span class="french-text">B I O P H Y S I Q U E</span>
+              </a>
+          </div>
+      </div>
   
-
-
-  <!-- زر: الفيزياء الحيوية -->
-<a href="#BIOPHYSIQUE" class="action-button button-urinaire">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <!-- الإنجليزية -->
-      <span style="font-size: 11px; writing-mode: vertical-lr; font-weight: bold; color: #6A6A6A;">
-        🔻<br>B I O P H Y S I C S<br>🔻
-      </span>
-      
-      <!-- العربية -->
-      <span style="font-family: 'Amiri', serif; font-weight: bold; font-size: 22px; color: #ffffff; text-align: center; direction: rtl;">
-        <br><br>🔭 اَلْفِيزْيَاءُ اَلْحَيَوِيَّة 🔭
-      </span>
-      
-      <!-- الفرنسية -->
-      <span style="font-size: 11px; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; color: #6A6A6A;">
-        🔻<br>B I O P H Y S I Q U E<br>🔻
-      </span>
-    </div>
-  </a>
-  
-
-
-
-
-<script>
-  function scrollToSection(className) {
-      let element = document.querySelector('.' + className);
-      if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-      }
-  }
-  </script>
-  
-</div>
-</div>
-</section>
-
+      <script>
+          function scrollToSection(className) {
+              let element = document.querySelector('.' + className);
+              if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+              }
+          }
+      </script>
+  </body>
+  </html>
 
 
 
@@ -1126,9 +1057,9 @@
 
           <main>
 
-            <section id="anatomie" class="lesson-section">
+            <section id="ANATOMIE" class="lesson-section">
           
-              <h2> 🦴Anatomie🦴🌬️</h2>
+              <h2> 🦴علم التشريح🦴</h2>
               <img src="QCMPIC/anatomie.jpg" alt="صورة علم التشريح" width="300" height="250">
               <div class="lesson-info">
                   <p>عدد الدروس: 12</p>
@@ -1349,52 +1280,6 @@
               
               
               
-              
-              
-              <!-- المحتوى المعزول: الزر مع القائمة -->
-              <div class="lesson-container">
-              <!-- زر الدرس -->
-              <button class="custom-button" onclick="toggleLessons('THORACICWALLSLessons')">
-              <span class="arabic-text"> جدران الصدر </span>
-              <br>
-              <span>   🔻THORACIC WALLS🔻  </span>  
-              <br>
-              <span>🔻 PAROIS DU THORAX🔻</span> <!-- الإنجليزية -->
-              </button>
-              
-              
-              <!-- قائمة الدروس -->
-              <ul id="THORACICWALLSLessons" class="lesson-list">
-              
-              <li class="college-item">
-              
-              
-              <ul>
-              <li class="ملخص">
-               <a href="EL MOLAKHS_MED02_U1_ANATOMIE_جدران الصدر .html" class="ملخص-رابط">🔻 <span class="ملخص-كلمة">الملخص</span> 🔻</a>
-               <p class="اصدار">إصدار 14 رمضان 1446 موافق لـ 12 مارس 2025</p>
-              </li>
-              </ul>
-              
-              
-              <li class="college-item">
-              <a href="#">
-               ANNABA - كلية عنابة
-              </a>
-              <p>2024 - 2016</p>
-              </li>
-              <li class="college-item">
-              <a href="#">
-               SIDI BEL ABBÈS - كلية سيدي بلعباس
-              </a>
-              <p>2024 - 2016</p>
-              </li>
-              </ul>
-              </div>
-              
-              
-              
-              
                        
               
               
@@ -1423,12 +1308,13 @@
           
           
           
+      
           
           
+          <section id="physiologie" class="lesson-section">
           
-          <section id="cardiorespiratoirePHYSIOLOGIE" class="lesson-section">
-          
-            <h2> 🫀 Cardio 🫁Respiratoire  PHYSIOLOGIE🦴🌬️</h2>
+            <h2> 🌬️🩸علم وظائف الأعضاء🩸🌬️
+            </h2>
             <img src="QCMPIC/EMECARDIO RESPIRATOIREANATOMIE.jpg" alt="صورة علم التشريح" width="300" height="250">
             <div class="lesson-info">
                 <p>عدد الدروس:10 </p>
@@ -1735,8 +1621,8 @@
           
           
           
-              <section id="cardiorespiratoirehistologie" class="lesson-section">
-                  <h2>   🔬Histologie🔬</h2>
+              <section id="histologie" class="lesson-section">
+                  <h2>   🔬علم الأنسجة🔬</h2>
                   <img src="QCMPIC/CARDIO RESPIRATOIRE HISTOLOGIE.jpg" alt="صورة علم التشريح" width="300" height="250">
                   <div class="lesson-info">
                       <p>عدد الدروس: 16</p>
@@ -2060,7 +1946,7 @@
           
               <section id="BIOPHYSIQUE" class="lesson-section">
           
-                <h2>  ⚛️🔢BIOPHYSIQUE🔢⚛️ </h2>
+                <h2>  ⚛️🔢علم الفيزياءالحيوية </h2>
                 <img src="" alt="صورة علم التشريح" width="300" height="250">
                 <div class="lesson-info">
                     <p>عدد الدروس: جميع الوحدات </p>
@@ -3185,3 +3071,264 @@
 
 
           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>زر تواصل متجاوب</title>
+    <style>
+        /* زر عائم متجاوب */
+        .floating-btnCONTACT {
+            position: fixed;
+            bottom: 440px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            width: 55;
+            height: 55px;
+        }
+
+        /* صورة الزر بحجم متجاوب */
+        .floating-btnCONTACT img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
+            object-fit: cover;
+        }
+
+        .floating-btnCONTACT img:hover {
+            transform: scale(1.1);
+        }
+
+        /* نافذة منبثقة متجاوبة */
+        .popupCONTACT {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 300px;
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1001;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* زر الإغلاق */
+        .close-btnCONTACT {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btnCONTACT:hover {
+            background-color: #f0f0f0;
+            color: #cc0000;
+        }
+
+        /* تحسينات المحتوى */
+        .contact-containerCONTACT {
+            text-align: center;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 12px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .contact-titleCONTACT {
+            font-size: 18px;
+            margin: 0 0 10px 0;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .contact-textCONTACT {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .social-linksCONTACT {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btnCONTACT {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .btnCONTACT img {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+
+        .telegram-btnCONTACT { background: #0088cc; }
+        .facebook-btnCONTACT { background: #1877f2; }
+        .instagram-btnCONTACT { background: #e1306c; }
+
+        .btnCONTACT:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* تأثير الظهور */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* تحسينات للشاشات الصغيرة جدًا */
+        @media (max-width: 350px) {
+            .floating-btnCONTACT {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .popupCONTACT {
+                width: 95%;
+                padding: 10px;
+            }
+            
+            .contact-titleCONTACT {
+                font-size: 16px;
+            }
+            
+            .contact-textCONTACT {
+                font-size: 13px;
+            }
+            
+            .btnCONTACT {
+                font-size: 13px;
+                padding: 8px;
+            }
+            
+            .btnCONTACT img {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        /* تحسينات للوضع الأفقي */
+        @media (max-height: 500px) {
+            .popupCONTACT {
+                top: 20px;
+                transform: translate(-50%, 0);
+                animation: fadeInMobile 0.3s ease-in-out;
+            }
+            
+            @keyframes fadeInMobile {
+                from { opacity: 0; transform: translate(-50%, -10px); }
+                to { opacity: 1; transform: translate(-50%, 0); }
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- زر عائم بصيغة GIF -->
+<button class="floating-btnCONTACT" id="floating-btnCONTACT" onclick="togglePopupCONTACT()" aria-label="فتح نافذة التواصل">
+    <img src="img/ai-assistant.gif" alt="تواصل معنا">
+</button>
+
+<!-- النافذة المنبثقة -->
+<div class="popupCONTACT" id="popupCONTACT">
+    <button class="close-btnCONTACT" onclick="togglePopupCONTACT()" aria-label="إغلاق النافذة">✖</button>
+    <div class="contact-containerCONTACT">
+        <h3 class="contact-titleCONTACT">📩 تواصل معنا</h3>
+        <p class="contact-textCONTACT">في حالة وجود مشكلة أو لديك اقتراح سواء حول اختبار أو غيره، تواصل معنا</p>
+        
+        <div class="social-linksCONTACT">
+            <a href="http://t.me/ADATEALM_bot" target="_blank" rel="noopener noreferrer" class="btnCONTACT telegram-btnCONTACT">
+                <img src="img/direct.gif" alt="" loading="lazy"> بوت تيليغرام
+            </a>
+            
+            <a href="https://t.me/adatealm" target="_blank" rel="noopener noreferrer" class="btnCONTACT telegram-btnCONTACT">
+                <img src="img/telegram.png" alt="" loading="lazy"> تيليغرام
+            </a>
+            
+            <a href="https://www.facebook.com/share/1BFTe2mWNL/" target="_blank" rel="noopener noreferrer" class="btnCONTACT facebook-btnCONTACT">
+                <img src="img/facebook.png" alt="" loading="lazy"> فيسبوك
+            </a>
+            
+            <a href="https://www.instagram.com/adat_ealm?igsh=djg1eXlwMTJvM2xw" target="_blank" rel="noopener noreferrer" class="btnCONTACT instagram-btnCONTACT">
+                <img src="img/social.png" alt="" loading="lazy"> إنستغرام
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePopupCONTACT() {
+        var popup = document.getElementById("popupCONTACT");
+        if (popup.style.display === "block") {
+            popup.style.display = "none";
+        } else {
+            popup.style.display = "block";
+            // إغلاق النافذة عند النقر خارجها
+            document.addEventListener('click', function closePopup(e) {
+                if (!popup.contains(e.target) && e.target.id !== 'floating-btnCONTACT') {
+                    popup.style.display = "none";
+                    document.removeEventListener('click', closePopup);
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>
