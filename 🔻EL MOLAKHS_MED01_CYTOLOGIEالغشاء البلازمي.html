@@ -2561,8 +2561,6 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
-
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -2645,6 +2643,10 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     </script>
 </body>
 </html>
+
+
+
+
 
 
 
@@ -3229,8 +3231,6 @@ updateCard();
 
 
 
-<br><br><br>
-
 
 
 
@@ -3599,14 +3599,18 @@ updateCard();
             transition: all 0.3s;
         }
         
-        /* زر البحث العائم */
+
+
+
+             /* زر البحث العائم */
         .search-floating-btn {
-            position: fixed;
-            bottom: 430px;
-            left: 17px;
+  position: fixed;
+  bottom: 430PX;
+    left: 62px;
             width: 55px;
             height: 55px;
-            background-color: #2185d0;
+          
+            background-color:2185d0 ;
             color: white;
             border: none;
             border-radius: 50%;
@@ -3619,6 +3623,7 @@ updateCard();
             justify-content: center;
             transition: all 0.3s;
         }
+
         
         .search-floating-btn:hover {
             background-color: #1678c2;
@@ -4316,3 +4321,217 @@ updateCard();
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحويل اتجاه النص تلقائيًا مع الحفاظ على التنسيق</title>
+    <style>
+        body {
+    
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        /* تنسيقات إضافية للحفاظ على المظهر */
+        .mixed-content {
+            unicode-bidi: embed;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // عناصر أكثر تحديداً مع استثناء العناصر التي قد تحتوي على أطفال معقدة
+            const elements = document.querySelectorAll('p, div:not(div div), span, li, h1, h2, h3, h4, h5, h6');
+            
+            elements.forEach(element => {
+                // تجاهل العناصر التي تحتوي على أطفال معقدة
+                if (element.children.length > 0 && !(element.children.length === 1 && element.children[0].tagName === 'SPAN')) {
+                    return;
+                }
+                
+                const text = element.textContent.trim();
+                
+                if (!text) return;
+                
+                // تحليل النص لتحديد إذا كان إنجليزي/عربي
+                const hasArabic = /[\u0600-\u06FF]/.test(text);
+                const hasEnglish = /[a-zA-Z]/.test(text);
+                
+                // إذا كان النص يحتوي على الإنجليزية فقط
+                if (hasEnglish && !hasArabic) {
+                    element.classList.add('ltr');
+                    element.classList.remove('rtl');
+                } 
+                // إذا كان النص يحتوي على العربية فقط
+                else if (hasArabic && !hasEnglish) {
+                    element.classList.add('rtl');
+                    element.classList.remove('ltr');
+                }
+                // إذا كان نصاً مختلطاً
+                else if (hasArabic && hasEnglish) {
+                    element.classList.add('mixed-content');
+                    
+                    // تحديد الاتجاه الأساسي بناءً على الحرف الأول
+                    const firstChar = text.charAt(0);
+                    if (/[a-zA-Z]/.test(firstChar)) {
+                        element.style.direction = 'ltr';
+                        element.style.textAlign = 'left';
+                    } else {
+                        element.style.direction = 'rtl';
+                        element.style.textAlign = 'right';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          

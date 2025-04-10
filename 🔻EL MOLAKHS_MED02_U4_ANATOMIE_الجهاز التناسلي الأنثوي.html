@@ -5387,12 +5387,6 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -5475,6 +5469,10 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     </script>
 </body>
 </html>
+
+
+
+
 
 
 
@@ -6059,6 +6057,9 @@ updateCard();
 
 
 
+
+
+
 <br><br><br>
 
 
@@ -6365,3 +6366,998 @@ updateCard();
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بحث ذكي مع اقتراحات</title>
+    <style>
+        /* التنسيق العام */
+        body {      
+      font-family: 'Poppins', 'Amiri', serif;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s;
+        }
+        
+
+
+
+             /* زر البحث العائم */
+        .search-floating-btn {
+  position: fixed;
+  bottom: 430PX;
+    left: 62px;
+            width: 55px;
+            height: 55px;
+          
+            background-color:2185d0 ;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        
+        .search-floating-btn:hover {
+            background-color: #1678c2;
+            transform: scale(1.1);
+        }
+        
+        /* فقاعة البحث المنبثقة */
+        .search-bubble {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
+            width: 350px;
+            max-height: 70vh;
+            background-color: rgb(82, 82, 82);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            z-index: 10000;
+            overflow: hidden;
+            animation: bubbleAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .search-bubble.show {
+            display: flex;
+        }
+
+        @keyframes bubbleAppear {
+            from {
+                transform: translateY(20px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* رأس الفقاعة */
+        .bubble-header {
+            padding: 15px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #424242;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bubble-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .close-bubble {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* محتوى الفقاعة */
+        .bubble-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        /* مربع البحث */
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-bottom: 2px solid #989898;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-bottom-color: #2185d0;
+        }
+
+        /* نتائج البحث */
+        .search-results {
+            max-height: calc(70vh - 120px);
+            overflow-y: auto;
+        }
+
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #747272;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .result-item:hover {
+            background-color: #393737;
+        }
+
+        .result-item.active {
+            background-color: #3d3f40;
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2185d0;
+        }
+   
+        
+
+
+        .result-preview {
+    position: relative;
+    max-height: 3em;
+    overflow: hidden;
+}
+.result-preview:after {
+    content: "...";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgb(72, 70, 70);
+    padding-left: 5px;
+}
+
+
+
+        .highlight {
+
+    background-color: #009c05; /* أخضر فاتح */
+
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+        }
+
+        /* مثلث المؤشر */
+        .bubble-pointer {
+            position: absolute;
+            bottom: -10px;
+            left: 40px;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 12px solid rgb(53, 52, 52);
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+        }
+
+        /* للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .search-floating-btn {
+                bottom: 20px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .search-bubble {
+                bottom: 80px;
+                left: 15px;
+                width: calc(100% - 30px);
+                max-height: 60vh;
+            }
+
+
+
+
+
+
+        }
+    </style>
+</head>
+<body>
+
+    <!-- زر البحث العائم -->
+    <button class="search-floating-btn" id="searchBtn" aria-label="فتح البحث">
+        <span>🔍</span>
+    </button>
+
+    <!-- فقاعة البحث المنبثقة -->
+    <div class="search-bubble" id="searchBubble">
+        <div class="bubble-pointer"></div>
+        <div class="bubble-header">
+            <div class="bubble-title">البحث في الموقع</div>
+            <button class="close-bubble" id="closeBubble" aria-label="إغلاق البحث">×</button>
+        </div>
+        <div class="bubble-content">
+            <input type="text" class="search-input" id="searchInput" 
+                   placeholder="اكتب كلمة البحث..." autocomplete="off"
+                   aria-label="مربع البحث">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    
+
+        
+    <script>
+        // عناصر الواجهة
+        const searchBtn = document.getElementById('searchBtn');
+        const searchBubble = document.getElementById('searchBubble');
+        const closeBubble = document.getElementById('closeBubble');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        
+        // متغيرات البحث
+        let currentResults = [];
+        let selectedIndex = -1;
+        let searchTimeout;
+        
+        // أحداث الزر العائم
+        searchBtn.addEventListener('click', toggleSearchBubble);
+        
+        // حدث إغلاق الفقاعة
+        closeBubble.addEventListener('click', closeSearchBubble);
+        
+        // أحداث مربع البحث
+        searchInput.addEventListener('input', handleSearchInput);
+        searchInput.addEventListener('keydown', handleKeyDown);
+        
+        // إغلاق الفقاعة عند النقر خارجها
+        document.addEventListener('click', (e) => {
+            if (!searchBubble.contains(e.target) && e.target !== searchBtn) {
+                closeSearchBubble();
+            }
+        });
+        
+        // تبديل حالة فقاعة البحث
+        function toggleSearchBubble() {
+            if (searchBubble.classList.contains('show')) {
+                closeSearchBubble();
+            } else {
+                openSearchBubble();
+            }
+        }
+        
+     
+        function openSearchBubble() {
+    // إزالة أي تأثيرات أو تأخيرات غير ضرورية
+    searchBubble.classList.add('show');
+    searchInput.focus();
+    selectedIndex = -1;
+    
+    // إذا كنت تقوم بالبحث، يمكن تشغيله بعد أن تفتح الفقاعة
+    handleSearchInput({ target: { value: searchInput.value } });
+}
+
+
+    
+        // إغلاق فقاعة البحث
+        function closeSearchBubble() {
+            searchBubble.classList.remove('show');
+            searchInput.value = '';
+            clearResults();
+        }
+        
+        // معالجة إدخال البحث
+        function handleSearchInput(e) {
+            const query = e.target.value.trim();
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                clearResults();
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        }
+        
+        // تنفيذ البحث
+        function performSearch(query) {
+            clearResults();
+            currentResults = [];
+            selectedIndex = -1;
+            
+            const searchableElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, [id]');
+            
+            searchableElements.forEach(element => {
+                const text = element.textContent || element.innerText;
+                const elementId = element.id || (element.parentNode.id || '');
+                
+                if (text.toLowerCase().includes(query.toLowerCase())) {
+                    const previewText = text.length > 100 ? text.substring(0, 100) + '...' : text;
+                    
+                    currentResults.push({
+                        element: element,
+                        id: elementId,
+                        title: element.tagName.startsWith('H') ? text : (elementId || 'قسم في الصفحة'),
+                        preview: previewText,
+                        fullText: text
+                    });
+                }
+            });
+            
+            if (currentResults.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            displayResults(currentResults, query);
+        }
+        
+        // عرض النتائج
+        function displayResults(results, query) {
+            results.forEach((result, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div class="result-title">${highlightText(result.title, query)}</div>
+                    <div class="result-preview">${highlightText(result.preview, query)}</div>
+                `;
+                resultItem.addEventListener('click', () => navigateToResult(result));
+                searchResults.appendChild(resultItem);
+            });
+        }
+        
+        // تمييز النص المطابق
+        function highlightText(text, query) {
+            if (!query) return text;
+            return text.replace(
+                new RegExp(query, 'gi'), 
+                match => `<span class="highlight">${match}</span>`
+            );
+        }
+        
+        // التنقل إلى النتيجة
+        function navigateToResult(result) {
+            if (result.element) {
+                result.element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // تأثير مرئي مؤقت
+                const originalBg = result.element.style.backgroundColor;
+                result.element.style.backgroundColor = '#fff9c4';
+                setTimeout(() => {
+                    result.element.style.backgroundColor = originalBg;
+                }, 2000);
+            }
+            
+            closeSearchBubble();
+        }
+        
+        // معالجة ضغطات المفاتيح
+        function handleKeyDown(e) {
+            if (currentResults.length === 0) return;
+            
+            switch (e.key) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (selectedIndex > 0) {
+                        selectedIndex--;
+                        updateSelectedItem();
+                    }
+                    break;
+                    
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (selectedIndex < currentResults.length - 1) {
+                        selectedIndex++;
+                        updateSelectedItem();
+                    }
+                    break;
+                    
+                case 'Enter':
+                    if (selectedIndex >= 0) {
+                        navigateToResult(currentResults[selectedIndex]);
+                    }
+                    break;
+                    
+                case 'Escape':
+                    closeSearchBubble();
+                    break;
+            }
+        }
+        
+        // تحديث العنصر المحدد
+        function updateSelectedItem() {
+            const items = document.querySelectorAll('.result-item');
+            items.forEach((item, index) => {
+                item.classList.toggle('active', index === selectedIndex);
+                if (index === selectedIndex) {
+                    item.scrollIntoView({ block: 'nearest' });
+                }
+            });
+        }
+        
+        // عرض رسالة عدم وجود نتائج
+        function showNoResults() {
+            searchResults.innerHTML = '<div class="no-results">لا توجد نتائج مطابقة</div>';
+        }
+        
+        // مسح النتائج
+        function clearResults() {
+            searchResults.innerHTML = '';
+            currentResults = [];
+            selectedIndex = -1;
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* زر عائم صغير */
+    .floating-btnCONTACT {
+        position: fixed;
+        bottom: 420px;
+        right: 0px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1000;
+    }
+
+    /* صورة الزر بحجم أصغر */
+    .floating-btnCONTACT img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .floating-btnCONTACT img:hover {
+        transform: scale(1.1);
+    }
+
+    /* نافذة منبثقة في وسط الشاشة */
+    .popupCONTACT {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 250px;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        z-index: 1001;
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    /* زر الإغلاق بشكل أنيق */
+    .close-btnCONTACT {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        font-size: 22px;
+        color: #ff4d4d;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .close-btnCONTACT:hover {
+        color: #cc0000;
+    }
+
+    /* عنوان النافذة */
+    .popupCONTACT h3 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #333;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        font-weight: bold;
+    }
+
+    /* أزرار التواصل بتصميم عصري */
+    .popupCONTACT a {
+        display: block;
+        margin: 10px auto;
+        text-decoration: none;
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s, transform 0.2s;
+        width: 90%;
+        text-align: center;
+    }
+
+    .popupCONTACT a:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+
+    .telegram-btnCONTACT { background-color: #0088cc; }
+    .instagram-btnCONTACT { background-color: #e4405f; }
+    .facebook-btnCONTACT { background-color: #3b5998; }
+
+    /* تأثير الظهور */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translate(-50%, -45%); }
+        to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    /* تحسين مظهر النافذة للهواتف */
+    @media (max-width: 500px) {
+        .popupCONTACT {
+            width: 90%;
+        }
+    }
+
+    /* تحسين مظهر النافذة */
+    .contact-containerCONTACT {
+        text-align: center;
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 400px;
+        margin: auto;
+    }
+
+    .contact-titleCONTACT {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .contact-textCONTACT {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .social-linksCONTACT {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btnCONTACT {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        transition: 0.3s;
+    }
+
+    .btnCONTACT img {
+        width: 24px;
+        height: 24px;
+        margin-left: 10px;
+    }
+
+    .telegram-btnCONTACT { background: #0088cc; }
+    .facebook-btnCONTACT { background: #1877f2; }
+    .instagram-btnCONTACT { background: #e1306c; }
+
+    .btnCONTACT:hover {
+        opacity: 0.8;
+    }
+</style>
+</head>
+<body>
+
+<!-- زر عائم بصيغة GIF -->
+<button class="floating-btnCONTACT" id="floating-btnCONTACT" onclick="togglePopupCONTACT()">
+    <img src="img/ai-assistant.gif" alt="تواصل معنا">
+</button>
+
+<!-- النافذة المنبثقة -->
+<div class="popupCONTACT" id="popupCONTACT">
+    <button class="close-btnCONTACT" onclick="togglePopupCONTACT()">✖</button>
+    <div class="contact-containerCONTACT">
+        <h3 class="contact-titleCONTACT">📩 تواصل معنا</h3>
+        <p class="contact-textCONTACT">في حالة توفر مشكلة أو لديك اقتراح سواء حول اختبار أو غيره تواصل معنا</p>
+        
+        <div class="social-linksCONTACT">
+            <a href="http://t.me/ADATEALM_bot" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                <img src="img/direct.gif" alt="بوت تيليغرام"> بوت تيليغرام
+            </a>
+            
+            <a href="https://t.me/adatealm" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                <img src="img/telegram.png" alt="تيليغرام"> تيليغرام
+            </a>
+            
+            <a href="https://www.facebook.com/share/1BFTe2mWNL/" target="_blank" class="btnCONTACT facebook-btnCONTACT">
+                <img src="img/facebook.png" alt="فيسبوك"> فيسبوك
+            </a>
+            
+            <a href="https://www.instagram.com/adat_ealm?igsh=djg1eXlwMTJvM2xw" target="_blank" class="btnCONTACT instagram-btnCONTACT">
+                <img src="img/social.png" alt="إنستغرام"> إنستغرام
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePopupCONTACT() {
+        var popup = document.getElementById("popupCONTACT");
+        popup.style.display = (popup.style.display === "block") ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحويل اتجاه النص تلقائيًا مع الحفاظ على التنسيق</title>
+    <style>
+        body {
+    
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        /* تنسيقات إضافية للحفاظ على المظهر */
+        .mixed-content {
+            unicode-bidi: embed;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // عناصر أكثر تحديداً مع استثناء العناصر التي قد تحتوي على أطفال معقدة
+            const elements = document.querySelectorAll('p, div:not(div div), span, li, h1, h2, h3, h4, h5, h6');
+            
+            elements.forEach(element => {
+                // تجاهل العناصر التي تحتوي على أطفال معقدة
+                if (element.children.length > 0 && !(element.children.length === 1 && element.children[0].tagName === 'SPAN')) {
+                    return;
+                }
+                
+                const text = element.textContent.trim();
+                
+                if (!text) return;
+                
+                // تحليل النص لتحديد إذا كان إنجليزي/عربي
+                const hasArabic = /[\u0600-\u06FF]/.test(text);
+                const hasEnglish = /[a-zA-Z]/.test(text);
+                
+                // إذا كان النص يحتوي على الإنجليزية فقط
+                if (hasEnglish && !hasArabic) {
+                    element.classList.add('ltr');
+                    element.classList.remove('rtl');
+                } 
+                // إذا كان النص يحتوي على العربية فقط
+                else if (hasArabic && !hasEnglish) {
+                    element.classList.add('rtl');
+                    element.classList.remove('ltr');
+                }
+                // إذا كان نصاً مختلطاً
+                else if (hasArabic && hasEnglish) {
+                    element.classList.add('mixed-content');
+                    
+                    // تحديد الاتجاه الأساسي بناءً على الحرف الأول
+                    const firstChar = text.charAt(0);
+                    if (/[a-zA-Z]/.test(firstChar)) {
+                        element.style.direction = 'ltr';
+                        element.style.textAlign = 'left';
+                    } else {
+                        element.style.direction = 'rtl';
+                        element.style.textAlign = 'right';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          

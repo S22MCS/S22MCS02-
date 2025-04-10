@@ -1,0 +1,4619 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>   المركب الوطاء-النخامي     </title>
+ 
+    <!-- إضافة الفافيكون بصيغة JPG -->
+    <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 150, 255, 0.6);
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, top 0.3s ease-in-out;
+        }
+
+        .popup h3 {
+            color: #00aaff;
+            font-size: 22px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .input-group input {
+            width: 85%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #00aaff;
+            text-align: center;
+            font-size: 16px;
+            background-color: #222;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+        }
+
+        .gender-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .gender-buttons button {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .gender-buttons button:hover {
+            background: linear-gradient(90deg, #0056b3, #003c80);
+            transform: scale(1.05);
+        }
+
+        .gender-buttons button.selected {
+            background: #FFD700;
+            color: black;
+            font-weight: bold;
+        }
+
+        .submit-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .submit-button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            top: 50% !important;
+        }
+
+        #greeting {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 50px;
+            text-shadow: 2px 2px 10px rgba(0, 150, 255, 0.5);
+        }
+
+        #studyMessage {
+            display: none;
+            font-size: 18px;
+            margin-top: 15px;
+            color: #FFD700;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+        
+    <div id="welcomePopup" class="popup">
+        <h3>  ! السلام عليكم و أهلاً يا طبيب/طبيبة مستقبلنا ان شاء الله  </h3>
+
+        <p>من فضلك أدخل/ادخلي اسمك واختر/اختاري جنسك:</p>
+
+    
+        <div class="input-group">
+            <input type="text" id="username" placeholder="أدخل اسمك">
+        </div>
+    
+        <div class="gender-buttons">
+            <button id="femaleButton" onclick="selectGender('female')"> امرأة</button>
+            <button id="maleButton" onclick="selectGender('male')">  رجل</button>
+           
+        </div>
+    
+        <button class="submit-button" onclick="submitInfo()">متابعة</button>
+    </div>
+    
+    <!-- يجب أن يكون خارج نافذة الإدخال حتى يظهر عند الضغط على متابعة -->
+    <div id="greetingContainer" style="display: none; flex-direction: column; align-items: center; gap: 10px; margin-top: 70px;">
+        <h2 id="welcomeMessage" style="color: #00aaff; text-align: center;"></h2>
+        <img id="doctorImage" src="" alt="صورة الطبيب" style="width: 60px; height: 60px; border-radius: 50%;">
+        <h1 id="greeting" style="margin: 0; font-size: 22px;"></h1>
+    </div>
+    <p id="studyMessage"></p>
+    <p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px;"></p>
+    
+    <script>
+        let selectedGender = "";
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            let storedName = localStorage.getItem("username");
+            let storedGender = localStorage.getItem("gender");
+            let visitCount = parseInt(localStorage.getItem("visitCount") || "0");
+    
+            visitCount += 1;
+            localStorage.setItem("visitCount", visitCount);
+    
+            if (visitCount >= 3) {
+                localStorage.removeItem("username");
+                localStorage.removeItem("gender");
+                localStorage.setItem("visitCount", "0");
+                storedName = null;
+            }
+    
+            if (storedName && storedGender) {
+                displayGreeting(storedName, storedGender);
+            } else {
+                let popup = document.getElementById('welcomePopup');
+                popup.style.display = 'block';
+                setTimeout(() => popup.classList.add('fade-in'), 50);
+            }
+        });
+    
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.getElementById("maleButton").classList.remove("selected");
+            document.getElementById("femaleButton").classList.remove("selected");
+    
+            if (gender === "male") {
+                document.getElementById("maleButton").classList.add("selected");
+            } else {
+                document.getElementById("femaleButton").classList.add("selected");
+            }
+        }
+    
+
+
+        function submitInfo() {
+    let name = document.getElementById('username').value.trim();
+    if (name === "") {
+        alert("❌ يرجى إدخال اسمك");
+        return;
+    }
+    if (!selectedGender) {
+        alert("❌ يرجى اختيار الجنس");
+        return;
+    }
+
+    console.log("🚀 إرسال الاسم:", name);
+    console.log("🚀 إرسال الجنس:", selectedGender);
+
+    localStorage.setItem("username", name);
+    localStorage.setItem("gender", selectedGender);
+    localStorage.setItem("visitCount", "0");
+
+    displayGreeting(name, selectedGender);
+
+    let popup = document.getElementById('welcomePopup');
+    popup.classList.remove('fade-in');
+    setTimeout(() => popup.style.display = 'none', 500);
+}
+
+
+
+
+
+
+function displayGreeting(name, gender) {
+    console.log("✅ تم استلام الاسم:", name);
+    console.log("✅ تم استلام الجنس:", gender);
+
+    let welcomeMessage = `السلام عليكم ومرحبًا بك يا ${name}`;  
+    
+    
+    let greetingMessage = gender === "male" 
+        ? `مرحبًا دكتور ${name}!` 
+        : `مرحبًا دكتورة ${name}!`;
+
+    let studyMessage = gender === "male" 
+        ? "ادرس جيدًا يا طبيب المسلمين إن شاء الله 📚" 
+        : "ادرسِ جيدًا يا طبيبة المسلمات إن شاء الله 📚";
+
+  
+       
+        
+
+        let nationNeedsYou = 
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "  ﴿الَّذِينَ يَتَّخِذُونَ الْكَافِرِينَ أَوْلِيَاءَ مِن دُونِ الْمُؤْمِنِينَ ۚ أَيَبْتَغُونَ عِندَهُمُ الْعِزَّةَ فَإِنَّ الْعِزَّةَ لِلَّهِ جَمِيعًا ﴾\n" +
+    "[النساء: 139]\n\n" +
+    
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "﴿ لَهُ مُعَقِّبَاتٌ مِّن بَيْنِ يَدَيْهِ وَمِنْ خَلْفِهِ يَحْفَظُونَهُ مِنْ أَمْرِ اللَّهِ ۗ إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ ۗ وَإِذَا أَرَادَ اللَّهُ بِقَوْمٍ سُوءًا فَلَا مَرَدَّ لَهُ ۚ وَمَا لَهُم مِّن دُونِهِ مِن وَالٍ ﴾\n" +
+    "[الرعد: 11]\n\n" +
+
+    "أمتكم بحاجة إليكم.. كونوا عونًا لها في سبيل الله، اجعلوا علمكم طريقًا لنهضة أمتكم.. أمتكم بحاجة إليكم.\n\n" +
+    
+    "فعن السلف الصالح عمر بن الخطاب رضي الله عنه قال:\n" +
+    "\"إنَّا كنَّا أذَلَّ قومٍ، فأعزَّنا اللَّهُ بالإسلامِ، فمهما نطلُبِ العِزَّةَ بغيرِ ما أعزَّنا اللَّهُ به أذلَّنا اللَّهُ.\"";
+
+// وضع النص داخل العنصر بدون أكواد HTML ظاهرة
+document.getElementById('nationMessage').textContent = nationNeedsYou;
+
+
+
+
+
+
+    let imageSrc = gender === "male" 
+        ? "S22MCS PARTS/doctor.png" 
+        : "S22MCS PARTS/doctormuslim.png";
+
+    // تحديث العناصر في الصفحة
+    document.getElementById('welcomeMessage').innerText = welcomeMessage;
+    document.getElementById('greeting').innerText = greetingMessage;
+    document.getElementById('studyMessage').innerText = studyMessage;
+    document.getElementById('nationMessage').innerText = nationNeedsYou;
+    document.getElementById('doctorImage').src = imageSrc;
+
+    // عرض القسم بالكامل
+    document.getElementById('greetingContainer').style.display = 'flex';
+    document.getElementById('studyMessage').style.display = 'block';
+    document.getElementById('nationMessage').style.display = 'block';
+}
+
+        
+    </script>
+    
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+        <html lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>  </title>
+            <style>
+                body {
+                    font-family: 'Poppins', 'Amiri', serif;
+                    background-color: #121212;
+                    color: white;
+                    margin: 0;
+                    padding: 20px;
+                    text-align: center;
+                    padding-top: 120px;
+                }
+            
+                /* Updated Sidebar to Header */
+                .sidebar {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height:50px;
+                    background-color: #333;
+                    text-align: center;
+                    padding: 10px 20px;
+                    z-index: 1000;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                }
+            
+                /* Progress Bar Container */
+                .progress-bar-container {
+                    width: 60%;
+                    height: 35px;
+                    background-color: #444;
+                    border-radius: 15px;
+                    position: relative;
+                    margin: 0 auto;
+                }
+            
+           /* Progress Bar */
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #00aaff;
+    border-radius: 15px;
+    transition: width 0.3s ease-in-out;
+    margin-left: 500px; /* تحريك الشريط قليلًا إلى اليسار */
+}
+
+
+            
+#proo {
+    display: flex;
+    align-items: center; /* محاذاة الإيموجي والنص أفقيًا */
+    gap: 5px; /* مسافة صغيرة بين الإيموجي والنص */
+    margin-left: 8rem; /* تحريكه لليمين */
+    font-size: 1.7rem;
+}
+
+
+                /* Progress Percentage */
+                .progress-percentage {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+            
+                /* Finish Button */
+                .finish-button {
+                    background-color: #00aaff;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    margin-right: 3rem;
+                }
+            
+                .finish-button:hover {
+                    background-color: #0077cc;
+                }
+            
+                /* Disabled Finish Button */
+                .finish-button:disabled {
+                    background-color: #ccc;
+                    cursor: not-allowed;
+                    opacity: 0.7;
+                }
+            
+                /* Lesson Container */
+                .lesson-container {
+                    margin-top: 20px;
+                }
+            
+                /* Bubble Styles */
+                .bubble {
+                    background: rgba(30, 30, 30, 0.95);
+                    box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+                    border-left: 6px solid #00aaff;
+                    padding: 20px;
+                    border-radius: 20px;
+                    margin: 20px auto;
+                    max-width: 60rem;
+                    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+                    text-align: right;
+                    direction: rtl;
+                    position: relative;
+                    cursor: pointer;
+
+
+
+                    margin-bottom: 70px; /* إضافة مسافة فارغة أسفل كل فقاعة */
+
+                }
+            
+                .bubble:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
+                }
+            
+                .interact-button {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                }
+            
+                .interact-button:hover {
+                    background-color: #0056b3;
+                }
+            
+                /* Modal Styles */
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 2000;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 90%;
+                    max-width: 400px;
+                    background: #222;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 10px rgba(0, 150, 255, 0.5);
+                    text-align: center;
+                }
+            
+                .modal h3 {
+                    margin-bottom: 15px;
+                    color: #00aaff;
+                }
+            
+                .modal button {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 15px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    margin: 10px;
+                    font-size: 16px;
+                }
+            
+                .modal button:hover {
+                    background-color: #0056b3;
+                }
+            
+                /* End Lesson Modal */
+                #end-lesson-modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 2000;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 80%;
+                    max-width: 600px;
+                    background-color: #333;
+                    padding: 30px;
+                    border-radius: 10px;
+                    color: white;
+                    text-align: center;
+                    box-shadow: 0 6px 30px rgba(0, 150, 255, 0.5);
+                }
+            
+                #end-lesson-modal h3 {
+                    color: #00aaff;
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+            
+                #end-lesson-modal p {
+                    font-size: 18px;
+                    margin-bottom: 20px;
+                }
+            
+                #end-lesson-modal button {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    margin: 10px;
+                    font-size: 16px;
+                }
+            
+                #end-lesson-modal button:hover {
+                    background-color: #0056b3;
+                }
+            
+                .reload-button {
+                    background-color: #28a745;
+                }
+            
+                .reload-button:hover {
+                    background-color: #218838;
+                }
+            
+                /* Vibration Animation */
+                @keyframes vibrate {
+                    0% { transform: translateX(0); }
+                    20% { transform: translateX(-5px); }
+                    40% { transform: translateX(5px); }
+                    60% { transform: translateX(-5px); }
+                    80% { transform: translateX(5px); }
+                    100% { transform: translateX(0); }
+                }
+            
+                .vibrate {
+                    animation: vibrate 0.5s ease-in-out;
+                }
+            
+                /* Media Queries for Small Screens */
+                @media (max-width: 768px) {
+                    body {
+                        padding-top: 80px; /* Reduce top padding */
+                    }
+            
+                    .bubble {
+                        max-width: 90%; /* Make the bubble width responsive */
+                        padding: 15px; /* Reduce padding */
+                    }
+            
+                    .interact-button {
+                        font-size: 12px; /* Reduce button font size */
+                        padding: 6px 10px; /* Adjust padding */
+                    }
+            
+                    .finish-button {
+                        font-size: 12px; /* Adjust font size */
+                        padding: 8px 13px; /* Adjust padding */
+                    }
+            
+                    .lesson-container {
+                        margin-top: 10px; /* Adjust for smaller screens */
+                    }
+                }
+            
+                @media (max-width: 480px) {
+                    body {
+                        font-size: 14px; /* Adjust font size for very small screens */
+                        padding: 10px; /* Reduce padding */
+                    }
+            
+                    .bubble {
+                        padding: 10px; /* Reduce padding */
+                        max-width: 100%; /* Full width on very small screens */
+                    }
+            
+                    .interact-button {
+                        font-size: 8px; /* Reduce button font size */
+                        padding: 4px 7px; /* Adjust padding */
+                    }
+            
+                    .finish-button {
+                        font-size: 10px; /* Reduce font size */
+                        padding: 5px 10px; /* Adjust padding */
+                    }
+                }
+     
+            
+@media (max-width: 768px) {
+    .progress-bar-container {
+        width: 85%; /* عرض الشريط أكبر قليلاً على الشاشات الصغيرة */
+    }
+}
+
+/* استعلام ميديا للأجهزة التي يزيد عرض شاشتها عن 480 بكسل */
+@media (max-width: 480px) {
+    .progress-bar-container {
+        width: 90%; /* شريط التقدم يشغل مساحة أكبر على الشاشات الصغيرة جدًا */
+        height: 20px; /* تقليص الارتفاع قليلاً */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.outside-image {
+    display: block; /* يجعل الصورة عنصرًا منفصلًا */
+    margin: 20px auto; /* يضع الصورة في المنتصف */
+    max-width: 100%; /* يضمن أن الصورة لا تتجاوز حجم الشاشة */
+    height: auto; /* يحافظ على الأبعاد الأصلية للصورة */
+}
+
+
+
+
+
+
+
+
+
+
+/* Refresh Container */
+.refresh-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.refresh-button {
+    background: linear-gradient(135deg, #1a1a1a, #333); /* ألوان داكنة مريحة */
+    color: #ffffff;
+    border: 1px solid #444;
+    padding: 10px 22px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 25px;
+    font-family: 'Poppins', Arial, sans-serif;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 160px;
+    justify-content: center;
+}
+
+.refresh-button:hover {
+    background: linear-gradient(135deg, #292929, #444);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
+}
+
+.refresh-button:active {
+    transform: scale(0.96);
+}
+
+.refresh-button::before {
+    content: "🔄"; /* أيقونة التحديث */
+    font-size: 18px;
+}
+
+/* تحسين للهواتف */
+@media (max-width: 768px) {
+    .refresh-button {
+        padding: 8px 18px;
+        font-size: 14px;
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .refresh-button {
+        padding: 7px 16px;
+        font-size: 13px;
+        min-width: 120px;
+        border-radius: 20px;
+    }
+}
+
+
+
+
+</style>
+
+
+
+
+
+<body>
+ 
+  
+    <div class="sidebar">
+   
+        <button class="finish-button" onclick="finishLesson()" 
+        style="font-size: 15px; padding: 6px 10px; position: relative; right: -20px;">
+        ✅ انتهيت من الدرس
+    </button>
+     
+    
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-percentage" id="progress-percentage">0%</div>
+        </div>
+
+        <h3 id="proo">📊 <span>التقدم</span></h3>
+
+      
+
+    <button onclick="goToUncompletedBubble()" class="uncompleted-button" style="font-size: 14px; padding: 6px 10px;">🔍 الفقاعات غير المكتملة</button>
+    
+
+</div>
+    
+    
+
+
+    <br>
+    <div class="refresh-container"  id="ref">
+        <button class="refresh-button" onclick="location.reload();">تحديث الصفحة</button>
+    </div>
+    <br>
+    <div class="lesson-container">
+        <h1 class="lesson-title">  المركب الوطاء-النخامي </h1>
+        
+
+        <h2 class="lesson-subtitle">🔻 HYPOTHALAMIC-PITUITARY COMPLEX 🔻</h2>
+        <h2 class="lesson-subtitle"> 🔻  COMPLEXE HYPOTHALAMO-HYPOPHYSAIRE    🔻</h2>
+     </div>
+
+     
+
+
+
+
+
+
+     <!DOCTYPE html>
+     <html lang="ar">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>تم عبر برنامج 2019 الطب الجزائري</title>
+     
+         <style>
+         body {
+             font-family: 'Poppins', 'Amiri', serif;
+             direction: rtl;
+             text-align: right;
+             background-color: #121212;
+             color: white;
+             margin: 0;
+             padding: 20px;
+         }
+         
+         .container {
+             max-width: 600px;
+             margin: auto;
+             background: #1e1e1e;
+             padding: 20px;
+             border-radius: 10px;
+             box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+         }
+         
+         h2 {
+             text-align: center;
+             color: #00aaff;
+         }
+         
+         .lesson {
+             display: flex;
+             align-items: center;
+             justify-content: space-between;
+             padding: 15px;
+             border-bottom: 1px solid #444;
+             flex-direction: column;
+             background: rgba(30, 30, 30, 0.9);
+             border-radius: 10px;
+             margin-bottom: 10px;
+             transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+         }
+         
+         .lesson:hover {
+             transform: translateY(-3px);
+             box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
+         }
+         
+         .lesson input {
+             transform: scale(1.3);
+             accent-color: #00aaff;
+         }
+         
+         .lesson span {
+             flex-grow: 1;
+             margin-right: 10px;
+         }
+         
+         .translation {
+             font-size: 12px;
+             color: #bbb;
+             margin-top: 5px;
+         }
+         
+         .progress-bar {
+             width: 100%;
+             background: #444;
+             height: 12px;
+             border-radius: 6px;
+             margin: 10px 0;
+             overflow: hidden;
+         }
+         
+         .progress {
+             height: 100%;
+             background: #00aaff;
+             width: 0%;
+             transition: width 0.3s;
+         }
+         
+         .btn {
+             display: block;
+             width: 100%;
+             padding: 12px;
+             background: #00aaff;
+             color: white;
+             text-align: center;
+             border: none;
+             border-radius: 6px;
+             cursor: pointer;
+             font-size: 16px;
+             margin-top: 10px;
+             transition: background 0.3s ease-in-out;
+         }
+         
+         .btn:hover {
+             background: #0077cc;
+         }
+         
+         .lang {
+             text-align: center;
+             color: #bbb;
+             font-size: 14px;
+             margin-top: 20px;
+         }
+         </style>    
+     </head>
+     <body>
+         <div class="container">
+             <h2>HISTOLOGIE</h2>
+             <div class="progress-bar"><div class="progress"></div></div>
+             <div id="lessonList"></div>
+             <button class="btn" onclick="completeAll()">إكمال الكل</button>
+             <div class="lang">
+                  
+                 عربية
+              
+             <br>English | Français 
+             </div>
+         </div>
+     
+         <script>
+             const lessons = [
+                 { ar: "وصف الأعضاء الغدد الصماء وعملها الهستولوجي", en: "Describe the organogenesis and histological structure of endocrine organs", fr: "Décrire l'organogenèse et la structure histologique des organes endocriniens" },
+                 { ar: "تسمية المكونات الهستولوجية الرئيسية للجهاز تحت المهاد والغدة النخامية", en: "Name the main histological components of the hypothalamo-hypophyseal system", fr: "Nommer les principaux constituants histologiques de l'appareil hypothalamo-hypophysaire" },
+                 { ar: "وصف التكوين الخارجي والداخلي للغدة الصنوبرية", en: "Describe the organogenesis and histological structure of the pineal gland", fr: "Décrire l'organogenèse et la structure histologique de l'épiphyse" },
+                 { ar: "وصف التكوين الخارجي والداخلي للغدة الدرقية-الجار درقية", en: "Describe the organogenesis and histological structure of the thyroid-parathyroid complex", fr: "Décrire l'organogenèse et la structure histologique du complexe thyro-parathyroidien" },
+                 { ar: "وصف التكوين الخارجي والداخلي للغدة الكظرية", en: "Describe the organogenesis and histological structure of the adrenal gland", fr: "Décrire l'organogenèse et la structure histologique de la surrénale" },
+                 { ar: "وصف التكوين الهستولوجي للبنكرياس الصماوي", en: "Describe the histological structure of the endocrine pancreas", fr: "Décrire la structure histologique du pancréas endocrine" },
+                 { ar: "وصف التكوين الهستولوجي للنظام العصبي الصماوي المنتشر", en: "Describe the histological organization of the diffuse neuro-endocrine system", fr: "Décrire l'organisation histologique du système neuro-endocrinien diffus" },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                 { ar: "تعريف الجهاز تحت المهاد والغدة النخامية من الناحية التشريحية والفيزيولوجية", en: "Define the hypothalamo-hypophyseal system anatomically and physiologically", fr: "Définir l'appareil hypothalamo-hypophysaire d'un point de vue anatomique et physiologique" },
+            { ar: "تحديد أصل الجهاز تحت المهاد وحدوده وتقسيماته التشريحية باستخدام الرسوم البيانية", en: "Specify the embryological origin and limits of the hypothalamus with its subdivisions using the diagrams", fr: "Préciser l'origine embryologique, les limites de l'hypothalamus et ses subdivisions à l'aide des schémas" },
+            { ar: "تسمية المكونات الهستولوجية الرئيسية للجهاز تحت المهاد باستخدام الرسم البياني", en: "Name the main histological components of the hypothalamus using the provided diagram", fr: "Nommer les principaux constituants histologiques de l'hypothalamus à l'aide du schéma" },
+            { ar: "تحديد خصائص الخلايا العصبية المفرزة للأحماض النووية", en: "Specify the cytological features that define a neurosecretory cell", fr: "Indiquer les caractères cytologiques essentiels permettant de définir une cellule neurosécrétoire" },
+            { ar: "تحديد الأسماء الدقيقة للنوى العصبية المختلفة في الدماغ في الرسم البياني", en: "Provide the full names of the magnocellular nuclei and parvocellular nuclei from the diagram", fr: "Fournir l'appellation complète et précise des noyaux magnocellulaires et parvo-cellulaires" },
+            { ar: "تحديد الفروق المورفولوجية بين الخلايا العصبية والنوى الصغرى الخلوية", en: "Specify the morphological differences between neurons and parvocellular nuclei", fr: "Spécifier les différences morphologiques entre un neurone et un noyau parvo-cellulaire" },
+            { ar: "تحديد المصدر الخلوي لهرمونات ما بعد النخامية باستخدام النصوص البيانية", en: "Specify the cellular source of the 'post-hypophyseal' hormones using histological techniques", fr: "Spécifier la source cellulaire des hormones dites 'post-hypophysaires' avec les techniques histologiques" },
+            { ar: "تسمية المكونات الرئيسية للنخامية باستخدام الرسم البياني", en: "Name the major components of the hypophysis using the provided diagram", fr: "Nommer les constituants principaux de l'hypophyse au sens large à l'aide du schéma" },
+            { ar: "تحديد المصير النهائي لأجزاء الجهاز تحت المهاد باستخدام الرسوم البيانية", en: "Specify the fate of the parts of the hypophyseal rudiment using diagrams", fr: "Préciser le devenir des parties de l'ébauche épilablastique et neurectoblastique de l'hypophyse" },
+            { ar: "تحديد الأقسام الرئيسية للطبقة الخلوية للنخامية باستخدام الرسم البياني", en: "Identify the three main components of the pituitary plexus using the provided diagram", fr: "Identifier les trois parties constituantes du plexus porte hypophysaire à l'aide du schéma" },
+            { ar: "تسمية الأجزاء المسؤولة عن القنوات العصبية في الرسم البياني", en: "Name the two contingents of nerve fibers in the hypothalamo-hypophyseal tract based on the diagram", fr: "Nommer les deux contingents des fibres nerveuses dans le tractus hypothalamo-hypophysaire à l'aide du schéma" },
+            { ar: "تسمية الهرمونات التي تفرزها الخلايا الرئيسية في النخامية الأمامية باستخدام الرسوم البيانية", en: "Name the hormones secreted by the main cells in the anterior pituitary using histological techniques", fr: "Nommer les hormones sécrétées par les cellules principales de l'antéhypophyse" },
+            { ar: "تحديد الأجزاء المكونة للإمكانية الحسية في النخامية", en: "Recognize the three main constituents of the two zones of the median eminence", fr: "Reconnaître les trois constituants principaux de chacune des deux zones de l'éminence médiane" },
+            { ar: "تحديد الأجزاء التي تتكون من الشرايين في النخامية", en: "Identify the four components of the capillary wall and intercapillary spaces of the posterior pituitary", fr: "Repérer les quatre constituants de la paroi capillaire du lobe postérieur de l'hypophyse" },
+            { ar: "تحديد العلاقة الوظيفية بين تحت المهاد والنخامية العصبية والنخامية الأمامية", en: "Determine the functional relationship between the hypothalamus and the neurohypophysis and the hypothalamus and the anterior pituitary", fr: "Déterminer la nature de la relation fonctionnelle entre l'hypothalamus et la neurohypophyse, et entre l'hypothalamus et l'antéhypophyse" }
+      
+            
+             
+                ];
+     
+             const lessonList = document.getElementById("lessonList");
+             lessons.forEach((lesson, index) => {
+                 const div = document.createElement("div");
+                 div.className = "lesson";
+                 div.innerHTML = `
+                     <input type="checkbox" onchange="updateProgress()" id="lesson${index}">
+                     <span>${lesson.ar}</span>
+                     <div class="translation">${lesson.en}</div>
+                     <div class="translation">${lesson.fr}</div>
+                 `;
+                 lessonList.appendChild(div);
+             });
+     
+             function updateProgress() {
+                 const checkboxes = document.querySelectorAll("input[type=checkbox]");
+                 let completed = 0;
+                 checkboxes.forEach(cb => { if (cb.checked) completed++; });
+                 document.querySelector(".progress").style.width = (completed / lessons.length * 100) + "%";
+             }
+     
+             function completeAll() {
+                 document.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
+                 updateProgress();
+             }
+         </script>
+     </body>
+     </html>
+
+<br>
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>1) المقدمة</strong></li>
+        <ul>
+            <li>الجهاز الغدد الصماء منتشر بشكل واسع في الجسم. يمكن تجميع الخلايا الغددية الصماء في أعضاء مخصصة لهذا الغرض مثل الغدة النخامية، الغدة الدرقية، الغدد الجاردرقية، والغدد الكظرية.</li>
+            <li>كما يمكن أن توجد في أعضاء مختلطة مثل البنكرياس، المبايض، الخصيتين. هذه الخلايا قد تكون أيضًا متوزعة في أنسجة غير غددية مثل الجهاز الهضمي، الجهاز التنفسي، الجلد... وفي أي نسيج مخاطي بشكل عام.</li>
+            <li>يتواصل الجهاز الغدد الصماء من خلال جزيئات خاصة: وهي الهرمونات.</li>
+            <li>تُفرز هذه الهرمونات في الدورة الدموية (عمل غدي صموي) أو في الأنسجة المحيطية (أعمال باراكرين و أوتوكرين).</li>
+            <li>مع الجهاز العصبي، تساهم الهرمونات في تنسيق ووظائف جميع الأنظمة الفسيولوجية.</li>
+            <li>يشكل تحت المهاد مع الغدة النخامية المجاورة وحدة وظيفية تسمى المركب تحت المهاد - النخامي.</li>
+            <li>الغدة النخامية هي غدة صماء مكونة من فصين: الفص الأمامي (الأنتهيبوفيزي) ويُسمى أيضًا الأديهيبوفيز، والفص الخلفي (الهيبوفيزي الخلفي) أو النخامي. هذان الفصان مختلفان من الناحية الجنينية، التشريحية والوظيفية.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>1) Introduction</strong></li>
+            <ul>
+                <li>The endocrine system is widely distributed throughout the body. Endocrine cells can be grouped into organs with purely endocrine functions (pituitary, thyroid, parathyroids, adrenals), mixed organs (pancreas, ovaries, testes); these cells can also be scattered in non-endocrine tissues (digestive tract, respiratory system, skin... and any mucosal tissue in a broad sense).</li>
+                <li>The endocrine system communicates through specific molecules: hormones.</li>
+                <li>These hormones are released into the bloodstream (endocrine action) or into the tissue interstitium (paracrine and autocrine actions).</li>
+                <li>Along with the nervous system, hormones ensure the coordination and synthesis of functions in all physiological systems.</li>
+                <li>The hypothalamus, together with the underlying pituitary, forms a functional unit called the hypothalamo-pituitary complex.</li>
+                <li>The pituitary is an endocrine gland, consisting of two lobes: the anterior lobe (adenohypophysis) and the posterior lobe (neurohypophysis). These two lobes differ in terms of embryological, anatomical, and functional characteristics.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>1) INTRODUCTION</strong></li>
+            <ul>
+                <li>Le système endocrinien est largement réparti dans l'organisme. Les cellules endocrines peuvent être regroupées en organes à vocation purement endocrine (hypophyse, thyroïde, parathyroïdes, surrénales), en organes mixtes (pancréas, ovaires, testicules); ces cellules peuvent également être dispersées dans des tissus non endocriniens (tube digestif, appareil respiratoire, peau ... et dans toute muqueuse au sens large).</li>
+                <li>Le système endocrinien communique par des molécules particulières : Les hormones.</li>
+                <li>Ces hormones sont libérées dans la circulation sanguine (action endocrine) ou dans l'interstitium tissulaire (actions paracrine et autocrine).</li>
+                <li>Avec le système nerveux, les hormones assurent la coordination et la synthèse des fonctions de tous les systèmes physiologiques.</li>
+                <li>L'hypothalamus forme avec l'hypophyse sous-jacente un ensemble fonctionnel appelé complexe hypothalamo-hypophysaire.</li>
+                <li>L’hypophyse est une glande endocrine, qui est composée de deux lobes : l’un antérieur (antéhypophyse) est aussi appelé l’adénohypophyse, et l’autre postérieur (posthypophyse) ou neurohypophyse. Ces deux lobes sont différents du point de vue embryologique, anatomique et fonctionnel.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>2) الأصل الجيني (التطور الجنيني)</strong></li>
+        <ul>
+            <li>تتطور الغدة النخامية من نموين مختلفين:</li>
+            <ul>
+                <li>الأديهيبوفيز (الفص الأمامي) ينشأ من جيب راتكه، الذي هو امتداد من الإكتوديرم في الفم، ويقع أمام الغشاء البلعومي.</li>
+                <li>النخامي (الفص الخلفي) وتحت المهاد ينشآن عن انغراس من الإكتوديرم العصبي.</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>2) Embryological origin</strong></li>
+            <ul>
+                <li>The pituitary develops from two different buds:</li>
+                <ul>
+                    <li>The adenohypophysis originates from Rathke's pouch, an outpouching of the ectoderm of the stomodeum, located anterior to the pharyngeal membrane.</li>
+                    <li>The neurohypophysis and the hypothalamus arise from an invagination of the neuroectoderm.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>2) ORIGINE EMBYOLOGIQUE</strong></li>
+            <ul>
+                <li>L’hypophyse se développe à partir de deux ébauches différentes :</li>
+                <ul>
+                    <li>L’adénohypophyse provient de la poche de Rathke qui est une évagination de l’ectoblaste du stomodeum, située en avant de la membrane pharyngienne.</li>
+                    <li>La neurohypophyse et l’hypothalamus proviennent par une invagination du neurectoblaste.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>3) تحت المهاد</strong></li>
+        <ul>
+            <li><strong>3.1- التعريف</strong></li>
+            <ul>
+                <li>يُعد تحت المهاد هيكلًا دماغيًا متوسطًا يقع في المنطقة البطنية من الديانسيفالون، ويشكل الجدار السفلي للبُطين الثالث.</li>
+                <li>يعتبر تحت المهاد مركزًا عصبيًا مكونًا من نوع متنوع من الخلايا العصبية التي تمتلك جميع خصائص الخلايا العصبية، بالإضافة إلى أن بعض هذه الخلايا العصبية تفرز منتجًا من “الإفراز العصبي” (neurosecretion).</li>
+                <li>تجمع الخلايا العصبية تحت المهاد في تجمعات تُسمى "النوى تحت المهاد" والتي تشكل النظام الأعلى في تكامل الجهاز العصبي السمبتاوي.</li>
+                <li>يمكن تمييز مجموعتين من الخلايا العصبية الإفرازية تحت المهاد بناءً على معايير مورفولوجية، وتوبوغرافية، ووظيفية: النوى كبيرة الخلايا والنوى الصغيرة الخلايا.</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>3) Hypothalamus</strong></li>
+            <ul>
+                <li><strong>3.1- Definition</strong></li>
+                <ul>
+                    <li>The hypothalamus is a median brain structure located in the ventral region of the diencephalon, constituting the lower wall of the third ventricle.</li>
+                    <li>The hypothalamus is a nerve center and is formed by a variety of neurons that have all the properties of a nerve cell, plus some of these neurons secrete a secretion product known as "neurosecretion".</li>
+                    <li>The hypothalamic neurons are grouped in clusters called "hypothalamic nuclei", forming the highest integration system of the autonomic nervous system.</li>
+                    <li>Two groups of hypothalamic neurosecretory cells can be distinguished based on morphological, topographical, and functional criteria: the magnocellular nuclei and the parvicellular nuclei.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>3) L'HYPOTHALAMUS</strong></li>
+            <ul>
+                <li><strong>3.1- Définition</strong></li>
+                <ul>
+                    <li>Il s'agit d'une structure cérébrale médiane localisée dans la région ventrale du diencéphale, constituant la paroi inférieure du troisième ventricule.</li>
+                    <li>L’hypothalamus est un centre nerveux et est formé d'une variété neuronale ayant toutes les propriétés d'une cellule nerveuse et, en plus, certains de ces neurones élaborent un produit de sécrétion “neurosécrétion”.</li>
+                    <li>Les neurones hypothalamiques sont rassemblés en amas qui constituent les "noyaux hypothalamiques" qui forment le système d'intégration le plus élevé du système nerveux végétatif.</li>
+                    <li>Deux groupes de cellules neuro-sécrétoires hypothalamiques peuvent être individualisés sur des critères morphologiques, topographiques et fonctionnels : les noyaux magno-cellulaires et les noyaux parvi-cellulaires.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>3.2- الهيكل النسجي</strong></li>
+        <ul>
+            <li><strong>النظام كبير الخلايا:</strong></li>
+            <ul>
+                <li>يشمل النواة فوق البصرية والنواة البارانتيكولارية.</li>
+                <li>تتميز هذه الخلايا بحجم كبير للجسم الخلوي، ونواة كبيرة ذات مظهر حويصلي مع نواة نووية.</li>
+                <li>السيتوبلازم يحتوي على العديد من أجسام نيسل.</li>
+            </ul>
+            <br>
+            <li><strong>النواة صغيرة الخلايا:</strong></li>
+            <ul>
+                <li>تتميز الخلايا بحجم صغير للجسم الخلوي، ونواة صغيرة مع كروماتين مكثف وسيتوبلازم قليل الصباغ.</li>
+                <li>بعيدًا عن النوى توجد الألياف الميالينية وغير الميالينية.</li>
+            </ul>
+            <br>
+            <li><strong>الهرمونات تحت المهاد:</strong></li>
+            <ul>
+                <li><strong>A- الهرمونات المحفزة للإفراز:</strong></li>
+                <ul>
+                    <li>GHRH (هرمون إفراز هرمون النمو) الذي يؤثر على إفراز هرمون النمو STH.</li>
+                    <li>GnRH (جونادو ليبرين) الذي يؤثر على إفراز FSH وLH.</li>
+                    <li>THR (ثيروليبرين) الذي يؤثر على إفراز وتنشيط TSH.</li>
+                    <li>CRF أو CRH (كورتيكوليبرين) الذي يؤثر على الغدة النخامية الأمامية لإنتاج ACTH.</li>
+                    <li>PRT أو PRH (هرمون تحفيز البرولاكتين) الذي يحفز إفراز البرولاكتين.</li>
+                </ul>
+                <br>
+                <li><strong>B- الهرمونات المثبطة:</strong></li>
+                <ul>
+                    <li>PIH (هرمون مثبط للبرولاكتين) مع الدوبامين يمنع إفراز البرولاكتين.</li>
+                    <li>SOMATOSTATINE (سوماتوستاتين) والتي لها أصل من الخلايا الصغيرة.</li>
+                </ul>
+                <br>
+                <li><strong>C- هرمونات أخرى:</strong></li>
+                <ul>
+                    <li>توجد هرمونات أخرى تحت المهاد مثل الأوكسيتوسين والفازوبريسين، والتي لها أصل من الخلايا الكبيرة.</li>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>3.2- Histological Structure</strong></li>
+            <ul>
+                <li><strong>The Magnocellular system:</strong></li>
+                <ul>
+                    <li>It includes the supraoptic nucleus and the paraventricular nucleus.</li>
+                    <li>They present a large cell body, a large vesicular nucleus with a nucleolus, and cytoplasm with many Nissl bodies.</li>
+                </ul>
+                <br>
+                <li><strong>The Parvicellular system:</strong></li>
+                <ul>
+                    <li>These cells have a small cell body, a small nucleus with condensed chromatin, and a cytoplasm that is lightly stained.</li>
+                    <li>Outside the nuclei, myelinated and unmyelinated fibers are found.</li>
+                </ul>
+                <br>
+                <li><strong>The hypothalamic hormones:</strong></li>
+                <ul>
+                    <li><strong>A- Releasing Hormones:</strong></li>
+                    <ul>
+                        <li>GHRH (Growth Hormone Releasing Hormone) that affects the secretion of growth hormone (STH).</li>
+                        <li>GnRH (gonadotropin-releasing hormone) that affects the secretion of FSH and LH.</li>
+                        <li>THR (Thyroliberin) that affects the secretion and stimulation of TSH.</li>
+                        <li>CRF or CRH (Corticotropin-releasing hormone) that acts on the anterior pituitary to synthesize ACTH.</li>
+                        <li>PRT or PRH (Prolactin Releasing Hormone) that induces the secretion of prolactin.</li>
+                    </ul>
+                    <br>
+                    <li><strong>B- Inhibiting Hormones:</strong></li>
+                    <ul>
+                        <li>PIH (Prolactin Inhibitor Hormone) with dopamine prevents prolactin secretion.</li>
+                        <li>SOMATOSTATIN, which has a parvicellular origin.</li>
+                    </ul>
+                    <br>
+                    <li><strong>C- Other Hormones:</strong></li>
+                    <ul>
+                        <li>There are other hypothalamic hormones such as oxytocin and vasopressin, which have a magnocellular origin.</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>3.2- Structure histologique</strong></li>
+            <ul>
+                <li><strong>Le système magno-cellulaire :</strong></li>
+                <ul>
+                    <li>Il comprend le noyau supra-optique et le noyau para-ventriculaire.</li>
+                    <li>Ils présentent un corps cellulaire de grande taille, un noyau volumineux vésiculeux avec nucléole et un cytoplasme contenant de nombreux corps de Nissl.</li>
+                </ul>
+                <br>
+                <li><strong>Le système parvi-cellulaire :</strong></li>
+                <ul>
+                    <li>Elles ont un corps cellulaire de petite taille, un petit noyau à chromatine condensée et un neuroplasme peu coloré.</li>
+                    <li>En dehors des noyaux, on retrouve des fibres myéliniques et amyéliniques.</li>
+                </ul>
+                <br>
+                <li><strong>Les hormones hypothalamiques :</strong></li>
+                <ul>
+                    <li><strong>A- Hormones de libération :</strong></li>
+                    <ul>
+                        <li>GHRH (Growth Hormone Releasing Hormone) qui agit sur la sécrétion de l'hormone de croissance (STH).</li>
+                        <li>GnRH (Gonadotropin-releasing hormone) qui agit sur la sécrétion de FSH et LH.</li>
+                        <li>THR (Thyrolibérine) qui agit sur la sécrétion et la stimulation de TSH.</li>
+                        <li>CRF ou CRH (Corticolibérine) qui agit sur l’adéno-hypophyse pour la synthèse de l’ACTH.</li>
+                        <li>PRT ou PRH (Prolactin Releasing Hormone) qui induit la sécrétion de prolactine.</li>
+                    </ul>
+                    <br>
+                    <li><strong>B- Hormones inhibitrices :</strong></li>
+                    <ul>
+                        <li>PIH (Prolactin Inhibitor Hormone) avec la dopamine qui empêchent la sécrétion de prolactine.</li>
+                        <li>SOMATOSTATINE, qui a une origine parvi-cellulaire.</li>
+                    </ul>
+                    <br>
+                    <li><strong>C- Autres hormones :</strong></li>
+                    <ul>
+                        <li>Il existe des hormones hypothalamiques telles que l'ocytocine et la vasopressine, qui ont une origine magno-cellulaire.</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>4) الغدة النخامية</strong></li>
+        <ul>
+            <li>الغدة النخامية "الغدة pituitaire" هي غدة ملحقة بالديانسيفالون وتقع في التجويف التركي (الذي هو تجويف في العظم الوتدي).</li>
+            <li>هي مرتبطة مع تحت المهاد عن طريق الساق النخامية، ويبلغ وزنها 0.6 جرام في الرجال و0.7 جرام في النساء.</li>
+            <li>تتكون الغدة النخامية من غدتين متميزتين: الأديينوهيوبيز والنيروهيوبيز.</li>
+            <li>تتم مراقبتها وتنظيمها من قبل تحت المهاد.</li>
+            <br>
+            <li><strong>أديينوهيوبيز:</strong> يتكون من ثلاث أجزاء:</li>
+            <ul>
+                <li>الفص الأمامي (الأنتيهيوبيز، بارس ديستاليس).</li>
+                <li>الفص الأنبوبي (بارس تيبيراليس).</li>
+                <li>الفص الوسيط (بارس إنتيرميديا).</li>
+            </ul>
+            <br>
+            <li><strong>نيروهيوبيز:</strong> يتكون من ثلاث أجزاء:</li>
+            <ul>
+                <li>الجزء المتوسط (إنفونديبولوم).</li>
+                <li>الساق النخامية.</li>
+                <li>الفص الخلفي أو الفص العصبي.</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>4) Pituitary Gland</strong></li>
+            <ul>
+                <li>The pituitary gland, also known as the "pituitary," is attached to the diencephalon and is housed in the sella turcica (a cavity in the sphenoid bone).</li>
+                <li>It is connected to the hypothalamus by the pituitary stalk and weighs 0.6 grams in men and 0.7 grams in women.</li>
+                <li>The pituitary consists of two distinct glands: the adenohypophysis and the neurohypophysis.</li>
+                <li>The pituitary is controlled by the hypothalamus.</li>
+                <br>
+                <li><strong>Adenohypophysis:</strong> Consists of three parts:</li>
+                <ul>
+                    <li>The anterior lobe (adenohypophysis, pars distalis).</li>
+                    <li>The tuberal lobe (pars tuberalis).</li>
+                    <li>The intermediate lobe (pars intermedia).</li>
+                </ul>
+                <br>
+                <li><strong>Neurohypophysis:</strong> Consists of three parts:</li>
+                <ul>
+                    <li>The median eminence (Infundibulum).</li>
+                    <li>The infundibular stalk.</li>
+                    <li>The posterior lobe or neural lobe.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>4) L'Hypophyse</strong></li>
+            <ul>
+                <li>L'hypophyse, ou "glande pituitaire", est attachée au diencéphale et logée dans la selle turcique (une cavité de l'os sphénoïde).</li>
+                <li>Elle est reliée à l'hypothalamus par la tige hypophysaire et pèse 0,6 g chez l'homme et 0,7 g chez la femme.</li>
+                <li>L'hypophyse est constituée de deux glandes distinctes : l'adénohypophyse et la neurohypophyse.</li>
+                <li>Elle est contrôlée par l'hypothalamus.</li>
+                <br>
+                <li><strong>Adénohypophyse :</strong> Comprend trois parties :</li>
+                <ul>
+                    <li>Le lobe antérieur (antéhypophyse, pars distalis).</li>
+                    <li>Le lobe tubéral (pars tuberalis).</li>
+                    <li>Le lobe intermédiaire (pars intermedia).</li>
+                </ul>
+                <br>
+                <li><strong>Neurohypophyse :</strong> Comprend trois parties :</li>
+                <ul>
+                    <li>L'éminence médiane (Infundibulum).</li>
+                    <li>La tige infundibulaire.</li>
+                    <li>Le lobe postérieur ou lobe nerveux.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>1- الأديينوهيوبيز:</strong></li>
+        <ul>
+            <li><strong>4.1.1- الفص الأمامي:</strong></li>
+            <ul>
+                <li>يشكل الفص الأمامي الجزء الأساسي من الأديينوهيوبيز.</li>
+                <li>يتكون من حبال خلوية متشابكة محددة بواسطة غشاء قاعدي يفصل بينها وبين حواجز ليفية تحتوي على شبكة غنية من الأوعية الدموية الشعيرية المشبكية.</li>
+                <li>يمكن تمييز نوعين من الخلايا:</li>
+                <ul>
+                    <li><strong>الخلايا غير الهرمونية:</strong> (10 إلى 15%) خالية من الحويصلات الإفرازية، وتوجد في مركز الحبال الخلوية.</li>
+                    <li><strong>الخلايا الهرمونية:</strong> أكثر عددًا ومتنوعة الأنواع.</li>
+                </ul>
+                <br>
+                <li>توجد بعض الخلايا التي تتجمع في مركز الحبال وتحيط بأجواف صغيرة تحتوي على مادة غروية، وتعرف بـ "الخلايا الجُريبية".</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>1- Adenohypophysis:</strong></li>
+            <ul>
+                <li><strong>4.1.1- Anterior Lobe:</strong></li>
+                <ul>
+                    <li>The anterior lobe constitutes the main mass of the adenohypophysis.</li>
+                    <li>It is made up of anastomosing cellular cords separated by a basal membrane, which is separated from fine connective trabeculae containing a rich network of fenestrated capillaries.</li>
+                    <li>Two categories of cells can be distinguished:</li>
+                    <ul>
+                        <li><strong>Non-hormonal cells:</strong> (10 to 15%) These are devoid of secretion vesicles and are located towards the center of the cords.</li>
+                        <li><strong>Hormonal cells:</strong> More numerous and of various types.</li>
+                    </ul>
+                    <br>
+                    <li>Some cells are grouped at the center of the cords and surround small cavities containing colloid material, known as "follicular cells."</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>1- Adénohypophyse:</strong></li>
+            <ul>
+                <li><strong>4.1.1- Le lobe antérieur:</strong></li>
+                <ul>
+                    <li>Le lobe antérieur constitue la masse essentielle de l'adénohypophyse.</li>
+                    <li>Il est constitué de cordons cellulaires anastomosés séparés par une membrane basale, qui les sépare des travées conjonctives fines contenant un riche réseau de capillaires sanguins fenêtrés.</li>
+                    <li>On distingue deux catégories de cellules:</li>
+                    <ul>
+                        <li><strong>Cellules non hormonogènes:</strong> (10 à 15%) Elles sont dépourvues de vésicules de sécrétion et sont situées vers le centre des cordons.</li>
+                        <li><strong>Cellules hormonogènes:</strong> Plus nombreuses et de types variés.</li>
+                    </ul>
+                    <br>
+                    <li>Certaines cellules sont regroupées au centre des cordons et entourent de petites cavités contenant un matériau colloïdal, appelées "cellules folliculaires".</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>الخلايا غير الهرمونية:</strong></li>
+        <ul>
+            <li>بعض الخلايا تمتلك امتدادات تتسلل بين الخلايا الهرمونية، تعرف بـ "الخلايا النجمية".</li>
+            <li>قد تتحول هذه الخلايا إلى خلايا هرمونية وتتمتع بخصائص بلعمية، بالإضافة إلى قدرتها على نقل الأيونات.</li>
+            <li>تشير الدراسات الحديثة إلى أن هذه الخلايا تلعب دورًا مهمًا في تنظيم التفاعلات المناعية والغدد الصماء.</li>
+        </ul>
+        <br>
+
+        <li><strong>الخلايا الهرمونية:</strong></li>
+        <ul>
+            <li>تقع هذه الخلايا على أطراف الحبال الخلوية وتشغل كامل الحجم الذي تتركه الخلايا الجُريبية.</li>
+            <li>بفضل المعايير التلوينية للمجهر الضوئي، والبنية المجهرية، والكيمياء المناعية، يتم تمييز حاليًا خمسة أنواع من الخلايا الهرمونية في الأديينوهيوبيز البشري:</li>
+            <ul>
+                <li><strong>الخلايا السوماتوطرية (STH أو هرمون النمو أو GH):</strong> تشكل حوالي 55% من خلايا الحبال.</li>
+                <li><strong>الخلايا الدرقيّة (TSH).</strong></li>
+                <li><strong>الخلايا التناسلية (FSH و LH).</strong></li>
+                <li><strong>الخلايا التي تفرز البرولاكتين.</strong></li>
+                <li><strong>الخلايا الكورتيكو-ميلانو-تروبية.</strong></li>
+            </ul>
+            <br>
+            <li>تفرز الخلايا السوماتوطرية هرمون النمو (هورمون سوماتوتروبي = GH = STH).</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>Non-hormonal cells:</strong></li>
+            <ul>
+                <li>Some cells have extensions that infiltrate between the hormonal cells, known as "stellate cells".</li>
+                <li>These cells might transform into hormonal cells and have phagocytic properties as well as ionic transport functions.</li>
+                <li>Recent studies suggest that these cells play an important role in regulating immune-endocrine interactions.</li>
+            </ul>
+            <br>
+
+            <li><strong>Hormonal cells:</strong></li>
+            <ul>
+                <li>These cells are located on the periphery of the cords and occupy all the cord space left free by the follicular cells.</li>
+                <li>Through photomicroscopic staining criteria, ultrastructure, and immunocytochemistry, five types of hormonal cells are currently distinguished in the human adenohypophysis:</li>
+                <ul>
+                    <li><strong>Somatotropic cells (STH or Growth Hormone or GH):</strong> About 55% of the cells in the cords.</li>
+                    <li><strong>Thyrotropic cells (TSH).</strong></li>
+                    <li><strong>Gonadotropic cells (FSH and LH).</strong></li>
+                    <li><strong>Prolactin-secreting cells.</strong></li>
+                    <li><strong>Cortico-melanotropic cells.</strong></li>
+                </ul>
+                <br>
+                <li>Somatotropic cells secrete growth hormone (somatotropic hormone = GH = STH).</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>Cellules non hormonogènes:</strong></li>
+            <ul>
+                <li>Certaines cellules ont des prolongements qui s'insinuent entre les cellules hormonogènes, appelées "cellules stellaires".</li>
+                <li>Ces cellules pourraient se transformer en cellules hormonogènes et avoir des propriétés phagocytaires ainsi que des fonctions de transport ionique.</li>
+                <li>Des études récentes suggèrent que ces cellules jouent un rôle important dans la régulation des interactions immuno-endocrines.</li>
+            </ul>
+            <br>
+
+            <li><strong>Cellules hormonogènes:</strong></li>
+            <ul>
+                <li>Elles sont localisées à la périphérie des cordons et occupent tout le volume laissé libre par les cellules folliculaires.</li>
+                <li>Grâce aux critères tinctoriaux de la microscopie photonique, à l’ultrastructure et à l’immunocytochimie, on distingue actuellement dans l’adénohypophyse humaine cinq variétés de cellules hormonogènes :</li>
+                <ul>
+                    <li><strong>Cellules somatotropes (STH ou Growth Hormone ou GH):</strong> Environ 55 % des cellules des cordons.</li>
+                    <li><strong>Cellules thyrotropes (TSH).</strong></li>
+                    <li><strong>Cellules gonadotropes (FSH et LH).</strong></li>
+                    <li><strong>Cellules à prolactine.</strong></li>
+                    <li><strong>Cellules cortico-mélano-tropes.</strong></li>
+                </ul>
+                <br>
+                <li>Les cellules somatotropes élaborent l'hormone de croissance (hormone somatotrope = GH = STH).</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>الخلايا السوماتوطرية (STH أو هرمون النمو أو GH):</strong></li>
+        <ul>
+            <li>تحفز STH الأيض في الأنسجة العضلية، تساهم في تحلل الدهون وتساعد في نمو الغضاريف.</li>
+            <li>تحفز إنتاج I.G.F. I من الكبد (وهو ميتوجين قوي يعمل على الأنسجة الضامة).</li>
+            <li>تتم السيطرة على إفراز STH بواسطة هرمونين هيبوتلاميين: السوماتوليبيرين والسوماتوستاتين.</li>
+        </ul>
+        <br>
+
+        <li><strong>الخلايا التي تفرز البرولاكتين:</strong></li>
+        <ul>
+            <li>هذه الخلايا قليلة العدد في الذكور وفي النساء خارج فترة الحمل.</li>
+            <li>الغرانولات الخاصة بها كبيرة الحجم (من 0.5 إلى 0.7 ميكرومتر).</li>
+            <li>الوظيفة الرئيسية للبرولاكتين هي إنتاج الحليب خلال فترة الرضاعة.</li>
+            <li>يتم التحكم في تخليق البرولاكتين بواسطة البرولاكتوليبيرين والبرولاكتوستاتين.</li>
+        </ul>
+        <br>
+
+        <li><strong>الخلايا الكورتيكو-ميلانو-تروبية:</strong></li>
+        <ul>
+            <li>تمثل 5% من خلايا الحبال.</li>
+            <li>الغرانولات الخاصة بها ذات شكل متعدد الأوجه (من 0.2 إلى 0.7 ميكرومتر).</li>
+            <li><strong>الهرمون الكورتيكوتروبي (ACTH):</strong> يحفز الغدة الكظرية. وهو منتج نضوج لبروهرمون يسمى POMC (برو-أوبيوميلانوكورتين).</li>
+            <li><strong>الهرمون الميلانو-تروبي (MSH):</strong> يحفز في الإنسان تخليق الميلانين، خاصة استجابة للأشعة فوق البنفسجية (UVA). وهو أيضًا منتج نضوج لبروهرمون POMC.</li>
+        </ul>
+        <br>
+
+        <li><strong>الخلايا الدرقيّة (Thyréotropes):</strong></li>
+        <ul>
+            <li>تمثل حوالي 10% من خلايا الأديينوهيوبيز.</li>
+            <li>السيتوبلازم يتسم بالصفاء القاعدي الفاتح ويحتوي على عدد قليل من الغرانولات الصغيرة (من 100 إلى 150 نانومتر).</li>
+            <li>تفرز الخلايا الهرمون المنبه للغدة الدرقية (TSH) الذي يحفز نمو الغدة الدرقية ويعزز تخليق وإفراز الهرمونات الدرقية.</li>
+        </ul>
+        <br>
+
+        <li><strong>الخلايا التناسلية (Gonadotropes):</strong></li>
+        <ul>
+            <li>تمثل حوالي 10% من خلايا الأديينوهيوبيز.</li>
+            <li>السيتوبلازم يتميز بالصفاء القاعدي ويحتوي على غرانولات (من 200 إلى 600 نانومتر).</li>
+            <li>تفرز الخلايا FSH و LH التي تحفز الوظائف الغددية الصماء والإفرازية للأعضاء التناسلية في كلا الجنسين.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>Somatotropic cells (STH or Growth Hormone or GH):</strong></li>
+            <ul>
+                <li>STH stimulates metabolism in muscle tissue, lipolysis, and cartilage growth.</li>
+                <li>It stimulates the production of I.G.F. I by the liver (a powerful mitogen that acts on connective tissues).</li>
+                <li>STH secretion is controlled by two hypothalamic hormones: somatoliberin and somatostatin.</li>
+            </ul>
+            <br>
+
+            <li><strong>Prolactin-secreting cells:</strong></li>
+            <ul>
+                <li>These cells are less numerous in men and in women outside of pregnancy.</li>
+                <li>Their granules are quite large (0.5 to 0.7 μm).</li>
+                <li>The main action of prolactin is milk production during lactation.</li>
+                <li>Its synthesis is controlled by prolactoliberin and prolactostatin.</li>
+            </ul>
+            <br>
+
+            <li><strong>Cortico-melanotropic cells:</strong></li>
+            <ul>
+                <li>They represent 5% of the cells in the cords.</li>
+                <li>Their polyhedral granules are from 0.2 to 0.7 μm.</li>
+                <li><strong>Corticotropic hormone (ACTH):</strong> Stimulates the adrenal cortex. It is the maturation product of a pro-hormone, POMC (pro-opiomelanocortin).</li>
+                <li><strong>Melanotropic hormone (MSH):</strong> Stimulates melanin synthesis in humans, mainly in response to UVA rays. It is also a maturation product of the pro-hormone POMC.</li>
+            </ul>
+            <br>
+
+            <li><strong>Thyrotropic cells:</strong></li>
+            <ul>
+                <li>They represent about 10% of the cells of the adenohypophysis.</li>
+                <li>The cytoplasm is lightly basophilic and contains few small granules (100 to 150 nm).</li>
+                <li>They secrete thyroid-stimulating hormone (TSH) which promotes thyroid growth and stimulates the synthesis and release of thyroid hormones.</li>
+            </ul>
+            <br>
+
+            <li><strong>Gonadotropic cells:</strong></li>
+            <ul>
+                <li>They represent about 10% of the cells of the adenohypophysis.</li>
+                <li>The cytoplasm is lightly basophilic and contains granules (200 to 600 nm).</li>
+                <li>They secrete FSH and LH which stimulate the endocrine and exocrine functions of the genital organs in both sexes.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>Cellules somatotropes (STH ou Growth Hormone ou GH):</strong></li>
+            <ul>
+                <li>La STH stimule le métabolisme du tissu musculaire, la lipolyse et la croissance du cartilage.</li>
+                <li>Elle stimule la production d'I.G.F. I par le foie (un mitogène puissant qui agit sur les tissus conjonctifs).</li>
+                <li>La sécrétion de STH est contrôlée par deux hormones hypothalamiques : la somatolibérine et la somatostatine.</li>
+            </ul>
+            <br>
+
+            <li><strong>Cellules à prolactine :</strong></li>
+            <ul>
+                <li>Elles sont peu nombreuses dans le sexe masculin et chez la femme en dehors de la grossesse.</li>
+                <li>Leurs granulations sont assez volumineuses (0.5 à 0.7 μm).</li>
+                <li>La principale action de la prolactine est la production du lait pendant la lactation.</li>
+                <li>Sa synthèse est contrôlée par la prolactolibérine et par la prolactostatine.</li>
+            </ul>
+            <br>
+
+            <li><strong>Cellules Cortico-mélano-tropes :</strong></li>
+            <ul>
+                <li>Elles représentent 5% des cellules des cordons.</li>
+                <li>Leurs granules polyédriques mesurent de 0.2 à 0.7 μm.</li>
+                <li><strong>ACTH (hormone corticotrope) :</strong> Elle stimule la glande corticosurrénale. Elle est le produit de maturation d'une pro-hormone, la POMC (pro-opiomélanocortine).</li>
+                <li><strong>MSH (hormone mélanotrope) :</strong> Elle provoque la synthèse de la mélanine chez l'homme, principalement en réponse aux rayons UVA. Elle est également le produit de maturation de la POMC.</li>
+            </ul>
+            <br>
+
+            <li><strong>Cellules Thyréotropes :</strong></li>
+            <ul>
+                <li>Elles représentent environ 10% des cellules de l’adénohypophyse.</li>
+                <li>Le cytoplasme est légèrement basophile clair et pauvre en granules de petite taille (100 à 150 nm).</li>
+                <li>Elles élaborent la thyréostimuline (TSH) qui provoque la croissance de la thyroïde et stimule la synthèse et la libération des hormones thyroïdiennes.</li>
+            </ul>
+            <br>
+
+            <li><strong>Cellules Gonadotropes :</strong></li>
+            <ul>
+                <li>Elles représentent environ 10 % des cellules de l’adénohypophyse.</li>
+                <li>Le cytoplasme est légèrement basophile, et contient des granulations (200 et 600 nm).</li>
+                <li>Elles sécrètent la FSH et la LH qui stimulent les fonctions endocrines et exocrines de l'appareil génital dans les deux sexes.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>اللوب الوسيط (Lobe Intermédiaire):</strong></li>
+        <ul>
+            <li>في الإنسان البالغ، لا يتكون الأديينوهيوبيز من لوب وسطي حقيقي، بل يحتوي على منطقة وسطية تحتوي على أكياس صغيرة مغطاة بخلايا طلائية بالإضافة إلى بعض الخلايا الغدية المتبقية (في الغالب خلايا كورتيكو-ميلانو-ليبتروبية).</li>
+        </ul>
+        <br>
+
+        <li><strong>اللوب الأنبوبي (Lobe Tubéral):</strong></li>
+        <ul>
+            <li>في الإنسان، يعتبر اللوب الأنبوبي متطورًا نسبيًا ويحتوي على خلايا تبدو في الغالب خالية من الصبغات، ولكن يحتوي أيضًا على خلايا هرمونية من نفس النوع الذي يوجد في اللوب الأمامي بشكل متقطع وبأعداد متفاوتة.</li>
+        </ul>
+        <br>
+
+        <li><strong>الستروما الضام-الوعائي (Stroma conjonctivo-vasculaire):</strong></li>
+        <ul>
+            <li>تلتصق الكبسولة الضامة بجدران السلة التركية. وتستمر الحواجز الضامة-الوعائية داخل الأنسجة حول الساق الغدة النخامية بواسطة الطبقة العنكبوتية.</li>
+            <li>تُشكل الشعيرات الدموية شبكة كثيفة بين الحبال الخلوية.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>Intermediate Lobe (Lobe Intermédiaire):</strong></li>
+            <ul>
+                <li>In the adult human, the adenohypophysis does not have a true intermediate lobe, but rather an intermediate zone containing small cysts covered with epithelial cells, as well as some residual glandular cells (mainly cortico-melanotropes).</li>
+            </ul>
+            <br>
+
+            <li><strong>Tuberal Lobe (Lobe Tubéral):</strong></li>
+            <ul>
+                <li>In humans, the tuberal lobe is relatively well-developed and contains cells that are mostly chromophobe in appearance, but also, intermittently and in varying numbers, hormonal cells of the same type as those in the anterior lobe.</li>
+            </ul>
+            <br>
+
+            <li><strong>Connective-Vascular Stroma (Stroma conjonctivo-vasculaire):</strong></li>
+            <ul>
+                <li>The connective capsule adheres to the walls of the sella turcica. Connective-vascular septa continue around the pituitary stalk through the pia mater.</li>
+                <li>The capillaries form a dense network between the cords.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>Lobe intermédiaire :</strong></li>
+            <ul>
+                <li>Dans l’espèce humaine, l’adénohypophyse de l’adulte ne comporte pas de véritable lobe intermédiaire, mais plutôt une zone intermédiaire contenant des petits kystes revêtus de cellules épithéliales ainsi que quelques cellules glandulaires résiduelles (principalement des cellules cortico-mélano-liptotropes).</li>
+            </ul>
+            <br>
+
+            <li><strong>Lobe tubéral :</strong></li>
+            <ul>
+                <li>Dans l’espèce humaine, le lobe tubéral est relativement bien développé et contient des cellules en grande majorité d’aspect chromophobe, mais aussi de façon inconstante et en nombre variable, des cellules hormonogènes du même type que celles du lobe antérieur.</li>
+            </ul>
+            <br>
+
+            <li><strong>Le stroma conjonctivo-vasculaire :</strong></li>
+            <ul>
+                <li>La capsule conjonctive adhère aux parois de la selle turcique. Des cloisons conjonctivovasculaires intra-parenchymateuses se continuent autour de la tige hypophysaire, par la piamère.</li>
+                <li>Les capillaires forment un réseau dense entre les cordons.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>النيوروهيوبيز (Neurohypophyse):</strong></li>
+        <ul>
+            <li>ليست غدة صماء بالمعنى المعتاد للكلمة، بل هي نسيج عصبي يعتمد على الهيبوثالاموس.</li>
+        </ul>
+        <br>
+
+        <li><strong>اللوب الخلفي (Le lobe postérieur):</strong></li>
+        <ul>
+            <li>هو عضو عصبي-وعائي يسمح للهرمونات العصبية التي يتم تصنيعها في الهيبوثالاموس بالمرور إلى الدورة الدموية. ويتكون أساسًا من:</li>
+            <ul>
+                <li>محاور الأعصاب الهيبوثلامية (الموجودة في النوى فوق البصرية والمحيط البطيني).</li>
+                <li>الشعيرات الدموية.</li>
+                <li>الخلايا الدبقية (أو الخلايا البيتيوسيتية).</li>
+            </ul>
+            <li>باستخدام تلوينات خاصة، يمكن رؤية الحويصلات التي تحتوي على مادة إفرازية (الهرمونات العصبية) داخل المحاور العصبية. أحيانًا تتجمع هذه الحويصلات على شكل كتل مستديرة تُسمى "أجسام هيرينغ".</li>
+            <li>في الميكروسكوب الإلكتروني، تظهر هذه الحويصلات كحويصلات ذات مركز كثيف.</li>
+            <li>طرف المحور العصبي لا يحتوي على تقاطع عصبي، بل يفرز محتويات الحويصلات (الهرمون) عن طريق الإخراج الخلوي، بحيث تنتشر الهرمونات عبر القاعدة إلى الفضاء المحيط بالشعيرات الدموية.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>Neurohypophysis:</strong></li>
+            <ul>
+                <li>It is not an endocrine gland in the usual sense, but rather nervous tissue dependent on the hypothalamus.</li>
+            </ul>
+            <br>
+
+            <li><strong>Posterior Lobe (Le lobe postérieur):</strong></li>
+            <ul>
+                <li>It is a neurovascular organ allowing neurohormones synthesized in the hypothalamus to enter the bloodstream. It is mainly composed of:</li>
+                <ul>
+                    <li>Axons of hypothalamic neurons (located in the supraoptic and paraventricular nuclei).</li>
+                    <li>Blood capillaries.</li>
+                    <li>Glial cells (or pituicytes).</li>
+                </ul>
+                <li>Through special staining, secretory vesicles (neurosecretions) within the axons can be seen under optical microscopy. These sometimes aggregate into rounded masses known as "Herring bodies".</li>
+                <li>In electron microscopy, these secretion granules appear as vesicles with dense centers.</li>
+                <li>The axonal tip does not have a synapse but releases the contents of the vesicles (hormones) via exocytosis, which diffuse through the basal lamina into the pericapillary space.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>La neurohypophyse :</strong></li>
+            <ul>
+                <li>Ce n'est pas une glande endocrine au sens habituel du terme, mais du tissu nerveux dépendant de l'hypothalamus.</li>
+            </ul>
+            <br>
+
+            <li><strong>Le lobe postérieur :</strong></li>
+            <ul>
+                <li>C’est un organe neuro-vasculaire permettant aux neuro-hormones synthétisées dans l’hypothalamus de passer dans la circulation sanguine. Il est constitué principalement par :</li>
+                <ul>
+                    <li>Axones des neurones hypothalamiques (situés dans les noyaux supra-optiques et paraventriculaires).</li>
+                    <li>Capillaires sanguins.</li>
+                    <li>Des cellules gliales (ou pituicytes).</li>
+                </ul>
+                <li>Grâce à des colorations spéciales, on peut voir en microscopie optique les vésicules de sécrétion (neurosecrétat) à l’intérieur des axones. Parfois ils s’agglomèrent sous forme de masses arrondies « les corps de Herring ».</li>
+                <li>En microscopie électronique, ces grains de sécrétion apparaissent comme des vésicules à centre dense.</li>
+                <li>L'extrémité de l'axone ne présente pas de synapse, mais libère par exocytose le contenu des grains (hormone), qui diffusent à travers la basale dans l'espace péricapillaire.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>الإمينانس الميدانية (Eminence médiane) :</strong></li>
+        <ul>
+            <li>هي الجدار السفلي للبطين الثالث. المحاور التي تمر عبر الإمينانس الميدانية هي من نوعين:</li>
+            <ul>
+                <li>محاور الأعصاب التي تتحكم في النيوروهيبويز.</li>
+                <li>محاور الأعصاب التي تتحكم في الأدينوهيبويز.</li>
+            </ul>
+        </ul>
+        <br>
+
+        <li><strong>التيج الهيبويز (La tige hypophysaire) :</strong></li>
+        <ul>
+            <li>ترتبط الإمينانس الميدانية باللوب العصبي وتكون مكونة من ألياف عصبية تأتي من الخلايا العصبية في الهيبوثالاموس (النوى فوق البصرية والمحيط البطيني).</li>
+        </ul>
+        <br>
+
+        <li><strong>منتجات الإفراز الهيبويز-الهيبوثالاموسي (Les produits de sécrétion hypothalamo-posthypophysaires) :</strong></li>
+        <ul>
+            <li>يتعلق الأمر بهرمونين ببتيديين يتم تصنيعهما بواسطة خلايا عصبية مختلفة.</li>
+            <ul>
+                <li><strong>الأوكسيتوسين (L’ocytocine) :</strong></li>
+                <ul>
+                    <li>يحفز خلايا العضلات الملساء في الغدد الثديية وفي الرحم. (دور أساسي أثناء الولادة).</li>
+                    <li>إفرازه يخضع للرقابة بواسطة رد فعل عصبي-إفرازي. التحفيز يحدث عند الاتصال بالحلمة أثناء الرضاعة، تمدد عنق الرحم أثناء الولادة، وتمدده أثناء الجماع.</li>
+                    <li>يتم أيضًا إنتاجه في المبيض.</li>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>Eminence médiane:</strong></li>
+            <ul>
+                <li>It is the lower wall of the third ventricle. The axons that pass through the eminence médiane are of two types:</li>
+                <ul>
+                    <li>Axons of neurons controlling the neurohypophysis.</li>
+                    <li>Axons of neurons controlling the adenohypophysis.</li>
+                </ul>
+            </ul>
+            <br>
+
+            <li><strong>Tige hypophysaire:</strong></li>
+            <ul>
+                <li>It connects the eminence to the posterior lobe and is composed of nerve fibers that come from hypothalamic neurons (supraoptic and paraventricular nuclei).</li>
+            </ul>
+            <br>
+
+            <li><strong>Hypothalamic-Posthypophyseal Secretions:</strong></li>
+            <ul>
+                <li>These are two peptide hormones synthesized by different neurons.</li>
+                <ul>
+                    <li><strong>Oxytocin:</strong></li>
+                    <ul>
+                        <li>It stimulates myoepithelial cells in the mammary gland and smooth muscle cells in the uterus. (It plays a fundamental role during childbirth).</li>
+                        <li>Its secretion is controlled by a neurosecretory reflex. The stimulus is nipple contact during breastfeeding, cervical distension during childbirth, and vaginal distension during intercourse.</li>
+                        <li>It is also produced by the ovary.</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- العنوان بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>L'éminence médiane :</strong></li>
+            <ul>
+                <li>C’est la paroi inférieure du troisième ventricule. Les axones qui parcourent l’éminence médiane sont de deux types :</li>
+                <ul>
+                    <li>Les axones des neurones contrôlant la neurohypophyse.</li>
+                    <li>Les axones des neurones contrôlant l’adénohypophyse.</li>
+                </ul>
+            </ul>
+            <br>
+
+            <li><strong>La tige hypophysaire :</strong></li>
+            <ul>
+                <li>Elle relie l’éminence au lobe nerveux et est constituée par des fibres nerveuses qui proviennent des neurones hypothalamiques (supra-optiques et paraventriculaires).</li>
+            </ul>
+            <br>
+
+            <li><strong>Les produits de sécrétion hypothalamo-posthypophysaires :</strong></li>
+            <ul>
+                <li>Il s'agit de deux hormones peptidiques synthétisées par des neurones différents.</li>
+                <ul>
+                    <li><strong>L'ocytocine :</strong></li>
+                    <ul>
+                        <li>Elle stimule les cellules myoépithéliales de la glande mammaire et les cellules musculaires lisses de l'utérus. (Rôle fondamental au moment de l'accouchement).</li>
+                        <li>Sa sécrétion est sous le contrôle d'un réflexe neuro-sécrétoire. Le stimulus est le contact du mamelon au cours de la tétée, la distension du col utérin au cours de l'accouchement, et celle du vagin au cours du coït.</li>
+                        <li>Elle est également produite par l'ovaire.</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>هرمون ADH (هرمون مضاد للتبول أو فاسوبريسين) :</strong></li>
+        <ul>
+            <li>يسبب إعادة امتصاص الماء بواسطة الظهارة في الأنبوب الكلوي.</li>
+            <li>عندما يكون إفراز هذا الهرمون غير كافٍ، فإنه يؤدي إلى متلازمة التبول المتكرر والعطش الشديد أو السكري الكاذب الهايبوفيزي.</li>
+            <li>يزيد من توتر الأوعية الدموية، ومن هنا جاء اسمه.</li>
+            <li>يحفز إنتاج ACTH بواسطة خلايا الكورتيكو-ميلانو-ليبوتروبية في الغدة النخامية.</li>
+        </ul>
+        <br>
+
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>ADH (Antidiuretic hormone or Vasopressin):</strong></li>
+                <ul>
+                    <li>It promotes water reabsorption by the renal tubular epithelium.</li>
+                    <li>Insufficient secretion of ADH results in a polyuric-polydipsic syndrome or hypophyseal diabetes insipidus.</li>
+                    <li>It increases vascular tone, which is why it is named vasopressin.</li>
+                    <li>It stimulates the production of ACTH by cortico-melanotropic-lipotropic cells of the pituitary.</li>
+                </ul>
+            </ul>
+        </div>
+        <br>
+
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>ADH (hormone antidiurétique ou vasopressine) :</strong></li>
+                <ul>
+                    <li>Elle provoque la réabsorption d'eau par l'épithélium du tube rénal.</li>
+                    <li>Une sécrétion insuffisante se traduit par un syndrome polyurique - polydipsique ou diabète insipide hypophysaire.</li>
+                    <li>Elle augmente le tonus vasculaire, d'où son nom.</li>
+                    <li>Elle stimule la production d'ACTH par les cellules cortico-mélano-lipotropes de l'hypophyse.</li>
+                </ul>
+            </ul>
+        </div>
+    </ul>
+</div>
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="vascularisation" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>التغذية الدموية (الوعائية) للغدة النخامية:</strong></li>
+        <ul>
+            <li><strong>الشبكة الهيبوثالاموسية:</strong> تنشأ من شرايين صغيرة مباشرة من فروع مضلع ويليس؛ حيث تصرف الشعيرات الدموية إلى الأوردة التي تصب في الجيب الكهفي.</li>
+            <li><strong>الشبكة الهيبوثالاموسية-الأنبوبية-الهيبوفيزية الأمامية:</strong> يتكون من نظام بوابة وريدي. الشرايين النخامية العلوية، التي تنبع من الشريان السباتي الداخلي، تروي المنطقة المتوسطة من النخاع والجزء العلوي من الساق النخامية. تُنتج هذه الشرايين شبكة شعيرية أولية من الشعيرات الدموية ذات النوافذ في الساق النخامية.</li>
+            <li><strong>الشبكة ما بعد النخامية:</strong> الشرايين النخامية السفلية التي تنبع من الشريان السباتي الداخلي تؤدي إلى شبكة شعيرية تقع في الفص الخلفي، ومن هذه الشعيرات تنشأ الأوردة التي تصب في الوريد الوداجي الداخلي.</li>
+        </ul>
+        <br>
+
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Vascularization (Blood supply) of the Hypothalamo-Pituitary Complex:</strong></li>
+                <ul>
+                    <li><strong>Hypothalamic Network:</strong> It originates from small arteries directly from the branches of the Circle of Willis; its capillaries are drained by veins that empty into the cavernous sinus.</li>
+                    <li><strong>Hypothalamo-Tubero-Antehypophyseal Network:</strong> A venous portal system. The superior pituitary arteries, coming from the internal carotid artery, supply the median eminence and the upper part of the infundibular stem. These arteries give rise to a primary capillary plexus of fenestrated capillaries in the pituitary stalk.</li>
+                    <li><strong>Post-Pituitary Network:</strong> The inferior pituitary arteries, originating from the internal carotid artery, give rise to a capillary network in the posterior lobe, and from these capillaries, veins are formed that empty into the internal jugular vein.</li>
+                </ul>
+            </ul>
+        </div>
+        <br>
+
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>Vascularisation du complexe hypothalamo-hypophysaire :</strong></li>
+                <ul>
+                    <li><strong>Réseau hypothalamique :</strong> Il provient de petites artères issues directement des branches du polygone de Willis; ses capillaires sont drainés par des veines qui se jettent dans le sinus caverneux.</li>
+                    <li><strong>Réseau hypothalamo-tubéro-antéhypophysaire :</strong> Un système porte veineux. Les artères hypophysaires supérieures, provenant de l'artère carotide interne, irriguent l'éminence médiane et la partie supérieure de la tige infundibulaire. Ces artères donnent naissance à un plexus capillaire primaire de capillaires fenêtrés au niveau de la tige pituitaire.</li>
+                    <li><strong>Réseau post-hypophysaire :</strong> Les artères hypophysaires inférieures issues de la carotide interne donnent naissance à un réseau capillaire situé dans le lobe postérieur, de ces capillaires naissent des veines qui se jettent finalement dans la veine jugulaire interne.</li>
+                </ul>
+            </ul>
+        </div>
+    </ul>
+</div>
+
+
+<div class="bubble">
+    <button class="interact-button" id="vascularisation" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>التروية الدموية (La Vascularisation):</strong></li>
+        <ul>
+            <li>التروية الدموية للتركيب الفرضي تحت المهاد-الغدة النخامية متخصصة بشكل عالٍ ومتكيفة مع تنظيم الغدة النخامية بواسطة تحت المهاد.</li>
+            <br>
+            <li><strong>الشبكة تحت المهادية:</strong></li>
+            <ul>
+                <li>تأتي من شرايين صغيرة تنشأ مباشرة من فروع مثلث ويليس؛ وتُصَرف شعيراتها بواسطة الأوردة التي تصب في الجيب الكهفي.</li>
+            </ul>
+            <br>
+
+            <li><strong>الشبكة تحت المهادية-الأنبوبيّة-اللوبيّة الأمامية:</strong></li>
+            <ul>
+                <li>نظام بوابة وريدي.</li>
+            </ul>
+        </ul>
+
+        <br>
+
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Vascularization:</strong></li>
+                <ul>
+                    <li>The vascularization of the hypothalamo-pituitary complex is highly specialized and adapted to the regulation of the pituitary by the hypothalamus.</li>
+                    <br>
+                    <li><strong>The hypothalamic network:</strong></li>
+                    <ul>
+                        <li>It originates from small arteries directly derived from the branches of the Circle of Willis; its capillaries are drained by veins that empty into the cavernous sinus.</li>
+                    </ul>
+                    <br>
+
+                    <li><strong>The hypothalamo-tubero-anterior pituitary network:</strong></li>
+                    <ul>
+                        <li>A venous portal system.</li>
+                    </ul>
+                </ul>
+            </div>
+
+            <br>
+
+            <!-- العنوان بالفرنسية -->
+            <div class="bubble">
+                <ul>
+                    <li><strong>La vascularisation :</strong></li>
+                    <ul>
+                        <li>La vascularisation du complexe hypothalamo-hypophysaire est hautement spécialisée et adaptée à la régulation de l’hypophyse par l’hypothalamus.</li>
+                        <br>
+                        <li><strong>Le réseau hypothalamique :</strong></li>
+                        <ul>
+                            <li>Il provient de petites artères issues directement des branches du polygone de Willis ; ses capillaires sont drainés par des veines qui se jettent dans le sinus caverneux.</li>
+                        </ul>
+                        <br>
+
+                        <li><strong>Le réseau hypothalamo-tubéro-antéhypophysaire :</strong></li>
+                        <ul>
+                            <li>Un système porte veineux.</li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+</div>
+
+
+<div class="bubble">
+    <button class="interact-button" id="vascularisation-details" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>التروية الدموية التفصيلية:</strong></li>
+        <ul>
+            <li><strong>الشرايين تحت المهادية العلوية:</strong> تنشأ من الشرايين السباتية الداخلية، وتغذي الإيمينس ميديان والجزء العلوي من الساق الإنعطافية. هذه الشرايين تولد شبكة شعرية أولية من الشعيرات الدموية الفتحتية على مستوى الساق النخامية.</li>
+            <br>
+            <li>من هذه الشعيرات تنشأ الأوردة الصغيرة ثم الأوردة البوابية. العديد من الأوردة البوابية تغذي الشبكة الشعرية الثانوية الموجودة في منطقة الغدة النخامية الأمامية، والتي تستمر عبر الوريد الوداجي الداخلي. هذا النظام البوابي ينقل العوامل RH أو IH القادمة من تحت المهاد والتي تتثبت على المستقبلات المقابلة في خلايا الغدة النخامية الأمامية.</li>
+            <br>
+            <li><strong>الشبكة ما بعد النخامية:</strong> الشرايين تحت المهادية السفلية التي تنشأ من الشرايين السباتية الداخلية تولد شبكة شعرية في الفص الخلفي، ومن هذه الشعيرات تنشأ الأوردة التي تصب في النهاية في الوريد الوداجي الداخلي.</li>
+        </ul>
+
+        <br>
+
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Detailed Vascularization:</strong></li>
+                <ul>
+                    <li><strong>The superior hypophyseal arteries:</strong> They arise from the internal carotid artery and supply the median eminence and the upper part of the infundibular stem. These arteries give rise to a primary capillary plexus of fenestrated capillaries at the pituitary stem.</li>
+                    <br>
+                    <li>From these capillaries, venules arise and eventually form portal veins. Several portal veins supply the secondary capillary network located in the adenohypophysis, which continues into the internal jugular vein. This portal system transports the RH or IH factors from the hypothalamus, which bind to corresponding receptors on endocrine cells in the anterior lobe of the pituitary gland.</li>
+                    <br>
+                    <li><strong>The post-hypophyseal network:</strong> The inferior hypophyseal arteries, which arise from the internal carotid artery, give rise to a capillary network in the posterior lobe. From these capillaries, veins are formed that eventually empty into the internal jugular vein.</li>
+                </ul>
+            </div>
+
+            <br>
+
+            <!-- العنوان بالفرنسية -->
+            <div class="bubble">
+                <ul>
+                    <li><strong>Vascularisation détaillée :</strong></li>
+                    <ul>
+                        <li><strong>Les artères hypophysaires supérieures :</strong> Elles proviennent de l'artère carotide interne et irriguent l'éminence médiane ainsi que la partie supérieure de la tige infundibulaire. Ces artères donnent naissance à un plexus capillaire primaire de capillaires fenêtrés au niveau de la tige pituitaire.</li>
+                        <br>
+                        <li>De ces capillaires naissent des veinules puis des veines portes. Plusieurs veines portes alimentent le réseau capillaire secondaire localisé au niveau de l'adénohypophyse et qui se poursuit par la veine jugulaire interne. Ce système porte transporte les facteurs RH ou IH provenant de l'hypothalamus, qui se fixe aux récepteurs correspondants au niveau des cellules endocrines du lobe antérieur de l'hypophyse.</li>
+                        <br>
+                        <li><strong>Le réseau post-hypophysaire :</strong> Les artères hypophysaires inférieures, issues de la carotide interne, donnent naissance à un réseau capillaire situé dans le lobe postérieur, de ces capillaires naissent des veines qui se jettent finalement dans la veine jugulaire interne.</li>
+                    </ul>
+                </div>
+            </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="clinical-applications" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>التطبيقات السريرية:</strong></li>
+        <ul>
+            <li><strong>فرط برولاكتين الدم:</strong> هو ارتفاع مستوى هرمون البرولاكتين في الدم، الذي يمكن أن يسبب مشاكل في الدورة الشهرية، العقم، أو إفراز الحليب غير الطبيعي لدى النساء والرجال.</li>
+            <li><strong>العملاقية / تضخم الأطراف:</strong> يعاني الأشخاص المصابون بهذا من نمو غير طبيعي للعظام والأعضاء بسبب زيادة إفراز هرمون النمو (GH) بعد اكتمال النمو.</li>
+            <li><strong>مرض كوشينغ:</strong> حالة ناتجة عن ارتفاع مستوى الكورتيزول في الجسم، مما يؤدي إلى زيادة الوزن، ترقق الجلد، وزيادة مستويات السكر في الدم.</li>
+        </ul>
+        <br>
+
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Clinical Applications:</strong></li>
+                <ul>
+                    <li><strong>Hyperprolactinemia:</strong> It is an elevated level of prolactin in the blood, which can cause menstrual problems, infertility, or abnormal milk production in both women and men.</li>
+                    <li><strong>Gigantism / Acromegaly:</strong> Individuals with this condition experience abnormal growth of bones and organs due to increased growth hormone (GH) secretion after growth completion.</li>
+                    <li><strong>Cushing's Disease:</strong> A condition caused by an excess of cortisol in the body, leading to weight gain, skin thinning, and elevated blood sugar levels.</li>
+                </ul>
+            </ul>
+        </div>
+        <br>
+
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>Applications cliniques :</strong></li>
+                <ul>
+                    <li><strong>Hyperprolactinémie :</strong> Il s'agit d'un niveau élevé de prolactine dans le sang, ce qui peut provoquer des problèmes menstruels, de fertilité ou une production anormale de lait chez les femmes et les hommes.</li>
+                    <li><strong>Gigantisme / Acromégalie :</strong> Les personnes atteintes de cette affection connaissent une croissance anormale des os et des organes en raison d'une sécrétion excessive d'hormone de croissance (GH) après la fin de la croissance.</li>
+                    <li><strong>Maladie de Cushing :</strong> Une condition causée par un excès de cortisol dans le corps, entraînant une prise de poids, un amincissement de la peau et des niveaux de sucre sanguin élevés.</li>
+                </ul>
+            </ul>
+        </div>
+    </ul>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="hyperprolactinemia" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>فرط برولاكتين الدم:</strong></li>
+        <ul>
+            <li>الأورام التي تفرز البرولاكتين تؤثر على المحور تحت المهاد – النخامية – الغدد التناسلية، مما يؤدي إلى نقص في الجونادوتروبينات.</li>
+            <li>في النساء، قد يرتبط الإفراز المفرط للبرولاكتين بالعقم (اضطرابات في الدورة الشهرية).</li>
+            <li>في الرجال، يؤدي إلى انخفاض الخصوبة والرغبة الجنسية. كما قد يظهر إفراز الحليب (القلعترية) لدى الرجال.</li>
+        </ul>
+        <br>
+
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Hyperprolactinemia:</strong></li>
+                <ul>
+                    <li>Tumors secreting prolactin influence the hypothalamic-pituitary-gonadal axis, leading to a deficiency in gonadotropins.</li>
+                    <li>In women, hypersecretion of prolactin can be associated with infertility and menstrual disturbances.</li>
+                    <li>In men, it causes a decrease in fertility and libido. Galactorrhea may also be observed in men.</li>
+                </ul>
+            </div>
+        </ul>
+
+        <br>
+
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>Hyperprolactinémie :</strong></li>
+                <ul>
+                    <li>Les tumeurs sécrétant de la prolactine influencent l'axe hypothalamo-hypophyse-gonades, entraînant un déficit en gonadotrophines.</li>
+                    <li>Chez la femme, l'hypersécrétion de prolactine peut être associée à une stérilité et des troubles des règles.</li>
+                    <li>Chez l'homme, diminution de la fertilité et de la libido. La galactorrhée peut également s'observer chez l'homme.</li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="gigantisme-acromegalie" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>العملاقية / الأكروماجالي:</strong></li>
+        <ul>
+            <li>يمكن أن يكون ورم الغدة النخامية الحميد، الذي يسمى الأدينوما، هو السبب في إفراز مفرط لهرمون النمو.</li>
+            <li>عندما يظهر الورم المفرز للهرمونات في مرحلة الطفولة أو في سن البلوغ، في فترة تكون فيها الغضاريف النموية لا تزال نشطة، يُلاحظ العملاقية.</li>
+            <li>إذا حدث الإفراز المفرط لهرمون النمو في مرحلة البلوغ، عندما تصبح الغضاريف النموية غير نشطة، يُطلق عليه الأكروماجالي، حيث تصبح اليدين والقدمين والفكوك والأنسجة الرخوة أكبر بشكل غير طبيعي.</li>
+            <li>لا يزيد طول العظام الطويلة، ولكن الغضاريف (مثل الأنف والأذنين) والعظام الغشائية (مثل الفك العلوي والقبة الجبهية) تستمر في النمو، مما يتسبب في تشوهات كبيرة.</li>
+            <li>التقليل من إفراز هرمون النمو عند الأطفال يؤدي إلى القزامة (الطول غير الطبيعي).</li>
+        </ul>
+
+        <br>
+
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Gigantism / Acromegaly:</strong></li>
+                <ul>
+                    <li>A benign tumor of the pituitary gland, called an adenoma, can lead to excessive secretion of growth hormone.</li>
+                    <li>When the hormone-secreting tumor appears in childhood or puberty, at a time when the growth plates are still active, gigantism is observed.</li>
+                    <li>If excessive growth hormone secretion occurs in adulthood, when the growth plates are inactive, it is called acromegaly, where hands, feet, jaws, and soft tissues become abnormally large.</li>
+                    <li>The length of long bones does not increase, but cartilage (such as the nose and ears) and membranous bones (such as the mandible and skull) continue to grow, causing coarse deformities.</li>
+                    <li>A decrease in growth hormone secretion in children leads to dwarfism (abnormally small size).</li>
+                </ul>
+            </div>
+        </ul>
+
+        <br>
+
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>Gigantisme / Acromégalie :</strong></li>
+                <ul>
+                    <li>Une tumeur bénigne de l’hypophyse, appelée adénome, peut être à l’origine d’une sécrétion excessive d’hormone de croissance.</li>
+                    <li>Lorsque la tumeur hormono-sécrétante apparaît dans l’enfance ou à la puberté, à une période où les cartilages de conjugaison sont encore en activité, on observe un gigantisme.</li>
+                    <li>Si la sécrétion excessive d’hormone de croissance survient à l’âge adulte, lorsque les cartilages de conjugaison sont devenus inactifs, on parle d’acromégalie, où les mains, les pieds, les mâchoires et les tissus mous deviennent anormalement grands.</li>
+                    <li>La longueur des os longs n’augmente pas mais le cartilage (nez, oreilles) et les os membraneux (mandibule et voute crânienne) continuent à grandir, provoquant des déformations grossières.</li>
+                    <li>Une diminution de la sécrétion d’hormone de croissance chez l’enfant provoque un nanisme (taille anormalement petite).</li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="maladie-cushing" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>مرض كوشينغ:</strong></li>
+        <ul>
+            <li>مرض كوشينغ ناتج عن ورم غدي يفرز ACTH.</li>
+            <li>يتميز هذا المرض بزيادة إنتاج الكورتيزول من قشرة الغدة الكظرية، السمنة، هشاشة العظام، وضمور العضلات.</li>
+            <li>تؤدي انخفاض إفراز ACTH إلى تقليل إفراز الكورتيزول وحدوث نقص السكر في الدم.</li>
+        </ul>
+
+        <br>
+
+        <!-- العنوان بالإنجليزية -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Cushing's Disease:</strong></li>
+                <ul>
+                    <li>Cushing's disease is caused by an ACTH-secreting adenoma.</li>
+                    <li>This disease is characterized by an increase in cortisol production by the adrenal cortex, obesity, osteoporosis, and muscle atrophy.</li>
+                    <li>A decrease in ACTH secretion leads to a decrease in cortisol secretion and hypoglycemia.</li>
+                </ul>
+            </div>
+        </ul>
+
+        <br>
+
+        <!-- العنوان بالفرنسية -->
+        <div class="bubble">
+            <ul>
+                <li><strong>Maladie de Cushing :</strong></li>
+                <ul>
+                    <li>La maladie de Cushing est due à un adénome sécrétant de l'ACTH.</li>
+                    <li>Cette maladie se caractérise par une augmentation de la production du cortisol par le cortex surrénalien, une obésité, une ostéoporose et une atrophie musculaire.</li>
+                    <li>Une diminution de la sécrétion d'ACTH entraîne une diminution de la sécrétion de cortisol et une hypoglycémie.</li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+</div>
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="plan-cours" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>الشكل 01: المعقد الوطائي-الهيبوفيزي</strong></li>
+        <li>يوضح الاتصال بين الوطاء والغدة النخامية مع الهياكل التشريحية التفصيلية.</li>
+          <li><strong>Figure 01: Hypothalamo-hypophyseal Complex</strong></li>
+        <li>Shows the connection between the hypothalamus and pituitary gland with detailed anatomical structures.</li>
+     
+   
+ 
+
+        <li><strong>Figure 01: Complexe hypothalamo-hypophysaire</strong></li>
+        <li>Montre la connexion entre l'hypothalamus et la glande pituitaire avec des structures anatomiques détaillées.</li>
+   
+
+
+
+
+        
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 HISTOLOGIE/A01.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+
+
+
+
+        <li><strong>الشكل 02: التطور الجنينى للوطاء والنيروهيوفيز</strong></li>
+        <li>باللون الأزرق: النيروهيوفيز، باللون الأحمر: الأديهنوهيوفيز.</li>
+        <li><strong>Figure 02: Embryological Development of the Hypothalamus + Neurohypophysis</strong></li>
+        <li>In blue: Neurohypophysis, in red: Adenohypophysis.</li>
+        <li><strong>Figure 02: Développement embryologique de l'hypothalamus et de la neurohypophyse</strong></li>
+        <li>En bleu : Neurohypophyse, en rouge : Adénohypophyse.</li>
+      
+   
+
+
+
+        
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 HISTOLOGIE/A02.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+
+
+        <li><strong>الشكل 03:</strong></li>
+        <ul>
+            <li>A: الشبكة الوطائية</li>
+            <li>B: الشبكة الوطائية-الأنبوبية-الهيبوفيزية الأمامية</li>
+            <li>C: الشبكة ما بعد الهيبوفيزية</li>
+        </ul>
+        <li><strong>Figure 03:</strong></li>
+        <ul>
+            <li>A: Hypothalamic network</li>
+            <li>B: Hypothalamo-tubero-anterior hypophyseal network</li>
+            <li>C: Post-hypophyseal network</li>
+        </ul>
+        <li><strong>Figure 03 :</strong></li>
+        <ul>
+            <li>A : Réseau hypothalamique</li>
+            <li>B : Réseau hypothalamo-tubéro-antéhypophysaire</li>
+            <li>C : Réseau post-hypophysaire</li>
+        </ul>
+
+
+
+        
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 HISTOLOGIE/A03.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+
+
+
+
+
+
+
+
+
+        <li><strong>الشكل 04: الهرمونات النخامية</strong></li>
+        <li>توضح الهرمونات التي تفرزها الغدة النخامية ودورها.</li>
+        <br>
+        <li><strong>Figure 04: Pituitary Hormones</strong></li>
+        <li>Shows the hormones secreted by the pituitary gland and their role.</li>
+        <li><strong>Figure 04 : Hormones hypophysaires</strong></li>
+        <li>Montre les hormones secrétées par la glande pituitaire et leur rôle.</li>
+      
+
+
+        
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 HISTOLOGIE/A04.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+        <br>
+        <li><strong>الشكل 05: الميكرو تصوير القطاعات النسيجية للغدة النخامية</strong></li>
+     
+     
+        <li>توضح صورة ميكروسكوبية لقطاع نسيجي للغدة النخامية تحت المجهر.</li>
+    
+        <li><strong>Figure 05: Microphotograph of a Histological Section of the Pituitary Gland</strong></li>
+        <li>Shows a microscopic image of a histological section of the pituitary gland under the microscope.</li>
+  
+    
+        <li><strong>Figure 05 : Microphotographie d'une coupe histologique de la glande pituitaire</strong></li>
+        <li>Montre une image microscopique d'une coupe histologique de la glande pituitaire sous le microscope.</li>
+  
+        <div style="display: flex; gap: 10px;">
+            <figure class="bubble">
+                <img src="2MED U4 HISTOLOGIE/A05.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
+            </figure>
+        </div>
+    </ul>
+
+
+     
+    </div>
+</div>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="end-lesson-modal">
+        <h3>أحسنت يا طبيبنا إن شاء الله!</h3>
+        <p id="lesson-summary">الوقت المستغرق: 00 دقيقة و 00 ثانية. عدد الفقاعات التي تم التفاعل معها: 0 من أصل 0.</p>
+        <button class="reload-button" onclick="reloadPage()">إعادة الحفظ</button>
+        <button onclick="goToTestsPage()">الانتقال إلى صفحة الاختبارات</button>
+    </div>
+
+    <div class="modal" id="question-modal">
+        <h3 id="modal-question">هل حفظت هذه الفقاعة؟</h3>
+        <button onclick="closeModal(true)">نعم</button>
+        <button onclick="closeModal(false)">لا</button>
+    </div>
+
+    <script>
+    let totalBubbles = 21; 
+    let completedBubbles = 0; 
+    let startTime = Date.now();
+    let bubbleButton = null;
+    
+    function showQuestion() {
+        document.getElementById('question-modal').style.display = 'block';
+    }
+    
+    function closeModal(answer) {
+        document.getElementById('question-modal').style.display = 'none';
+    
+        if (answer) {
+            completedBubbles++;
+            updateProgress();
+            bubbleButton.style.backgroundColor = '#4CAF50'; 
+            bubbleButton.innerText = 'تم التفاعل'; 
+            bubbleButton.disabled = true; 
+    
+            if (completedBubbles === totalBubbles) {
+                enableFinishButton();
+            }
+        }
+    }
+    
+    function updateProgress() {
+        let progress = (completedBubbles / totalBubbles) * 100; 
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+        document.getElementById('progress-percentage').innerText = `${Math.round(progress)}%`;
+    
+        const finishButton = document.querySelector('.finish-button');
+        if (progress === 100) {
+            finishButton.disabled = false; 
+            finishButton.style.backgroundColor = '#00aaff'; 
+            finishButton.style.cursor = 'pointer'; 
+        } else {
+            finishButton.disabled = true;
+            finishButton.style.backgroundColor = '#ccc'; 
+            finishButton.style.cursor = 'not-allowed'; 
+        }
+    }
+    
+    function markBubbleAsCompleted(button) {
+        bubbleButton = button; 
+        showQuestion(); 
+    }
+    
+    function finishLesson() {
+        let elapsedTime = Date.now() - startTime;
+        let minutes = Math.floor(elapsedTime / 60000);
+        let seconds = Math.floor((elapsedTime % 60000) / 1000);
+        let summary = `الوقت المستغرق: ${minutes} دقيقة و ${seconds} ثانية. عدد الفقاعات التي تم التفاعل معها: ${completedBubbles} من أصل ${totalBubbles}.`;
+        document.getElementById('lesson-summary').innerText = summary;
+        document.getElementById('end-lesson-modal').style.display = 'block';
+    }
+    
+    function reloadPage() {
+        location.reload();
+    }
+    
+    function goToTestsPage() {
+        window.location.href = 'MED02.html';
+    }
+    
+    function initializeFinishButton() {
+        const finishButton = document.querySelector('.finish-button');
+        finishButton.disabled = true; 
+        finishButton.style.backgroundColor = '#ccc'; 
+        finishButton.style.cursor = 'not-allowed'; 
+    }
+    
+    window.onload = initializeFinishButton;
+    
+    // وظيفة للانتقال إلى أول فقاعة غير مكتملة
+    function goToUncompletedBubble() {
+        let bubbles = document.querySelectorAll('.interact-button');
+        for (let bubble of bubbles) {
+            if (!bubble.disabled) { // تعني أن الفقاعة لم يتم التفاعل معها
+                bubble.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                bubble.style.border = "3px solid red"; // تمييزها باللون الأحمر
+                break;
+            }
+        }
+    }
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أزرار للانتقال</title>
+    <style>
+        /* الزر العائم */
+        .floating-buttons {
+            position: fixed;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            left: 20px;  /* وضع الزر في الجهة اليسرى */
+            bottom: 20px;
+        }
+
+        /* زر الفلاش كارد */
+        .flashcard-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 22px;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* التأثير عند التمرير على الزر */
+        .flashcard-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1); /* زيادة الحجم عند التمرير */
+        }
+
+        /* قسم بطاقات الفلاش */
+        #flashcard-section {
+            margin-top: 100px;  /* إعطاء بعض المسافة من الأعلى */
+            padding: 20px;
+            background-color: #1000f1;
+        }
+
+        /* تحسين العرض على الأجهزة الصغيرة */
+        @media (max-width: 768px) {
+            .floating-buttons {
+                left: 10px;  /* جعل الزر أقرب قليلاً على الشاشات الصغيرة */
+                bottom: 10px;
+            }
+
+            .flashcard-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+ 
+
+    <!-- الأزرار العائمة -->
+    <div class="floating-buttons">
+        <!-- زر للانتقال إلى الفلاش كارد -->
+        <button class="flashcard-button" onclick="goToFlashCard()">🎴</button>
+    </div>
+
+    <script>
+        // وظيفة للانتقال إلى بطاقات الفلاش داخل نفس الصفحة
+        function goToFlashCard() {
+            // هنا نقوم بالانتقال مباشرة إلى قسم بطاقات الفلاش
+            document.getElementById('flashcard-section').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br>
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 بطاقات فلاش تفاعلية</title>
+    <style>
+        body {
+            font-family: 'Amiri', serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            direction: rtl;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .front {
+            background-color: #1e1e1e;
+        }
+
+        .back {
+            background-color: #2c2c2c;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-image {
+            width: 40%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcard-image img {
+            max-width: 100%;
+            max-height: 100%;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .flashcard-image img.expanded {
+            transform: scale(1.5);
+        }
+
+        .flashcard-content {
+            width: 65%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: right;
+            direction: rtl;
+            overflow-y: auto;
+            max-height: 150px;
+            white-space: normal;
+            word-wrap: break-word;
+            position: relative;
+        }
+        .hint-container {
+    position: fixed; /* استخدم fixed لجعل التلميح ثابتًا في المكان */
+    top: -190px; /* 20px من أعلى الصفحة */
+    left: 50%;
+    transform: translateX(-50%); /* لتوسيط التلميح بشكل أفقي */
+    width: 80%; /* عرض التلميح */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #f1c40f;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+}
+
+        /* عند إظهار التلميح */
+        .hint-container.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .arrow {
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .arrow:hover {
+            color: #00aaff;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 480px) {
+            .flashcard {
+                height: 230px;
+            }
+
+            .flashcard-image {
+                width: 40%;
+                max-height: 150px;
+            }
+
+            .flashcard-content {
+                font-size: 14px;
+                padding: 10px;
+                max-height: 120px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body><br><br><br><br><br><br><br>
+    <h2 id="flashcard-section">📚 بطاقات فلاش تفاعلية</h2>
+    <br><br><br><br><br><br><br><br><br>
+    <div class="flashcard-container" onclick="flipCard(event)">
+        <div class="flashcard" id="flashcard">
+            <div class="flashcard-side front">
+                <div class="flashcard-image">
+                    <img id="cardImageFront" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3 id="question"></h3>
+                    <!-- حاوية التلميح -->
+                    <div id="hintContainer" class="hint-container">
+                        <p id="hint" class="hint"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flashcard-side back">
+                <div class="flashcard-image">
+                    <img id="cardImageBack" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3>الإجابة:</h3>
+                    <p id="answer"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="buttons">
+        <button onclick="showHint()">🔍 تلميح</button>
+        <button onclick="shuffleCards()">🔀 خلط البطاقات</button>
+    </div>
+
+    <br>
+    <div class="navigation">
+        <span class="arrow" onclick="nextCard()">➡️</span>
+        <span id="cardNumber">1 / 3</span>
+        <span class="arrow" onclick="prevCard()">⬅️</span>
+    </div>
+
+    <script>
+        const flashcards = [
+            {
+                question : "خمن البيانات والعنوان:<br>🔹 باللغة العربية (AR): خمن البيانات والعنوان<br>🔹 باللغة الإنجليزية (EN): Guess the data and the title<br>🔹 باللغة الفرنسية (FR): Devinez les données et le titre",
+                hint : "🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5 (AR)<br>🔍 In English (EN): Axial slice from a CT scan / TDM of the chest at the Th5 level<br>🔍 En français (FR): Coupe axiale d'un scanner TDM du thorax au niveau Th5",
+                answer: `
+                    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                        <li><b>  العنوان:</b><br>
+                            🔹 <b>شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5.  (AR):</b><br>
+                            🔹 <b>Axial slice of a CT scan / TDM of the thorax at the Th5 level.  (EN):</b><br>
+                            🔹 <b> Coupe axiale d'un scanner / TDM thoracique au niveau Th5 (FR):</b>
+               
+                        </li><br>
+                        <span style="font-size: 20px; font-weight: bold;">🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5:</span><br>
+                        <ol style="padding-right: 20px; text-align: right;">
+                            <li>1️⃣ : الرئة اليمنى (Right Lung) - <i>Poumon droit</i></li><br>
+                            <li>2️⃣ : الرئة اليسرى (Left Lung) - <i>Poumon gauche</i></li><br>
+                            <li>3️⃣ : الجذع الرئوي (Pulmonary Trunk) - <i>Tronc pulmonaire</i></li><br>
+                            <li>4️⃣ : الشريان الرئوي الأيمن (Right Pulmonary Artery) - <i>Artère pulmonaire droite</i></li><br>
+                            <li>5️⃣ : الشريان الرئوي الأيسر (Left Pulmonary Artery) - <i>Artère pulmonaire gauche</i></li><br>
+                            <li>6️⃣ : الوريد الأجوف العلوي (Superior Vena Cava) - <i>Veine cave supérieure</i></li><br>
+                            <li>7️⃣ : الأبهر الصدري الصاعد (Ascending Thoracic Aorta) - <i>Aorte thoracique ascendante</i></li><br>
+                            <li>8️⃣ : الأبهر الصدري النازل (Descending Thoracic Aorta) - <i>Aorte thoracique descendante</i></li><br>
+                            <li>9️⃣ : الوريد الرئوي الأيسر (Left Pulmonary Vein) - <i>Veine pulmonaire gauche</i></li><br>
+                            <li>🔟 : الكتف الأيسر (Left Scapula) - <i>Scapula gauche</i></li><br>
+                        </ol>
+                    </ul>
+                `,
+                imageFront: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الخلفية
+                isHtml: true
+            },
+    {
+        question: `🔹 <b>  خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.   </b> 🔹<br>
+        🔹 <b>باللغة العربية (AR):</b> خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.  br>
+        🔹 <b>In English (EN):</b> Guess the intercostal arteries that supply the mammary gland<br>
+        🔹 <b>En français (FR):</b> Devinez les artères intercostales qui irriguent la glande mammaire`,
+        
+        hint: `🔍 <b>تلميح / Hint / Indice</b><br>
+        🔴 <b>باللغة العربية (AR):</b> عددها ثلاثة بالترتيب.<br>
+        🔵 <b>In English (EN):</b> They are three in order.<br>
+        ⚪ <b>En français (FR):</b> Ils sont au nombre de trois dans l'ordre.`,
+        
+        answer: `
+            <div style="text-align: center;">
+                <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                    <li>2️⃣ <b>الشريان الوربي الثاني</b> (Intercostal Artery 2) - <i>Deuxième artère intercostale</i></li><br>
+                    <li>3️⃣ <b>الشريان الوربي الثالث</b> (Intercostal Artery 3) - <i>Troisième artère intercostale</i></li><br>
+                    <li>4️⃣ <b>الشريان الوربي الرابع</b> (Intercostal Artery 4) - <i>Quatrième artère intercostale</i></li><br>
+                </ul>
+            </div>
+        `,
+        imageFront: "/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MED U4 ANATOMIE/A47.jpg", // صورة الجهة الخلفية
+                isHtml: true
+    }
+
+
+
+    ];
+
+let currentIndex = 0;
+let flipped = false;
+
+function updateCard() {
+    const card = flashcards[currentIndex];
+    document.getElementById("question").innerHTML = card.question;
+    document.getElementById("answer").innerHTML = card.answer;
+    document.getElementById("cardImageFront").src = card.imageFront;
+    document.getElementById("cardImageBack").src = card.imageBack;
+    document.getElementById("cardNumber").textContent = `${currentIndex + 1} / ${flashcards.length}`;
+}
+
+function flipCard(event) {
+    event.stopPropagation();
+    flipped = !flipped;
+    document.getElementById("flashcard").classList.toggle("flipped", flipped);
+}
+
+function nextCard() {
+    currentIndex = (currentIndex + 1) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+function prevCard() {
+    currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+updateCard();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br>
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القلم الناطق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #008cff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
+            display: none;
+        }
+
+        .show-notification {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffcc00;
+            color: black;
+            font-size: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.2s;
+            z-index: 9999;
+        }
+
+        .floating-btn:hover {
+            background-color: #ffdb4d;
+            transform: scale(1.1);
+        }
+
+        .speed-control {
+            margin-top: 15px;
+        }
+
+        input[type="range"] {
+            width: 50%;
+            accent-color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>حدد أي نص لسماعه! 🎧</h1>
+    <p>هذه جملة باللغة العربية.</p>
+    <p>This is a sentence in English.</p>
+    <p>Ceci est une phrase en français.</p>
+
+    <div>
+        <label>🔹 اختر جنس الصوت:</label>
+        <select id="voiceGender">
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+        </select>
+    </div>
+
+    <div class="speed-control">
+        <label for="speedRange">🔊 سرعة الصوت:</label>
+        <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1">
+    </div>
+
+    <button class="floating-btn" onclick="toggleSpeech()">⚡</button>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let speechSynthesisInstance = window.speechSynthesis;
+        let isSpeechEnabled = false;
+        let currentUtterance = null;
+        let voices = [];
+        let speechRate = 1; 
+        let userGender = "male"; 
+
+        function showNotification(message) {
+            let notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("show-notification");
+
+            setTimeout(() => {
+                notification.classList.remove("show-notification");
+            }, 2000);
+        }
+
+        function toggleSpeech() {
+            isSpeechEnabled = !isSpeechEnabled;
+            showNotification(isSpeechEnabled ? "✅ تم تفعيل القلم الناطق!" : "⛔ تم إيقاف القلم الناطق!");
+        }
+
+        document.addEventListener('mouseup', function () {
+            if (!isSpeechEnabled) return;
+
+            let selectedText = window.getSelection().toString().trim();
+            if (selectedText.length > 0) {
+                speakText(selectedText);
+            }
+        });
+
+        function speakText(text) {
+            stopSpeech();
+
+            let utterance = new SpeechSynthesisUtterance(text);
+            let lang = detectLanguage(text);
+            utterance.lang = lang;
+            utterance.voice = getBestVoice(lang);
+            utterance.rate = speechRate;
+            utterance.volume = 1.0;
+
+            currentUtterance = utterance;
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function detectLanguage(text) {
+            if (/[\u0600-\u06FF]/.test(text)) return "ar-SA"; 
+            if (/[a-zA-Z]/.test(text)) return "en-US"; 
+            return "fr-FR"; 
+        }
+
+        function getBestVoice() {
+    voices = speechSynthesis.getVoices();
+    
+    let maleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("m"));
+    let femaleVoice = voices.find(voice => voice.lang.startsWith("ar") && voice.name.toLowerCase().includes("f"));
+
+    if (userGender === "male" && maleVoice) {
+        return maleVoice;
+    } else if (userGender === "female" && femaleVoice) {
+        return femaleVoice;
+    }
+
+    // إذا لم يتم العثور على صوت مناسب، استخدم أي صوت عربي متاح
+    return voices.find(voice => voice.lang.startsWith("ar")) || voices[0];
+}
+
+        function transliterateToEnglish(langCode, availableVoices) {
+            let transliterationMap = {
+                "ar": {
+                    "أ": "A", "ب": "B", "ت": "T", "ث": "TH", "ج": "J", "ح": "H", "خ": "KH",
+                    "د": "D", "ذ": "DH", "ر": "R", "ز": "Z", "س": "S", "ش": "SH", "ص": "S",
+                    "ض": "D", "ط": "T", "ظ": "Z", "ع": "A", "غ": "GH", "ف": "F", "ق": "Q",
+                    "ك": "K", "ل": "L", "م": "M", "ن": "N", "ه": "H", "و": "W", "ي": "Y"
+                }
+            };
+
+            let text = window.getSelection().toString();
+            let transliteratedText = text.split("").map(char => transliterationMap[langCode][char] || char).join("");
+
+            let utterance = new SpeechSynthesisUtterance(transliteratedText);
+            utterance.lang = "en-US";
+            utterance.voice = availableVoices.find(voice => voice.lang.startsWith("en")) || availableVoices[0];
+            speechSynthesisInstance.speak(utterance);
+        }
+
+        function stopSpeech() {
+            if (speechSynthesisInstance.speaking) {
+                speechSynthesisInstance.cancel();
+            }
+            currentUtterance = null;
+        }
+
+        document.getElementById("speedRange").addEventListener("input", function () {
+            speechRate = this.value;
+        });
+
+        document.getElementById("voiceGender").addEventListener("change", function () {
+            userGender = this.value;
+        });
+
+        window.onload = function() {
+            speechSynthesis.onvoiceschanged = function() {
+                voices = speechSynthesis.getVoices();
+            };
+        };
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بحث ذكي مع اقتراحات</title>
+    <style>
+        /* التنسيق العام */
+        body {      
+      font-family: 'Poppins', 'Amiri', serif;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s;
+        }
+        
+
+
+
+             /* زر البحث العائم */
+        .search-floating-btn {
+  position: fixed;
+  bottom: 430PX;
+    left: 62px;
+            width: 55px;
+            height: 55px;
+          
+            background-color:2185d0 ;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        
+        .search-floating-btn:hover {
+            background-color: #1678c2;
+            transform: scale(1.1);
+        }
+        
+        /* فقاعة البحث المنبثقة */
+        .search-bubble {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
+            width: 350px;
+            max-height: 70vh;
+            background-color: rgb(82, 82, 82);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            z-index: 10000;
+            overflow: hidden;
+            animation: bubbleAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .search-bubble.show {
+            display: flex;
+        }
+
+        @keyframes bubbleAppear {
+            from {
+                transform: translateY(20px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* رأس الفقاعة */
+        .bubble-header {
+            padding: 15px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #424242;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bubble-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .close-bubble {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* محتوى الفقاعة */
+        .bubble-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        /* مربع البحث */
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-bottom: 2px solid #989898;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-bottom-color: #2185d0;
+        }
+
+        /* نتائج البحث */
+        .search-results {
+            max-height: calc(70vh - 120px);
+            overflow-y: auto;
+        }
+
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #747272;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .result-item:hover {
+            background-color: #393737;
+        }
+
+        .result-item.active {
+            background-color: #3d3f40;
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2185d0;
+        }
+   
+        
+
+
+        .result-preview {
+    position: relative;
+    max-height: 3em;
+    overflow: hidden;
+}
+.result-preview:after {
+    content: "...";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgb(72, 70, 70);
+    padding-left: 5px;
+}
+
+
+
+        .highlight {
+
+    background-color: #009c05; /* أخضر فاتح */
+
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+        }
+
+        /* مثلث المؤشر */
+        .bubble-pointer {
+            position: absolute;
+            bottom: -10px;
+            left: 40px;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 12px solid rgb(53, 52, 52);
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+        }
+
+        /* للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .search-floating-btn {
+                bottom: 20px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .search-bubble {
+                bottom: 80px;
+                left: 15px;
+                width: calc(100% - 30px);
+                max-height: 60vh;
+            }
+
+
+
+
+
+
+        }
+    </style>
+</head>
+<body>
+
+    <!-- زر البحث العائم -->
+    <button class="search-floating-btn" id="searchBtn" aria-label="فتح البحث">
+        <span>🔍</span>
+    </button>
+
+    <!-- فقاعة البحث المنبثقة -->
+    <div class="search-bubble" id="searchBubble">
+        <div class="bubble-pointer"></div>
+        <div class="bubble-header">
+            <div class="bubble-title">البحث في الموقع</div>
+            <button class="close-bubble" id="closeBubble" aria-label="إغلاق البحث">×</button>
+        </div>
+        <div class="bubble-content">
+            <input type="text" class="search-input" id="searchInput" 
+                   placeholder="اكتب كلمة البحث..." autocomplete="off"
+                   aria-label="مربع البحث">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    
+
+        
+    <script>
+        // عناصر الواجهة
+        const searchBtn = document.getElementById('searchBtn');
+        const searchBubble = document.getElementById('searchBubble');
+        const closeBubble = document.getElementById('closeBubble');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        
+        // متغيرات البحث
+        let currentResults = [];
+        let selectedIndex = -1;
+        let searchTimeout;
+        
+        // أحداث الزر العائم
+        searchBtn.addEventListener('click', toggleSearchBubble);
+        
+        // حدث إغلاق الفقاعة
+        closeBubble.addEventListener('click', closeSearchBubble);
+        
+        // أحداث مربع البحث
+        searchInput.addEventListener('input', handleSearchInput);
+        searchInput.addEventListener('keydown', handleKeyDown);
+        
+        // إغلاق الفقاعة عند النقر خارجها
+        document.addEventListener('click', (e) => {
+            if (!searchBubble.contains(e.target) && e.target !== searchBtn) {
+                closeSearchBubble();
+            }
+        });
+        
+        // تبديل حالة فقاعة البحث
+        function toggleSearchBubble() {
+            if (searchBubble.classList.contains('show')) {
+                closeSearchBubble();
+            } else {
+                openSearchBubble();
+            }
+        }
+        
+     
+        function openSearchBubble() {
+    // إزالة أي تأثيرات أو تأخيرات غير ضرورية
+    searchBubble.classList.add('show');
+    searchInput.focus();
+    selectedIndex = -1;
+    
+    // إذا كنت تقوم بالبحث، يمكن تشغيله بعد أن تفتح الفقاعة
+    handleSearchInput({ target: { value: searchInput.value } });
+}
+
+
+    
+        // إغلاق فقاعة البحث
+        function closeSearchBubble() {
+            searchBubble.classList.remove('show');
+            searchInput.value = '';
+            clearResults();
+        }
+        
+        // معالجة إدخال البحث
+        function handleSearchInput(e) {
+            const query = e.target.value.trim();
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                clearResults();
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        }
+        
+        // تنفيذ البحث
+        function performSearch(query) {
+            clearResults();
+            currentResults = [];
+            selectedIndex = -1;
+            
+            const searchableElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, [id]');
+            
+            searchableElements.forEach(element => {
+                const text = element.textContent || element.innerText;
+                const elementId = element.id || (element.parentNode.id || '');
+                
+                if (text.toLowerCase().includes(query.toLowerCase())) {
+                    const previewText = text.length > 100 ? text.substring(0, 100) + '...' : text;
+                    
+                    currentResults.push({
+                        element: element,
+                        id: elementId,
+                        title: element.tagName.startsWith('H') ? text : (elementId || 'قسم في الصفحة'),
+                        preview: previewText,
+                        fullText: text
+                    });
+                }
+            });
+            
+            if (currentResults.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            displayResults(currentResults, query);
+        }
+        
+        // عرض النتائج
+        function displayResults(results, query) {
+            results.forEach((result, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div class="result-title">${highlightText(result.title, query)}</div>
+                    <div class="result-preview">${highlightText(result.preview, query)}</div>
+                `;
+                resultItem.addEventListener('click', () => navigateToResult(result));
+                searchResults.appendChild(resultItem);
+            });
+        }
+        
+        // تمييز النص المطابق
+        function highlightText(text, query) {
+            if (!query) return text;
+            return text.replace(
+                new RegExp(query, 'gi'), 
+                match => `<span class="highlight">${match}</span>`
+            );
+        }
+        
+        // التنقل إلى النتيجة
+        function navigateToResult(result) {
+            if (result.element) {
+                result.element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // تأثير مرئي مؤقت
+                const originalBg = result.element.style.backgroundColor;
+                result.element.style.backgroundColor = '#fff9c4';
+                setTimeout(() => {
+                    result.element.style.backgroundColor = originalBg;
+                }, 2000);
+            }
+            
+            closeSearchBubble();
+        }
+        
+        // معالجة ضغطات المفاتيح
+        function handleKeyDown(e) {
+            if (currentResults.length === 0) return;
+            
+            switch (e.key) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (selectedIndex > 0) {
+                        selectedIndex--;
+                        updateSelectedItem();
+                    }
+                    break;
+                    
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (selectedIndex < currentResults.length - 1) {
+                        selectedIndex++;
+                        updateSelectedItem();
+                    }
+                    break;
+                    
+                case 'Enter':
+                    if (selectedIndex >= 0) {
+                        navigateToResult(currentResults[selectedIndex]);
+                    }
+                    break;
+                    
+                case 'Escape':
+                    closeSearchBubble();
+                    break;
+            }
+        }
+        
+        // تحديث العنصر المحدد
+        function updateSelectedItem() {
+            const items = document.querySelectorAll('.result-item');
+            items.forEach((item, index) => {
+                item.classList.toggle('active', index === selectedIndex);
+                if (index === selectedIndex) {
+                    item.scrollIntoView({ block: 'nearest' });
+                }
+            });
+        }
+        
+        // عرض رسالة عدم وجود نتائج
+        function showNoResults() {
+            searchResults.innerHTML = '<div class="no-results">لا توجد نتائج مطابقة</div>';
+        }
+        
+        // مسح النتائج
+        function clearResults() {
+            searchResults.innerHTML = '';
+            currentResults = [];
+            selectedIndex = -1;
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* زر عائم صغير */
+    .floating-btnCONTACT {
+        position: fixed;
+        bottom: 420px;
+        right: 0px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1000;
+    }
+
+    /* صورة الزر بحجم أصغر */
+    .floating-btnCONTACT img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .floating-btnCONTACT img:hover {
+        transform: scale(1.1);
+    }
+
+    /* نافذة منبثقة في وسط الشاشة */
+    .popupCONTACT {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 250px;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        z-index: 1001;
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    /* زر الإغلاق بشكل أنيق */
+    .close-btnCONTACT {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        font-size: 22px;
+        color: #ff4d4d;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .close-btnCONTACT:hover {
+        color: #cc0000;
+    }
+
+    /* عنوان النافذة */
+    .popupCONTACT h3 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #333;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        font-weight: bold;
+    }
+
+    /* أزرار التواصل بتصميم عصري */
+    .popupCONTACT a {
+        display: block;
+        margin: 10px auto;
+        text-decoration: none;
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s, transform 0.2s;
+        width: 90%;
+        text-align: center;
+    }
+
+    .popupCONTACT a:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+
+    .telegram-btnCONTACT { background-color: #0088cc; }
+    .instagram-btnCONTACT { background-color: #e4405f; }
+    .facebook-btnCONTACT { background-color: #3b5998; }
+
+    /* تأثير الظهور */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translate(-50%, -45%); }
+        to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    /* تحسين مظهر النافذة للهواتف */
+    @media (max-width: 500px) {
+        .popupCONTACT {
+            width: 90%;
+        }
+    }
+
+    /* تحسين مظهر النافذة */
+    .contact-containerCONTACT {
+        text-align: center;
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 400px;
+        margin: auto;
+    }
+
+    .contact-titleCONTACT {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .contact-textCONTACT {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .social-linksCONTACT {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btnCONTACT {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        transition: 0.3s;
+    }
+
+    .btnCONTACT img {
+        width: 24px;
+        height: 24px;
+        margin-left: 10px;
+    }
+
+    .telegram-btnCONTACT { background: #0088cc; }
+    .facebook-btnCONTACT { background: #1877f2; }
+    .instagram-btnCONTACT { background: #e1306c; }
+
+    .btnCONTACT:hover {
+        opacity: 0.8;
+    }
+</style>
+</head>
+<body>
+
+<!-- زر عائم بصيغة GIF -->
+<button class="floating-btnCONTACT" id="floating-btnCONTACT" onclick="togglePopupCONTACT()">
+    <img src="img/ai-assistant.gif" alt="تواصل معنا">
+</button>
+
+<!-- النافذة المنبثقة -->
+<div class="popupCONTACT" id="popupCONTACT">
+    <button class="close-btnCONTACT" onclick="togglePopupCONTACT()">✖</button>
+    <div class="contact-containerCONTACT">
+        <h3 class="contact-titleCONTACT">📩 تواصل معنا</h3>
+        <p class="contact-textCONTACT">في حالة توفر مشكلة أو لديك اقتراح سواء حول اختبار أو غيره تواصل معنا</p>
+        
+        <div class="social-linksCONTACT">
+            <a href="http://t.me/ADATEALM_bot" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                <img src="img/direct.gif" alt="بوت تيليغرام"> بوت تيليغرام
+            </a>
+            
+            <a href="https://t.me/adatealm" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                <img src="img/telegram.png" alt="تيليغرام"> تيليغرام
+            </a>
+            
+            <a href="https://www.facebook.com/share/1BFTe2mWNL/" target="_blank" class="btnCONTACT facebook-btnCONTACT">
+                <img src="img/facebook.png" alt="فيسبوك"> فيسبوك
+            </a>
+            
+            <a href="https://www.instagram.com/adat_ealm?igsh=djg1eXlwMTJvM2xw" target="_blank" class="btnCONTACT instagram-btnCONTACT">
+                <img src="img/social.png" alt="إنستغرام"> إنستغرام
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePopupCONTACT() {
+        var popup = document.getElementById("popupCONTACT");
+        popup.style.display = (popup.style.display === "block") ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحويل اتجاه النص تلقائيًا مع الحفاظ على التنسيق</title>
+    <style>
+        body {
+    
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        /* تنسيقات إضافية للحفاظ على المظهر */
+        .mixed-content {
+            unicode-bidi: embed;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // عناصر أكثر تحديداً مع استثناء العناصر التي قد تحتوي على أطفال معقدة
+            const elements = document.querySelectorAll('p, div:not(div div), span, li, h1, h2, h3, h4, h5, h6');
+            
+            elements.forEach(element => {
+                // تجاهل العناصر التي تحتوي على أطفال معقدة
+                if (element.children.length > 0 && !(element.children.length === 1 && element.children[0].tagName === 'SPAN')) {
+                    return;
+                }
+                
+                const text = element.textContent.trim();
+                
+                if (!text) return;
+                
+                // تحليل النص لتحديد إذا كان إنجليزي/عربي
+                const hasArabic = /[\u0600-\u06FF]/.test(text);
+                const hasEnglish = /[a-zA-Z]/.test(text);
+                
+                // إذا كان النص يحتوي على الإنجليزية فقط
+                if (hasEnglish && !hasArabic) {
+                    element.classList.add('ltr');
+                    element.classList.remove('rtl');
+                } 
+                // إذا كان النص يحتوي على العربية فقط
+                else if (hasArabic && !hasEnglish) {
+                    element.classList.add('rtl');
+                    element.classList.remove('ltr');
+                }
+                // إذا كان نصاً مختلطاً
+                else if (hasArabic && hasEnglish) {
+                    element.classList.add('mixed-content');
+                    
+                    // تحديد الاتجاه الأساسي بناءً على الحرف الأول
+                    const firstChar = text.charAt(0);
+                    if (/[a-zA-Z]/.test(firstChar)) {
+                        element.style.direction = 'ltr';
+                        element.style.textAlign = 'left';
+                    } else {
+                        element.style.direction = 'rtl';
+                        element.style.textAlign = 'right';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
