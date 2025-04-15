@@ -2948,46 +2948,19 @@ updateCard();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>نظام الأزرار العائمة الذكي - نسخة الهاتف</title>
+
     <style>
-    
-        /* النظام الأساسي */
         .floating-system {
             position: fixed;
             z-index: 9999;
             bottom: 25px;
-            right: 25px;
+            left: 25px; /* تغيير من right إلى left */
             display: flex;
             flex-direction: row;
             gap: 15px;
@@ -3054,6 +3027,10 @@ updateCard();
             color: #333;
         }
     
+      .secondary-btn.eldars-btn {
+          background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      }
+  
         /* حالة الأزرار عند الفتح */
         .floating-system.expanded {
             flex-direction: row-reverse;
@@ -3080,6 +3057,10 @@ updateCard();
         .floating-system.expanded .flashcard-btn {
             transition-delay: 0.4s;
         }
+            
+      .floating-system.expanded .eldars-btn {
+          transition-delay: 0.5s;
+      }
     
         /* تأثير النبض */
         @keyframes pulse {
@@ -3096,7 +3077,7 @@ updateCard();
         @media (max-width: 480px) {
             .floating-system {
                 bottom: 20px;
-                right: 20px;
+                left: 20px; /* تغيير من right إلى left */
                 gap: 12px;
             }
             
@@ -3354,6 +3335,123 @@ updateCard();
         .facebook-btnCONTACT { background: #1877f2; }
         .instagram-btnCONTACT { background: #e1306c; }
     
+  
+  
+  
+  
+   /* أنماط نافذة Eldars */
+   .eldars-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 600px;
+  height: 80vh;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 10010;
+  display: none;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .eldars-popup.show {
+  display: block;
+  }
+  
+  .eldars-header {
+  padding: 15px;
+  background: #9b59b6;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+  
+  .eldars-title {
+  font-weight: bold;
+  font-size: 18px;
+  }
+  
+  .close-eldars {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  }
+  
+  .eldars-content {
+  width: 100%;
+  height: calc(100% - 50px);
+  overflow: hidden;
+  position: relative;
+  }
+  
+  .eldars-iframe {
+  width: 100%; /* عرض العنصر 100% ليشغل المساحة المتاحة */
+  height: 100%; /* ارتفاع العنصر 100% ليشغل المساحة المتاحة */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: none; /* إزالة التكبير الزائد */
+  border: none;
+  overflow: auto; /* تمكين التمرير داخل الـiframe إذا لزم الأمر */
+  }
+  
+  /* تحسين العرض على الشاشات الصغيرة (الهواتف) */
+  @media (max-width: 768px) {
+  .eldars-popup {
+      max-width: 90%;
+      height: 85vh; /* تقليل ارتفاع النافذة لتكون أكثر مرونة */
+  }
+  .eldars-iframe {
+      width: 100%;
+      height: 100%;
+  }
+  }
+  
+  /* تحسين العرض على الشاشات الصغيرة جدًا (الهاتف المحمول) */
+  @media (max-width: 480px) {
+  .eldars-popup {
+      max-width: 95%;
+      height: 90vh;
+  }
+  .eldars-iframe {
+      width: 100%;
+      height: 100%;
+  }
+  }
+  
+  /* تحسين العرض على الشاشات الكبيرة */
+  @media (min-width: 1024px) {
+  .eldars-popup {
+      max-width: 800px;
+      height: 80vh;
+  }
+  .eldars-iframe {
+      width: 100%;
+      height: 100%;
+  }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
         @keyframes fadeIn {
             from { opacity: 0; transform: translate(50%, -45%); }
             to { opacity: 1; transform: translate(50%, -50%); }
@@ -3363,7 +3461,7 @@ updateCard();
         @media (max-width: 480px) {
             .floating-system {
                 bottom: 15px;
-                right: 15px;
+                left: 15px; /* تغيير من right إلى left */
                 gap: 8px;
             }
             
@@ -3428,7 +3526,7 @@ updateCard();
         @media (max-width: 360px) {
             .floating-system {
                 bottom: 10px;
-                right: 10px;
+                left: 10px; /* تغيير من right إلى left */
                 gap: 6px;
             }
             
@@ -3444,6 +3542,7 @@ updateCard();
                 font-size: 16px;
             }
         }
+        </style>
     </style>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -3462,16 +3561,9 @@ updateCard();
         </button>
 
 
-        <button class="secondary-btn speech-btn" id="speechBtn" title="القلم الناطق">
-            <i class="fas fa-microphone-alt"></i>
-        </button>
+    
 
 
-
-        
-        <button class="secondary-btn speech-btn" id="speechBtn" title="القلم الناطق">
-            <i class="fas fa-microphone-alt"></i>
-        </button>
 
         <button class="secondary-btn speech-btn" id="speechBtn" title="القلم الناطق">
             <i class="fas fa-microphone-alt"></i>
@@ -3522,7 +3614,8 @@ updateCard();
     <div class="popupCONTACT" id="popupCONTACT">
         <button class="close-btnCONTACT" id="closeContactBtn">✖</button>
         <div class="contact-containerCONTACT">
-            <h3 class="contact-titleCONTACT">📩 تواصل معنا</h3>
+            <h3 class="contact-titleCONTACT" style="text-align: center; color: black; font-size: 24px; font-weight: bold;">📩 تواصل معنا</h3>
+
             <p class="contact-textCONTACT">في حالة توفر مشكلة أو لديك اقتراح سواء حول اختبار أو غيره تواصل معنا</p>
             
             <div class="social-linksCONTACT">
@@ -3709,28 +3802,21 @@ updateCard();
             if (e.cancelable) e.preventDefault();
         }
         
+
+
+
+
         function endDrag() {
-            if (!isDragging) return;
-            isDragging = false;
-            
-            // إذا كان النظام قريبًا من الحواف، يلتصق بالحافة
-            const systemRect = floatingSystem.getBoundingClientRect();
-            const middleX = systemRect.left + systemRect.width / 2;
-            
-            // تحديد إذا كان سيلتصق باليمين أو اليسار
-            if (middleX < window.innerWidth / 2) {
-                floatingSystem.style.left = '20px';
-                floatingSystem.style.right = 'auto';
-            } else {
-                floatingSystem.style.right = 'auto';
-                floatingSystem.style.left = '20px';
-            }
-            
-            // العودة إلى الأسفل دائمًا
-            floatingSystem.style.bottom = '20px';
-            floatingSystem.style.top = 'auto';
-        }
-        
+    if (!isDragging) return;
+    isDragging = false;
+    
+    // جعل النظام يلتصق بالجانب الأيسر دائماً
+    floatingSystem.style.left = '20px';
+    floatingSystem.style.right = 'auto';
+    floatingSystem.style.bottom = '20px';
+    floatingSystem.style.top = 'auto';
+}
+       
         // وظائف الأزرار
         function toggleSearch() {
             if (isExpanded) toggleSystem();
@@ -4112,187 +4198,23 @@ updateCard();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-         
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>نافذة منبثقة مع Iframe</title>
     <style>
-        /* زر الفتح العائم (في اليسار) */
+        /* زر الفتح العائم - تأكد من ظهوره فوق معظم العناصر */
         .floating-btn-warning {
             position: fixed;
-            bottom: 170px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
+            top: 120px; /* تغيير من bottom إلى top */
+            right: 15px;  /* تعديل القيمة */
+            width: 30px;
+            height: 50px;
             background-color: #ff2512;
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             border-radius: 50%;
             display: flex;
@@ -4300,100 +4222,12 @@ updateCard();
             align-items: center;
             cursor: pointer;
             border: none;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
             z-index: 9999;
         }
 
-        .floating-btn-warning:hover {
-            transform: scale(1.1);
-            background-color: #ff3d2e;
-        }
-
-        /* نافذة منبثقة تحتوي على Iframe */
-        .popup-iframe {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            background-color: #ffffff;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            display: none;
-            z-index: 9998;
-            overflow: hidden;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        /* تأثير الظهور */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translate(-50%, -45%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
-        }
-
-        /* رأس النافذة */
-        .popup-header {
-            text-align: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
-        }
-
-        /* محتوى النافذة */
-        .popup-content {
-            margin: 15px 0;
-            height: calc(100% - 100px);
-            overflow-y: auto;
-        }
-
-        /* زر الإغلاق المحسّن */
-/* زر الإغلاق المحسّن */
-.btn-close {
-    background: linear-gradient(135deg, #ff0000, #FF3D00);
-    color: white;
-    padding: 12px 25px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 10px; /* مسافة من أعلى النافذة */
-    right: 10px; /* مسافة من يمين النافذة */
-    z-index: 100;
-}
-
-/* التأثيرات عند التحويم */
-.btn-close:hover {
-    background: linear-gradient(135deg, #ff0000, #f62e2e);
-    transform: translateY(-2px); /* حركة صغيرة عند التحويم */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* التأثيرات عند الضغط على الزر */
-.btn-close:active {
-    background: linear-gradient(135deg, #ff0000, #ea3700);
-    transform: translateY(1px); /* تأثير ضغط الزر */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-      
-        /* تنسيق الـ iframe */
-        .popup-iframe iframe {
-            width: 100%;
-            height: 100%;
-            min-height: 400px;
-            border: none;
-            border-radius: 8px;
-        }
-
-        /* طبقة التعتيم الخلفية */
+        /* طبقة التعتيم - تظهر فوق كل شيء ما عدا النافذة */
         .overlay {
             position: fixed;
             top: 0;
@@ -4401,35 +4235,196 @@ updateCard();
             right: 0;
             bottom: 0;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 9997;
+            z-index: 9999; /* أعلى من الزر ولكن أقل من النافذة */
             display: none;
         }
 
-   
+        /* النافذة المنبثقة - أعلى عنصر في الصفحة */
+        .popup-iframe {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 80vh;
+            max-width: 800px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 10000; /* أعلى قيمة لضمان الظهور فوق الجميع */
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* تأثيرات التحويم والظهور */
+        .floating-btn-warning:hover {
+            transform: scale(1.1);
+            background-color: #ff3d2e;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* تنسيق رأس النافذة */
+        .popup-header {
+            position: relative;
+            display: flex; /* إضافة */
+            justify-content: center; /* إضافة */
+            align-items: center; /* إضافة */
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 15px 60px 15px 15px;
+            border-bottom: 1px solid #eee;
+            background-color: #f1c40f;
+            border-radius: 8px;
+        }
+
+        /* محتوى النافذة */
+        .popup-content {
+            margin: 10px 0;
+            height: calc(100% - 100px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* زر الإغلاق */
+        .btn-close {
+            background: linear-gradient(135deg, #ff0000, #FF3D00);
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        .btn-close:hover {
+            background: linear-gradient(135deg, #ff0000, #f62e2e);
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-close:active {
+            background: linear-gradient(135deg, #ff0000, #ea3700);
+            transform: translateY(-48%) scale(0.98);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* تنسيق الـ iframe */
+        .popup-iframe iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            border: none;
+            border-radius: 6px;
+        }
+
+        /* عنوان النافذة */
+        .popup-header h2 {
+            color: #f39c12;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 255, 0, 0.7), 0 0 10px rgba(255, 255, 0, 0.5);
+            margin: 0;
+            padding-right: 10px;
+            text-align: center;
+        }
+
+        /* تحسينات للشاشات الكبيرة */
+        @media (min-width: 768px) {
+            .floating-btn-warning {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                top: 120px; /* تغيير من bottom إلى top */
+            right: 15px;  /* تعديل القيمة */
+            }
+            
+            .popup-iframe {
+                width: 85%;
+                padding: 20px;
+                border-radius: 15px;
+            }
+            
+            .popup-header {
+                padding: 20px 80px 20px 20px;
+            }
+            
+            .popup-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .btn-close {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+        }
+
+        /* تعديلات للشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .popup-iframe {
+                width: 95%;
+                height: 85vh;
+            }
+            
+            .popup-header {
+                padding: 12px 50px 12px 12px;
+            }
+            
+            .popup-header h2 {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+            
+            .btn-close {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .floating-btn-warning {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+                top: 120px; /* تغيير من bottom إلى top */
+                right: 15px;  /* تعديل القيمة */
+            }
+        }
     </style>
 </head>
 <body>
 
-<!-- زر الفتح لعرض النافذة -->
+<!-- زر الفتح -->
 <button class="floating-btn-warning" onclick="toggleIframePopup()">⚠️</button>
 
-<!-- طبقة التعتيم الخلفية -->
+<!-- طبقة التعتيم -->
 <div class="overlay" id="overlay"></div>
 
-<!-- نافذة منبثقة تحتوي على iframe -->
+<!-- النافذة المنبثقة -->
 <div id="popupIframe" class="popup-iframe">
-    <div class="popup-header" style="text-align: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #eee; background-color: #f1c40f; padding: 20px; border-radius: 10px;">
-        <h2 style="color: #f39c12; font-size: 24px; font-weight: bold; text-shadow: 0 0 10px rgba(255, 255, 0, 0.7), 0 0 20px rgba(255, 255, 0, 0.5); transition: all 0.3s ease; text-align: center; ">اكتشف ما تقدمه أداة "علم" لمساعدتك في رحلتك  العملية و العلمية</h2>
+    <div class="popup-header">
+        <h2>اكتشف ما تقدمه أداة "علم" لمساعدتك في رحلتك العملية والعلمية</h2>
+        <button class="btn-close" onclick="toggleIframePopup()">إغلاق</button>
     </div>
     
     <div class="popup-content">
         <iframe src="MEDECINE_EXAM_NOTE.html" title="محتوى صفحة خارجية"></iframe>
     </div>
-    <button class="btn-close" onclick="toggleIframePopup()">إغلاق النافذة</button>
 </div>
 
 <script>
-    // وظيفة لفتح وغلق النافذة المنبثقة
+    // وظيفة فتح/غلق النافذة
     function toggleIframePopup() {
         const popup = document.getElementById('popupIframe');
         const overlay = document.getElementById('overlay');
@@ -4437,7 +4432,7 @@ updateCard();
         if (popup.style.display === 'block') {
             popup.style.display = 'none';
             overlay.style.display = 'none';
-            document.body.style.overflow = 'auto'; // إعادة تمكين التمرير
+            document.body.style.overflow = 'auto'; // إعادة التمرير
         } else {
             popup.style.display = 'block';
             overlay.style.display = 'block';
@@ -4446,9 +4441,7 @@ updateCard();
     }
 
     // إغلاق النافذة عند النقر خارجها
-    document.getElementById('overlay').addEventListener('click', function() {
-        toggleIframePopup();
-    });
+    document.getElementById('overlay').addEventListener('click', toggleIframePopup);
 
     // منع إغلاق النافذة عند النقر داخلها
     document.getElementById('popupIframe').addEventListener('click', function(e) {
@@ -4458,16 +4451,6 @@ updateCard();
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
 
 
 
