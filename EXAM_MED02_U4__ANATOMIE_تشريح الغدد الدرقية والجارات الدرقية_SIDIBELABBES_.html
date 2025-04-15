@@ -1,0 +1,4456 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<br>
+<br>
+  <title>اختبار معلومات عامة حول الهرمونات في الكيمياء العضوية - كلية عنابة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+
+
+
+
+<style>
+    /* أنماط عامة */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2980b9;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --warning-color: #f39c12;
+  --light-color: #ecf0f1;
+  --dark-color: #2c3e50;
+  --text-color: #333;
+  --white: #fff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background-color: #f5f7fa;
+  color: var(--text-color);
+  line-height: 1.6;
+  direction: rtl;
+}
+
+/* تصميم الهيدر */
+header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--white);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-bottom: 4px solid var(--secondary-color);
+  position: relative;
+  overflow: hidden;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('https://via.placeholder.com/1920x1080') center/cover;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+/* شريط الوقت */
+.timer-container {
+  background-color: var(--dark-color);
+  color: var(--white);
+  padding: 0.8rem 0;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer-container i {
+  margin-left: 10px;
+}
+
+/* الحاوية الرئيسية */
+.container {
+  max-width: 800px;
+  margin: 5rem auto 2rem;
+  padding: 1.5rem;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* شريط التقدم */
+.progress-indicator {
+  width: 100%;
+  height: 6px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--dark-color);
+  margin-top: 0.5rem;
+}
+
+/* إعدادات البداية */
+.start-screen {
+  text-align: center;
+  padding: 2rem;
+}
+
+.start-screen img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.start-screen img:hover {
+  transform: scale(1.02);
+}
+
+/* اختيار المدة وعدد الأسئلة */
+.quiz-settings {
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.setting-group {
+  margin-bottom: 1.5rem;
+}
+
+.setting-group label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--dark-color);
+}
+
+.setting-group input, .setting-group select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s ease;
+  font-family: 'Tajawal', sans-serif;
+}
+
+.setting-group input:focus, .setting-group select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* حاوية الأسئلة */
+.question-container {
+  margin-bottom: 1.5rem;
+  display: none;
+}
+
+/* إطار الصورة */
+.question-image {
+  width: 100%;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.question-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.question-image:hover img {
+  transform: scale(1.05);
+}
+
+/* نص السؤال */
+.question-text {
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* خيارات الإجابة */
+.options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.options li {
+  padding: 1rem 1.5rem;
+  background-color: var(--white);
+  margin: 0.5rem 0;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+  user-select: none;
+}
+
+.options li:hover {
+  background-color: #f8f9fa;
+  border-color: var(--primary-color);
+  transform: translateX(-5px);
+}
+
+.options li.selected {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+.options li.correct {
+  background-color: var(--success-color);
+  color: var(--white);
+  border-color: var(--success-color);
+}
+
+.options li.incorrect {
+  background-color: var(--danger-color);
+  color: var(--white);
+  border-color: var(--danger-color);
+}
+
+.options li.touched {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* علامة الإجابة الصحيحة */
+.correct-mark {
+  position: absolute;
+  left: 10px;
+  color: var(--white);
+  font-weight: bold;
+}
+
+/* أزرار التحكم */
+.btn {
+  display: inline-block;
+
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--white);
+  padding: 0.8rem 1.8rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #6c757d, #5a6268);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--success-color), #27ae60);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger-color), #c0392b);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, var(--warning-color), #e67e22);
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #17a2b8, #138496);
+}
+
+/* قسم النتائج */
+.result-section {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+}
+
+.result-section h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.score-display {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--dark-color);
+  margin: 1.5rem 0;
+}
+
+.progress-container {
+  width: 100%;
+  height: 30px;
+  background-color: #e0e0e0;
+  border-radius: 15px;
+  margin: 1.5rem 0;
+  overflow: hidden;
+}
+
+.time-stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.stat-box {
+  background-color: var(--light-color);
+  padding: 1rem;
+  border-radius: 8px;
+  min-width: 150px;
+  margin: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stat-box h3 {
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+}
+
+.stat-box p {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* الرسوم البيانية */
+.chart-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+/* مراجعة الأسئلة */
+.question-review {
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: right;
+  border-left: 4px solid #ddd;
+}
+
+.question-review.correct {
+  border-left-color: var(--success-color);
+}
+
+.question-review.incorrect {
+  border-left-color: var(--danger-color);
+}
+
+.question-review h3 {
+  margin-bottom: 0.8rem;
+  color: var(--dark-color);
+}
+
+.question-review p {
+  margin-bottom: 0.8rem;
+}
+
+.question-review .user-answer {
+  font-weight: bold;
+}
+
+.question-review .correct-answer {
+  font-weight: bold;
+  color: var(--success-color);
+}
+
+.question-review .explanation {
+  background-color: var(--light-color);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+/* النافذة المنبثقة للشرح */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background-color: var(--white);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--danger-color);
+}
+
+/* زر المعلومات العائم */
+.info-btn {
+  position: fixed;
+  bottom: 9rem;
+  right: 2rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.info-btn:hover {
+  background-color: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+.info-btn i {
+  font-size: 1.5rem;
+}
+
+/* لوحة المعلومات الجانبية */
+.info-panel {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 350px;
+  height: 100%;
+  background-color: var(--white);
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  z-index: 1500;
+  transition: right 0.3s ease;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.info-panel.active {
+  right: 0;
+}
+
+.info-panel h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+}
+
+.info-panel p {
+  margin-bottom: 1rem;
+}
+
+.info-panel ul {
+  margin-right: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-panel li {
+  margin-bottom: 0.5rem;
+}
+
+.close-panel {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--danger-color);
+}
+
+/* زر العودة للأعلى */
+.back-to-top {
+  position: fixed;
+  bottom: 20rem;
+  left: 2rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-3px);
+}
+
+/* الجداول */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+th, td {
+  padding: 0.8rem;
+  text-align: right;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #e9e9e9;
+}
+
+/* التكيف مع الشاشات الصغيرة */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .container {
+    margin: 4rem auto 1rem;
+    padding: 1rem;
+  }
+  
+  .question-text {
+    font-size: 1.1rem;
+    padding: 1rem;
+  }
+  
+  .options li {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .btn {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .result-section h2 {
+    font-size: 1.8rem;
+  }
+  
+  .score-display {
+    font-size: 2rem;
+  }
+  
+  .info-panel {
+    width: 300px;
+    right: -300px;
+  }
+  
+  .info-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+  
+  th, td {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .timer-container {
+    font-size: 1.2rem;
+  }
+  
+  .question-text {
+    font-size: 1rem;
+  }
+  
+  .options li {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+  
+  .btn {
+    width: 100%;
+    margin: 0.3rem 0;
+  }
+  
+  .time-stats {
+    flex-direction: column;
+  }
+  
+  .info-panel {
+    width: 85%;
+    right: -85%;
+  }
+  
+  .info-btn {
+    width: 45px;
+    height: 45px;
+    bottom: 12rem;
+    right: 1rem;
+  }
+  
+  .back-to-top {
+    width: 45px;
+    height: 45px;
+    bottom: 14rem;
+    left: 1rem;
+  }
+  
+  .question-image {
+    max-height: 200px;
+  }
+  
+  th, td {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .hormones-table {
+    overflow-x: auto;
+    display: block;
+  }
+}
+</style>
+
+
+
+
+
+<body>
+  <!-- شريط الوقت -->
+  <div class="timer-container">
+    <i class="fas fa-clock"></i>
+    <span id="timer">00:00</span>
+  </div>
+  
+  <!-- الهيدر -->
+  <header>
+    <h1>اختبار معلومات عامة حول الهرمونات في الكيمياء العضوية - كلية عنابة</h1>
+  </header>
+  
+  <!-- زر المعلومات العائم -->
+  <div class="info-btn" id="info-btn">
+    <i class="fas fa-info"></i>
+  </div>
+  
+  <!-- لوحة المعلومات الجانبية -->
+  <div class="info-panel" id="info-panel">
+    <button class="close-panel" id="close-panel">&times;</button>
+    <h3>معلومات عن الهرمونات</h3>
+    <p>الهرمونات هي مواد كيميائية تفرزها الغدد الصماء في الجسم، وتعمل كرسائل كيميائية تنظم العديد من الوظائف الحيوية.</p>
+    
+    <h3>أنواع الهرمونات الرئيسية:</h3>
+    <ul>
+      <li>هرمونات الببتيد (مثل الإنسولين)</li>
+      <li>الهرمونات الستيرويدية (مثل التستوستيرون)</li>
+      <li>هرمونات الأحماض الأمينية (مثل الثيروكسين)</li>
+    </ul>
+    
+    <h3>وظائف الهرمونات:</h3>
+    <ul>
+      <li>تنظيم عملية الأيض</li>
+      <li>النمو والتطور</li>
+      <li>التكاثر والوظائف الجنسية</li>
+      <li>استجابة الجسم للتوتر</li>
+      <li>توازن السوائل والأملاح</li>
+    </ul>
+    
+    <h3>نصائح للاختبار:</h3>
+    <ul>
+      <li>اقرأ الأسئلة بعناية</li>
+      <li>ركز على الفروقات بين الهرمونات المتشابهة</li>
+      <li>تذكر الغدد المفرزة لكل هرمون</li>
+      <li>انتبه للوظائف الرئيسية لكل هرمون</li>
+    </ul>
+    
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <button class="btn btn-info" onclick="closeInfoPanel()">حسناً، فهمت</button>
+    </div>
+  </div>
+  
+  <!-- الحاوية الرئيسية -->
+  <div class="container">
+    <!-- شاشة البداية -->
+    <div class="start-screen" id="start-screen">
+      <img src="2.jpg" alt="صورة اختبار الهرمونات" style="width: 25%; height: 25%;">
+
+      <h2>مرحباً بك في اختبار  أداة علم</h2>
+      <p>هذا الاختبار مصمم لقياس معرفتك العامة بالهرمونات في الكيمياء العضوية</p>
+      
+      <!-- اختيار إعدادات الاختبار -->
+      <div class="quiz-settings">
+        <div class="setting-group">
+          <label for="custom-duration">اختر مدة الاختبار (بالدقائق):</label>
+          <input type="number" id="custom-duration" min="1" max="60" value="10">
+        </div>
+        
+        <div class="setting-group">
+          <label for="question-count">عدد الأسئلة:</label>
+          <select id="question-count">
+            <option value="5">5 أسئلة</option>
+            <option value="10">10 أسئلة</option>
+            <option value="15">15 أسئلة</option>
+            <option value="20">20 أسئلة</option>
+          </select>
+        </div>
+        
+        <div style="text-align: center;">
+          <button class="btn" id="start-btn">بدء الاختبار</button>
+          <button class="btn btn-secondary" id="quick-test-btn">اختبار سريع (5 أسئلة - 5 دقائق)</button>
+        </div>
+      </div>
+      
+      <div class="tips">
+        <h3>نصائح قبل البدء:</h3>
+        <ul style="text-align: right; margin-right: 1.5rem;">
+          <li>اقرأ كل سؤال بعناية قبل الإجابة</li>
+          <li>يمكنك تغيير إجابتك قبل الضغط على زر الإرسال</li>
+          <li>سيتم احتساب الوقت المستغرق لكل سؤال</li>
+          <li>اضغط على زر المعلومات (<i class="fas fa-info"></i>) للحصول على مساعدة</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- شريط التقدم -->
+    <div class="progress-indicator" id="progress-indicator" style="display: none;">
+      <div class="progress-bar" id="question-progress"></div>
+      <div class="progress-text" id="progress-text">السؤال 1 من 10</div>
+    </div>
+    
+    <!-- حاوية الأسئلة -->
+    <div id="question-container" class="question-container">
+      <!-- سيتم تعبئتها ديناميكياً -->
+    </div>
+    
+    <!-- قسم النتائج -->
+    <div id="result-section" class="result-section">
+      <h2>نتيجة الاختبار</h2>
+      <div class="score-display" id="score-display"></div>
+      
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      
+      <div class="chart-container">
+        <canvas id="results-chart"></canvas>
+      </div>
+      
+      <div class="time-stats">
+        <div class="stat-box">
+          <h3>الوقت المستغرق</h3>
+          <p id="total-time"></p>
+        </div>
+        <div class="stat-box">
+          <h3>متوسط الوقت لكل سؤال</h3>
+          <p id="average-time"></p>
+        </div>
+        <div class="stat-box">
+          <h3>أسرع إجابة</h3>
+          <p id="fastest-time"></p>
+        </div>
+        <div class="stat-box">
+          <h3>أبطأ إجابة</h3>
+          <p id="slowest-time"></p>
+        </div>
+      </div>
+      
+      <h3>مراجعة الأسئلة:</h3>
+      <div id="results-container"></div>
+      
+      <div class="actions">
+        <button class="btn btn-success" onclick="restartQuiz()">إعادة الاختبار</button>
+        <button class="btn btn-secondary" onclick="window.location.href='index.html';">العودة للرئيسية</button>
+        <button class="btn btn-warning" id="suggest-btn">اقترح تحسينات</button>
+        <button class="btn btn-info" id="show-lesson-btn">عرض درس عن الهرمونات</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- النافذة المنبثقة للشرح -->
+  <div id="explanation-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeExplanation()">×</button>
+      <h3 id="modal-title">شرح السؤال</h3>
+      <div id="explanation-text"></div>
+    </div>
+  </div>
+  
+  <!-- نافذة الدرس التعليمي -->
+  <div id="lesson-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeLessonModal()">×</button>
+      <h3>درس تعليمي عن الهرمونات</h3>
+      
+      <div class="lesson-content">
+        <h4>مقدمة عن الهرمونات:</h4>
+        <p>الهرمونات هي مركبات كيميائية تفرزها الغدد الصماء في الجسم، وتعمل كرسائل كيميائية تنظم العديد من الوظائف الحيوية في الجسم.</p>
+        
+        <h4>تصنيف الهرمونات:</h4>
+        <p>تصنف الهرمونات حسب تركيبها الكيميائي إلى:</p>
+        <ul>
+          <li><strong>هرمونات ببتيدية:</strong> تتكون من سلاسل أحماض أمينية (مثل الإنسولين، هرمون النمو)</li>
+          <li><strong>هرمونات ستيرويدية:</strong> مشتقة من الكوليسترول (مثل التستوستيرون، الإستروجين)</li>
+          <li><strong>هرمونات مشتقة من الأحماض الأمينية:</strong> مثل الثيروكسين والأدرينالين</li>
+        </ul>
+        
+        <h4>الهرمونات الرئيسية ووظائفها:</h4>
+        <div class="hormones-table">
+          <table>
+            <thead>
+              <tr>
+                <th>الهرمون</th>
+                <th>الغدة المفرزة</th>
+                <th>الوظيفة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>الإنسولين</td>
+                <td>البنكرياس</td>
+                <td>تنظيم مستوى السكر في الدم</td>
+              </tr>
+              <tr>
+                <td>الثيروكسين</td>
+                <td>الغدة الدرقية</td>
+                <td>تنظيم عملية الأيض</td>
+              </tr>
+              <tr>
+                <td>الأدرينالين</td>
+                <td>الغدة الكظرية</td>
+                <td>استجابة الجسم للتوتر</td>
+              </tr>
+              <tr>
+                <td>هرمون النمو</td>
+                <td>الغدة النخامية</td>
+                <td>تحفيز النمو وتكاثر الخلايا</td>
+              </tr>
+              <tr>
+                <td>التستوستيرون</td>
+                <td>الخصيتان</td>
+                <td>تطور الصفات الجنسية الذكرية</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h4>اضطرابات الهرمونات:</h4>
+        <p>يمكن أن تؤدي الاختلالات الهرمونية إلى العديد من المشكلات الصحية مثل:</p>
+        <ul>
+          <li>مرض السكري (خلل في إفراز الإنسولين)</li>
+          <li>قصور أو فرط نشاط الغدة الدرقية</li>
+          <li>اضطرابات النمو</li>
+          <li>اضطرابات الخصوبة</li>
+        </ul>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+          <button class="btn btn-info" onclick="closeLessonModal()">حسناً، فهمت</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- زر العودة للأعلى -->
+  <div class="back-to-top" id="back-to-top">↑</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+
+
+
+// بيانات الأسئلة الكاملة
+const allQuestions = [
+  {
+    text: "ما هو الهرمون المسؤول عن تنظيم مستوى السكر في الدم؟",
+    options: [
+      "الإنسولين",
+      "الأدرينالين",
+      "الثيروكسين",
+      "التستوستيرون"
+    ],
+    correct: [0],
+    explanation: "الإنسولين هو الهرمون المسؤول عن تنظيم مستوى السكر في الدم، حيث يساعد على دخول الجلوكوز إلى الخلايا. يفرز من خلايا بيتا في البنكرياس ويقلل من مستوى الجلوكوز في الدم.",
+    image: "https://via.placeholder.com/600x300?text=هرمون+الإنسولين",
+    timeSpent: 0,
+    type: "single"
+  },
+  {
+    text: "أي من الهرمونات التالية تفرزها الغدة النخامية؟ (اختر أكثر من إجابة)",
+    options: [
+      "هرمون النمو",
+      "الأوكسيتوسين",
+      "الثيروكسين",
+      "البرولاكتين"
+    ],
+    correct: [0, 1, 3],
+    explanation: "تفرز الغدة النخامية عدة هرمونات منها هرمون النمو، الأوكسيتوسين والبرولاكتين، بينما يفرز الثيروكسين من الغدة الدرقية.",
+    image: "https://via.placeholder.com/600x300?text=الغدة+النخامية",
+    timeSpent: 0,
+    type: "multi"
+  },
+  {
+    text: "ما هو الهرمون الذي يزداد إفرازه في حالات التوتر والخوف؟",
+    options: [
+      "الإنسولين",
+      "الأدرينالين",
+      "البروجسترون",
+      "الميلاتونين"
+    ],
+    correct: [1],
+    explanation: "الأدرينالين يفرز من الغدة الكظرية في حالات التوتر والخوف، مما يزيد من معدل ضربات القلب وضغط الدم. وهو جزء من استجابة الجسم للقتال أو الهروب.",
+    image: "https://via.placeholder.com/600x300?text=هرمون+الأدرينالين",
+    timeSpent: 0,
+    type: "single"
+  },
+  // يمكن إضافة المزيد من الأسئلة هنا...
+];
+
+// متغيرات التطبيق
+let currentQuestionIndex = 0;
+let selectedAnswers = [];
+let timer;
+let timeLeft;
+let totalTime = 0;
+let quizDuration = 0;
+let questionStartTime;
+let timePerQuestion = [];
+let questions = [];
+
+// عناصر DOM
+const startScreen = document.getElementById("start-screen");
+const startBtn = document.getElementById("start-btn");
+const quickTestBtn = document.getElementById("quick-test-btn");
+const questionContainer = document.getElementById("question-container");
+const resultSection = document.getElementById("result-section");
+const resultsContainer = document.getElementById("results-container");
+const scoreDisplay = document.getElementById("score-display");
+const progressBar = document.getElementById("progress-bar");
+const questionProgress = document.getElementById("question-progress");
+const progressIndicator = document.getElementById("progress-indicator");
+const timerElement = document.getElementById("timer");
+const totalTimeElement = document.getElementById("total-time");
+const averageTimeElement = document.getElementById("average-time");
+const fastestTimeElement = document.getElementById("fastest-time");
+const slowestTimeElement = document.getElementById("slowest-time");
+const backToTopBtn = document.getElementById("back-to-top");
+const suggestBtn = document.getElementById("suggest-btn");
+const showLessonBtn = document.getElementById("show-lesson-btn");
+const infoBtn = document.getElementById("info-btn");
+const infoPanel = document.getElementById("info-panel");
+const closePanelBtn = document.getElementById("close-panel");
+
+// أحداث
+startBtn.addEventListener("click", startQuiz);
+quickTestBtn.addEventListener("click", startQuickTest);
+infoBtn.addEventListener("click", toggleInfoPanel);
+closePanelBtn.addEventListener("click", closeInfoPanel);
+showLessonBtn.addEventListener("click", showLessonModal);
+
+// بدء الاختبار
+function startQuiz() {
+  const durationInput = parseInt(document.getElementById("custom-duration").value);
+  const questionCount = parseInt(document.getElementById("question-count").value);
+  
+  quizDuration = durationInput * 60;
+  selectedAnswers = [];
+  timePerQuestion = [];
+  totalTime = 0;
+  currentQuestionIndex = 0;
+  
+  // اختيار أسئلة عشوائية حسب العدد المطلوب
+  questions = getRandomQuestions(questionCount);
+  
+  startScreen.style.display = "none";
+  questionContainer.style.display = "block";
+  resultSection.style.display = "none";
+  progressIndicator.style.display = "block";
+  
+  loadQuestion();
+  startTimer();
+}
+
+// بدء اختبار سريع
+function startQuickTest() {
+  quizDuration = 5 * 60; // 5 دقائق
+  selectedAnswers = [];
+  timePerQuestion = [];
+  totalTime = 0;
+  currentQuestionIndex = 0;
+  
+  // اختيار 5 أسئلة عشوائية
+  questions = getRandomQuestions(5);
+  
+  startScreen.style.display = "none";
+  questionContainer.style.display = "block";
+  resultSection.style.display = "none";
+  progressIndicator.style.display = "block";
+  
+  loadQuestion();
+  startTimer();
+}
+
+// الحصول على أسئلة عشوائية
+function getRandomQuestions(count) {
+  // نسخ جميع الأسئلة
+  const shuffled = [...allQuestions];
+  
+  // خلط الأسئلة
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  
+  // إرجاع العدد المطلوب من الأسئلة
+  return shuffled.slice(0, count);
+}
+
+// تحميل السؤال
+function loadQuestion() {
+  const question = questions[currentQuestionIndex];
+  questionStartTime = new Date().getTime();
+  
+  // تحديث شريط التقدم
+  const progressPercent = (currentQuestionIndex / questions.length) * 100;
+  questionProgress.style.width = `${progressPercent}%`;
+  
+  // إعداد خيارات الإجابة
+  const optionsHTML = question.options.map((option, index) => {
+    const isSelected = Array.isArray(selectedAnswers[currentQuestionIndex]) ? 
+      selectedAnswers[currentQuestionIndex].includes(index) : 
+      selectedAnswers[currentQuestionIndex] === index;
+      
+    return `
+      <li onclick="selectOption(${index})" id="option-${index}" 
+          class="${isSelected ? 'selected' : ''}" 
+          aria-pressed="${isSelected}"
+          tabindex="0"
+          role="button">
+        ${option}
+        ${question.correct.includes(index) ? '<span class="correct-mark" style="display: none;"><i class="fas fa-check"></i></span>' : ''}
+      </li>
+    `;
+  }).join('');
+
+  questionContainer.innerHTML = `
+    <div class="question-image">
+      <img src="${question.image}" alt="صورة السؤال" loading="lazy">
+    </div>
+    <div class="question-text">
+      <p>${question.text}</p>
+    </div>
+    <ul class="options">
+      ${optionsHTML}
+    </ul>
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <button class="btn" onclick="submitAnswer()" id="submit-btn">إرسال الإجابة</button>
+      <button class="btn btn-secondary" onclick="showExplanation()" id="explain-btn" style="display: none;">
+        <i class="fas fa-lightbulb"></i> شرح الإجابة
+      </button>
+    </div>
+    <div style="text-align: center; margin-top: 1rem; color: #666;">
+      السؤال ${currentQuestionIndex + 1} من ${questions.length}
+    </div>
+  `;
+  
+  // إضافة إمكانية الاختيار بالضغط على Enter
+  document.querySelectorAll('.options li').forEach(option => {
+    option.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const index = parseInt(option.id.split('-')[1]);
+        selectOption(index);
+      }
+    });
+  });
+}
+
+// اختيار إجابة
+function selectOption(optionIndex) {
+  const question = questions[currentQuestionIndex];
+  const optionElement = document.getElementById(`option-${optionIndex}`);
+  
+  // إضافة تأثير اللمس
+  optionElement.classList.add("touched");
+  setTimeout(() => {
+    optionElement.classList.remove("touched");
+  }, 200);
+  
+  if (question.type === "multi") {
+    // تبديل التحديد للأسئلة متعددة الإجابات
+    optionElement.classList.toggle("selected");
+    optionElement.setAttribute("aria-pressed", optionElement.classList.contains("selected"));
+    
+    // تحديث الإجابات المختارة
+    if (!selectedAnswers[currentQuestionIndex]) {
+      selectedAnswers[currentQuestionIndex] = [];
+    }
+    
+    const index = selectedAnswers[currentQuestionIndex].indexOf(optionIndex);
+    if (index === -1) {
+      selectedAnswers[currentQuestionIndex].push(optionIndex);
+    } else {
+      selectedAnswers[currentQuestionIndex].splice(index, 1);
+    }
+  } else {
+    // المنطق الأصلي للأسئلة ذات الإجابة الواحدة
+    const options = document.querySelectorAll(".options li");
+    options.forEach((option, index) => {
+      if (index === optionIndex) {
+        option.classList.add("selected");
+        option.setAttribute("aria-pressed", "true");
+      } else {
+        option.classList.remove("selected");
+        option.setAttribute("aria-pressed", "false");
+      }
+    });
+    selectedAnswers[currentQuestionIndex] = optionIndex;
+  }
+}
+
+// إرسال الإجابة
+function submitAnswer() {
+  const question = questions[currentQuestionIndex];
+  const endTime = new Date().getTime();
+  const timeSpent = Math.floor((endTime - questionStartTime) / 1000);
+  
+  question.timeSpent = timeSpent;
+  timePerQuestion.push(timeSpent);
+  totalTime += timeSpent;
+  
+  if (question.type === "multi") {
+    // التحقق من الإجابات المتعددة
+    const isCorrect = arraysEqual(selectedAnswers[currentQuestionIndex], question.correct);
+    
+    // عرض النتائج
+    showMultiAnswerResult(isCorrect, question.correct);
+  } else {
+    // المنطق الأصلي للأسئلة ذات الإجابة الواحدة
+    showCorrectAnswer();
+  }
+  
+  // تعطيل جميع الخيارات
+  const options = document.querySelectorAll(".options li");
+  options.forEach(option => {
+    option.style.pointerEvents = "none";
+    option.setAttribute("tabindex", "-1");
+  });
+  
+  // تغيير زر الإرسال إلى زر التالي
+  const submitBtn = document.getElementById("submit-btn");
+  submitBtn.style.display = "none";
+  
+  // عرض زر الشرح
+  const explainBtn = document.getElementById("explain-btn");
+  explainBtn.style.display = "inline-block";
+}
+
+// التقدم إلى السؤال التالي
+function nextQuestion() {
+  currentQuestionIndex++;
+  
+  if (currentQuestionIndex < questions.length) {
+    loadQuestion();
+  } else {
+    finishQuiz();
+  }
+}
+
+// إنهاء الاختبار
+function finishQuiz() {
+  clearInterval(timer);
+  questionContainer.style.display = "none";
+  resultSection.style.display = "block";
+  progressIndicator.style.display = "none";
+  
+  displayResults();
+  scrollToTop();
+}
+
+// عرض النتائج
+function displayResults() {
+  let correctAnswersCount = 0;
+  resultsContainer.innerHTML = "";
+  
+  questions.forEach((question, index) => {
+    let isCorrect;
+    
+    if (question.type === "multi") {
+      isCorrect = arraysEqual(selectedAnswers[index], question.correct);
+    } else {
+      isCorrect = selectedAnswers[index] === question.correct[0];
+    }
+    
+    if (isCorrect) correctAnswersCount++;
+    
+    const reviewClass = isCorrect ? "correct" : "incorrect";
+    const reviewText = isCorrect ? "إجابة صحيحة" : "إجابة خاطئة";
+    
+    // إعداد عرض الإجابات للمستخدم
+    let userAnswerText;
+    if (question.type === "multi" && selectedAnswers[index] && selectedAnswers[index].length > 0) {
+      userAnswerText = selectedAnswers[index].map(i => question.options[i]).join("، ");
+    } else if (selectedAnswers[index] !== undefined) {
+      userAnswerText = question.options[selectedAnswers[index]];
+    } else {
+      userAnswerText = "لم يتم الإجابة";
+    }
+    
+    // إعداد الإجابات الصحيحة
+    let correctAnswerText = question.correct.map(i => question.options[i]).join("، ");
+    
+    resultsContainer.innerHTML += `
+      <div class="question-review ${reviewClass}">
+        <h3>السؤال ${index + 1}: ${question.text}</h3>
+        <p class="user-answer">إجابتك: ${userAnswerText}</p>
+        ${!isCorrect ? `<p class="correct-answer">الإجابة الصحيحة: ${correctAnswerText}</p>` : ''}
+        <div class="explanation">
+          <p><strong>الشرح:</strong> ${question.explanation}</p>
+          <p><strong>الوقت المستغرق:</strong> ${formatTime(question.timeSpent)}</p>
+        </div>
+      </div>
+    `;
+  });
+  
+  // حساب النسبة المئوية
+  const percentage = Math.round((correctAnswersCount / questions.length) * 100);
+  
+  // عرض النتيجة
+  scoreDisplay.textContent = `${correctAnswersCount} / ${questions.length} (${percentage}%)`;
+  progressBar.style.width = `${percentage}%`;
+  
+  // عرض إحصائيات الوقت
+  totalTimeElement.textContent = formatTime(totalTime);
+  
+  const averageTime = Math.round(totalTime / questions.length);
+  averageTimeElement.textContent = formatTime(averageTime);
+  
+  const fastestTime = Math.min(...timePerQuestion);
+  fastestTimeElement.textContent = formatTime(fastestTime);
+  
+  const slowestTime = Math.max(...timePerQuestion);
+  slowestTimeElement.textContent = formatTime(slowestTime);
+  
+  // عرض الرسم البياني
+  renderResultsChart(correctAnswersCount, questions.length - correctAnswersCount);
+}
+
+// عرض الإجابة الصحيحة
+function showCorrectAnswer() {
+  const question = questions[currentQuestionIndex];
+  const options = document.querySelectorAll(".options li");
+  
+  options.forEach((option, index) => {
+    if (question.correct.includes(index)) {
+      option.classList.add("correct");
+      const correctMark = option.querySelector(".correct-mark");
+      if (correctMark) correctMark.style.display = "block";
+    } else if ((Array.isArray(selectedAnswers[currentQuestionIndex]) && 
+               selectedAnswers[currentQuestionIndex].includes(index)) || 
+               selectedAnswers[currentQuestionIndex] === index) {
+      option.classList.add("incorrect");
+    }
+  });
+}
+
+// عرض نتائج الأسئلة متعددة الإجابات
+function showMultiAnswerResult(isCorrect, correctAnswers) {
+  const options = document.querySelectorAll(".options li");
+  
+  options.forEach((option, index) => {
+    if (correctAnswers.includes(index)) {
+      option.classList.add("correct");
+      const correctMark = option.querySelector(".correct-mark");
+      if (correctMark) correctMark.style.display = "block";
+    }
+    
+    if (selectedAnswers[currentQuestionIndex] && 
+        selectedAnswers[currentQuestionIndex].includes(index) && 
+        !correctAnswers.includes(index)) {
+      option.classList.add("incorrect");
+    }
+  });
+}
+
+// دالة مساعدة لمقارنة المصفوفات
+function arraysEqual(a, b) {
+  if (!a || !b) return false;
+  if (a.length !== b.length) return false;
+  
+  const sortedA = [...a].sort();
+  const sortedB = [...b].sort();
+  
+  return sortedA.every((val, index) => val === sortedB[index]);
+}
+
+// عرض شرح السؤال
+function showExplanation() {
+  const question = questions[currentQuestionIndex];
+  
+  document.getElementById("modal-title").textContent = "شرح السؤال";
+  document.getElementById("explanation-text").innerHTML = `
+    <p><strong>السؤال:</strong> ${question.text}</p>
+    <p><strong>الإجابة الصحيحة:</strong> ${question.correct.map(i => question.options[i]).join("، ")}</p>
+    <p><strong>الشرح:</strong> ${question.explanation}</p>
+    <p><strong>الوقت المستغرق:</strong> ${formatTime(question.timeSpent)}</p>
+  `;
+  
+  document.getElementById("explanation-modal").classList.add("active");
+}
+
+// إغلاق نافذة الشرح
+function closeExplanation() {
+  document.getElementById("explanation-modal").classList.remove("active");
+  nextQuestion();
+}
+
+// عرض نافذة الدرس التعليمي
+function showLessonModal() {
+  document.getElementById("lesson-modal").classList.add("active");
+}
+
+// إغلاق نافذة الدرس التعليمي
+function closeLessonModal() {
+  document.getElementById("lesson-modal").classList.remove("active");
+}
+
+// عرض/إخفاء لوحة المعلومات
+function toggleInfoPanel() {
+  infoPanel.classList.toggle("active");
+}
+
+// إغلاق لوحة المعلومات
+function closeInfoPanel() {
+  infoPanel.classList.remove("active");
+}
+
+// عرض الرسم البياني للنتائج
+function renderResultsChart(correct, incorrect) {
+  const ctx = document.getElementById('results-chart').getContext('2d');
+  
+  // إذا كان هناك رسم بياني موجود، قم بتدميره أولاً
+  if (window.resultsChart) {
+    window.resultsChart.destroy();
+  }
+  
+  window.resultsChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['الإجابات الصحيحة', 'الإجابات الخاطئة'],
+      datasets: [{
+        data: [correct, incorrect],
+        backgroundColor: [
+          'rgba(46, 204, 113, 0.8)',
+          'rgba(231, 76, 60, 0.8)'
+        ],
+        borderColor: [
+          'rgba(46, 204, 113, 1)',
+          'rgba(231, 76, 60, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          rtl: true,
+          labels: {
+            usePointStyle: true,
+            padding: 20,
+            font: {
+              family: 'Tajawal',
+              size: 14
+            }
+          }
+        }
+      },
+      cutout: '70%'
+    }
+  });
+}
+
+// بدء المؤقت
+function startTimer() {
+  timeLeft = quizDuration;
+  updateTimerDisplay();
+  
+  timer = setInterval(function() {
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      finishQuiz();
+      
+      // تنبيه بانتهاء الوقت
+      Swal.fire({
+        title: 'انتهى الوقت!',
+        text: 'لقد انتهى الوقت المخصص للاختبار',
+        icon: 'warning',
+        confirmButtonText: 'حسناً'
+      });
+    } else {
+      timeLeft--;
+      updateTimerDisplay();
+      
+      // تنبيه عند اقتراب انتهاء الوقت
+      if (timeLeft === 60) {
+        Swal.fire({
+          title: 'تنبيه!',
+          text: 'تبقى دقيقة واحدة فقط لإنهاء الاختبار',
+          icon: 'warning',
+          confirmButtonText: 'حسناً'
+        });
+      }
+    }
+  }, 1000);
+}
+
+// تحديث عرض المؤقت
+function updateTimerDisplay() {
+  timerElement.textContent = formatTime(timeLeft);
+  
+  // تغيير لون المؤقت عند اقتراب النهاية
+  if (timeLeft <= 60) {
+    timerElement.style.color = '#ff6b6b';
+  } else {
+    timerElement.style.color = 'white';
+  }
+}
+
+// تنسيق الوقت
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+// إعادة الاختبار
+function restartQuiz() {
+  Swal.fire({
+    title: 'هل تريد إعادة الاختبار؟',
+    text: "سيتم حذف جميع النتائج الحالية",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'نعم، أعد الاختبار',
+    cancelButtonText: 'إلغاء'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      startQuiz();
+    }
+  });
+}
+
+// اقتراح تحسينات
+suggestBtn.addEventListener('click', function() {
+  Swal.fire({
+    title: 'اقترح تحسينات للاختبار',
+    input: 'textarea',
+    inputPlaceholder: 'أدخل اقتراحاتك هنا...',
+    showCancelButton: true,
+    confirmButtonText: 'إرسال',
+    cancelButtonText: 'إلغاء',
+    inputValidator: (value) => {
+      if (!value) {
+        return 'يجب إدخال اقتراح!';
+      }
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        'شكراً لك!',
+        'تم استلام اقتراحك بنجاح وسيتم دراسته.',
+        'success'
+      );
+    }
+  });
+});
+
+// التمرير للأعلى
+window.addEventListener('scroll', function() {
+  if (window.pageYOffset > 300) {
+    backToTopBtn.classList.add('visible');
+  } else {
+    backToTopBtn.classList.remove('visible');
+  }
+});
+
+backToTopBtn.addEventListener('click', function() {
+  scrollToTop();
+});
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+// تحميل الصور مسبقاً
+function preloadImages() {
+  const images = [];
+  allQuestions.forEach(question => {
+    if (question.image) {
+      const img = new Image();
+      img.src = question.image;
+      images.push(img);
+    }
+  });
+}
+
+// الانتقال إلى الأعلى عند تحميل الصفحة
+window.addEventListener('load', function() {
+  scrollToTop();
+  preloadImages();
+  
+  // إضافة إمكانية إغلاق لوحة المعلومات بالضغط على ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && infoPanel.classList.contains('active')) {
+      closeInfoPanel();
+    }
+  });
+});
+
+// جعل الدوال متاحة عالمياً للاستدعاء من HTML
+window.selectOption = selectOption;
+window.submitAnswer = submitAnswer;
+window.showExplanation = showExplanation;
+window.nextQuestion = nextQuestion;
+window.restartQuiz = restartQuiz;
+window.closeExplanation = closeExplanation;
+window.closeLessonModal = closeLessonModal;
+window.showLessonModal = showLessonModal;
+window.toggleInfoPanel = toggleInfoPanel;
+window.closeInfoPanel = closeInfoPanel;
+window.scrollToTop = scrollToTop;
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مواقيت الصلاة وأذكار الاستغفار</title>
+    <style>
+        :root {
+        
+            --secondary-color: #2196F3;
+            --accent-color: #FF9800;
+            --dark-color: #333;
+            --light-color: #f5f5f5;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        /* تنسيق الأزرار العائمة */
+        .floating-btn {
+          position: fixed;
+            width: 60px;
+            height: 60px;
+    
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            font-size: 24px;
+            color: white;
+            border: none;
+            user-select: none;
+        }
+        
+        .floating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* زر الاستغفار */
+        .istighfar-btn {
+            bottom: 90px;
+            left: 15px; /* تغيير من right إلى left */
+            background-color: var(--secondary-color);
+        }
+        
+        /* زر الصلاة */
+        .prayer-btn {
+            bottom: 155px;
+            left: 13px; /* تغيير من right إلى left */
+            background-color: var(--primary-color);
+        }
+        
+        /* زر الإعدادات */
+        .settings-btn {
+            bottom: 20px;
+            right: 10px; /* تغيير من left إلى right */
+            background-color: var(--accent-color);
+        }
+        
+        /* النوافذ المنبثقة */
+        .popup {
+            position: fixed;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+            max-width: 95%;
+            width: 350px;
+            padding: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        
+        .popup-header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .popup-title {
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            font-weight: bold;
+        }
+        
+        .popup-content {
+            margin: 15px 0;
+        }
+        
+        .popup-footer {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        /* تنسيق مواقيت الصلاة */
+        .prayer-times-container {
+            margin: 15px 0;
+        }
+        
+        .city-selector {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .prayer-time {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .prayer-name {
+            font-weight: bold;
+        }
+        
+        .next-prayer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        /* تنسيق الاستغفار */
+        .istighfar-text {
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #e3f2fd;
+            border-radius: 10px;
+            color: #0d47a1;
+            font-weight: bold;
+        }
+        
+        .ayah {
+            text-align: center;
+            padding: 10px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Amiri', serif;
+            font-size: 1.1rem;
+        }
+        
+        .hadith {
+            text-align: center;
+            padding: 10px;
+            background: #fff3e0;
+            color: #e65100;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+        }
+        
+        /* تنسيق الإعدادات */
+        .settings-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        /* فقاعات الأذكار */
+        .dhikr-bubble {
+            position: fixed;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            max-width: 250px;
+            display: none;
+        }
+        
+        .bubble-content {
+            position: relative;
+        }
+        
+        .close-bubble {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        /* للشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .popup {
+                width: 90%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- الأزرار العائمة -->
+<button class="floating-btn istighfar-btn" onclick="togglePopup('istighfarPopup')">📿</button>
+<button class="floating-btn prayer-btn" onclick="togglePopup('prayerPopup')">🕌</button>
+<button class="floating-btn settings-btn" onclick="togglePopup('settingsPopup')">⚙️</button>
+
+<!-- نافذة الاستغفار -->
+<div id="istighfarPopup" class="popup">
+    <div class="popup-header">
+        <h2 class="popup-title">أذكار الاستغفار والتسبيح</h2>
+    </div>
+    <div class="popup-content">
+        <div class="istighfar-text" id="istighfarText">استغفر الله العظيم</div>
+        
+        <div class="ayah">
+            <p>﴿ وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا ﴾</p>
+            <p>[ النساء: 110 ]</p>
+        </div>
+        
+        <div class="hadith">
+            <p>عنِ ابْنِ عَبَّاسٍ رضِي اللَّه عنْهُما قَال: قالَ رَسولُ اللَّهِ ﷺ: منْ لَزِم الاسْتِغْفَار، جَعَلَ اللَّه لَهُ مِنْ كُلِّ ضِيقٍ مخْرجًا، ومنْ كُلِّ هَمٍّ فَرجًا، وَرَزَقَهُ مِنْ حيْثُ لاَ يَحْتَسِبُ</p>
+            <p style="font-size: 0.8rem; margin-top: 5px;">رواه أبو داود</p>
+        </div>
+        
+        <div id="counterContainer" style="text-align: center; margin: 15px 0;">
+            <p>عدد التسبيحات: <span id="tasbeehCounter">0</span></p>
+            <button class="btn btn-accent" onclick="incrementTasbeeh()">+1</button>
+            <button class="btn btn-secondary" onclick="resetTasbeeh()">إعادة تعيين</button>
+        </div>
+    </div>
+    <div class="popup-footer">
+        <button class="btn btn-primary" onclick="changeDhikr()">تغيير الذكر</button>
+        <button class="btn btn-secondary" onclick="togglePopup('istighfarPopup')">إغلاق</button>
+    </div>
+</div>
+
+<!-- نافذة الصلاة -->
+<div id="prayerPopup" class="popup">
+    <div class="popup-header">
+        <h2 class="popup-title">مواقيت الصلاة اليومية</h2>
+        <h2 class="popup-title" style="color: red; text-shadow: 0 0 10px red;">تحذير هذه المواقيت غير دقيقة</h2>
+    </div>
+    <div class="popup-content">
+        <select id="citySelector" class="city-selector" onchange="fetchPrayerTimes()">
+            <option value="algiers">الجزائر العاصمة</option>
+            <option value="oran">وهران</option>
+            <option value="constantine">قسنطينة</option>
+            <option value="annaba">عنابة</option>
+            <option value="batna">باتنة</option>
+            <option value="setif">سطيف</option>
+            <option value="blida">البليدة</option>
+            <option value="tlemcen">تلمسان</option>
+            <option value="bejaia">بجاية</option>
+            <option value="sidi_bel_abbes">سيدي بلعباس</option>
+        </select>
+        
+        <div id="prayerDate" style="text-align: center; margin-bottom: 10px; font-weight: bold;"></div>
+        
+        <div id="nextPrayerTime" class="next-prayer"></div>
+        
+        <div class="prayer-times-container" id="prayerTimesContainer">
+            <!-- سيتم ملؤها بواسطة الجافاسكريبت -->
+        </div>
+        
+        <div class="ayah">
+            <p>﴿ فَإِذَا قَضَيْتُمُ الصَّلَاةَ فَاذْكُرُوا اللَّهَ قِيَامًا وَقُعُودًا وَعَلَىٰ جُنُوبِكُمْ ۚ فَإِذَا اطْمَأْنَنتُمْ فَأَقِيمُوا الصَّلَاةَ ۚ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾</p>
+            <p>[ النساء: 103 ]</p>
+        </div>
+    </div>
+    <div class="popup-footer">
+        <button class="btn btn-primary" onclick="togglePopup('prayerPopup')">إغلاق</button>
+    </div>
+</div>
+
+<!-- نافذة الإعدادات -->
+<div id="settingsPopup" class="popup">
+    <div class="popup-header">
+        <h2 class="popup-title">إعدادات التطبيق</h2>
+    </div>
+    <div class="popup-content">
+        <div class="settings-form">
+            <div class="form-group">
+                <label for="autoOpenInterval">فترة الظهور التلقائي:</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="autoOpenMinutes" min="1" max="120" value="30" style="flex: 1;">
+                    <span style="align-self: center;">دقائق</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="dhikrType">نوع الأذكار:</label>
+                <select id="dhikrType">
+                    <option value="istighfar">استغفار فقط</option>
+                    <option value="tasbeeh">تسبيح فقط</option>
+                    <option value="mixed" selected>مختلط (استغفار وتسبيح)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="notificationSound">صوت التنبيه:</label>
+                <select id="notificationSound">
+                    <option value="none">بدون صوت</option>
+                    <option value="adhan">أذان</option>
+                    <option value="bell" selected>جرس</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="showNotifications" checked> 
+                    عرض التنبيهات
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="enableBubbles" checked> 
+                    تمكين فقاعات الأذكار
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="popup-footer">
+        <button class="btn btn-primary" onclick="saveSettings()">حفظ الإعدادات</button>
+        <button class="btn btn-secondary" onclick="togglePopup('settingsPopup')">إلغاء</button>
+    </div>
+</div>
+
+<script>
+    // بيانات الأذكار
+    const dhikrList = {
+        istighfar: [
+            "استغفر الله العظيم",
+            "أستغفر الله الذي لا إله إلا هو الحي القيوم وأتوب إليه",
+            "رب اغفر لي وتب علي إنك أنت التواب الرحيم",
+            "اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، وأنا على عهدك ووعدك ما استطعت، أعوذ بك من شر ما صنعت، أبوء لك بنعمتك علي وأبوء بذنبي فاغفر لي فإنه لا يغفر الذنوب إلا أنت"
+        ],
+        tasbeeh: [
+            "سبحان الله وبحمده",
+            "سبحان الله العظيم",
+            "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير",
+            "سبحان الله والحمد لله ولا إله إلا الله والله أكبر",
+            "لا حول ولا قوة إلا بالله العلي العظيم"
+        ],
+        mixed: [
+            "الحمد الله",
+            "استغفر الله العظيم",
+            "سبحان الله وبحمده",
+            "أستغفر الله الذي لا إله إلا هو الحي القيوم وأتوب إليه",
+            "سبحان الله العظيم",
+            "رب اغفر لي وتب علي إنك أنت التواب الرحيم",
+            "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير"
+        ]
+    };
+
+    // بيانات المدن
+    const citiesMap = {
+        algiers: "algeria/algiers",
+        oran: "algeria/oran",
+        constantine: "algeria/constantine",
+        annaba: "algeria/annaba",
+        batna: "algeria/batna",
+        setif: "algeria/setif",
+        blida: "algeria/blida",
+        tlemcen: "algeria/tlemcen",
+        bejaia: "algeria/bejaia",
+        sidi_bel_abbes: "algeria/sidi-bel-abbes"
+    };
+
+    // متغيرات التطبيق
+    let settings = {
+        autoOpenMinutes: 30,
+        dhikrType: "mixed",
+        notificationSound: "bell",
+        showNotifications: true,
+        enableBubbles: true
+    };
+
+    let tasbeehCounter = 0;
+    let prayerTimes = {};
+    let activeNotifications = [];
+    let autoDhikrInterval;
+
+    // تهيئة التطبيق عند التحميل
+    window.onload = function() {
+        loadSettings();
+        fetchPrayerTimes();
+        setupAutoDhikr();
+        
+        // طلب إذن الإشعارات
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission();
+        }
+    };
+
+    // تبديل النوافذ المنبثقة
+    function togglePopup(popupId) {
+        const popup = document.getElementById(popupId);
+        if (popup.style.display === "block") {
+            popup.style.display = "none";
+        } else {
+            // إغلاق جميع النوافذ الأخرى أولاً
+            document.querySelectorAll('.popup').forEach(p => {
+                if (p.id !== popupId) p.style.display = "none";
+            });
+            popup.style.display = "block";
+        }
+    }
+
+    // تغيير الذكر المعروض
+    function changeDhikr() {
+        const dhikrType = settings.dhikrType;
+        const dhikrArray = dhikrList[dhikrType];
+        const randomIndex = Math.floor(Math.random() * dhikrArray.length);
+        document.getElementById("istighfarText").textContent = dhikrArray[randomIndex];
+    }
+
+    // زيادة عداد التسبيح
+    function incrementTasbeeh() {
+        tasbeehCounter++;
+        document.getElementById("tasbeehCounter").textContent = tasbeehCounter;
+    }
+
+    // إعادة تعيين عداد التسبيح
+    function resetTasbeeh() {
+        tasbeehCounter = 0;
+        document.getElementById("tasbeehCounter").textContent = tasbeehCounter;
+    }
+
+    // جلب مواقيت الصلاة
+    function fetchPrayerTimes() {
+        const city = document.getElementById("citySelector").value;
+        const cityPath = citiesMap[city];
+        
+        // هنا يجب استبدال هذا الجزء بطلب حقيقي لمواقيت الصلاة من API
+        // هذا مجرد مثال للبيانات الوهمية
+        const today = new Date();
+        const fakePrayerTimes = {
+            Fajr: "05:30",
+            Sunrise: "06:45",
+            Dhuhr: "12:45",
+            Asr: "15:30",
+            Maghrib: "18:20",
+            Isha: "19:45"
+        };
+        
+        prayerTimes = fakePrayerTimes;
+        updatePrayerTimesDisplay();
+        updateNextPrayerTime();
+        
+        // تحديث التاريخ المعروض
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById("prayerDate").textContent = today.toLocaleDateString('ar-AR', options);
+    }
+
+    // تحديث عرض مواقيت الصلاة
+    function updatePrayerTimesDisplay() {
+        const container = document.getElementById("prayerTimesContainer");
+        container.innerHTML = "";
+        
+        for (const [prayer, time] of Object.entries(prayerTimes)) {
+            const prayerTimeDiv = document.createElement("div");
+            prayerTimeDiv.className = "prayer-time";
+            
+            const prayerNameSpan = document.createElement("span");
+            prayerNameSpan.className = "prayer-name";
+            prayerNameSpan.textContent = prayer;
+            
+            const prayerTimeSpan = document.createElement("span");
+            prayerTimeSpan.className = "prayer-time";
+            prayerTimeSpan.textContent = time;
+            
+            prayerTimeDiv.appendChild(prayerNameSpan);
+            prayerTimeDiv.appendChild(prayerTimeSpan);
+            container.appendChild(prayerTimeDiv);
+        }
+    }
+
+    // تحديث وقت الصلاة التالي
+    function updateNextPrayerTime() {
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+        
+        let nextPrayer = "";
+        let nextTime = "";
+        
+        // هذا مثال مبسط، في التطبيق الحقيقي يجب تحويل الأوقات إلى دقائق للمقارنة
+        if (currentHour < 5 || (currentHour === 5 && currentMinute < 30)) {
+            nextPrayer = "الفجر";
+            nextTime = prayerTimes.Fajr;
+        } else if (currentHour < 12 || (currentHour === 12 && currentMinute < 45)) {
+            nextPrayer = "الظهر";
+            nextTime = prayerTimes.Dhuhr;
+        } else if (currentHour < 15 || (currentHour === 15 && currentMinute < 30)) {
+            nextPrayer = "العصر";
+            nextTime = prayerTimes.Asr;
+        } else if (currentHour < 18 || (currentHour === 18 && currentMinute < 20)) {
+            nextPrayer = "المغرب";
+            nextTime = prayerTimes.Maghrib;
+        } else {
+            nextPrayer = "العشاء";
+            nextTime = prayerTimes.Isha;
+        }
+        
+        document.getElementById("nextPrayerTime").textContent = `الصلاة القادمة: ${nextPrayer} ${nextTime}`;
+    }
+
+    // إعداد الأذكار التلقائية
+    function setupAutoDhikr() {
+        // إلغاء أي فاصل زمني موجود
+        if (autoDhikrInterval) {
+            clearInterval(autoDhikrInterval);
+        }
+        
+        // تحديد الفاصل الزمني من الإعدادات
+        const intervalMinutes = settings.autoOpenMinutes || 30;
+        
+        // تعيين فاصل زمني جديد
+        autoDhikrInterval = setInterval(() => {
+            if (settings.enableBubbles) {
+                showDhikrBubble();
+            }
+        }, intervalMinutes * 60000);
+    }
+
+    // عرض فقاعة الأذكار
+    function showDhikrBubble() {
+        // إغلاق أي فقاعات موجودة
+        closeAllBubbles();
+        
+        const bubble = document.createElement("div");
+        bubble.className = "dhikr-bubble";
+        
+        // اختيار ذكر عشوائي
+        const dhikrType = settings.dhikrType;
+        const dhikrArray = dhikrList[dhikrType];
+        const randomIndex = Math.floor(Math.random() * dhikrArray.length);
+        
+        bubble.innerHTML = `
+            <div class="bubble-content">
+                <p>${dhikrArray[randomIndex]}</p>
+                <button class="close-bubble" onclick="this.parentElement.parentElement.style.display='none'">✕</button>
+            </div>
+        `;
+        
+        document.body.appendChild(bubble);
+        
+        // وضع عشوائي على الشاشة
+        const maxX = window.innerWidth - 250;
+        const maxY = window.innerHeight - 150;
+        bubble.style.left = `${Math.random() * maxX}px`;
+        bubble.style.top = `${Math.random() * maxY}px`;
+        bubble.style.display = 'block';
+        
+        // إضافة تأثير الظهور
+        setTimeout(() => bubble.style.opacity = '1', 10);
+        
+        // تشغيل الصوت إذا كان مفعلًا
+        if (settings.notificationSound !== 'none') {
+            playNotificationSound();
+        }
+        
+        // إرسال إشعار إذا كان مفعلًا
+        if (settings.showNotifications && Notification.permission === "granted") {
+            const notification = new Notification('تذكير بالأذكار', {
+                body: dhikrArray[randomIndex],
+                icon: 'icon.png'
+            });
+            activeNotifications.push(notification);
+        }
+    }
+
+    // إغلاق جميع الفقاعات
+    function closeAllBubbles() {
+        const bubbles = document.querySelectorAll('.dhikr-bubble');
+        bubbles.forEach(bubble => bubble.remove());
+        
+        // إغلاق جميع الإشعارات النشطة
+        activeNotifications.forEach(notification => notification.close());
+        activeNotifications = [];
+    }
+
+    // تشغيل صوت الإشعار
+    function playNotificationSound() {
+        const audio = new Audio();
+        audio.src = settings.notificationSound === 'bell' ? 'bell.mp3' : 'adhan.mp3';
+        audio.play().catch(e => console.log("لا يمكن تشغيل الصوت: ", e));
+    }
+
+    // حفظ الإعدادات
+    function saveSettings() {
+        settings = {
+            autoOpenMinutes: parseInt(document.getElementById("autoOpenMinutes").value) || 30,
+            dhikrType: document.getElementById("dhikrType").value,
+            notificationSound: document.getElementById("notificationSound").value,
+            showNotifications: document.getElementById("showNotifications").checked,
+            enableBubbles: document.getElementById("enableBubbles").checked
+        };
+        
+        localStorage.setItem("dhikrAppSettings", JSON.stringify(settings));
+        
+        // إعادة تهيئة الأذكار التلقائية
+        setupAutoDhikr();
+        
+        togglePopup('settingsPopup');
+        showDhikrBubble(); // عرض فقاعة تأكيد الحفظ
+    }
+
+    // تحميل الإعدادات
+    function loadSettings() {
+        const savedSettings = localStorage.getItem("dhikrAppSettings");
+        if (savedSettings) {
+            settings = JSON.parse(savedSettings);
+            
+            document.getElementById("autoOpenMinutes").value = settings.autoOpenMinutes || 30;
+            document.getElementById("dhikrType").value = settings.dhikrType;
+            document.getElementById("notificationSound").value = settings.notificationSound;
+            document.getElementById("showNotifications").checked = settings.showNotifications !== false;
+            document.getElementById("enableBubbles").checked = settings.enableBubbles !== false;
+        }
+    }
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>نظام الأزرار العائمة الذكي - نسخة الهاتف</title>
+
+
+    <style>
+      .floating-system {
+          position: fixed;
+          z-index: 9999;
+          bottom: 25px;
+          left: 25px; /* تغيير من right إلى left */
+          display: flex;
+          flex-direction: row;
+          gap: 15px;
+          align-items: center;
+          touch-action: none;
+      }
+      
+      /* الزر الرئيسي */
+      .main-floating-btn {
+          width: 65px;
+          height: 65px;
+          background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+          color: white;
+          border: none;
+          border-radius: 50%;
+          font-size: 24px;
+          cursor: pointer;
+          box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          -webkit-tap-highlight-color: transparent;
+          position: relative;
+          order: 1;
+      }
+  
+      /* الأزرار الثانوية */
+      .secondary-btn {
+          width: 55px;
+          height: 55px;
+          background: linear-gradient(135deg, #00b894, #55efc4);
+          color: white;
+          border: none;
+          border-radius: 50%;
+          font-size: 22px;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transform: translateX(30px);
+          visibility: hidden;
+          -webkit-tap-highlight-color: transparent;
+          position: relative;
+      }
+      
+      .secondary-btn.search-btn {
+          background: linear-gradient(135deg, #0984e3, #74b9ff);
+      }
+      
+      .secondary-btn.speech-btn {
+          background: linear-gradient(135deg, #e17055, #fab1a0);
+      }
+      
+      .secondary-btn.contact-btn {
+          background: linear-gradient(135deg, #fd79a8, #ff9ff3);
+      }
+      
+      .secondary-btn.flashcard-btn {
+          background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+          color: #333;
+      }
+  
+	.secondary-btn.eldars-btn {
+		background: linear-gradient(135deg, #9b59b6, #8e44ad);
+	}
+
+      /* حالة الأزرار عند الفتح */
+      .floating-system.expanded {
+          flex-direction: row-reverse;
+      }
+      
+      .floating-system.expanded .secondary-btn {
+          opacity: 1;
+          transform: translateX(0);
+          visibility: visible;
+      }
+      
+      .floating-system.expanded .search-btn {
+          transition-delay: 0.1s;
+      }
+      
+      .floating-system.expanded .speech-btn {
+          transition-delay: 0.2s;
+      }
+      
+      .floating-system.expanded .contact-btn {
+          transition-delay: 0.3s;
+      }
+      
+      .floating-system.expanded .flashcard-btn {
+          transition-delay: 0.4s;
+      }
+      	
+	.floating-system.expanded .eldars-btn {
+		transition-delay: 0.5s;
+	}
+  
+      /* تأثير النبض */
+      @keyframes pulse {
+          0% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.7); }
+          70% { box-shadow: 0 0 0 12px rgba(108, 92, 231, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
+      }
+  
+      .pulse-effect {
+          animation: pulse 1.5s infinite;
+      }
+  
+      /* تحسينات للهواتف الصغيرة */
+      @media (max-width: 480px) {
+          .floating-system {
+              bottom: 20px;
+              left: 20px; /* تغيير من right إلى left */
+              gap: 12px;
+          }
+          
+          .main-floating-btn {
+              width: 60px;
+              height: 60px;
+              font-size: 24px;
+          }
+          
+          .secondary-btn {
+              width: 52px;
+              height: 52px;
+              font-size: 22px;
+          }
+          
+          /* زيادة مساحة الضغط */
+          .main-floating-btn::after,
+          .secondary-btn::after {
+              content: '';
+              position: absolute;
+              top: -15px;
+              left: -15px;
+              right: -15px;
+              bottom: -15px;
+          }
+      }
+  
+      /* أنماط القلم الناطق */
+      .notification {
+          position: fixed;
+          bottom: 100px;
+          right: 20px;
+          background: #008cff;
+          color: white;
+          padding: 15px 20px;
+          border-radius: 10px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+          font-size: 18px;
+          opacity: 0;
+          transform: translateY(50px);
+          transition: opacity 0.5s, transform 0.5s;
+          display: none;
+          z-index: 9998;
+          max-width: 80%;
+      }
+  
+      .show-notification {
+          opacity: 1;
+          transform: translateY(0);
+          display: block;
+      }
+      
+      /* أنماط البحث */
+      .search-bubble {
+          position: fixed;
+          bottom: 120px;
+          right: 30px;
+          width: 350px;
+          max-height: 60vh;
+          background-color: rgb(82, 82, 82);
+          border-radius: 18px;
+          box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+          display: none;
+          flex-direction: column;
+          z-index: 10000;
+          overflow: hidden;
+          animation: bubbleAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+  
+      .search-bubble.show {
+          display: flex;
+      }
+  
+      @keyframes bubbleAppear {
+          from {
+              transform: translateY(20px) scale(0.9);
+              opacity: 0;
+          }
+          to {
+              transform: translateY(0) scale(1);
+              opacity: 1;
+          }
+      }
+  
+      .bubble-header {
+          padding: 15px;
+          background-color: #ffffff;
+          border-bottom: 1px solid #424242;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+  
+      .bubble-title {
+          font-weight: bold;
+          color: #333;
+      }
+  
+      .close-bubble {
+          background: none;
+          border: none;
+          font-size: 20px;
+          cursor: pointer;
+          color: #777;
+          padding: 0;
+          margin: 0;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+  
+      .bubble-content {
+          flex: 1;
+          overflow-y: auto;
+          padding: 0;
+      }
+  
+      .search-input {
+          width: 100%;
+          padding: 15px;
+          font-size: 16px;
+          border: none;
+          border-bottom: 2px solid #989898;
+          outline: none;
+      }
+  
+      .search-input:focus {
+          border-bottom-color: #2185d0;
+      }
+  
+      .search-results {
+          max-height: calc(60vh - 120px);
+          overflow-y: auto;
+      }
+  
+      .result-item {
+          padding: 15px;
+          border-bottom: 1px solid #747272;
+          cursor: pointer;
+          transition: background 0.2s;
+      }
+  
+      .result-item:hover {
+          background-color: #393737;
+      }
+  
+      .result-title {
+          font-weight: bold;
+          margin-bottom: 5px;
+          color: #2185d0;
+      }
+  
+      .highlight {
+          background-color: #009c05;
+          padding: 0 2px;
+          border-radius: 3px;
+      }
+      .no-results {
+          padding: 20px;
+          text-align: center;
+          color: #999;
+      }
+  
+      @media (max-width: 768px) {
+          .search-bubble {
+              right: 15px;
+              width: calc(100% - 30px);
+              max-height: 50vh;
+              bottom: 100px;
+          }
+          
+          .search-results {
+              max-height: calc(50vh - 120px);
+          }
+      }
+      
+      /* أنماط نافذة التواصل */
+      .popupCONTACT {
+          position: fixed;
+          top: 50%;
+          right: 50%;
+          transform: translate(50%, -50%);
+          width: 90%;
+          max-width: 300px;
+          background: #ffffff;
+          padding: 20px;
+          border-radius: 15px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          text-align: center;
+          z-index: 1001;
+          display: none;
+          animation: fadeIn 0.3s ease-in-out;
+      }
+  
+      .close-btnCONTACT {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          background: transparent;
+          border: none;
+          font-size: 22px;
+          color: #ff4d4d;
+          cursor: pointer;
+          font-weight: bold;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+  
+      .contact-containerCONTACT {
+          text-align: center;
+          background: #f9f9f9;
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          margin: auto;
+      }
+  
+      .contact-titleCONTACT {
+          font-size: 22px;
+          margin-bottom: 10px;
+      }
+  
+      .contact-textCONTACT {
+          font-size: 16px;
+          color: #333;
+          margin-bottom: 15px;
+      }
+  
+      .social-linksCONTACT {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+      }
+  
+      .btnCONTACT {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 12px;
+          border-radius: 8px;
+          text-decoration: none;
+          font-size: 16px;
+          font-weight: bold;
+          color: white;
+          transition: 0.3s;
+      }
+  
+      .telegram-btnCONTACT { background: #0088cc; }
+      .facebook-btnCONTACT { background: #1877f2; }
+      .instagram-btnCONTACT { background: #e1306c; }
+  
+
+
+
+
+ /* أنماط نافذة Eldars */
+ .eldars-popup {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 100%;
+max-width: 600px;
+height: 80vh;
+background: white;
+border-radius: 15px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+z-index: 10010;
+display: none;
+overflow: hidden;
+animation: fadeIn 0.3s ease-in-out;
+}
+
+.eldars-popup.show {
+display: block;
+}
+
+.eldars-header {
+padding: 15px;
+background: #9b59b6;
+color: white;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.eldars-title {
+font-weight: bold;
+font-size: 18px;
+}
+
+.close-eldars {
+background: none;
+border: none;
+color: white;
+font-size: 24px;
+cursor: pointer;
+}
+
+.eldars-content {
+width: 100%;
+height: calc(100% - 50px);
+overflow: hidden;
+position: relative;
+}
+
+.eldars-iframe {
+width: 100%; /* عرض العنصر 100% ليشغل المساحة المتاحة */
+height: 100%; /* ارتفاع العنصر 100% ليشغل المساحة المتاحة */
+position: absolute;
+top: 0;
+left: 0;
+transform: none; /* إزالة التكبير الزائد */
+border: none;
+overflow: auto; /* تمكين التمرير داخل الـiframe إذا لزم الأمر */
+}
+
+/* تحسين العرض على الشاشات الصغيرة (الهواتف) */
+@media (max-width: 768px) {
+.eldars-popup {
+	max-width: 90%;
+	height: 85vh; /* تقليل ارتفاع النافذة لتكون أكثر مرونة */
+}
+.eldars-iframe {
+	width: 100%;
+	height: 100%;
+}
+}
+
+/* تحسين العرض على الشاشات الصغيرة جدًا (الهاتف المحمول) */
+@media (max-width: 480px) {
+.eldars-popup {
+	max-width: 95%;
+	height: 90vh;
+}
+.eldars-iframe {
+	width: 100%;
+	height: 100%;
+}
+}
+
+/* تحسين العرض على الشاشات الكبيرة */
+@media (min-width: 1024px) {
+.eldars-popup {
+	max-width: 800px;
+	height: 80vh;
+}
+.eldars-iframe {
+	width: 100%;
+	height: 100%;
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      @keyframes fadeIn {
+          from { opacity: 0; transform: translate(50%, -45%); }
+          to { opacity: 1; transform: translate(50%, -50%); }
+      }
+  
+      /* تحسينات للهواتف الصغيرة */
+      @media (max-width: 480px) {
+          .floating-system {
+              bottom: 15px;
+              left: 15px; /* تغيير من right إلى left */
+              gap: 8px;
+          }
+          
+          .main-floating-btn {
+              width: 50px;
+              height: 50px;
+              font-size: 20px;
+          }
+          
+          .secondary-btn {
+              width: 42px;
+              height: 42px;
+              font-size: 18px;
+          }
+          
+          /* تحسينات للبحث على الشاشات الصغيرة */
+          .search-bubble {
+              bottom: 90px;
+              max-height: 60vh;
+          }
+          
+          /* تحسينات لنافذة التواصل */
+          .popupCONTACT {
+              max-width: 90%;
+              padding: 15px;
+          }
+          
+          .contact-titleCONTACT {
+              font-size: 18px;
+          }
+          
+          .contact-textCONTACT {
+              font-size: 14px;
+          }
+          
+          .btnCONTACT {
+              padding: 10px;
+              font-size: 14px;
+          }
+          
+          /* زيادة مساحة الضغط للأزرار */
+          .main-floating-btn::after,
+          .secondary-btn::after {
+              content: '';
+              position: absolute;
+              top: -10px;
+              left: -10px;
+              right: -10px;
+              bottom: -10px;
+          }
+          
+          /* تحسينات للإشعارات */
+          .notification {
+              bottom: 80px;
+              right: 10px;
+              font-size: 14px;
+              padding: 10px 15px;
+          }
+      }
+  
+      /* تحسينات إضافية للشاشات الصغيرة جدًا */
+      @media (max-width: 360px) {
+          .floating-system {
+              bottom: 10px;
+              left: 10px; /* تغيير من right إلى left */
+              gap: 6px;
+          }
+          
+          .main-floating-btn {
+              width: 45px;
+              height: 45px;
+              font-size: 18px;
+          }
+          
+          .secondary-btn {
+              width: 38px;
+              height: 38px;
+              font-size: 16px;
+          }
+      }
+      </style>
+
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- نظام الأزرار العائمة -->
+    <div class="floating-system" id="floatingSystem">
+        <!-- الأزرار الثانوية -->
+        <button class="secondary-btn flashcard-btn" id="flashcardBtn" title="البطاقات التعليمية">
+            <i class="far fa-copy"></i>
+        </button>
+        
+        <button class="secondary-btn contact-btn" id="contactBtn" title="الدعم الفني">
+            <i class="fas fa-headset"></i>
+        </button>
+        
+        <button class="secondary-btn speech-btn" id="speechBtn" title="القلم الناطق">
+            <i class="fas fa-microphone-alt"></i>
+        </button>
+        
+        <button class="secondary-btn search-btn" id="searchBtn" title="البحث الذكي">
+            <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="secondary-btn eldars-btn" id="eldarsBtn" title="Eldars">
+            <i class="fas fa-book"></i>
+        </button>
+        
+        <!-- الزر الرئيسي -->
+        <button class="main-floating-btn" id="mainFloatingBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <!-- إشعارات القلم الناطق -->
+    <div id="notification" class="notification"></div>
+
+    <!-- فقاعة البحث -->
+    <div class="search-bubble" id="searchBubble">
+        <div class="bubble-header">
+            <div class="bubble-title">البحث في الموقع</div>
+            <button class="close-bubble" id="closeBubble" aria-label="إغلاق البحث">×</button>
+        </div>
+        <div class="bubble-content">
+            <input type="text" class="search-input" id="searchInput" 
+                   placeholder="اكتب كلمة البحث..." autocomplete="off"
+                   aria-label="مربع البحث">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- نافذة التواصل -->
+    <div class="popupCONTACT" id="popupCONTACT">
+        <button class="close-btnCONTACT" id="closeContactBtn">✖</button>
+        <div class="contact-containerCONTACT">
+            <h3 class="contact-titleCONTACT">📩 تواصل معنا</h3>
+            <p class="contact-textCONTACT">في حالة توفر مشكلة أو لديك اقتراح سواء حول اختبار أو غيره تواصل معنا</p>
+            
+            <div class="social-linksCONTACT">
+                <a href="http://t.me/ADATEALM_bot" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                    <i class="fab fa-telegram"></i> بوت تيليغرام
+                </a>
+                
+                <a href="https://t.me/adatealm" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                    <i class="fab fa-telegram"></i> تيليغرام
+                </a>
+                
+                <a href="https://www.facebook.com/share/1BFTe2mWNL/" target="_blank" class="btnCONTACT facebook-btnCONTACT">
+                    <i class="fab fa-facebook"></i> فيسبوك
+                </a>
+                
+                <a href="https://www.instagram.com/adat_ealm?igsh=djg1eXlwMTJvM2xw" target="_blank" class="btnCONTACT instagram-btnCONTACT">
+                    <i class="fab fa-instagram"></i> إنستغرام
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة Eldars -->
+    <div class="eldars-popup" id="eldarsPopup">
+        <div class="eldars-header">
+            <div class="eldars-title">Eldars</div>
+            <button class="close-eldars" id="closeEldars">×</button>
+        </div>
+        <div class="eldars-content">
+            <iframe class="eldars-iframe" src="🔻EL MOLAKHS_MED02_U4_ANATOMIE_تشريح الغدد الدرقية والجارات الدرقية.html"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // عناصر الواجهة
+        const floatingSystem = document.getElementById('floatingSystem');
+        const mainBtn = document.getElementById('mainFloatingBtn');
+        const searchBtn = document.getElementById('searchBtn');
+        const speechBtn = document.getElementById('speechBtn');
+        const contactBtn = document.getElementById('contactBtn');
+        const flashcardBtn = document.getElementById('flashcardBtn');
+        const eldarsBtn = document.getElementById('eldarsBtn');
+        const searchBubble = document.getElementById('searchBubble');
+        const closeBubble = document.getElementById('closeBubble');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const popupCONTACT = document.getElementById('popupCONTACT');
+        const closeContactBtn = document.getElementById('closeContactBtn');
+        const notification = document.getElementById('notification');
+        const eldarsPopup = document.getElementById('eldarsPopup');
+        const closeEldars = document.getElementById('closeEldars');
+        
+        // حالات النظام
+        let isExpanded = false;
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+        let isSpeechEnabled = false;
+        let speechSynthesisInstance = window.speechSynthesis || null;
+        let currentUtterance = null;
+        let voices = [];
+        let currentResults = [];
+        let selectedIndex = -1;
+        let searchTimeout;
+        
+        // تهيئة النظام
+        function initSystem() {
+            // إضافة تأثير النبض بعد 3 ثواني
+            setTimeout(() => {
+                mainBtn.classList.add('pulse-effect');
+                setTimeout(() => {
+                    mainBtn.classList.remove('pulse-effect');
+                }, 3000);
+            }, 3000);
+            
+            // تهيئة Web Speech API
+            if (speechSynthesisInstance) {
+                speechSynthesisInstance.onvoiceschanged = function() {
+                    voices = speechSynthesisInstance.getVoices();
+                };
+                
+                // تحميل الأصوات مباشرة إذا كانت متاحة
+                voices = speechSynthesisInstance.getVoices();
+            } else {
+                speechBtn.style.display = 'none';
+            }
+            
+            // جعل النظام قابلاً للسحب
+            setupDragAndDrop();
+            
+            // إضافة أحداث اللمس
+            setupTouchEvents();
+        }
+        
+        // إعداد أحداث اللمس
+        function setupTouchEvents() {
+            // منع السلوك الافتراضي لللمس
+            const buttons = [mainBtn, searchBtn, speechBtn, contactBtn, flashcardBtn, eldarsBtn];
+            
+            buttons.forEach(btn => {
+                btn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // محاكاة تأثير الضغط
+                    this.style.transform = 'scale(0.95)';
+                    
+                    // تحديد الزر الذي تم الضغط عليه
+                    if (btn === mainBtn) {
+                        toggleSystem();
+                    } else if (btn === searchBtn) {
+                        toggleSearch();
+                    } else if (btn === speechBtn) {
+                        toggleSpeech();
+                    } else if (btn === contactBtn) {
+                        togglePopupCONTACT();
+                    } else if (btn === flashcardBtn) {
+                        goToFlashCard();
+                    } else if (btn === eldarsBtn) {
+                        toggleEldarsPopup();
+                    }
+                }, { passive: false });
+                
+                btn.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        }
+        
+        // تبديل حالة النظام (مفتوح/مغلق)
+        function toggleSystem() {
+            isExpanded = !isExpanded;
+            floatingSystem.classList.toggle('expanded', isExpanded);
+            
+            if (isExpanded) {
+                mainBtn.innerHTML = '<i class="fas fa-times"></i>';
+                mainBtn.style.transform = 'rotate(135deg)';
+                isDragging = false;
+            } else {
+                mainBtn.innerHTML = '<i class="fas fa-plus"></i>';
+                mainBtn.style.transform = 'rotate(0)';
+                closeAllPopups();
+            }
+        }
+        
+        // إغلاق جميع النوافذ المنبثقة
+        function closeAllPopups() {
+            searchBubble.classList.remove('show');
+            popupCONTACT.style.display = 'none';
+            eldarsPopup.classList.remove('show');
+        }
+        
+        // تهيئة السحب والإفلات
+        function setupDragAndDrop() {
+            // للأجهزة التي تعمل باللمس
+            mainBtn.addEventListener('touchstart', handleDragStart, { passive: false });
+            document.addEventListener('touchmove', handleDragMove, { passive: false });
+            document.addEventListener('touchend', endDrag);
+            
+            // للأجهزة التي تعمل بالماوس
+            mainBtn.addEventListener('mousedown', handleDragStart);
+            document.addEventListener('mousemove', handleDragMove);
+            document.addEventListener('mouseup', endDrag);
+        }
+        
+        function handleDragStart(e) {
+            if (isExpanded) return;
+            
+            isDragging = true;
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            
+            startX = clientX;
+            startY = clientY;
+            initialX = floatingSystem.offsetLeft;
+            initialY = floatingSystem.offsetTop;
+            
+            if (e.cancelable) e.preventDefault();
+        }
+        
+        function handleDragMove(e) {
+            if (!isDragging || isExpanded) return;
+            
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            const deltaX = clientX - startX;
+            const deltaY = clientY - startY;
+            
+            let newX = initialX + deltaX;
+            let newY = initialY + deltaY;
+            
+            // تحديد الحدود لمنع الخروج من الشاشة
+            newX = Math.max(0, Math.min(newX, window.innerWidth - floatingSystem.offsetWidth));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - floatingSystem.offsetHeight));
+            
+            floatingSystem.style.left = newX + 'px';
+            floatingSystem.style.top = newY + 'px';
+            floatingSystem.style.right = 'auto';
+            floatingSystem.style.bottom = 'auto';
+            
+            if (e.cancelable) e.preventDefault();
+        }
+        
+        function endDrag() {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            // إذا كان النظام قريبًا من الحواف، يلتصق بالحافة
+            const systemRect = floatingSystem.getBoundingClientRect();
+            const middleX = systemRect.left + systemRect.width / 2;
+            
+            // تحديد إذا كان سيلتصق باليمين أو اليسار
+            if (middleX < window.innerWidth / 2) {
+                floatingSystem.style.left = '20px';
+                floatingSystem.style.right = 'auto';
+            } else {
+                floatingSystem.style.right = 'auto';
+                floatingSystem.style.left = '20px';
+            }
+            
+            // العودة إلى الأسفل دائمًا
+            floatingSystem.style.bottom = '230px';
+            floatingSystem.style.top = 'auto';
+        }
+        
+        // وظائف الأزرار
+        function toggleSearch() {
+            if (isExpanded) toggleSystem();
+            searchBubble.classList.toggle('show');
+            if (searchBubble.classList.contains('show')) {
+                searchInput.focus();
+            }
+        }
+        
+        function toggleSpeech() {
+            if (!speechSynthesisInstance) {
+                showNotification("⚠️ هذه الميزة غير مدعومة في متصفحك");
+                return;
+            }
+            
+            if (isExpanded) toggleSystem();
+            isSpeechEnabled = !isSpeechEnabled;
+            showNotification(isSpeechEnabled ? "✅ تم تفعيل القلم الناطق!" : "⛔ تم إيقاف القلم الناطق!");
+            
+            if (isSpeechEnabled) {
+                document.addEventListener('mouseup', handleTextSelection);
+                document.addEventListener('touchend', handleTextSelection);
+            } else {
+                document.removeEventListener('mouseup', handleTextSelection);
+                document.removeEventListener('touchend', handleTextSelection);
+                stopSpeech();
+            }
+        }
+        
+        function handleTextSelection(e) {
+            if (!isSpeechEnabled) return;
+            
+            // منع النقر العادي إذا كان القلم الناطق مفعلاً
+            if (e.target.closest('.floating-system, .search-bubble, .popupCONTACT, .eldars-popup')) {
+                return;
+            }
+            
+            let selectedText = window.getSelection().toString().trim();
+            if (selectedText.length > 0) {
+                speakText(selectedText);
+            }
+        }
+        
+        function speakText(text) {
+            stopSpeech();
+            
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = /[\u0600-\u06FF]/.test(text) ? "ar-SA" : "en-US";
+            
+            // اختيار الصوت المناسب
+            if (voices.length > 0) {
+                const arabicVoices = voices.filter(v => v.lang.includes('ar'));
+                if (arabicVoices.length > 0) {
+                    utterance.voice = arabicVoices[0];
+                }
+            }
+            
+            utterance.rate = 1;
+            utterance.volume = 1.0;
+            
+            currentUtterance = utterance;
+            speechSynthesisInstance.speak(utterance);
+        }
+        
+        function stopSpeech() {
+            if (speechSynthesisInstance && speechSynthesisInstance.speaking) {
+                speechSynthesisInstance.cancel();
+            }
+            currentUtterance = null;
+        }
+        
+        function togglePopupCONTACT() {
+            if (isExpanded) toggleSystem();
+            popupCONTACT.style.display = popupCONTACT.style.display === "block" ? "none" : "block";
+        }
+        
+        function toggleEldarsPopup() {
+            if (isExpanded) toggleSystem();
+            eldarsPopup.classList.toggle('show');
+        }
+        
+        function goToFlashCard() {
+            if (isExpanded) toggleSystem();
+            document.getElementById('flashcard-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+        
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add("show-notification");
+            
+            setTimeout(() => {
+                notification.classList.remove("show-notification");
+            }, 2000);
+        }
+        
+        // أحداث البحث
+        function handleSearchInput(e) {
+            const query = e.target.value.trim();
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                clearResults();
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        }
+        
+        function performSearch(query) {
+            clearResults();
+            currentResults = [];
+            selectedIndex = -1;
+            
+            const searchableElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, [id]');
+            
+            searchableElements.forEach(element => {
+                const text = element.textContent || element.innerText;
+                const elementId = element.id || (element.parentNode.id || '');
+                
+                if (text.toLowerCase().includes(query.toLowerCase())) {
+                    const previewText = text.length > 100 ? text.substring(0, 100) + '...' : text;
+                    
+                    currentResults.push({
+                        element: element,
+                        id: elementId,
+                        title: element.tagName.startsWith('H') ? text : (elementId || 'قسم في الصفحة'),
+                        preview: previewText,
+                        fullText: text
+                    });
+                }
+            });
+            
+            if (currentResults.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            displayResults(currentResults, query);
+        }
+        
+        function displayResults(results, query) {
+            results.forEach((result, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div class="result-title">${highlightText(result.title, query)}</div>
+                    <div class="result-preview">${highlightText(result.preview, query)}</div>
+                `;
+                resultItem.addEventListener('click', () => navigateToResult(result));
+                searchResults.appendChild(resultItem);
+            });
+        }
+        
+        function highlightText(text, query) {
+            if (!query) return text;
+            return text.replace(
+                new RegExp(query, 'gi'), 
+                match => `<span class="highlight">${match}</span>`
+            );
+        }
+        
+        function navigateToResult(result) {
+            if (result.element) {
+                result.element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                const originalBg = result.element.style.backgroundColor;
+                result.element.style.backgroundColor = '#fff9c4';
+                setTimeout(() => {
+                    result.element.style.backgroundColor = originalBg;
+                }, 2000);
+            }
+            
+            searchBubble.classList.remove('show');
+        }
+        
+        function showNoResults() {
+            searchResults.innerHTML = '<div class="no-results">لا توجد نتائج مطابقة</div>';
+        }
+        
+        function clearResults() {
+            searchResults.innerHTML = '';
+            currentResults = [];
+            selectedIndex = -1;
+        }
+        
+        // إضافة الأحداث
+        mainBtn.addEventListener('click', toggleSystem);
+        searchBtn.addEventListener('click', toggleSearch);
+        speechBtn.addEventListener('click', toggleSpeech);
+        contactBtn.addEventListener('click', togglePopupCONTACT);
+        flashcardBtn.addEventListener('click', goToFlashCard);
+        eldarsBtn.addEventListener('click', toggleEldarsPopup);
+        closeBubble.addEventListener('click', () => searchBubble.classList.remove('show'));
+        closeContactBtn.addEventListener('click', togglePopupCONTACT);
+        closeEldars.addEventListener('click', toggleEldarsPopup);
+        searchInput.addEventListener('input', handleSearchInput);
+        
+        // تهيئة النظام عند التحميل
+        window.addEventListener('load', initSystem);
+        
+        // إعادة حساب المواقع عند تغيير حجم النافذة
+        window.addEventListener('resize', endDrag);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>نافذة منبثقة مع Iframe</title>
+    <style>
+        /* زر الفتح العائم - تأكد من ظهوره فوق معظم العناصر */
+        .floating-btn-warning {
+            position: fixed;
+            top: 120px; /* تغيير من bottom إلى top */
+            left: 15px;  /* تعديل القيمة */
+            width: 30px;
+            height: 50px;
+            background-color: #ff2512;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+
+        /* طبقة التعتيم - تظهر فوق كل شيء ما عدا النافذة */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999; /* أعلى من الزر ولكن أقل من النافذة */
+            display: none;
+        }
+
+        /* النافذة المنبثقة - أعلى عنصر في الصفحة */
+        .popup-iframe {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 80vh;
+            max-width: 800px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 10000; /* أعلى قيمة لضمان الظهور فوق الجميع */
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* تأثيرات التحويم والظهور */
+        .floating-btn-warning:hover {
+            transform: scale(1.1);
+            background-color: #ff3d2e;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* تنسيق رأس النافذة */
+        .popup-header {
+            position: relative;
+            display: flex; /* إضافة */
+            justify-content: center; /* إضافة */
+            align-items: center; /* إضافة */
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 15px 60px 15px 15px;
+            border-bottom: 1px solid #eee;
+            background-color: #f1c40f;
+            border-radius: 8px;
+        }
+
+        /* محتوى النافذة */
+        .popup-content {
+            margin: 10px 0;
+            height: calc(100% - 100px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* زر الإغلاق */
+        .btn-close {
+            background: linear-gradient(135deg, #ff0000, #FF3D00);
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        .btn-close:hover {
+            background: linear-gradient(135deg, #ff0000, #f62e2e);
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-close:active {
+            background: linear-gradient(135deg, #ff0000, #ea3700);
+            transform: translateY(-48%) scale(0.98);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* تنسيق الـ iframe */
+        .popup-iframe iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            border: none;
+            border-radius: 6px;
+        }
+
+        /* عنوان النافذة */
+        .popup-header h2 {
+            color: #f39c12;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 255, 0, 0.7), 0 0 10px rgba(255, 255, 0, 0.5);
+            margin: 0;
+            padding-right: 10px;
+            text-align: center;
+        }
+
+        /* تحسينات للشاشات الكبيرة */
+        @media (min-width: 768px) {
+            .floating-btn-warning {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                top: 120px; /* تغيير من bottom إلى top */
+                left: 15px;  /* تعديل القيمة */
+            }
+            
+            .popup-iframe {
+                width: 85%;
+                padding: 20px;
+                border-radius: 15px;
+            }
+            
+            .popup-header {
+                padding: 20px 80px 20px 20px;
+            }
+            
+            .popup-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .btn-close {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+        }
+
+        /* تعديلات للشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .popup-iframe {
+                width: 95%;
+                height: 85vh;
+            }
+            
+            .popup-header {
+                padding: 12px 50px 12px 12px;
+            }
+            
+            .popup-header h2 {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+            
+            .btn-close {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .floating-btn-warning {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+                top: 120px; /* تغيير من bottom إلى top */
+                left: 15px;  /* تعديل القيمة */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- زر الفتح -->
+<button class="floating-btn-warning" onclick="toggleIframePopup()">⚠️</button>
+
+<!-- طبقة التعتيم -->
+<div class="overlay" id="overlay"></div>
+
+<!-- النافذة المنبثقة -->
+<div id="popupIframe" class="popup-iframe">
+    <div class="popup-header">
+        <h2>اكتشف ما تقدمه أداة "علم" لمساعدتك في رحلتك العملية والعلمية</h2>
+        <button class="btn-close" onclick="toggleIframePopup()">إغلاق</button>
+    </div>
+    
+    <div class="popup-content">
+        <iframe src="MEDECINE_EXAM_NOTE.html" title="محتوى صفحة خارجية"></iframe>
+    </div>
+</div>
+
+<script>
+    // وظيفة فتح/غلق النافذة
+    function toggleIframePopup() {
+        const popup = document.getElementById('popupIframe');
+        const overlay = document.getElementById('overlay');
+        
+        if (popup.style.display === 'block') {
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto'; // إعادة التمرير
+        } else {
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // منع التمرير عند فتح النافذة
+        }
+    }
+
+    // إغلاق النافذة عند النقر خارجها
+    document.getElementById('overlay').addEventListener('click', toggleIframePopup);
+
+    // منع إغلاق النافذة عند النقر داخلها
+    document.getElementById('popupIframe').addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+</script>
+
+</body>
+</html>
+
+
