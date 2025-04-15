@@ -2981,9 +2981,8 @@ updateCard();
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>نظام الأزرار العائمة الذكي - نسخة الهاتف</title>
     
-    
-    
     <style>
+    
         /* النظام الأساسي */
         .floating-system {
             position: fixed;
@@ -2995,7 +2994,6 @@ updateCard();
             gap: 15px;
             align-items: center;
             touch-action: none;
-            overflow: visible;
         }
         
         /* الزر الرئيسي */
@@ -3093,6 +3091,38 @@ updateCard();
     
         .pulse-effect {
             animation: pulse 1.5s infinite;
+        }
+    
+        /* تحسينات للهواتف الصغيرة */
+        @media (max-width: 480px) {
+            .floating-system {
+                bottom: 20px;
+                right: 20px;
+                gap: 12px;
+            }
+            
+            .main-floating-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .secondary-btn {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+            }
+            
+            /* زيادة مساحة الضغط */
+            .main-floating-btn::after,
+            .secondary-btn::after {
+                content: '';
+                position: absolute;
+                top: -15px;
+                left: -15px;
+                right: -15px;
+                bottom: -15px;
+            }
         }
     
         /* أنماط القلم الناطق */
@@ -3233,6 +3263,19 @@ updateCard();
             color: #999;
         }
     
+        @media (max-width: 768px) {
+            .search-bubble {
+                right: 15px;
+                width: calc(100% - 30px);
+                max-height: 50vh;
+                bottom: 100px;
+            }
+            
+            .search-results {
+                max-height: calc(50vh - 120px);
+            }
+        }
+        
         /* أنماط نافذة التواصل */
         .popupCONTACT {
             position: fixed;
@@ -3323,7 +3366,6 @@ updateCard();
                 bottom: 15px;
                 right: 15px;
                 gap: 8px;
-                flex-direction: row-reverse;
             }
             
             .main-floating-btn {
@@ -3336,39 +3378,15 @@ updateCard();
                 width: 42px;
                 height: 42px;
                 font-size: 18px;
-                opacity: 1 !important;
-                visibility: visible !important;
-                transform: none !important;
-                margin: 0;
             }
             
-            .floating-system.expanded {
-                flex-wrap: wrap;
-                width: auto;
-                max-width: 100%;
-                justify-content: flex-end;
-            }
-            
-            /* زيادة مساحة الضغط */
-            .main-floating-btn::after,
-            .secondary-btn::after {
-                content: '';
-                position: absolute;
-                top: -10px;
-                left: -10px;
-                right: -10px;
-                bottom: -10px;
-            }
-            
-            /* تعديلات البحث */
+            /* تحسينات للبحث على الشاشات الصغيرة */
             .search-bubble {
-                right: 10px;
-                width: calc(100% - 20px);
-                max-height: 50vh;
                 bottom: 90px;
+                max-height: 60vh;
             }
             
-            /* تعديلات نافذة التواصل */
+            /* تحسينات لنافذة التواصل */
             .popupCONTACT {
                 max-width: 90%;
                 padding: 15px;
@@ -3387,7 +3405,18 @@ updateCard();
                 font-size: 14px;
             }
             
-            /* تعديلات الإشعارات */
+            /* زيادة مساحة الضغط للأزرار */
+            .main-floating-btn::after,
+            .secondary-btn::after {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+            }
+            
+            /* تحسينات للإشعارات */
             .notification {
                 bottom: 80px;
                 right: 10px;
@@ -3396,7 +3425,7 @@ updateCard();
             }
         }
     
-        /* تحسينات للهواتف الصغيرة جدًا */
+        /* تحسينات إضافية للشاشات الصغيرة جدًا */
         @media (max-width: 360px) {
             .floating-system {
                 bottom: 10px;
@@ -3431,6 +3460,9 @@ updateCard();
         
         <button class="secondary-btn contact-btn" id="contactBtn" title="الدعم الفني">
             <i class="fas fa-headset"></i>
+        </button>
+        <button class="secondary-btn speech-btn" id="speechBtn" title="القلم الناطق">
+            <i class="fas fa-microphone-alt"></i>
         </button>
         
         <button class="secondary-btn speech-btn" id="speechBtn" title="القلم الناطق">
