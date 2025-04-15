@@ -2980,8 +2980,10 @@ updateCard();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>نظام الأزرار العائمة الذكي - نسخة الهاتف</title>
-    <style>
     
+    
+    
+    <style>
         /* النظام الأساسي */
         .floating-system {
             position: fixed;
@@ -2993,6 +2995,7 @@ updateCard();
             gap: 15px;
             align-items: center;
             touch-action: none;
+            overflow: visible;
         }
         
         /* الزر الرئيسي */
@@ -3014,7 +3017,7 @@ updateCard();
             position: relative;
             order: 1;
         }
-
+    
         /* الأزرار الثانوية */
         .secondary-btn {
             width: 55px;
@@ -3053,7 +3056,7 @@ updateCard();
             background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
             color: #333;
         }
-
+    
         /* حالة الأزرار عند الفتح */
         .floating-system.expanded {
             flex-direction: row-reverse;
@@ -3080,50 +3083,18 @@ updateCard();
         .floating-system.expanded .flashcard-btn {
             transition-delay: 0.4s;
         }
-
+    
         /* تأثير النبض */
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.7); }
             70% { box-shadow: 0 0 0 12px rgba(108, 92, 231, 0); }
             100% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
         }
-
+    
         .pulse-effect {
             animation: pulse 1.5s infinite;
         }
-
-        /* تحسينات للهواتف الصغيرة */
-        @media (max-width: 480px) {
-            .floating-system {
-                bottom: 20px;
-                right: 20px;
-                gap: 12px;
-            }
-            
-            .main-floating-btn {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-            }
-            
-            .secondary-btn {
-                width: 52px;
-                height: 52px;
-                font-size: 22px;
-            }
-            
-            /* زيادة مساحة الضغط */
-            .main-floating-btn::after,
-            .secondary-btn::after {
-                content: '';
-                position: absolute;
-                top: -15px;
-                left: -15px;
-                right: -15px;
-                bottom: -15px;
-            }
-        }
-
+    
         /* أنماط القلم الناطق */
         .notification {
             position: fixed;
@@ -3142,7 +3113,7 @@ updateCard();
             z-index: 9998;
             max-width: 80%;
         }
-
+    
         .show-notification {
             opacity: 1;
             transform: translateY(0);
@@ -3165,11 +3136,11 @@ updateCard();
             overflow: hidden;
             animation: bubbleAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
+    
         .search-bubble.show {
             display: flex;
         }
-
+    
         @keyframes bubbleAppear {
             from {
                 transform: translateY(20px) scale(0.9);
@@ -3180,7 +3151,7 @@ updateCard();
                 opacity: 1;
             }
         }
-
+    
         .bubble-header {
             padding: 15px;
             background-color: #ffffff;
@@ -3189,12 +3160,12 @@ updateCard();
             justify-content: space-between;
             align-items: center;
         }
-
+    
         .bubble-title {
             font-weight: bold;
             color: #333;
         }
-
+    
         .close-bubble {
             background: none;
             border: none;
@@ -3209,13 +3180,13 @@ updateCard();
             align-items: center;
             justify-content: center;
         }
-
+    
         .bubble-content {
             flex: 1;
             overflow-y: auto;
             padding: 0;
         }
-
+    
         .search-input {
             width: 100%;
             padding: 15px;
@@ -3224,33 +3195,33 @@ updateCard();
             border-bottom: 2px solid #989898;
             outline: none;
         }
-
+    
         .search-input:focus {
             border-bottom-color: #2185d0;
         }
-
+    
         .search-results {
             max-height: calc(60vh - 120px);
             overflow-y: auto;
         }
-
+    
         .result-item {
             padding: 15px;
             border-bottom: 1px solid #747272;
             cursor: pointer;
             transition: background 0.2s;
         }
-
+    
         .result-item:hover {
             background-color: #393737;
         }
-
+    
         .result-title {
             font-weight: bold;
             margin-bottom: 5px;
             color: #2185d0;
         }
-
+    
         .highlight {
             background-color: #009c05;
             padding: 0 2px;
@@ -3261,20 +3232,7 @@ updateCard();
             text-align: center;
             color: #999;
         }
-
-        @media (max-width: 768px) {
-            .search-bubble {
-                right: 15px;
-                width: calc(100% - 30px);
-                max-height: 50vh;
-                bottom: 100px;
-            }
-            
-            .search-results {
-                max-height: calc(50vh - 120px);
-            }
-        }
-        
+    
         /* أنماط نافذة التواصل */
         .popupCONTACT {
             position: fixed;
@@ -3292,7 +3250,7 @@ updateCard();
             display: none;
             animation: fadeIn 0.3s ease-in-out;
         }
-
+    
         .close-btnCONTACT {
             position: absolute;
             top: 10px;
@@ -3309,7 +3267,7 @@ updateCard();
             align-items: center;
             justify-content: center;
         }
-
+    
         .contact-containerCONTACT {
             text-align: center;
             background: #f9f9f9;
@@ -3319,24 +3277,24 @@ updateCard();
             width: 100%;
             margin: auto;
         }
-
+    
         .contact-titleCONTACT {
             font-size: 22px;
             margin-bottom: 10px;
         }
-
+    
         .contact-textCONTACT {
             font-size: 16px;
             color: #333;
             margin-bottom: 15px;
         }
-
+    
         .social-linksCONTACT {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
+    
         .btnCONTACT {
             display: flex;
             align-items: center;
@@ -3349,22 +3307,23 @@ updateCard();
             color: white;
             transition: 0.3s;
         }
-
+    
         .telegram-btnCONTACT { background: #0088cc; }
         .facebook-btnCONTACT { background: #1877f2; }
         .instagram-btnCONTACT { background: #e1306c; }
-
+    
         @keyframes fadeIn {
             from { opacity: 0; transform: translate(50%, -45%); }
             to { opacity: 1; transform: translate(50%, -50%); }
         }
-
+    
         /* تحسينات للهواتف الصغيرة */
         @media (max-width: 480px) {
             .floating-system {
                 bottom: 15px;
                 right: 15px;
                 gap: 8px;
+                flex-direction: row-reverse;
             }
             
             .main-floating-btn {
@@ -3377,15 +3336,39 @@ updateCard();
                 width: 42px;
                 height: 42px;
                 font-size: 18px;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                margin: 0;
             }
             
-            /* تحسينات للبحث على الشاشات الصغيرة */
+            .floating-system.expanded {
+                flex-wrap: wrap;
+                width: auto;
+                max-width: 100%;
+                justify-content: flex-end;
+            }
+            
+            /* زيادة مساحة الضغط */
+            .main-floating-btn::after,
+            .secondary-btn::after {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+            }
+            
+            /* تعديلات البحث */
             .search-bubble {
+                right: 10px;
+                width: calc(100% - 20px);
+                max-height: 50vh;
                 bottom: 90px;
-                max-height: 60vh;
             }
             
-            /* تحسينات لنافذة التواصل */
+            /* تعديلات نافذة التواصل */
             .popupCONTACT {
                 max-width: 90%;
                 padding: 15px;
@@ -3404,18 +3387,7 @@ updateCard();
                 font-size: 14px;
             }
             
-            /* زيادة مساحة الضغط للأزرار */
-            .main-floating-btn::after,
-            .secondary-btn::after {
-                content: '';
-                position: absolute;
-                top: -10px;
-                left: -10px;
-                right: -10px;
-                bottom: -10px;
-            }
-            
-            /* تحسينات للإشعارات */
+            /* تعديلات الإشعارات */
             .notification {
                 bottom: 80px;
                 right: 10px;
@@ -3424,7 +3396,7 @@ updateCard();
             }
         }
     
-        /* تحسينات إضافية للشاشات الصغيرة جدًا */
+        /* تحسينات للهواتف الصغيرة جدًا */
         @media (max-width: 360px) {
             .floating-system {
                 bottom: 10px;
@@ -3445,6 +3417,7 @@ updateCard();
             }
         }
     </style>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
