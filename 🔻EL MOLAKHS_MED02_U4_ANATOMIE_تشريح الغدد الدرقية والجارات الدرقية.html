@@ -2981,6 +2981,384 @@ updateCard();
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>نظام الأزرار العائمة الذكي - نسخة الهاتف</title>
     <style>
+    
+        /* النظام الأساسي */
+        .floating-system {
+            position: fixed;
+            z-index: 9999;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+            touch-action: none;
+        }
+        
+        /* الزر الرئيسي */
+        .main-floating-btn {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            order: 1;
+        }
+
+        /* الأزرار الثانوية */
+        .secondary-btn {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #00b894, #55efc4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(30px);
+            visibility: hidden;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+        }
+        
+        .secondary-btn.search-btn {
+            background: linear-gradient(135deg, #0984e3, #74b9ff);
+        }
+        
+        .secondary-btn.speech-btn {
+            background: linear-gradient(135deg, #e17055, #fab1a0);
+        }
+        
+        .secondary-btn.contact-btn {
+            background: linear-gradient(135deg, #fd79a8, #ff9ff3);
+        }
+        
+        .secondary-btn.flashcard-btn {
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            color: #333;
+        }
+
+        /* حالة الأزرار عند الفتح */
+        .floating-system.expanded {
+            flex-direction: row-reverse;
+        }
+        
+        .floating-system.expanded .secondary-btn {
+            opacity: 1;
+            transform: translateX(0);
+            visibility: visible;
+        }
+        
+        .floating-system.expanded .search-btn {
+            transition-delay: 0.1s;
+        }
+        
+        .floating-system.expanded .speech-btn {
+            transition-delay: 0.2s;
+        }
+        
+        .floating-system.expanded .contact-btn {
+            transition-delay: 0.3s;
+        }
+        
+        .floating-system.expanded .flashcard-btn {
+            transition-delay: 0.4s;
+        }
+
+        /* تأثير النبض */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(108, 92, 231, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
+        }
+
+        .pulse-effect {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* تحسينات للهواتف الصغيرة */
+        @media (max-width: 480px) {
+            .floating-system {
+                bottom: 20px;
+                right: 20px;
+                gap: 12px;
+            }
+            
+            .main-floating-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .secondary-btn {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+            }
+            
+            /* زيادة مساحة الضغط */
+            .main-floating-btn::after,
+            .secondary-btn::after {
+                content: '';
+                position: absolute;
+                top: -15px;
+                left: -15px;
+                right: -15px;
+                bottom: -15px;
+            }
+        }
+
+        /* أنماط القلم الناطق */
+        .notification {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #008cff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
+            display: none;
+            z-index: 9998;
+            max-width: 80%;
+        }
+
+        .show-notification {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+        
+        /* أنماط البحث */
+        .search-bubble {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 350px;
+            max-height: 60vh;
+            background-color: rgb(82, 82, 82);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            z-index: 10000;
+            overflow: hidden;
+            animation: bubbleAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .search-bubble.show {
+            display: flex;
+        }
+
+        @keyframes bubbleAppear {
+            from {
+                transform: translateY(20px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .bubble-header {
+            padding: 15px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #424242;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bubble-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .close-bubble {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+            padding: 0;
+            margin: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bubble-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-bottom: 2px solid #989898;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-bottom-color: #2185d0;
+        }
+
+        .search-results {
+            max-height: calc(60vh - 120px);
+            overflow-y: auto;
+        }
+
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #747272;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .result-item:hover {
+            background-color: #393737;
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2185d0;
+        }
+
+        .highlight {
+            background-color: #009c05;
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .search-bubble {
+                right: 15px;
+                width: calc(100% - 30px);
+                max-height: 50vh;
+                bottom: 100px;
+            }
+            
+            .search-results {
+                max-height: calc(50vh - 120px);
+            }
+        }
+        
+        /* أنماط نافذة التواصل */
+        .popupCONTACT {
+            position: fixed;
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
+            width: 90%;
+            max-width: 300px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1001;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .close-btnCONTACT {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-containerCONTACT {
+            text-align: center;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin: auto;
+        }
+
+        .contact-titleCONTACT {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .contact-textCONTACT {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .social-linksCONTACT {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btnCONTACT {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .telegram-btnCONTACT { background: #0088cc; }
+        .facebook-btnCONTACT { background: #1877f2; }
+        .instagram-btnCONTACT { background: #e1306c; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(50%, -45%); }
+            to { opacity: 1; transform: translate(50%, -50%); }
+        }
+
         /* تحسينات للهواتف الصغيرة */
         @media (max-width: 480px) {
             .floating-system {
