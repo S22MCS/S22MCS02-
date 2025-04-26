@@ -4,59 +4,426 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سورة الكهف</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        :root {
+            /* ألوان الوضع النهاري */
+            --primary-color: #2c3e50;
+            --secondary-color: #000000;
+            --text-color: #333333;
+            --bg-color: #f5f5f5;
+            --container-bg: #ffffff;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --title-color: #1a5276;
+            --progress-bar: #4CAF50;
+            
+            /* ألوان الوضع الليلي */
+            --dark-bg-color: #0d0d0d;
+            --dark-container-bg: #1a1a1a;
+            --dark-text-color: #e6e6e6;
+            --dark-title-color: #7fb3d5;
+            --dark-ayah-color: #ffffff;
+            --dark-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            --dark-progress-bar: #8BC34A;
+            
+            /* ألوان وضع حماية العين */
+            --eye-protection-bg: #fff5e6;
+            --eye-protection-container: #ffeed9;
+            --eye-protection-text: #5a4a42;
+            --eye-protection-ayah: #5a4a42;
+            --eye-protection-progress: #FF9800;
+            
+            --dark-eye-protection-bg: #1a1612;
+            --dark-eye-protection-container: #26221c;
+            --dark-eye-protection-text: #d7ccc0;
+            --dark-eye-protection-ayah: #d7ccc0;
+            --dark-eye-protection-progress: #FFA726;
+        }
+        
         body {
             font-family: 'Arial', sans-serif;
             text-align: center;
-            background-color: #f9f9f9;
+            background-color: var(--bg-color);
             margin: 0;
             padding: 0;
             direction: rtl;
+            transition: all 0.5s ease;
+            color: var(--text-color);
+            min-height: 100vh;
         }
+        
+        /* شريط التقدم */
+        .progress-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--container-bg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1001;
+            transition: all 0.5s ease;
+            padding: 10px 0;
+        }
+        
+        .progress-container {
+            width: 90%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 5px auto;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--progress-bar);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 5px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            margin: 0 auto;
+            font-size: 0.9em;
+        }
+        
+        .progress-title {
+            font-weight: bold;
+            color: var(--title-color);
+        }
+        
+        .progress-percent {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
         .container {
             max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            margin: 80px auto 20px;
+            padding: 30px;
+            background: var(--container-bg);
+            box-shadow: var(--box-shadow);
+            border-radius: 15px;
+            transition: all 0.5s ease;
         }
+        
         h1 {
-            color: #2c3e50;
+            color: var(--title-color);
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            transition: color 0.5s ease;
         }
+        
+        h2 {
+            color: var(--text-color);
+            font-size: 1.5em;
+            transition: color 0.5s ease;
+            margin-bottom: 5px;
+        }
+        
         p {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #333;
+            font-size: 1.1em;
+            line-height: 1.9;
+            color: var(--text-color);
+            transition: all 0.5s ease;
+            margin-bottom: 20px;
         }
+        
         .ayah {
-            color: #27ae60;
+            color: var(--secondary-color);
             font-weight: bold;
+            transition: all 0.5s ease;
         }
+        
+        /* أنماط الوضع الليلي */
+        body.dark-mode {
+            background-color: var(--dark-bg-color);
+            color: var(--dark-text-color);
+        }
+        
+        body.dark-mode .progress-header {
+            background-color: var(--dark-container-bg);
+        }
+        
+        body.dark-mode .container {
+            background-color: var(--dark-container-bg);
+            box-shadow: var(--dark-box-shadow);
+        }
+        
+        body.dark-mode h1 {
+            color: var(--dark-title-color);
+        }
+        
+        body.dark-mode h2 {
+            color: var(--dark-text-color);
+        }
+        
+        body.dark-mode .ayah {
+            color: var(--dark-ayah-color);
+        }
+        
+        body.dark-mode .progress-bar {
+            background: var(--dark-progress-bar);
+        }
+        
+        body.dark-mode .progress-title {
+            color: var(--dark-title-color);
+        }
+        
+        body.dark-mode .progress-percent {
+            color: var(--dark-progress-bar);
+        }
+        
+        /* وضع حماية العين */
+        body.eye-protection {
+            background-color: var(--eye-protection-bg);
+            color: var(--eye-protection-text);
+        }
+        
+        body.eye-protection .progress-header {
+            background-color: var(--eye-protection-container);
+        }
+        
+        body.eye-protection .container {
+            background-color: var(--eye-protection-container);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        body.eye-protection .ayah {
+            color: var(--eye-protection-ayah);
+            font-weight: normal;
+        }
+        
+        body.eye-protection .progress-bar {
+            background: var(--eye-protection-progress);
+        }
+        
+        body.eye-protection .progress-title {
+            color: var(--eye-protection-text);
+        }
+        
+        body.eye-protection .progress-percent {
+            color: var(--eye-protection-progress);
+        }
+        
+        /* وضع حماية العين مع الوضع الليلي */
+        body.dark-mode.eye-protection {
+            background-color: var(--dark-eye-protection-bg);
+            color: var(--dark-eye-protection-text);
+        }
+        
+        body.dark-mode.eye-protection .progress-header {
+            background-color: var(--dark-eye-protection-container);
+        }
+        
+        body.dark-mode.eye-protection .container {
+            background-color: var(--dark-eye-protection-container);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        body.dark-mode.eye-protection .ayah {
+            color: var(--dark-eye-protection-ayah);
+            font-weight: normal;
+        }
+        
+        body.dark-mode.eye-protection .progress-bar {
+            background: var(--dark-eye-protection-progress);
+        }
+        
+        body.dark-mode.eye-protection .progress-title {
+            color: var(--dark-eye-protection-text);
+        }
+        
+        body.dark-mode.eye-protection .progress-percent {
+            color: var(--dark-eye-protection-progress);
+        }
+        
+        /* عناصر التحكم */
+        .controls {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .control-btn {
+            background-color: var(--primary-color);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+            position: relative;
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.12);
+        }
+        
+        .control-btn.active {
+            background-color: var(--secondary-color);
+        }
+        
+        /* زر حماية العين */
+        #eyeProtectionToggle {
+            background-color: #8d6e63;
+        }
+        
+        #eyeProtectionToggle.active {
+            background-color: #a1887f;
+        }
+        
+        /* صورة البسملة */
+        .basmala-container {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .basmala {
+            max-width: 80%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* تذييل الصفحة */
+        .footer {
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 35px;
+            transition: all 0.5s ease;
+        }
+        
         /* استجابة للهاتف */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .container {
-                width: 90%;
-                padding: 15px;
+                width: 92%;
+                padding: 20px;
+                margin-top: 70px;
             }
-            p {
-                font-size: 16px;
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                bottom: 20px;
+                left: 20px;
+            }
+            
+            .progress-header {
+                padding: 8px 0;
+            }
+            
+            .progress-container {
+                height: 8px;
+            }
+            
+            .progress-info {
+                font-size: 0.8em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .progress-header {
+                padding: 5px 0;
+            }
+            
+            .progress-container {
+                height: 6px;
+            }
+            
+            .progress-info {
+                font-size: 0.75em;
+            }
+            
+            .controls {
+                bottom: 15px;
+                left: 15px;
+            }
+            
+            .control-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 0.9em;
             }
         }
     </style>
 </head>
 <body>
+    <!-- شريط التقدم المحسّن -->
+    <div class="progress-header">
+        <div class="progress-info">
+            <span class="progress-title">ورد اليوم الأول</span>
+            <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="themeToggle" title="تبديل الوضع الليلي">
+            <i class="fas fa-moon"></i>
+        </button>
+        <button class="control-btn" id="eyeProtectionToggle" title="وضع حماية العين">
+            <i class="fas fa-eye"></i>
+        </button>
+    </div>
 
     <div class="container">
         <h1>سورة الكهف</h1>
 		<h1>القرآن الكريم  رواية حفص عن عاصم سورة الكهف مكتوبة بالرسم العثماني
 		</h1>
-        <p>
-          
-<div style="font-size:2.2em;text-align:justify;font-family:conv_original-hafs;color:#17274a;font-weight:400;line-height:1.65em;margin:0 0 1em">
-	<a id="reading" name="1"><h2 style="font-size: 1em;font-family: conv_original-hafs;text-align: center;">سورة الكهف مكتوبة كاملة بالتشكيل | كتابة وقراءة</h2></a>
-	<p style="text-align: center;"><img loading="lazy" alt="بسم الله الرحمن الرحيم" style="max-width: 75%; border-radius:0%;text-align: center; " src="SALAT JOMOAA/basmalah.png"></p>
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="surah-text">
+					<div class="basmala-container">
+					
+						<h3>أَعُوذُ بِاللَّهِ مِنَ الشَّيطَانِ الرَّجِيمِ</h3>
+						<h3>بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ</h3>
+					</div>
+				
+
+
+
+		
+					<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;">
+						<div style="font-size: 1.5em;  line-height: 1.5; max-width: 600px;">
+							<h3 style="margin: 0; white-space: pre-line;">
+		
+				
 	ٱلۡحَمۡدُ <b>لِلَّهِ</b> ٱلَّذِيٓ أَنزَلَ عَلَىٰ عَبۡدِهِ ٱلۡكِتَٰبَ وَلَمۡ يَجۡعَل لَّهُۥ عِوَجَاۜ 
 	<label>(1)</label> قَيِّمٗا لِّيُنذِرَ بَأۡسٗا شَدِيدٗا مِّن لَّدُنۡهُ وَيُبَشِّرَ ٱلۡمُؤۡمِنِينَ 
 	ٱلَّذِينَ يَعۡمَلُونَ ٱلصَّٰلِحَٰتِ أَنَّ لَهُمۡ أَجۡرًا حَسَنٗا <label>(2)</label> 
@@ -240,21 +607,142 @@
 	
 	
 	<br>
-	<br>
-	<br>
-	<p class="p5">لا تنسنا من دعوة صالحة بظهر الغيب</p>
-	<p class="p5" style="font-family: Arial, sans-serif; font-size: 18px; color: #333; background-color: #f8f8f8; padding: 10px; border-radius: 8px; text-align: center;">
-		المصدر: موقع <a href="https://surahquran.com/18.html" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">القرآن الكريم</a>
-	</p>
-	
-	
-	 </div>								
-	 </div>	
-        </p>
+
+    
+                    </h3>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            <div class="footer">
+                <p>لا تنسنا من دعوة صالحة بظهر الغيب</p>
+                <p>المصدر: موقع <a href="https://surahquran.com/18.html" target="_blank">القرآن الكريم</a></p>
+            </div>
+        </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const eyeProtectionToggle = document.getElementById('eyeProtectionToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const eyeIcon = eyeProtectionToggle.querySelector('i');
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            
+            // تحميل التفضيلات المحفوظة
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeToggle.classList.add('active');
+            }
+            
+            if (localStorage.getItem('eyeProtection') === 'enabled') {
+                document.body.classList.add('eye-protection');
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+                eyeProtectionToggle.classList.add('active');
+            }
+            
+            // تبديل الوضع الليلي
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                
+                if (isDarkMode) {
+                    localStorage.setItem('darkMode', 'enabled');
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                    themeToggle.classList.add('active');
+                } else {
+                    localStorage.setItem('darkMode', 'disabled');
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                    themeToggle.classList.remove('active');
+                }
+            });
+            
+            // تبديل وضع حماية العين
+            eyeProtectionToggle.addEventListener('click', function() {
+                document.body.classList.toggle('eye-protection');
+                const isEyeProtection = document.body.classList.contains('eye-protection');
+                
+                if (isEyeProtection) {
+                    localStorage.setItem('eyeProtection', 'enabled');
+                    eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+                    eyeProtectionToggle.classList.add('active');
+                } else {
+                    localStorage.setItem('eyeProtection', 'disabled');
+                    eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+                    eyeProtectionToggle.classList.remove('active');
+                }
+            });
+            
+            // حساب تقدم القراءة
+            function updateProgress() {
+                const windowHeight = window.innerHeight;
+                const fullHeight = document.body.scrollHeight;
+                const scrolled = window.scrollY;
+                const progress = (scrolled / (fullHeight - windowHeight)) * 100;
+                
+                progressBar.style.width = progress + '%';
+                progressPercent.textContent = Math.round(progress) + '%';
+                
+                // تخزين التقدم عند الوصول إلى 100%
+                if (progress >= 100) {
+                    localStorage.setItem('readingProgress', 'completed');
+                }
+            }
+            
+            // تحديث شريط التقدم عند التمرير
+            window.addEventListener('scroll', updateProgress);
+            
+            // تحديث أولي عند تحميل الصفحة
+            updateProgress();
+        });
+    </script>
 </body>
 </html>
-
-
-	
