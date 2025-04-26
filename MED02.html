@@ -8825,3 +8825,595 @@
   
   </body>
   </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>طائرة - S22MCS والقرآن</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Tajawal', Arial, sans-serif;
+    }
+    body {
+      background-color: #f0f8ff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      font-size: 16px;
+    }
+    
+    /* أنماط طائرة S22MCS */
+    .flying-container {
+      position: fixed;
+      top: 15%;
+      left: -500px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      animation: flyAcross 40s linear forwards;
+      filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+      direction: ltr;
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+    .flying-container.show {
+      opacity: 1;
+    }
+    @keyframes flyAcross {
+      0% { transform: scale(0.9) translateX(0) translateY(0) rotate(0deg); left: -500px; opacity: 0; }
+      5% { opacity: 1; }
+      20% { transform: scale(1) translateX(0) translateY(-10px) rotate(-2deg); }
+      40% { transform: scale(1.02) translateX(0) translateY(5px) rotate(1deg); }
+      60% { transform: scale(1.03) translateX(0) translateY(-5px) rotate(-1deg); }
+      80% { transform: scale(1.05) translateX(0) translateY(8px) rotate(2deg); }
+      95% { opacity: 1; }
+      100% { left: 100vw; opacity: 0; }
+    }
+    .rope {
+      width: 40px;
+      height: 4px;
+      background: #546e7a;
+      margin: 0 5px;
+      position: relative;
+    }
+    .rope::before, .rope::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #546e7a;
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .rope::before { left: -3px; }
+    .rope::after { right: -3px; }
+    .airplane {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .airplane img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .banner {
+      position: relative;
+      width: 280px;
+      min-height: 100px;
+      background: rgba(30, 136, 229, 0.5);
+      backdrop-filter: blur(10px);
+      border-radius: 20px 0 0 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.4s ease-in-out;
+      pointer-events: auto;
+    }
+    .banner:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    }
+    .banner-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    }
+    .banner-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .banner-link {
+      background: rgba(255,255,255,0.1);
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 500;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 5px rgba(255,255,255,0.1);
+    }
+    .banner-link:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.02);
+    }
+    .banner-link i {
+      margin-left: 10px;
+      font-size: 1.2rem;
+      color: #e3f2fd;
+    }
+
+    /* أنماط طائرة القرآن */
+    .flying-container-quran {
+      position: fixed;
+      top: 15%;
+      left: -500px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      animation: flyAcrossQuran 30s linear forwards;
+      filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+      direction: ltr;
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+    .flying-container-quran.show {
+      opacity: 1;
+    }
+    @keyframes flyAcrossQuran {
+      0% { transform: scale(0.9) translateX(0) translateY(0) rotate(0deg); left: -500px; opacity: 0; }
+      5% { opacity: 1; }
+      20% { transform: scale(1) translateX(0) translateY(-10px) rotate(-2deg); }
+      40% { transform: scale(1.02) translateX(0) translateY(5px) rotate(1deg); }
+      60% { transform: scale(1.03) translateX(0) translateY(-5px) rotate(-1deg); }
+      80% { transform: scale(1.05) translateX(0) translateY(8px) rotate(2deg); }
+      95% { opacity: 1; }
+      100% { left: 100vw; opacity: 0; }
+    }
+    .rope-quran {
+      width: 40px;
+      height: 4px;
+      background: #2e7d32;
+      margin: 0 5px;
+      position: relative;
+    }
+    .rope-quran::before, .rope-quran::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #2e7d32;
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .rope-quran::before { left: -3px; }
+    .rope-quran::after { right: -3px; }
+    .airplane-quran {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .airplane-quran img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .banner-quran {
+      position: relative;
+      width: 280px;
+      min-height: 100px;
+      background: linear-gradient(135deg, rgba(46, 125, 50, 0.95) 0%, rgba(27, 94, 32, 0.95) 100%);
+      backdrop-filter: blur(10px);
+      border-radius: 20px 0 0 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.4s ease-in-out;
+      pointer-events: auto;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .banner-quran:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    }
+    .banner-title-quran {
+      font-weight: 700;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .banner-links-quran {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .banner-link-quran {
+      background: rgba(255,255,255,0.15);
+      padding: 10px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .banner-link-quran:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateX(5px);
+    }
+    .banner-link-quran i {
+      margin-left: 10px;
+      font-size: 1.1rem;
+      color: #e8f5e9;
+    }
+    .banner-link-quran::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    .banner-link-quran:hover::after {
+      transform: translateX(100%);
+    }
+
+    /* تحسينات للهواتف */
+    @media (max-width: 768px) {
+      .airplane, .airplane-quran {
+        width: 60px;
+        height: 60px;
+      }
+      .rope, .rope-quran {
+        width: 30px;
+      }
+      .banner, .banner-quran {
+        width: 220px;
+        padding: 12px;
+        min-height: 85px;
+      }
+      .banner-title, .banner-title-quran {
+        font-size: 1rem;
+      }
+      .banner-link, .banner-link-quran {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        font-size: 14px;
+      }
+      .flying-container, .flying-container-quran {
+        top: 10%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- مشهد الطائرة الأولى (S22MCS) -->
+  <div class="flying-container" id="fly">
+    <div class="banner">
+      <div class="banner-title"><i class="fas fa-paper-plane"></i> تابع ال S22MCS</div>
+      <div class="banner-links">
+        <a href="https://t.me/S22MCS" class="banner-link" target="_blank"><i class="fab fa-telegram"></i> التيليجرام الرسمي</a>
+        <a href="https://www.instagram.com/s22mcs/profilecard" class="banner-link" target="_blank"><i class="fab fa-instagram"></i> الانتستقرام الرسمي</a>
+        <a href="https://www.facebook.com/profile.php?id=61552919247921" class="banner-link" target="_blank"><i class="fab fa-facebook"></i> الفيس الرسمي</a>
+        <a href="https://www.tiktok.com/@s22mcs" class="banner-link" target="_blank"><i class="fab fa-tiktok"></i> التيك توك الرسمي</a>
+        <a href="https://x.com/S22MCS" class="banner-link" target="_blank"><i class="fab fa-twitter"></i> التويتر الرسمي</a>
+      </div>
+    </div>
+    <div class="rope"></div>
+    <div class="airplane" style="width: 120px; height: 120px;">
+      <video src="adatealm/flying-airplane.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
+    </div>
+  </div>
+
+  <!-- مشهد الطائرة الثانية (القرآن) -->
+  <div class="flying-container-quran" id="flyQuran">
+    <div class="banner-quran">
+      <div class="banner-title-quran"><i class="fas fa-book-quran"></i> السلام عليكم نذكركم بتحدي ختم القرآن</div>
+      <div class="banner-links-quran">
+        <a href="index_KHATM_WARCH_30YOM.html" class="banner-link-quran" target="_blank"><i class="fas fa-play"></i> ابدأ تحدي  ختم القران الآن</a>
+        <a href="https://adatealm.github.io/khtam-alqaran/" class="banner-link-quran" target="_blank"><i class="fas fa-globe"></i>    الموقع الإلكتروني لختم القران</a>
+        <a href="https://t.me/adatealm/197" class="banner-link-quran" target="_blank"><i class="fab fa-android"></i> تحميل  تطبيق ختم القران للاندرويد</a>
+        <a href="https://t.me/adatealm/230" class="banner-link-quran" target="_blank"><i class="fab fa-telegram"></i>  قناة التليجرام لاداة علم</a>
+      </div>
+    </div>
+   
+        <div class="airplane-quran"style="width: 120px; height: 120px;">
+            <video src="adatealm/flying-airplane.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
+          </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const flyingContainer = document.getElementById('fly');
+      const flyingContainerQuran = document.getElementById('flyQuran');
+      
+      // إعدادات التحليق
+      const settings = {
+        initialDelay: 3000,       // تأخير البدء الأولي (3 ثواني)
+        flightDuration: 40000,    // مدة التحليق (40 ثانية)
+        quranFlightDuration: 30000, // مدة تحليق القرآن (30 ثانية)
+        minHeight: 10,           // أقل ارتفاع للطائرة (بالمئة)
+        maxHeight: 30            // أعلى ارتفاع للطائرة (بالمئة)
+      };
+      
+      // دالة لبدء التحليق
+      function startFlight(container, duration, isQuran = false) {
+        // إعادة تعيين الطائرة
+        container.style.animation = 'none';
+        container.style.left = '-500px';
+        container.style.opacity = '0';
+        container.classList.remove('show');
+        
+        // إعادة حساب العرض لضمان التمرير الصحيح
+        void container.offsetWidth;
+
+        // وضع عشوائي للارتفاع
+        const randomHeight = Math.random() * (settings.maxHeight - settings.minHeight) + settings.minHeight;
+        container.style.top = randomHeight + '%';
+
+        // بدء التحليق بعد تأخير بسيط
+        setTimeout(() => {
+          const animationName = isQuran ? 'flyAcrossQuran' : 'flyAcross';
+          container.style.animation = `${animationName} ${duration/1000}s linear forwards`;
+          container.classList.add('show');
+        }, 100);
+      }
+      
+      // دالة لإدارة التحليق المتناوب
+      function manageFlights() {
+        // بدء تحليق الطائرة الأولى
+        startFlight(flyingContainer, settings.flightDuration);
+        
+        // بعد انتهاء تحليق الطائرة الأولى، ابدأ تحليق القرآن
+        setTimeout(() => {
+          startFlight(flyingContainerQuran, settings.quranFlightDuration, true);
+          
+          // بعد انتهاء تحليق القرآن، ابدأ الدورة من جديد
+          setTimeout(() => {
+            manageFlights();
+          }, settings.quranFlightDuration + 30000); // تأخير 30 ثانية بين التحليقات
+        }, settings.flightDuration + 30000); // تأخير 30 ثانية بين التحليقات
+      }
+      
+      // بدء التحليق الأول بعد التأخير الأولي
+      setTimeout(() => {
+        manageFlights();
+      }, settings.initialDelay);
+    });
+  </script>
+</body>
+</html>

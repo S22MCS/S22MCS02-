@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>طائرة - القرآن</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Tajawal', Arial, sans-serif;
+    }
+    body {
+      background-color: #f0f8ff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      font-size: 16px;
+    }
+    .flying-container {
+      position: fixed;
+      top: 15%;
+      left: -500px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      animation: flyAcross 60s linear forwards;
+      filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+      direction: ltr;
+      opacity: 0;
+      transition: opacity 2s ease;
+      pointer-events: none;
+    }
+    .flying-container.show {
+      opacity: 1;
+    }
+    @keyframes flyAcross {
+      0% { transform: scale(0.9) translateX(0) translateY(0) rotate(0deg); left: -500px; opacity: 0; }
+      5% { opacity: 1; }
+      20% { transform: scale(1) translateX(0) translateY(-10px) rotate(-2deg); }
+      40% { transform: scale(1.02) translateX(0) translateY(5px) rotate(1deg); }
+      60% { transform: scale(1.03) translateX(0) translateY(-5px) rotate(-1deg); }
+      80% { transform: scale(1.05) translateX(0) translateY(8px) rotate(2deg); }
+      95% { opacity: 1; }
+      100% { left: 100vw; opacity: 0; }
+    }
+    .rope {
+      width: 40px;
+      height: 4px;
+      background: #546e7a;
+      margin: 0 5px;
+      position: relative;
+    }
+    .rope::before, .rope::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #546e7a;
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .rope::before { left: -3px; }
+    .rope::after { right: -3px; }
+    .airplane {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .airplane img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .banner {
+      position: relative;
+      width: 280px;
+      min-height: 100px;
+      background: linear-gradient(135deg, rgba(46, 125, 50, 0.9) 0%, rgba(27, 94, 32, 0.9) 100%);
+      backdrop-filter: blur(10px);
+      border-radius: 20px 0 0 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.8s ease-in-out;
+      pointer-events: auto;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .banner:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    }
+    .banner-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .banner-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .banner-link {
+      background: rgba(255,255,255,0.15);
+      padding: 10px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      transition: all 0.6s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .banner-link:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateX(5px);
+    }
+    .banner-link i {
+      margin-left: 10px;
+      font-size: 1.1rem;
+      color: #e3f2fd;
+    }
+    .banner-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+      transform: translateX(-100%);
+      transition: transform 1.2s;
+    }
+    .banner-link:hover::after {
+      transform: translateX(100%);
+    }
+
+    /* تحسينات للهواتف */
+    @media (max-width: 768px) {
+      .flying-container {
+        top: 10%;
+        animation-duration: 50s;
+      }
+      .airplane {
+        width: 60px;
+        height: 60px;
+      }
+      .rope {
+        width: 25px;
+      }
+      .banner {
+        width: 220px;
+        padding: 12px;
+        min-height: 90px;
+        border-radius: 15px 0 0 15px;
+      }
+      .banner-title {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      .banner-link {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        font-size: 14px;
+      }
+      .flying-container {
+        top: 8%;
+        animation-duration: 40s;
+      }
+      .banner {
+        width: 200px;
+        padding: 10px;
+        min-height: 80px;
+      }
+      .banner-title {
+        font-size: 0.9rem;
+      }
+      .banner-link {
+        font-size: 0.8rem;
+        padding: 7px 8px;
+      }
+      .banner-link i {
+        font-size: 0.9rem;
+        margin-left: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- مشهد الطائرة -->
+  <div class="flying-container" id="fly">
+    <div class="banner">
+      <div class="banner-title"><i class="fas fa-paper-plane"></i> السلام عليكم نذكركم بتحدي ختم القرآن</div>
+      <div class="banner-links">
+        <a href="index_KHATM_WARCH_30YOM.html" class="banner-link" target="_blank"><i class="fas fa-play"></i> ابدأ التحدي الآن</a>
+        <a href="https://adatealm.github.io/khtam-alqaran/" class="banner-link" target="_blank"><i class="fas fa-globe"></i> الموقع الإلكتروني</a>
+        <a href="https://t.me/adatealm/197" class="banner-link" target="_blank"><i class="fab fa-android"></i> تحميل للتطبيق</a>
+        <a href="https://t.me/adatealm/230" class="banner-link" target="_blank"><i class="fab fa-telegram"></i> قناة التليجرام</a>
+      </div>
+    </div>
+    <div class="rope"></div>
+    <div class="airplane">
+      <img src="https://cdn.pixabay.com/animation/2022/12/18/23/42/23-42-11-879_512.gif" alt="طائرة تحلق">
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const flyingContainer = document.getElementById('fly');
+      
+      // إعدادات التحليق
+      const settings = {
+        initialDelay: 30000,       // تأخير البدء الأولي (30 ثانية)
+        flightDuration: 60000,     // مدة التحليق (60 ثانية)
+        flightInterval: 300000,    // الفترة بين التحليقات (5 دقائق)
+        minHeight: 5,            // أقل ارتفاع للطائرة (بالمئة)
+        maxHeight: 25,           // أعلى ارتفاع للطائرة (بالمئة)
+      };
+  
+      // دالة لبدء التحليق
+      function startFlight() {
+        // إعادة تعيين الطائرة
+        flyingContainer.style.animation = 'none';
+        flyingContainer.style.left = '-500px';
+        flyingContainer.style.opacity = '0';
+        flyingContainer.classList.remove('show');
+        
+        // إعادة حساب العرض لضمان التمرير الصحيح
+        void flyingContainer.offsetWidth;
+  
+        // وضع عشوائي للارتفاع
+        const randomHeight = Math.random() * (settings.maxHeight - settings.minHeight) + settings.minHeight;
+        flyingContainer.style.top = randomHeight + '%';
+  
+        // بدء التحليق بعد تأخير بسيط
+        setTimeout(() => {
+          flyingContainer.style.animation = `flyAcross ${settings.flightDuration/1000}s linear forwards`;
+          flyingContainer.classList.add('show');
+        }, 100);
+      }
+      
+      // بدء التحليق الأول بعد التأخير الأولي
+      setTimeout(() => {
+        startFlight(); // التحليق الأول
+        
+        // تكرار التحليق كل 5 دقائق
+        setInterval(startFlight, settings.flightInterval);
+      }, settings.initialDelay);
+    });
+  </script>
+</body>
+</html>
