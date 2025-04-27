@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ختمة القرآن الكريم - برنامج ختم القرآن في 30 يومًا</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ختمة القرآن في 30 يومًا</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -160,6 +160,11 @@
             min-height: 80px;
         }
 
+        .day-card.current-day {
+            background: linear-gradient(135deg, #d4af37, #f1c40f);
+            transform: scale(1.05);
+        }
+
         .day-card::before {
             content: "";
             position: absolute;
@@ -195,34 +200,6 @@
             margin-bottom: 5px;
         }
 
-        blockquote {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-right: 5px solid var(--secondary-color);
-            margin: 20px auto;
-            max-width: 800px;
-            border-radius: var(--border-radius);
-            position: relative;
-            font-style: italic;
-        }
-
-        blockquote::before {
-            content: "\201C";
-            font-size: 4rem;
-            position: absolute;
-            left: 10px;
-            top: 10px;
-            color: rgba(255, 255, 255, 0.2);
-            font-family: serif;
-        }
-
-        .hadith-source {
-            display: block;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: var(--secondary-color);
-        }
-
         .progress-container {
             width: 90%;
             max-width: 800px;
@@ -242,7 +219,6 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
-        /* التنسيقات الجديدة للعداد التنازلي */
         .countdown-container {
             background: rgba(0, 0, 0, 0.1);
             padding: 15px;
@@ -312,17 +288,6 @@
             
             .day-number {
                 font-size: 1.5rem;
-            }
-
-            blockquote {
-                padding: 15px;
-                font-size: 0.95rem;
-            }
-
-            blockquote::before {
-                font-size: 3rem;
-                left: 5px;
-                top: 5px;
             }
             
             .countdown-item {
@@ -401,11 +366,6 @@
                 padding: 10px 15px;
                 font-size: 0.9rem;
             }
-            
-            blockquote {
-                padding: 15px 10px;
-                font-size: 0.9rem;
-            }
         }
     </style>
 </head>
@@ -417,31 +377,57 @@
         <h1>ختمة القرآن الكريم</h1>
         <p>برنامج ختم القرآن في 30 يومًا - يشفع لك يوم القيامة</p>
         
-        <!-- شريط التقدم -->
         <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
         
-        <!-- العداد التنازلي -->
         <div class="countdown-container">
             <div class="countdown-title" id="currentDayTitle">اليوم الأول</div>
             <div class="countdown-info">
                 <div class="countdown-item">
                     <div class="countdown-value" id="daysLeft">30</div>
-                    <div class="countdown-label">يوم متبقي</div>
+                    <div class="countdown-label">أيام متبقية في هذه الدورة</div>
                 </div>
                 <div class="countdown-item">
                     <div class="countdown-value" id="hoursLeft">24</div>
-                    <div class="countdown-label">ساعة متبقية</div>
+                    <div class="countdown-label">ساعة متبقية حتى نهاية اليوم</div>
                 </div>
             </div>
         </div>
     </header>
 
-
-
-
     <main>
+        <section style="padding: 20px; max-width: 900px; margin: 0 auto;">
+            <div class="buttons-container">
+                <button class="custom-button" onclick="navigateToPage('#')">
+                    <i class="fas fa-calendar-alt"></i> (قريبا) اختم في أربعين يوم
+                </button>
+                <button class="custom-button" onclick="navigateToPage('index.html')">
+                    <i class="fas fa-book-open"></i> أختم في ثلاثين يوم 
+                </button>
+                <button class="custom-button" onclick="navigateToPage('#')">
+                    <i class="fas fa-trophy"></i> (قريبا) الختم في سبعة أيام
+                </button>
+            </div>
+        </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         <section style="padding: 20px; max-width: 900px; margin: 0 auto;">
             <p style="font-size: 1.2rem; color: var(--accent-color);">
 
@@ -518,78 +504,81 @@
 
 
 
+
+        
         <section>
             <h2 style="color: var(--primary-color); margin-top: 30px;">خطة الختمة في 30 يومًا</h2>
             <div class="days-container" id="daysContainer">
                 <!-- سيتم ملؤها بالجافاسكريبت -->
             </div>
         </section>
-
-
-
-
     </main>
 
     <script>
+        // دالة تحويل الأرقام إلى كلمات
+        function numberToArabicWords(number) {
+            const units = ['', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 
+                          'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر',
+                          'الحادي عشر', 'الثاني عشر', 'الثالث عشر', 'الرابع عشر', 'الخامس عشر',
+                          'السادس عشر', 'السابع عشر', 'الثامن عشر', 'التاسع عشر', 'العشرون',
+                          'الحادي والعشرون', 'الثاني والعشرون', 'الثالث والعشرون', 'الرابع والعشرون', 'الخامس والعشرون',
+                          'السادس والعشرون', 'السابع والعشرون', 'الثامن والعشرون', 'التاسع والعشرون', 'الثلاثون'];
+            return units[number];
+        }
+
         function navigateToPage(page) {
             window.location.href = page;
         }
-        
-        // إنشاء أزرار الأيام ديناميكياً
-        document.addEventListener('DOMContentLoaded', function() {
-            const daysContainer = document.getElementById('daysContainer');
-            const days = [
-                {number: 1, link: "YAWM_01-30_WARCH.html"},
-                {number: 2, link: "YAWM_02-30_WARCH.html"},
-{number: 3, link: "#"},
-{number: 4, link: "#"},
-{number: 5, link: "#"},
-{number: 6, link: "#"},
-{number: 7, link: "#"},
-{number: 8, link: "#"},
-{number: 9, link: "#"},
-{number: 10, link: "#"},
-{number: 11, link: "#"},
-{number: 12, link: "#"},
-{number: 13, link: "#"},
-{number: 14, link: "#"},
-{number: 15, link: "#"},
-{number: 16, link: "#"},
-{number: 17, link: "#"},
-{number: 18, link: "#"},
-{number: 19, link: "#"},
-{number: 20, link: "#"},
-{number: 21, link: "#"},
-{number: 22, link: "#"},
-{number: 23, link: "#"},
-{number: 24, link: "#"},
-{number: 25, link: "#"},
-{number: 26, link: "#"},
-{number: 27, link: "#"},
-{number: 28, link: "#"},
-{number: 29, link: "#"},
-{number: 30, link: "#"}
 
-            ];
+        function updateProgressAndCountdown() {
+            // تاريخ البداية الثابت - 26 أبريل 2025 الساعة 00:00
+            const startDate = new Date(2025, 3, 26, 0, 0, 0);
             
-            days.forEach(day => {
-                const dayCard = document.createElement('a');
-                dayCard.href = day.link;
-                dayCard.className = 'day-card';
-                dayCard.innerHTML = `
-                    <span class="day-number">${day.number}</span>
-                    <span>اليوم ${day.number}</span>
-                `;
-                daysContainer.appendChild(dayCard);
+            // التاريخ الحالي
+            const now = new Date();
+            
+            // الفرق بالمللي ثانية
+            const diffMs = now - startDate;
+            
+            // التحويل إلى أيام (مع الاعتبار أن اليوم يبدأ من منتصف الليل)
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            // حساب اليوم الحالي في الدورة (1-30)
+            const currentDayInCycle = (diffDays % 30) + 1;
+            
+            // الأيام المتبقية في الدورة الحالية
+            const daysLeftInCycle = 30 - currentDayInCycle;
+            
+            // حساب الساعات المتبقية حتى نهاية اليوم (حتى منتصف الليل)
+            const endOfDay = new Date();
+            endOfDay.setHours(24, 0, 0, 0);
+            const hoursLeft = Math.floor((endOfDay - now) / (1000 * 60 * 60));
+            
+            // تحديث واجهة المستخدم
+            document.getElementById('currentDayTitle').textContent = `اليوم ${numberToArabicWords(currentDayInCycle)}`;
+            document.getElementById('daysLeft').textContent = daysLeftInCycle;
+            document.getElementById('hoursLeft').textContent = hoursLeft;
+            
+            // تحديث شريط التقدم
+            const progressPercentage = (currentDayInCycle / 30) * 100;
+            document.getElementById('progressBar').style.width = `${progressPercentage}%`;
+            
+            // تحديث أزرار الأيام
+            updateDayButtons(currentDayInCycle);
+        }
+
+        function updateDayButtons(currentDay) {
+            const dayButtons = document.querySelectorAll('.day-card');
+            dayButtons.forEach((btn, index) => {
+                const dayNum = index + 1;
+                if (dayNum === currentDay) {
+                    btn.classList.add('current-day');
+                } else {
+                    btn.classList.remove('current-day');
+                }
             });
-            
-            // حساب التقدم والعداد التنازلي
-            updateProgressAndCountdown();
-            
-            // تحديث العداد كل ساعة
-            setInterval(updateProgressAndCountdown, 3600000);
-        });
-        
+        }
+
         // تبديل الوضع الليلي/النهاري
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', function() {
@@ -603,79 +592,72 @@
             const icon = themeToggle.querySelector('i');
             icon.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
         });
-        
+
         // تحميل التفضيل المحفوظ عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
+            // تحميل وضع الألوان
             const savedDarkMode = localStorage.getItem('darkMode') === 'true';
             if (savedDarkMode) {
                 document.body.classList.add('dark-mode');
                 const icon = themeToggle.querySelector('i');
                 icon.className = 'fas fa-sun';
             }
+            
+            // إنشاء أزرار الأيام
+            const daysContainer = document.getElementById('daysContainer');
+            const days = [
+                {number: 1, link: "YAWM_01-30_WARCH.html"},
+                {number: 2, link: "YAWM_02-30_WARCH.html"},
+                {number: 3, link: "#"},
+                {number: 4, link: "#"},
+                {number: 5, link: "#"},
+                {number: 6, link: "#"},
+                {number: 7, link: "#"},
+                {number: 8, link: "#"},
+                {number: 9, link: "#"},
+                {number: 10, link: "#"},
+                {number: 11, link: "#"},
+                {number: 12, link: "#"},
+                {number: 13, link: "#"},
+                {number: 14, link: "#"},
+                {number: 15, link: "#"},
+                {number: 16, link: "#"},
+                {number: 17, link: "#"},
+                {number: 18, link: "#"},
+                {number: 19, link: "#"},
+                {number: 20, link: "#"},
+                {number: 21, link: "#"},
+                {number: 22, link: "#"},
+                {number: 23, link: "#"},
+                {number: 24, link: "#"},
+                {number: 25, link: "#"},
+                {number: 26, link: "#"},
+                {number: 27, link: "#"},
+                {number: 28, link: "#"},
+                {number: 29, link: "#"},
+                {number: 30, link: "#"}
+            ];
+            
+            days.forEach(day => {
+                const dayCard = document.createElement('a');
+                dayCard.href = day.link;
+                dayCard.className = 'day-card';
+                dayCard.innerHTML = `
+                    <span class="day-number">${day.number}</span>
+                    <span>اليوم ${numberToArabicWords(day.number)}</span>
+                `;
+                daysContainer.appendChild(dayCard);
+            });
+            
+            // تحديث العدادات
+            updateProgressAndCountdown();
+            
+            // تحديث كل ساعة
+            setInterval(updateProgressAndCountdown, 3600000);
         });
-        
-        // دالة حساب التقدم والعداد التنازلي
-        function updateProgressAndCountdown() {
-            // تاريخ البداية (اليوم الأول)
-            const startDate = new Date();
-            startDate.setHours(0, 0, 0, 0); // بداية اليوم
-            
-            // تاريخ النهاية (بعد 30 يومًا من البداية)
-            const endDate = new Date(startDate);
-            endDate.setDate(endDate.getDate() + 30);
-            
-            // التاريخ الحالي
-            const now = new Date();
-            
-            // حساب الأيام المتبقية
-            const timeDiff = endDate - now;
-            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-            
-            // حساب اليوم الحالي من الخطة (1 إلى 30)
-            const dayOfPlan = Math.min(30 - daysDiff + 1, 30);
-            
-            // حساب الساعات المتبقية حتى نهاية اليوم الحالي
-            const endOfToday = new Date();
-            endOfToday.setHours(23, 59, 59, 999);
-            const hoursLeft = Math.max(0, Math.ceil((endOfToday - now) / (1000 * 60 * 60)));
-            
-            // تحديث شريط التقدم
-            const progressPercentage = Math.min(100, Math.max(0, ((dayOfPlan - 1) / 30) * 100));
-            document.getElementById('progressBar').style.width = `${progressPercentage}%`;
-            
-            // تحديث العداد التنازلي
-            document.getElementById('currentDayTitle').textContent = `اليوم ${dayOfPlan}`;
-            document.getElementById('daysLeft').textContent = Math.max(0, 30 - dayOfPlan);
-            document.getElementById('hoursLeft').textContent = hoursLeft;
-            
-            // إذا انتهت المدة، نعرض رسالة
-            if (daysDiff <= 0) {
-                document.getElementById('currentDayTitle').textContent = "مبروك! لقد أكملت الخطة";
-                document.getElementById('daysLeft').textContent = "0";
-                document.getElementById('hoursLeft').textContent = "0";
-            }
-        }
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
