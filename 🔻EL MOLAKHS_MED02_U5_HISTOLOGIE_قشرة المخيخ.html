@@ -4031,3 +4031,295 @@ updateCard();
         }
     });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أداة التحكم في التكبير/التصغير</title>
+  <style>
+    /* تنسيقات أداة التكبير/التصغير */
+    .zoom-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      background: rgba(40, 40, 40, 0.9);
+      padding: 12px;
+      border-radius: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .zoom-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #007bff;
+      color: white;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    
+    .zoom-btn:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+    
+    .zoom-value {
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    /* للهواتف */
+    @media (max-width: 768px) {
+      .zoom-controls-container {
+        bottom: 15px;
+        left: 15px;
+      }
+      
+      
+    }
+  </style>
+</head>
+<body>
+
+
+
+<script>
+  // إعدادات التكبير
+  const zoomSettings = {
+    current: 1, // هذه القيمة سيتم تغييرها عند التحميل إذا لم توجد قيمة محفوظة
+    min: 0.3, // غيرت الحد الأدنى ليتناسب مع القيمة الافتراضية
+    max: 2,
+    step: 0.1
+  };
+
+  // عناصر التحكم
+  const elements = {
+    zoomIn: document.getElementById('zoom-in'),
+    zoomOut: document.getElementById('zoom-out'),
+    zoomReset: document.getElementById('zoom-reset'),
+    zoomValue: document.getElementById('zoom-value'),
+    html: document.documentElement
+  };
+
+  // تطبيق مستوى التكبير الحالي
+  function applyZoom() {
+    elements.html.style.fontSize = `${zoomSettings.current * 100}%`;
+    elements.zoomValue.textContent = `${Math.round(zoomSettings.current * 100)}%`;
+    
+    // حفظ الإعدادات
+    localStorage.setItem('pageZoomLevel', zoomSettings.current);
+  }
+
+  // تكبير النص
+  elements.zoomIn.addEventListener('click', () => {
+    if (zoomSettings.current < zoomSettings.max) {
+      zoomSettings.current += zoomSettings.step;
+      applyZoom();
+    }
+  });
+
+  // تصغير النص
+  elements.zoomOut.addEventListener('click', () => {
+    if (zoomSettings.current > zoomSettings.min) {
+      zoomSettings.current -= zoomSettings.step;
+      applyZoom();
+    }
+  });
+
+  // إعادة التعيين
+  elements.zoomReset.addEventListener('click', () => {
+    zoomSettings.current = 1;
+    applyZoom();
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedZoom = localStorage.getItem('pageZoomLevel');
+    if (savedZoom) {
+      zoomSettings.current = parseFloat(savedZoom);
+    } else {
+      // القيمة الافتراضية عند أول فتح (30%)
+      zoomSettings.current = 0.1;
+    }
+    applyZoom();
+  });
+
+  // اختصارات لوحة المفاتيح
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === '0') {
+      e.preventDefault();
+      elements.zoomReset.click();
+    }
+  });
+</script>
+
+</body>
+</html>
