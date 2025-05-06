@@ -7364,13 +7364,14 @@
    
 
 
-                  <span class="arabic-text">القِشْرَةُ المُخِّيَّةُ</span>
+                  <span class="arabic-text">هيكل الجمجمة  </span>
                   <br>
-                  <span>🔻 CEREBRAL CORTEX 🔻</span> <!-- الإنجليزية -->
+                  <span>🔻 SKULL SKELETON🔻</span> <!-- الإنجليزية -->
                   <br>
-                  <span>   🔻 CORTEX CEREBRAL 🔻  </span>  <!-- الفرنسية -->
+                  <span>   🔻SQUELETTE DU CRÂNE   🔻  </span>  <!-- الفرنسية -->
        
               
+
                 </button>
                 
 
@@ -7382,7 +7383,7 @@
                 
                 <ul>
                   <li class="ملخص">
-                    <a href="🔻EL MOLAKHS_MED02_U5_HISTOLOGIE_القشرة المخية.html" class="ملخص-رابط">🔻 <span class="ملخص-كلمة">الملخص</span> 🔻</a>
+                    <a href="🔻EL MOLAKHS_MED02_U5_ANATOMIE_هيكل الجمجمة.html" class="ملخص-رابط">🔻 <span class="ملخص-كلمة">الملخص</span> 🔻</a>
                     <p class="اصدار">إصدار 01 ذو القعدة  1446 موافق لـ 29 افريل 2025</p>
                   </li>
                 </ul>
@@ -9230,297 +9231,435 @@ SIDI BEL ABBÈS - كلية سيدي بلعباس
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <!DOCTYPE html>
-  <html lang="ar">
+  <html lang="ar" dir="rtl">
   <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>نافذة منبثقة مع Iframe</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <title>تنبيه طبي - INFATM</title>
       <style>
-          /* زر الفتح العائم (في اليسار) */
-          .floating-btn-warning {
+          /* تهيئة عامة */
+          * {
+              box-sizing: border-box;
+              margin: 0;
+              padding: 0;
+          }
+          
+          body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              -webkit-text-size-adjust: 100%;
+              touch-action: manipulation;
+          }
+  
+          /* زر الخطر العائم - تصميم جديد */
+          ._x1 {
               position: fixed;
-              bottom: 450px;
-              left: 20px;
-              width: 50px;
-              height: 50px;
-              background-color: #ff2512;
+              bottom: 425px;
+              left: 25px;
+              width: 65px;
+              height: 65px;
+              background: linear-gradient(135deg, #ff0000, #c00000);
               color: white;
-              font-size: 23px;
-              font-weight: normal;
+              font-size: 28px;
               border-radius: 50%;
               display: flex;
               justify-content: center;
               align-items: center;
               cursor: pointer;
-              border: none;
-              box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-              transition: transform 0.2s ease;
-              z-index: 9999;
+              border: 2px solid white;
+              box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
+                          inset 0 2px 4px rgba(255, 255, 255, 0.3);
+              transition: all 0.2s ease;
+              z-index: 1000;
+              user-select: none;
+              -webkit-tap-highlight-color: transparent;
+              animation: _a1 2s infinite;
           }
   
-          /* حركة الزر التحذيري */
-          @keyframes moveAndGlowWarning {
-              0% {
-                  transform: translateX(0) translateY(0);
-                  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-                  background-color: #ff6f61;
-              }
-              50% {
-                  transform: translateX(15px) translateY(-15px);
-                  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
-                  background-color: #ff3d2e;
-              }
-              100% {
-                  transform: translateX(0) translateY(0);
-                  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-                  background-color: #ff6f61;
-              }
+          @keyframes _a1 {
+              0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+              70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+              100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
           }
   
-          /* نافذة منبثقة للزر التحذيري */
-          .popup-warning {
+          ._x1:hover {
+              transform: scale(1.1);
+              background: linear-gradient(135deg, #ff3333, #d10000);
+          }
+  
+          ._x1:active {
+              transform: scale(0.95);
+              animation: none;
+          }
+  
+          /* طبقة التعتيم */
+          ._x2 {
               position: fixed;
-              bottom: 3%; /* مسافة مناسبة من الأسفل */
-              left: 50%;
-              transform: translateX(-50%);
-              width: 50%; /* تقليل العرض ليكون أكثر مرونة */
-              max-width: 250px; /* الحد الأقصى للعرض */
-              background-color: #ffffff;
-              border-radius: 10px; /* حواف مدورة لطيفة */
-              padding: 1em; /* حشو داخلي مرن */
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* تحسين الظلال */
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: rgba(0, 0, 0, 0.8);
+              z-index: 1001;
               display: none;
-              z-index: 9998;
-              font-size: 1em; /* حجم نص مرن */
+              backdrop-filter: blur(5px);
+              -webkit-backdrop-filter: blur(5px);
           }
   
-          /* استجابة للشاشات الصغيرة */
-          @media (max-width: 768px) {
-              .popup-warning {
-                  width: 70%; /* عرض مناسب للأجهزة اللوحية */
-                  bottom: 5%; /* مسافة منطقية من الأسفل */
-                  padding: 0.8em; /* تقليل الحشو قليلاً */
-              }
-          }
-  
-          @media (max-width: 480px) {
-              .popup-warning {
-                  width: 85%; /* عرض يناسب الهواتف */
-                  bottom: 7%; /* مسافة أكبر من الأسفل */
-                  padding: 0.6em; /* تقليل الحشو أكثر */
-                  font-size: 0.9em; /* تصغير حجم النص */
-              }
-          }
-  
-          /* إضافة حركة لطيفة عند ظهور النافذة */
-          .popup-warning.show {
-              display: block;
-              animation: fadeIn 0.3s ease-in-out;
-          }
-  
-          /* تأثير الحركة */
-          @keyframes fadeIn {
-              from {
-                  opacity: 0;
-                  transform: translateY(10px);
-              }
-              to {
-                  opacity: 1;
-                  transform: translateY(0);
-              }
-          }
-  
-          /* نافذة منبثقة تحتوي على Iframe */
-          .popup-iframe {
+          /* نافذة المحتوى */
+          ._x3 {
               position: fixed;
-              top: 15%; /* ضبط المسافة من الأعلى */
-              left: 50%;
-              transform: translateX(-50%);
-              width: 90%;
-              max-width: 600px; /* تقليل الحجم على الشاشات الصغيرة */
-              background-color: #ffffff;
-              border-radius: 10px;
-              padding: 1em;
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+              top: 10px;
+              left: 10px;
+              right: 10px;
+              bottom: 10px;
+              display: flex;
+              flex-direction: column;
+              z-index: 10012;
               display: none;
-              z-index: 9998;
-              font-size: 1em;
               overflow: hidden;
-              animation: fadeIn 0.3s ease-in-out;
+              border-radius: 15px;
+              box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+              background: white;
           }
   
-          /* نافذة محتوى Iframe */
-          .popup-iframe.show {
-              display: block;
+          ._x4 {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            padding: 18px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        ._x4 h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+  
+          ._x5 {
+              flex-grow: 1;
+              overflow-y: auto;
+              -webkit-overflow-scrolling: touch;
+              background-color: #f5f5f5;
           }
   
-          /* النافذة التحفيزية */
-          .motivational-msg {
-              font-size: 1.1em;
-              margin-top: 15px;
-              text-align: center;
-          }
-  
-          /* الأزرار داخل النافذة */
-          .btn-close {
-              background-color: #FF5722;
-              color: white;
-              padding: 10px 20px;
-              font-size: 1.1em;
+          /* زر الإغلاق الجديد */
+          ._x6 {
+              position: absolute;
+              top: 12px;
+              left: 12px;
+              background: white;
+              color: #e74c3c;
               border: none;
-              border-radius: 8px;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
               cursor: pointer;
-              width: 100%;
-              transition: background-color 0.2s ease;
+              font-weight: bold;
+              font-size: 1.2rem;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+              transition: all 0.2s;
           }
   
-          .btn-close:hover {
-              background-color: #FF3D00;
+          ._x6:hover {
+              transform: rotate(90deg);
+              background: #ffebee;
           }
   
-          /* استجابة للمحتوى ليكون متجاوبًا */
-          @media (max-width: 600px) {
-              .popup-iframe {
-                  top: 10%;
-                  width: 95%;
-                  max-height: 70vh; /* اجعل النافذة مرنة لتناسب المساحة */
+          /* مؤشر التحميل */
+          ._x7 {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              height: 100%;
+              padding: 20px;
+          }
+  
+          ._x8 {
+              width: 45px;
+              height: 45px;
+              border: 5px solid rgba(231, 76, 60, 0.2);
+              border-top: 5px solid #e74c3c;
+              border-radius: 50%;
+              animation: _a2 1s linear infinite;
+              margin-bottom: 20px;
+          }
+  
+          @keyframes _a2 {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+          }
+  
+          ._x7 p {
+              color: #7f8c8d;
+              font-size: 1.1rem;
+              margin-top: 10px;
+          }
+  
+          /* المحتوى المعروض */
+          ._x9 {
+              padding: 18px;
+              line-height: 1.7;
+              font-size: 1rem;
+              color: #333;
+          }
+  
+          /* التكيف مع الشاشات الصغيرة */
+          @media (max-width: 480px) {
+              ._x1 {
+                  width: 60px;
+                  height: 60px;
+                  font-size: 26px;
+                  bottom: 20px;
+                  left: 20px;
               }
-  
-              .popup-iframe iframe {
-                  height: 70vh; /* اجعل الـ iframe يناسب النافذة بشكل أفضل */
+              
+              ._x4 {
+                  padding: 15px;
+              }
+              
+              ._x4 h2 {
+                  font-size: 1.1rem;
+              }
+              
+              ._x6 {
+                  width: 28px;
+                  height: 28px;
+                  font-size: 1rem;
               }
           }
   
-          /* تنسيق الـ iframe */
-          .popup-iframe iframe {
-              width: 100%;
-              height: 400px;
-              border: none;
-              border-radius: 8px;
-              margin-top: 20px;
+          /* تحسينات لللمس على الهواتف */
+          @media (hover: none) {
+              ._x1:hover {
+                  transform: scale(1);
+                  background: linear-gradient(135deg, #ff0000, #c00000);
+              }
+              
+              ._x6:hover {
+                  transform: rotate(0deg);
+                  background: white;
+              }
           }
       </style>
   </head>
   <body>
   
-  <!-- زر الفتح لعرض النافذة -->
-  <button class="floating-btn-warning" onclick="toggleIframePopup()">⚠️</button>
+  <!-- زر الخطر العائم الجديد -->
+  <button class="_x1" onclick="_f1()">⚠️</button>
   
-  <!-- نافذة منبثقة تحتوي على iframe -->
-  <div id="popupIframe" class="popup-iframe">
-      <div class="popup-header">
-      
+  <!-- طبقة التعتيم -->
+  <div class="_x2" id="_d1"></div>
+  
+  <!-- نافذة المحتوى -->
+  <div class="_x3" id="_d2">
+      <div class="_x4">
+          <button class="_x6" onclick="_f1()">×</button>
+          <h2>تنبيه  - محتوى </h2>
       </div>
-      <div class="popup-content">
-          <!-- Iframe لعرض محتوى من صفحة أخرى -->
-          <iframe src="MEDECINE_EXAM_NOTE.html" title="محتوى صفحة خارجية"></iframe>
+      <div class="_x5" id="_d3">
+          <div class="_x7">
+              <div class="_x8"></div>
+              <p>جاري تحميل المحتوى ...</p>
+          </div>
       </div>
-      <button class="btn-close" onclick="toggleIframePopup()">إغلاق</button>
   </div>
   
   <script>
-      // وظيفة لفتح وغلق النافذة المنبثقة
-      function toggleIframePopup() {
-          const popup = document.getElementById('popupIframe');
-          popup.classList.toggle('show');
+      // متغيرات التطبيق
+      let _v1 = false;
+      const _u1 = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+      
+      // عناصر DOM
+      const _d2 = document.getElementById('_d2');
+      const _d1 = document.getElementById('_d1');
+      const _d3 = document.getElementById('_d3');
+      const _b1 = document.querySelector('._x1');
+      
+      // تبديل عرض/إخفاء النافذة
+      function _f1() {
+          if (_d2.style.display === 'flex') {
+              _f2();
+          } else {
+              _f3();
+          }
       }
+      
+      function _f3() {
+          // إيقاف تأثير النبض عند الفتح
+          _b1.style.animation = 'none';
+          
+          _d1.style.display = 'block';
+          _d2.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+          
+          if (!_v1) {
+              _f4();
+          }
+      }
+      
+      function _f2() {
+          // إعادة تشغيل تأثير النبض عند الإغلاق
+          _b1.style.animation = '_a1 2s infinite';
+          
+          _d1.style.display = 'none';
+          _d2.style.display = 'none';
+          document.body.style.overflow = 'auto';
+      }
+      
+      // تحميل المحتوى
+      async function _f4() {
+          try {
+              // استخدام iframe كحل أساسي
+              _f5();
+              _v1 = true;
+          } catch (error) {
+              _f6(error);
+          }
+      }
+      
+      // عرض المحتوى باستخدام iframe
+      function _f5() {
+          _d3.innerHTML = `
+              <iframe src="${_u1}" 
+                      style="width:100%; height:100%; border:none;"
+                      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                      loading="lazy">
+              </iframe>
+          `;
+      }
+      
+      // عرض رسالة الخطأ
+      function _f6(_e1) {
+          _d3.innerHTML = `
+              <div class="_x7">
+                  <div style="color: #e74c3c; margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                  <p style="margin-bottom: 20px; color: #555;">${_e1.message}</p>
+                  <button onclick="_f7()" 
+                          style="padding: 10px 20px; 
+                                 background: linear-gradient(to right, #e74c3c, #c0392b); 
+                                 color: white; 
+                                 border: none; 
+                                 border-radius: 30px;
+                                 font-size: 1rem;
+                                 box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+                                 transition: all 0.2s;">
+                      إعادة المحاولة
+                  </button>
+              </div>
+          `;
+      }
+      
+      // إعادة تحميل المحتوى
+      function _f7() {
+          _d3.innerHTML = `
+              <div class="_x7">
+                  <div class="_x8"></div>
+                  <p>جاري تحميل المحتوى الطبي...</p>
+              </div>
+          `;
+          _f4();
+      }
+      
+      // إغلاق النافذة عند النقر خارجها
+      _d1.addEventListener('click', _f2);
+      
+      // منع إغلاق النافذة عند النقر داخلها
+      _d2.addEventListener('click', (e) => {
+          e.stopPropagation();
+      });
+      
+      // تحسين الأداء للهواتف
+      if ('connection' in navigator) {
+          if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
+              // تحسينات لشبكات الجيل الثاني
+              _b1.style.animation = 'none';
+          }
+      }
+      
+      // إضافة اهتزاز عند النقر (للهواتف)
+      function _f8() {
+          if ('vibrate' in navigator) {
+              navigator.vibrate(10);
+          }
+      }
+      
+      // إضافة الاهتزاز للأزرار
+      document.querySelector('._x1').addEventListener('click', _f8);
+      document.querySelector('._x6')?.addEventListener('click', _f8);
   </script>
   
   </body>
   </html>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   
   
