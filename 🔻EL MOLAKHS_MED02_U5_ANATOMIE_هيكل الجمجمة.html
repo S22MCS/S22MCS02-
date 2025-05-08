@@ -10,8 +10,645 @@
     <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
 
 
+  
+  
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
-    <style>
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>أداة حماية العين</title>
+        <style>
+            /* إعدادات الصفحة الأساسية */
+            body {
+                margin: 0;
+                font-family: 'Arial', sans-serif;
+                background-color: #edf2f7;
+                color: #333;
+                transition: all 0.5s ease;
+            }
+        
+            header, main {
+                padding: 20px;
+                text-align: center;
+            }
+        
+            header h1 {
+                font-size: 2rem;
+                color: #444;
+                margin-bottom: 20px;
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+                animation: fadeIn 1.2s ease-in-out;
+            }
+        
+            main h2 {
+                font-size: 1.5rem;
+                color: #555;
+                margin-bottom: 10px;
+            }
+        
+            main p {
+                font-size: 1rem;
+                line-height: 1.6;
+                color: #666;
+            }
+        
+            /* الحاوية */
+            #controlPanel {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: linear-gradient(145deg, #e0e5ec, #ffffff);
+                border-radius: 50px;
+                box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                width: 60px;
+                height: 60px;
+                overflow: hidden;
+                transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+            }
+        
+            #controlPanel.expanded {
+                width: 340px;
+                height: auto;
+                border-radius: 20px;
+                box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
+            }
+        
+            /* الزر */
+            #toggleButton {
+                width: 60px;
+                height: 60px;
+                background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c);
+                border: none;
+                border-radius: 50%;
+                color: white;
+                font-size: 28px;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 
+                            5px 5px 10px rgba(0,0,0,0.2), 
+                            -5px -5px 10px rgba(255,255,255,0.5);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+        
+            #toggleButton:hover {
+                transform: scale(1.1) rotate(5deg);
+                box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 
+                            8px 8px 20px rgba(0,0,0,0.2), 
+                            -8px -8px 20px rgba(255,255,255,0.5);
+                background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+            }
+        
+            #emoji {
+                font-size: 32px;
+                line-height: 1;
+                animation: bounce 2s infinite ease-in-out;
+            }
+        
+            #toggleText {
+                font-size: 14px;
+                color: white;
+                position: absolute;
+                bottom: -20px;
+                opacity: 0;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
+        
+            #toggleButton:hover #toggleText {
+                opacity: 1;
+                transform: translateY(-5px);
+            }
+        
+            /* شريط التمرير */
+            .slider-container {
+                width: 90%;
+                margin: 10px 0;
+                position: relative;
+            }
+            
+            .color-spectrum {
+                width: 100%;
+                height: 20px;
+                border-radius: 10px;
+                background: linear-gradient(to right, 
+                    #ff9a3c, /* 1700K - برتقالي دافئ جداً */
+                    #ffb347, /* 2000K */
+                    #ffcc6a, /* 2300K */
+                    #ffe08c, /* 2700K - أصفر دافئ */
+                    #f5f5f5  /* أبيض محايد */
+                );
+                margin-bottom: 5px;
+                box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            
+            #colorTempSlider {
+                width: 100%;
+                appearance: none;
+                height: 12px;
+                background: transparent;
+                border-radius: 6px;
+                outline: none;
+                cursor: pointer;
+                position: absolute;
+                top: 20px;
+                left: 0;
+            }
+        
+            #colorTempSlider::-webkit-slider-thumb {
+                appearance: none;
+                width: 22px;
+                height: 22px;
+                background: radial-gradient(circle, #4caf50, #388e3c);
+                border-radius: 50%;
+                cursor: pointer;
+                box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+                transition: transform 0.2s ease-in-out;
+            }
+        
+            #colorTempSlider::-webkit-slider-thumb:hover {
+                transform: scale(1.2);
+            }
+        
+            .temp-labels {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                font-size: 11px;
+                color: #555;
+                margin-top: 25px;
+            }
+        
+            .small-slider {
+                width: 80px;
+                height: 8px;
+            }
+        
+            #label {
+                font-size: 14px;
+                font-weight: bold;
+                color: #333;
+                display: none;
+                text-align: center;
+                animation: fadeIn 0.8s ease-in-out;
+            }
+        
+            .expanded #label {
+                display: block;
+            }
+        
+            /* خيارات إضافية */
+            .options {
+                display: none;
+                width: 100%;
+                padding: 0 15px 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+        
+            .expanded .options {
+                display: flex;
+            }
+        
+            .option-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        
+            .option-label {
+                font-size: 13px;
+                color: #555;
+            }
+        
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 50px;
+                height: 24px;
+            }
+        
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+        
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                transition: .4s;
+                border-radius: 24px;
+            }
+        
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 13px;
+                width: 13px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+            }
+        
+            input:checked + .slider {
+                background-color: #4CAF50;
+            }
+        
+            input:checked + .slider:before {
+                transform: translateX(26px);
+            }
+        
+            /* معلومات علمية */
+            .science-info {
+                display: none;
+                background: #f8f9fa;
+                border-radius: 10px;
+                padding: 10px;
+                margin: 10px 15px;
+                font-size: 12px;
+                color: #555;
+                border-right: 3px solid #4CAF50;
+            }
+        
+            .expanded .science-info {
+                display: block;
+                animation: fadeIn 0.8s ease-in-out;
+            }
+        
+            .science-title {
+                font-weight: bold;
+                color: #388e3c;
+                margin-bottom: 5px;
+            }
+        
+            /* الإشعارات */
+            .notification {
+                position: fixed;
+                bottom: 100px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 5px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                animation: slideIn 0.5s ease-out;
+                z-index: 1001;
+            }
+        
+            .fade-out {
+                animation: fadeOut 0.5s ease-out forwards;
+            }
+        
+            /* الرسوم المتحركة */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        
+            @keyframes bounce {
+                0%, 100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+        
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+        
+            /* تحسين التوافق مع الهواتف */
+            @media (max-width: 768px) {
+                #controlPanel {
+                    bottom: 10px;
+                    right: 10px;
+                }
+                #toggleButton {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 24px;
+                }
+                #controlPanel.expanded {
+                    width: 300px;
+                }
+            }
+        
+            @media (max-width: 480px) {
+                #controlPanel.expanded {
+                    width: 90%;
+                    right: 5%;
+                    bottom: 10px;
+                }
+                
+                .options {
+                    padding: 0 10px 10px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- أداة التحكم -->
+        <div id="controlPanel">
+            <button id="toggleButton">
+                <span id="emoji">🌙</span>
+                <span id="toggleText">تشغيل</span>
+            </button>
+            <label id="label" for="colorTempSlider">درجة حرارة اللون (1700K-2700K):</label>
+            
+            <div class="slider-container">
+                <div class="color-spectrum"></div>
+                <input type="range" id="colorTempSlider" min="1700" max="2700" step="100" value="2700">
+                <div class="temp-labels">
+                    <span>1700K</span>
+                    <span>2000K</span>
+                    <span>2300K</span>
+                    <span>2700K</span>
+                </div>
+            </div>
+            
+            <div class="science-info">
+                <div class="science-title">معلومات علمية:</div>
+                <p>• درجات الحرارة المرتفعة (>5000K) تسبب انتباه الأشخاص وزيادة التركيز</p>
+                <p>• درجات الحرارة المنخفضة (2700K-3000K) تشعر الأشخاص بالاسترخاء والنعاس</p>
+                <p>• الضوء الأزرق (380-550 نانومتر) يؤثر على الساعة البيولوجية</p>
+            </div>
+            
+            <div class="options">
+                <div class="option-row">
+                    <span class="option-label">الوضع الليلي التلقائي</span>
+                    <label class="switch">
+                        <input type="checkbox" id="autoNightMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="option-row">
+                    <span class="option-label">تقليل الوهج</span>
+                    <label class="switch">
+                        <input type="checkbox" id="reduceGlare" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="option-row">
+                    <span class="option-label">تعتيم النص</span>
+                    <label class="switch">
+                        <input type="checkbox" id="darkenText">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="option-row">
+                    <span class="option-label">ضبط السطوع</span>
+                    <input type="range" id="brightnessSlider" min="50" max="100" value="100" class="small-slider">
+                  </div>
+                  <div class="mobile-breaks"></div>
+
+                  <style>    .mobile-breaks {
+                    display: none;
+                  }
+                  
+                  @media (max-width: 768px) {
+                    .mobile-breaks {
+                      display: block;
+                      height: 2em; /* تعادل تقريبا سطرين فارغين */
+                    }
+                  }</style>
+              
+                  
+            </div>
+        </div>
+    
+        <script>
+            const controlPanel = document.getElementById('controlPanel');
+            const toggleButton = document.getElementById('toggleButton');
+            const emoji = document.getElementById('emoji');
+            const toggleText = document.getElementById('toggleText');
+            const slider = document.getElementById('colorTempSlider');
+            const autoNightMode = document.getElementById('autoNightMode');
+            const reduceGlare = document.getElementById('reduceGlare');
+            const darkenText = document.getElementById('darkenText');
+            const brightnessSlider = document.getElementById('brightnessSlider');
+    
+            let isEyeProtectionEnabled = false;
+            let autoNightModeInterval;
+    
+            // تحميل التفضيلات المحفوظة
+            window.addEventListener('DOMContentLoaded', () => {
+                const preferences = JSON.parse(localStorage.getItem('eyeProtectionPrefs')) || {};
+                if (preferences.autoNightMode) autoNightMode.checked = true;
+                if (preferences.reduceGlare) reduceGlare.checked = true;
+                if (preferences.darkenText) darkenText.checked = true;
+                if (preferences.enabled) enableEyeProtection();
+                if (preferences.brightness) brightnessSlider.value = preferences.brightness;
+                if (preferences.colorTemp) slider.value = preferences.colorTemp;
+    
+                // تحقق من وقت اليوم عند التحميل
+                checkTimeOfDay();
+            });
+    
+            toggleButton.addEventListener('click', () => {
+                controlPanel.classList.toggle('expanded');
+    
+                if (isEyeProtectionEnabled) {
+                    disableEyeProtection();
+                } else {
+                    enableEyeProtection();
+                    setTimeout(() => {
+                        controlPanel.classList.remove('expanded');
+                    }, 5000);
+                }
+                
+                savePreferences();
+            });
+    
+            slider.addEventListener('input', function() {
+                updateFilter();
+                updateSliderColor(this.value);
+            });
+            
+            // تحديث لون شريط التمرير بناء على القيمة
+            function updateSliderColor(value) {
+                const percent = (value - 1700) / (2700 - 1700) * 100;
+                const thumb = document.querySelector('#colorTempSlider::-webkit-slider-thumb');
+                
+                // تغيير لون الإبهام حسب الموقع على الطيف
+                if (thumb) {
+                    if (percent < 30) {
+                        thumb.style.background = 'radial-gradient(circle, #ff9a3c, #e07c2e)';
+                    } else if (percent < 70) {
+                        thumb.style.background = 'radial-gradient(circle, #ffb347, #e0953a)';
+                    } else {
+                        thumb.style.background = 'radial-gradient(circle, #ffe08c, #e0c87a)';
+                    }
+                }
+            }
+            
+            autoNightMode.addEventListener('change', function() {
+                if (this.checked) {
+                    startAutoNightMode();
+                    if (isEyeProtectionEnabled) {
+                        updateFilter();
+                    }
+                } else {
+                    stopAutoNightMode();
+                }
+                savePreferences();
+            });
+    
+            reduceGlare.addEventListener('change', function() {
+                if (isEyeProtectionEnabled) {
+                    updateFilter();
+                }
+                savePreferences();
+            });
+    
+            darkenText.addEventListener('change', function() {
+                if (isEyeProtectionEnabled) {
+                    updateFilter();
+                }
+                savePreferences();
+            });
+    
+            brightnessSlider.addEventListener('input', function() {
+                document.body.style.opacity = this.value / 100;
+                savePreferences();
+            });
+    
+            function enableEyeProtection() {
+                isEyeProtectionEnabled = true;
+                emoji.textContent = '🛡️';
+                toggleText.textContent = 'إيقاف';
+                updateFilter();
+                updateSliderColor(slider.value);
+                showNotification('تم تفعيل حماية العين');
+            }
+    
+            function disableEyeProtection() {
+                isEyeProtectionEnabled = false;
+                emoji.textContent = '🌙';
+                toggleText.textContent = 'تشغيل';
+                document.documentElement.style.filter = 'none';
+                document.body.style.color = '';
+                showNotification('تم إيقاف حماية العين');
+            }
+    
+            function updateFilter() {
+                if (!isEyeProtectionEnabled) return;
+    
+                const temp = slider.value;
+                const warmth = (temp - 1700) / (2700 - 1700);
+                const sepia = 0.4 + 0.6 * (1 - warmth);
+                const brightness = 1 - 0.2 * warmth;
+                const contrast = reduceGlare.checked ? 1.1 : 1;
+                const grayscale = reduceGlare.checked ? 0.1 : 0;
+                
+                let filter = `sepia(${sepia}) brightness(${brightness}) contrast(${contrast}) grayscale(${grayscale})`;
+                
+                document.documentElement.style.filter = filter;
+                
+                if (darkenText.checked) {
+                    document.body.style.color = `hsl(0, 0%, ${70 - (warmth * 30)}%)`;
+                } else {
+                    document.body.style.color = '';
+                }
+            }
+    
+            function checkTimeOfDay() {
+                const hour = new Date().getHours();
+                const isNightTime = hour >= 18 || hour <= 6;
+                
+                if (isNightTime) {
+                    slider.value = 2000;
+                    if (autoNightMode.checked && !isEyeProtectionEnabled) {
+                        enableEyeProtection();
+                        showNotification('تم تفعيل الوضع الليلي تلقائياً');
+                    }
+                } else {
+                    slider.value = 2700;
+                }
+                updateFilter();
+                updateSliderColor(slider.value);
+            }
+    
+            function startAutoNightMode() {
+                checkTimeOfDay();
+                autoNightModeInterval = setInterval(checkTimeOfDay, 30 * 60 * 1000); // كل 30 دقيقة
+            }
+    
+            function stopAutoNightMode() {
+                clearInterval(autoNightModeInterval);
+            }
+    
+            function showNotification(message) {
+                const notif = document.createElement('div');
+                notif.className = 'notification';
+                notif.textContent = message;
+                document.body.appendChild(notif);
+                
+                setTimeout(() => {
+                    notif.classList.add('fade-out');
+                    setTimeout(() => notif.remove(), 500);
+                }, 3000);
+            }
+    
+            function savePreferences() {
+                localStorage.setItem('eyeProtectionPrefs', JSON.stringify({
+                    autoNightMode: autoNightMode.checked,
+                    reduceGlare: reduceGlare.checked,
+                    darkenText: darkenText.checked,
+                    enabled: isEyeProtectionEnabled,
+                    brightness: brightnessSlider.value,
+                    colorTemp: slider.value
+                }));
+            }
+    
+            // تفعيل الوضع الليلي التلقائي إذا كان الوقت ليلاً
+            if (autoNightMode.checked) {
+                startAutoNightMode();
+            }
+            
+            // تحديث لون شريط التمرير عند التحميل
+            updateSliderColor(slider.value);
+        </script>
+    </body>
+    </html>
+  <style>
         body {
             font-family: 'Poppins', 'Amiri', serif;
             background-color: #121212;
@@ -144,7 +781,7 @@
 </head>
 <body>
 
-        
+    <br>  <br>  
     <div id="welcomePopup" class="popup">
         <h3>  ! السلام عليكم و أهلاً يا طبيب/طبيبة مستقبلنا ان شاء الله  </h3>
 
@@ -328,88 +965,126 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
                     padding-top: 120px;
                 }
             
-                /* Updated Sidebar to Header */
-                .sidebar {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height:50px;
-                    background-color: #333;
-                    text-align: center;
-                    padding: 10px 20px;
-                    z-index: 1000;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-                }
-            
-                /* Progress Bar Container */
-                .progress-bar-container {
-                    width: 60%;
-                    height: 35px;
-                    background-color: #444;
-                    border-radius: 15px;
-                    position: relative;
-                    margin: 0 auto;
-                }
-            
-           /* Progress Bar */
+
+/* الشريط العلوي */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background-color: #333;
+    color: white;
+    padding: 0 16px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+/* شريط التقدم */
+.progress-bar-container {
+    width: 90%;
+    top: -30px;
+    max-width: 600px;
+    height: 25px; /* تقليل الارتفاع للأجهزة المحمولة */
+    background-color: #444;
+    border-radius: 15px;
+    position: relative;
+    margin: 70px auto 10px auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
 .progress-bar {
     height: 100%;
-    width: 0;
+    width: 50%; /* مثال */
     background-color: #00aaff;
     border-radius: 15px;
     transition: width 0.3s ease-in-out;
-    margin-left: 500px; /* تحريك الشريط قليلًا إلى اليسار */
 }
 
+.progress-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px; /* تصغير حجم الخط للأجهزة المحمولة */
+    font-weight: bold;
+}
 
-            
 #proo {
-    display: flex;
-    align-items: center; /* محاذاة الإيموجي والنص أفقيًا */
-    gap: 5px; /* مسافة صغيرة بين الإيموجي والنص */
-    margin-left: 8rem; /* تحريكه لليمين */
-    font-size: 1.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 1.2rem;
+            margin: 10px auto;
+        }
+
+.finish-button {
+
+    background-color: #00aaff;
+    font-size: 0.8rem;
+              padding: 0.4rem  0.3rem;
+              width: 80%;
+              max-width: 100px;
+              box-sizing: border-box;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              transition: background-color 0.3s;
 }
 
+/* تحسينات للأجهزة صغيرة جدًا */
+@media (max-width: 480px) {
+    .sidebar {
+        padding: 0 10px;
+        height: 70px; /* تقليل الارتفاع قليلاً */
+    }
+    
+    .sidebar * {
+        font-size: 14px;
+    }
+    
+    .progress-bar-container {
+        height: 20px;
+        margin: 60px auto 8px auto;
+    }
+    
+    .progress-percentage {
+        font-size: 12px;
+    }
+    
+    #proo {
+        font-size: 0.6rem;
+    }
+    
+    .finish-button {
 
-                /* Progress Percentage */
-                .progress-percentage {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    color: white;
-                    font-size: 18px;
-                    font-weight: bold;
-                }
-            
-                /* Finish Button */
-                .finish-button {
-                    background-color: #00aaff;
-                    color: white;
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-size: 16px;
-                    margin-right: 3rem;
-                }
-            
-                .finish-button:hover {
-                    background-color: #0077cc;
-                }
-            
-                /* Disabled Finish Button */
-                .finish-button:disabled {
-                    background-color: #ccc;
-                    cursor: not-allowed;
-                    opacity: 0.7;
-                }
-            
+
+                font-size: 0.75rem;
+                padding: 0.3rem 0.4rem;
+                max-width: 120px;
+              
+
+    }
+}
+
+/* تحسينات للأجهزة الأفقية (landscape) */
+@media (max-height: 480px) {
+    .progress-bar-container {
+        margin: 50px auto 5px auto;
+    }
+} 
+
+
+
+
+
+              
                 /* Lesson Container */
                 .lesson-container {
                     margin-top: 20px;
@@ -722,7 +1397,7 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 <body>
  
-  
+
     <div class="sidebar">
    
         <button class="finish-button" onclick="finishLesson()" 
@@ -736,15 +1411,53 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
             <div class="progress-percentage" id="progress-percentage">0%</div>
         </div>
 
-        <h3 id="proo">📊 <span>التقدم</span></h3>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+        <h3 id="proo" style="margin-right: 20px;">📊 <span>التقدم</span></h3>
 
       
 
-    <button onclick="goToUncompletedBubble()" class="uncompleted-button" style="font-size: 14px; padding: 6px 10px;">🔍 الفقاعات غير المكتملة</button>
-    
+
+        
+
+
+        <style>
+            .uncompleted-button {
+              font-size: 0.8rem;
+              padding: 0.4rem  0.3rem;
+              width: 80%;
+              max-width: 100px;
+              box-sizing: border-box;
+              border: none;
+              border-radius: 8px;
+              background-color: #007bff; /* أزرق فاتح */
+              cursor: pointer;
+              transition: background-color 0.3s;
+            }
+          
+            .uncompleted-button:hover {
+              background-color:  #0056b3; /* أزرق أغمق قليلاً عند التحويم */
+            }
+          
+            /* تصغير الزر أكثر على الشاشات الصغيرة */
+            @media (max-width: 600px) {
+              .uncompleted-button {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.4rem;
+                max-width: 120px;
+              }
+            }
+          </style>
+          
+          <button onclick="goToUncompletedBubble()" class="uncompleted-button">
+            🔍 الفقاعات غير المكتملة
+          </button>
+          
 
 </div>
     
+
+
     
 
 
@@ -1198,587 +1911,203 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
                    
 
 
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A29.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="bubble">
-                <div style="background:#fdecea;border:1px solid #f5c2c7;padding:10px;border-radius:6px;display:inline-block;float:left;"><button style="background:#ff4d4f;color:#fff;border:none;padding:8px 16px;border-radius:4px;font-size:15px;cursor:pointer;">اضافات</button></div>
-<BR>
-    <BR><BR>
-            <div class="bubble">
-                <div style="background:#fdecea;border:1px solid #f5c2c7;padding:10px;border-radius:6px;display:inline-block;float:left;"><button style="background:#ff4d4f;color:#fff;border:none;padding:8px 16px;border-radius:4px;font-size:15px;cursor:pointer;">اضافات</button></div>
-            
-                <!-- العنوان بالعربية -->
-                <ul>
-                    <li><strong>التصوير المقطعي المحوري للعمود الفقري العنقي:</strong></li>
-                    <li>يُظهر كسرًا من النوع الثالث في فقرة الأطلس (C1)، ويتكوّن من كسر معزول في الكتلة الجانبية.</li>
-                    <li><strong>الشرح:</strong></li>
-                    <ul>
-                        <li><strong>التصوير المقطعي المحوري (Axial CT):</strong> نوع من التصوير يُؤخذ في مستوى أفقي، كما لو كنت تنظر من الأعلى إلى الأسفل.</li>
-                        <li><strong>العمود الفقري العنقي (Cervical spine):</strong> الجزء العلوي من العمود الفقري ويشمل الفقرات C1 إلى C7، حيث تُعرف C1 باسم الأطلس.</li>
-                        <li><strong>كسر النوع الثالث في الأطلس (Type 3 atlas fracture):</strong> كسر يصيب الكتلة الجانبية لفقرة C1.</li>
-                        <li><strong>كسر معزول في الكتلة الجانبية:</strong> الكسر مقتصر على الكتلة الجانبية فقط دون إصابة القوس الأمامي أو الخلفي.</li>
-                    </ul>
-                    <li><strong>معلومة تشريحية:</strong></li>
-                    <ul>
-                        <li>فقرة C1 (الأطلس) لا تحتوي على جسم فقري.</li>
-                        <li>تشبه الحلقة وتدعم الجمجمة من الأعلى.</li>
-                        <li>تلعب دورًا أساسيًا في دعم واستقرار حركة الرأس.</li>
-                    </ul>
-                </ul>
-            
-
-
-
-                
-                  
-                <div style="display: flex; gap: 10px;">
-                    <figure class="bubble">
-                        <img src="2MED U5 ANATOMIE/Atlas Fractures & Transverse Ligament Injuries.jpg" alt="NNN" class="outside-image">
-                    </figure>
-                </div>
-                <br>
-            
-                <!-- العنوان بالإنجليزية -->
-                <div class="bubble" dir="ltr">
-                    <ul>
-                        <li><strong>Axial CT of the cervical spine:</strong></li>
-                        <li>Depicts a type 3 atlas fracture consisting of an isolated lateral mass fracture.</li>
-                        <li><strong>Explanation:</strong></li>
+                    <div class="bubble">
+                        <button class="interact-button" id="developpement-os-crane" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+                    
+                        <!-- المحتوى بالعربية -->
                         <ul>
-                            <li><strong>Axial CT:</strong> A type of scan taken in a horizontal plane, as if viewing the body from above.</li>
-                            <li><strong>Cervical spine:</strong> The upper portion of the spine (C1 to C7); C1 is known as the atlas.</li>
-                            <li><strong>Type 3 atlas fracture:</strong> A fracture involving the lateral mass of C1.</li>
-                            <li><strong>Isolated lateral mass fracture:</strong> A fracture limited to the lateral mass without involving the anterior or posterior arches.</li>
-                        </ul>
-                        <li><strong>Anatomical note:</strong></li>
-                        <ul>
-                            <li>The atlas (C1) has no vertebral body.</li>
-                            <li>It forms a ring and supports the skull from above.</li>
-                            <li>It is crucial for head stability and movement.</li>
-                        </ul>
-                    </ul>
-                </div>
-            
-                <br>
-            
-                <!-- العنوان بالفرنسية -->
-                <div class="bubble">
-                    <ul>
-                        <li><strong>Scanner axial de la colonne cervicale :</strong></li>
-                        <li>Montre une fracture de type 3 de l'atlas composée d'une fracture isolée de la masse latérale.</li>
-                        <li><strong>Explication :</strong></li>
-                        <ul>
-                            <li><strong>Scanner axial :</strong> Imagerie en coupe horizontale, comme si on regardait le corps de haut en bas.</li>
-                            <li><strong>Colonne cervicale :</strong> Partie supérieure de la colonne vertébrale (C1 à C7), où C1 est appelée l’atlas.</li>
-                            <li><strong>Fracture de type 3 de l’atlas :</strong> Fracture touchant la masse latérale de C1.</li>
-                            <li><strong>Fracture isolée de la masse latérale :</strong> Fracture limitée à la masse latérale sans atteinte des arcs antérieur ou postérieur.</li>
-                        </ul>
-                        <li><strong>Note anatomique :</strong></li>
-                        <ul>
-                            <li>L’atlas (C1) ne possède pas de corps vertébral.</li>
-                            <li>Il a une forme d’anneau et soutient le crâne par le haut.</li>
-                            <li>Il joue un rôle essentiel dans la stabilité et le mouvement de la tête.</li>
-                        </ul>
-                    </ul>
-                </div>
-            </div>
-            
-
-
-
-
-            <div class="bubble">
-                <div style="background:#fdecea;border:1px solid #f5c2c7;padding:10px;border-radius:6px;display:inline-block;float:left;"><button style="background:#ff4d4f;color:#fff;border:none;padding:8px 16px;border-radius:4px;font-size:15px;cursor:pointer;">اضافات</button></div>
-
-                <!-- العنوان بالعربية -->
-                <ul>
-                    <li><strong>أنواع كسور الأطلس (C1) حسب تصنيف Gehweiler:</strong></li>
-            
-                    <ul>
-                        <li><strong>✅ النوع 1 (Type I):</strong> كسر في القوس الخلفي</li>
-                        <ul>
-                            <li><strong>الوصف:</strong> كسر معزول في القوس الخلفي للأطلس.</li>
-                            <li><strong>السبب الشائع:</strong> فرط التمدد (hyperextension).</li>
-                            <li><strong>الاستقرار:</strong> غالبًا مستقر.</li>
-                        </ul>
-            
-                        <li><strong>✅ النوع 2 (Type II):</strong> كسر في القوس الأمامي</li>
-                        <ul>
-                            <li><strong>الوصف:</strong> كسر معزول في القوس الأمامي للأطلس.</li>
-                            <li><strong>السبب:</strong> نادر جدًا.</li>
-                            <li><strong>الاستقرار:</strong> غالبًا مستقر.</li>
-                        </ul>
-            
-                        <li><strong>✅ النوع 3 (Type III):</strong> كسر في الكتلة الجانبية</li>
-                        <ul>
-                            <li><strong>الوصف:</strong> كسر معزول في الكتلة الجانبية.</li>
-                            <li><strong>الاستقرار:</strong> متغير حسب إصابة الرباط المستعرض.</li>
-                        </ul>
-            
-                        <li><strong>✅ النوع 4 (Type IV):</strong> كسر Jefferson (الكسر الانفجاري)</li>
-                        <ul>
-                            <li><strong>الوصف:</strong> كسر متعدد القطع يشمل القوسين الأمامي والخلفي نتيجة ضغط محوري.</li>
-                            <li><strong>السبب الشائع:</strong> سقوط على الرأس أو ضغط رأسي شديد.</li>
-                            <li><strong>الاستقرار:</strong> غالبًا غير مستقر، خاصة مع تمزق الرباط المستعرض.</li>
-                        </ul>
-            
-                        <li><strong>✅ النوع 5 (Type V):</strong> كسر انفتاقي (Avulsion)</li>
-                        <ul>
-                            <li><strong>الوصف:</strong> ناتج عن تمزق أربطة وسحب جزء من العظم معها.</li>
-                            <li><strong>الاستقرار:</strong> غالبًا غير مستقر ويتطلب تقييم دقيق.</li>
-                        </ul>
-                    </ul>
-            
-                    <li><strong>خلاصة التصنيف:</strong></li>
-                    <ul>
-                        <li>I — القوس الخلفي — مستقر</li>
-                        <li>II — القوس الأمامي — مستقر (نادراً)</li>
-                        <li>III — الكتلة الجانبية — متغير</li>
-                        <li>IV — كسر Jefferson — غير مستقر غالبًا</li>
-                        <li>V — كسر انفتاقي — غير مستقر غالبًا</li>
-                    </ul>
-                </ul>
-            
-                <br>
-            
-                <!-- العنوان بالإنجليزية -->
-                <div class="bubble" dir="ltr">
-                    <ul>
-                        <li><strong>Types of Atlas (C1) Fractures – Gehweiler Classification:</strong></li>
-            
-                        <ul>
-                            <li><strong>✅ Type I:</strong> Posterior arch fracture</li>
+                            <li><strong>تطور عظام الجمجمة:</strong></li>
                             <ul>
-                                <li><strong>Description:</strong> Isolated fracture of the posterior arch of the atlas.</li>
-                                <li><strong>Common cause:</strong> Hyperextension.</li>
-                                <li><strong>Stability:</strong> Generally stable.</li>
-                            </ul>
-            
-                            <li><strong>✅ Type II:</strong> Anterior arch fracture</li>
-                            <ul>
-                                <li><strong>Description:</strong> Isolated fracture of the anterior arch of the atlas.</li>
-                                <li><strong>Cause:</strong> Very rare.</li>
-                                <li><strong>Stability:</strong> Usually stable.</li>
-                            </ul>
-            
-                            <li><strong>✅ Type III:</strong> Lateral mass fracture</li>
-                            <ul>
-                                <li><strong>Description:</strong> Isolated fracture of the lateral mass.</li>
-                                <li><strong>Stability:</strong> Variable depending on transverse ligament injury.</li>
-                            </ul>
-            
-                            <li><strong>✅ Type IV:</strong> Jefferson fracture (burst fracture)</li>
-                            <ul>
-                                <li><strong>Description:</strong> Burst fracture involving both anterior and posterior arches due to axial compression.</li>
-                                <li><strong>Common cause:</strong> Fall on the head or high axial load.</li>
-                                <li><strong>Stability:</strong> Often unstable, especially with transverse ligament rupture.</li>
-                            </ul>
-            
-                            <li><strong>✅ Type V:</strong> Avulsion fracture</li>
-                            <ul>
-                                <li><strong>Description:</strong> Caused by ligament tear pulling off a piece of bone.</li>
-                                <li><strong>Stability:</strong> Often unstable and requires careful evaluation.</li>
+                                <li>لعظام الجمجمة أصل مزدوج:</li>
+                                <ul>
+                                    <li>عظام قاعدة الجمجمة لها أصل غضروفي.</li>
+                                    <li>عظام القبة (الكالفاريا) لها أصل غشائي.</li>
+                                </ul>
+                                <li>تكون الجمجمة عند حديث الولادة غير مكتملة، مما يترك فراغات بين عظام القبة، حيث تكون العظام في حالتها الغشائية.</li>
+                                <li>تُعرف هذه الفراغات باسم "اليافوخات"، وعددها ستة.</li>
+                                <ul>
+                                    <li><strong>في المنتصف:</strong></li>
+                                    <ul>
+                                        <li>يافوخ أمامي بشكل مُعيّن (Bregma).</li>
+                                        <li>يافوخ خلفي بشكل مثلث (Lambda).</li>
+                                    </ul>
+                                    <li><strong>جانبيًا:</strong></li>
+                                    <ul>
+                                        <li>يافوخان أماميان (Ptérique).</li>
+                                        <li>يافوخان خلفيان (Astérique).</li>
+                                    </ul>
+                                </ul>
                             </ul>
                         </ul>
-            
-                        <li><strong>Classification Summary:</strong></li>
+                    
+                        <br>
+                    
+                        <!-- English version -->
+                        <div class="bubble" dir="ltr">
+                            <ul>
+                                <li><strong>Development of Skull Bones:</strong></li>
+                                <ul>
+                                    <li>The skull bones have a dual origin:</li>
+                                    <ul>
+                                        <li>The base bones originate from cartilage.</li>
+                                        <li>The calvaria bones originate from membrane.</li>
+                                    </ul>
+                                    <li>At birth, skull development is incomplete, leaving spaces between the calvaria bones where the bone remains membranous.</li>
+                                    <li>These spaces are called "fontanelles", and there are six of them.</li>
+                                    <ul>
+                                        <li><strong>Midline:</strong></li>
+                                        <ul>
+                                            <li>Anterior fontanelle (diamond-shaped): Bregma.</li>
+                                            <li>Posterior fontanelle (triangular): Lambda.</li>
+                                        </ul>
+                                        <li><strong>Lateral:</strong></li>
+                                        <ul>
+                                            <li>Two anterior fontanelles: Pteric.</li>
+                                            <li>Two posterior fontanelles: Asteric.</li>
+                                        </ul>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        </div>
+                    
+                        <br>
+                    
+                        <!-- Version française -->
+                        <div class="bubble">
+                            <ul>
+                                <li><strong>Développement des os du crâne :</strong></li>
+                                <ul>
+                                    <li>Les os du crâne ont une origine double :</li>
+                                    <ul>
+                                        <li>Ceux de la base ont une origine cartilagineuse.</li>
+                                        <li>Ceux de la calvaria ont une origine membraneuse.</li>
+                                    </ul>
+                                    <li>Chez le nouveau-né, le développement du crâne est encore incomplet, laissant des espaces entre les os de la calvaria où l’os est encore à l’état membraneux.</li>
+                                    <li>Ces espaces sont appelés "fontanelles", et leur nombre est de six :</li>
+                                    <ul>
+                                        <li><strong>Au milieu :</strong></li>
+                                        <ul>
+                                            <li>Une fontanelle antérieure en forme losangique : Bregma.</li>
+                                            <li>Une fontanelle postérieure en forme triangulaire : Lambda.</li>
+                                        </ul>
+                                        <li><strong>Latéralement :</strong></li>
+                                        <ul>
+                                            <li>Deux fontanelles antérieures : Ptérique.</li>
+                                            <li>Deux fontanelles postérieures : Astérique.</li>
+                                        </ul>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                    
+
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A30.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+
+
+
+
+                    <div class="bubble">
+                        <button class="interact-button" id="sutures-crane" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+                    
+                        <!-- المحتوى بالعربية -->
                         <ul>
-                            <li>I — Posterior arch — Stable</li>
-                            <li>II — Anterior arch — Stable (rare)</li>
-                            <li>III — Lateral mass — Variable</li>
-                            <li>IV — Jefferson fracture — Often unstable</li>
-                            <li>V — Avulsion fracture — Often unstable</li>
-                        </ul>
-                    </ul>
-                </div>
-            
-                <br>
-            
-                <!-- العنوان بالفرنسية -->
-                <div class="bubble">
-                    <ul>
-                        <li><strong>Types de fractures de l’atlas (C1) – Classification de Gehweiler :</strong></li>
-            
-                        <ul>
-                            <li><strong>✅ Type I :</strong> Fracture de l’arc postérieur</li>
+                            <li><strong>الدرزات الطبيعية للجمجمة:</strong></li>
                             <ul>
-                                <li><strong>Description :</strong> Fracture isolée de l’arc postérieur de l’atlas.</li>
-                                <li><strong>Cause fréquente :</strong> Hyperextension.</li>
-                                <li><strong>Stabilité :</strong> Généralement stable.</li>
-                            </ul>
-            
-                            <li><strong>✅ Type II :</strong> Fracture de l’arc antérieur</li>
-                            <ul>
-                                <li><strong>Description :</strong> Fracture isolée de l’arc antérieur.</li>
-                                <li><strong>Cause :</strong> Très rare.</li>
-                                <li><strong>Stabilité :</strong> Généralement stable.</li>
-                            </ul>
-            
-                            <li><strong>✅ Type III :</strong> Fracture de la masse latérale</li>
-                            <ul>
-                                <li><strong>Description :</strong> Fracture isolée de la masse latérale.</li>
-                                <li><strong>Stabilité :</strong> Variable selon l’état du ligament transverse.</li>
-                            </ul>
-            
-                            <li><strong>✅ Type IV :</strong> Fracture de Jefferson (fracture par éclatement)</li>
-                            <ul>
-                                <li><strong>Description :</strong> Fracture multifragmentaire impliquant les arcs antérieur et postérieur due à une compression axiale.</li>
-                                <li><strong>Cause fréquente :</strong> Chute sur la tête ou compression verticale sévère.</li>
-                                <li><strong>Stabilité :</strong> Souvent instable, surtout en cas de rupture du ligament transverse.</li>
-                            </ul>
-            
-                            <li><strong>✅ Type V :</strong> Fracture d’arrachement (Avulsion)</li>
-                            <ul>
-                                <li><strong>Description :</strong> Résulte d’un arrachement ligamentaire entraînant une portion osseuse.</li>
-                                <li><strong>Stabilité :</strong> Souvent instable, nécessite une évaluation minutieuse.</li>
+                                <li>يتم ضمان نمو الجمجمة بشكل متناغم من خلال نظامين من الدرزات:</li>
+                                <ul>
+                                    <li><strong>النظام الطولي:</strong> يشمل الدرز الجبهي (الميتوبي) والدرز السهمي، ويسمحان بنمو الجمجمة من حيث العرض.</li>
+                                    <li><strong>النظام العرضي:</strong> يشمل الدرز الإكليلي والدرز اللامي، ويسمحان بنمو الجمجمة إلى الأمام والخلف.</li>
+                                </ul>
+                                <li>عند الولادة، تبقى الدرزات مفتوحة عادة، مما يسمح بتراكب عظام القبة، وهذا يُسهّل مرور رأس الجنين عبر الحوض أثناء الولادة ويُقلل من "الرضح التوليدي".</li>
                             </ul>
                         </ul>
-            
-                        <li><strong>Résumé de la classification :</strong></li>
-                        <ul>
-                            <li>I — Arc postérieur — Stable</li>
-                            <li>II — Arc antérieur — Stable (rare)</li>
-                            <li>III — Masse latérale — Variable</li>
-                            <li>IV — Fracture de Jefferson — Souvent instable</li>
-                            <li>V — Fracture d’arrachement — Souvent instable</li>
-                        </ul>
-                    </ul>
-                </div>
-            </div>
-            
-
-
-
-
-            <div class="bubble">
-                <div style="background:#fdecea;border:1px solid #f5c2c7;padding:10px;border-radius:6px;display:inline-block;float:left;"><button style="background:#ff4d4f;color:#fff;border:none;padding:8px 16px;border-radius:4px;font-size:15px;cursor:pointer;">اضافات</button></div>
-            
-                <!-- العنوان بالعربية -->
-                <ul>
-                    <li><strong>التصوير المقطعي المحوري للعمود الفقري الرقبي:</strong></li>
-                    <li>الصورة (a) تُظهر كسر "المحراث" مع كسر في الحلقة الأمامية.</li>
-                    <li>الصورة (b) تُظهر كسرًا في الحلقة الخلفية.</li>
-                </ul>
-            
-
-                
-                  
-                <div style="display: flex; gap: 10px;">
-                    <figure class="bubble">
-                        <img src="2MED U5 ANATOMIE/Atlas Fractures & Transverse Ligament Injuries 2.jpg" alt="NNN" class="outside-image">
-                    </figure>
-                </div>
-                <br>
-            
-                <!-- العنوان بالإنجليزية -->
-                <div class="bubble" dir="ltr">
-                    <ul>
-                        <li><strong>Axial CT scan of the cervical spine:</strong></li>
-                        <li>Image (a) depicts a "Plough" fracture with an anterior ring fracture.</li>
-                        <li>Image (b) depicts a posterior ring fracture.</li>
-                    </ul>
-                </div>
-            
-                <br>
-            
-                <!-- العنوان بالفرنسية -->
-                <div class="bubble">
-                    <ul>
-                        <li><strong>Scanner axial du rachis cervical :</strong></li>
-                        <li>L’image (a) montre une fracture en « charrue » avec une fracture de l’anneau antérieur.</li>
-                        <li>L’image (b) montre une fracture de l’anneau postérieur.</li>
-                    </ul>
-                </div>
-            </div>
-            
+                    
+                        <br>
+                    
+                        <!-- English version -->
+                        <div class="bubble" dir="ltr">
+                            <ul>
+                                <li><strong>Normal Sutures of the Skull:</strong></li>
+                                <ul>
+                                    <li>Harmonious skull growth is ensured by two systems of sutures:</li>
+                                    <ul>
+                                        <li><strong>Longitudinal system:</strong> includes the metopic and sagittal sutures, allowing transverse (width) development of the skull.</li>
+                                        <li><strong>Transverse system:</strong> includes the coronal and lambdoid sutures, allowing anterior and posterior development of the skull.</li>
+                                    </ul>
+                                    <li>At birth, the sutures normally remain open, allowing overlapping of calvaria bones, which facilitates the passage of the fetal head through the pelvis during delivery, thus minimizing "obstetrical trauma".</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    
+                        <br>
+                    
+                        <!-- Version française -->
+                        <div class="bubble">
+                            <ul>
+                                <li><strong>2 - Les sutures normales du crâne :</strong></li>
+                                <ul>
+                                    <li>La croissance harmonieuse du crâne est assurée par deux systèmes de sutures :</li>
+                                    <ul>
+                                        <li><strong>Système longitudinal :</strong> sutures métopique et sagittale qui permettent le développement du crâne en largeur.</li>
+                                        <li><strong>Système transversal :</strong> sutures coronales et lambdoïdes, qui autorisent le développement du crâne vers l’avant et vers l’arrière.</li>
+                                    </ul>
+                                    <li>Normalement à la naissance, les sutures restent ouvertes, permettant le chevauchement des os de la calvaria, ce qui facilite le passage de la tête fœtale dans le pelvis lors de l’accouchement et réduit ainsi au minimum le « traumatisme obstétrical ».</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                    
 
 
 
 
 
-            <div class="bubble">
-                <div style="background:#fdecea;border:1px solid #f5c2c7;padding:10px;border-radius:6px;display:inline-block;float:left;"><button style="background:#ff4d4f;color:#fff;border:none;padding:8px 16px;border-radius:4px;font-size:15px;cursor:pointer;">اضافات</button></div>
-            
-                <!-- العنوان بالعربية -->
-                <ul>
-                    <li><strong>التصوير المقطعي المحوري للعمود الفقري الرقبي:</strong></li>
-                    <li>يُظهر وجود حلقة خلفية غير مكتملة للفقرة C1.</li>
-                </ul>
-            
-                  
-                <div style="display: flex; gap: 10px;">
-                    <figure class="bubble">
-                        <img src="2MED U5 ANATOMIE/Atlas Fractures & Transverse Ligament Injuries 2.jpg" alt="NNN" class="outside-image">
-                    </figure>
-                </div>
-                <br>
-            
-                <!-- العنوان بالإنجليزية -->
-                <div class="bubble" dir="ltr">
-                    <ul>
-                        <li><strong>Axial CT of the cervical spine:</strong></li>
-                        <li>Depicts an incomplete posterior ring of C1.</li>
-                    </ul>
-                </div>
-            
-                <br>
-            
-                <!-- العنوان بالفرنسية -->
-                <div class="bubble">
-                    <ul>
-                        <li><strong>Scanner axial du rachis cervical :</strong></li>
-                        <li>Montre un anneau postérieur incomplet de C1.</li>
-                    </ul>
-                </div>
-            </div>
-            
 
 
-            <div class="bubble">
-                <div style="background:#fdecea;border:1px solid #f5c2c7;padding:10px;border-radius:6px;display:inline-block; float: left;"><button style="background:#ff4d4f;color:#fff;border:none;padding:8px 16px;border-radius:4px;font-size:15px;cursor:pointer;">اضافات</button></div>
-            
-                <!-- العنوان بالعربية -->
-                <ul>
-                    <li><strong>صورة شعاعية بمنظر الفم المفتوح للفقرة الثانية (الأودونتويد):</strong></li>
-                    <li>تُظهر مجموع إزاحة الكتلتين الجانبيتين أكبر من 7 مم (8.1 مم مع التكبير الشعاعي)،</li>
-                    <li>مما يشير إلى تمزق في الرباط المستعرض ونمط كسر غير مستقر.</li>
-                </ul>
-            
-                <div style="display: flex; gap: 10px;">
-                    <figure class="bubble">
-                        <img src="2MED U5 ANATOMIE/xray_jefferson_fx.jpg" alt="NNN" class="outside-image">
-                    </figure>
-                </div>
-                <br>
-            
-                <!-- العنوان بالإنجليزية -->
-                <div class="bubble" dir="ltr">
-                    <ul>
-                        <li><strong>Open-mouth odontoid view radiograph:</strong></li>
-                        <li>Shows sum of lateral mass displacement &gt;7 mm (8.1 mm with radiographic magnification),</li>
-                        <li>indicative of a transverse ligament rupture and an unstable fracture pattern.</li>
-                    </ul>
-                </div>
-            
-                <br>
-            
-                <!-- العنوان بالفرنسية -->
-                <div class="bubble">
-                    <ul>
-                        <li><strong>Radiographie en incidence bouche ouverte de l’odontoïde :</strong></li>
-                        <li>Montre un déplacement des masses latérales supérieur à 7 mm (8,1 mm avec l’agrandissement radiographique),</li>
-                        <li>indiquant une rupture du ligament transverse et un schéma de fracture instable.</li>
-                    </ul>
-                </div>
-            </div>
-            
 
-            <div class="bubble">
-                <div style="background:#fdecea;border:1px solid #f5c2c7;padding:10px;border-radius:6px;display:inline-block;float:left;"><button style="background:#ff4d4f;color:#fff;border:none;padding:8px 16px;border-radius:4px;font-size:15px;cursor:pointer;">اضافات</button></div>
-            
-                <!-- العنوان بالعربية -->
-                <ul>
-                    <li><strong>ملخص:</strong></li>
-                    <li>كسور الأطلس وإصابات الرباط المستعرض هي إصابات رضحية تحدث عادةً بسبب صدمة عالية الشدة مع حمل محوري لدى المرضى الشباب (كسر جيفرسون)، أو بسبب سقوط منخفض الشدة لدى كبار السن.</li>
-                    <li>بسبب اتساع القناة الشوكية في هذا المستوى، غالبًا ما تظهر هذه الإصابات بألم في الرقبة دون عجز عصبي.</li>
-                    <li>غالبًا لا تُكتشف هذه الإصابات بالأشعة البسيطة، لذا قد يتطلب الأمر إجراء تصوير طبقي محوري (CT) للتشخيص.</li>
-                    <li>تُعد صورة الأودونتويد بمنظر الفم المفتوح مفيدة لتقييم تمزق الرباط المستعرض، والذي يؤدي إلى إزاحة جانبية في الكتلتين الجانبيتين نسبةً لبعضهما البعض.</li>
-                    <li>يمكن علاج الإصابات المستقرة بالتثبيت بواسطة طوق رقبي، أما الإصابات غير المستقرة فتتطلب التثبيت بواسطة جهاز هالو-فيست أو التثبيت الجراحي مع دمج الفقرات.</li>
-                </ul>
-            
-                <br>
-            
-                <!-- العنوان بالإنجليزية -->
-                <div class="bubble" dir="ltr">
-                    <ul>
-                        <li><strong>Summary:</strong></li>
-                        <li>Atlas fractures and transverse ligament injuries are traumatic injuries usually caused by high-energy trauma with axial loading in young patients (Jefferson fracture) or low-energy falls in the elderly.</li>
-                        <li>Due to the capacious nature of the spinal canal at this level, these injuries usually present with neck pain without neurological deficits.</li>
-                        <li>Diagnosis is often missed with plain radiographs, so a CT scan may be required to make the diagnosis.</li>
-                        <li>An open-mouth odontoid radiograph is useful to evaluate for disruption of the transverse ligament, which leads to lateral displacement of the lateral masses relative to one another.</li>
-                        <li>Stable injuries can be treated with immobilization in a cervical collar. Unstable injuries require either halo-vest immobilization or surgical stabilization with fusion.</li>
-                    </ul>
-                </div>
-            
-                <br>
-            
-                <!-- العنوان بالفرنسية -->
-                <div class="bubble">
-                    <ul>
-                        <li><strong>Résumé :</strong></li>
-                        <li>Les fractures de l’atlas et les lésions du ligament transverse sont des traumatismes généralement causés par un traumatisme à haute énergie avec une charge axiale chez les jeunes patients (fracture de Jefferson) ou par des chutes à faible énergie chez les personnes âgées.</li>
-                        <li>En raison de la largeur du canal rachidien à ce niveau, ces lésions se manifestent généralement par une douleur cervicale sans déficit neurologique.</li>
-                        <li>Le diagnostic est souvent manqué avec les radiographies standards, un scanner (CT) peut donc être nécessaire pour confirmer le diagnostic.</li>
-                        <li>La radiographie de l’odontoïde en bouche ouverte est utile pour évaluer une rupture du ligament transverse, qui entraîne un déplacement latéral des masses latérales l’une par rapport à l’autre.</li>
-                        <li>Les lésions stables peuvent être traitées par immobilisation avec une minerve cervicale. Les lésions instables nécessitent une immobilisation par halo-vest ou une stabilisation chirurgicale avec arthrodèse.</li>
-                    </ul>
-                </div>
-            </div>
-            
- </div>
+
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A31.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+                    
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A32.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+                    
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A33.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
 
 
 
@@ -1808,6 +2137,220 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="bubble">
+
+                        <!-- زر إضافات باللون الأحمر ومتمركز -->
+                        <div style="text-align: center; margin-bottom: 20px;">
+                          <button style="background-color: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-size: 16px; cursor: pointer;">
+                            إضافات
+                          </button>
+                        </div>
+                    </div>
+
+
+
+                        <div class="bubble">
+                        
+                            <!-- المحتوى بالعربية -->
+                            <ul>
+                                <li><strong>التشريح الناحي – الجمجمة:</strong></li>
+                                <ul>
+                                    <li>تتكون الجمجمة من 22 عظمة، باستثناء عظيمات السمع الموجودة في الأذن.</li>
+                                    <li>ترتبط عظام الجمجمة بواسطة الدروز، وهي غير متحركة، باستثناء الفك السفلي.</li>
+                                    <li>تقسيم الجمجمة:</li>
+                                    <ul>
+                                        <li><strong>القبة (Calvaria):</strong> الجزء العلوي الذي يغطي الدماغ.</li>
+                                        <li><strong>قاعدة الجمجمة:</strong> تشكل أرضية الجوف القحفي.</li>
+                                        <li><strong>الوجه العظمي (Viscerocranium):</strong> الجزء الأمامي السفلي ويشمل هيكل الوجه.</li>
+                                    </ul>
+                                    <li>تتشكل القبة من العظام: الجبهي، الجداري، أجزاء من الصدغي، الوتدي والقذالي.</li>
+                                    <li>القاعدة تتكوّن أساسًا من: الوتدي، الصدغي، والقذالي.</li>
+                                    <li>هيكل الوجه يتكوّن من: عظام مزدوجة (الأنفي، الحنكي، الدمعي، الوجني، الفك العلوي، القرين السفلي)، وعظمة مفردة (المعقة).</li>
+                                    <li>الفك السفلي لا يُعد جزءًا من القحف ولا من هيكل الوجه.</li>
+                                    <li><strong>المنظر الأمامي:</strong> يظهر الجبهة، المنطقة الأنفية، الحجاج، الفك العلوي والسفلي.</li>
+                                </ul>
+                            </ul>
+                        
+                            <br>
+
+                            <div style="display: flex; gap: 10px;">
+                                <figure class="bubble">
+                                    <img src="2MED U5 ANATOMIE/A33.jpg" alt="NNN" class="outside-image">
+                                </figure>
+                            </div>
+                           
+                        
+                            <!-- English version -->
+                            <div class="bubble" dir="ltr">
+                                <ul>
+                                    <li><strong>Regional Anatomy – Skull:</strong></li>
+                                    <ul>
+                                        <li>The skull consists of 22 bones, excluding the auditory ossicles in the ear.</li>
+                                        <li>Skull bones are joined by immobile sutures, except for the mandible.</li>
+                                        <li>Division of the skull:</li>
+                                        <ul>
+                                            <li><strong>Calvaria:</strong> Upper part covering the cranial cavity and brain.</li>
+                                            <li><strong>Skull base:</strong> Forms the floor of the cranial cavity.</li>
+                                            <li><strong>Facial skeleton (Viscerocranium):</strong> Lower anterior portion forming the face.</li>
+                                        </ul>
+                                        <li>The calvaria includes: frontal, parietal, and parts of sphenoid, temporal, and occipital bones.</li>
+                                        <li>The base includes: sphenoid, temporal, and occipital bones.</li>
+                                        <li>The facial skeleton includes: paired bones (nasal, palatine, lacrimal, zygomatic, maxilla, inferior nasal concha) and one unpaired bone (vomer).</li>
+                                        <li>The mandible is not considered part of the cranium nor the facial skeleton.</li>
+                                        <li><strong>Anterior View:</strong> Shows the forehead, nasal region, orbits, maxilla, and mandible.</li>
+                                    </ul>
+                                </ul>
+                            </div>
+                        
+                            <br>
+                        
+                            <!-- Version française -->
+                            <div class="bubble">
+                                <ul>
+                                    <li><strong>Anatomie régionale – Le crâne :</strong></li>
+                                    <ul>
+                                        <li>Le crâne comprend 22 os, à l'exception des osselets de l’oreille.</li>
+                                        <li>Les os du crâne sont unis par des sutures immobiles, sauf la mandibule.</li>
+                                        <li>Division du crâne :</li>
+                                        <ul>
+                                            <li><strong>Calvaria :</strong> partie supérieure couvrant la cavité crânienne.</li>
+                                            <li><strong>Base du crâne :</strong> plancher de la cavité crânienne.</li>
+                                            <li><strong>Squelette facial (Viscérocrâne) :</strong> partie inférieure antérieure du visage.</li>
+                                        </ul>
+                                        <li>La calvaria est formée des os : frontal, pariétal, parties du temporal, sphénoïde et occipital.</li>
+                                        <li>La base comprend principalement : sphénoïde, temporal et occipital.</li>
+                                        <li>Le squelette facial est formé d’os pairs (nasal, palatin, lacrymal, zygomatique, maxillaire, cornets inférieurs) et un os impair (vomer).</li>
+                                        <li>La mandibule ne fait pas partie du crâne ni du squelette facial.</li>
+                                        <li><strong>Vue antérieure :</strong> montre le front, la région nasale, les orbites, le maxillaire et la mandibule.</li>
+                                    </ul>
+                                </ul>
+                            </div>
+                        </div>
 
 
 
@@ -1917,9 +2460,6 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     
 </body>
 </html>
-
-
-
 
 
 
@@ -3596,259 +4136,377 @@ updateCard();
 
 
 
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نافذة منبثقة مع Iframe</title>
+    <title>تنبيه طبي - INFATM</title>
     <style>
-        /* زر الفتح العائم - تأكد من ظهوره فوق معظم العناصر */
-        .floating-btn-warning {
+        /* تهيئة عامة */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+        }
+
+        /* زر الخطر العائم - تصميم جديد */
+        ._x1 {
             position: fixed;
             top: 120px; /* تغيير من bottom إلى top */
-            right: 15px;  /* تعديل القيمة */
-            width: 30px;
-            height: 50px;
-            background-color: #ff2512;
+            right: 10px;  /* تعديل القيمة */
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff0000, #c00000);
             color: white;
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 21px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            border: none;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
-            z-index: 9999;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
+                        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1000;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            animation: _a1 2s infinite;
         }
 
-        /* طبقة التعتيم - تظهر فوق كل شيء ما عدا النافذة */
-        .overlay {
+        @keyframes _a1 {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        ._x1:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff3333, #d10000);
+        }
+
+        ._x1:active {
+            transform: scale(0.95);
+            animation: none;
+        }
+
+        /* طبقة التعتيم */
+        ._x2 {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 9999; /* أعلى من الزر ولكن أقل من النافذة */
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
             display: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
-        /* النافذة المنبثقة - أعلى عنصر في الصفحة */
-        .popup-iframe {
+        /* نافذة المحتوى */
+        ._x3 {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70%;
-            height: 80vh;
-            max-width: 800px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10012;
             display: none;
-            z-index: 10000; /* أعلى قيمة لضمان الظهور فوق الجميع */
-            animation: fadeIn 0.3s ease-out;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: white;
         }
 
-        /* تأثيرات التحويم والظهور */
-        .floating-btn-warning:hover {
-            transform: scale(1.1);
-            background-color: #ff3d2e;
-        }
+        ._x4 {
+          background: linear-gradient(to right, #e74c3c, #c0392b);
+          color: white;
+          padding: 18px;
+          text-align: center;
+          position: relative;
+          flex-shrink: 0;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translate(-50%, -45%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
-        }
+      ._x4 h2 {
+          font-size: 1.3rem;
+          font-weight: 600;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
 
-        /* تنسيق رأس النافذة */
-        .popup-header {
-            position: relative;
-            display: flex; /* إضافة */
-            justify-content: center; /* إضافة */
-            align-items: center; /* إضافة */
-            text-align: center;
-            margin-bottom: 10px;
-            padding: 15px 60px 15px 15px;
-            border-bottom: 1px solid #eee;
-            background-color: #f1c40f;
-            border-radius: 8px;
-        }
-
-        /* محتوى النافذة */
-        .popup-content {
-            margin: 10px 0;
-            height: calc(100% - 100px);
+        ._x5 {
+            flex-grow: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            background-color: #f5f5f5;
         }
 
-        /* زر الإغلاق */
-        .btn-close {
-            background: linear-gradient(135deg, #ff0000, #FF3D00);
-            color: white;
-            padding: 8px 16px;
-            font-size: 14px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        /* زر الإغلاق الجديد */
+        ._x6 {
             position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            z-index: 100;
-            white-space: nowrap;
-        }
-
-        .btn-close:hover {
-            background: linear-gradient(135deg, #ff0000, #f62e2e);
-            transform: translateY(-50%) scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn-close:active {
-            background: linear-gradient(135deg, #ff0000, #ea3700);
-            transform: translateY(-48%) scale(0.98);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* تنسيق الـ iframe */
-        .popup-iframe iframe {
-            width: 100%;
-            height: 100%;
-            min-height: 300px;
+            top: 12px;
+            left: 12px;
+            background: white;
+            color: #e74c3c;
             border: none;
-            border-radius: 6px;
-        }
-
-        /* عنوان النافذة */
-        .popup-header h2 {
-            color: #f39c12;
-            font-size: 1.2rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(255, 255, 0, 0.7), 0 0 10px rgba(255, 255, 0, 0.5);
-            margin: 0;
-            padding-right: 10px;
-            text-align: center;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
         }
 
-        /* تحسينات للشاشات الكبيرة */
-        @media (min-width: 768px) {
-            .floating-btn-warning {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-                top: 120px; /* تغيير من bottom إلى top */
-            right: 15px;  /* تعديل القيمة */
-            }
-            
-            .popup-iframe {
-                width: 85%;
-                padding: 20px;
-                border-radius: 15px;
-            }
-            
-            .popup-header {
-                padding: 20px 80px 20px 20px;
-            }
-            
-            .popup-header h2 {
-                font-size: 1.5rem;
-            }
-            
-            .btn-close {
-                padding: 10px 20px;
-                font-size: 16px;
-            }
+        ._x6:hover {
+            transform: rotate(90deg);
+            background: #ffebee;
         }
 
-        /* تعديلات للشاشات الصغيرة */
+        /* مؤشر التحميل */
+        ._x7 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        ._x8 {
+            width: 45px;
+            height: 45px;
+            border: 5px solid rgba(231, 76, 60, 0.2);
+            border-top: 5px solid #e74c3c;
+            border-radius: 50%;
+            animation: _a2 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes _a2 {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        ._x7 p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* المحتوى المعروض */
+        ._x9 {
+            padding: 18px;
+            line-height: 1.7;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
         @media (max-width: 480px) {
-            .popup-iframe {
-                width: 95%;
-                height: 85vh;
+            ._x1 {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+                bottom: 20px;
             }
             
-            .popup-header {
-                padding: 12px 50px 12px 12px;
+            ._x4 {
+                padding: 15px;
             }
             
-            .popup-header h2 {
+            ._x4 h2 {
+                font-size: 1.1rem;
+            }
+            
+            ._x6 {
+                width: 28px;
+                height: 28px;
                 font-size: 1rem;
-                line-height: 1.4;
+            }
+        }
+
+        /* تحسينات لللمس على الهواتف */
+        @media (hover: none) {
+            ._x1:hover {
+                transform: scale(1);
+                background: linear-gradient(135deg, #ff0000, #c00000);
             }
             
-            .btn-close {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-            
-            .floating-btn-warning {
-                width: 45px;
-                height: 45px;
-                font-size: 18px;
-                top: 120px; /* تغيير من bottom إلى top */
-                right: 15px;  /* تعديل القيمة */
+            ._x6:hover {
+                transform: rotate(0deg);
+                background: white;
             }
         }
     </style>
 </head>
 <body>
 
-<!-- زر الفتح -->
-<button class="floating-btn-warning" onclick="toggleIframePopup()">⚠️</button>
+<!-- زر الخطر العائم الجديد -->
+<button class="_x1" onclick="_f1()">⚠️</button>
 
 <!-- طبقة التعتيم -->
-<div class="overlay" id="overlay"></div>
+<div class="_x2" id="_d1"></div>
 
-<!-- النافذة المنبثقة -->
-<div id="popupIframe" class="popup-iframe">
-    <div class="popup-header">
-        <h2>اكتشف ما تقدمه أداة "علم" لمساعدتك في رحلتك العملية والعلمية</h2>
-        <button class="btn-close" onclick="toggleIframePopup()">إغلاق</button>
+<!-- نافذة المحتوى -->
+<div class="_x3" id="_d2">
+    <div class="_x4">
+        <button class="_x6" onclick="_f1()">×</button>
+        <h2 >⚠️  محتوى زر التنبيه  الخطر   ⚠️   </h2>
     </div>
-    
-    <div class="popup-content">
-        <iframe src="MEDECINE_EXAM_NOTE.html" title="محتوى صفحة خارجية"></iframe>
+    <div class="_x5" id="_d3">
+        <div class="_x7">
+            <div class="_x8"></div>
+            <p>جاري تحميل المحتوى ...</p>
+        </div>
     </div>
 </div>
 
 <script>
-    // وظيفة فتح/غلق النافذة
-    function toggleIframePopup() {
-        const popup = document.getElementById('popupIframe');
-        const overlay = document.getElementById('overlay');
-        
-        if (popup.style.display === 'block') {
-            popup.style.display = 'none';
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto'; // إعادة التمرير
+    // متغيرات التطبيق
+    let _v1 = false;
+    const _u1 = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    
+    // عناصر DOM
+    const _d2 = document.getElementById('_d2');
+    const _d1 = document.getElementById('_d1');
+    const _d3 = document.getElementById('_d3');
+    const _b1 = document.querySelector('._x1');
+    
+    // تبديل عرض/إخفاء النافذة
+    function _f1() {
+        if (_d2.style.display === 'flex') {
+            _f2();
         } else {
-            popup.style.display = 'block';
-            overlay.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // منع التمرير عند فتح النافذة
+            _f3();
         }
     }
-
+    
+    function _f3() {
+        // إيقاف تأثير النبض عند الفتح
+        _b1.style.animation = 'none';
+        
+        _d1.style.display = 'block';
+        _d2.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        if (!_v1) {
+            _f4();
+        }
+    }
+    
+    function _f2() {
+        // إعادة تشغيل تأثير النبض عند الإغلاق
+        _b1.style.animation = '_a1 2s infinite';
+        
+        _d1.style.display = 'none';
+        _d2.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // تحميل المحتوى
+    async function _f4() {
+        try {
+            // استخدام iframe كحل أساسي
+            _f5();
+            _v1 = true;
+        } catch (error) {
+            _f6(error);
+        }
+    }
+    
+    // عرض المحتوى باستخدام iframe
+    function _f5() {
+        _d3.innerHTML = `
+            <iframe src="${_u1}" 
+                    style="width:100%; height:100%; border:none;"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    loading="lazy">
+            </iframe>
+        `;
+    }
+    
+    // عرض رسالة الخطأ
+    function _f6(_e1) {
+        _d3.innerHTML = `
+            <div class="_x7">
+                <div style="color: #e74c3c; margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 20px; color: #555;">${_e1.message}</p>
+                <button onclick="_f7()" 
+                        style="padding: 10px 20px; 
+                               background: linear-gradient(to right, #e74c3c, #c0392b); 
+                               color: white; 
+                               border: none; 
+                               border-radius: 30px;
+                               font-size: 1rem;
+                               box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+                               transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // إعادة تحميل المحتوى
+    function _f7() {
+        _d3.innerHTML = `
+            <div class="_x7">
+                <div class="_x8"></div>
+                <p>جاري تحميل المحتوى الطبي...</p>
+            </div>
+        `;
+        _f4();
+    }
+    
     // إغلاق النافذة عند النقر خارجها
-    document.getElementById('overlay').addEventListener('click', toggleIframePopup);
-
+    _d1.addEventListener('click', _f2);
+    
     // منع إغلاق النافذة عند النقر داخلها
-    document.getElementById('popupIframe').addEventListener('click', function(e) {
+    _d2.addEventListener('click', (e) => {
         e.stopPropagation();
     });
+    
+    // تحسين الأداء للهواتف
+    if ('connection' in navigator) {
+        if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
+            // تحسينات لشبكات الجيل الثاني
+            _b1.style.animation = 'none';
+        }
+    }
+    
+    // إضافة اهتزاز عند النقر (للهواتف)
+    function _f8() {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(10);
+        }
+    }
+    
+    // إضافة الاهتزاز للأزرار
+    document.querySelector('._x1').addEventListener('click', _f8);
+    document.querySelector('._x6')?.addEventListener('click', _f8);
 </script>
 
 </body>
 </html>
+
+
+
+  
 
 
 
