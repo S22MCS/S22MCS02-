@@ -3793,156 +3793,146 @@ function closeFourthModal() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نافذة منبثقة مميزة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>خيارات</title>
     <style>
-        /* --- نفس التنسيقات كما في كودك السابق بدون تغيير --- */
-        .floating-btn-warning-1 {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .overlay {
             position: fixed;
-            bottom: 450px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            background-color: #ff2512;
-            color: white;
-            font-size: 23px;
-            font-weight: normal;
-            border-radius: 50%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            transition: transform 0.2s ease;
-            z-index: 9999;
+            z-index: 1000;
+            padding: 15px;
         }
-
-        /* حركة الزر */
-        @keyframes moveAndGlowWarning {
-            0% { transform: translateX(0) translateY(0); background-color: #ff6f61; }
-            50% { transform: translateX(15px) translateY(-15px); background-color: #ff3d2e; }
-            100% { transform: translateX(0) translateY(0); background-color: #ff6f61; }
-        }
-
-        .popup-iframe-1 {
-            position: fixed;
-            top: 15%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 600px;
-            background-color: #ffffff;
+        
+        .options-box {
+            background-color: white;
+            padding: 20px;
             border-radius: 10px;
-            padding: 1em;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: none;
-            z-index: 9998;
-            font-size: 1em;
-            overflow: hidden;
-            animation: fadeIn 0.3s ease-in-out;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-
-        .popup-iframe-1.show {
+        
+        .option-btn {
             display: block;
-        }
-
-        .btn-close-1 {
-            background-color: #FF5722;
-            color: white;
-            padding: 10px 20px;
-            font-size: 1.1em;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s ease;
-            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
-
-        .btn-close-1:hover {
-            background-color: #FF3D00;
+        
+        .option-btn:active {
+            transform: scale(0.98);
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        .continue {
+            background-color: #4CAF50;
+            color: white;
         }
-
-        @media (max-width: 600px) {
-            .popup-iframe-1 {
-                top: 10%;
-                width: 95%;
-                max-height: 70vh;
+        
+        .bac {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .exit {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        /* تحسينات للشاشات الصغيرة جدًا */
+        @media (max-width: 480px) {
+            .options-box {
+                padding: 15px;
             }
-            .popup-iframe-1 iframe {
-                height: 70vh;
+            
+            .option-btn {
+                padding: 12px;
+                font-size: 15px;
+                margin: 8px 0;
             }
         }
-
-        .popup-iframe-1 iframe {
-            width: 100%;
-            height: 400px;
-            border: none;
-            border-radius: 8px;
-            margin-top: 20px;
+        
+        /* منع التكبير/التصغير على iOS */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                touch-action: manipulation;
+            }
         }
     </style>
 </head>
 <body>
-
-<!-- زر الفتح -->
-<button class="floating-btn-warning-1" onclick="toggleIframePopup1()">⚠️</button>
-
-<!-- النافذة المنبثقة -->
-<div id="popupIframe1" class="popup-iframe-1">
-    <div class="popup-header"></div>
-    <div class="popup-content">
-        <iframe src="MEDECINE_EXAM_NOTE.html" title="محتوى صفحة خارجية"></iframe>
+    <div class="overlay" id="overlay">
+        <div class="options-box">
+            <button class="option-btn continue" id="continueBtn">الدخول إلى الموقع</button>
+            <button class="option-btn bac" id="bacBtn">موقع الباكالوريا</button>
+            <button class="option-btn exit" id="exitBtn">مغادرة الموقع</button>
+        </div>
     </div>
-    <button class="btn-close-1" onclick="toggleIframePopup1()">إغلاق</button>
-</div>
 
-<script>
-    function toggleIframePopup1() {
-        const popup = document.getElementById('popupIframe1');
-        popup.classList.toggle('show');
-    }
-</script>
-
+    <script>
+        // تحسينات للتفاعل على الأجهزة المحمولة
+        document.addEventListener('DOMContentLoaded', function() {
+            // منع التمرير على iOS
+            document.body.addEventListener('touchmove', function(e) {
+                if (document.getElementById('overlay').style.display !== 'none') {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            // إضافة تأثيرات اللمس
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('touchstart', function() {
+                    this.style.opacity = '0.8';
+                });
+                
+                btn.addEventListener('touchend', function() {
+                    this.style.opacity = '1';
+                });
+            });
+            
+            // معالجة النقر على الأزرار
+            document.getElementById('continueBtn').addEventListener('click', function() {
+                document.getElementById('overlay').style.display = 'none';
+            });
+            
+            document.getElementById('bacBtn').addEventListener('click', function() {
+                window.location.href = 'https://adatealm.github.io/BAC/';
+            });
+            
+            document.getElementById('exitBtn').addEventListener('click', function() {
+                window.location.href = 'about:blank';
+            });
+        });
+    </script>
 </body>
 </html>
