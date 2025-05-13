@@ -1,0 +1,3219 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 بطاقات فلاش تفاعلية</title>
+    <style>
+        /* أنماط الزر الطافي */
+        .theme-toggle {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 9999;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        /* أنماط الوضع النهاري */
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        body.light-mode .flashcard-side {
+            background-color: #ffffff;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.light-mode .flashcard-content {
+            background-color: rgba(240, 240, 240, 0.9);
+            color: #333;
+        }
+        
+        body.light-mode button {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        body.light-mode .arrow:hover {
+            color: #007bff;
+        }
+        
+        body.light-mode .hint-container {
+            background-color: rgba(240, 240, 240, 0.9);
+            color: #d35400;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* أنماط الوضع الليلي */
+        body.dark-mode {
+            background-color: #121212;
+            color: #fff;
+        }
+        
+        body.dark-mode .flashcard-side {
+            background-color: #1e1e1e;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+        
+        body.dark-mode .flashcard-content {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+        }
+        
+        body.dark-mode button {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        body.dark-mode .arrow:hover {
+            color: #00aaff;
+        }
+        
+        body.dark-mode .hint-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #f1c40f;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+        }
+
+        /* أنماط البطاقات المشتركة */
+        body {
+            font-family: 'Amiri', serif;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            direction: rtl;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 15px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .front {
+            background-color: #1e1e1e;
+        }
+
+        .back {
+            background-color: #2c2c2c;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-image {
+            width: 40%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcard-image img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .flashcard-content {
+            width: 65%;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: right;
+            direction: rtl;
+            overflow-y: auto;
+            max-height: 150px;
+            white-space: normal;
+            word-wrap: break-word;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+        
+        .hint-container {
+            position: fixed;
+            top: -160px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-out;
+        }
+
+        .hint-container.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        button {
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .arrow {
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .arrow:hover {
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 480px) {
+            .flashcard {
+                height: 230px;
+            }
+
+            .flashcard-image {
+                width: 40%;
+                max-height: 150px;
+            }
+
+            .flashcard-content {
+                font-size: 14px;
+                padding: 10px;
+                max-height: 120px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+
+    <div class="lesson-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 30vh; text-align: center;">
+        <h2 id="flashcard-section">📚 بطاقات فلاش تفاعلية</h2>
+    </div>
+    
+    <div class="flashcard-container" onclick="flipCard(event)">
+        <div class="flashcard" id="flashcard">
+            <div class="flashcard-side front">
+                <div class="flashcard-image">
+                    <img id="cardImageFront" src="" alt="صورة البطاقة">
+                </div>
+                <div class="flashcard-content">
+                    <h3 id="question"></h3>
+                    <div id="hintContainer" class="hint-container">
+                        <p id="hint" class="hint"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flashcard-side back">
+                <div class="flashcard-image">
+                    <img id="cardImageBack" src="" alt="صورة البطاقة">
+                </div>
+                <div class="flashcard-content">
+                    <h3>الإجابة:</h3>
+                    <p id="answer"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="buttons">
+        <button onclick="showHint()">🔍 تلميح</button>
+        <button onclick="shuffleCards()">🔀 خلط البطاقات</button>
+    </div>
+
+    <br>
+    <div class="navigation">
+        <span class="arrow" onclick="nextCard()">➡️</span>
+        <span id="cardNumber">1 / 30</span>
+        <span class="arrow" onclick="prevCard()">⬅️</span>
+    </div>
+
+    <script>
+        const flashcards = [
+            {
+    question : "🔍 السؤال 1:<br>🔹 (AR): ما هو الهيكل الذي يشكل الهيكل المحوري للجسم؟<br>🔹 (EN): What structure forms the axial skeleton of the body?<br>🔹 (FR): Quelle structure forme le squelette axial du corps ?",
+       hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>الهيكل المحوري للجسم. (AR):</b><br>
+                🔹 <b>The axial skeleton of the body. (EN):</b><br>
+                🔹 <b>Le squelette axial du corps. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): العمود الفقري</li><br>
+                <li>🔹 (EN): The vertebral column</li><br>
+                <li>🔹 (FR): La colonne vertébrale</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+    question : "🔍 السؤال 2:<br>🔹 (AR): كم عدد الفقرات التي يتكون منها العمود الفقري؟<br>🔹 (EN): How many parts make up the vertebral column?<br>🔹 (FR): De quoi est composée la colonne vertébrale ?",
+       hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>عدد فقرات العمود الفقري. (AR):</b><br>
+                🔹 <b>Number of vertebrae in the vertebral column. (EN):</b><br>
+                🔹 <b>Nombre de vertèbres de la colonne vertébrale. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): 24 فقرة حرة، العجز، والعصعص</li><br>
+                <li>🔹 (EN): 24 free vertebrae, the sacrum, and the coccyx</li><br>
+                <li>🔹 (FR): 24 vertèbres libres, le sacrum et le coccyx</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+{
+    question : "🔍 السؤال 3:<br>🔹 (AR): بماذا يرتبط العمود الفقري من الأعلى ومن الأسفل؟<br>🔹 (EN): To what is the vertebral column connected superiorly and inferiorly?<br>🔹 (FR): À quoi est reliée la colonne vertébrale en haut et en bas ?",
+       hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>ارتباطات العمود الفقري. (AR):</b><br>
+                🔹 <b>Connections of the vertebral column. (EN):</b><br>
+                🔹 <b>Connexions de la colonne vertébrale. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): من الأعلى بالجمجمة، ومن الأسفل بالحوض</li><br>
+                <li>🔹 (EN): Superiorly to the skull, and inferiorly to the pelvis</li><br>
+                <li>🔹 (FR): En haut au crâne, en bas au pelvis</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+
+{
+    question : "🔍 السؤال 4:<br>🔹 (AR): ما هي تقوسات العمود الفقري؟<br>🔹 (EN): What curvatures does the vertebral column present?<br>🔹 (FR): Quelles courbures présente la colonne vertébrale ?",
+        hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>تقوسات العمود الفقري. (AR):</b><br>
+                🔹 <b>Curvatures of the vertebral column. (EN):</b><br>
+                🔹 <b>Courbures de la colonne vertébrale. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): تقوس أمامي (لوردوز) في الرقبة</li>
+                <li>🔹 (AR): حدب خلفي (كيفوز) في الظهر</li>
+                <li>🔹 (AR): تقوس أمامي (لوردوز) في أسفل الظهر</li><br>
+                <li>🔹 (EN): Cervical lordosis</li>
+                <li>🔹 (EN): Thoracic kyphosis</li>
+                <li>🔹 (EN): Lumbar lordosis</li><br>
+                <li>🔹 (FR): Une lordose cervicale</li>
+                <li>🔹 (FR): Une cyphose dorsale</li>
+                <li>🔹 (FR): Une lordose lombaire</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+{
+    question : "🔍 السؤال 5:<br>🔹 (AR): ماذا يحتوي العمود الفقري؟<br>🔹 (EN): What does the vertebral column house?<br>🔹 (FR): Que loge la colonne vertébrale ?",
+        hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>محتوى العمود الفقري. (AR):</b><br>
+                🔹 <b>Content of the vertebral column. (EN):</b><br>
+                🔹 <b>Contenu de la colonne vertébrale. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): يحتوي على الحبل الشوكي الذي يشغل تجويف القناة الفقرية</li><br>
+                <li>🔹 (EN): It houses the spinal cord which occupies the vertebral canal</li><br>
+                <li>🔹 (FR): Elle loge la moelle spinale qui occupe le canal vertébral</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+
+
+
+
+{
+    question : "🔍 السؤال 6:<br>🔹 (AR): من أين ينشأ العمود الفقري في علم الأجنة؟<br>🔹 (EN): From what does the vertebral column derive in embryology?<br>🔹 (FR): De quoi dérive la colonne vertébrale en embryologie ?",
+       hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>أصل العمود الفقري في علم الأجنة. (AR):</b><br>
+                🔹 <b>Origin of the vertebral column in embryology. (EN):</b><br>
+                🔹 <b>Origine de la colonne vertébrale en embryologie. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): من التصلبونات (Sclérotomes)</li><br>
+                <li>🔹 (EN): From the sclerotomes</li><br>
+                <li>🔹 (FR): Des sclérotomes</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+
+
+
+
+{
+    question : "🔍 السؤال 7:<br>🔹 (AR): كيف تتشكل كل فقرة؟<br>🔹 (EN): How does each vertebra form?<br>🔹 (FR): Comment se forme chaque vertèbre ?",
+        hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>تشكّل الفقرة في علم الأجنة. (AR):</b><br>
+                🔹 <b>Formation of the vertebra in embryology. (EN):</b><br>
+                🔹 <b>Formation des vertèbres en embryologie. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): تتشكل كل فقرة من اندماج نصفين من التصلبونات</li><br>
+                <li>🔹 (EN): Each vertebra forms by the fusion of two halves of sclerotomes</li><br>
+                <li>🔹 (FR): Chaque vertèbre se forme par la fusion de deux moitiés de sclérotomes</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+    question : "🔍 السؤال 8:<br>🔹 (AR): ما هي أنواع الفقرات في العمود الفقري؟<br>🔹 (EN): What are the types of vertebrae in the vertebral column?<br>🔹 (FR): Quels sont les types de vertèbres dans la colonne vertébrale ?",
+      hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>أنواع الفقرات في العمود الفقري. (AR):</b><br>
+                🔹 <b>Types of vertebrae in the vertebral column. (EN):</b><br>
+                🔹 <b>Types de vertèbres dans la colonne vertébrale. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): الفقرة الرقبية</li>
+                <li>🔹 (AR): الفقرة الظهرية (الصدرية)</li>
+                <li>🔹 (AR): الفقرة القطنية</li><br>
+                <li>🔹 (EN): Cervical vertebra</li>
+                <li>🔹 (EN): Thoracic vertebra</li>
+                <li>🔹 (EN): Lumbar vertebra</li><br>
+                <li>🔹 (FR): Vertèbre cervicale</li>
+                <li>🔹 (FR): Vertèbre thoracique</li>
+                <li>🔹 (FR): Vertèbre lombaire</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+
+
+
+
+{
+    question : "🔍 السؤال 9:<br>🔹 (AR): ما هو الجسم الفقري؟<br>🔹 (EN): What is the vertebral body?<br>🔹 (FR): Qu’est-ce que le corps vertébral ?",
+       hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>الجسم الفقري. (AR):</b><br>
+                🔹 <b>The vertebral body. (EN):</b><br>
+                🔹 <b>Le corps vertébral. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): جزء أمامي، سميك، يحتوي على سطحين مفصليين علوي وسفلي</li><br>
+                <li>🔹 (EN): Anterior, thick part with superior and inferior articular surfaces</li><br>
+                <li>🔹 (FR): Partie antérieure, épaisse, présentant deux faces articulaires (supérieure et inférieure)</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+   
+    question : "🔍 السؤال 10:<br>🔹 (AR): ما هو القوس الفقري وممَ يتكوّن؟<br>🔹 (EN): What is the vertebral arch and what does it consist of?<br>🔹 (FR): Qu’est-ce que l’arc vertébral et de quoi se compose-t-il ?",
+        hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>القوس الفقري ومكوناته. (AR):</b><br>
+                🔹 <b>The vertebral arch and its components. (EN):</b><br>
+                🔹 <b>L’arc vertébral et ses composants. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): السويقتين (Pédicules): تربطان القوس بالجسم</li>
+                <li>🔹 (AR): الصفيحتين (Lames): تغلقان القوس من الخلف</li>
+                <li>🔹 (AR): الناتئ الشوكي: امتداد خلفي</li>
+                <li>🔹 (AR): النواتئ المستعرضة: امتدادات جانبية</li>
+                <li>🔹 (AR): النواتئ المفصلية: عند التقاء الصفيحات والسويقات</li><br>
+                
+                <li>🔹 (EN): Pedicles: connect the arch to the body</li>
+                <li>🔹 (EN): Laminae: close the arch posteriorly</li>
+                <li>🔹 (EN): Spinous process: posterior projection</li>
+                <li>🔹 (EN): Transverse processes: lateral projections</li>
+                <li>🔹 (EN): Articular processes: at the junction of laminae and pedicles</li><br>
+                
+                <li>🔹 (FR): Pédicules : unissent l’arc au corps</li>
+                <li>🔹 (FR): Lames : ferment l’arc en arrière</li>
+                <li>🔹 (FR): Processus épineux : prolongement postérieur</li>
+                <li>🔹 (FR): Processus transverses : prolongements latéraux</li>
+                <li>🔹 (FR): Processus articulaires : à l’union des lames et des pédicules</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+{
+    question : "🔍 السؤال 11:<br>🔹 (AR): ما هو الثقب بين الفقرات (Foramen de conjugaison) وما وظيفته؟<br>🔹 (EN): What is the intervertebral foramen (foramen of conjugation) and what is its function?<br>🔹 (FR): Qu’est-ce que le foramen de conjugaison et quelle est sa fonction ?",
+       hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>الثقب بين الفقرات (Foramen de conjugaison) وما وظيفته. (AR):</b><br>
+                🔹 <b>Intervertebral foramen (foramen of conjugation) and its function. (EN):</b><br>
+                🔹 <b>Foramen de conjugaison et sa fonction. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): يقع بين السويقتين ويسمح بمرور الجذور الشوكية.</li><br>
+                <li>🔹 (EN): Located between the pedicles; allows passage of the spinal roots.</li><br>
+                <li>🔹 (FR): Situé entre les pédicules, livrant passage aux racines rachidiennes.</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+
+
+
+{
+ 
+    question : "🔍 السؤال 12:<br>🔹 (AR): ما هو الثقب الفقري (Foramen vertébral)؟<br>🔹 (EN): What is the vertebral foramen?<br>🔹 (FR): Qu’est-ce que le foramen vertébral ?",
+      hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>الثقب الفقري (Foramen vertébral). (AR):</b><br>
+                🔹 <b>Vertebral foramen. (EN):</b><br>
+                🔹 <b>Foramen vertébral. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): هو تجويف القناة الشوكية عند كل مستوى فقري.</li><br>
+                <li>🔹 (EN): It is the lumen of the spinal canal at each vertebral level.</li><br>
+                <li>🔹 (FR): C’est la lumière du canal rachidien à chaque étage vertébral.</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+
+
+{
+    question : "🔍 السؤال 13:<br>🔹 (AR): كم عدد الفقرات الرقبية وما أبرز خصائصها؟<br>🔹 (EN): How many cervical vertebrae are there and what are their main features?<br>🔹 (FR): Combien y a-t-il de vertèbres cervicales et quelles sont leurs caractéristiques principales ?",
+       hint : "لا يتوفر تلميح حاليا",
+
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>عدد الفقرات الرقبية وخصائصها. (AR):</b><br>
+                🔹 <b>Cervical vertebrae and their features. (EN):</b><br>
+                🔹 <b>Vertèbres cervicales et leurs caractéristiques. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): 7 فقرات، تتميز بـ:<br>
+                    🔸 جسم فقري صغير ممدود أفقيًا، يحده الحديبات الجانبية<br>
+                    🔸 ناتئ شوكي مشقوق<br>
+                    🔸 ناتئ مستعرض يحوي ثقبة مستعرضة
+                </li><br>
+                <li>🔹 (EN): 7 vertebrae with:<br>
+                    🔸 Small, transversely elongated body with uncinate processes<br>
+                    🔸 Bifid spinous process<br>
+                    🔸 Transverse process containing a foramen
+                </li><br>
+                <li>🔹 (FR): 7 vertèbres avec :<br>
+                    🔸 Corps petit, allongé transversalement, avec processus unciformes<br>
+                    🔸 Processus épineux bifide<br>
+                    🔸 Processus transverse avec foramen transverse
+                </li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+{
+    
+     question  : "🔍 1السؤال 4:<br>🔹 (AR): ما مميزات الفقرة الأولى (الأطلس C1)؟<br>🔹 (EN): What are the features of the first cervical vertebra (atlas, C1)?<br>🔹 (FR): Quelles sont les caractéristiques de la première vertèbre cervicale (atlas, C1) ?",
+     hint : "لا يتوفر تلميح حاليا",
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>مميزات الفقرة الأولى (الأطلس C1). (AR):</b><br>
+                🔹 <b>Features of the first cervical vertebra (atlas, C1). (EN):</b><br>
+                🔹 <b>Caractéristiques de la première vertèbre cervicale (atlas, C1). (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): كتل جانبية مع وجيهات مفصلية علوية وسفلية</li>
+                <li>🔹 (AR): قوس أمامي به حدبة أمامية ووجيه سنّي خلفها</li>
+                <li>🔹 (AR): قوس خلفي به حدبة خلفية</li>
+                <li>🔹 (AR): الثقب الفقري مقسوم إلى حجرتين: أمامية للسن، وخلفية للحبل الشوكي</li><br>
+                <li>🔹 (EN): Lateral masses with superior/inferior articular facets</li>
+                <li>🔹 (EN): Anterior arch: anterior tubercle and posterior odontoid facet</li>
+                <li>🔹 (EN): Posterior arch: posterior tubercle</li>
+                <li>🔹 (EN): Vertebral foramen divided into two compartments: anterior (odontoid), posterior (spinal cord)</li><br>
+                <li>🔹 (FR): Masses latérales avec facettes articulaires supérieures et inférieures</li>
+                <li>🔹 (FR): Arc antérieur : tubercule antérieur, facette odontoïde postérieure</li>
+                <li>🔹 (FR): Arc postérieur : tubercule postérieur</li>
+                <li>🔹 (FR): Foramen vertébral divisé en deux chambres : antérieure (dent), postérieure (moelle)</li><br>
+            </ol>
+        </ul>
+    `,
+    isHtml: true
+},
+
+
+
+
+
+{
+   
+    question  : "🔍 1السؤال 5:<br>🔹 (AR): ما وظيفة ومميزات الفقرة الثانية (المحور C2)؟<br>🔹 (EN): What is the function and feature of the second cervical vertebra (axis, C2)?<br>🔹 (FR): Quelle est la fonction et les caractéristiques de la deuxième vertèbre cervicale (axis, C2) ?",
+       hint : "لا يتوفر تلميح حاليا",
+    answer: `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>العنوان:</b><br>
+                🔹 <b>وظيفة ومميزات الفقرة الثانية (المحور C2). (AR):</b><br>
+                🔹 <b>Function and feature of the second cervical vertebra (axis, C2). (EN):</b><br>
+                🔹 <b>Fonction et caractéristiques de la deuxième vertèbre cervicale (axis, C2). (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): تشكل محور دوران للأطلس</li>
+                <li>🔹 (AR): لها جسم فقري يعلوه الناتئ السني</li>
+<li>🔹 (AR): ناتئ شوكي كبير ومشقوق</li><br>
+<li>🔹 (EN): Acts as a pivot for the atlas</li>
+<li>🔹 (EN): Has a body topped by the odontoid process</li>
+<li>🔹 (EN): Large and bifid spinous process</li><br>
+<li>🔹 (FR): Sert d’axe de rotation à l’atlas</li>
+<li>🔹 (FR): Corps surmonté du processus odontoïde</li>
+<li>🔹 (FR): Processus épineux large et bifide</li><br>
+</ol>
+</ul>
+`,
+isHtml: true
+},
+
+
+
+
+
+
+
+{
+    "question": "🔍 السؤال 16:<br>🔹 (AR): ما هي الحُفيرة السِنيّة (Fossette odontoïde)؟<br>🔹 (EN): What is the odontoid facet (Fossette odontoïde)?<br>🔹 (FR): Qu’est-ce que la fossette odontoïde ?",
+    "hint": "لا يتوفر تلميح حاليا",
+    "answer": `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>الحُفيرة السِنيّة (Fossette odontoïde). (AR):</b><br>
+                🔹 <b>Odontoid facet (Fossette odontoïde). (EN):</b><br>
+                🔹 <b>Fossette odontoïde. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): هي سطح مفصلي موجود على الوجه الخلفي للقوس الأمامي للفقرة الأولى (الأطلس - C1). وظيفتها الاتصال مع السن (odontoïde) الموجودة على جسم الفقرة الثانية (C2 - المحور). تُعتبر سطح استقبال لهذا البروز السني، مما يسمح بحركة المفصل بين C1 وC2. وبالتالي، فإن "fossette pour dent" و"fossette odontoïde" هما تسميتان مختلفتان لنفس البنية التشريحية.</li><br>
+                <li>🔹 (EN): It is an articular surface located on the posterior side of the anterior arch of the atlas (C1). Its function is to articulate with the odontoid process (dens) of the second cervical vertebra (C2 - axis). It serves as a receiving surface for the dens, enabling the articulation between C1 and C2. Therefore, "fossette pour dent" and "fossette odontoïde" are two terms referring to the same anatomical structure.</li><br>
+                <li>🔹 (FR): C’est une surface articulaire située sur la face postérieure de l’arc antérieur de l’atlas (C1). Elle s’articule avec la dent (odontoïde) située sur le corps de la deuxième vertèbre cervicale (C2 - axis). Elle constitue la surface de réception de la dent, permettant l’articulation entre C1 et C2. Donc, "fossette pour dent" et "fossette odontoïde" désignent la même structure anatomique.</li><br>
+            </ol>
+        </ul>
+    `,
+    "isHtml": true
+},
+
+
+
+
+
+
+{
+    "question": "🔍 السؤال 17:<br>🔹 (AR): كيف يختلف الثقب الفقري في الفقرة C1؟<br>🔹 (EN): How is the vertebral foramen in C1 different?<br>🔹 (FR): Comment le foramen vertébral de C1 est-il différent ?",
+    "hint": "لا يتوفر تلميح حاليا",
+    "answer": `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>الثقب الفقري في الفقرة C1. (AR):</b><br>
+                🔹 <b>Vertebral foramen in C1. (EN):</b><br>
+                🔹 <b>Foramen vertébral de C1. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): يكون الثقب الفقري في C1 واسعًا ومميزًا. يُقسم إلى حجرتين بواسطة الرباط المستعرض:<br> 
+                الحجرة الأمامية: تحتوي على السن (odontoïde) لفقرة C2.<br> 
+                الحجرة الخلفية: تحتوي على الحبل الشوكي.<br> 
+                في باقي الفقرات (الرقبية الأخرى، الصدرية، القطنية)، لا يوجد هذا التقسيم، ويحتوي الثقب الفقري فقط على الحبل الشوكي.</li><br>
+                <li>🔹 (EN): The vertebral foramen in C1 is wide and distinct. It is divided into two compartments by the transverse ligament:<br> 
+                Anterior compartment: contains the odontoid process (dens) of C2.<br> 
+                Posterior compartment: contains the spinal cord.<br> 
+                In other vertebrae (cervical, thoracic, lumbar), the foramen is not divided and contains only the spinal cord.</li><br>
+                <li>🔹 (FR): Le foramen vertébral de l’atlas (C1) est large et particulier. Il est divisé en deux compartiments par le ligament transverse :<br> 
+                Compartiment antérieur : contient la dent de l’axis (C2).<br> 
+                Compartiment postérieur : contient la moelle épinière.<br> 
+                Dans les autres vertèbres (cervicales, thoraciques, lombaires), le foramen n’est pas divisé et contient uniquement la moelle épinière.</li><br>
+            </ol>
+        </ul>
+    `,
+    "isHtml": true
+},
+
+
+
+
+
+
+
+
+
+{
+    "question": "🔍 السؤال 18:<br>🔹 (AR): ما هي الفقرة البارزة؟<br>🔹 (EN): What is the prominent vertebra?<br>🔹 (FR): Qu’est-ce que la vertèbre proéminente ?",
+    "hint": "لا يتوفر تلميح حاليا",
+    "answer": `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>الفقرة البارزة. (AR):</b><br>
+                🔹 <b>Prominent vertebra. (EN):</b><br>
+                🔹 <b>Vertèbre proéminente. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): الفقرة السابعة العنقية، المعروفة بالفقرة البارزة، هي فقرة انتقالية بين الفقرات العنقية والصدرية. يكون جسمها أكبر حجمًا من باقي الفقرات العنقية. قد تحتوي بشكل غير ثابت على سطح مفصلي جانبي مع الضلع الأول. الناتئ الشوكي والنواتئ المستعرضة أطول من المعتاد وتحتوي على حدبة واحدة فقط. الثقوب المستعرضة فيها أصغر حجمًا، ولا تمر من خلالها إلا الأوردة الفقرية.</li><br>
+                <li>🔹 (EN): The seventh cervical vertebra, or prominent vertebra, is a transitional vertebra between the cervical and thoracic vertebrae. Its body is larger than that of other cervical vertebrae. It may inconsistently present a lateral articular surface with the first rib. Its spinous and transverse processes are longer and have only one tubercle. The transverse foramina are smaller and are traversed only by vertebral veins.</li><br>
+                <li>🔹 (FR): La septième vertèbre cervicale, ou vertèbre proéminente, est une vertèbre de transition entre les vertèbres cervicales et thoraciques. Son corps est plus volumineux que les autres vertèbres cervicales. De façon inconstante, elle peut présenter une surface articulaire latérale avec la première côte. Son processus épineux et ses processus transverses sont plus longs et n'ont qu'un tubercule. Leurs foramens transversaires sont plus petits et ne sont traversés que par les veines vertébrales.</li><br>
+            </ol>
+        </ul>
+    `,
+    "isHtml": true
+},
+
+
+
+
+{
+    "question": "🔍 السؤال 19:<br>🔹 (AR): ما هي الفقرات الصدرية؟<br>🔹 (EN): What are the thoracic vertebrae?<br>🔹 (FR): Qu’est-ce que les vertèbres thoraciques ?",
+    "hint": "لا يتوفر تلميح حاليا",
+    "answer": `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>الفقرات الصدرية. (AR):</b><br>
+                🔹 <b>Thoracic vertebrae. (EN):</b><br>
+                🔹 <b>Vertèbres thoraciques. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): عددها 12 فقرة، وتتصل بالأضلاع. تحتوي كل فقرة على:<br>
+                - جسم أسطواني الشكل يحتوي على وجيهين ضلعيين علوي وسفلي.<br>
+                - ناتئ شوكي طويل ومائل بشدة نحو الأسفل.<br>
+                - ناتئ عرضي طويل يحتوي على وجه مفصلي ضلعي.</li><br>
+                <li>🔹 (EN): There are 12 thoracic vertebrae articulating with the ribs. Each vertebra includes:<br>
+                - A cylindrical body containing superior and inferior costal facets.<br>
+                - A long spinous process that is strongly inclined downward.<br>
+                - A long transverse process with a costal facet.</li><br>
+                <li>🔹 (FR): Il y a 12 vertèbres thoraciques qui s'articulent avec les côtes. Chaque vertèbre comprend :<br>
+                - Un corps cylindrique renfermant les fossettes costales supérieures et inférieures.<br>
+                - Un processus épineux long et fortement incliné vers le bas.<br>
+                - Un processus transverse long avec une facette costale.</li><br>
+            </ol>
+        </ul>
+    `,
+    "isHtml": true
+},
+
+
+
+
+
+{
+    "question": "🔍 السؤال 20:<br>🔹 (AR): ما هي الفقرات القطنية؟<br>🔹 (EN): What are the lumbar vertebrae?<br>🔹 (FR): Qu’est-ce que les vertèbres lombaires ?",
+    "hint": "لا يتوفر تلميح حاليا",
+    "answer": `
+        <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+            <li><b>  العنوان:</b><br>
+                🔹 <b>الفقرات القطنية. (AR):</b><br>
+                🔹 <b>Lumbar vertebrae. (EN):</b><br>
+                🔹 <b>Vertèbres lombaires. (FR):</b>
+            </li><br>
+            <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+            <ol style="padding-right: 20px; text-align: right;">
+                <li>🔹 (AR): عددها خمس فقرات، وتتميز بكبر حجمها. <br>
+                - جسم الفقرة كبير جدًا. <br>
+                - السويقات عريضة. <br>
+                - الصفائح سميكة. <br>
+                - الناتئ الشوكي مستطيل وسميك. <br>
+                - الثقب الفقري مثلث الشكل.</li><br>
+                <li>🔹 (EN): There are five lumbar vertebrae, and they are large in size.<br>
+                - The vertebral body is very large.<br>
+                - The pedicles are thick.<br>
+                - The laminae are thick.<br>
+                - The spinous process is rectangular and thick.<br>
+                - The vertebral foramen is triangular.</li><br>
+                <li>🔹 (FR): Au nombre de cinq, les vertèbres lombaires sont volumineuses.<br>
+                - Le corps vertébral est très volumineux.<br>
+                - Les pédicules sont épais.<br>
+                - Les lames sont épaisses.<br>
+                - Le processus épineux est rectangulaire et épais.<br>
+                - Le foramen vertébral est triangulaire.</li><br>
+            </ol>
+        </ul>
+    `,
+    "isHtml": true
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ];
+
+        let currentIndex = 0;
+        let flipped = false;
+
+        function updateCard() {
+            const card = flashcards[currentIndex];
+            document.getElementById("question").innerHTML = card.question;
+            document.getElementById("answer").innerHTML = card.answer;
+            document.getElementById("cardImageFront").src = card.imageFront;
+            document.getElementById("cardImageBack").src = card.imageBack;
+            document.getElementById("cardNumber").textContent = `${currentIndex + 1} / ${flashcards.length}`;
+        }
+
+        function flipCard(event) {
+            event.stopPropagation();
+            flipped = !flipped;
+            document.getElementById("flashcard").classList.toggle("flipped", flipped);
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % flashcards.length;
+            flipped = false;
+            document.getElementById("flashcard").classList.remove("flipped");
+            updateCard();
+        }
+
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+            flipped = false;
+            document.getElementById("flashcard").classList.remove("flipped");
+            updateCard();
+        }
+
+        function showHint() {
+            const hintContainer = document.getElementById("hintContainer");
+            const hint = document.getElementById("hint");
+            hint.innerHTML = flashcards[currentIndex].hint;
+            
+            hintContainer.classList.add("show");
+            
+            setTimeout(() => {
+                hintContainer.classList.remove("show");
+            }, 5000);
+        }
+
+        function shuffleCards() {
+            for (let i = flashcards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
+            }
+            currentIndex = 0;
+            updateCard();
+        }
+
+        // حدث النقر على الزر
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                // التحويل إلى الوضع النهاري
+                body.classList.add('light-mode');
+                body.classList.remove('dark-mode');
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                // التحويل إلى الوضع الليلي
+                body.classList.add('dark-mode');
+                body.classList.remove('light-mode');
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // تهيئة البطاقة الأولى
+        updateCard();
+    </script>
+</body>
+</html>
+
+
+
+<br><br><br><br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>نظام الأزرار العائمة الذكي - نسخة الهاتف</title>
+
+    <style>
+        .floating-system {
+            position: fixed;
+            z-index: 9999;
+            bottom: 25px;
+            left: 25px; /* تغيير من right إلى left */
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+            touch-action: none;
+        }
+        
+        /* الزر الرئيسي */
+        .main-floating-btn {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            order: 1;
+        }
+    
+        /* الأزرار الثانوية */
+        .secondary-btn {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #00b894, #55efc4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(30px);
+            visibility: hidden;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+        }
+        
+        .secondary-btn.search-btn {
+            background: linear-gradient(135deg, #0984e3, #74b9ff);
+        }
+        
+        .secondary-btn.speech-btn {
+            background: linear-gradient(135deg, #e17055, #fab1a0);
+        }
+        
+        .secondary-btn.contact-btn {
+            background: linear-gradient(135deg, #fd79a8, #ff9ff3);
+        }
+        
+        .secondary-btn.flashcard-btn {
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            color: #333;
+        }
+    
+      .secondary-btn.eldars-btn {
+          background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      }
+  
+        /* حالة الأزرار عند الفتح */
+        .floating-system.expanded {
+            flex-direction: row-reverse;
+        }
+        
+        .floating-system.expanded .secondary-btn {
+            opacity: 1;
+            transform: translateX(0);
+            visibility: visible;
+        }
+        
+        .floating-system.expanded .search-btn {
+            transition-delay: 0.1s;
+        }
+        
+        .floating-system.expanded .speech-btn {
+            transition-delay: 0.2s;
+        }
+        
+        .floating-system.expanded .contact-btn {
+            transition-delay: 0.3s;
+        }
+        
+        .floating-system.expanded .flashcard-btn {
+            transition-delay: 0.4s;
+        }
+            
+      .floating-system.expanded .eldars-btn {
+          transition-delay: 0.5s;
+      }
+    
+        /* تأثير النبض */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(108, 92, 231, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
+        }
+    
+        .pulse-effect {
+            animation: pulse 1.5s infinite;
+        }
+    
+        /* تحسينات للهواتف الصغيرة */
+        @media (max-width: 480px) {
+            .floating-system {
+                bottom: 20px;
+                left: 20px; /* تغيير من right إلى left */
+                gap: 12px;
+            }
+            
+            .main-floating-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .secondary-btn {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+            }
+            
+            /* زيادة مساحة الضغط */
+            .main-floating-btn::after,
+            .secondary-btn::after {
+                content: '';
+                position: absolute;
+                top: -15px;
+                left: -15px;
+                right: -15px;
+                bottom: -15px;
+            }
+        }
+    
+        /* أنماط القلم الناطق */
+        .notification {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #008cff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
+            display: none;
+            z-index: 9998;
+            max-width: 80%;
+        }
+    
+        .show-notification {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+        
+        /* أنماط البحث */
+        .search-bubble {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 350px;
+            max-height: 60vh;
+            background-color: rgb(82, 82, 82);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            z-index: 10000;
+            overflow: hidden;
+            animation: bubbleAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    
+        .search-bubble.show {
+            display: flex;
+        }
+    
+        @keyframes bubbleAppear {
+            from {
+                transform: translateY(20px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+    
+        .bubble-header {
+            padding: 15px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #424242;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .bubble-title {
+            font-weight: bold;
+            color: #333;
+        }
+    
+        .close-bubble {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+            padding: 0;
+            margin: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .bubble-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+    
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-bottom: 2px solid #989898;
+            outline: none;
+        }
+    
+        .search-input:focus {
+            border-bottom-color: #2185d0;
+        }
+    
+        .search-results {
+            max-height: calc(60vh - 120px);
+            overflow-y: auto;
+        }
+    
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #747272;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+    
+        .result-item:hover {
+            background-color: #393737;
+        }
+    
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2185d0;
+        }
+    
+        .highlight {
+            background-color: #009c05;
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+        }
+    
+        @media (max-width: 768px) {
+            .search-bubble {
+                right: 15px;
+                width: calc(100% - 30px);
+                max-height: 50vh;
+                bottom: 100px;
+            }
+            
+            .search-results {
+                max-height: calc(50vh - 120px);
+            }
+        }
+        
+        /* أنماط نافذة التواصل */
+        .popupCONTACT {
+            position: fixed;
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
+            width: 90%;
+            max-width: 300px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1001;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+    
+        .close-btnCONTACT {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .contact-containerCONTACT {
+            text-align: center;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin: auto;
+        }
+    
+        .contact-titleCONTACT {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+    
+        .contact-textCONTACT {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+    
+        .social-linksCONTACT {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    
+        .btnCONTACT {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            transition: 0.3s;
+        }
+    
+        .telegram-btnCONTACT { background: #0088cc; }
+        .facebook-btnCONTACT { background: #1877f2; }
+        .instagram-btnCONTACT { background: #e1306c; }
+    
+  
+  
+  
+  
+   /* أنماط نافذة Eldars */
+   .eldars-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 600px;
+  height: 80vh;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 10010;
+  display: none;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .eldars-popup.show {
+  display: block;
+  }
+  
+  .eldars-header {
+  padding: 15px;
+  background: #9b59b6;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+  
+  .eldars-title {
+  font-weight: bold;
+  font-size: 18px;
+  }
+  
+  .close-eldars {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  }
+  
+  .eldars-content {
+  width: 100%;
+  height: calc(100% - 50px);
+  overflow: hidden;
+  position: relative;
+  }
+  
+  .eldars-iframe {
+  width: 100%; /* عرض العنصر 100% ليشغل المساحة المتاحة */
+  height: 100%; /* ارتفاع العنصر 100% ليشغل المساحة المتاحة */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: none; /* إزالة التكبير الزائد */
+  border: none;
+  overflow: auto; /* تمكين التمرير داخل الـiframe إذا لزم الأمر */
+  }
+  
+  /* تحسين العرض على الشاشات الصغيرة (الهواتف) */
+  @media (max-width: 768px) {
+  .eldars-popup {
+      max-width: 90%;
+      height: 85vh; /* تقليل ارتفاع النافذة لتكون أكثر مرونة */
+  }
+  .eldars-iframe {
+      width: 100%;
+      height: 100%;
+  }
+  }
+  
+  /* تحسين العرض على الشاشات الصغيرة جدًا (الهاتف المحمول) */
+  @media (max-width: 480px) {
+  .eldars-popup {
+      max-width: 95%;
+      height: 90vh;
+  }
+  .eldars-iframe {
+      width: 100%;
+      height: 100%;
+  }
+  }
+  
+  /* تحسين العرض على الشاشات الكبيرة */
+  @media (min-width: 1024px) {
+  .eldars-popup {
+      max-width: 800px;
+      height: 80vh;
+  }
+  .eldars-iframe {
+      width: 100%;
+      height: 100%;
+  }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(50%, -45%); }
+            to { opacity: 1; transform: translate(50%, -50%); }
+        }
+    
+        /* تحسينات للهواتف الصغيرة */
+        @media (max-width: 480px) {
+            .floating-system {
+                bottom: 15px;
+                left: 15px; /* تغيير من right إلى left */
+                gap: 8px;
+            }
+            
+            .main-floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .secondary-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+            
+            /* تحسينات للبحث على الشاشات الصغيرة */
+            .search-bubble {
+                bottom: 90px;
+                max-height: 60vh;
+            }
+            
+            /* تحسينات لنافذة التواصل */
+            .popupCONTACT {
+                max-width: 90%;
+                padding: 15px;
+            }
+            
+            .contact-titleCONTACT {
+                font-size: 18px;
+            }
+            
+            .contact-textCONTACT {
+                font-size: 14px;
+            }
+            
+            .btnCONTACT {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            /* زيادة مساحة الضغط للأزرار */
+            .main-floating-btn::after,
+            .secondary-btn::after {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+            }
+            
+            /* تحسينات للإشعارات */
+            .notification {
+                bottom: 80px;
+                right: 10px;
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+        }
+    
+        /* تحسينات إضافية للشاشات الصغيرة جدًا */
+        @media (max-width: 360px) {
+            .floating-system {
+                bottom: 10px;
+                left: 10px; /* تغيير من right إلى left */
+                gap: 6px;
+            }
+            
+            .main-floating-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+            
+            .secondary-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+        }
+        </style>
+    </style>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- نظام الأزرار العائمة -->
+    <div class="floating-system" id="floatingSystem">
+        <!-- الأزرار الثانوية -->
+        <button class="secondary-btn flashcard-btn" id="flashcardBtn" title="البطاقات التعليمية">
+            <i class="far fa-copy"></i>
+        </button>
+        
+        <button class="secondary-btn contact-btn" id="contactBtn" title="الدعم الفني">
+            <i class="fas fa-headset"></i>
+        </button>
+
+
+    
+
+
+
+        <button class="secondary-btn speech-btn" id="speechBtn" title="القلم الناطق">
+            <i class="fas fa-microphone-alt"></i>
+        </button>
+        
+        <button class="secondary-btn search-btn" id="searchBtn" title="البحث الذكي">
+            <i class="fas fa-search"></i>
+        </button>
+        
+        <!-- الزر الرئيسي -->
+        <button class="main-floating-btn" id="mainFloatingBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+
+    <!-- إشعارات القلم الناطق -->
+    <div id="notification" class="notification"></div>
+
+
+    <div>
+        <label>🔹 اختر جنس الصوت:</label>
+        <select id="voiceGender">
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+        </select>
+    </div>
+
+    <div class="speed-control">
+        <label for="speedRange">🔊 سرعة الصوت:</label>
+        <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1">
+    </div>
+    <!-- فقاعة البحث -->
+    <div class="search-bubble" id="searchBubble">
+        <div class="bubble-header">
+            <div class="bubble-title">البحث في الموقع</div>
+            <button class="close-bubble" id="closeBubble" aria-label="إغلاق البحث">×</button>
+        </div>
+        <div class="bubble-content">
+            <input type="text" class="search-input" id="searchInput" 
+                   placeholder="اكتب كلمة البحث..." autocomplete="off"
+                   aria-label="مربع البحث">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- نافذة التواصل -->
+    <div class="popupCONTACT" id="popupCONTACT">
+        <button class="close-btnCONTACT" id="closeContactBtn">✖</button>
+        <div class="contact-containerCONTACT">
+            <h3 class="contact-titleCONTACT" style="text-align: center; color: black; font-size: 24px; font-weight: bold;">📩 تواصل معنا</h3>
+
+            <p class="contact-textCONTACT">في حالة توفر مشكلة أو لديك اقتراح سواء حول اختبار أو غيره تواصل معنا</p>
+            
+            <div class="social-linksCONTACT">
+                <a href="http://t.me/ADATEALM_bot" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                    <i class="fab fa-telegram"></i> بوت تيليغرام
+                </a>
+                
+                <a href="https://t.me/adatealm" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                    <i class="fab fa-telegram"></i> تيليغرام
+                </a>
+                
+                <a href="https://www.facebook.com/share/1BFTe2mWNL/" target="_blank" class="btnCONTACT facebook-btnCONTACT">
+                    <i class="fab fa-facebook"></i> فيسبوك
+                </a>
+                
+                <a href="https://www.instagram.com/adat_ealm?igsh=djg1eXlwMTJvM2xw" target="_blank" class="btnCONTACT instagram-btnCONTACT">
+                    <i class="fab fa-instagram"></i> إنستغرام
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // عناصر الواجهة
+        const floatingSystem = document.getElementById('floatingSystem');
+        const mainBtn = document.getElementById('mainFloatingBtn');
+        const searchBtn = document.getElementById('searchBtn');
+        const speechBtn = document.getElementById('speechBtn');
+        const contactBtn = document.getElementById('contactBtn');
+        const flashcardBtn = document.getElementById('flashcardBtn');
+        const searchBubble = document.getElementById('searchBubble');
+        const closeBubble = document.getElementById('closeBubble');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const popupCONTACT = document.getElementById('popupCONTACT');
+        const closeContactBtn = document.getElementById('closeContactBtn');
+        const notification = document.getElementById('notification');
+        
+        // حالات النظام
+        let isExpanded = false;
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+        let isSpeechEnabled = false;
+        let speechSynthesisInstance = window.speechSynthesis || null;
+        let currentUtterance = null;
+        let voices = [];
+        let currentResults = [];
+        let selectedIndex = -1;
+        let searchTimeout;
+        
+        // تهيئة النظام
+        function initSystem() {
+            // إضافة تأثير النبض بعد 3 ثواني
+            setTimeout(() => {
+                mainBtn.classList.add('pulse-effect');
+                setTimeout(() => {
+                    mainBtn.classList.remove('pulse-effect');
+                }, 3000);
+            }, 3000);
+            
+            // تهيئة Web Speech API
+            if (speechSynthesisInstance) {
+                speechSynthesisInstance.onvoiceschanged = function() {
+                    voices = speechSynthesisInstance.getVoices();
+                };
+                
+                // تحميل الأصوات مباشرة إذا كانت متاحة
+                voices = speechSynthesisInstance.getVoices();
+            } else {
+                speechBtn.style.display = 'none';
+            }
+            
+            // جعل النظام قابلاً للسحب
+            setupDragAndDrop();
+            
+            // إضافة أحداث اللمس
+            setupTouchEvents();
+        }
+        
+        // إعداد أحداث اللمس
+        function setupTouchEvents() {
+            // منع السلوك الافتراضي لللمس
+            const buttons = [mainBtn, searchBtn, speechBtn, contactBtn, flashcardBtn];
+            
+            buttons.forEach(btn => {
+                btn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // محاكاة تأثير الضغط
+                    this.style.transform = 'scale(0.95)';
+                    
+                    // تحديد الزر الذي تم الضغط عليه
+                    if (btn === mainBtn) {
+                        toggleSystem();
+                    } else if (btn === searchBtn) {
+                        toggleSearch();
+                    } else if (btn === speechBtn) {
+                        toggleSpeech();
+                    } else if (btn === contactBtn) {
+                        togglePopupCONTACT();
+                    } else if (btn === flashcardBtn) {
+                        goToFlashCard();
+                    }
+                }, { passive: false });
+                
+                btn.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        }
+        
+        // تبديل حالة النظام (مفتوح/مغلق)
+        function toggleSystem() {
+            isExpanded = !isExpanded;
+            floatingSystem.classList.toggle('expanded', isExpanded);
+            
+            if (isExpanded) {
+                mainBtn.innerHTML = '<i class="fas fa-times"></i>';
+                mainBtn.style.transform = 'rotate(135deg)';
+                isDragging = false;
+            } else {
+                mainBtn.innerHTML = '<i class="fas fa-plus"></i>';
+                mainBtn.style.transform = 'rotate(0)';
+                closeAllPopups();
+            }
+        }
+        
+        // إغلاق جميع النوافذ المنبثقة
+        function closeAllPopups() {
+            searchBubble.classList.remove('show');
+            popupCONTACT.style.display = 'none';
+        }
+        
+        // تهيئة السحب والإفلات
+        function setupDragAndDrop() {
+            // للأجهزة التي تعمل باللمس
+            mainBtn.addEventListener('touchstart', handleDragStart, { passive: false });
+            document.addEventListener('touchmove', handleDragMove, { passive: false });
+            document.addEventListener('touchend', endDrag);
+            
+            // للأجهزة التي تعمل بالماوس
+            mainBtn.addEventListener('mousedown', handleDragStart);
+            document.addEventListener('mousemove', handleDragMove);
+            document.addEventListener('mouseup', endDrag);
+        }
+        
+        function handleDragStart(e) {
+            if (isExpanded) return;
+            
+            isDragging = true;
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            
+            startX = clientX;
+            startY = clientY;
+            initialX = floatingSystem.offsetLeft;
+            initialY = floatingSystem.offsetTop;
+            
+            if (e.cancelable) e.preventDefault();
+        }
+        
+        function handleDragMove(e) {
+            if (!isDragging || isExpanded) return;
+            
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            const deltaX = clientX - startX;
+            const deltaY = clientY - startY;
+            
+            let newX = initialX + deltaX;
+            let newY = initialY + deltaY;
+            
+            // تحديد الحدود لمنع الخروج من الشاشة
+            newX = Math.max(0, Math.min(newX, window.innerWidth - floatingSystem.offsetWidth));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - floatingSystem.offsetHeight));
+            
+            floatingSystem.style.left = newX + 'px';
+            floatingSystem.style.top = newY + 'px';
+            floatingSystem.style.right = 'auto';
+            floatingSystem.style.bottom = 'auto';
+            
+            if (e.cancelable) e.preventDefault();
+        }
+        
+
+
+
+
+        function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    
+    // جعل النظام يلتصق بالجانب الأيسر دائماً
+    floatingSystem.style.left = '20px';
+    floatingSystem.style.right = 'auto';
+    floatingSystem.style.bottom = '20px';
+    floatingSystem.style.top = 'auto';
+}
+       
+        // وظائف الأزرار
+        function toggleSearch() {
+            if (isExpanded) toggleSystem();
+            searchBubble.classList.toggle('show');
+            if (searchBubble.classList.contains('show')) {
+                searchInput.focus();
+            }
+        }
+        
+        function toggleSpeech() {
+            if (!speechSynthesisInstance) {
+                showNotification("⚠️ هذه الميزة غير مدعومة في متصفحك");
+                return;
+            }
+            
+            if (isExpanded) toggleSystem();
+            isSpeechEnabled = !isSpeechEnabled;
+            showNotification(isSpeechEnabled ? "✅ تم تفعيل القلم الناطق!" : "⛔ تم إيقاف القلم الناطق!");
+            
+            if (isSpeechEnabled) {
+                document.addEventListener('mouseup', handleTextSelection);
+                document.addEventListener('touchend', handleTextSelection);
+            } else {
+                document.removeEventListener('mouseup', handleTextSelection);
+                document.removeEventListener('touchend', handleTextSelection);
+                stopSpeech();
+            }
+        }
+        
+        function handleTextSelection(e) {
+            if (!isSpeechEnabled) return;
+            
+            // منع النقر العادي إذا كان القلم الناطق مفعلاً
+            if (e.target.closest('.floating-system, .search-bubble, .popupCONTACT')) {
+                return;
+            }
+            
+            let selectedText = window.getSelection().toString().trim();
+            if (selectedText.length > 0) {
+                speakText(selectedText);
+            }
+        }
+        
+        function speakText(text) {
+            stopSpeech();
+            
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = /[\u0600-\u06FF]/.test(text) ? "ar-SA" : "en-US";
+            
+            // اختيار الصوت المناسب
+            if (voices.length > 0) {
+                const arabicVoices = voices.filter(v => v.lang.includes('ar'));
+                if (arabicVoices.length > 0) {
+                    utterance.voice = arabicVoices[0];
+                }
+            }
+            
+            utterance.rate = 1;
+            utterance.volume = 1.0;
+            
+            currentUtterance = utterance;
+            speechSynthesisInstance.speak(utterance);
+        }
+        
+        function stopSpeech() {
+            if (speechSynthesisInstance && speechSynthesisInstance.speaking) {
+                speechSynthesisInstance.cancel();
+            }
+            currentUtterance = null;
+        }
+        
+        function togglePopupCONTACT() {
+            if (isExpanded) toggleSystem();
+            popupCONTACT.style.display = popupCONTACT.style.display === "block" ? "none" : "block";
+        }
+        
+        function goToFlashCard() {
+            if (isExpanded) toggleSystem();
+            document.getElementById('flashcard-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+        
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add("show-notification");
+            
+            setTimeout(() => {
+                notification.classList.remove("show-notification");
+            }, 2000);
+        }
+        
+        // أحداث البحث
+        function handleSearchInput(e) {
+            const query = e.target.value.trim();
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                clearResults();
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        }
+        
+        function performSearch(query) {
+            clearResults();
+            currentResults = [];
+            selectedIndex = -1;
+            
+            const searchableElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, [id]');
+            
+            searchableElements.forEach(element => {
+                const text = element.textContent || element.innerText;
+                const elementId = element.id || (element.parentNode.id || '');
+                
+                if (text.toLowerCase().includes(query.toLowerCase())) {
+                    const previewText = text.length > 100 ? text.substring(0, 100) + '...' : text;
+                    
+                    currentResults.push({
+                        element: element,
+                        id: elementId,
+                        title: element.tagName.startsWith('H') ? text : (elementId || 'قسم في الصفحة'),
+                        preview: previewText,
+                        fullText: text
+                    });
+                }
+            });
+            
+            if (currentResults.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            displayResults(currentResults, query);
+        }
+        
+        function displayResults(results, query) {
+            results.forEach((result, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div class="result-title">${highlightText(result.title, query)}</div>
+                    <div class="result-preview">${highlightText(result.preview, query)}</div>
+                `;
+                resultItem.addEventListener('click', () => navigateToResult(result));
+                searchResults.appendChild(resultItem);
+            });
+        }
+        
+        function highlightText(text, query) {
+            if (!query) return text;
+            return text.replace(
+                new RegExp(query, 'gi'), 
+                match => `<span class="highlight">${match}</span>`
+            );
+        }
+        
+        function navigateToResult(result) {
+            if (result.element) {
+                result.element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                const originalBg = result.element.style.backgroundColor;
+                result.element.style.backgroundColor = '#fff9c4';
+                setTimeout(() => {
+                    result.element.style.backgroundColor = originalBg;
+                }, 2000);
+            }
+            
+            searchBubble.classList.remove('show');
+        }
+        
+        function showNoResults() {
+            searchResults.innerHTML = '<div class="no-results">لا توجد نتائج مطابقة</div>';
+        }
+        
+        function clearResults() {
+            searchResults.innerHTML = '';
+            currentResults = [];
+            selectedIndex = -1;
+        }
+        
+        // إضافة الأحداث
+        mainBtn.addEventListener('click', toggleSystem);
+        searchBtn.addEventListener('click', toggleSearch);
+        speechBtn.addEventListener('click', toggleSpeech);
+        contactBtn.addEventListener('click', togglePopupCONTACT);
+        flashcardBtn.addEventListener('click', goToFlashCard);
+        closeBubble.addEventListener('click', () => searchBubble.classList.remove('show'));
+        closeContactBtn.addEventListener('click', togglePopupCONTACT);
+        searchInput.addEventListener('input', handleSearchInput);
+        
+        // تهيئة النظام عند التحميل
+        window.addEventListener('load', initSystem);
+        
+        // إعادة حساب المواقع عند تغيير حجم النافذة
+        window.addEventListener('resize', endDrag);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحويل اتجاه النص تلقائيًا مع الحفاظ على التنسيق</title>
+    <style>
+        body {
+    
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        /* تنسيقات إضافية للحفاظ على المظهر */
+        .mixed-content {
+            unicode-bidi: embed;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // عناصر أكثر تحديداً مع استثناء العناصر التي قد تحتوي على أطفال معقدة
+            const elements = document.querySelectorAll('p, div:not(div div), span, li, h1, h2, h3, h4, h5, h6');
+            
+            elements.forEach(element => {
+                // تجاهل العناصر التي تحتوي على أطفال معقدة
+                if (element.children.length > 0 && !(element.children.length === 1 && element.children[0].tagName === 'SPAN')) {
+                    return;
+                }
+                
+                const text = element.textContent.trim();
+                
+                if (!text) return;
+                
+                // تحليل النص لتحديد إذا كان إنجليزي/عربي
+                const hasArabic = /[\u0600-\u06FF]/.test(text);
+                const hasEnglish = /[a-zA-Z]/.test(text);
+                
+                // إذا كان النص يحتوي على الإنجليزية فقط
+                if (hasEnglish && !hasArabic) {
+                    element.classList.add('ltr');
+                    element.classList.remove('rtl');
+                } 
+                // إذا كان النص يحتوي على العربية فقط
+                else if (hasArabic && !hasEnglish) {
+                    element.classList.add('rtl');
+                    element.classList.remove('ltr');
+                }
+                // إذا كان نصاً مختلطاً
+                else if (hasArabic && hasEnglish) {
+                    element.classList.add('mixed-content');
+                    
+                    // تحديد الاتجاه الأساسي بناءً على الحرف الأول
+                    const firstChar = text.charAt(0);
+                    if (/[a-zA-Z]/.test(firstChar)) {
+                        element.style.direction = 'ltr';
+                        element.style.textAlign = 'left';
+                    } else {
+                        element.style.direction = 'rtl';
+                        element.style.textAlign = 'right';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تنبيه طبي - INFATM</title>
+    <style>
+        /* تهيئة عامة */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+        }
+
+        /* زر الخطر العائم - تصميم جديد */
+        ._x1 {
+            position: fixed;
+            top: 120px; /* تغيير من bottom إلى top */
+            right: 10px;  /* تعديل القيمة */
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff0000, #c00000);
+            color: white;
+            font-size: 21px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
+                        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1000;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            animation: _a1 2s infinite;
+        }
+
+        @keyframes _a1 {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        ._x1:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff3333, #d10000);
+        }
+
+        ._x1:active {
+            transform: scale(0.95);
+            animation: none;
+        }
+
+        /* طبقة التعتيم */
+        ._x2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            display: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* نافذة المحتوى */
+        ._x3 {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10012;
+            display: none;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+
+        ._x4 {
+          background: linear-gradient(to right, #e74c3c, #c0392b);
+          color: white;
+          padding: 18px;
+          text-align: center;
+          position: relative;
+          flex-shrink: 0;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      ._x4 h2 {
+          font-size: 1.3rem;
+          font-weight: 600;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+        ._x5 {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: #f5f5f5;
+        }
+
+        /* زر الإغلاق الجديد */
+        ._x6 {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: white;
+            color: #e74c3c;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        ._x6:hover {
+            transform: rotate(90deg);
+            background: #ffebee;
+        }
+
+        /* مؤشر التحميل */
+        ._x7 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        ._x8 {
+            width: 45px;
+            height: 45px;
+            border: 5px solid rgba(231, 76, 60, 0.2);
+            border-top: 5px solid #e74c3c;
+            border-radius: 50%;
+            animation: _a2 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes _a2 {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        ._x7 p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* المحتوى المعروض */
+        ._x9 {
+            padding: 18px;
+            line-height: 1.7;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 480px) {
+            ._x1 {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+                bottom: 20px;
+            }
+            
+            ._x4 {
+                padding: 15px;
+            }
+            
+            ._x4 h2 {
+                font-size: 1.1rem;
+            }
+            
+            ._x6 {
+                width: 28px;
+                height: 28px;
+                font-size: 1rem;
+            }
+        }
+
+        /* تحسينات لللمس على الهواتف */
+        @media (hover: none) {
+            ._x1:hover {
+                transform: scale(1);
+                background: linear-gradient(135deg, #ff0000, #c00000);
+            }
+            
+            ._x6:hover {
+                transform: rotate(0deg);
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- زر الخطر العائم الجديد -->
+<button class="_x1" onclick="_f1()">⚠️</button>
+
+<!-- طبقة التعتيم -->
+<div class="_x2" id="_d1"></div>
+
+<!-- نافذة المحتوى -->
+<div class="_x3" id="_d2">
+    <div class="_x4">
+        <button class="_x6" onclick="_f1()">×</button>
+        <h2 >⚠️  محتوى زر التنبيه  الخطر   ⚠️   </h2>
+    </div>
+    <div class="_x5" id="_d3">
+        <div class="_x7">
+            <div class="_x8"></div>
+            <p>جاري تحميل المحتوى ...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // متغيرات التطبيق
+    let _v1 = false;
+    const _u1 = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    
+    // عناصر DOM
+    const _d2 = document.getElementById('_d2');
+    const _d1 = document.getElementById('_d1');
+    const _d3 = document.getElementById('_d3');
+    const _b1 = document.querySelector('._x1');
+    
+    // تبديل عرض/إخفاء النافذة
+    function _f1() {
+        if (_d2.style.display === 'flex') {
+            _f2();
+        } else {
+            _f3();
+        }
+    }
+    
+    function _f3() {
+        // إيقاف تأثير النبض عند الفتح
+        _b1.style.animation = 'none';
+        
+        _d1.style.display = 'block';
+        _d2.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        if (!_v1) {
+            _f4();
+        }
+    }
+    
+    function _f2() {
+        // إعادة تشغيل تأثير النبض عند الإغلاق
+        _b1.style.animation = '_a1 2s infinite';
+        
+        _d1.style.display = 'none';
+        _d2.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // تحميل المحتوى
+    async function _f4() {
+        try {
+            // استخدام iframe كحل أساسي
+            _f5();
+            _v1 = true;
+        } catch (error) {
+            _f6(error);
+        }
+    }
+    
+    // عرض المحتوى باستخدام iframe
+    function _f5() {
+        _d3.innerHTML = `
+            <iframe src="${_u1}" 
+                    style="width:100%; height:100%; border:none;"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    loading="lazy">
+            </iframe>
+        `;
+    }
+    
+    // عرض رسالة الخطأ
+    function _f6(_e1) {
+        _d3.innerHTML = `
+            <div class="_x7">
+                <div style="color: #e74c3c; margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 20px; color: #555;">${_e1.message}</p>
+                <button onclick="_f7()" 
+                        style="padding: 10px 20px; 
+                               background: linear-gradient(to right, #e74c3c, #c0392b); 
+                               color: white; 
+                               border: none; 
+                               border-radius: 30px;
+                               font-size: 1rem;
+                               box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+                               transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // إعادة تحميل المحتوى
+    function _f7() {
+        _d3.innerHTML = `
+            <div class="_x7">
+                <div class="_x8"></div>
+                <p>جاري تحميل المحتوى الطبي...</p>
+            </div>
+        `;
+        _f4();
+    }
+    
+    // إغلاق النافذة عند النقر خارجها
+    _d1.addEventListener('click', _f2);
+    
+    // منع إغلاق النافذة عند النقر داخلها
+    _d2.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
+    // تحسين الأداء للهواتف
+    if ('connection' in navigator) {
+        if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
+            // تحسينات لشبكات الجيل الثاني
+            _b1.style.animation = 'none';
+        }
+    }
+    
+    // إضافة اهتزاز عند النقر (للهواتف)
+    function _f8() {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(10);
+        }
+    }
+    
+    // إضافة الاهتزاز للأزرار
+    document.querySelector('._x1').addEventListener('click', _f8);
+    document.querySelector('._x6')?.addEventListener('click', _f8);
+</script>
+
+</body>
+</html>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* أنماط الزر الطافي */
+    .theme-toggle {
+        position: fixed;
+        top:100px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        z-index: 9999;
+        transition: all 0.3s ease;
+    }
+    
+    .theme-toggle:hover {
+        transform: scale(1.1);
+    }
+    
+    /* أنماط الوضع النهاري */
+    body.light-mode {
+        background-color: #f5f5f5;
+        color: #333;
+    }
+    
+
+    
+
+body.dark-mode .hover-image-container {
+    color: #ffffff;
+}
+
+body.dark-mode .image-tooltip {
+    color: #66bfff;
+}
+
+body.dark-mode .image-tooltip-content {
+    background-color: #222;
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .tooltip-caption {
+    color: #ccc;
+}
+    body.light-mode .sidebar {
+        background-color: #f0f0f0;
+        color: #333;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.light-mode .bubble {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border-left: 6px solid #007bff;
+        color: #333;
+    }
+    
+    body.light-mode .progress-bar-container {
+        background-color: #e0e0e0;
+    }
+    
+    body.light-mode .finish-button {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    body.light-mode .interact-button {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    body.light-mode .refresh-button {
+        background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+        color: #333;
+        border: 1px solid #ccc;
+    }
+    
+    body.light-mode #end-lesson-modal {
+        background-color: #f5f5f5;
+        color: #333;
+    }
+    
+    body.light-mode .modal {
+        background: #f5f5f5;
+        color: #333;
+    }
+</style>
+
+<button class="theme-toggle" id="themeToggle">☀️</button>
+
+<script>
+    // اختيار العناصر
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // التحقق من التفضيل المحفوظ
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'light') {
+        body.classList.add('light-mode');
+        body.classList.remove('dark-mode');
+        themeToggle.textContent = '🌙';
+    } else {
+        body.classList.add('dark-mode');
+        themeToggle.textContent = '☀️';
+    }
+    
+    // حدث النقر على الزر
+    themeToggle.addEventListener('click', () => {
+        if (body.classList.contains('dark-mode')) {
+            // التحويل إلى الوضع النهاري
+            body.classList.add('light-mode');
+            body.classList.remove('dark-mode');
+            themeToggle.textContent = '🌙';
+            localStorage.setItem('theme', 'light');
+        } else {
+            // التحويل إلى الوضع الليلي
+            body.classList.add('dark-mode');
+            body.classList.remove('light-mode');
+            themeToggle.textContent = '☀️';
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            
+            
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أداة التحكم في التكبير/التصغير</title>
+  <style>
+    /* تنسيقات أداة التكبير/التصغير */
+    .zoom-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      background: rgba(40, 40, 40, 0.9);
+      padding: 12px;
+      border-radius: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .zoom-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #007bff;
+      color: white;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    
+    .zoom-btn:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+    
+    .zoom-value {
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    /* للهواتف */
+    @media (max-width: 768px) {
+      .zoom-controls-container {
+        bottom: 15px;
+        left: 15px;
+      }
+      
+      
+    }
+  </style>
+</head>
+<body>
+
+
+
+<script>
+  // إعدادات التكبير
+  const zoomSettings = {
+    current: 1, // هذه القيمة سيتم تغييرها عند التحميل إذا لم توجد قيمة محفوظة
+    min: 0.3, // غيرت الحد الأدنى ليتناسب مع القيمة الافتراضية
+    max: 2,
+    step: 0.1
+  };
+
+  // عناصر التحكم
+  const elements = {
+    zoomIn: document.getElementById('zoom-in'),
+    zoomOut: document.getElementById('zoom-out'),
+    zoomReset: document.getElementById('zoom-reset'),
+    zoomValue: document.getElementById('zoom-value'),
+    html: document.documentElement
+  };
+
+  // تطبيق مستوى التكبير الحالي
+  function applyZoom() {
+    elements.html.style.fontSize = `${zoomSettings.current * 100}%`;
+    elements.zoomValue.textContent = `${Math.round(zoomSettings.current * 100)}%`;
+    
+    // حفظ الإعدادات
+    localStorage.setItem('pageZoomLevel', zoomSettings.current);
+  }
+
+  // تكبير النص
+  elements.zoomIn.addEventListener('click', () => {
+    if (zoomSettings.current < zoomSettings.max) {
+      zoomSettings.current += zoomSettings.step;
+      applyZoom();
+    }
+  });
+
+  // تصغير النص
+  elements.zoomOut.addEventListener('click', () => {
+    if (zoomSettings.current > zoomSettings.min) {
+      zoomSettings.current -= zoomSettings.step;
+      applyZoom();
+    }
+  });
+
+  // إعادة التعيين
+  elements.zoomReset.addEventListener('click', () => {
+    zoomSettings.current = 1;
+    applyZoom();
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedZoom = localStorage.getItem('pageZoomLevel');
+    if (savedZoom) {
+      zoomSettings.current = parseFloat(savedZoom);
+    } else {
+      // القيمة الافتراضية عند أول فتح (30%)
+      zoomSettings.current = 0.1;
+    }
+    applyZoom();
+  });
+
+  // اختصارات لوحة المفاتيح
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === '0') {
+      e.preventDefault();
+      elements.zoomReset.click();
+    }
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
