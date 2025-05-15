@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسة الشم - Histologie</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #f8f9fa;
+            --border-color: #2d2d2d;
+            --sidebar-width: 280px;
+            --header-height: 120px; /* زيادة الارتفاع لاستيعاب شريط التقدم */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* الهيدر مع السايد بار */
+        .header-container {
+            display: flex;
+            flex-direction: column; /* تغيير إلى عمودي لاحتواء شريط التقدم */
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* الجزء العلوي من الهيدر */
+        .header-top {
+            display: flex;
+            background-color: #16213e;
+            height: 70px;
+            align-items: center;
+            padding: 0 30px;
+        }
+        
+        /* شريط التقدم في الهيدر */
+        .header-progress {
+            background-color: rgba(30, 30, 30, 0.9);
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .progress-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .progress-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .progress-title i {
+            margin-left: 5px;
+        }
+        
+        .progress-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .progress-stat {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+        
+        .progress-stat i {
+            margin-left: 5px;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #2d2d2d;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                            transparent, 
+                            rgba(255, 255, 255, 0.2), 
+                            transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        .progress-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .progress-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .progress-btn:hover {
+            background-color: rgba(76, 201, 240, 0.1);
+        }
+        
+        .progress-btn i {
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: #1a1a2e;
+            color: white;
+            padding: 20px 0;
+            height: 100vh;
+            position: fixed;
+            top: var(--header-height);
+            right: -100%;
+            transition: all 0.4s ease;
+            overflow-y: auto;
+            z-index: 999;
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+        
+        .sidebar-menu a:hover {
+            background-color: rgba(67, 97, 238, 0.2);
+            color: var(--accent-color);
+        }
+        
+        .sidebar-menu a i {
+            margin-left: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .sidebar-menu .active {
+            background-color: var(--primary-color);
+            border-right: 4px solid var(--accent-color);
+        }
+        
+        .header {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .menu-toggle {
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: 20px;
+            color: var(--text-color);
+            transition: all 0.3s;
+        }
+        
+        .menu-toggle:hover {
+            color: var(--accent-color);
+        }
+        
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-left: 10px;
+            color: var(--accent-color);
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-container {
+            margin-top: calc(var(--header-height) + 20px);
+            padding: 20px;
+            transition: all 0.4s ease;
+        }
+        
+        .main-container.sidebar-active {
+            margin-right: var(--sidebar-width);
+        }
+        
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35);
+        }
+        
+        .section-title {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-left: 10px;
+        }
+        
+        /* بطاقات المحتوى */
+        .content-card {
+            background-color: rgba(30, 30, 30, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+        
+        .content-card.completed {
+            border-left: 4px solid #28a745;
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+        
+        .content-card.highlight {
+            animation: highlight 1.5s ease-out;
+        }
+        
+        @keyframes highlight {
+            0% { background-color: rgba(67, 97, 238, 0.3); }
+            100% { background-color: rgba(30, 30, 30, 0.7); }
+        }
+        
+        .content-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .content-title i {
+            margin-left: 10px;
+        }
+        
+        .content-body {
+            margin-bottom: 20px;
+        }
+        
+        .content-body ul {
+            padding-right: 20px;
+        }
+        
+        .content-body li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .content-body li::before {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+        }
+        
+        /* تبويبات اللغات */
+        .language-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .language-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .language-tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .language-content {
+            display: none;
+        }
+        
+        .language-content.active {
+            display: block;
+        }
+        
+        /* الأزرار */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .btn i {
+            font-size: 1rem;
+        }
+        
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #444;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* الصور */
+        .content-image {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s;
+        }
+        
+        .content-image:hover {
+            transform: scale(1.02);
+        }
+        
+        /* المودال */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-top: 4px solid var(--primary-color);
+            animation: modalFadeIn 0.4s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-icon {
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+        
+        .modal-text {
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 992px) {
+            :root {
+                --sidebar-width: 250px;
+                --header-height: 110px;
+            }
+            
+            .header-top {
+                padding: 0 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 100px;
+            }
+            
+            .header-top {
+                padding: 0 15px;
+            }
+            
+            .logo {
+                font-size: 1.1rem;
+            }
+            
+            .header-progress {
+                padding: 8px 15px;
+            }
+            
+            .progress-stat {
+                font-size: 0.8rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .content-card {
+                padding: 15px;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            :root {
+                --sidebar-width: 85%;
+                --header-height: 110px;
+            }
+            
+            .progress-stats {
+                flex-direction: column;
+                gap: 5px;
+                align-items: flex-end;
+            }
+            
+            .progress-stat {
+                font-size: 0.75rem;
+            }
+            
+            .language-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .language-tab {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر مع السايد بار -->
+    <div class="header-container">
+        <!-- الجزء العلوي من الهيدر -->
+        <div class="header-top">
+            <div class="header-left">
+                <a href="#" class="logo">
+                    <span>حاسة الشم</span>
+                    <i class="fas fa-smell"></i>
+                </a>
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <button class="btn btn-primary" id="finish-btn" disabled>
+                    <i class="fas fa-check-circle"></i>
+                    <span>إنهاء الدرس</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- شريط التقدم في الهيدر -->
+        <div class="header-progress">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <div class="progress-title">
+                        <i class="fas fa-chart-line"></i>
+                        تقدمك في الدرس
+                    </div>
+                    <div class="progress-stats">
+                        <div class="progress-stat">
+                            <i class="fas fa-check-circle"></i>
+                            <span id="completed-count">0</span> مكتمل
+                        </div>
+                        <div class="progress-stat">
+                            <i class="fas fa-clock"></i>
+                            <span id="remaining-count">17</span> متبقٍ
+                        </div>
+                        <div class="progress-stat">
+                            <i class="fas fa-percentage"></i>
+                            <span id="progress-percentage">0</span>%
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-actions">
+                    <button class="progress-btn" onclick="goToUncompleted()">
+                        <i class="fas fa-arrow-down"></i>
+                        الانتقال إلى الجزء التالي
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- السايد بار -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> الصفحة الرئيسية</a></li>
+                <li><a href="#sense-organs-intro"><i class="fas fa-brain"></i> مقدمة عن الأعضاء الحسية</a></li>
+                <li><a href="#embryology"><i class="fas fa-dna"></i> الأصل الجنيني</a></li>
+                <li><a href="#histology"><i class="fas fa-microscope"></i> البنية النسيجية</a></li>
+                <li><a href="#olfactory-epithelium"><i class="fas fa-layer-group"></i> الظهارة الشمية</a></li>
+                <li><a href="#basal-cells"><i class="fas fa-circle"></i> الخلايا القاعدية</a></li>
+                <li><a href="#supporting-cells"><i class="fas fa-hold"></i> الخلايا الداعمة</a></li>
+                <li><a href="#olfactory-cells"><i class="fas fa-smell"></i> الخلايا الشمية</a></li>
+                <li><a href="#chorion-structure"><i class="fas fa-network-wired"></i> الكوريون</a></li>
+                <li><a href="#histophysiology"><i class="fas fa-flask"></i> الفيزيولوجيا النسيجية</a></li>
+                <li><a href="#images"><i class="fas fa-images"></i> الصور التوضيحية</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- المحتوى الرئيسي -->
+    <main class="main-container" id="mainContainer">
+       
+        <!-- مقدمة الدرس -->
+        <section class="section">
+            <h1 class="section-title">
+                <i class="fas fa-smell"></i>
+                حاسة الشم
+            </h1>
+            <h2 style="text-align: center; color: var(--accent-color); margin: 15px 0;">
+                <i class="fas fa-language"></i> SMELL | L'OLFACTION
+            </h2>
+            
+            <div class="content-card" id="objectives">
+                <h3 class="content-title">
+                    <i class="fas fa-bullseye"></i>
+                    الأهداف التعليمية
+                </h3>
+                <div class="content-body">
+                    <ul>
+                        <li>فهم التركيب النسيجي لحاسة الشم</li>
+                        <li>معرفة الخلايا المكونة للظهارة الشمية</li>
+                        <li>استيعاب آلية عمل حاسة الشم</li>
+                        <li>تمييز أنواع المستقبلات الشمية</li>
+                        <li>فهم العلاقة بين التركيب والوظيفة في حاسة الشم</li>
+                    </ul>
+                </div>
+                <div class="content-footer">
+                    <button class="btn btn-secondary mark-complete">
+                        <i class="far fa-check-circle"></i>
+                        تمت المطالعة
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- مقدمة عن الأعضاء الحسية -->
+        <section class="section" id="sense-organs-intro">
+            <h2 class="section-title">
+                <i class="fas fa-brain"></i>
+                مقدمة عن الأعضاء الحسية
+            </h2>
+            
+            <div class="language-tabs">
+                <div class="language-tab active" data-lang="ar">العربية</div>
+                <div class="language-tab" data-lang="en">English</div>
+                <div class="language-tab" data-lang="fr">Français</div>
+            </div>
+            
+            <div class="content-card">
+                <div class="language-content active" data-lang="ar">
+                    <div class="content-body">
+                        <ul>
+                            <li>تستقبل الأعضاء الحسية معلومات من البيئة المحيطة من خلال مستقبلات الحس.</li>
+                            <li>تستجيب هذه المستقبلات لمحفزات مثل:
+                                <ul>
+                                    <li>الضوء</li>
+                                    <li>الصوت</li>
+                                    <li>النكهة أو الطعم</li>
+                                    <li>الرائحة</li>
+                                </ul>
+                            </li>
+                            <li>تصنّف الأعضاء الحسية إلى:
+                                <ul>
+                                    <li><strong>عضو أولي:</strong> الخلية العصبية الحسية توجد مباشرة في الظهارة مثل الظهارة الشمية.</li>
+                                    <li><strong>عضو ثانوي:</strong> مثل براعم التذوق، حيث تمتد الزوائد التغصنية للعصبونات الحسية إلى الظهارة وتقوم بتشابك مع خلية حسية، وتقع أجسام الخلايا الحسية في عقدة قحفية شوكية.</li>
+                                    <li><strong>عضو ثالثي:</strong> التركيب العصبي يكون متصلاً مباشرة ببنية دماغية، مثل الشبكية.</li>
+                                </ul>
+                            </li>
+                            <li><strong>عضو الشم:</strong> هو العضو الحسي الوحيد من النوع الأولي، ويستجيب للجزيئات المنتشرة في الهواء. عند الإنسان، يتمثل في الغشاء المخاطي الشمي أو البقعة الصفراء، الموجودة في الجزء الخلفي العلوي من الغشاء المخاطي للأنف.</li>
+                            <li>تبدو البقعة الشمية ملساء عند النظر إليها بالعين المجردة، بسمك 60 ميكرون، وتمتد على مساحة تقارب 250 مم² لكل فتحة أنفية.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="language-content" data-lang="en">
+                    <div class="content-body">
+                        <ul>
+                            <li><strong>Introduction to the sensory organs:</strong></li>
+                            <ul>
+                                <li>Sensory organs receive information from the environment through sensory receptors.</li>
+                                <li>These receptors detect stimuli such as:
+                                    <ul>
+                                        <li>Light</li>
+                                        <li>Sound</li>
+                                        <li>Taste or flavor</li>
+                                        <li>Smell</li>
+                                    </ul>
+                                </li>
+                                <li>Sensory organs are classified into:
+                                    <ul>
+                                        <li><strong>Primary organ:</strong> The sensory neuron receptor is located in the epithelium itself, such as the olfactory epithelium.</li>
+                                        <li><strong>Secondary organ:</strong> Such as taste buds, where the dendritic extensions of the sensory neurons are placed in the epithelium and synapse with a sensory cell. The cell bodies of these neurons are located in a craniospinal ganglion.</li>
+                                        <li><strong>Tertiary organ:</strong> The neural structure is in direct continuity with a brain structure, such as the retina.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Olfactory organ:</strong> It is the only primary sensory organ, responsive to molecules dispersed in the air. In humans, it corresponds to the olfactory mucosa or yellow spot, located in the postero-superior part of the nasal mucosa.</li>
+                                <li>The olfactory spot appears macroscopically smooth, about 60 µm thick, and covers an area of approximately 250 mm² (per nostril).</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="language-content" data-lang="fr">
+                    <div class="content-body">
+                        <ul>
+                            <li><strong>INTRODUCTION :</strong></li>
+                            <ul>
+                                <li>Les organes sensoriels reçoivent des informations de l'environnement par des récepteurs de la sensibilité.</li>
+                                <li>Ils détectent des stimuli tels que :
+                                    <ul>
+                                        <li>Lumière</li>
+                                        <li>Son</li>
+                                        <li>Saveur ou goût</li>
+                                        <li>Odeur</li>
+                                    </ul>
+                                </li>
+                                <li>On classe les organes de sens en :
+                                    <ul>
+                                        <li><strong>Organe primaire :</strong> le neurone sensoriel récepteur est placé au niveau d'un épithélium, l'épithélium olfactif.</li>
+                                        <li><strong>Organe secondaire :</strong> comme les bourgeons du goût : les prolongements dendritiques des neurones récepteurs sont placés au niveau de l'épithélium et font synapse avec une cellule sensorielle. Les corps cellulaires des neurones sensoriels sont situés dans un ganglion cérébro-spinal.</li>
+                                        <li><strong>Organe tertiaire :</strong> la structure nerveuse est en continuité avec une structure encéphalique, comme la rétine.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>L'organe de l'olfaction :</strong> C'est le seul organe des sens primaire, sensible à des molécules dispersées dans l'air. Il correspond, chez l'homme, à la muqueuse olfactive ou tache jaune, située à la partie postéro-supérieure de la muqueuse nasale.</li>
+                                <li> La tache olfactive ou tache jaune présente macroscopiquement un aspect lisse, d'une épaisseur de 60μ, elle s'étend sur une surface d'environ 250 mm2 (par narine).</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="content-footer">
+                    <button class="btn btn-secondary mark-complete">
+                        <i class="far fa-check-circle"></i>
+                        تمت المطالعة
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- الأصل الجنيني -->
+        <section class="section" id="embryology">
+            <h2 class="section-title">
+                <i class="fas fa-dna"></i>
+                الأصل الجنيني
+            </h2>
+            
+            <div class="language-tabs">
+                <div class="language-tab active" data-lang="ar">العربية</div>
+                <div class="language-tab" data-lang="en">English</div>
+                <div class="language-tab" data-lang="fr">Français</div>
+            </div>
+            
+            <div class="content-card">
+                <div class="language-content active" data-lang="ar">
+                    <div class="content-body">
+                        <ul>
+                            <li>ينشأ عضو الشم من الأديم الظاهر (الإيبي بلاست).</li>
+                            <li>تظهر بدايات الظهارة الشمية البدائية مبكرًا، في اليوم الخامس والعشرين من التطور الجنيني.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="language-content" data-lang="en">
+                    <div class="content-body">
+                        <ul>
+                            <li><strong>Embryological origin:</strong></li>
+                            <ul>
+                                <li>The olfactory organ originates from the epiblast.</li>
+                                <li>The early primordia of the olfactory epithelium appear early, on the 25th day of embryological development.</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="language-content" data-lang="fr">
+                    <div class="content-body">
+                        <ul>
+                            <li><strong>ORIGINE EMBRYOLOGIQUE :</strong></li>
+                            <ul>
+                                <li>L'organe de l'olfaction est d'origine épiblastique.</li>
+                                <li>En effet, les ébauches primitives de l'épithélium olfactif apparaissent précocement, au 25ᵉ jour du développement embryologique.</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="content-footer">
+                    <button class="btn btn-secondary mark-complete">
+                        <i class="far fa-check-circle"></i>
+                        تمت المطالعة
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- البنية النسيجية -->
+        <section class="section" id="histology">
+            <h2 class="section-title">
+                <i class="fas fa-microscope"></i>
+                البنية النسيجية
+            </h2>
+            
+            <div class="language-tabs">
+                <div class="language-tab active" data-lang="ar">العربية</div>
+                <div class="language-tab" data-lang="en">English</div>
+                <div class="language-tab" data-lang="fr">Français</div>
+            </div>
+            
+            <div class="content-card">
+                <div class="language-content active" data-lang="ar">
+                    <div class="content-body">
+                        <ul>
+                            <li>تتكون الغشاء المخاطي الشمي من:
+                                <ul>
+                                    <li>ظهارة</li>
+                                    <li>نسيج ضام (الكوريون)</li>
+                                </ul>
+                            </li>
+                            <li>ترتكز الظهارة على غشاء قاعدي أو زجاجي يفصلها عن الكوريون.</li>
+                            <li>كل هذه المكونات تستند إلى صفيحة عظمية: الصفيحة الغربالية.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="language-content" data-lang="en">
+                    <div class="content-body">
+                        <ul>
+                            <li><strong>Histological structure:</strong></li>
+                            <ul>
+                                <li>The olfactory mucosa consists of:
+                                    <ul>
+                                        <li>An epithelium</li>
+                                        <li>A chorion (connective tissue)</li>
+                                    </ul>
+                                </li>
+                                <li>The epithelium rests on a basal or glassy membrane that separates it from the chorion.</li>
+                                <li>These components lie upon a bony plate: the cribriform plate of the ethmoid bone.</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="language-content" data-lang="fr">
+                    <div class="content-body">
+                        <ul>
+                            <li><strong>STRUCTURE HISTOLOGIQUE :</strong></li>
+                            <ul>
+                                <li>La muqueuse olfactive est constituée de :
+                                    <ul>
+                                        <li>Un épithélium</li>
+                                        <li>Un chorion</li>
+                                    </ul>
+                                </li>
+                                <li>L'épithélium repose sur une membrane basale ou vitrée qui le sépare du chorion.</li>
+                                <li>Ces éléments reposent sur une lame osseuse : la lame criblée de l'éthmoïde.</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="content-footer">
+                    <button class="btn btn-secondary mark-complete">
+                        <i class="far fa-check-circle"></i>
+                        تمت المطالعة
+                    </button>
+                </div>
+            </div>
+            
+            <!-- صورة توضيحية -->
+            <div class="content-card">
+                <img src="Rotation_ethmoid.gif" alt="الصفيحة الغربالية" class="content-image">
+                <div class="content-footer">
+                    <button class="btn btn-secondary mark-complete">
+                        <i class="far fa-check-circle"></i>
+                        تمت المطالعة
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- الفيزيولوجيا النسيجية -->
+        <section class="section" id="histophysiology">
+            <h2 class="section-title">
+                <i class="fas fa-flask"></i>
+                الفيزيولوجيا النسيجية
+            </h2>
+            
+            <div class="language-tabs">
+                <div class="language-tab active" data-lang="ar">العربية</div>
+                <div class="language-tab" data-lang="en">English</div>
+                <div class="language-tab" data-lang="fr">Français</div>
+            </div>
+            
+            <div class="content-card">
+                <div class="language-content active" data-lang="ar">
+                    <div class="content-body">
+                        <ul>
+                            <li>يُعتبر عضو الشم مستقبلاً كيميائيًا خارجيًا (chemo-récepteur extérocepteur).</li>
+                            <li>توجد 7 روائح أساسية: الكافور، المسك، الزهور، النعناع، الإيثر، الحامض، والعفن (النتن).</li>
+                            <li>إدراك الروائح يتم عبر ارتباط فيزيائي-كيميائي قابل للعكس مع مستقبلات جزيئية على أهداب الخلايا الشمية.</li>
+                            <li>لكل رائحة أساسية موقع استقبال نوعي على غشاء الأهداب الشمية.</li>
+                            <li>لكي تنبه الجزيئات هذه المستقبلات، يجب أن تكون:
+                                <ul>
+                                    <li>متطايرة،</li>
+                                    <li>قابلة للذوبان في الماء،</li>
+                                    <li>قابلة للذوبان في الدهون، وهذه القابلية للذوبان في الدهون ضرورية لاختراق طبقة المخاط-الليبيد الواقية التي تغطي الظهارة الشمية.</li>
+                                </ul>
+                            </li>
+                            <li>تستجيب الخلايا الشمية للروائح عبر إزالة الاستقطاب في الغشاء، أي توليد جهد مستقبل يتحول إلى جهد فعل على الألياف العصبية الشمية.</li>
+                            <li>تنقل هذه المنبهات من الأهداب عبر الخيوط الشمية إلى البصلة الشمية ثم إلى القشرة المخية (عبر الحزمة الشمية الجانبية)، حيث تتم عملية الإدماج والتمييز والتفسير للإشارات.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="language-content" data-lang="en">
+                    <div class="content-body">
+                        <ul>
+                            <li><strong>Histophysiology:</strong></li>
+                            <ul>
+                                <li>The olfactory organ functions as a chemoreceptive exteroceptor.</li>
+                                <li>There are 7 basic odors: camphoraceous, musky, floral, minty, ether, pungent, and putrid.</li>
+                                <li>Odor perception involves a reversible physico-chemical bond at molecular receptors on the cilia of olfactory cells.</li>
+                                <li>Each odor corresponds to a specific receptor site on the plasma membrane of olfactory cilia.</li>
+                                <li>To stimulate these receptors, molecules must be:
+                                    <ul>
+                                        <li>Volatile,</li>
+                                        <li>Water-soluble,</li>
+                                        <li>Lipid-soluble — this is crucial for penetrating the muco-lipid protective film covering the olfactory epithelium.</li>
+                                    </ul>
+                                </li>
+                                <li>Olfactory cells respond to odor stimuli via membrane depolarization (receptor potential), which triggers an action potential in the olfactory nerve fiber.</li>
+                                <li>From the cilia, stimuli travel through olfactory filaments to the olfactory bulb, then to the cerebral cortex (via the lateral olfactory tract), where signal integration, discrimination, and interpretation occur.</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="language-content" data-lang="fr">
+                    <div class="content-body">
+                        <ul>
+                            <li><strong>Histophysiologie :</strong></li>
+                            <ul>
+                                <li>L'organe de l'olfaction est un chémorécepteur extérocepteur.</li>
+                                <li>Il existe 7 odeurs élémentaires : camphrée, musquée, florale, mentholée, éthérée, âcre, et putride.</li>
+                                <li>La perception des odeurs repose sur une liaison physico-chimique réversible au niveau de récepteurs moléculaires situés sur les cils des cellules olfactives.</li>
+                                <li>Chaque odeur élémentaire correspond à un site récepteur spécifique localisé sur la membrane plasmique des cils olfactifs.</li>
+                                <li>Pour stimuler ces récepteurs, les molécules doivent :
+                                    <ul>
+                                        <li>Être volatiles,</li>
+                                        <li>Solubles dans l'eau,</li>
+                                        <li>Solubles dans les lipides — condition essentielle pour traverser le film muco-lipidique protecteur de l'épithélium olfactif.</li>
+                                    </ul>
+                                </li>
+                                <li>La réponse cellulaire consiste en une dépolarisation membranaire (potentiel récepteur), à l'origine du potentiel d'action de la fibre nerveuse olfactive.</li>
+                                <li>Depuis les cils, les stimuli sont transmis par les filets olfactifs vers le bulbe olfactif, puis au cortex cérébral (via le faisceau olfactif latéral), où a lieu l'intégration, la discrimination et l'interprétation des influx.</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="content-footer">
+                    <button class="btn btn-secondary mark-complete">
+                        <i class="far fa-check-circle"></i>
+                        تمت المطالعة
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- صور إضافية -->
+        <section class="section" id="images">
+            <h2 class="section-title">
+                <i class="fas fa-images"></i>
+                صور توضيحية
+            </h2>
+            
+            <div class="content-card">
+                <img src="2MED U5 HISTOLOGIE/A64.jpg" alt="شرح حاسة الشم" class="content-image">
+                <div class="content-footer">
+                    <button class="btn btn-secondary mark-complete">
+                        <i class="far fa-check-circle"></i>
+                        تمت المطالعة
+                    </button>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <img src="2MED U5 HISTOLOGIE/A65.jpg" alt="شرح حاسة الشم" class="content-image">
+                <div class="content-footer">
+                    <button class="btn btn-secondary mark-complete">
+                        <i class="far fa-check-circle"></i>
+                        تمت المطالعة
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- مودال إكمال الدرس -->
+    <div class="modal" id="completion-modal">
+        <div class="modal-content">
+            <div class="modal-title">
+                <i class="fas fa-check-circle modal-icon"></i>
+                أحسنت يا طبيبنا إن شاء الله!
+            </div>
+            <p class="modal-text" id="completion-stats">لقد أكملت الدرس بنجاح في 0 دقيقة و 0 ثانية.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-success" onclick="location.reload()">
+                    <i class="fas fa-redo"></i>
+                    إعادة الحفظ
+                </button>
+                <button class="btn btn-primary" onclick="goToTests()">
+                    <i class="fas fa-arrow-right"></i>
+                    الانتقال إلى الاختبارات
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // متغيرات التتبع
+        let totalSections = document.querySelectorAll('.content-card').length;
+        let completedSections = 0;
+        let startTime = Date.now();
+        let menuToggle = document.getElementById('menuToggle');
+        let sidebar = document.querySelector('.sidebar');
+        let mainContainer = document.getElementById('mainContainer');
+        
+        // تهيئة الصفحة عند التحميل
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCounters();
+            setupLanguageTabs();
+            setupCompleteButtons();
+            updateProgress();
+            
+            // تعطيل زر الإنهاء في البداية
+            document.getElementById('finish-btn').disabled = true;
+        });
+        
+        // تبديل السايد بار
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            mainContainer.classList.toggle('sidebar-active');
+            menuToggle.innerHTML = sidebar.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // إغلاق السايد بار عند النقر خارجها
+        document.addEventListener('click', function(e) {
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                mainContainer.classList.remove('sidebar-active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+        
+        // تهيئة أزرار التبويب اللغوي
+        function setupLanguageTabs() {
+            const tabs = document.querySelectorAll('.language-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const lang = this.dataset.lang;
+                    const parent = this.closest('.section');
+                    
+                    // إزالة التنشيط من جميع الألسنة
+                    parent.querySelectorAll('.language-tab').forEach(t => t.classList.remove('active'));
+                    // إضافة التنشيط للسان المحدد
+                    this.classList.add('active');
+                    
+                    // إخفاء جميع المحتويات
+                    parent.querySelectorAll('.language-content').forEach(c => c.classList.remove('active'));
+                    // إظهار المحتوى المحدد
+                    parent.querySelector(`.language-content[data-lang="${lang}"]`).classList.add('active');
+                });
+            });
+        }
+        
+        // تهيئة أزرار إكمال الأجزاء
+        function setupCompleteButtons() {
+            const buttons = document.querySelectorAll('.mark-complete');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('.content-card');
+                    
+                    // إذا لم يكن مكتملاً بالفعل
+                    if (!card.classList.contains('completed')) {
+                        completedSections++;
+                        card.classList.add('completed');
+                        
+                        // تغيير الزر إلى حالة المكتمل
+                        this.innerHTML = '<i class="fas fa-check-circle"></i> تمت المراجعة';
+                        this.classList.remove('btn-secondary');
+                        this.classList.add('btn-success');
+                        
+                        // إضافة تأثير تمييز
+                        card.classList.add('highlight');
+                        setTimeout(() => card.classList.remove('highlight'), 1500);
+                        
+                        // تحديث العدادات وشريط التقدم
+                        updateCounters();
+                        updateProgress();
+                        
+                        // إذا أكمل كل الأجزاء، تفعيل زر الإنهاء
+                        if (completedSections === totalSections) {
+                            document.getElementById('finish-btn').disabled = false;
+                        }
+                    }
+                });
+            });
+        }
+        
+        // تحديث العدادات
+        function updateCounters() {
+            document.getElementById('completed-count').textContent = completedSections;
+            document.getElementById('remaining-count').textContent = totalSections - completedSections;
+        }
+        
+        // تحديث شريط التقدم
+        function updateProgress() {
+            const progress = (completedSections / totalSections) * 100;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('progress-percentage').textContent = Math.round(progress);
+        }
+        
+        // الانتقال إلى صفحة الاختبارات
+        function goToTests() {
+            window.location.href = 'MED02.html';
+        }
+        
+        // زر إنهاء الدرس
+        document.getElementById('finish-btn').addEventListener('click', function() {
+            const elapsedTime = Date.now() - startTime;
+            const minutes = Math.floor(elapsedTime / 60000);
+            const seconds = Math.floor((elapsedTime % 60000) / 1000);
+            
+            document.getElementById('completion-stats').textContent = 
+                `لقد أكملت الدرس بنجاح في ${minutes} دقيقة و ${seconds} ثانية.`;
+            
+            document.getElementById('completion-modal').style.display = 'flex';
+        });
+        
+        // الانتقال إلى أول قسم غير مكتمل
+        function goToUncompleted() {
+            const cards = document.querySelectorAll('.content-card:not(.completed)');
+            if (cards.length > 0) {
+                cards[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                cards[0].classList.add('highlight');
+                setTimeout(() => cards[0].classList.remove('highlight'), 2000);
+            } else {
+                alert('تهانينا! لقد أكملت جميع أجزاء الدرس.');
+            }
+        }
+        
+        // إغلاق المودال عند النقر خارجها
+        window.addEventListener('click', function(e) {
+            if (e.target === document.getElementById('completion-modal')) {
+                document.getElementById('completion-modal').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
