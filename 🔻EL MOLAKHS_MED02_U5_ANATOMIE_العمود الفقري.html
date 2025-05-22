@@ -10,7 +10,715 @@
     <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
 
 
+  
+  
+   
+   
+ 
+   
+   
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+   
+<style>
+.image-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.image-tooltip-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+    width: 300px;
+    max-height: 400px; /* ارتفاع أقصى للعنصر */
+    overflow-y: auto; /* تمكين التمرير العمودي عند الحاجة */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    scrollbar-width: thin; /* لعرض شريط تمرير أنيق (يدعمه Firefox) */
+    scrollbar-color: #888 #f1f1f1; /* ألوان شريط التمرير */
+}
+
+/* تخصيص شريط التمرير لمتصفحات WebKit (Chrome, Edge) */
+.image-tooltip-content::-webkit-scrollbar {
+    width: 8px;
+}
+.image-tooltip-content::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+.image-tooltip-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.image-tooltip.active .image-tooltip-content {
+    display: block;
+}
+</style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tooltip = document.getElementById('tooltip');
+    
+    tooltip.addEventListener('click', function(e) {
+        e.stopPropagation();
+        tooltip.classList.toggle('active');
+    });
+
+    document.addEventListener('click', function() {
+        tooltip.classList.remove('active');
+    });
+});
+</script>
+                    
+   
+   
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>أداة حماية العين</title>
+        <style>
+            /* إعدادات الصفحة الأساسية */
+            body {
+                margin: 0;
+                font-family: 'Arial', sans-serif;
+                background-color: #edf2f7;
+                color: #333;
+                transition: all 0.5s ease;
+            }
+        
+            header, main {
+                padding: 20px;
+                text-align: center;
+            }
+        
+            header h1 {
+                font-size: 2rem;
+                color: #444;
+                margin-bottom: 20px;
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+                animation: fadeIn 1.2s ease-in-out;
+            }
+        
+            main h2 {
+                font-size: 1.5rem;
+                color: #555;
+                margin-bottom: 10px;
+            }
+        
+            main p {
+                font-size: 1rem;
+                line-height: 1.6;
+                color: #666;
+            }
+        
+            /* الحاوية */
+            #controlPanel {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: linear-gradient(145deg, #e0e5ec, #ffffff);
+                border-radius: 50px;
+                box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                width: 60px;
+                height: 60px;
+                overflow: hidden;
+                transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+            }
+        
+            #controlPanel.expanded {
+                width: 340px;
+                height: auto;
+                border-radius: 20px;
+                box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
+            }
+        
+            /* الزر */
+            #toggleButton {
+                width: 60px;
+                height: 60px;
+                background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c);
+                border: none;
+                border-radius: 50%;
+                color: white;
+                font-size: 28px;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 
+                            5px 5px 10px rgba(0,0,0,0.2), 
+                            -5px -5px 10px rgba(255,255,255,0.5);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+        
+            #toggleButton:hover {
+                transform: scale(1.1) rotate(5deg);
+                box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 
+                            8px 8px 20px rgba(0,0,0,0.2), 
+                            -8px -8px 20px rgba(255,255,255,0.5);
+                background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+            }
+        
+            #emoji {
+                font-size: 32px;
+                line-height: 1;
+                animation: bounce 2s infinite ease-in-out;
+            }
+        
+            #toggleText {
+                font-size: 14px;
+                color: white;
+                position: absolute;
+                bottom: -20px;
+                opacity: 0;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
+        
+            #toggleButton:hover #toggleText {
+                opacity: 1;
+                transform: translateY(-5px);
+            }
+        
+            /* شريط التمرير */
+            .slider-container {
+                width: 90%;
+                margin: 10px 0;
+                position: relative;
+            }
+            
+            .color-spectrum {
+                width: 100%;
+                height: 20px;
+                border-radius: 10px;
+                background: linear-gradient(to right, 
+                    #ff9a3c, /* 1700K - برتقالي دافئ جداً */
+                    #ffb347, /* 2000K */
+                    #ffcc6a, /* 2300K */
+                    #ffe08c, /* 2700K - أصفر دافئ */
+                    #f5f5f5  /* أبيض محايد */
+                );
+                margin-bottom: 5px;
+                box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            
+            #colorTempSlider {
+                width: 100%;
+                appearance: none;
+                height: 12px;
+                background: transparent;
+                border-radius: 6px;
+                outline: none;
+                cursor: pointer;
+                position: absolute;
+                top: 20px;
+                left: 0;
+            }
+        
+            #colorTempSlider::-webkit-slider-thumb {
+                appearance: none;
+                width: 22px;
+                height: 22px;
+                background: radial-gradient(circle, #4caf50, #388e3c);
+                border-radius: 50%;
+                cursor: pointer;
+                box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+                transition: transform 0.2s ease-in-out;
+            }
+        
+            #colorTempSlider::-webkit-slider-thumb:hover {
+                transform: scale(1.2);
+            }
+        
+            .temp-labels {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                font-size: 11px;
+                color: #555;
+                margin-top: 25px;
+            }
+        
+            .small-slider {
+                width: 80px;
+                height: 8px;
+            }
+        
+            #label {
+                font-size: 14px;
+                font-weight: bold;
+                color: #333;
+                display: none;
+                text-align: center;
+                animation: fadeIn 0.8s ease-in-out;
+            }
+        
+            .expanded #label {
+                display: block;
+            }
+        
+            /* خيارات إضافية */
+            .options {
+                display: none;
+                width: 100%;
+                padding: 0 15px 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+        
+            .expanded .options {
+                display: flex;
+            }
+        
+            .option-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        
+            .option-label {
+                font-size: 13px;
+                color: #555;
+            }
+        
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 50px;
+                height: 24px;
+            }
+        
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+        
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                transition: .4s;
+                border-radius: 24px;
+            }
+        
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 13px;
+                width: 13px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+            }
+        
+            input:checked + .slider {
+                background-color: #4CAF50;
+            }
+        
+            input:checked + .slider:before {
+                transform: translateX(26px);
+            }
+        
+            /* معلومات علمية */
+            .science-info {
+                display: none;
+                background: #f8f9fa;
+                border-radius: 10px;
+                padding: 10px;
+                margin: 10px 15px;
+                font-size: 12px;
+                color: #555;
+                border-right: 3px solid #4CAF50;
+            }
+        
+            .expanded .science-info {
+                display: block;
+                animation: fadeIn 0.8s ease-in-out;
+            }
+        
+            .science-title {
+                font-weight: bold;
+                color: #388e3c;
+                margin-bottom: 5px;
+            }
+        
+            /* الإشعارات */
+            .notification {
+                position: fixed;
+                bottom: 100px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 5px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                animation: slideIn 0.5s ease-out;
+                z-index: 1001;
+            }
+        
+            .fade-out {
+                animation: fadeOut 0.5s ease-out forwards;
+            }
+        
+            /* الرسوم المتحركة */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        
+            @keyframes bounce {
+                0%, 100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+        
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+        
+            /* تحسين التوافق مع الهواتف */
+            @media (max-width: 768px) {
+                #controlPanel {
+                    bottom: 10px;
+                    right: 10px;
+                }
+                #toggleButton {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 24px;
+                }
+                #controlPanel.expanded {
+                    width: 300px;
+                }
+            }
+        
+            @media (max-width: 480px) {
+                #controlPanel.expanded {
+                    width: 90%;
+                    right: 5%;
+                    bottom: 10px;
+                }
+                
+                .options {
+                    padding: 0 10px 10px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- أداة التحكم -->
+        <div id="controlPanel">
+            <button id="toggleButton">
+                <span id="emoji">🌙</span>
+                <span id="toggleText">تشغيل</span>
+            </button>
+            <label id="label" for="colorTempSlider">درجة حرارة اللون (1700K-2700K):</label>
+            
+            <div class="slider-container">
+                <div class="color-spectrum"></div>
+                <input type="range" id="colorTempSlider" min="1700" max="2700" step="100" value="2700">
+                <div class="temp-labels">
+                    <span>1700K</span>
+                    <span>2000K</span>
+                    <span>2300K</span>
+                    <span>2700K</span>
+                </div>
+            </div>
+            
+            <div class="science-info">
+                <div class="science-title">معلومات علمية:</div>
+                <p>• درجات الحرارة المرتفعة (>5000K) تسبب انتباه الأشخاص وزيادة التركيز</p>
+                <p>• درجات الحرارة المنخفضة (2700K-3000K) تشعر الأشخاص بالاسترخاء والنعاس</p>
+                <p>• الضوء الأزرق (380-550 نانومتر) يؤثر على الساعة البيولوجية</p>
+            </div>
+            
+            <div class="options">
+                <div class="option-row">
+                    <span class="option-label">الوضع الليلي التلقائي</span>
+                    <label class="switch">
+                        <input type="checkbox" id="autoNightMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="option-row">
+                    <span class="option-label">تقليل الوهج</span>
+                    <label class="switch">
+                        <input type="checkbox" id="reduceGlare" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="option-row">
+                    <span class="option-label">تعتيم النص</span>
+                    <label class="switch">
+                        <input type="checkbox" id="darkenText">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="option-row">
+                    <span class="option-label">ضبط السطوع</span>
+                    <input type="range" id="brightnessSlider" min="50" max="100" value="100" class="small-slider">
+                  </div>
+                  <div class="mobile-breaks"></div>
+
+                  <style>    .mobile-breaks {
+                    display: none;
+                  }
+                  
+                  @media (max-width: 768px) {
+                    .mobile-breaks {
+                      display: block;
+                      height: 2em; /* تعادل تقريبا سطرين فارغين */
+                    }
+                  }</style>
+              
+                  
+            </div>
+        </div>
+    
+        <script>
+            const controlPanel = document.getElementById('controlPanel');
+            const toggleButton = document.getElementById('toggleButton');
+            const emoji = document.getElementById('emoji');
+            const toggleText = document.getElementById('toggleText');
+            const slider = document.getElementById('colorTempSlider');
+            const autoNightMode = document.getElementById('autoNightMode');
+            const reduceGlare = document.getElementById('reduceGlare');
+            const darkenText = document.getElementById('darkenText');
+            const brightnessSlider = document.getElementById('brightnessSlider');
+    
+            let isEyeProtectionEnabled = false;
+            let autoNightModeInterval;
+    
+            // تحميل التفضيلات المحفوظة
+            window.addEventListener('DOMContentLoaded', () => {
+                const preferences = JSON.parse(localStorage.getItem('eyeProtectionPrefs')) || {};
+                if (preferences.autoNightMode) autoNightMode.checked = true;
+                if (preferences.reduceGlare) reduceGlare.checked = true;
+                if (preferences.darkenText) darkenText.checked = true;
+                if (preferences.enabled) enableEyeProtection();
+                if (preferences.brightness) brightnessSlider.value = preferences.brightness;
+                if (preferences.colorTemp) slider.value = preferences.colorTemp;
+    
+                // تحقق من وقت اليوم عند التحميل
+                checkTimeOfDay();
+            });
+    
+            toggleButton.addEventListener('click', () => {
+                controlPanel.classList.toggle('expanded');
+    
+                if (isEyeProtectionEnabled) {
+                    disableEyeProtection();
+                } else {
+                    enableEyeProtection();
+                    setTimeout(() => {
+                        controlPanel.classList.remove('expanded');
+                    }, 5000);
+                }
+                
+                savePreferences();
+            });
+    
+            slider.addEventListener('input', function() {
+                updateFilter();
+                updateSliderColor(this.value);
+            });
+            
+            // تحديث لون شريط التمرير بناء على القيمة
+            function updateSliderColor(value) {
+                const percent = (value - 1700) / (2700 - 1700) * 100;
+                const thumb = document.querySelector('#colorTempSlider::-webkit-slider-thumb');
+                
+                // تغيير لون الإبهام حسب الموقع على الطيف
+                if (thumb) {
+                    if (percent < 30) {
+                        thumb.style.background = 'radial-gradient(circle, #ff9a3c, #e07c2e)';
+                    } else if (percent < 70) {
+                        thumb.style.background = 'radial-gradient(circle, #ffb347, #e0953a)';
+                    } else {
+                        thumb.style.background = 'radial-gradient(circle, #ffe08c, #e0c87a)';
+                    }
+                }
+            }
+            
+            autoNightMode.addEventListener('change', function() {
+                if (this.checked) {
+                    startAutoNightMode();
+                    if (isEyeProtectionEnabled) {
+                        updateFilter();
+                    }
+                } else {
+                    stopAutoNightMode();
+                }
+                savePreferences();
+            });
+    
+            reduceGlare.addEventListener('change', function() {
+                if (isEyeProtectionEnabled) {
+                    updateFilter();
+                }
+                savePreferences();
+            });
+    
+            darkenText.addEventListener('change', function() {
+                if (isEyeProtectionEnabled) {
+                    updateFilter();
+                }
+                savePreferences();
+            });
+    
+            brightnessSlider.addEventListener('input', function() {
+                document.body.style.opacity = this.value / 100;
+                savePreferences();
+            });
+    
+            function enableEyeProtection() {
+                isEyeProtectionEnabled = true;
+                emoji.textContent = '🛡️';
+                toggleText.textContent = 'إيقاف';
+                updateFilter();
+                updateSliderColor(slider.value);
+                showNotification('تم تفعيل حماية العين');
+            }
+    
+            function disableEyeProtection() {
+                isEyeProtectionEnabled = false;
+                emoji.textContent = '🌙';
+                toggleText.textContent = 'تشغيل';
+                document.documentElement.style.filter = 'none';
+                document.body.style.color = '';
+                showNotification('تم إيقاف حماية العين');
+            }
+    
+            function updateFilter() {
+                if (!isEyeProtectionEnabled) return;
+    
+                const temp = slider.value;
+                const warmth = (temp - 1700) / (2700 - 1700);
+                const sepia = 0.4 + 0.6 * (1 - warmth);
+                const brightness = 1 - 0.2 * warmth;
+                const contrast = reduceGlare.checked ? 1.1 : 1;
+                const grayscale = reduceGlare.checked ? 0.1 : 0;
+                
+                let filter = `sepia(${sepia}) brightness(${brightness}) contrast(${contrast}) grayscale(${grayscale})`;
+                
+                document.documentElement.style.filter = filter;
+                
+                if (darkenText.checked) {
+                    document.body.style.color = `hsl(0, 0%, ${70 - (warmth * 30)}%)`;
+                } else {
+                    document.body.style.color = '';
+                }
+            }
+    
+            function checkTimeOfDay() {
+                const hour = new Date().getHours();
+                const isNightTime = hour >= 18 || hour <= 6;
+                
+                if (isNightTime) {
+                    slider.value = 2000;
+                    if (autoNightMode.checked && !isEyeProtectionEnabled) {
+                        enableEyeProtection();
+                        showNotification('تم تفعيل الوضع الليلي تلقائياً');
+                    }
+                } else {
+                    slider.value = 2700;
+                }
+                updateFilter();
+                updateSliderColor(slider.value);
+            }
+    
+            function startAutoNightMode() {
+                checkTimeOfDay();
+                autoNightModeInterval = setInterval(checkTimeOfDay, 30 * 60 * 1000); // كل 30 دقيقة
+            }
+    
+            function stopAutoNightMode() {
+                clearInterval(autoNightModeInterval);
+            }
+    
+            function showNotification(message) {
+                const notif = document.createElement('div');
+                notif.className = 'notification';
+                notif.textContent = message;
+                document.body.appendChild(notif);
+                
+                setTimeout(() => {
+                    notif.classList.add('fade-out');
+                    setTimeout(() => notif.remove(), 500);
+                }, 3000);
+            }
+    
+            function savePreferences() {
+                localStorage.setItem('eyeProtectionPrefs', JSON.stringify({
+                    autoNightMode: autoNightMode.checked,
+                    reduceGlare: reduceGlare.checked,
+                    darkenText: darkenText.checked,
+                    enabled: isEyeProtectionEnabled,
+                    brightness: brightnessSlider.value,
+                    colorTemp: slider.value
+                }));
+            }
+    
+            // تفعيل الوضع الليلي التلقائي إذا كان الوقت ليلاً
+            if (autoNightMode.checked) {
+                startAutoNightMode();
+            }
+            
+            // تحديث لون شريط التمرير عند التحميل
+            updateSliderColor(slider.value);
+        </script>
+    </body>
+    </html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ترحيب</title>
     <style>
         body {
             font-family: 'Poppins', 'Amiri', serif;
@@ -19,10 +727,13 @@
             text-align: center;
             margin: 0;
             padding: 20px;
-
-
-
             text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: #333;
         }
 
         .popup {
@@ -38,12 +749,22 @@
             text-align: center;
             z-index: 1000;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out, top 0.3s ease-in-out;
+            transition: opacity 0.5s ease-in-out, top 0.3s ease-in-out, background 0.3s ease;
+        }
+
+        body.light-mode .popup {
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .popup h3 {
             color: #00aaff;
             font-size: 22px;
+            transition: color 0.3s ease;
+        }
+
+        body.light-mode .popup h3 {
+            color: #007bff;
         }
 
         .input-group {
@@ -64,6 +785,12 @@
             color: white;
             outline: none;
             transition: 0.3s;
+        }
+
+        body.light-mode .input-group input {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 2px solid #007bff;
         }
 
         .input-group input:focus {
@@ -87,6 +814,10 @@
             border-radius: 8px;
             font-size: 16px;
             transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        body.light-mode .gender-buttons button {
+            background: linear-gradient(90deg, #007bff, #0056b3);
         }
 
         .gender-buttons button:hover {
@@ -128,6 +859,11 @@
             font-weight: bold;
             margin-top: 50px;
             text-shadow: 2px 2px 10px rgba(0, 150, 255, 0.5);
+            transition: text-shadow 0.3s ease;
+        }
+
+        body.light-mode #greeting {
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         #studyMessage {
@@ -136,47 +872,77 @@
             margin-top: 15px;
             color: #FFD700;
             font-style: italic;
-
-
             text-align: center;
+            transition: color 0.3s ease;
         }
+
+        body.light-mode #studyMessage {
+            color: #d4a017;
+        }
+
+        #nationMessage {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        body.light-mode #nationMessage {
+            color: #d4a017;
+        }
+
+      
     </style>
 </head>
 <body>
 
-        
+
+
+    <br><br>
     <div id="welcomePopup" class="popup">
-        <h3>  ! السلام عليكم و أهلاً يا طبيب/طبيبة مستقبلنا ان شاء الله  </h3>
-
+        <h3>  
+            السلام عليكم و أهلاً يا طبيب/طبيبة  المستقبل ان شاء الله عز وجل 
+            
+            !
+             </h3>
         <p>من فضلك أدخل/ادخلي اسمك واختر/اختاري جنسك:</p>
-
     
         <div class="input-group">
             <input type="text" id="username" placeholder="أدخل اسمك">
         </div>
     
         <div class="gender-buttons">
-            <button id="femaleButton" onclick="selectGender('female')"> امرأة</button>
-            <button id="maleButton" onclick="selectGender('male')">  رجل</button>
-           
+            <button id="femaleButton" onclick="selectGender('female')">امرأة</button>
+            <button id="maleButton" onclick="selectGender('male')">رجل</button>
         </div>
     
         <button class="submit-button" onclick="submitInfo()">متابعة</button>
     </div>
     
-    <!-- يجب أن يكون خارج نافذة الإدخال حتى يظهر عند الضغط على متابعة -->
     <div id="greetingContainer" style="display: none; flex-direction: column; align-items: center; gap: 10px; margin-top: 70px;">
         <h2 id="welcomeMessage" style="color: #00aaff; text-align: center;"></h2>
         <img id="doctorImage" src="" alt="صورة الطبيب" style="width: 60px; height: 60px; border-radius: 50%;">
         <h1 id="greeting" style="margin: 0; font-size: 22px;"></h1>
     </div>
     <p id="studyMessage"></p>
-    <p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px;         text-align: center;"></p>
+    <p id="nationMessage"></p>
     
     <script>
         let selectedGender = "";
     
         document.addEventListener("DOMContentLoaded", function () {
+            // تحميل وضع الثيم
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('themeToggle').textContent = '🌙';
+            } else {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggle').textContent = '☀️';
+            }
+            
+            // الكود الأصلي
             let storedName = localStorage.getItem("username");
             let storedGender = localStorage.getItem("gender");
             let visitCount = parseInt(localStorage.getItem("visitCount") || "0");
@@ -200,6 +966,21 @@
             }
         });
     
+        // حدث تغيير الوضع
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.classList.add('light-mode');
+                document.body.classList.remove('dark-mode');
+                document.getElementById('themeToggle').textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.add('dark-mode');
+                document.body.classList.remove('light-mode');
+                document.getElementById('themeToggle').textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    
         function selectGender(gender) {
             selectedGender = gender;
             document.getElementById("maleButton").classList.remove("selected");
@@ -212,101 +993,70 @@
             }
         }
     
-
-
         function submitInfo() {
-    let name = document.getElementById('username').value.trim();
-    if (name === "") {
-        alert("❌ يرجى إدخال اسمك");
-        return;
-    }
-    if (!selectedGender) {
-        alert("❌ يرجى اختيار الجنس");
-        return;
-    }
-
-    console.log("🚀 إرسال الاسم:", name);
-    console.log("🚀 إرسال الجنس:", selectedGender);
-
-    localStorage.setItem("username", name);
-    localStorage.setItem("gender", selectedGender);
-    localStorage.setItem("visitCount", "0");
-
-    displayGreeting(name, selectedGender);
-
-    let popup = document.getElementById('welcomePopup');
-    popup.classList.remove('fade-in');
-    setTimeout(() => popup.style.display = 'none', 500);
-}
-
-
-
-
-
-
-function displayGreeting(name, gender) {
-    console.log("✅ تم استلام الاسم:", name);
-    console.log("✅ تم استلام الجنس:", gender);
-
-    let welcomeMessage = `السلام عليكم ومرحبًا بك يا ${name}`;  
+            let name = document.getElementById('username').value.trim();
+            if (name === "") {
+                alert("❌ يرجى إدخال اسمك");
+                return;
+            }
+            if (!selectedGender) {
+                alert("❌ يرجى اختيار الجنس");
+                return;
+            }
     
+            localStorage.setItem("username", name);
+            localStorage.setItem("gender", selectedGender);
+            localStorage.setItem("visitCount", "0");
     
-    let greetingMessage = gender === "male" 
-        ? `مرحبًا دكتور ${name}!` 
-        : `مرحبًا دكتورة ${name}!`;
-
-    let studyMessage = gender === "male" 
-        ? "ادرس جيدًا يا طبيب المسلمين إن شاء الله 📚" 
-        : "ادرسِ جيدًا يا طبيبة المسلمات إن شاء الله 📚";
-
-  
-       
-        
-
-        let nationNeedsYou = 
-    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
-    "  ﴿الَّذِينَ يَتَّخِذُونَ الْكَافِرِينَ أَوْلِيَاءَ مِن دُونِ الْمُؤْمِنِينَ ۚ أَيَبْتَغُونَ عِندَهُمُ الْعِزَّةَ فَإِنَّ الْعِزَّةَ لِلَّهِ جَمِيعًا ﴾\n" +
-    "[النساء: 139]\n\n" +
+            displayGreeting(name, selectedGender);
     
-    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
-    "﴿ لَهُ مُعَقِّبَاتٌ مِّن بَيْنِ يَدَيْهِ وَمِنْ خَلْفِهِ يَحْفَظُونَهُ مِنْ أَمْرِ اللَّهِ ۗ إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ ۗ وَإِذَا أَرَادَ اللَّهُ بِقَوْمٍ سُوءًا فَلَا مَرَدَّ لَهُ ۚ وَمَا لَهُم مِّن دُونِهِ مِن وَالٍ ﴾\n" +
-    "[الرعد: 11]\n\n" +
-
-    "أمتكم بحاجة إليكم.. كونوا عونًا لها في سبيل الله، اجعلوا علمكم طريقًا لنهضة أمتكم.. أمتكم بحاجة إليكم.\n\n" +
+            let popup = document.getElementById('welcomePopup');
+            popup.classList.remove('fade-in');
+            setTimeout(() => popup.style.display = 'none', 500);
+        }
     
-    "فعن السلف الصالح عمر بن الخطاب رضي الله عنه قال:\n" +
-    "\"إنَّا كنَّا أذَلَّ قومٍ، فأعزَّنا اللَّهُ بالإسلامِ، فمهما نطلُبِ العِزَّةَ بغيرِ ما أعزَّنا اللَّهُ به أذلَّنا اللَّهُ.\"";
-
-// وضع النص داخل العنصر بدون أكواد HTML ظاهرة
-document.getElementById('nationMessage').textContent = nationNeedsYou;
-
-
-
-
-
-
-    let imageSrc = gender === "male" 
-        ? "S22MCS PARTS/doctor.png" 
-        : "S22MCS PARTS/doctormuslim.png";
-
-    // تحديث العناصر في الصفحة
-    document.getElementById('welcomeMessage').innerText = welcomeMessage;
-    document.getElementById('greeting').innerText = greetingMessage;
-    document.getElementById('studyMessage').innerText = studyMessage;
-    document.getElementById('nationMessage').innerText = nationNeedsYou;
-    document.getElementById('doctorImage').src = imageSrc;
-
-    // عرض القسم بالكامل
-    document.getElementById('greetingContainer').style.display = 'flex';
-    document.getElementById('studyMessage').style.display = 'block';
-    document.getElementById('nationMessage').style.display = 'block';
-}
-
-        
+        function displayGreeting(name, gender) {
+            let welcomeMessage = `السلام عليكم ومرحبًا بك يا ${name}`;  
+            let greetingMessage = gender === "male" 
+                ? `مرحبًا دكتور ${name}!` 
+                : `مرحبًا دكتورة ${name}!`;
+    
+            let studyMessage = gender === "male" 
+                ? "ادرس جيدًا يا طبيب المسلمين إن شاء الله 📚" 
+                : "ادرسِ جيدًا يا طبيبة المسلمات إن شاء الله 📚";
+    
+            let nationNeedsYou = 
+                "يقول الله تعالى وبعد بسم الله الرحمان الرحيم:\n" +
+                "﴿الَّذِينَ يَتَّخِذُونَ الْكَافِرِينَ أَوْلِيَاءَ مِن دُونِ الْمُؤْمِنِينَ ۚ أَيَبْتَغُونَ عِندَهُمُ الْعِزَّةَ فَإِنَّ الْعِزَّةَ لِلَّهِ جَمِيعًا ﴾\n" +
+                "[النساء: 139]\n\n" +
+                "يقول الله تعالى وبعد بسم الله الرحمان الرحيم:\n" +
+                "﴿ لَهُ مُعَقِّبَاتٌ مِّن بَيْنِ يَدَيْهِ وَمِنْ خَلْفِهِ يَحْفَظُونَهُ مِنْ أَمْرِ اللَّهِ ۗ إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ ۗ وَإِذَا أَرَادَ اللَّهُ بِقَوْمٍ سُوءًا فَلَا مَرَدَّ لَهُ ۚ وَمَا لَهُم مِّن دُونِهِ مِن وَالٍ ﴾\n" +
+                "[الرعد: 11]\n\n" +
+                "أمتكم بحاجة إليكم.. كونوا عونًا لها في سبيل الله، اجعلوا علمكم طريقًا لنهضة أمتكم.. أمتكم بحاجة إليكم.\n\n" +
+                "فعن السلف الصالح عمر بن الخطاب رضي الله عنه قال:\n" +
+                "\"إنَّا كنَّا أذَلَّ قومٍ، فأعزَّنا اللَّهُ بالإسلامِ، فمهما نطلُبِ العِزَّةَ بغيرِ ما أعزَّنا اللَّهُ به أذلَّنا اللَّهُ.\"";
+    
+            let imageSrc = gender === "male" 
+                ? "S22MCS PARTS/doctor.png" 
+                : "S22MCS PARTS/doctormuslim.png";
+    
+            document.getElementById('welcomeMessage').innerText = welcomeMessage;
+            document.getElementById('greeting').innerText = greetingMessage;
+            document.getElementById('studyMessage').innerText = studyMessage;
+            document.getElementById('nationMessage').innerText = nationNeedsYou;
+            document.getElementById('doctorImage').src = imageSrc;
+    
+            document.getElementById('greetingContainer').style.display = 'flex';
+            document.getElementById('studyMessage').style.display = 'block';
+            document.getElementById('nationMessage').style.display = 'block';
+        }
     </script>
-    
 </body>
 </html>
+
+
+
+
 
 
 
@@ -328,88 +1078,126 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
                     padding-top: 120px;
                 }
             
-                /* Updated Sidebar to Header */
-                .sidebar {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height:50px;
-                    background-color: #333;
-                    text-align: center;
-                    padding: 10px 20px;
-                    z-index: 1000;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-                }
-            
-                /* Progress Bar Container */
-                .progress-bar-container {
-                    width: 60%;
-                    height: 35px;
-                    background-color: #444;
-                    border-radius: 15px;
-                    position: relative;
-                    margin: 0 auto;
-                }
-            
-           /* Progress Bar */
+
+/* الشريط العلوي */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background-color: #333;
+    color: white;
+    padding: 0 16px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+/* شريط التقدم */
+.progress-bar-container {
+    width: 90%;
+    top: -30px;
+    max-width: 600px;
+    height: 25px; /* تقليل الارتفاع للأجهزة المحمولة */
+    background-color: #444;
+    border-radius: 15px;
+    position: relative;
+    margin: 70px auto 10px auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
 .progress-bar {
     height: 100%;
-    width: 0;
+    width: 50%; /* مثال */
     background-color: #00aaff;
     border-radius: 15px;
     transition: width 0.3s ease-in-out;
-    margin-left: 500px; /* تحريك الشريط قليلًا إلى اليسار */
 }
 
+.progress-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px; /* تصغير حجم الخط للأجهزة المحمولة */
+    font-weight: bold;
+}
 
-            
 #proo {
-    display: flex;
-    align-items: center; /* محاذاة الإيموجي والنص أفقيًا */
-    gap: 5px; /* مسافة صغيرة بين الإيموجي والنص */
-    margin-left: 8rem; /* تحريكه لليمين */
-    font-size: 1.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 1.2rem;
+            margin: 10px auto;
+        }
+
+.finish-button {
+
+    background-color: #00aaff;
+    font-size: 0.8rem;
+              padding: 0.4rem  0.3rem;
+              width: 80%;
+              max-width: 100px;
+              box-sizing: border-box;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              transition: background-color 0.3s;
 }
 
+/* تحسينات للأجهزة صغيرة جدًا */
+@media (max-width: 480px) {
+    .sidebar {
+        padding: 0 10px;
+        height: 70px; /* تقليل الارتفاع قليلاً */
+    }
+    
+    .sidebar * {
+        font-size: 14px;
+    }
+    
+    .progress-bar-container {
+        height: 20px;
+        margin: 60px auto 8px auto;
+    }
+    
+    .progress-percentage {
+        font-size: 12px;
+    }
+    
+    #proo {
+        font-size: 0.6rem;
+    }
+    
+    .finish-button {
 
-                /* Progress Percentage */
-                .progress-percentage {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    color: white;
-                    font-size: 18px;
-                    font-weight: bold;
-                }
-            
-                /* Finish Button */
-                .finish-button {
-                    background-color: #00aaff;
-                    color: white;
-                    padding: 10px 20px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-size: 16px;
-                    margin-right: 3rem;
-                }
-            
-                .finish-button:hover {
-                    background-color: #0077cc;
-                }
-            
-                /* Disabled Finish Button */
-                .finish-button:disabled {
-                    background-color: #ccc;
-                    cursor: not-allowed;
-                    opacity: 0.7;
-                }
-            
+
+                font-size: 0.75rem;
+                padding: 0.3rem 0.4rem;
+                max-width: 120px;
+              
+
+    }
+}
+
+/* تحسينات للأجهزة الأفقية (landscape) */
+@media (max-height: 480px) {
+    .progress-bar-container {
+        margin: 50px auto 5px auto;
+    }
+} 
+
+
+
+
+
+              
                 /* Lesson Container */
                 .lesson-container {
                     margin-top: 20px;
@@ -722,7 +1510,7 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 <body>
  
-  
+
     <div class="sidebar">
    
         <button class="finish-button" onclick="finishLesson()" 
@@ -736,15 +1524,53 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
             <div class="progress-percentage" id="progress-percentage">0%</div>
         </div>
 
-        <h3 id="proo">📊 <span>التقدم</span></h3>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+        <h3 id="proo" style="margin-right: 20px;">📊 <span>التقدم</span></h3>
 
       
 
-    <button onclick="goToUncompletedBubble()" class="uncompleted-button" style="font-size: 14px; padding: 6px 10px;">🔍 الفقاعات غير المكتملة</button>
-    
+
+        
+
+
+        <style>
+            .uncompleted-button {
+              font-size: 0.8rem;
+              padding: 0.4rem  0.3rem;
+              width: 80%;
+              max-width: 100px;
+              box-sizing: border-box;
+              border: none;
+              border-radius: 8px;
+              background-color: #007bff; /* أزرق فاتح */
+              cursor: pointer;
+              transition: background-color 0.3s;
+            }
+          
+            .uncompleted-button:hover {
+              background-color:  #0056b3; /* أزرق أغمق قليلاً عند التحويم */
+            }
+          
+            /* تصغير الزر أكثر على الشاشات الصغيرة */
+            @media (max-width: 600px) {
+              .uncompleted-button {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.4rem;
+                max-width: 120px;
+              }
+            }
+          </style>
+          
+          <button onclick="goToUncompletedBubble()" class="uncompleted-button">
+            🔍 الفقاعات غير المكتملة
+          </button>
+          
 
 </div>
     
+
+
     
 
 
@@ -755,6 +1581,7 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <br>
     <div class="lesson-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 70vh; text-align: center;">
       
+     
      
 
  
@@ -2388,7 +3215,7 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
                             <li><strong>Système ligamentaire :</strong></li>
 
-                            <li>Système ligamentaire: </li>
+<li>Particularités régionales :</li>
                             <li>Ligament cruciforme : un dispositif ligamentaire unissant l'os occipital, l'atlas (C1) et l'axis (C2), formé par :</li>
                             <li>Un faisceau longitudinal vertical.</li>
                             <li>Le ligament transverse.</li>
@@ -3271,15 +4098,6 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
-
-
-
-
-<BR><BR><br><br><br><br><br><br><br><br>
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -3573,7 +4391,7 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <br>
     <div class="navigation">
         <span class="arrow" onclick="nextCard()">➡️</span>
-        <span id="cardNumber">1 / 30</span>
+        <span id="cardNumber">1 / 31</span>
         <span class="arrow" onclick="prevCard()">⬅️</span>
     </div>
 
@@ -4187,6 +5005,7 @@ isHtml: true
 
 
 
+
 {
     "question": "🔍 السؤال 20:<br>🔹 (AR): ما هي الفقرات القطنية؟<br>🔹 (EN): What are the lumbar vertebrae?<br>🔹 (FR): Qu’est-ce que les vertèbres lombaires ?",
     "hint": "لا يتوفر تلميح حاليا",
@@ -4234,10 +5053,298 @@ isHtml: true
 
 
 
+{
+  "question": "🔍 السؤال 21:<br>🔹 (AR): ممّ يتكوّن العجز وما خصائصه؟<br>🔹 (EN): What is the sacrum composed of and what are its features?<br>🔹 (FR): De quoi est constitué le sacrum et quelles sont ses caractéristiques ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b> العنوان:</b><br>
+          🔹 <b>العجز - التكوين والخصائص (AR):</b><br>
+          🔹 <b>The sacrum - composition and features (EN):</b><br>
+          🔹 <b>Le sacrum - constitution et caractéristiques (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): يتكوّن العَجُز من اندماج خمس فقرات عجزية، ويخترقه القناة العجزية. له شكل هرمي، قاعدته في الأعلى وقمته في الأسفل. الوجه الحوضي: مقعّر وتفتح فيه الثقوب العجزية الحوضية. الوجه الظهري: محدّب وتفتح فيه الثقوب العجزية الظهرية. السطحان الجانبيان: يحتوي كل جانب في نصفه العلوي على السطح الأذني.</li><br>
+        <li>🔹 (EN): The sacrum is formed by the fusion of five sacral vertebrae and is traversed by the sacral canal. It has a pyramidal shape, with a superior base and an inferior apex. Pelvic surface: concave, with the pelvic sacral foramina. Dorsal surface: convex, with the dorsal sacral foramina. Lateral surfaces: the auricular surface occupies the upper half of each side.</li><br>
+        <li>🔹 (FR): Le sacrum est formé par la fusion de 5 vertèbres sacrales et est traversé par le canal sacral. Il a une forme pyramidale, avec une base supérieure et un sommet inférieur. Face pelvienne : concave, où s’ouvrent les foramens sacrés pelviens. Face dorsale : convexe, où s’ouvrent les foramens sacrés dorsaux. Faces latérales : la surface auriculaire occupe la moitié supérieure de chaque côté.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
 
 
 
 
+
+
+
+
+
+{
+  "question": "🔍 السؤال 22:<br>🔹 (AR): ممّ يتكوّن العصعص وما شكله؟<br>🔹 (EN): What is the coccyx composed of and what is its shape?<br>🔹 (FR): De quoi est constitué le coccyx et quelle est sa forme ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b> العنوان:</b><br>
+          🔹 <b>العُصعُص - التكوين والشكل (AR):</b><br>
+          🔹 <b>The coccyx - composition and shape (EN):</b><br>
+          🔹 <b>Le coccyx - constitution et forme (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): يتكوّن العُصعُص من اندماج أربع أو خمس فقرات. له شكل مثلثي، قمته موجهة نحو الأسفل.</li><br>
+        <li>🔹 (EN): The coccyx is formed by the fusion of 4 or 5 vertebrae. It is triangular in shape, with the apex directed downward.</li><br>
+        <li>🔹 (FR): Le coccyx est formé par la soudure de 4 ou 5 vertèbres. Il est triangulaire, avec un sommet dirigé vers le bas.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
+
+
+
+
+
+
+
+
+
+
+
+{
+  "question": "🔍 السؤال 23:<br>🔹 (AR): ما هي مكونات الأربطة بين الأجسام الفقرية؟<br>🔹 (EN): What are the components of the inter-somatic ligaments?<br>🔹 (FR): Quels sont les composants des ligaments intersomatiques ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b> العنوان:</b><br>
+          🔹 <b>الأربطة بين الأجسام الفقرية - المكونات (AR):</b><br>
+          🔹 <b>Inter-somatic ligaments - components (EN):</b><br>
+          🔹 <b>Les ligaments intersomatiques - composants (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): الرباط الطولي الأمامي، القرص بين الفقري، الرباط الطولي الخلفي.</li><br>
+        <li>🔹 (EN): Anterior longitudinal ligament, intervertebral disc, posterior longitudinal ligament.</li><br>
+        <li>🔹 (FR): Ligament longitudinal antérieur, disque intervertébral, ligament longitudinal postérieur.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
+
+
+
+{
+  "question": "🔍 السؤال 24:<br>🔹 (AR): ما هي الأربطة المكونة للقوس الفقري الخلفي؟<br>🔹 (EN): What are the ligaments of the posterior vertebral arch?<br>🔹 (FR): Quels sont les ligaments de l’arc postérieur vertébral ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b> العنوان:</b><br>
+          🔹 <b>أربطة القوس الفقري الخلفي (AR):</b><br>
+          🔹 <b>Posterior vertebral arch ligaments (EN):</b><br>
+          🔹 <b>Les ligaments de l’arc postérieur vertébral (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): المحفظات المفصلية، الرباط الأصفر، الرباط بين الشوكي، الرباط فوق الشوكي، الرباط بين المستعرض.</li><br>
+        <li>🔹 (EN): Articular capsules, ligamentum flavum, interspinous ligament, supraspinous ligament, intertransverse ligament.</li><br>
+        <li>🔹 (FR): Capsules articulaires, ligament jaune, ligament interépineux, ligament supra-épineux, ligament intertransversaire.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
+
+
+
+{
+  "question": "🔍 السؤال 25:<br>🔹 (AR): ما المقصود بـ \"الخصوصيات المناطقية\" في الجهاز الرابط؟<br>🔹 (EN): What are the “regional particularities” in the ligamentous system?<br>🔹 (FR): Que signifie “particularités régionales” dans le système ligamentaire ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b> العنوان:</b><br>
+          🔹 <b>الخصوصيات المناطقية في الأربطة (AR):</b><br>
+          🔹 <b>Regional particularities in ligaments (EN):</b><br>
+          🔹 <b>Particularités régionales dans les ligaments (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): تشير إلى اختلاف شكل وسمك وقوة الأربطة حسب المنطقة (عنقية، صدرية، قطنية) لتتناسب مع متطلبات كل منطقة.</li><br>
+        <li>🔹 (EN): Refers to differences in ligament shape, thickness, and strength by region (cervical, thoracic, lumbar) adapted to functional demands.</li><br>
+        <li>🔹 (FR): Désignent les variations de forme, d’épaisseur et de solidité des ligaments selon la région vertébrale (cervicale, thoracique, lombaire).</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
+
+
+
+
+
+
+
+{
+  "question": "🔍 السؤال 26:<br>🔹 (AR): ما هو الرباط الصليبي وما مكوناته؟<br>🔹 (EN): What is the cruciform ligament and what are its components?<br>🔹 (FR): Qu’est-ce que le ligament cruciforme et quels sont ses composants ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b> العنوان:</b><br>
+          🔹 <b>الرباط الصليبي - المكونات (AR):</b><br>
+          🔹 <b>Cruciform ligament - components (EN):</b><br>
+          🔹 <b>Ligament cruciforme - composants (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): يتكوّن من حزمة طولية عمودية والرباط المستعرض، ويرتبط أيضًا بالأربطة الجناحية.</li><br>
+        <li>🔹 (EN): Consists of a vertical longitudinal band and the transverse ligament; also linked to the alar ligaments.</li><br>
+        <li>🔹 (FR): Formé d’un faisceau longitudinal vertical et du ligament transverse ; associé aussi aux ligaments alaires.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
+
+
+
+
+
+
+
+{
+  "question": "🔍 السؤال 27:<br>🔹 (AR): ما هو الرباط القفوي وما وظيفته؟<br>🔹 (EN): What is the nuchal ligament and what is its function?<br>🔹 (FR): Qu’est-ce que le ligament nucal et quelle est sa fonction ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b> العنوان:</b><br>
+          🔹 <b>الرباط القفوي ووظيفته (AR):</b><br>
+          🔹 <b>Nuchal ligament and its function (EN):</b><br>
+          🔹 <b>Ligament nucal et sa fonction (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): غشاء ليفي مرن يمتد من البروز القذالي الخارجي إلى الناتئ الشوكي للفَقرة C7، ويعادل الرباط فوق الشوكي.</li><br>
+        <li>🔹 (EN): A sagittal fibroelastic membrane from the external occipital protuberance to the spinous process of C7; cervical equivalent of the supraspinous ligament.</li><br>
+        <li>🔹 (FR): Membrane sagittale fibro-élastique allant de la protubérance occipitale externe au processus épineux de C7 ; équivalent cervical du ligament supra-épineux.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+  "question": "🔍 السؤال 28:<br>🔹 (AR): ما هي الأنواع الشائعة لإصابات العمود الرقبي؟<br>🔹 (EN): What are the common types of cervical spine injuries?<br>🔹 (FR): Quels sont les types courants de traumatismes du rachis cervical ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b>العنوان:</b><br>
+        🔹 <b>إصابات العمود الرقبي. (AR):</b><br>
+        🔹 <b>Cervical spine injuries. (EN):</b><br>
+        🔹 <b>Traumatismes du rachis cervical. (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): الكسور، الخلوع، والآفات الرباطية.</li><br>
+        <li>🔹 (EN): Fractures, dislocations, and ligament injuries.</li><br>
+        <li>🔹 (FR): Fractures, luxations et lésions ligamentaires.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
+
+
+
+
+
+{
+  "question": "🔍 السؤال 29:<br>🔹 (AR): ما هي أبرز التشوهات الفقرية؟<br>🔹 (EN): What are the main spinal malformations?<br>🔹 (FR): Quelles sont les principales malformations rachidiennes ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b>العنوان:</b><br>
+        🔹 <b>التشوهات الفقرية. (AR):</b><br>
+        🔹 <b>Spinal malformations. (EN):</b><br>
+        🔹 <b>Malformations rachidiennes. (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): السنسنة المشقوقة، الجنف، الحدب.</li><br>
+        <li>🔹 (EN): Spina bifida, scoliosis, kyphosis.</li><br>
+        <li>🔹 (FR): Spina-bifida, scoliose, cyphose.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
+
+
+
+
+
+
+{
+  "question": "🔍 السؤال 30:<br>🔹 (AR): ما هي الأمراض التنكسية الشائعة في العمود الفقري؟<br>🔹 (EN): What are the common degenerative spinal diseases?<br>🔹 (FR): Quelles sont les pathologies dégénératives courantes de la colonne vertébrale ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b>العنوان:</b><br>
+        🔹 <b>الأمراض التنكسية في العمود الفقري. (AR):</b><br>
+        🔹 <b>Degenerative spinal diseases. (EN):</b><br>
+        🔹 <b>Pathologies dégénératives de la colonne vertébrale. (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): الفُصال العظمي، الانزلاق الغضروفي.</li><br>
+        <li>🔹 (EN): Osteoarthritis, disc herniation.</li><br>
+        <li>🔹 (FR): Arthrose, hernie discale.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
+
+
+
+
+
+
+
+{
+  "question": "🔍 السؤال 31:<br>🔹 (AR): ما هي أنواع العدوى التي يمكن أن تصيب العمود الفقري؟<br>🔹 (EN): What types of infections can affect the spine?<br>🔹 (FR): Quels types d'infections peuvent toucher la colonne vertébrale ?",
+  "hint": "لا يتوفر تلميح حاليا",
+  "answer": `
+    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+      <li><b>العنوان:</b><br>
+        🔹 <b>العدوى التي تصيب العمود الفقري. (AR):</b><br>
+        🔹 <b>Spinal infections. (EN):</b><br>
+        🔹 <b>Infections de la colonne vertébrale. (FR):</b>
+      </li><br>
+      <span style="font-size: 20px; font-weight: bold;">🔍 الإجابة:</span><br>
+      <ol style="padding-right: 20px; text-align: right;">
+        <li>🔹 (AR): داء بوت (السلّ الفقري)، داء البروسيلا (المالطية).</li><br>
+        <li>🔹 (EN): Pott’s disease (spinal tuberculosis), brucellosis.</li><br>
+        <li>🔹 (FR): Mal de Pott (tuberculose rachidienne), brucellose.</li><br>
+      </ol>
+    </ul>
+  `,
+  "isHtml": true
+},
 
 
 
@@ -4345,10 +5452,82 @@ isHtml: true
 
 
 
+<br><br><br><br><br>
 
 
 
-<br><br><br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
