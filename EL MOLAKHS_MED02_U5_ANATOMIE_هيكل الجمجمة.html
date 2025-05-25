@@ -10,292 +10,70 @@
     <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
 
 
+  
+  
+   
+   
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+   
 <style>
-.LIKEWIKIIDAFA-tooltip {
+.image-tooltip {
     position: relative;
     display: inline-block;
     cursor: pointer;
-    color: red;
-    font-weight: bold;
-    line-height: 1.5;
 }
 
-.LIKEWIKIIDAFA-content {
+.image-tooltip-content {
     display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90vw;
-    max-width: 650px;
-    max-height: 85vh;
+    position: absolute;
+    top: 100%;
+    right: 0;
     background-color: #fff;
-    padding: 20px;
-    z-index: 999999;
-    overflow-y: auto;
-    direction: rtl;
-    border-radius: 12px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-    border: 1px solid #e0e0e0;
-    font-size: 1rem;
-}
-
-.LIKEWIKIIDAFA-content-inner {
-    position: relative;
-    height: auto;
+    border: 1px solid #ccc;
     padding: 10px;
+    z-index: 1000;
+    width: 300px;
+    max-height: 400px; /* ارتفاع أقصى للعنصر */
+    overflow-y: auto; /* تمكين التمرير العمودي عند الحاجة */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    scrollbar-width: thin; /* لعرض شريط تمرير أنيق (يدعمه Firefox) */
+    scrollbar-color: #888 #f1f1f1; /* ألوان شريط التمرير */
 }
 
-.LIKEWIKIIDAFA-content::-webkit-scrollbar {
+/* تخصيص شريط التمرير لمتصفحات WebKit (Chrome, Edge) */
+.image-tooltip-content::-webkit-scrollbar {
     width: 8px;
 }
-.LIKEWIKIIDAFA-content::-webkit-scrollbar-thumb {
+.image-tooltip-content::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 4px;
 }
-.LIKEWIKIIDAFA-content::-webkit-scrollbar-track {
+.image-tooltip-content::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
-.LIKEWIKIIDAFA-tooltip.active .LIKEWIKIIDAFA-content {
+.image-tooltip.active .image-tooltip-content {
     display: block;
-    animation: fadeInScale 0.3s ease;
-}
-
-.LIKEWIKIIDAFA-tooltip.active::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999998;
-}
-
-@keyframes fadeInScale {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-
-.LIKEWIKIIDAFA-content img {
-    max-width: 100%;
-    height: auto;
-    margin: 15px auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: block;
-}
-
-.LIKEWIKIIDAFA-close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #f44336;
-    border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
-    z-index: 1000000;
-    padding: 0;
-    line-height: 1;
-}
-
-.LIKEWIKIIDAFA-close-btn:hover {
-    background: #d32f2f;
-    transform: scale(1.1);
-}
-
-.LIKEWIKIIDAFA-close-btn:active {
-    transform: scale(0.95);
-}
-
-.language-section {
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-}
-
-.language-title {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 15px;
-    text-align: center;
-    padding: 8px 12px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.arabic-text {
-    direction: rtl;
-    text-align: right;
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-.english-text, .french-text {
-    direction: ltr;
-    text-align: left;
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-.language-flag {
-    width: 22px;
-    height: 16px;
-    margin: 0 6px;
-    vertical-align: middle;
-    border-radius: 3px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-}
-
-ul {
-    padding-right: 20px;
-    margin: 10px 0;
-}
-
-li {
-    margin-bottom: 8px;
-}
-
-@media (max-width: 1024px) {
-    .LIKEWIKIIDAFA-content {
-        width: 92vw;
-        padding: 18px;
-    }
-}
-
-@media (max-width: 768px) {
-    .LIKEWIKIIDAFA-content {
-        width: 94vw;
-        max-height: 90vh;
-        padding: 16px;
-        font-size: 0.95rem;
-    }
-    
-    .language-title {
-        font-size: 1rem;
-        padding: 6px 10px;
-    }
-    
-    .LIKEWIKIIDAFA-close-btn {
-        width: 28px;
-        height: 28px;
-        font-size: 16px;
-    }
-    
-    .language-flag {
-        width: 20px;
-        height: 14px;
-    }
-}
-
-@media (max-width: 480px) {
-    .LIKEWIKIIDAFA-content {
-        width: 96vw;
-        padding: 14px;
-        max-height: 95vh;
-        font-size: 0.9rem;
-    }
-    
-    .language-title {
-        font-size: 0.95rem;
-        padding: 5px 8px;
-    }
-    
-    .LIKEWIKIIDAFA-close-btn {
-        width: 26px;
-        height: 26px;
-        font-size: 15px;
-        top: 10px;
-        right: 10px;
-    }
-    
-    .language-flag {
-        width: 18px;
-        height: 12px;
-    }
-    
-    ul {
-        padding-right: 15px;
-    }
-    
-    li {
-        margin-bottom: 6px;
-    }
-}
-
-@media (max-height: 600px) {
-    .LIKEWIKIIDAFA-content {
-        top: 20px;
-        transform: translateX(-50%);
-        max-height: calc(100vh - 40px);
-    }
 }
 </style>
 
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const LIKEWIKIIDAFA_tooltip = document.getElementById('LIKEWIKIIDAFA-tooltip');
-    const LIKEWIKIIDAFA_closeBtn = document.querySelector('.LIKEWIKIIDAFA-close-btn');
+    const tooltip = document.getElementById('tooltip');
     
-    // فتح عند الضغط على النص
-    LIKEWIKIIDAFA_tooltip.addEventListener('click', function(e) {
+    tooltip.addEventListener('click', function(e) {
         e.stopPropagation();
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
-        LIKEWIKIIDAFA_tooltip.classList.add('active');
+        tooltip.classList.toggle('active');
     });
-    
-    // إغلاق بالضغط على الزر X فقط
-    LIKEWIKIIDAFA_closeBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        closeTooltip();
+
+    document.addEventListener('click', function() {
+        tooltip.classList.remove('active');
     });
-    
-    // إغلاق عند الضغط خارج النافذة
-    document.addEventListener('click', function(e) {
-        if (LIKEWIKIIDAFA_tooltip.classList.contains('active') && 
-            !e.target.closest('.LIKEWIKIIDAFA-content') && 
-            !e.target.closest('.LIKEWIKIIDAFA-tooltip')) {
-            closeTooltip();
-        }
-    });
-    
-    // إغلاق بالضغط على زر ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && LIKEWIKIIDAFA_tooltip.classList.contains('active')) {
-            closeTooltip();
-        }
-    });
-    
-    function closeTooltip() {
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
-        LIKEWIKIIDAFA_tooltip.classList.remove('active');
-    }
-    
-    // منع التمرير عند فتح النافذة على الأجهزة المحمولة
-    document.querySelector('.LIKEWIKIIDAFA-content').addEventListener('touchmove', function(e) {
-        if (LIKEWIKIIDAFA_tooltip.classList.contains('active')) {
-            e.preventDefault();
-        }
-    }, { passive: false });
 });
 </script>
-
-
+   
+   
     <!DOCTYPE html>
     <html lang="ar" dir="rtl">
     <head>
@@ -1049,17 +827,17 @@ document.addEventListener('DOMContentLoaded', function() {
             margin-top: 50px;
             text-shadow: 2px 2px 10px rgba(0, 150, 255, 0.5);
         }
-#studyMessage {
-    display: none;
-    font-size: 18px;
-    margin-top: 15px;
-    color: #FFD700;
-    font-weight: bold; /* ← تمت إضافتها */
-    text-align: center;
-}
+
+        #studyMessage {
+            display: none;
+            font-size: 18px;
+            margin-top: 15px;
+            color: #FFD700;
+            font-style: italic;
 
 
-
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -1090,9 +868,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <img id="doctorImage" src="" alt="صورة الطبيب" style="width: 60px; height: 60px; border-radius: 50%;">
         <h1 id="greeting" style="margin: 0; font-size: 22px;"></h1>
     </div>
-    <p id="studyMessage" style= " text-align: center; background-color: black;"></p>
-    <BR>
-<p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px; text-align: center; background-color: black;"></p>
+    <p id="studyMessage"></p>
+    <p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px;         text-align: center;"></p>
     
     <script>
         let selectedGender = "";
@@ -1751,11 +1528,14 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     </div>
     <br>
     <div class="lesson-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 70vh; text-align: center;">
-          
-   
-        <h1 class="lesson-title">          العَصَب الثُّلَاثِي التَّوَائِم  </h1>
-        <h2 class="lesson-subtitle">🔻TRIGEMINAL NERVE🔻</h2>
-        <h2 class="lesson-subtitle">🔻NERF TRIJUMEAU🔻</h2>
+      
+     
+
+ 
+     
+        <h1 class="lesson-title"> هيكل الجمجمة  </h1>
+        <h2 class="lesson-subtitle">🔻SKULL SKELETON🔻</h2>
+        <h2 class="lesson-subtitle">🔻SQUELETTE DU CRÂNE 🔻</h2>
     
     </div>
           
@@ -1941,6 +1721,7 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
          </script>
      </body>
      </html>
+     
 
 
 
@@ -1948,486 +1729,563 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
-<div class="bubble">
-    <button class="interact-button" id="trigeminal-nerve-intro" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>مقدمة عن العصب الثلاثي التوائم (العصب الخامس):</strong></li>
+
+
+
+
+
+
+                        
+
+
+
+
+
+                        
+                        
+
+
+
+
+
+
+
+     <div class="bubble">
+        <button class="interact-button" id="plan-crane" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- العنوان بالعربية -->
         <ul>
-            <li>العصب الثلاثي التوائم هو عصب مختلط (حسي-حركي).</li>
-            <li>يتكون من:
+            <li><strong>خطة الدرس:</strong></li>
+            <ul>
+                <li>مقدمة - معلومات عامة</li>
+                <li>علم التشريح الوصفي</li>
+                <li>تطور عظام الجمجمة</li>
+                <li>الدرزات الطبيعية والتشوهات</li>
+                <li>بنية الجمجمة</li>
+                <li>قاعدة الجمجمة +++</li>
                 <ul>
-                    <li><strong>جذر حسي كبير:</strong> يحتوي على عقدة حسية وينقسم إلى ثلاث فروع:
+                    <li>الحدود</li>
+                    <li>الفتحات والعناصر المارة:</li>
+                    <ul>
+                        <li>الطبقة الأمامية</li>
+                        <li>الطبقة الوسطى</li>
+                        <li>الطبقة الخلفية</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- English Version -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Course Plan:</strong></li>
+                <ul>
+                    <li>Introduction - Generalities</li>
+                    <li>Descriptive Anatomy</li>
+                    <li>Development of Skull Bones</li>
+                    <li>Normal Cranial Sutures and Malformations</li>
+                    <li>Structure of the Skull</li>
+                    <li>Base of the Skull +++</li>
+                    <ul>
+                        <li>Boundaries</li>
+                        <li>Foramina and Passing Elements:</li>
                         <ul>
-                            <li>الفرع العيني</li>
-                            <li>الفرع الفكي العلوي</li>
-                            <li>الفرع الفكي السفلي</li>
+                            <li>Anterior Cranial Fossa</li>
+                            <li>Middle Cranial Fossa</li>
+                            <li>Posterior Cranial Fossa</li>
                         </ul>
-                    </li>
-                    <li><strong>جذر حركي نحيف:</strong> يخص عضلات المضغ.</li>
-                </ul>
-            </li>
-            <li>ينشأ من الوجه الجانبي للجسر (البون).</li>
-            <li>يمر عبر:
-                <ul>
-                    <li>الحفرة القحفية الخلفية (الجذر)</li>
-                    <li>تجويف العصب الثلاثي التوائم (العقدة الثلاثية التوائم)</li>
-                    <li>الجدار الجانبي للجيب الكهفي (الفروع الثلاثة)</li>
-                </ul>
-            </li>
-            <li>مسارات الفروع:
-                <ul>
-                    <li><strong>الفرع العيني:</strong> الشق الحجاجي العلوي، الحجاج</li>
-                    <li><strong>الفرع الفكي العلوي:</strong> الثقبة المستديرة، الشق الجناحي الحنكي، الشق الحجاجي السفلي، القناة تحت الحجاجية</li>
-                    <li><strong>الفرع الفكي السفلي:</strong> الثقبة البيضوية، الحفرة تحت الصدغية</li>
-                </ul>
-            </li>
-        </ul>
-    </ul>
-
-    <br>
-
-    <!-- بالإنجليزية -->
-    <div class="bubble" dir="ltr">
-        <ul>
-            <li><strong>Introduction to the Trigeminal Nerve (Cranial Nerve V):</strong></li>
-            <ul>
-                <li>The trigeminal nerve is a mixed (sensory-motor) nerve.</li>
-                <li>It consists of:
-                    <ul>
-                        <li><strong>Large sensory root:</strong> contains a sensory ganglion and divides into three branches:
-                            <ul>
-                                <li>Ophthalmic branch</li>
-                                <li>Maxillary branch</li>
-                                <li>Mandibular branch</li>
-                            </ul>
-                        </li>
-                        <li><strong>Thin motor root:</strong> supplies the muscles of mastication.</li>
                     </ul>
-                </li>
-                <li>It arises from the lateral surface of the pons.</li>
-                <li>It travels through:
-                    <ul>
-                        <li>Posterior cranial fossa (root)</li>
-                        <li>Trigeminal cave (trigeminal ganglion)</li>
-                        <li>Lateral wall of the cavernous sinus (branches)</li>
-                    </ul>
-                </li>
-                <li>Pathways of the branches:
-                    <ul>
-                        <li><strong>Ophthalmic branch:</strong> superior orbital fissure, orbit</li>
-                        <li><strong>Maxillary branch:</strong> foramen rotundum, pterygopalatine fissure, inferior orbital fissure, infraorbital canal</li>
-                        <li><strong>Mandibular branch:</strong> foramen ovale, infratemporal fossa</li>
-                    </ul>
-                </li>
+                </ul>
             </ul>
-        </ul>
-    </div>
-
-    <br>
-
-    <!-- بالفرنسية -->
-    <div class="bubble">
-        <ul>
-            <li><strong>INTRODUCTION :</strong></li>
-            <ul>
-                <li>Le nerf trijumeau (V) est un nerf mixte, sensitif et moteur.</li>
-                <li>Il est composé de :
-                    <ul>
-                        <li><strong>Racine sensitive volumineuse :</strong> possède un ganglion sensitif et se divise en trois branches :
-                            <ul>
-                                <li>Branche ophtalmique</li>
-                                <li>Branche maxillaire</li>
-                                <li>Branche mandibulaire</li>
-                            </ul>
-                        </li>
-                        <li><strong>Racine motrice grêle :</strong> destinée aux muscles masticateurs.</li>
-                    </ul>
-                </li>
-                <li>Il naît de la face latérale du pont.</li>
-                <li>Il parcourt :
-                    <ul>
-                        <li>La fosse cérébrale postérieure (racine)</li>
-                        <li>Le cavum trigéminal (ganglion trigéminal)</li>
-                        <li>La paroi latérale du sinus caverneux (branches)</li>
-                    </ul>
-                </li>
-                <li>Trajet des branches :
-                    <ul>
-                        <li><strong>Branche ophtalmique :</strong> fissure orbitaire supérieure, orbite</li>
-                        <li><strong>Branche maxillaire :</strong> foramen rond, fissure ptérygo-palatine, fissure orbitaire inférieure, canal infra-orbitaire</li>
-                        <li><strong>Branche mandibulaire :</strong> foramen ovale, fosse infra-temporale</li>
-                    </ul>
-                </li>
-            </ul>
-        </ul>
-    </div>
-
-        <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A133.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
         </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="bubble">
-    <button class="interact-button" id="posterior-cranial-fossa" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>الفَوسَّة القِحْفية الخلفية:</strong></li>
-        <ul>
-            <li>تُعرف أيضًا باسم "المنطقة تحت الخيمة"، وهي منطقة تشريحية تقع في الجزء الخلفي من قاعدة الجمجمة.</li>
-            <li>تحتوي على المخيخ، وجزء من جذع الدماغ، والبطين الرابع.</li>
-            <li>تُحاط بالثقبة العظمى وخيمة المخيخ.</li>
-            <li>تُعد الفوسة القحفية الخلفية منطقة حيوية تتحكم في التوازن، والوظائف الحيوية، والحركة.</li>
-            <li>يتكوَّن قاعها من الجزء القاعدي للعظم القذالي، أما الجدار الجانبي الأمامي فيتشكل من:
-                <ul>
-                    <li>السطوح الخلفية-العلوية من الجزء الصخري للعظم الصدغي</li>
-                    <li>السطوح الداخلية للجزء الخشائي منه</li>
-                </ul>
-            </li>
-            <li>كما يحتوي الجدار الجانبي أيضًا على أخدود الجيب المستعرض.</li>
-        </ul>
-    </ul>
-
-    <br>
-
-    <!-- بالإنجليزية -->
-    <div class="bubble" dir="ltr">
-        <ul>
-            <li><strong>Posterior Cranial Fossa:</strong></li>
-            <ul>
-                <li>Also known as the "infratentorial region", it is an anatomical space located at the back of the cranial base.</li>
-                <li>It houses the cerebellum, part of the brainstem, and the fourth ventricle.</li>
-                <li>It is bounded by the foramen magnum and the tentorium cerebelli.</li>
-                <li>This fossa is crucial for motor control, vital functions, and balance.</li>
-                <li>The floor is formed by:
-                    <ul>
-                        <li>The basilar part and the inner surface of the occipital bone</li>
-                    </ul>
-                </li>
-                <li>The anterior lateral walls are formed by:
-                    <ul>
-                        <li>The posteriosuperior surfaces of the petrous part of the temporal bone</li>
-                        <li>The internal surface of the mastoid portion</li>
-                    </ul>
-                </li>
-                <li>It also contains the groove for the transverse sinus.</li>
-            </ul>
-        </ul>
-    </div>
-
-    <br>
-
-    <!-- بالفرنسية -->
-    <div class="bubble">
-        <ul>
-            <li><strong>Fosse cérébrale postérieure :</strong></li>
-            <ul>
-                <li>Également appelée « fosse postérieure » ou « région infratentorielle ».</li>
-                <li>C’est une zone anatomique située à l’arrière de la base du crâne.</li>
-                <li>Elle contient le cervelet, une partie du tronc cérébral et le quatrième ventricule.</li>
-                <li>Elle est limitée par le foramen magnum et la tente du cervelet.</li>
-                <li>Elle joue un rôle essentiel dans le contrôle moteur, l'équilibre et les fonctions vitales.</li>
-                <li>Le plancher est formé par :
-                    <ul>
-                        <li>La partie basilaire de l’os occipital et sa surface endocrânienne inférieure</li>
-                    </ul>
-                </li>
-                <li>Les parois latérales antérieures sont constituées :
-                    <ul>
-                        <li>Des faces postéro-supérieures endocrâniennes de la portion pétreuse de l’os temporal</li>
-                        <li>Et des faces endocrâniennes de sa portion mastoïdienne</li>
-                    </ul>
-                </li>
-                <li>On y trouve également le sillon du sinus transverse.</li>
-            </ul>
-        </ul>
-    </div>
-
-
-
-
-
-
-    <div class="bubble">
-    <button class="interact-button" id="posterior-fossa-description" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>وصف الفوسة القحفية الخلفية وحدودها:</strong></li>
-        <ul>
-            <li>الفوسة القحفية الخلفية هي الأدنى من بين الفُوَس الثلاث القحفية.</li>
-            <li>تقابل أرضية قاعدة الجمجمة في الجزء القذالي-الصُّدْغِي.</li>
-            <li>حدودها:
-                <ul>
-                    <li>الخلف من سرج العظم الوتدي</li>
-                    <li>الحواف العلوية للجزء الصخري من العظم الصدغي</li>
-                    <li>أخدود الجيب المستعرض على العظم القذالي</li>
-                </ul>
-            </li>
-        </ul>
-    </ul>
-
-    <br>
-
-    <!-- بالإنجليزية -->
-    <div class="bubble" dir="ltr">
-        <ul>
-            <li><strong>Description and boundaries of the posterior cranial fossa:</strong></li>
-            <ul>
-                <li>The posterior cranial fossa is the lowest of the three cranial fossae.</li>
-                <li>It corresponds to the occipito-temporal floor of the cranial base.</li>
-                <li>Its boundaries include:
-                    <ul>
-                        <li>Dorsum sellae of the sphenoid bone (anterior limit)</li>
-                        <li>Superior borders of the petrous part of the temporal bone</li>
-                        <li>Groove of the transverse sinus on the occipital bone (posterior limit)</li>
-                    </ul>
-                </li>
-            </ul>
-        </ul>
-    </div>
-
-    <br>
-
-    <!-- بالفرنسية -->
-    <div class="bubble">
-        <ul>
-            <li><strong>Description et limites de la fosse crânienne postérieure :</strong></li>
-            <ul>
-                <li>La fosse crânienne postérieure est la plus basse des trois fosses crâniennes.</li>
-                <li>Elle correspond au plancher occipito-temporal de la base du crâne.</li>
-                <li>Ses limites sont :
-                    <ul>
-                        <li>Le dos de la selle de l’os sphénoïde</li>
-                        <li>Les bords supérieurs de la partie pétreuse de l’os temporal</li>
-                        <li>Le sillon du sinus transverse sur l’os occipital</li>
-                    </ul>
-                </li>
-            </ul>
-        </ul>
-    </div>
-</div>
-
-
-        <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A117.png" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-
-
-
-        <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A118.gif" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-
-
-</div>
-
-
-
-
-
-
-<div class="bubble">
-    <button class="interact-button" id="cavum-trigeminal" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>الكهف الثلاثي (Cavum trigeminal):</strong></li>
-        <ul>
-            <li>الكهف الثلاثي أو "كهف ميكل" هو جيب تشريحي ناتج عن انقسام الأم الجافية.</li>
-            <li>يقع في قاعدة الجمجمة على الوجه الأمامي للعظم الصدغي الصخري.</li>
-            <li>يحتوي على العقدة الثلاثية (عقدة غاسر)، وهي تجمع لأجسام الخلايا العصبية الحسية.</li>
-            <li>تتلقى هذه العقدة الإشارات الحسية من فروع العصب الثلاثي التوائم.</li>
-            <li><strong>البنية:</strong>
-                <ul>
-                    <li>يتكوّن الكهف من وريقتين من الأم الجافية: وريقة عظمية ووريقة سحائية.</li>
-                    <li>يمتد من الخيمة المخيخية نحو قمة الجزء الصخري للعظم الصدغي في الحفرة القحفية الوسطى.</li>
-                </ul>
-            </li>
-            <li><strong>المجاورات التشريحية:</strong>
-                <ul>
-                    <li>الخيمة المخيخية (من الأعلى والخارج)</li>
-                    <li>الجدار الجانبي للجيب الكهفي (من الأعلى والداخل)</li>
-                    <li>الكليفوس (في المنتصف)</li>
-                    <li>الوجه الخلفي الصخري (من الأسفل والخارج)</li>
-                </ul>
-            </li>
-            <li><strong>الأمراض:</strong> قد يصاب الكهف الثلاثي بأورام مثل الورم العصبي السمعي والورم السحائي.</li>
-            <li>سُمِّي نسبةً إلى العالم الألماني "يوهان فريدريش ميكل الأصغر"، الذي وصفه لأول مرة سنة 1832.</li>
-        </ul>
-    </ul>
-
-    <br>
-
-    <!-- بالإنجليزية -->
-    <div class="bubble" dir="ltr">
-        <ul>
-            <li><strong>Trigeminal Cavum (Meckel's Cave):</strong></li>
-            <ul>
-                <li>The trigeminal cavum, or Meckel’s cave, is a pouch formed by a splitting of the dura mater.</li>
-                <li>Located at the base of the skull, on the anterior surface of the petrous part of the temporal bone.</li>
-                <li>It contains the trigeminal (Gasserian) ganglion, a sensory ganglion receiving input from the trigeminal nerve.</li>
-                <li><strong>Structure:</strong>
-                    <ul>
-                        <li>Formed by a duplication of dura mater: periosteal and meningeal layers.</li>
-                        <li>It is a dural outpouching from the posterior cranial fossa into the middle cranial fossa, at the petrous apex.</li>
-                    </ul>
-                </li>
-                <li><strong>Surrounding anatomy:</strong>
-                    <ul>
-                        <li>Tentorium cerebelli (superolateral)</li>
-                        <li>Lateral wall of the cavernous sinus (superomedial)</li>
-                        <li>Clivus (medial)</li>
-                        <li>Posterior petrous surface (inferolateral)</li>
-                    </ul>
-                </li>
-                <li><strong>Pathology:</strong> It can be involved in lesions such as schwannomas and meningiomas.</li>
-                <li>Named after Johann Friedrich Meckel the Younger, who described it in 1832.</li>
-            </ul>
-        </ul>
-    </div>
-
-    <br>
-
-    <!-- بالفرنسية -->
-    <div class="bubble">
-        <ul>
-            <li><strong>Cavum trigéminal (cavum de Meckel) :</strong></li>
-            <ul>
-                <li>Le cavum trigéminal est une logette formée par un dédoublement de la dure-mère.</li>
-                <li>Il est situé à la base du crâne, sur la face antérieure de la portion pétreuse de l’os temporal.</li>
-                <li>Il contient le ganglion trigéminal (ou de Gasser), un amas de corps cellulaires de neurones sensitifs.</li>
-                <li><strong>Structure :</strong>
-                    <ul>
-                        <li>Formé par deux feuillets de dure-mère : périosté et méningé.</li>
-                        <li>C’est une évagination de la fosse postérieure vers la fosse crânienne moyenne, au niveau de l’apex pétreux.</li>
-                    </ul>
-                </li>
-                <li><strong>Rapports anatomiques :</strong>
-                    <ul>
-                        <li>Tente du cervelet (au-dessus et en dehors)</li>
-                        <li>Paroi latérale du sinus caverneux (au-dessus et en dedans)</li>
-                        <li>Clivus (médialement)</li>
-                        <li>Face postérieure pétreuse (en bas et en dehors)</li>
-                    </ul>
-                </li>
-                <li><strong>Pathologie :</strong> Le cavum peut être le siège de tumeurs, notamment des neurinomes et des méningiomes.</li>
-                <li>Il doit son nom à Johann Friedrich Meckel le Jeune, qui l’a décrit en 1832.</li>
-            </ul>
-        </ul>
-    </div>
-
-
-
-
-
-
-
-        <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A119.png" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-
-
-
-
-
-
-
-
-
-
-        <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A120.avif" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-
-
-
-
-
+    
+        <br>
+    
+        <!-- Version française -->
         <div class="bubble">
-    <button class="interact-button" id="trigeminal-ganglion" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>العقدة الثلاثية التوائم وفروعها:</strong></li>
-        <ul>
-            <li>تمثل العقدة الثلاثية التوائم (العقدة الجذرية الحسية للعصب الخامس) من خلال فروعها الثلاثة:</li>
             <ul>
-                <li>الفرع الأول: العيني</li>
-                <li>الفرع الثاني: الفكي العلوي</li>
-                <li>الفرع الثالث: الفكي السفلي</li>
+                <li><strong>Plan du cours :</strong></li>
+                <ul>
+                    <li>Introduction - Généralités</li>
+                    <li>Anatomie descriptive</li>
+                    <li>Développement des os du crâne</li>
+                    <li>Les sutures normales du crâne et les malformations</li>
+                    <li>Constitution du crâne</li>
+                    <li>La base du crâne +++</li>
+                    <ul>
+                        <li>Limites</li>
+                        <li>Orifices et éléments de passage :</li>
+                        <ul>
+                            <li>Étage antérieur</li>
+                            <li>Étage moyen</li>
+                            <li>Étage postérieur</li>
+                        </ul>
+                    </ul>
+                </ul>
             </ul>
-            <li>توجد هذه العقدة داخل "غار العصب الثلاثي التوائم" (Cavum trigéminal).</li>
+        </div>
+    </div>
+    
+
+          
+    
+
+    <div class="bubble">
+        <button class="interact-button" id="intro-crane" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    
+        <!-- المحتوى بالعربية -->
+        <ul>
+            <li><strong>المقدمة - معلومات عامة:</strong></li>
+            <ul>
+                <li>يتكون هيكل الرأس من عدة عظام، أغلبها متصلة بمفاصل غير متحركة، باستثناء الفك السفلي الذي يرتبط بقاعدة الجمجمة بواسطة المفصل الفكي الصدغي.</li>
+                <li>الهيكل القحفي الوجهي يتكون من قسمين:</li>
+                <ul>
+                    <li><strong>عظام الوجه:</strong> تُشكّل كتلة عظمية ملتحمة بالجزء الأمامي من قاعدة الجمجمة، وتضم الفك العلوي والسفلي.</li>
+                    <li><strong>عظام الجمجمة:</strong> تقع في الجزء الخلفي من الرأس، وتكوّن غلافًا عظميًا يحتوي على الدماغ والأغشية السحائية. يُقسم إلى:</li>
+                    <ul>
+                        <li>جزء علوي يُسمى القبة أو "كالفاريا".</li>
+                        <li>جزء سفلي هو قاعدة الجمجمة المثقبة بعدة فتحات تمر عبرها عناصر وعائية وعصبية.</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    
+        <br>
+    
+        <!-- English version -->
+        <div class="bubble" dir="ltr">
+            <ul>
+                <li><strong>Introduction – Generalities:</strong></li>
+                <ul>
+                    <li>The skeletal structure of the head consists of several bones, most of which are united by immobile joints, except for the mandible which is connected to the skull base by the temporomandibular joint.</li>
+                    <li>The craniofacial skeleton is divided into two parts:</li>
+                    <ul>
+                        <li><strong>Facial bones:</strong> A bony mass fused to the anterior part of the skull base, consisting of the upper and lower jaws.</li>
+                        <li><strong>Skull bones:</strong> Located at the posterior part of the head, forming a bony envelope that encloses the brain and meninges. It is divided into:</li>
+                        <ul>
+                            <li>An upper part called the vault or calvaria.</li>
+                            <li>A lower part called the skull base, perforated with numerous neurovascular foramina.</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    
+        <br>
+    
+        <!-- Version française -->
+        <div class="bubble">
+            <ul>
+                <li><strong>Introduction – Généralités :</strong></li>
+                <ul>
+                    <li>Le squelette de la tête est composé de plusieurs os, dont la plupart unis par des articulations immobiles, excepté la mandibule qui est reliée à la base du crâne par l’articulation temporo-mandibulaire.</li>
+                    <li>Le squelette crânio-facial est composé de deux parties :</li>
+                    <ul>
+                        <li><strong>Les os de la face :</strong> Ils constituent un massif osseux soudé à la partie antérieure de la base du crâne, composé des mâchoires supérieure et inférieure.</li>
+                        <li><strong>Les os du crâne :</strong> Situés à la partie postérieure de la tête, ils forment une enveloppe osseuse contenant l’encéphale et les méninges. On distingue :</li>
+                        <ul>
+                            <li>Une partie supérieure appelée la voûte ou calvaria.</li>
+                            <li>Une partie inférieure, la base du crâne, percée de nombreux foramens vasculo-nerveux.</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    
+
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A27.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+
+
+
+                    <div class="bubble">
+                        <button class="interact-button" id="anatomie-descriptive" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+                    
+                        <!-- المحتوى بالعربية -->
+                        <ul>
+                            <li><strong>علم التشريح الوصفي:</strong></li>
+                            <ul>
+                                <li>تتكون الجمجمة من ثمانية عظام وثلاث أزواج من العظيمات.</li>
+                                <li>العظام الثمانية الملتحمة تشمل:</li>
+                                <ul>
+                                    <li>أربعة عظام مفردة ووسطية: الجبهي، الغربالي، الوتدي، والقذالي.</li>
+                                    <li>عظمان مزدوجان وجانبيان: الجداريان والصُدْغيان.</li>
+                                </ul>
+                                <li>يوجد داخل العظم الصدغي ثلاث أزواج من العظيمات المرتبطة ببعضها: المطرقة، السندان، والركاب.</li>
+                            </ul>
+                        </ul>
+                    
+                        <br>
+                    
+                        <!-- English version -->
+                        <div class="bubble" dir="ltr">
+                            <ul>
+                                <li><strong>Descriptive Anatomy:</strong></li>
+                                <ul>
+                                    <li>The skull is composed of eight bones and three pairs of ossicles.</li>
+                                    <li>The eight fused bones include:</li>
+                                    <ul>
+                                        <li>Four unpaired and midline bones: the frontal, ethmoid, sphenoid, and occipital bones.</li>
+                                        <li>Two paired and lateral bones: the parietal and temporal bones.</li>
+                                    </ul>
+                                    <li>Within the temporal bone are three pairs of ossicles articulated with each other: the malleus, incus, and stapes.</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    
+                        <br>
+                    
+                        <!-- Version française -->
+                        <div class="bubble">
+                            <ul>
+                                <li><strong>II - Anatomie descriptive :</strong></li>
+                                <ul>
+                                    <li>Le crâne est formé de huit os et de trois paires d’osselets.</li>
+                                    <li>Les huit os soudés comprennent :</li>
+                                    <ul>
+                                        <li>Quatre os impairs et médians : le frontal, l’éthmoïde, le sphénoïde et l’occipital,</li>
+                                        <li>Deux os pairs et latéraux : les pariétaux et les temporaux.</li>
+                                    </ul>
+                                    <li>Dans l’os temporal se trouvent trois paires d’osselets articulés entre eux : le marteau (malléus), l’enclume (incus) et l’étrier (stapes).</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+
+                    
+
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A28.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A29.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+
+
+
+
+
+
+                    <div class="bubble">
+                        <button class="interact-button" id="developpement-os-crane" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+                    
+                        <!-- المحتوى بالعربية -->
+                        <ul>
+                            <li><strong>تطور عظام الجمجمة:</strong></li>
+                            <ul>
+                                <li>لعظام الجمجمة أصل مزدوج:</li>
+                                <ul>
+                                    <li>عظام قاعدة الجمجمة لها أصل غضروفي.</li>
+                                    <li>عظام القبة (الكالفاريا) لها أصل غشائي.</li>
+                                </ul>
+                                <li>تكون الجمجمة عند حديث الولادة غير مكتملة، مما يترك فراغات بين عظام القبة، حيث تكون العظام في حالتها الغشائية.</li>
+                                <li>تُعرف هذه الفراغات باسم "اليافوخات"، وعددها ستة.</li>
+                                <ul>
+                                    <li><strong>في المنتصف:</strong></li>
+                                    <ul>
+                                        <li>يافوخ أمامي بشكل مُعيّن (Bregma).</li>
+                                        <li>يافوخ خلفي بشكل مثلث (Lambda).</li>
+                                    </ul>
+                                    <li><strong>جانبيًا:</strong></li>
+                                    <ul>
+                                        <li>يافوخان أماميان (Ptérique).</li>
+                                        <li>يافوخان خلفيان (Astérique).</li>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        </ul>
+                    
+                        <br>
+                    
+                        <!-- English version -->
+                        <div class="bubble" dir="ltr">
+                            <ul>
+                                <li><strong>Development of Skull Bones:</strong></li>
+                                <ul>
+                                    <li>The skull bones have a dual origin:</li>
+                                    <ul>
+                                        <li>The base bones originate from cartilage.</li>
+                                        <li>The calvaria bones originate from membrane.</li>
+                                    </ul>
+                                    <li>At birth, skull development is incomplete, leaving spaces between the calvaria bones where the bone remains membranous.</li>
+                                    <li>These spaces are called "fontanelles", and there are six of them.</li>
+                                    <ul>
+                                        <li><strong>Midline:</strong></li>
+                                        <ul>
+                                            <li>Anterior fontanelle (diamond-shaped): Bregma.</li>
+                                            <li>Posterior fontanelle (triangular): Lambda.</li>
+                                        </ul>
+                                        <li><strong>Lateral:</strong></li>
+                                        <ul>
+                                            <li>Two anterior fontanelles: Pteric.</li>
+                                            <li>Two posterior fontanelles: Asteric.</li>
+                                        </ul>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        </div>
+                    
+                        <br>
+                    
+                        <!-- Version française -->
+                        <div class="bubble">
+                            <ul>
+                                <li><strong>Développement des os du crâne :</strong></li>
+                                <ul>
+                                    <li>Les os du crâne ont une origine double :</li>
+                                    <ul>
+                                        <li>Ceux de la base ont une origine cartilagineuse.</li>
+                                        <li>Ceux de la calvaria ont une origine membraneuse.</li>
+                                    </ul>
+                                    <li>Chez le nouveau-né, le développement du crâne est encore incomplet, laissant des espaces entre les os de la calvaria où l’os est encore à l’état membraneux.</li>
+                                    <li>Ces espaces sont appelés "fontanelles", et leur nombre est de six :</li>
+                                    <ul>
+                                        <li><strong>Au milieu :</strong></li>
+                                        <ul>
+                                            <li>Une fontanelle antérieure en forme losangique : Bregma.</li>
+                                            <li>Une fontanelle postérieure en forme triangulaire : Lambda.</li>
+                                        </ul>
+                                        <li><strong>Latéralement :</strong></li>
+                                        <ul>
+                                            <li>Deux fontanelles antérieures : Ptérique.</li>
+                                            <li>Deux fontanelles postérieures : Astérique.</li>
+                                        </ul>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                    
+
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A30.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+
+
+
+
+                    <div class="bubble">
+                        <button class="interact-button" id="sutures-crane" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+                    
+                        <!-- المحتوى بالعربية -->
+                        <ul>
+                            <li><strong>الدرزات الطبيعية للجمجمة:</strong></li>
+                            <ul>
+                                <li>يتم ضمان نمو الجمجمة بشكل متناغم من خلال نظامين من الدرزات:</li>
+                                <ul>
+                                    <li><strong>النظام الطولي:</strong> يشمل الدرز الجبهي (الميتوبي) والدرز السهمي، ويسمحان بنمو الجمجمة من حيث العرض.</li>
+                                    <li><strong>النظام العرضي:</strong> يشمل الدرز الإكليلي والدرز اللامي، ويسمحان بنمو الجمجمة إلى الأمام والخلف.</li>
+                                </ul>
+                                <li>عند الولادة، تبقى الدرزات مفتوحة عادة، مما يسمح بتراكب عظام القبة، وهذا يُسهّل مرور رأس الجنين عبر الحوض أثناء الولادة ويُقلل من "الرضح التوليدي".</li>
+                            </ul>
+                        </ul>
+                    
+                        <br>
+                    
+                        <!-- English version -->
+                        <div class="bubble" dir="ltr">
+                            <ul>
+                                <li><strong>Normal Sutures of the Skull:</strong></li>
+                                <ul>
+                                    <li>Harmonious skull growth is ensured by two systems of sutures:</li>
+                                    <ul>
+                                        <li><strong>Longitudinal system:</strong> includes the metopic and sagittal sutures, allowing transverse (width) development of the skull.</li>
+                                        <li><strong>Transverse system:</strong> includes the coronal and lambdoid sutures, allowing anterior and posterior development of the skull.</li>
+                                    </ul>
+                                    <li>At birth, the sutures normally remain open, allowing overlapping of calvaria bones, which facilitates the passage of the fetal head through the pelvis during delivery, thus minimizing "obstetrical trauma".</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    
+                        <br>
+                    
+                        <!-- Version française -->
+                        <div class="bubble">
+                            <ul>
+                                <li><strong>2 - Les sutures normales du crâne :</strong></li>
+                                <ul>
+                                    <li>La croissance harmonieuse du crâne est assurée par deux systèmes de sutures :</li>
+                                    <ul>
+                                        <li><strong>Système longitudinal :</strong> sutures métopique et sagittale qui permettent le développement du crâne en largeur.</li>
+                                        <li><strong>Système transversal :</strong> sutures coronales et lambdoïdes, qui autorisent le développement du crâne vers l’avant et vers l’arrière.</li>
+                                    </ul>
+                                    <li>Normalement à la naissance, les sutures restent ouvertes, permettant le chevauchement des os de la calvaria, ce qui facilite le passage de la tête fœtale dans le pelvis lors de l’accouchement et réduit ainsi au minimum le « traumatisme obstétrical ».</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                    
+
+
+
+
+
+
+
+
+
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A31.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+                    
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A32.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+                    
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A33.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+                   
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="craniosynostosis" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>التحام مبكر أو غياب بعض الدروز:</strong></li>
+        <ul>
+            <li>التحام مبكر أو غياب بعض الدروز يؤدي سريريًا إلى ما يُعرف بتَعَظُّم الجمجمة المبكر 
+                
+<span class="image-tooltip" id="tooltip">
+    <span style="color: red; font-weight: bold;">(الكرانيوستنوز)</span>
+    <span class="image-tooltip-content">
+        <div style="text-align: center;">
+            <img src="2MED U5 ANATOMIE/en3719091.jpg" alt="صورة توضيحية" style="max-width: 100%;">
+            <img src="2MED U5 ANATOMIE/craniosynostosis-scaled.jpg" alt="صورة توضيحية" style="max-width: 100%;">
+
+            
+        </div>
+        <ul>
+    <ul>
+                <li><strong>التحام عظام الجمجمة المبكر (Craniosynostosis):</strong></li>
+                <ul>
+                    <li>هي حالة يحدث فيها التحام مبكر لأحد أو أكثر من الدروز الليفية في جمجمة الرضيع، مما يؤدي إلى تحوّلها إلى عظم قبل الأوان.</li>
+                    <li>يتسبب هذا الالتحام المبكر في تغيير نمط نمو الجمجمة، ما قد يؤدي إلى تشوهات في شكل الرأس ومشكلات محتملة في نمو الدماغ.</li>
+                </ul>
+            </ul>
+        </span>
+    </span>
+</span>
+            
+            
+            
+            </li>
         </ul>
     </ul>
 
     <br>
-    <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A121.png" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
 
-
-    <!-- بالإنجليزية -->
+    <!-- English Version -->
     <div class="bubble" dir="ltr">
         <ul>
-            <li><strong>The trigeminal ganglion and its branches:</strong></li>
+            <li><strong>Premature fusion or absence of some sutures:</strong></li>
             <ul>
-                <li>The trigeminal ganglion is represented by its three divisions:</li>
+                <li>The absence of certain sutures or their early fusion is clinically manifested as
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                
+                <span class="image-tooltip">
+    <span style="color: red; font-weight: bold;"><strong>
+        (Craniosynostosis)</strong></span>
+
+    <span class="image-tooltip-content">
+        <img src="2MED U5 ANATOMIE/craniosynostosis-scaled.jpg" alt="Babinski Reflex Illustration">
+        <span class="tooltip-caption">
+            <ul>
+                <li><strong>Premature fusion of skull bones (Craniosynostosis):</strong></li>
                 <ul>
-                    <li>First division: Ophthalmic</li>
-                    <li>Second division: Maxillary</li>
-                    <li>Third division: Mandibular</li>
+                    <li>It is a condition in which one or more of the fibrous sutures in an infant’s skull close too early, before the brain has fully developed.</li>
+                    <li>This early fusion changes the pattern of skull growth, which can lead to abnormal head shapes and potential issues with brain development.</li>
                 </ul>
-                <li>This ganglion is housed in the trigeminal cave (Meckel's cave).</li>
+            </ul>
+        </span>
+    </span>
+</span>
+
+                
+                
+                </li>
             </ul>
         </ul>
     </div>
 
     <br>
 
-    <!-- بالفرنسية -->
+    <!-- Version française -->
     <div class="bubble">
         <ul>
-            <li><strong>Le ganglion trigéminal et ses branches :</strong></li>
+            <li><strong>Absence ou soudure précoce de certaines sutures :</strong></li>
             <ul>
-                <li>Le ganglion trigéminal est représenté ici par ses trois divisions :</li>
+                <li>L’absence de certaines sutures ou leur soudure précoce se traduit cliniquement par les 
+                    
+                    
+                    
+                    
+<span class="image-tooltip">
+    <span style="color: red; font-weight: bold;"><strong>
+        (Craniosynostose)</strong></span>
+
+    <span class="image-tooltip-content">
+        <img src="2MED U5 ANATOMIE/craniosynostosis-scaled.jpg" alt="Illustration du réflexe de Babinski">
+        <span class="tooltip-caption">
+            <ul>
+                <li><strong>Fusion prématurée des os du crâne (Craniosynostose) :</strong></li>
                 <ul>
-                    <li>1ʳᵉ division : ophtalmique</li>
-                    <li>2ᵉ division : maxillaire</li>
-                    <li>3ᵉ division : mandibulaire</li>
+                    <li>Il s'agit d'une condition où une ou plusieurs sutures fibreuses du crâne d’un nourrisson se ferment trop tôt, avant que le cerveau ne soit complètement développé.</li>
+                    <li>Cette fusion prématurée modifie le schéma de croissance du crâne, ce qui peut entraîner des déformations de la tête et des problèmes potentiels dans le développement cérébral.</li>
                 </ul>
-                <li>Ce ganglion est situé dans la grotte du trijumeau (cavum trigéminal).</li>
+            </ul>
+        </span>
+    </span>
+</span>
+                
+                
+                </li>
             </ul>
         </ul>
     </div>
 </div>
 
-</div>
 
 
 
@@ -2437,49 +2295,139 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 <div class="bubble">
-    <button class="interact-button" id="cavernous-sinus-wall" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <button class="interact-button" id="trigonocéphalie" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
     <!-- بالعربية -->
     <ul>
-        <li><strong>الجدار الجانبي للجيب الكهفي:</strong></li>
+        <li><strong>أ-</strong> غياب الدرز الجبهي يؤدي إلى تثلث الرأس: جبهة ضيقة جداً.</li>
+    </ul>
+
+         
+
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A35.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
         <ul>
-            <li>يحتوي الجدار الجانبي للجيب الكهفي على عدة أعصاب قحفية مهمة تنقسم إلى فروع قبل مغادرتها الجيب:</li>
-            <li><strong>العصب المحرك للعين (III):</strong> يعبر الجدار الجانبي وينقسم إلى فرعين رئيسيين (علوي وسفلي) يعصبان عضلات العين المحركة.</li>
-            <li><strong>العصب البَكَري (IV):</strong> يعبر الجدار الجانبي ويعصب العضلة المائلة العلوية للعين.</li>
-            <li><strong>الفرع العيني (V1):</strong> ينقسم إلى ثلاث فروع نهائية داخل الجدار: العصب الدمعي، الجبهي، والأنفي الهدبي.</li>
-            <li><strong>الفرع الفكي العلوي (V2):</strong> يمر لفترة قصيرة في الجدار ويعطي فرعين هما: العصب الوجني والعصب الجناحي الحنكي، ويغادران عبر الثقبة المستديرة.</li>
-            <li><strong>العصب المُبعد (VI):</strong> يعبر الجدار ويعصب العضلة المستقيمة الوحشية للعين.</li>
-            <li>يُعد الجدار الجانبي للجيب الكهفي موقعًا مهمًا لعبور وتقسيم عدة أعصاب قحفية تتجه نحو العين وأجزاء من الرأس.</li>
-            <li>الجيب الكهفي (sinus cavernosus) هو أحد جيوب الأم الجافية، يقع في الحفرة القحفية الوسطى.</li>
+            <li><strong>a-</strong> The absence of the metopic suture results in trigonocephaly: a very narrow forehead.</li>
         </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>a-</strong> L’absence de la suture métopique donne la Trigonocéphalie : front très étroit.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="scaphocéphalie" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>ب-</strong> غياب الدرز السهمي يؤدي إلى استسقاء الرأس الطولي (السَّفنَة القحفية): ينمو الجمجمة بشكل مفرط إلى الأمام والخلف انطلاقاً من الدروز المتبقية.</li>
+    </ul>
+
+    <br>
+
+    
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A36.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>b-</strong> The absence of the sagittal suture causes scaphocephaly: the skull grows excessively forward and backward from the remaining sutures.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>b-</strong> L’absence de la suture sagittale donne la Scaphocéphalie : le crâne se développe exagérément vers l’avant et vers l’arrière à partir des sutures existantes.</li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="bubble">
+    <button class="interact-button" id="plagiocéphalie" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>ج-</strong> غياب نصف الدرز الإكليلي يؤدي إلى الرأس المائل (الجنَف القحفي): جمجمة غير متناظرة.</li>
+    </ul>
+
+    
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A37.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>c-</strong> The absence of half of the coronal suture results in plagiocephaly: an asymmetrical skull.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>c-</strong> L’absence de la moitié de la suture coronale donne la Plagiocéphalie : crâne asymétrique.</li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="brachycéphalie" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>د-</strong> غياب الدروز الجبهية-الجداريـة والجداريـة-القذاليـة يؤدي إلى الرأس القصير (القِصر القِحفي): تكون الجمجمة قصيرة من الأمام إلى الخلف.</li>
     </ul>
 
     <br>
     
-
-
-    <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A122.png" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-
-
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A38.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
 
     <!-- بالإنجليزية -->
     <div class="bubble" dir="ltr">
         <ul>
-            <li><strong>Lateral wall of the cavernous sinus:</strong></li>
-            <ul>
-                <li>This wall contains several important cranial nerves that divide into branches before exiting:</li>
-                <li><strong>Oculomotor nerve (III):</strong> Passes through the lateral wall and splits into superior and inferior branches that innervate eye muscles.</li>
-                <li><strong>Trochlear nerve (IV):</strong> Also passes through the lateral wall and innervates the superior oblique muscle.</li>
-                <li><strong>Ophthalmic nerve (V1):</strong> Divides into three terminal branches within the wall: lacrimal, frontal, and nasociliary nerves.</li>
-                <li><strong>Maxillary nerve (V2):</strong> Briefly passes through the wall and gives off the zygomatic and pterygopalatine nerves before exiting via the foramen rotundum.</li>
-                <li><strong>Abducens nerve (VI):</strong> Passes through and innervates the lateral rectus muscle of the eye.</li>
-                <li>The lateral wall of the cavernous sinus is a key passage and branching site for cranial nerves heading to the eye and head regions.</li>
-                <li>The cavernous sinus (Latin: *sinus cavernosus*) is a paired dural venous sinus located in the middle cranial fossa.</li>
-            </ul>
+            <li><strong>d-</strong> The absence of the fronto-parietal and parieto-occipital sutures results in brachycephaly: the skull is shortened from front to back.</li>
         </ul>
     </div>
 
@@ -2488,136 +2436,73 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالفرنسية -->
     <div class="bubble">
         <ul>
-            <li><strong>Paroi latérale du sinus caverneux :</strong></li>
-            <ul>
-                <li>Cette paroi contient plusieurs nerfs crâniens importants qui se divisent avant de quitter le sinus :</li>
-                <li><strong>Nerf oculomoteur (III) :</strong> Traverse la paroi latérale et se divise en deux branches (supérieure et inférieure) pour innerver les muscles de l'œil.</li>
-                <li><strong>Nerf trochléaire (IV) :</strong> Traverse aussi la paroi et innerve le muscle oblique supérieur de l'œil.</li>
-                <li><strong>Nerf ophtalmique (V1) :</strong> Se termine en trois branches terminales : nerf lacrymal, frontal et naso-ciliaire.</li>
-                <li><strong>Nerf maxillaire (V2) :</strong> Émet les nerfs zygomatique et ptérygopalatin après un bref trajet dans la paroi, et quitte le crâne via le foramen rond.</li>
-                <li><strong>Nerf abducens (VI) :</strong> Traverse également la paroi latérale et innerve le muscle droit latéral de l’œil.</li>
-                <li>La paroi latérale du sinus caverneux est donc un point de passage essentiel pour plusieurs nerfs crâniens qui se dirigent vers l’œil et la tête.</li>
-                <li>Le sinus caverneux (*sinus cavernosus* en latin) est un sinus veineux pair de la dure-mère situé dans la fosse crânienne moyenne.</li>
-            </ul>
+            <li><strong>d-</strong> L’absence des sutures fronto-pariétale et pariéto-occipitale donne la Brachycéphalie : le crâne est raccourci d’avant en arrière.</li>
         </ul>
     </div>
 </div>
 
 
-
-
-
-
-
-
-
-
+                    
 
 
 
 <div class="bubble">
-    <button class="interact-button" id="trigeminal-origin" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <button class="interact-button" id="oxycéphalie" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
     <!-- بالعربية -->
     <ul>
-        <li><strong>الأصل (النواتئ وموقع المنشأ الظاهري):</strong></li>
-        <ul>
-            <li><strong>النواة الحسية:</strong> كبيرة وتمتد من الدماغ المتوسط حتى النخاع الرقبي.</li>
-            <ul>
-                <li>النواة المسنقفة: مسؤولة عن الإحساس بالموضع (الاستقبال الحسي العميق) من عضلات المضغ.</li>
-                <li>النواة الجسرية (الرئيسية): مسؤولة عن اللمس.</li>
-                <li>النواة الشوكية: مسؤولة عن الإحساس بالحرارة والألم واللمس.</li>
-            </ul>
-            <li><strong>النواة الحركية:</strong> تقع في الجسر، وتنتمي إلى المشتق الأول من القوس البلعومي.</li>
-            <li><strong>المنشأ الظاهري:</strong> من الوجه الجانبي للجسر (البونس).</li>
-        </ul>
+        <li><strong>هـ-</strong> غياب العديد من الدروز يؤدي إلى الرأس المدبب (الأوكسيسيفالي): التشوه يؤثر على جميع اتجاهات النمو وكذلك على التطور المتناغم للدماغ، مما يجعلها تشوهًا خطيرًا للغاية.</li>
     </ul>
 
     <br>
-  <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A123.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
 
-    <!-- بالإنجليزية -->
-    <div class="bubble" dir="ltr">
-        <ul>
-            <li><strong>Origin (nuclei and apparent emergence):</strong></li>
-            <ul>
-                <li><strong>Sensory nucleus:</strong> Large and extends from the midbrain to the cervical spinal cord.</li>
-                <ul>
-                    <li>Mesencephalic nucleus: proprioception from masticatory muscles.</li>
-                    <li>Pontine (principal) nucleus: touch sensation.</li>
-                    <li>Spinal nucleus: temperature, pain, and touch.</li>
-                </ul>
-                <li><strong>Motor nucleus:</strong> Located in the pons; derived from the first branchial arch.</li>
-                <li><strong>Apparent origin:</strong> From the lateral aspect of the pons.</li>
-            </ul>
-        </ul>
-    </div>
-
-    <br>
-
-    <!-- بالفرنسية -->
-    <div class="bubble">
-        <ul>
-            <li><strong>Origine (noyaux et émergence apparente) :</strong></li>
-            <ul>
-                <li><strong>Noyau sensitif :</strong> de grande taille, s'étend du mésencéphale à la moelle cervicale.</li>
-                <ul>
-                    <li>Noyau mésencéphalique : proprioception des muscles masticateurs.</li>
-                    <li>Noyau pontique (principal) : tact.</li>
-                    <li>Noyau spinal : thermo-algésie et tact.</li>
-                </ul>
-                <li><strong>Noyau moteur :</strong> situé au niveau du pont ; dérivé du premier arc branchial.</li>
-                <li><strong>Origine apparente :</strong> à la face latérale du pont.</li>
-            </ul>
-        </ul>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<div class="bubble">
-    <button class="interact-button" id="posterior-cranial-fossa" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>الحفرة الدماغية الخلفية:</strong></li>
-        <ul>
-            <li>تعبر الجذور العصبية الحفرة الدماغية الخلفية عبر <strong>الخزان الجسري المخيخي</strong>.</li>
-            <li>تقع الجذور الحركية <strong>داخلية</strong> مقارنة بالحسية.</li>
-            <li><strong>المسار:</strong> صاعد نحو الحفرة الثلاثية التوائم، مارًا من <strong>الشق الثلاثي التوائم</strong> عند قمة الصخرة (الجزء الصخري من العظم الصدغي).</li>
-        </ul>
-    </ul>
-
-    <br>
     
+                    <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A39.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>e-</strong> The absence of several sutures results in oxycephaly: the deformity affects all directions of growth as well as the harmonious development of the brain, making it a very serious malformation.</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>e-</strong> L’absence de plusieurs sutures donne l’Oxycéphalie : la déformation affecte toutes les directions de croissance ainsi que le développement harmonieux de l’encéphale ce qui fait d’elle une malformation très grave.</li>
+        </ul>
+    </div>
+</div>
 
 
-  <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A124.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
 
 
 
+
+<div class="bubble">
+    <button class="interact-button" id="constitution-crane" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>٣- تكوين الجمجمة:</strong></li>
+        <ul>
+            <li><strong>أ-</strong> العظم الجبهي: هو عظم فردي ووسيط يقع في الجزء الأمامي من الجمجمة. يساهم في تشكيل قبة الجمجمة والطابق الأمامي لقاعدتها، ويُوصَف فيه جزءان: جزء عمودي يُعرف بحراشفة الجبهي، وآخر أفقي يُعرف بالقسم الحجاجي-الأنفي.</li>
+        </ul>
+    </ul>
+
+    <br>
 
     <!-- بالإنجليزية -->
     <div class="bubble" dir="ltr">
         <ul>
-            <li><strong>Posterior cranial fossa:</strong></li>
+            <li><strong>3- Skull Constitution:</strong></li>
             <ul>
-                <li>The roots pass through the <strong>pontocerebellar cistern</strong>.</li>
-                <li>The motor root is located <strong>medially</strong> to the sensory root.</li>
-                <li><strong>Pathway:</strong> Ascending toward the trigeminal fossa, crossing the <strong>trigeminal notch</strong> at the apex of the petrous part of the temporal bone.</li>
+                <li><strong>a-</strong> The frontal bone: it is a single, median bone in the anterior part of the skull. It contributes to the formation of the calvaria and the anterior cranial fossa. It has two parts: a vertical part called the squamous part, and a horizontal part called the orbito-nasal segment.</li>
             </ul>
         </ul>
     </div>
@@ -2627,11 +2512,9 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالفرنسية -->
     <div class="bubble">
         <ul>
-            <li><strong>Fosse cérébrale postérieure :</strong></li>
+            <li><strong>3- Constitution du crâne :</strong></li>
             <ul>
-                <li>Les racines traversent la <strong>citernes ponto-cérébelleuse</strong>.</li>
-                <li>La racine motrice est située <strong>en dedans</strong> de la racine sensitive.</li>
-                <li><strong>Trajet :</strong> ascendant vers la fosse trigéminale en traversant l’<strong>incisure trigéminale</strong> (au sommet de la partie pétreuse de l’os temporal).</li>
+                <li><strong>a-</strong> L’os frontal : est un os impair et médian de la partie antérieure du crâne. Il participe à la constitution de la calvaria et de l’étage antérieur de la base du crâne. On lui décrit deux segments : l’un vertical ou écaille du frontal, l’autre horizontal ou orbito-nasale.</li>
             </ul>
         </ul>
     </div>
@@ -2643,70 +2526,70 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
+     <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A40.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+
+     <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A41.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+
+     <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A42.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+                         <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A43.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
 
 <div class="bubble">
-    <button class="interact-button" id="middle-cranial-fossa" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <button class="interact-button" id="ethmoide" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
     <!-- بالعربية -->
     <ul>
-        <li><strong>الحفرة الدماغية الوسطى:</strong></li>
+        <li><strong>٣- تكوين الجمجمة:</strong></li>
         <ul>
-            <li>يُظهر العصب الثلاثي التوائم <strong>العقدة الثلاثية التوائم</strong> التي تأخذ شكل نصف هلال ذو تقعر خلفي.</li>
-            <li>تقع العقدة داخل <strong>تجويف ثلاثي التوائم (Cavum trigeminal)</strong>، وهي جيب من الأم الجافية بمحاذاة الحفرة الثلاثية التوائم.</li>
-            <li>موقع العقدة:
-                <ul>
-                    <li>جانبي للجيب الوريدي الكهفي (السينوس الكهفي).</li>
-                    <li>مغطاة من الأعلى بالفص الصدغي.</li>
-                    <li>يمر <strong>الشريان السباتي الداخلي داخل الصخرة</strong> أسفلها.</li>
-                </ul>
-            </li>
-            <li>تنشأ الفروع الثلاثة من <strong>الحافة الأمامية المحدبة للعقدة الثلاثية التوائم</strong>:
-                <ul>
-                    <li>الفرع العيني: يتجه نحو الشق الحجاجي العلوي.</li>
-                    <li>الفرع الفكي العلوي: يتجه نحو الثقبة المستديرة.</li>
-                    <li>الفرع الفكي السفلي (مع الفرع الحركي): يتجه نحو الثقبة البيضوية.</li>
-                </ul>
-            </li>
-            <li>تمر الفروع الثلاثة عبر <strong>الجدار الجانبي للجيب الكهفي</strong>.</li>
+            <li><strong>ب-</strong> العظم الغربالي: هو عظم فردي ومتناظر يقع في الجزء الأمامي من قاعدة الجمجمة. يساهم في تشكيل الحجاج والتجويف الأنفي. يتكوّن من صفيحة عمودية وأخرى أفقية مثقبة، وتتصل بها الكتل الجانبية عند الطرفين.</li>
         </ul>
     </ul>
 
     <br>
-      <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A125.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
 
           <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A126.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A44.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
 
 
     <!-- بالإنجليزية -->
     <div class="bubble" dir="ltr">
         <ul>
-            <li><strong>Middle cranial fossa:</strong></li>
+            <li><strong>3- Skull Constitution:</strong></li>
             <ul>
-                <li>The trigeminal nerve features the <strong>trigeminal ganglion</strong>, semilunar in shape with posterior concavity.</li>
-                <li>The ganglion is located in the <strong>trigeminal cave (Cavum trigeminale)</strong>, a dural pouch at the trigeminal fossa.</li>
-                <li>Ganglion location:
-                    <ul>
-                        <li>Lateral to the cavernous sinus.</li>
-                        <li>Covered superiorly by the temporal lobe.</li>
-                        <li>The <strong>intrapetrous internal carotid artery</strong> passes below it.</li>
-                    </ul>
-                </li>
-                <li>The three divisions arise from the <strong>anterior convex border of the ganglion</strong>:
-                    <ul>
-                        <li>Ophthalmic branch: directed toward the superior orbital fissure.</li>
-                        <li>Maxillary branch: directed toward the foramen rotundum.</li>
-                        <li>Mandibular branch (with the motor root): directed toward the foramen ovale.</li>
-                    </ul>
-                </li>
-                <li>All three branches pass through the <strong>lateral wall of the cavernous sinus</strong>.</li>
+                <li><strong>b-</strong> The ethmoid bone: it is a single, symmetrical bone in the anterior part of the skull base. It contributes to the formation of the orbits and nasal cavities. It is composed of a vertical plate and a horizontal cribriform plate, with lateral masses attached at each end.</li>
             </ul>
         </ul>
     </div>
@@ -2716,25 +2599,9 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالفرنسية -->
     <div class="bubble">
         <ul>
-            <li><strong>Fosse cérébrale moyenne :</strong></li>
+            <li><strong>3- Constitution du crâne :</strong></li>
             <ul>
-                <li>Le nerf trijumeau présente le <strong>ganglion trigéminal</strong> en forme de demi-lune à concavité postérieure.</li>
-                <li>Le ganglion est situé dans le <strong>cavum trigéminal</strong>, une poche dure-mérienne en regard de la fosse trigéminale.</li>
-                <li>Position du ganglion :
-                    <ul>
-                        <li>Latéral au sinus caverneux.</li>
-                        <li>Recouvert en haut par le lobe temporal.</li>
-                        <li>La <strong>carotide interne intra-pétreuse</strong> passe en dessous de lui.</li>
-                    </ul>
-                </li>
-                <li>Les trois branches naissent du <strong>bord antérieur convexe du ganglion trigéminal</strong> :
-                    <ul>
-                        <li>Branche ophtalmique : vers la fissure orbitaire supérieure.</li>
-                        <li>Branche maxillaire : vers le foramen rond.</li>
-                        <li>Branche mandibulaire accompagnée par la branche motrice : vers le foramen ovale.</li>
-                    </ul>
-                </li>
-                <li>Les trois branches parcourent la <strong>paroi latérale du sinus caverneux</strong>.</li>
+                <li><strong>b-</strong> L’ethmoïde : est un os impair et symétrique de la partie antérieure de la base du crâne. Il participe à la formation des orbites et des cavités nasales. Constitué d’une lame verticale et une lame horizontale en forme de crible aux extrémités de laquelle s’implante les masses latérales.</li>
             </ul>
         </ul>
     </div>
@@ -2744,40 +2611,28 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 <div class="bubble">
-    <button class="interact-button" id="nerf-ophtalmique" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <button class="interact-button" id="ethmoide-details" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
     <!-- بالعربية -->
     <ul>
-        <li><strong>العصب العيني (V1):</strong></li>
+        <li><strong>تفاصيل العظم الغربالي:</strong></li>
         <ul>
-            <li>ينقسم قبل وصوله إلى الشق الحجاجي العلوي إلى ثلاث فروع نهائية:</li>
-            <ul>
-                <li><strong>العصب الدمعي:</strong> يسير بمحاذاة الجدار الجانبي للحجاج ويعبر الغدة الدمعية.</li>
-                <li><strong>العصب الجبهي:</strong> أكبر الفروع، يسير بمحاذاة الجدار العلوي، يخرج من الحافة فوق الحجاجية ليُعصّب الجبهة والجفن العلوي.</li>
-                <li><strong>العصب الأنفي الهدبي:</strong> يسير ضمن المخروط العضلي باتجاه الجدار الإنسي للحجاج ليُعصّب الجيوب الأنفية العلوية للأنف.</li>
-            </ul>
+            <li><strong>١-</strong> الصفيحة العمودية: تُقسم بشكل غير متساوٍ بواسطة الصفيحة الأفقية إلى جزء علوي صغير يُسمى الناتئ العرفي (Crista Galli) ويبرز داخل التجويف الدماغي، وجزء سفلي يُعرف بالصفيحة العمودية التي تساهم في تشكيل الجزء الأمامي العلوي من حاجز التجاويف الأنفية.</li>
+            <li><strong>٢-</strong> الصفيحة الأفقية المثقبة: تسمح بمرور فروع العصب الشمي (الزوج القحفي الأول).</li>
+            <li><strong>٣-</strong> الكتل الجانبية: تتكون من خلايا غربالية. سطحها الداخلي غير منتظم، ويحمل بروزات تُعرف بالقرينات العلوية والوسطى، وفتحات تُعرف بالممرات الأنفية (الميئات).</li>
         </ul>
     </ul>
 
     <br>
-         <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A127.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-
 
     <!-- بالإنجليزية -->
     <div class="bubble" dir="ltr">
         <ul>
-            <li><strong>Ophthalmic nerve (V1):</strong></li>
+            <li><strong>Details of the Ethmoid Bone:</strong></li>
             <ul>
-                <li>It divides before reaching the superior orbital fissure into three terminal branches:</li>
-                <ul>
-                    <li><strong>Lacrimal nerve:</strong> Runs along the lateral wall of the orbit and passes through the lacrimal gland.</li>
-                    <li><strong>Frontal nerve:</strong> The largest branch, runs along the superior wall and exits via the supraorbital margin to innervate the forehead and upper eyelid.</li>
-                    <li><strong>Naso-ciliary nerve:</strong> Runs intra-conically toward the medial wall of the orbit to innervate the upper sinuses of the nasal cavity.</li>
-                </ul>
+                <li><strong>1-</strong> Vertical plate: Unequally divided by the horizontal plate into a small upper part — the Crista Galli — which projects into the cranial cavity, and a lower part — the perpendicular plate — which contributes to the upper anterior portion of the nasal septum.</li>
+                <li><strong>2-</strong> Horizontal (cribriform) plate: Permits the passage of olfactory nerve branches (CN I).</li>
+                <li><strong>3-</strong> Lateral masses: Composed of ethmoidal air cells. Their internal surface is irregular, featuring protrusions — the superior and middle nasal conchae — and openings — the meatuses.</li>
             </ul>
         </ul>
     </div>
@@ -2787,65 +2642,59 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالفرنسية -->
     <div class="bubble">
         <ul>
-            <li><strong>Nerf ophtalmique (V1) :</strong></li>
+            <li><strong>Détails de l’os ethmoïde :</strong></li>
             <ul>
-                <li>Il se divise avant d'atteindre la fissure orbitaire supérieure en trois branches terminales :</li>
-                <ul>
-                    <li><strong>Nerf lacrymal :</strong> longe la paroi latérale de l'orbite et traverse la glande lacrymale.</li>
-                    <li><strong>Nerf frontal :</strong> la plus grosse branche, longeant la paroi supérieure, sort par le bord supra-orbitaire pour innerver le front et la paupière supérieure.</li>
-                    <li><strong>Nerf naso-ciliaire :</strong> intra-conique, se dirige vers la paroi médiale de l'orbite pour l’innervation des sinus supérieurs de la cavité nasale.</li>
-                </ul>
+                <li><strong>1-</strong> Lame verticale : divisée inégalement par la lame horizontale en une petite partie supérieure — l’apophyse Crista Galli — qui fait saillie dans la cavité cérébrale, et une partie inférieure — la lame perpendiculaire — qui contribue à former la partie antérosupérieure de la cloison des fosses nasales.</li>
+                <li><strong>2-</strong> La lame horizontale criblée : qui livre passage aux rameaux du nerf olfactif (I).</li>
+                <li><strong>3-</strong> Les masses latérales : elles sont formées de logettes ethmoïdales. La face interne est irrégulière, présentant des saillies — les cornets supérieur et moyen — et des ouvertures — les méats.</li>
             </ul>
         </ul>
     </div>
 </div>
 
-
-
-
-
-
-
-<div class="bubble">
-    <button class="interact-button" id="nerf-maxillaire" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>العصب الفكي العلوي (V2):</strong></li>
-        <ul>
-            <li>يسلك المسار التالي:</li>
-            <ul>
-                <li>جدار الجيب الكهفي الجانبي.</li>
-                <li>الثقب الدائري (الفتحة المستديرة).</li>
-                <li>الجزء العلوي من الحفرة الجناحية الحنكية.</li>
-                <li>الشق الحجاجي السفلي.</li>
-                <li>الأخدود والقناة تحت الحجاج للخروج عبر الثقبة تحت الحجاج كـ <strong>العصب تحت الحجاج</strong>.</li>
-            </ul>
-        </ul>
-    </ul>
 
       <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A128.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A45.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
 
+      <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A46.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="sphenoide" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>٣- تكوين الجمجمة:</strong></li>
+        <ul>
+            <li><strong>ج-</strong> العظم الوتدي: هو عظم فردي ومتناظر يتصل مع جميع عظام الجمجمة. يُشكّل الجزء الأوسط من قاعدة الجمجمة بشكل أساسي. يتميز بجسم مركزي وثلاثة نتوءات (زُوائد) على كل جانب من الجسم.</li>
+        </ul>
+    </ul>
 
     <br>
+       <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A47.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
 
     <!-- بالإنجليزية -->
     <div class="bubble" dir="ltr">
         <ul>
-            <li><strong>Maxillary nerve (V2):</strong></li>
+            <li><strong>3- Skull Constitution:</strong></li>
             <ul>
-                <li>It follows this path:</li>
-                <ul>
-                    <li>Lateral wall of the cavernous sinus.</li>
-                    <li>Foramen rotundum.</li>
-                    <li>Upper part of the pterygopalatine fossa.</li>
-                    <li>Inferior orbital fissure.</li>
-                    <li>Infraorbital groove and canal to exit through the infraorbital foramen as the <strong>infraorbital nerve</strong>.</li>
-                </ul>
+                <li><strong>c-</strong> The sphenoid bone: it is a single, symmetrical bone that articulates with all the bones of the skull. It mainly belongs to the middle part of the skull base. It consists of a central body and three processes on each side of the body.</li>
             </ul>
         </ul>
     </div>
@@ -2855,16 +2704,68 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالفرنسية -->
     <div class="bubble">
         <ul>
-            <li><strong>Nerf maxillaire (V2) :</strong></li>
+            <li><strong>3- Constitution du crâne :</strong></li>
             <ul>
-                <li>Il parcourt :</li>
+                <li><strong>c-</strong> Le sphénoïde : est un os impair et symétrique qui s’articule avec tous les os du crâne. Il appartient essentiellement à la partie moyenne de la base du crâne. Présente à décrire un corps et trois apophyses de chaque côté du corps.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="sphenoide-details" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>تفاصيل العظم الوتدي:</strong></li>
+        <ul>
+            <li><strong>١- الجسم:</strong> مكعّب الشكل تقريبًا، وتوجد على سطحه العلوي حفرة عميقة تُسمى "السُرج التركي" تحتوي على الغدة النخامية.</li>
+            <li>من جانبي الجسم تنشأ:</li>
+            <ul>
+                <li><strong>- الأجنحة الصغيرة:</strong> تتصل بالجسم عبر جذرين يُشكّلان بينهما القناة البصرية، وتتصل من الأمام بالجزء الأفقي للعظم الجبهي.</li>
+                <li><strong>- الأجنحة الكبيرة:</strong> تُشكّل جزءًا من الطابق الأوسط لقاعدة الجمجمة، وتُساهم من خلال سطحها الخارجي في بناء الجدران الجانبية للتجويف الحجاجي.</li>
+            </ul>
+            <li><strong>٢- الزوائد الجناحية (البتيرية):</strong> تتكون من صفيحتين تحددان الحفرة الجناحية (البتيرية).</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>Details of the Sphenoid Bone:</strong></li>
+            <ul>
+                <li><strong>1- Body:</strong> Roughly cuboidal in shape. Its superior surface features a deep depression — the sella turcica — that houses the pituitary gland.</li>
+                <li>From the lateral sides of the body arise:</li>
                 <ul>
-                    <li>La paroi latérale du sinus caverneux.</li>
-                    <li>Le foramen rond.</li>
-                    <li>La partie supérieure de la fosse ptérygo-palatine.</li>
-                    <li>La fissure orbitaire inférieure.</li>
-                    <li>Le sillon et le canal infra-orbitaire pour sortir par le foramen infra-orbitaire sous le nom de <strong>nerf infra-orbitaire</strong>.</li>
+                    <li><strong>- Lesser wings:</strong> Attached to the body by two roots that define the optic canal between them, and articulate anteriorly with the horizontal part of the frontal bone.</li>
+                    <li><strong>- Greater wings:</strong> Form part of the middle cranial fossa and contribute to the lateral walls of the orbital cavities via their extracranial surfaces.</li>
                 </ul>
+                <li><strong>2- Pterygoid processes:</strong> Composed of two plates that delimit the pterygoid fossa.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>Détails de l’os sphénoïde :</strong></li>
+            <ul>
+                <li><strong>1- Corps :</strong> régulièrement cubique. La face supérieure présente une fosse profonde : la selle turcique où se loge l’hypophyse.</li>
+                <li>Des faces latérales naissent les :</li>
+                <ul>
+                    <li><strong>- Petites ailes :</strong> elles s’implantent sur le corps par deux racines qui délimitent entre elles le canal optique, et s’articulent en avant avec la portion horizontale du frontal.</li>
+                    <li><strong>- Grandes ailes :</strong> font partie de l’étage moyen de la base du crâne et participent, par leurs faces exocrâniennes, à la formation des parois externes des cavités orbitaires.</li>
+                </ul>
+                <li><strong>2- Apophyses ptérygoïdes :</strong> faites de deux lames qui délimitent la fosse ptérygoïde.</li>
             </ul>
         </ul>
     </div>
@@ -2876,41 +2777,70 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
+      <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A48.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+                          <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A49.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+                          <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A50.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+
+
 
 
 <div class="bubble">
-    <button class="interact-button" id="nerf-mandibulaire" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <button class="interact-button" id="occipital" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
     <!-- بالعربية -->
     <ul>
-        <li><strong>العصب الفكي السفلي (V3):</strong></li>
+        <li><strong>٣- تكوين الجمجمة:</strong></li>
         <ul>
-            <li>بمجرد خروجه من العقدة الثلاثية التوائم، يعبر عبر الثقب البيضوي (البيضاوي).</li>
-            <li>ينتهي في الحفرة تحت الصدغية مشكلاً فرعين رئيسيين:</li>
+            <li><strong>د-</strong> العظم القذالي: هو عظم فردي ومتناظر يُشكّل الجزء الخلفي من الجمجمة. يساهم في تشكيل قاعدة الجمجمة وقبتها.</li>
+            <li><strong>١- السطح الخارجي (خارج القحف):</strong></li>
             <ul>
-                <li><strong>العصب اللساني:</strong> يتجه نحو الحجرة تحت الفك السفلي ثم تحت اللسان ليصل إلى الوجه الجانبي اللساني.</li>
-                <li><strong>العصب السنخي السفلي:</strong> ينزل عموديًا ويدخل القناة الفكية السفلية ليخرج من الثقبة الذقنية كـ <strong>العصب الذقني</strong>.</li>
+                <li>على الخط الناصف من الأمام إلى الخلف: الناتئ القاعدي، الثقبة العظمى (الثقب القذالي الكبير)، البروز القذالي الخارجي.</li>
+                <li>جانبيًا من الأمام إلى الخلف: اللقمتان القذاليتان، الخط المنحني القذالي السفلي، الخط المنحني القذالي العلوي.</li>
+            </ul>
+            <li><strong>٢- السطح الداخلي (داخل القحف):</strong></li>
+            <ul>
+                <li>على الخط الناصف: الثلم القاعدي الذي يستقر فيه الجذع القاعدي (الشريان القاعدي)، الثقبة العظمى، البروز القذالي الداخلي.</li>
+                <li>جانبيًا: الحفرتان المخيخيتان، والحفرتان المخيتان.</li>
             </ul>
         </ul>
     </ul>
 
     <br>
-   <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A129.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
 
     <!-- بالإنجليزية -->
     <div class="bubble" dir="ltr">
         <ul>
-            <li><strong>Mandibular nerve (V3):</strong></li>
+            <li><strong>3- Skull Constitution:</strong></li>
             <ul>
-                <li>As soon as it emerges from the trigeminal ganglion, it passes through the foramen ovale.</li>
-                <li>It terminates in the infratemporal fossa into two main branches:</li>
+                <li><strong>d-</strong> The occipital bone: a single, symmetrical bone that forms the posterior part of the skull. It contributes to the formation of both the cranial base and calvaria.</li>
+                <li><strong>1- Exocranial surface:</strong></li>
                 <ul>
-                    <li><strong>Lingual nerve:</strong> heads towards the submandibular and sublingual spaces, then to the lateral lingual surface.</li>
-                    <li><strong>Inferior alveolar nerve:</strong> descends vertically, enters the mandibular canal, and exits through the mental foramen as the <strong>mental nerve</strong>.</li>
+                    <li>Along the midline from front to back: basilar process, foramen magnum, external occipital protuberance.</li>
+                    <li>Laterally from front to back: occipital condyles, inferior nuchal line, superior nuchal line.</li>
+                </ul>
+                <li><strong>2- Endocranial surface:</strong></li>
+                <ul>
+                    <li>Along the midline: basilar groove (housing the basilar artery), foramen magnum, internal occipital protuberance.</li>
+                    <li>Laterally: cerebellar fossae and cerebral fossae.</li>
                 </ul>
             </ul>
         </ul>
@@ -2921,13 +2851,18 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالفرنسية -->
     <div class="bubble">
         <ul>
-            <li><strong>Nerf mandibulaire (V3) :</strong></li>
+            <li><strong>3- Constitution du crâne :</strong></li>
             <ul>
-                <li>Dès qu’il émerge du ganglion trigéminal, il traverse le foramen ovale.</li>
-                <li>Il se termine dans la fosse infratemporale en deux branches principales :</li>
+                <li><strong>d-</strong> L’occipital : est un os impair et symétrique qui forme la partie postérieure du crâne. Il participe à la formation de la base du crâne et de la calvaria.</li>
+                <li><strong>1- La face exocrânienne montre :</strong></li>
                 <ul>
-                    <li><strong>Nerf lingual :</strong> se dirige vers la loge submandibulaire, puis sublinguale, et atteint la face latérale linguale.</li>
-                    <li><strong>Nerf alvéolaire inférieur :</strong> descend verticalement, pénètre dans le canal mandibulaire et ressort par le foramen mentonnier sous le nom de <strong>nerf mentonnier</strong>.</li>
+                    <li>Sur la ligne médiane et d’avant en arrière : l’apophyse basilaire, le foramen magnum, la protubérance occipitale externe.</li>
+                    <li>Latéralement d’avant en arrière : les condyles occipitaux, la ligne courbe occipitale inférieure, la ligne courbe occipitale supérieure.</li>
+                </ul>
+                <li><strong>2- Face endocrânienne présente :</strong></li>
+                <ul>
+                    <li>Sur la ligne médiane : la gouttière basilaire où repose le tronc basilaire (artère), le foramen magnum, la protubérance occipitale interne.</li>
+                    <li>Latéralement : on a les fosses cérébelleuses et les fosses cérébrales.</li>
                 </ul>
             </ul>
         </ul>
@@ -2936,147 +2871,42 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
-
-
-
-
-
-
-
-
-<div class="bubble">
-    <button class="interact-button" id="territoire-innervation" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>نطاق التعصيب:</strong></li>
-        <ul>
-            <li><strong>المنطقة الحسية:</strong></li>
-            <ul>
-                <li>العصب العيني: الثلث العلوي من جلد الوجه، والجزء العلوي من الغشاء المخاطي للأنف.</li>
-                <li>العصب الفكي العلوي: الثلث الأوسط من جلد الوجه، والجزء الأوسط من الغشاء المخاطي للأنف والبلعوم.</li>
-                <li>العصب الفكي السفلي: الثلث السفلي من جلد الوجه، والثلثين الأماميين من اللسان (بدون الإحساس بالتذوق).</li>
-            </ul>
-            <li><strong>المنطقة الحركية:</strong> تؤمنها الفرع الحركي، وتخص العضلات الماضغة:</li>
-            <ul>
-                <li>العضلة الصدغية</li>
-                <li>العضلة الماضغة</li>
-                <li>العضلة الجناحية الوحشية</li>
-                <li>العضلة الجناحية الإنسية</li>
-            </ul>
-        </ul>
-    </ul>
-
-    <br>
 
        <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A130.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-
-    <!-- بالإنجليزية -->
-    <div class="bubble" dir="ltr">
-        <ul>
-            <li><strong>Innervation territory:</strong></li>
-            <ul>
-                <li><strong>Sensory territory:</strong></li>
-                <ul>
-                    <li>Ophthalmic nerve: upper third of facial skin, upper nasal mucosa.</li>
-                    <li>Maxillary nerve: middle third of facial skin, middle nasopharyngeal mucosa.</li>
-                    <li>Mandibular nerve: lower third of facial skin, anterior two-thirds of the tongue (no taste).</li>
-                </ul>
-                <li><strong>Motor territory:</strong> Provided by the motor branch to the masticatory muscles:</li>
-                <ul>
-                    <li>Temporalis muscle</li>
-                    <li>Masseter muscle</li>
-                    <li>Lateral pterygoid muscle</li>
-                    <li>Medial pterygoid muscle</li>
-                </ul>
-            </ul>
-        </ul>
-    </div>
-
-    <br>
-
-    <!-- بالفرنسية -->
-    <div class="bubble">
-        <ul>
-            <li><strong>Territoire d'innervation :</strong></li>
-            <ul>
-                <li><strong>Territoire sensitif :</strong></li>
-                <ul>
-                    <li>Nerf ophtalmique : tiers supérieur de la peau du visage, muqueuse nasale haute.</li>
-                    <li>Nerf maxillaire : tiers moyen de la peau du visage, muqueuse naso-pharyngée moyenne.</li>
-                    <li>Nerf mandibulaire : tiers inférieur de la peau du visage, deux tiers antérieurs de la langue (sans la gustation).</li>
-                </ul>
-                <li><strong>Territoire moteur :</strong> assuré par la branche motrice pour les muscles masticateurs :</li>
-                <ul>
-                    <li>Muscle temporal</li>
-                    <li>Muscle masséter</li>
-                    <li>Muscle ptérygoïdien latéral</li>
-                    <li>Muscle ptérygoïdien médial</li>
-                </ul>
-            </ul>
-        </ul>
-    </div>
-</div>
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A51.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
 
 
-<div class="bubble">
-    <button class="interact-button" id="interet-clinique" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>الأهمية السريرية:</strong></li>
-        <ul>
-            <li><strong>المنعكس القرني:</strong> تحفيز القرنية بقطن مبلل بمحلول ملحي يؤدي إلى إغلاق الجفون، ويعتمد على العصب ثلاثي التوائم.</li>
-            <li><strong>ألم العصب الثلاثي التوائم (العِصاب):</strong> ألم نابض أو حاد يحدث في منطقة تعصيب العصب، غالبًا بسبب ضغط وعاء دموي على العصب.</li>
-            <li><strong>الهربس النطاقي (الحزام الناري):</strong> إعادة تنشيط فيروس جدري الماء يسبب طفحًا جلديًا مؤلمًا يتبع مسار أحد فروع العصب.</li>
-        </ul>
-    </ul>
-
-           <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A131.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A52.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
 
 
-             <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A132.jpeg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-    <br>
 
-    <!-- بالإنجليزية -->
-    <div class="bubble" dir="ltr">
-        <ul>
-            <li><strong>Clinical significance:</strong></li>
-            <ul>
-                <li><strong>Corneal reflex:</strong> Stimulation of the cornea with cotton soaked in saline triggers eyelid closure; mediated by the trigeminal nerve.</li>
-                <li><strong>Trigeminal neuralgia:</strong> A sharp or throbbing pain within the trigeminal territory, often due to a neurovascular conflict.</li>
-                <li><strong>Herpes zoster (shingles):</strong> Reactivation of the varicella virus manifests as painful skin eruptions along the path of a nerve.</li>
-            </ul>
-        </ul>
-    </div>
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A53.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
 
 
-    <br>
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A54.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
 
-    <!-- بالفرنسية -->
-    <div class="bubble">
-        <ul>
-            <li><strong>Intérêt clinique :</strong></li>
-            <ul>
-                <li><strong>Réflexe cornéen :</strong> la stimulation de la cornée avec un coton imbibé de sérum provoque une occlusion réflexe des paupières, dépendant du nerf trijumeau.</li>
-                <li><strong>Névralgie trigéminale :</strong> douleur vive ou sourde survenant dans un territoire du nerf, souvent liée à un conflit vasculo-nerveux.</li>
-                <li><strong>Zona (herpès zostérien) :</strong> réactivation du virus de la varicelle entraînant des éruptions douloureuses suivant le trajet d'une branche nerveuse.</li>
-            </ul>
-        </ul>
-    </div>
-</div>
+
+
+
+
+
+
 
 
 
@@ -3088,25 +2918,18 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 <div class="bubble">
-    <button class="interact-button" id="trigeminal-terminology" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <button class="interact-button" id="temporal" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
     <!-- بالعربية -->
     <ul>
-        <li><strong>المصطلحات التشريحية:</strong></li>
+        <li><strong>٣- تكوين الجمجمة:</strong></li>
         <ul>
-            <li><strong>التسمية الحديثة:</strong></li>
+            <li><strong>هـ-</strong> العظم الصدغي: هو عظم مزدوج يُشارك في تكوين قاعدة الجمجمة وقبتها.</li>
+            <li>يتكوّن من ثلاث أجزاء:</li>
             <ul>
-                <li>العقدة ثلاثية التوائم</li>
-                <li>تجويف ثلاثي التوائم</li>
-                <li>شق ثلاثي التوائم</li>
-                <li>العصب العيني</li>
-            </ul>
-            <li><strong>التسمية القديمة:</strong></li>
-            <ul>
-                <li>عقدة غاسر (Gasser)</li>
-                <li>تجويف ميكل (Meckel)</li>
-                <li>شق غرونبرغ (Gruberg)</li>
-                <li>العصب العيني لـ ويليس (Willis)</li>
+                <li><strong>١- الجزء العلوي:</strong> يُعرف بالقِشرة (القَشَرَة)، وتُقسَّم سطحه الخارجي إلى جزأين بواسطة الناتئ الوجني.</li>
+                <li>ينشأ الناتئ الوجني من القشرة عبر جذرين، أحدهما أفقي يُشكّل اللقمة الصدغية.</li>
+                <li><strong>٢- الجزء الخلفي السفلي:</strong> وهو الجزء الخشائي، ضخم الحجم، يقع خلف القناة السمعية الخارجية، ويمتد إلى الأسفل ببروز مخروطي الشكل يُسمى الناتئ الخُشائي، الذي يحتوي على تجاويف تُعرف بالخلايا الخُشائية.</li>
             </ul>
         </ul>
     </ul>
@@ -3116,21 +2939,14 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالإنجليزية -->
     <div class="bubble" dir="ltr">
         <ul>
-            <li><strong>Terminology – Anatomical Nomenclature:</strong></li>
+            <li><strong>3- Skull Constitution:</strong></li>
             <ul>
-                <li><strong>Modern terminology:</strong></li>
+                <li><strong>e-</strong> The temporal bone: a paired bone that contributes to the formation of both the cranial base and the calvaria.</li>
+                <li>It consists of three parts:</li>
                 <ul>
-                    <li>Trigeminal ganglion</li>
-                    <li>Trigeminal cavum</li>
-                    <li>Trigeminal notch/incisure</li>
-                    <li>Ophthalmic nerve</li>
-                </ul>
-                <li><strong>Old terminology:</strong></li>
-                <ul>
-                    <li>Gasserian ganglion</li>
-                    <li>Meckel’s cavity</li>
-                    <li>Gruberg’s notch</li>
-                    <li>Ophthalmic nerve of Willis</li>
+                    <li><strong>1- The superior part:</strong> the squamous part is divided into two segments on its external surface by the zygomatic process.</li>
+                    <li>The zygomatic process originates from the squama via two roots, the transverse root forming the temporal condyle.</li>
+                    <li><strong>2- The posteroinferior part:</strong> the mastoid portion is large, located behind the external acoustic meatus, and extends downward as a conical prominence with an inferior apex — the mastoid process — which is hollowed out into air-filled spaces called mastoid cells.</li>
                 </ul>
             </ul>
         </ul>
@@ -3141,21 +2957,14 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالفرنسية -->
     <div class="bubble">
         <ul>
-            <li><strong>Terminologie – Nomenclature anatomique :</strong></li>
+            <li><strong>3- Constitution du crâne :</strong></li>
             <ul>
-                <li><strong>Nomenclature actuelle :</strong></li>
+                <li><strong>e-</strong> L’os temporal : est un os pair qui participe à la formation de la base du crâne et de la calvaria.</li>
+                <li>Il est constitué de trois parties :</li>
                 <ul>
-                    <li>Ganglion trigéminal</li>
-                    <li>Cavum trigéminal</li>
-                    <li>Incisure trigéminale</li>
-                    <li>Nerf ophtalmique</li>
-                </ul>
-                <li><strong>Ancienne nomenclature :</strong></li>
-                <ul>
-                    <li>Ganglion de Gasser</li>
-                    <li>Cavum de Meckel</li>
-                    <li>Incisure de Gruberg</li>
-                    <li>Nerf ophtalmique de Willis</li>
+                    <li><strong>1- Une partie supérieure :</strong> l’écaille est divisée en deux segments dans sa surface exocrânienne par le processus zygomatique.</li>
+                    <li>Le processus zygomatique naît de l’écaille par deux racines, dont la racine transversale constitue le condyle temporal.</li>
+                    <li><strong>2- Une partie postéro-inférieure :</strong> la portion mastoïdienne est volumineuse, située derrière le méat acoustique externe, et se prolonge en bas par une éminence conique à sommet inférieur — le processus mastoïde — creusée de logettes appelées cellules mastoïdiennes.</li>
                 </ul>
             </ul>
         </ul>
@@ -3166,75 +2975,50 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A55.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A56.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- تصميم جديد كليًا بدون خاصية الطفو -->
-<div style="display: flex; justify-content: center; align-items: center; height: 200px; background-color: #f5f5f5; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-
-  <button style="background-color: #d32f2f; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">
-      ملخص 
-  </button>
-
-</div>
-
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A57.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
 
 
 
 
 
 <div class="bubble">
-    <button class="interact-button" id="trigeminal-intro" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <button class="interact-button" id="temporal-internal" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
     <!-- بالعربية -->
     <ul>
-        <li><strong>المقدمة:</strong></li>
+        <li><strong>٣- تكوين الجمجمة:</strong></li>
         <ul>
-            <li>العصب ثلاثي التوائم هو عصب مختلط (حسي-حركي).</li>
-            <li>ينشأ من الجزء الجانبي للجسر (البروتوبيرانس).</li>
-            <li>تشمل وظيفته الحركية تعصيب عضلات المضغ.</li>
-            <li>أما الوظيفة الحسية فتشمل نقل الإحساس من الوجه، العينين، والتجويف الأنفي.</li>
+            <li><strong>هـ-</strong> العظم الصدغي (تابع):</li>
+            <li><strong>٣- الجزء الداخلي:</strong> الصخرة، وتحتوي على الجهاز الدهليزي الحلزوني (جهاز السمع والتوازن). لها شكل هرمي مثلثي، ذروته باتجاه الداخل وقاعدته في الخارج متمثلة في القناة السمعية الخارجية.</li>
+            <li>يُوصف الصخرة من خلال ثلاث سطوح:</li>
+            <ul>
+                <li><strong>- السطح الأمامي العلوي:</strong> داخلي (داخل القحف).</li>
+                <li><strong>- السطح الخلفي العلوي:</strong> داخلي (داخل القحف)، ويحتوي على القناة السمعية الداخلية.</li>
+                <li><strong>- السطح السفلي:</strong> خارجي (خارج القحف)، ويحتوي على الناتئ الإبري.</li>
+            </ul>
         </ul>
     </ul>
 
@@ -3243,12 +3027,16 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالإنجليزية -->
     <div class="bubble" dir="ltr">
         <ul>
-            <li><strong>Introduction:</strong></li>
+            <li><strong>3- Skull Constitution:</strong></li>
             <ul>
-                <li>The trigeminal nerve is a mixed (sensory and motor) nerve.</li>
-                <li>It originates from the lateral part of the pons (protuberance).</li>
-                <li>Its motor branch innervates the masticatory muscles.</li>
-                <li>Its sensory branch provides sensation to the face, orbits, and nasal cavity.</li>
+                <li><strong>e-</strong> Temporal bone (continued):</li>
+                <li><strong>3- Internal part:</strong> The petrous part (rock) houses the cochleo-vestibular organ. It has the shape of a triangular pyramid with an internal apex and an external base represented by the external acoustic meatus.</li>
+                <li>The petrous part features:</li>
+                <ul>
+                    <li><strong>- Anterosuperior surface:</strong> endocranial.</li>
+                    <li><strong>- Posterosuperior surface:</strong> endocranial, containing the internal acoustic meatus.</li>
+                    <li><strong>- Inferior surface:</strong> exocranial, presenting the styloid process.</li>
+                </ul>
             </ul>
         </ul>
     </div>
@@ -3258,12 +3046,16 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     <!-- بالفرنسية -->
     <div class="bubble">
         <ul>
-            <li><strong>I. INTRODUCTION :</strong></li>
+            <li><strong>3- Constitution du crâne :</strong></li>
             <ul>
-                <li>Le nerf trijumeau est un nerf mixte (sensitif et moteur).</li>
-                <li>Il prend son origine au niveau de la partie latérale de la protubérance.</li>
-                <li>Sa voie motrice innerve les muscles masticateurs.</li>
-                <li>Sa voie sensitive assure la sensibilité de la face, des orbites et de la fosse nasale.</li>
+                <li><strong>e-</strong> L’os temporal (suite) :</li>
+                <li><strong>3- Une partie interne :</strong> Le rocher renferme l’organe cochléo-vestibulaire. Il a la forme d’une pyramide triangulaire à sommet interne et à base externe représentée par le méat acoustique externe.</li>
+                <li>Le rocher présente à décrire :</li>
+                <ul>
+                    <li><strong>- Face antéro-supérieure :</strong> endocrânienne.</li>
+                    <li><strong>- Face postéro-supérieure :</strong> endocrânienne, présentant le méat acoustique interne.</li>
+                    <li><strong>- Face inférieure :</strong> exocrânienne, présente le processus styloïde.</li>
+                </ul>
             </ul>
         </ul>
     </div>
@@ -3276,276 +3068,879 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A58.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
 
 <div class="bubble">
-    <button class="interact-button" id="trigeminal-origin" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+    <button class="interact-button" id="os-parietal" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
     <!-- بالعربية -->
     <ul>
-        <li><strong>المنشأ الحقيقي:</strong></li>
+        <li><strong>f- العظم الجداري:</strong></li>
         <ul>
-            <li>تنشأ الألياف الحسية من العقدة نصف القمرية (عقدة جيسر).</li>
-            <li>وهي كتلة عصبية تقع في الجزء الأمامي من السطح الأمامي العلوي للصخرة (العظم الصدغي).</li>
-            <li>تُحاط هذه العقدة بتجويف يُسمى الكهف ثلاثي التوائم (Cavum trigeminal)، وهو انطواء من الأم الجافية.</li>
-            <li>ينشأ من الحافة الأمامية الخارجية للعقدة ثلاث فروع مرتبة من الأمام إلى الخلف:
+            <li>العظم الجداري: هو عظم مزدوج يقع في الجزء الجانبي من الجمجمة. يلتصق مع العظم المقابل له على الخط المتوسط ويشكل مع هذا العظم أكثر من ثلث الجمجمة.</li>
+            <li>يتميز العظم الجداري بشكل مسطح وأربعة أضلاع ويقع خلف صفيحة الجبهة، أمام العظم القذالي، ويعلو الجناح الكبير للعظم الوتدي وصفيحة العظم الصدغي من الجوانب.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>f- The parietal bone:</strong></li>
+            <ul>
+                <li>The parietal bone: is a paired bone located in the lateral part of the calvaria. It articulates along the midline with the opposite bone and forms more than one-third of the calvaria with it.</li>
+                <li>The parietal bone is flat and quadrilateral, situated posterior to the frontal squama, anterior to the occipital bone, and laterally overhanging the greater wing of the sphenoid and the squama of the temporal bone.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>f- L’os pariétal :</strong></li>
+            <ul>
+                <li>L’os pariétal : est un os pair de la partie latérale de la calvaria. Il s’articule sur la ligne médiane avec celui du côté opposé et forme avec lui plus du 1/3 de la calvaria.</li>
+                <li>Il est aplati quadrilatère situé en arrière de l’écaille du frontal, en avant de l’occipital et surplombe latéralement la grande aile du sphénoïde et l’écaille de l’os temporal.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A59.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+
+
+
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A60.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="division-crane" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>4) تقسيم الجمجمة:</strong></li>
+        <ul>
+            <li>الجمجمة العظمية مقسمة بواسطة خط أفقي يمتد من الجزء الأوربي-الأنفي إلى البروز القذالي الخارجي إلى جزئين:</li>
+            <ul>
+                <li>جزء علوي، القحف أو القبة.</li>
+                <li>جزء سفلي، قاعدة الجمجمة المثقوبة بالعديد من الثقوب العصبية والأوعية الدموية.</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>4) Division of the skull:</strong></li>
+            <ul>
+                <li>The bony skull is divided by a horizontal line going from the orbito-nasal part to the external occipital protuberance into two parts:</li>
                 <ul>
-                    <li>الفرع العيني (n. ophthalmique)</li>
-                    <li>الفرع الفكي العلوي (n. maxillaire supérieur)</li>
-                    <li>الفرع الفكي السفلي (n. maxillaire inférieur أو mandibulaire)</li>
+                    <li>An upper part, the calvaria or vault.</li>
+                    <li>A lower part, the base of the skull pierced with numerous vascular and nerve foramina.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>4) Division du crâne :</strong></li>
+            <ul>
+                <li>Le crâne osseux est divisé par un trait horizontal allant de la partie orbito-nasale à la protubérance occipitale externe en deux parties :</li>
+                <ul>
+                    <li>Une partie supérieure, la calvaria ou la voute.</li>
+                    <li>Une partie inférieure, la base du crâne percée de nombreux foramens vasculo-nerveux.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A61.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="calvaria" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>a- القحف (Calvaria):</strong></li>
+        <ul>
+            <li>منظر خارجي للجمجمة، يمكن تقسيمها إلى خمس أجزاء:</li>
+            <ul>
+                <li>1. الجزء الأمامي: يتمثل في الجزء العمودي من العظم الجبهي، الذي يعرض من الأمام إلى الخلف الحواف العظمية العلوية للعين، الدرز الجبهي (عند الأطفال الذين تقل أعمارهم عن 6 سنوات، يكون خفيفًا عند البالغين)، الأقواس الحاجبية، الجلايبل (المسافة بين الحاجبين)، والتلال الجبهية.</li>
+                <li>2. الجزء الوسطي: يتمثل في الجزء الخلفي من صفيحة الجبهة التي تتصل بالعظم الجداري، مكونة الدرز التاجي؛ العظام الجدارية متصلة معًا مكونة الدرز السهمي.</li>
+                <li>3. الجزء الخلفي: يتمثل في العظم القذالي، المتصل بالأمام بالعظام الجدارية، مكونًا الدرز اللامبداوي.
+                في هذه المنطقة يمكن العثور على العظام الوعائية أو الساتورالية، والأكثر أهمية هو عظم الإنكا.</li>
+                <li>4. الجانبان الأيمن والأيسر: يظهران تجويفًا يسمى الحفرة الصدغية، التي تحددها الخطوط الصدغية العلوية والسفلية.</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>a- The Calvaria:</strong></li>
+            <ul>
+                <li>Externally, the skull can be divided into five parts:</li>
+                <ul>
+                    <li>1. The anterior part is represented by the vertical part of the frontal bone, which presents from front to back the upper orbital margins, the metopic suture (in children under 6 years of age, diminished in adults), the eyebrow arches, the glabella, and the frontal bosses.</li>
+                    <li>2. The median part is represented by the posterior part of the frontal squama, articulated with the parietals, forming the coronal suture; the parietals articulated with each other, forming the sagittal suture.</li>
+                    <li>3. The posterior part is represented by the occipital, articulated anteriorly with the parietals, forming the lambdoid suture.
+                    In this region, we can find the wormian or sutural bones, the most important of which is the Inca bone.</li>
+                    <li>4. The right and left lateral parts present a depression called the temporal fossa, marked by the superior and inferior temporal lines.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>a- La Calvaria :</strong></li>
+            <ul>
+                <li>Vue exocrânienne, elle peut être divisée en cinq parties :</li>
+                <ul>
+                    <li>1. La partie antérieure est représentée par la partie verticale du frontal qui présente d’avant en arrière, les rebords orbitaires supérieurs, la suture métopique (chez l’enfant dont l'âge est inférieur à 6 ans, atténuée chez l’adulte), les arcades sourcilières, la glabelle et les bosses frontales.</li>
+                    <li>2. La partie médiane est représentée par la partie postérieure de l’écaille du frontal articulée avec les pariétaux, formant la suture coronale ; les pariétaux articulés entre eux formant la suture sagittale.</li>
+                    <li>3. La partie postérieure est représentée par l’occipital, articulé en avant avec les pariétaux, formant la suture lambdoïde.
+                    Dans cette région, on peut trouver les os wormiens ou suturaux, dont le plus important est l’os de l’Inca.</li>
+                    <li>4. Les parties latérales droite et gauche présentent une dépression appelée fosse temporale, marquée par les lignes courbes temporales supérieure et inférieure.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A62.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="vue-endocranienne" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>- المنظر الداخلي للجمجمة (القحف):</strong></li>
+        <ul>
+            <li>تكون في اتصال مباشر مع الكتلة الدماغية والأوعية الدموية داخل الجمجمة؛ ولذلك، فهي مليئة بالعديد من الأخاديد والجداول.</li>
+            <li>تحتوي على العناصر التالية:</li>
+            <ul>
+                <li>1. على الخط المتوسط: التلة الجبهية، الأخدود الخاص بالجيوب المستعرضة العليا، والدرز السهمي.</li>
+                <li>2. جانبيًا: الأحواض الجبهية والأحواض الجدارية.</li>
+                <li>3. في الخلف: العظم القذالي.</li>
+                <li>4. من الخارج: الجداول الخارجية والداخلية مع الدبلو.</li>
+                <li>5. سطح القبة مليء بالأخاديد الشريانية ويحتوي على حفر الحبيبات العنكبوتية.</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>- Endocranial view of the calvaria:</strong></li>
+            <ul>
+                <li>It is in direct contact with the brain mass and intracranial vessels; thus, it is traversed by numerous grooves and sulci.</li>
+                <li>It presents the following elements:</li>
+                <ul>
+                    <li>1. On the midline: the frontal crest, the groove of the superior longitudinal sinus, and the sagittal suture.</li>
+                    <li>2. Laterally: the frontal fossae and the parietal fossae.</li>
+                    <li>3. Posteriorly: the occipital bone.</li>
+                    <li>4. Laterally: the external and internal tables with the diploë.</li>
+                    <li>5. The surface of the vault is traversed by arterial grooves and presents the foveae of the arachnoid granulations.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>- Vue endocrânienne de la calvaria :</strong></li>
+            <ul>
+                <li>Elle est en contact direct avec la masse cérébrale et les vaisseaux intracrâniens ; elle est parcourue, de ce fait, par de nombreux sillons et gouttières.</li>
+                <li>Elle présente les éléments suivants :</li>
+                <ul>
+                    <li>1. Sur la ligne médiane : la crête frontale, la gouttière du sinus longitudinal supérieur et la suture sagittale.</li>
+                    <li>2. Latéralement : les fosses frontales et les fosses pariétales.</li>
+                    <li>3. En arrière : l’occipital.</li>
+                    <li>4. En dehors : les tables externe et interne avec la diploé.</li>
+                    <li>5. La surface de la voute est parcourue par des sillons artériels et présente des fossettes des granulations arachnoïdiennes.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+                           <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A63.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="base-du-crane" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>b- قاعدة الجمجمة:</strong></li>
+        <ul>
+            <li>1. الطابق الأمامي: يحده الجزء العمودي من العظم الجبهي من الأمام، وزوائد السرج التركي والأجنحة الصغيرة للعظم الوتدي من الخلف.</li>
+            <li>2. الطابق المتوسط: يحده الحد الخلفي للطابق الأمامي من الأمام، واللوح الرباعي للعظم القذالي، وحواف الصخور العليا من الخلف.</li>
+            <li>3. الطابق الخلفي: يحده الحد الخلفي للطابق المتوسط من الأمام، ومن الخلف الأخاديد الخاصة بالجيوب الجانبية التي تتقارب نحو البروز القذالي الداخلي.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>b- The base of the skull:</strong></li>
+            <ul>
+                <li>1. Anterior floor: limited by the vertical portion of the frontal bone in front, the tubercle of the Turkish saddle, and the small wings of the sphenoid bone at the back.</li>
+                <li>2. Middle floor: limited by the posterior boundaries of the anterior floor in front, the quadrilateral plate of the occipital bone, and the upper borders of the petrous bones at the back.</li>
+                <li>3. Posterior floor: limited by the posterior boundaries of the middle floor in front, and at the back by the grooves of the lateral sinuses that converge toward the internal occipital protuberance.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>b- La base du crâne :</strong></li>
+            <ul>
+                <li>1. Étage antérieur : limité par la portion verticale du frontal en avant, le tubercule de la selle turcique et les petites ailes du sphénoïde en arrière.</li>
+                <li>2. Étage moyen : limité par les limites postérieures de l’étage antérieur en avant, la lame quadrilatère de l’occipital et les bords supérieurs des rochers en arrière.</li>
+                <li>3. Étage postérieur : limité par les limites postérieures de l’étage moyen en avant et en arrière les gouttières des sinus latéraux qui convergent vers la protubérance occipitale interne.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+     <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A64.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="foramens-et-elements" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>فتح الفتحات والعناصر المارة:</strong></li>
+        <ul>
+            <li><strong>A- الطابق الأمامي:</strong></li>
+            <ul>
+                <li>1- الفتحة العمياء (Foramen caecum) تعطي مكانًا لإدخال الفاكس الدماغي.</li>
+                <li>2- فتحات اللوحة المثقبة (Foramens de la lame criblée) للعظم الغربالي تسمح بمرور فروع العصب الشمي (العدد الأول).</li>
+                <li>3- القناة البصرية (Canal optique) تسمح بمرور العصب البصري (العدد الثاني)، والشريان العيني، والعصب السمبثاوي المحيط بالشريان.</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>Foramina and the passing elements:</strong></li>
+            <ul>
+                <li><strong>A- The anterior floor:</strong></li>
+                <ul>
+                    <li>1- The caecum foramen provides attachment for the falx cerebri.</li>
+                    <li>2- The foramina of the cribriform plate of the ethmoid bone allow passage for the branches of the olfactory nerve (I).</li>
+                    <li>3- The optic canal allows passage for the optic nerve (II), the ophthalmic artery, and the sympathetic peri-arterial plexus.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>Foramens et les éléments de passage :</strong></li>
+            <ul>
+                <li><strong>A- L’étage antérieur :</strong></li>
+                <ul>
+                    <li>1- Le foramen caecum donne insertion à la faux du cerveau.</li>
+                    <li>2- Les foramens de la lame criblée de l’éthmoïde livrent passage aux rameaux du nerf olfactif I.</li>
+                    <li>3- Le canal optique livre passage au nerf optique II, à l’artère ophtalmique et au plexus sympathique péri-artériel.</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+     <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A65.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+<div class="bubble">
+    <button class="interact-button" id="etage-moyen" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>B- الطابق المتوسط:</strong></li>
+        <ul>
+            <li>1- الشق العيني العلوي (Fissure orbitaire supérieure): على شكل فاصلة، يمر من خلالها العناصر العصبية والأوعية الدموية التالية:</li>
+            <ul>
+                <li>- الوريد العيني.</li>
+                <li>- الأعصاب الحركية للعين: العصب الحركي III، العصب الهدبي IV، العصب العيني V1، العصب الأبدي VI.</li>
+            </ul>
+            <li>2- الفتحة الدائرية (Foramen rond): العصب الفكي العلوي (V2).</li>
+            <li>3- الفتحة البيضاوية (Foramen ovale): العصب الفكي السفلي (V3) والشريان السحائي المساعد.</li>
+            <li>4- الفتحة الشوكية (Foramen épineux): الشريان السحائي المتوسط.</li>
+            <li>5- الفتحة الممزقة (Foramen déchiré): الشريان السباتي الداخلي.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>B- The middle floor:</strong></li>
+            <ul>
+                <li>1- The superior orbital fissure, in the shape of a comma, allows passage for the following vascular and nerve elements:</li>
+                <ul>
+                    <li>- Ophthalmic vein.</li>
+                    <li>- Oculomotor nerve III, trochlear nerve IV, ophthalmic nerve V1, and abducens nerve VI.</li>
+                </ul>
+                <li>2- The round foramen: maxillary nerve (V2).</li>
+                <li>3- The oval foramen: mandibular nerve (V3) and the accessory meningeal artery.</li>
+                <li>4- The spinosum foramen: middle meningeal artery.</li>
+                <li>5- The foramen lacerum: internal carotid artery.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>B- L’étage moyen :</strong></li>
+            <ul>
+                <li>1- Fissure orbitaire supérieure, en forme de virgule, elle livre passage aux éléments vasculo-nerveux suivants :</li>
+                <ul>
+                    <li>- Veine ophtalmique.</li>
+                    <li>- Nerfs oculomoteur III, trochléaire IV, ophtalmique V1 et abducens VI.</li>
+                </ul>
+                <li>2- Foramen rond : nerf maxillaire (V2).</li>
+                <li>3- Foramen ovale : nerf mandibulaire (V3) et l’artère méningée accessoire.</li>
+                <li>4- Foramen épineux : artère méningée moyenne.</li>
+                <li>5- Foramen déchiré : l’artère carotide interne.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+   <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A66.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+<div class="bubble">
+    <button class="interact-button" id="etage-posterieur" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>C- الطابق الخلفي:</strong></li>
+        <ul>
+            <li>1- المأخذ السمعي الداخلي (Méat acoustique interne): العصب الوجهي VII، العصب السمعي VIII والشريان السمعي الداخلي.</li>
+            <li>2- الفتحة الوداجية (Foramen jugulaire): الأعصاب اللساني البلعومي IX، العصب المبهم X، العصب الإضافي XI، الجيب الصخري السفلي والجيب الجانبي الذي يستمر عبر الوريد الوداجي الداخلي.</li>
+            <li>3- القناة تحت اللسان (Canal hypoglosse): العصب تحت اللسان (XII).</li>
+            <li>4- الفتحة الكبيرة (Foramen magnum): النخاع المستطيل وأغشيته السحائية، الشرايين الفقرية، الجذر النخاعي لكل عصب إضافي، والضفائر الوريدية.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>C- The posterior floor:</strong></li>
+            <ul>
+                <li>1- Internal acoustic meatus: facial nerve VII, vestibulocochlear nerve VIII, and the internal auditory artery.</li>
+                <li>2- Jugular foramen: glossopharyngeal nerve IX, vagus nerve X, accessory nerve XI, inferior petrosal sinus, and the lateral sinus continuing into the internal jugular vein.</li>
+                <li>3- Hypoglossal canal: hypoglossal nerve (XII).</li>
+                <li>4- Foramen magnum: medulla oblongata and its meningeal coverings, vertebral arteries, the medullary root of each accessory nerve, and venous plexuses.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>C- L’étage postérieur :</strong></li>
+            <ul>
+                <li>1- Méat acoustique interne, nerf facial VII, nerf auditif VIII et l’artère auditive interne.</li>
+                <li>2- Foramen jugulaire : nerfs glosso-pharyngien IX, vague X, accessoire XI, le sinus pétreux inférieur et le sinus latéral qui se continue par la veine jugulaire interne.</li>
+                <li>3- Canal hypoglosse : nerf hypoglosse (XII).</li>
+                <li>4- Foramen magnum : moelle allongée et ses enveloppes méningées, les artères vertébrales, la racine médullaire de chaque nerf accessoire et les plexus veineux.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+   <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A66.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="bubble">
+
+                        <!-- زر إضافات باللون الأحمر ومتمركز -->
+                        <div style="text-align: center; margin-bottom: 20px;">
+                          <button style="background-color: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-size: 16px; cursor: pointer;">
+                            إضافات
+                          </button>
+                        </div>
+                    </div>
+
+
+<div class="bubble">
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>الجمجمة:</strong>
+            <ul>
+                <li>تمتلك الجمجمة 22 عظمةً باستثناء عظيمات السمع في الأذن.</li>
+                <li>ترتبط عظام الجمجمة مع بعضها بواسطة الدروز، وهي عظام غير متحركة، وذلك باستثناء الفك السفلي الذي يُعد متحركًا ويشكل الجزء السفلي من القحف.</li>
+                <li>يمكن تقسيم القحف إلى:
+                    <ul>
+                        <li>جزء علوي يُسمى <strong>القبّة (calvaria)</strong> يغطّي جوف القحف الحاوي على الدماغ.</li>
+                        <li>قاعدة تُشكّل أرضية جوف القحف.</li>
+                    </ul>
+                </li>
+                <li>الهيكل الوجهي (<strong>viscerocranium</strong>) يشكّل الجزء السفلي الأمامي من القحف.</li>
+                <li>تتشكل القبة بشكل رئيسي من عظمتين مزدوجتين هامتين هما: العظمتان الجداريتان، ومن أجزاء من عظام مفردة هي: الجبهية، الوتدية، القذالية، والصدغية.</li>
+                <li>تتشكل القاعدة بشكل رئيسي من أجزاء من كل من: العظم الوتدي، الصدغي، والقذالي.</li>
+                <li>يتكون الهيكل الوجهي من عظام مزدوجة هي: الأنفية، الحنك، الدمعي، الوجني، الفك العلوي، والمحارة الأنفية السفلية، بالإضافة إلى عظم مفرد هو الميكعة.</li>
+                <li>لا يُعد الفك السفلي جزءًا من القحف ولا من الهيكل الوجهي.</li>
+                <li>المنظر الأمامي للجمجمة يضم الجبهة (forehead) في الأعلى، والناحية الأنفية (nasal region)، وجزء الوجه الواقع بين الحجاجين، والفك العلوي، والفك السفلي في الأسفل (انظر الشكل 8.18).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div dir="ltr">
+        <ul>
+            <li><strong>Skull:</strong>
+                <ul>
+                    <li>The skull has 22 bones, excluding the auditory ossicles in the ear.</li>
+                    <li>The bones of the skull are joined by sutures, which are immovable joints, except for the mandible, which is movable and forms the lower part of the cranium.</li>
+                    <li>The cranium can be divided into:
+                        <ul>
+                            <li>An upper part called the <strong>calvaria</strong>, covering the cranial cavity that houses the brain.</li>
+                            <li>A base that forms the floor of the cranial cavity.</li>
+                        </ul>
+                    </li>
+                    <li>The facial skeleton (<strong>viscerocranium</strong>) forms the anterior lower part of the cranium.</li>
+                    <li>The calvaria is mainly formed by two paired bones: the parietal bones, and parts of unpaired bones: the frontal, sphenoid, occipital, and temporal bones.</li>
+                    <li>The base is primarily formed by parts of the sphenoid, temporal, and occipital bones.</li>
+                    <li>The facial skeleton consists of paired bones: nasal, palatine, lacrimal, zygomatic, maxilla, and inferior nasal concha, plus one unpaired bone: the vomer.</li>
+                    <li>The mandible is not considered part of the cranium nor of the facial skeleton.</li>
+                    <li>The anterior view of the skull shows the forehead at the top, nasal region, the area between the orbits, the maxilla, and the mandible at the bottom (see figure 8.18).</li>
                 </ul>
             </li>
         </ul>
-    </ul>
+    </div>
 
     <br>
-               <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A134.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
 
-    <!-- بالإنجليزية -->
-    <div class="bubble" dir="ltr">
-        <ul>
-            <li><strong>Descriptive Anatomy – Real Origin:</strong></li>
+    <!-- العنوان بالفرنسية -->
+    <ul>
+        <li><strong>Crâne :</strong>
             <ul>
-                <li>The sensory fibers originate from the semilunar (Gasserian) ganglion.</li>
-                <li>This is a neural mass located on the anterior part of the anterosuperior surface of the petrous temporal bone.</li>
-                <li>It is enclosed in a cavity called the trigeminal cavum, which is a dural duplication.</li>
-                <li>From the anterolateral border of the ganglion arise, from front to back:
+                <li>Le crâne possède 22 os, à l'exception des osselets de l'oreille.</li>
+                <li>Les os du crâne sont reliés par des sutures, qui sont immobiles, sauf la mandibule, qui est mobile et constitue la partie inférieure du crâne.</li>
+                <li>Le crâne peut être divisé en :
                     <ul>
-                        <li>Ophthalmic nerve (n. ophthalmic)</li>
-                        <li>Maxillary nerve (superior branch)</li>
-                        <li>Mandibular nerve (inferior branch)</li>
+                        <li>Une partie supérieure appelée <strong>calvaria</strong>, qui recouvre la cavité crânienne contenant le cerveau.</li>
+                        <li>Une base qui forme le plancher de la cavité crânienne.</li>
+                    </ul>
+                </li>
+                <li>Le squelette facial (<strong>viscérocrâne</strong>) forme la partie antérieure inférieure du crâne.</li>
+                <li>La calvaria est principalement formée de deux os pairs : les pariétaux, et de parties d’os impairs : frontal, sphénoïde, occipital et temporal.</li>
+                <li>La base est formée principalement de parties des os sphénoïde, temporal et occipital.</li>
+                <li>Le squelette facial comprend des os pairs : nasal, palatin, lacrymal, zygomatique, maxillaire, et cornet nasal inférieur, ainsi qu’un os impair : le vomer.</li>
+                <li>La mandibule n’est considérée ni comme une partie du crâne ni comme une partie du squelette facial.</li>
+                <li>La vue antérieure du crâne montre le front en haut, la région nasale, la zone entre les orbites, le maxillaire et la mandibule en bas (voir figure 8.18).</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+ <div style="display: flex; gap: 10px;">
+                        <figure class="bubble">
+                            <img src="2MED U5 ANATOMIE/A68.jpg" alt="NNN" class="outside-image">
+                        </figure>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+
+    <!-- العنوان بالعربية -->
+    <ul>
+        <li><strong>العظم الجبهي:</strong>
+            <ul>
+                <li>تتشكّل الجبهة من العظم الجبهي الذي يشكّل أيضاً الجزء العلوي لحافة كلّ من الحجاجين (الشكل 8.18).</li>
+                <li>تقع القوسان الحاجبيتان <strong>(superciliary arches)</strong> البارزتان فوق حافة الحجاج تمامًا في كل جانب، وتكونان أكثر وضوحًا عند الرجال منهما عند النساء.</li>
+                <li>يوجد بين هاتين القوسين انخفاض صغير يُسمى <strong>الغلابيلا (glabella)</strong>.</li>
+                <li>يمكن رؤية <strong>الثقبة فوق الحجاج (supraorbital foramen)</strong> أو <strong>الثلمة فوق الحجاج (supraorbital notch)</strong> بوضوح في الجزء الإِنسي للحافة العلوية لكل من الحجاجين.</li>
+                <li>يبرز العظم الجبهي إنسياً نحو الأسفل مشكلاً جزءاً من الحافة الإنسية للحجاج.</li>
+                <li>يرتبط الناتئ الوجني <strong>(zygomatic process)</strong> للعظم الجبهي وحشيًا نحو الأسفل، مشكّلًا الحافة الوحشية العلوية للحجاج، ويتمفصل مع الناتئ الجبهي <strong>(frontal process)</strong> للعظم الوجني.</li>
+                <li><strong>الجدول 8.1: الثقوب الخارجية الظاهرة للجمجمة:</strong>
+                    <ul>
+                        <li><strong>منظر أمامي:</strong>
+                            <ul>
+                                <li>الثقبة فوق الحجاج - العصب والأوعية فوق الحجاج</li>
+                                <li>الثقبة تحت الحجاج - العصب والأوعية تحت الحجاج</li>
+                                <li>الثقبة الذقنية - العصب والأوعية الذقنية</li>
+                            </ul>
+                        </li>
+                        <li><strong>منظر وحشي:</strong>
+                            <ul>
+                                <li>الثقبة الوجنية الوجهية - العصب الوجني الوجهي</li>
+                                <li>الثقبة الجدارية - أوردة مبشرة</li>
+                            </ul>
+                        </li>
+                        <li><strong>منظر سفلي:</strong>
+                            <ul>
+                                <li>الثقبة القاطعية - العصب الأنفي الحنكي، والأوعية الوتدية الحنكية</li>
+                                <li>الثقبة الحنكية الكبيرة - العصب والأوعية الحنكية الكبيرة</li>
+                                <li>الثقبة الحنكية الصغيرة - العصب والأوعية الحنكية الصغيرة</li>
+                                <li>النفق الجناحي - العصب والأوعية الجناحية</li>
+                                <li>الثقبة البيضوية - العصب الفكي (V3)، العصب الصخري الصغير</li>
+                                <li>الثقبة الشوكية - الشريان السحائي المتوسط</li>
+                                <li>الثقبة الممزقة - مملوءة بغضروف</li>
+                                <li>النفق السباتي - الشريان السباتي الداخلي (الباطن) والضفيرة العصبية</li>
+                                <li>الثقبة العظمى - استمرار الدماغ والنخاع الشوكي، الشريانان الفقريان والضفائر العصبية، الشريان الشوكي الأمامي والخلفي، جذور العصب الإضافي (XI)، والسحايا</li>
+                                <li>النفق اللقمي - أوردة مبشرة</li>
+                                <li>النفق تحت اللسان - العصب تحت اللسان (XII)، والأوعية تحت اللسان</li>
+                                <li>الثقبة الوداجية - الوريد الوداجي الداخلي، الجيب الصخري السفلي، العصب اللساني البلعومي (IX)، العصب المبهم (X)، العصب الإضافي (XI)</li>
+                                <li>الثقبة الإبرية الخشائية - العصب الوجهي (VII)</li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             </ul>
+        </li>
+    </ul>
+
+    <br>
+
+    <!-- العنوان بالإنجليزية -->
+    <div dir="ltr">
+        <ul>
+            <li><strong>Frontal Bone:</strong>
+                <ul>
+                    <li>The forehead is formed by the frontal bone, which also constitutes the upper margin of both orbits (figure 8.18).</li>
+                    <li>The prominent <strong>superciliary arches</strong> are located just above the orbital margins on each side and are more pronounced in males than in females.</li>
+                    <li>Between the arches lies a small depression called the <strong>glabella</strong>.</li>
+                    <li>The <strong>supraorbital foramen</strong> or <strong>supraorbital notch</strong> is clearly visible on the medial portion of the superior orbital margin of each orbit.</li>
+                    <li>The frontal bone projects medially downward forming part of the medial orbital margin.</li>
+                    <li>The <strong>zygomatic process</strong> of the frontal bone extends laterally downward to form the superolateral margin of the orbit, articulating with the <strong>frontal process</strong> of the zygomatic bone.</li>
+                    <li><strong>Table 8.1: Visible external foramina of the skull:</strong>
+                        <ul>
+                            <li><strong>Anterior View:</strong>
+                                <ul>
+                                    <li>Supraorbital foramen – supraorbital nerve and vessels</li>
+                                    <li>Infraorbital foramen – infraorbital nerve and vessels</li>
+                                    <li>Mental foramen – mental nerve and vessels</li>
+                                </ul>
+                            </li>
+                            <li><strong>Lateral View:</strong>
+                                <ul>
+                                    <li>Zygomaticofacial foramen – zygomaticofacial nerve</li>
+                                    <li>Parietal foramen – emissary veins</li>
+                                </ul>
+                            </li>
+                            <li><strong>Inferior View:</strong>
+                                <ul>
+                                    <li>Incisive foramen – nasopalatine nerve, sphenopalatine vessels</li>
+                                    <li>Greater palatine foramen – greater palatine nerve and vessels</li>
+                                    <li>Lesser palatine foramen – lesser palatine nerve and vessels</li>
+                                    <li>Pterygoid canal – nerve and vessels of the pterygoid canal</li>
+                                    <li>Foramen ovale – mandibular nerve (V3), lesser petrosal nerve</li>
+                                    <li>Foramen spinosum – middle meningeal artery</li>
+                                    <li>Foramen lacerum – filled with cartilage</li>
+                                    <li>Carotid canal – internal carotid artery, sympathetic plexus</li>
+                                    <li>Foramen magnum – brainstem continuation, spinal cord, vertebral arteries, spinal roots of CN XI, meninges</li>
+                                    <li>Condylar canal – emissary veins</li>
+                                    <li>Hypoglossal canal – hypoglossal nerve (XII), accompanying vessels</li>
+                                    <li>Jugular foramen – internal jugular vein, inferior petrosal sinus, glossopharyngeal nerve (IX), vagus nerve (X), accessory nerve (XI)</li>
+                                    <li>Stylomastoid foramen – facial nerve (VII)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
 
     <br>
 
-    <!-- بالفرنسية -->
-    <div class="bubble">
-        <ul>
-            <li><strong>ANATOMIE DESCRIPTIVE – L’ORIGINE RÉELLE :</strong></li>
+    <!-- العنوان بالفرنسية -->
+    <ul>
+        <li><strong>Os frontal :</strong>
             <ul>
-                <li>Les fibres sensitives prennent naissance au niveau du ganglion semi-lunaire de Gasser.</li>
-                <li>C’est une masse nerveuse située à la partie antérieure de la face antéro-supérieure du rocher (os temporal).</li>
-                <li>Il est contenu dans une cavité appelée cavum trigéminal, formée par un dédoublement de la dure-mère.</li>
-                <li>Du bord antéro-externe du ganglion naissent, d’avant en arrière :
+                <li>Le front est formé par l’os frontal qui constitue également le bord supérieur de chaque orbite (figure 8.18).</li>
+                <li>Les <strong>arches sourcilières (superciliary arches)</strong> proéminentes se situent juste au-dessus du bord orbitaire de chaque côté et sont plus visibles chez l’homme que chez la femme.</li>
+                <li>Un léger creux nommé <strong>glabella</strong> se trouve entre les deux arches.</li>
+                <li>Le <strong>trou sus-orbitaire (supraorbital foramen)</strong> ou l’<strong>incisure sus-orbitaire (supraorbital notch)</strong> est bien visible sur la partie médiale du bord supérieur de chaque orbite.</li>
+                <li>L’os frontal descend médialement pour former une partie du bord médial de l’orbite.</li>
+                <li>Le <strong>processus zygomatique</strong> de l’os frontal s’étend latéralement vers le bas, formant le bord supéro-latéral de l’orbite, et s’articule avec le <strong>processus frontal</strong> de l’os zygomatique.</li>
+                <li><strong>Tableau 8.1 : Trous externes visibles du crâne :</strong>
                     <ul>
-                        <li>Le nerf ophtalmique</li>
-                        <li>Le nerf maxillaire supérieur</li>
-                        <li>Le nerf mandibulaire (ou maxillaire inférieur)</li>
+                        <li><strong>Vue antérieure :</strong>
+                            <ul>
+                                <li>Trou sus-orbitaire – nerf et vaisseaux sus-orbitaires</li>
+                                <li>Trou sous-orbitaire – nerf et vaisseaux sous-orbitaires</li>
+                                <li>Trou mentonnier – nerf et vaisseaux mentonniers</li>
+                            </ul>
+                        </li>
+                        <li><strong>Vue latérale :</strong>
+                            <ul>
+                                <li>Trou zygomatico-facial – nerf zygomatico-facial</li>
+                                <li>Trou pariétal – veines émissaires</li>
+                            </ul>
+                        </li>
+                        <li><strong>Vue inférieure :</strong>
+                            <ul>
+                                <li>Trou incisif – nerf naso-palatin, vaisseaux sphéno-palatins</li>
+                                <li>Grand trou palatin – nerf et vaisseaux palatins grands</li>
+                                <li>Petit trou palatin – nerf et vaisseaux palatins petits</li>
+                                <li>Canal ptérygoïdien – nerf et vaisseaux du canal ptérygoïdien</li>
+                                <li>Trou ovale – nerf mandibulaire (V3), nerf pétreux mineur</li>
+                                <li>Trou épineux – artère méningée moyenne</li>
+                                <li>Trou déchiré – rempli de cartilage</li>
+                                <li>Canal carotidien – artère carotide interne, plexus nerveux</li>
+                                <li>Foramen magnum – moelle allongée, artères vertébrales, nerf accessoire (XI), méninges</li>
+                                <li>Canal condylaire – veines émissaires</li>
+                                <li>Canal hypoglosse – nerf hypoglosse (XII), vaisseaux</li>
+                                <li>Foramen jugulaire – veine jugulaire interne, sinus pétreux inférieur, nerfs glossopharyngien (IX), vague (X), accessoire (XI)</li>
+                                <li>Foramen stylo-mastoïdien – nerf facial (VII)</li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             </ul>
-        </ul>
-    </div>
-</div>
-
-
-
-
-
-
-           <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A135.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-<div class="bubble">
-    <button class="interact-button" id="motor-origin" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-    <!-- بالعربية -->
-    <ul>
-        <li><strong>الأصل الحركي:</strong></li>
-        <ul>
-            <li>تنشأ الألياف الحركية من خلايا موجودة في نواتين للمضغ، بالإضافة إلى نوى أخرى تقع في الدماغ الأوسط (الميسنْسيفال).</li>
-        </ul>
-
-        <li><strong>الأصل الظاهري:</strong></li>
-        <ul>
-            <li>تتجه الجذور (الحسية والحركية) إلى الأعلى والخارج ثم إلى الأمام لتدخل الكهف الثلاثي (Cavum de Meckel).</li>
-            <li>تمر هذه الجذور بين الحافة العلوية للصخرة (الجزء الصدغي) والتوسعة الكبرى للمخيخ.</li>
-            <li>الجذر الحسي يستمر نحو الحافة الداخلية للعقدة العصبية ويتصل بالجذر الحركي.</li>
-            <li>الجذر الحركي يقع أمام وداخل الجذر الحسي، ثم يمر تحته ليصل إلى الحافة المقعرة للعقدة.</li>
-            <li>يلتحم في النهاية مع الفرع السفلي (الماكسيلير السفلي/المانديبولير) عند مستوى الثقبة البيضوية، مشكلاً العصب ثلاثي التوائم (NTJ) بفروعه الثلاثة:</li>
-            <ul>
-                <li>الفرع العيني (n. ophtalmique)</li>
-                <li>الفرع الفكي العلوي (n. maxillaire supérieur)</li>
-                <li>الفرع الفكي السفلي (n. maxillaire inférieur)</li>
-            </ul>
-        </ul>
+        </li>
     </ul>
-
-    <br>
-
-    <!-- بالإنجليزية -->
-    <div class="bubble" dir="ltr">
-        <ul>
-            <li><strong>Motor Origin:</strong></li>
-            <ul>
-                <li>Motor fibers arise from cells in two masticatory nuclei and additional nuclei located in the mesencephalon (midbrain).</li>
-            </ul>
-
-            <li><strong>Apparent Origin:</strong></li>
-            <ul>
-                <li>Both sensory and motor roots move upward, outward, and forward to enter the trigeminal cave (Cavum of Meckel).</li>
-                <li>They lie between the superior border of the petrous part of the temporal bone and the large cerebellar convexity.</li>
-                <li>The sensory root continues to the inner edge of the ganglion and connects with the motor root.</li>
-                <li>The motor root is situated anterior and medial to the sensory root, passing underneath to reach the concave edge of the ganglion.</li>
-                <li>Eventually, it joins the mandibular branch at the foramen ovale, forming the trigeminal nerve (NTJ) with its three main branches:
-                    <ul>
-                        <li>Ophthalmic nerve (n. ophthalmic)</li>
-                        <li>Maxillary nerve (n. maxillary superior)</li>
-                        <li>Mandibular nerve (n. maxillary inferior)</li>
-                    </ul>
-                </li>
-            </ul>
-        </ul>
-    </div>
-
-    <br>
-
-    <!-- بالفرنسية -->
-    <div class="bubble">
-        <ul>
-            <li><strong>Origine motrice :</strong></li>
-            <ul>
-                <li>Les fibres motrices naissent des cellules de deux noyaux masticateurs ainsi que d'autres noyaux situés dans le mésencéphale.</li>
-            </ul>
-
-            <li><strong>Origine apparente :</strong></li>
-            <ul>
-                <li>Les deux racines (sensitive et motrice) se dirigent en haut, en dehors et en avant pour pénétrer dans le cavum de Meckel.</li>
-                <li>Elles sont situées entre le bord supérieur de la partie pétreuse de l’os temporal et la grande courbure du cervelet.</li>
-                <li>La racine sensitive se prolonge vers le bord interne du ganglion et s’anastomose avec la racine motrice.</li>
-                <li>La racine motrice est placée en dedans et en avant de la racine sensitive, puis passe en dessous pour atteindre le bord concave du ganglion.</li>
-                <li>Elle rejoint ensuite la face inférieure du nerf maxillaire au niveau du foramen ovale, formant ainsi le nerf trijumeau (NTJ) avec ses trois branches principales :
-                    <ul>
-                        <li>Le nerf ophtalmique</li>
-                        <li>Le nerf maxillaire supérieur</li>
-                        <li>Le nerf mandibulaire (ou maxillaire inférieur)</li>
-                    </ul>
-                </li>
-            </ul>
-        </ul>
-    </div>
-</div>
-
-
-
-<div class="bubble">
-  <button class="interact-button" id="trigeminal-branches" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-  <!-- بالعربية -->
-  <ul>
-    <li><strong>يتفرع العصب ثلاثي التوائم من العقدة الثلاثية (عقدة غاسر) إلى ثلاث شعب رئيسية:</strong></li>
-    <ul>
-      <li><strong>V1:</strong> العصب العيني (النرف الأوبثالميكي)</li>
-      <li><strong>V2:</strong> العصب الفكي العلوي (النرف الماكسيلاري)</li>
-      <li><strong>V3:</strong> العصب الفكي السفلي (النرف المانديبولاري)</li>
-    </ul>
-  </ul>
-
-  
-           <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A136.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-  <br>
-
-  <!-- In English -->
-  <div class="bubble" dir="ltr">
-    <ul>
-      <li><strong>The trigeminal nerve divides from the trigeminal (Gasserian) ganglion into three main branches:</strong></li>
-      <ul>
-        <li><strong>V1:</strong> Ophthalmic nerve</li>
-        <li><strong>V2:</strong> Maxillary nerve</li>
-        <li><strong>V3:</strong> Mandibular nerve</li>
-      </ul>
-    </ul>
-  </div>
-
-  <br>
-
-  <!-- En français -->
-  <div class="bubble">
-    <ul>
-      <li><strong>Le nerf trijumeau se divise à partir du ganglion trigéminal (de Gasser) en trois branches principales :</strong></li>
-      <ul>
-        <li><strong>V1 :</strong> nerf ophtalmique</li>
-        <li><strong>V2 :</strong> nerf maxillaire</li>
-        <li><strong>V3 :</strong> nerf mandibulaire</li>
-      </ul>
-    </ul>
-  </div>
-</div>
-
-
-
-<div class="bubble">
-  <button class="interact-button" id="ophthalmic-termination" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-  <!-- بالعربية -->
-  <ul>
-    <li><strong>النهاية العصبية للعصب العيني (العصب العيني لويلّيس):</strong></li>
-    <ul>
-      <li>يتصل بالحلقة العصبية حول الشريان السباتي (الضفيرة حول السباتية).</li>
-      <li>يعطي فروعاً سحائية وفرع أنفي.</li>
-      <li>ينتهي بفرعين رئيسيين:</li>
-      <ul>
-        <li>العصب الدمعي</li>
-        <li>العصب الجبهي</li>
-      </ul>
-    </ul>
-  </ul>
-
-  <br>
-
-
-     <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A137.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-
-  <!-- In English -->
-  <div class="bubble" dir="ltr">
-    <ul>
-      <li><strong>Termination of the ophthalmic nerve (Willis' ophthalmic nerve):</strong></li>
-      <ul>
-        <li>Gives an anastomotic branch to the pericarotid plexus.</li>
-        <li>Emits meningeal branches and the nasal nerve.</li>
-        <li>Ends in two main branches:</li>
-        <ul>
-          <li>Lacrimal nerve</li>
-          <li>Frontal nerve</li>
-        </ul>
-      </ul>
-    </ul>
-  </div>
-
-  <br>
-
-  <!-- En français -->
-  <div class="bubble">
-    <ul>
-      <li><strong>Terminaison du nerf ophtalmique (nerf ophtalmique de Willis) :</strong></li>
-      <ul>
-        <li>Émet une branche anastomotique au plexus péri-carotidien.</li>
-        <li>Donne des rameaux méningés et le nerf nasal.</li>
-        <li>Se termine par deux branches principales :</li>
-        <ul>
-          <li>Le nerf lacrymal</li>
-          <li>Le nerf frontal</li>
-        </ul>
-      </ul>
-    </ul>
-  </div>
 </div>
 
 
@@ -3554,207 +3949,111 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
-<div class="bubble">
-  <button class="interact-button" id="maxillary-termination" onclick="markBubbleAsCompleted(this)">تفاعل</button>
 
-  <!-- بالعربية -->
-  <ul>
-    <li><strong>النهاية العصبية للعصب الفكي العلوي:</strong></li>
-    <ul>
-      <li>فروع جانبية (Collatérales) تشمل:</li>
-      <ul>
-        <li>فرع سحائي (الفرع السحائي الأوسط)</li>
-        <li>العصب الوجني (الفرع العيني)</li>
-        <li>العصب الوتدي الحنكي (الجبهي الحنكي)</li>
-        <li>العصب السنخي العلوي الخلفي</li>
-        <li>العصب السنخي العلوي الأوسط</li>
-        <li>العصب السنخي العلوي الأمامي</li>
-      </ul>
-      <li>الفرع النهائي:</li>
-      <ul>
-        <li>العصب تحت الحجاج، والذي ينقسم إلى:</li>
-        <ul>
-          <li>فرع جفني</li>
-          <li>فرع شفوي</li>
-          <li>فرع أنفي</li>
-        </ul>
-      </ul>
-    </ul>
-  </ul>
 
-     <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A138.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-  <br>
 
-  <!-- In English -->
-  <div class="bubble" dir="ltr">
-    <ul>
-      <li><strong>Maxillary Nerve (V2) Termination:</strong></li>
-      <ul>
-        <li>Collateral branches include:</li>
-        <ul>
-          <li>Meningeal branch (middle meningeal)</li>
-          <li>Zygomatic nerve (orbital branch)</li>
-          <li>Pterygopalatine nerve (sphenopalatine)</li>
-          <li>Posterior superior alveolar nerve</li>
-          <li>Middle superior alveolar nerve</li>
-          <li>Anterior superior alveolar nerve</li>
-        </ul>
-        <li>Terminal branch:</li>
-        <ul>
-          <li>Infraorbital nerve, which divides into:</li>
-          <ul>
-            <li>Palpebral branch</li>
-            <li>Labial branch</li>
-            <li>Nasal branch</li>
-          </ul>
-        </ul>
-      </ul>
-    </ul>
-  </div>
 
-  <br>
 
-  <!-- En français -->
-  <div class="bubble">
-    <ul>
-      <li><strong>Terminaison du nerf maxillaire supérieur (V2) :</strong></li>
-      <ul>
-        <li>Branches collatérales :</li>
-        <ul>
-          <li>Rameau méningé moyen</li>
-          <li>Nerf zygomatique (orbitaire)</li>
-          <li>Nerf ptérygo-palatin (sphéno-palatin)</li>
-          <li>Nerf alvéolaire supéro-postérieur</li>
-          <li>Nerf alvéolaire supéro-moyen</li>
-          <li>Nerf alvéolaire supéro-antérieur</li>
-        </ul>
-        <li>Branche terminale :</li>
-        <ul>
-          <li>Le nerf sous-orbitaire, qui se divise en :</li>
-          <ul>
-            <li>Branche palpébrale</li>
-            <li>Branche labiale</li>
-            <li>Branche nasale</li>
-          </ul>
-        </ul>
-      </ul>
-    </ul>
-  </div>
+
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_872.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_873.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_874.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_875.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_876.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_877.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_878.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_879.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_880.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_881.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_882.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_883.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_884.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_885.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_886.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_887.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_888.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_889.jpg" alt="NNN" class="outside-image">
+    </figure>
+</div>
+<div style="display: flex; gap: 10px;">
+    <figure class="bubble">
+        <img src="Gray's Anatomy بالعربية/Gray's Anatomy بالعربية (1)_890.jpg" alt="NNN" class="outside-image">
+    </figure>
 </div>
 
 
 
 
-<div class="bubble">
-  <button class="interact-button" id="mandibular-termination" onclick="markBubbleAsCompleted(this)">تفاعل</button>
-
-  <!-- بالعربية -->
-  <ul>
-    <li><strong>العصب الفكي السفلي (V3):</strong></li>
-    <ul>
-      <li>هو عصب مختلط (حسي وحركي) يُغذي الفك السفلي</li>
-      <li><strong>الفروع الجانبية (Collatérales):</strong></li>
-      <ul>
-        <li>فرع سحائي (Rameau méningé)</li>
-      </ul>
-      <li><strong>الفروع النهائية:</strong></li>
-      <ul>
-        <li>العصب الصدغي-الوجهي (Temporo-buccal):</li>
-        <ul>
-          <li>العصب الصدغي العميق الأمامي</li>
-          <li>العصب الوجهي (buccal)</li>
-        </ul>
-        <li>العصب الصدغي-العضلي (Temporo-massétérin):</li>
-        <ul>
-          <li>العصب الصدغي العميق الخلفي</li>
-          <li>العصب الماضغي (massétérin)</li>
-        </ul>
-      </ul>
-    </ul>
-  </ul>
-
-       <div style="display: flex; gap: 10px;">
-            <figure class="bubble">
-                <img src="2MED U5 ANATOMIE/A139.jpg" alt="شرح الاختصارات الطبية" class="outside-image">
-            </figure>
-        </div>
-  <br>
-
-  <!-- In English -->
-  <div class="bubble" dir="ltr">
-    <ul>
-      <li><strong>Mandibular Nerve (V3):</strong></li>
-      <ul>
-        <li>A mixed nerve (sensory and motor) destined for the mandible</li>
-        <li><strong>Collateral branch:</strong></li>
-        <ul>
-          <li>Meningeal branch</li>
-        </ul>
-        <li><strong>Terminal branches:</strong></li>
-        <ul>
-          <li><strong>Temporo-buccal nerve:</strong></li>
-          <ul>
-            <li>Anterior deep temporal nerve</li>
-            <li>Buccal nerve</li>
-          </ul>
-          <li><strong>Temporo-masseteric nerve:</strong></li>
-          <ul>
-            <li>Posterior deep temporal nerve</li>
-            <li>Masseteric nerve</li>
-          </ul>
-        </ul>
-      </ul>
-    </ul>
-  </div>
-
-  <br>
-
-  <!-- En français -->
-  <div class="bubble">
-    <ul>
-      <li><strong>Nerf mandibulaire (V3) :</strong></li>
-      <ul>
-        <li>Nerf mixte (sensitif et moteur) destiné à la mandibule</li>
-        <li><strong>Branche collatérale :</strong></li>
-        <ul>
-          <li>Rameau méningé</li>
-        </ul>
-        <li><strong>Branches terminales :</strong></li>
-        <ul>
-          <li><strong>Nerf temporo-buccal :</strong></li>
-          <ul>
-            <li>Nerf temporal profond antérieur</li>
-            <li>Nerf buccal</li>
-          </ul>
-          <li><strong>Nerf temporo-massétérin :</strong></li>
-          <ul>
-            <li>Nerf temporal profond postérieur</li>
-            <li>Nerf massétérin</li>
-          </ul>
-        </ul>
-      </ul>
-    </ul>
-  </div>
-</div>
-
-
-
-
-
-
-
-<!-- تصميم جديد كليًا بدون خاصية الطفو -->
-<div style="display: flex; justify-content: center; align-items: center; height: 200px; background-color: #f5f5f5; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-
-  <button style="background-color: #d32f2f; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">
-    إضافات   قريبا
-  </button>
-
-</div>
 
 
 
@@ -3789,7 +4088,7 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     </div>
 
     <script>
-    let totalBubbles = 23; 
+    let totalBubbles = 27; 
     let completedBubbles = 0; 
     let startTime = Date.now();
     let bubbleButton = null;
@@ -3877,33 +4176,6 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
     
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

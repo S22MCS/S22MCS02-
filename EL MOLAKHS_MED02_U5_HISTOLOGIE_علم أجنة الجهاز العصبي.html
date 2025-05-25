@@ -10,9 +10,292 @@
     <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
 
 
-  
-  
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Amiri:wght@700&display=swap" rel="stylesheet">
+<style>
+.LIKEWIKIIDAFA-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.LIKEWIKIIDAFA-content {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 650px;
+    max-height: 85vh;
+    background-color: #fff;
+    padding: 20px;
+    z-index: 999999;
+    overflow-y: auto;
+    direction: rtl;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    border: 1px solid #e0e0e0;
+    font-size: 1rem;
+}
+
+.LIKEWIKIIDAFA-content-inner {
+    position: relative;
+    height: auto;
+    padding: 10px;
+}
+
+.LIKEWIKIIDAFA-content::-webkit-scrollbar {
+    width: 8px;
+}
+.LIKEWIKIIDAFA-content::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+.LIKEWIKIIDAFA-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.LIKEWIKIIDAFA-tooltip.active .LIKEWIKIIDAFA-content {
+    display: block;
+    animation: fadeInScale 0.3s ease;
+}
+
+.LIKEWIKIIDAFA-tooltip.active::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999998;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.LIKEWIKIIDAFA-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 15px auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: block;
+}
+
+.LIKEWIKIIDAFA-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #f44336;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    z-index: 1000000;
+    padding: 0;
+    line-height: 1;
+}
+
+.LIKEWIKIIDAFA-close-btn:hover {
+    background: #d32f2f;
+    transform: scale(1.1);
+}
+
+.LIKEWIKIIDAFA-close-btn:active {
+    transform: scale(0.95);
+}
+
+.language-section {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.language-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    text-align: center;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.arabic-text {
+    direction: rtl;
+    text-align: right;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.english-text, .french-text {
+    direction: ltr;
+    text-align: left;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.language-flag {
+    width: 22px;
+    height: 16px;
+    margin: 0 6px;
+    vertical-align: middle;
+    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+    padding-right: 20px;
+    margin: 10px 0;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+@media (max-width: 1024px) {
+    .LIKEWIKIIDAFA-content {
+        width: 92vw;
+        padding: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .LIKEWIKIIDAFA-content {
+        width: 94vw;
+        max-height: 90vh;
+        padding: 16px;
+        font-size: 0.95rem;
+    }
+    
+    .language-title {
+        font-size: 1rem;
+        padding: 6px 10px;
+    }
+    
+    .LIKEWIKIIDAFA-close-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+    
+    .language-flag {
+        width: 20px;
+        height: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .LIKEWIKIIDAFA-content {
+        width: 96vw;
+        padding: 14px;
+        max-height: 95vh;
+        font-size: 0.9rem;
+    }
+    
+    .language-title {
+        font-size: 0.95rem;
+        padding: 5px 8px;
+    }
+    
+    .LIKEWIKIIDAFA-close-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 15px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .language-flag {
+        width: 18px;
+        height: 12px;
+    }
+    
+    ul {
+        padding-right: 15px;
+    }
+    
+    li {
+        margin-bottom: 6px;
+    }
+}
+
+@media (max-height: 600px) {
+    .LIKEWIKIIDAFA-content {
+        top: 20px;
+        transform: translateX(-50%);
+        max-height: calc(100vh - 40px);
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const LIKEWIKIIDAFA_tooltip = document.getElementById('LIKEWIKIIDAFA-tooltip');
+    const LIKEWIKIIDAFA_closeBtn = document.querySelector('.LIKEWIKIIDAFA-close-btn');
+    
+    // فتح عند الضغط على النص
+    LIKEWIKIIDAFA_tooltip.addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        LIKEWIKIIDAFA_tooltip.classList.add('active');
+    });
+    
+    // إغلاق بالضغط على الزر X فقط
+    LIKEWIKIIDAFA_closeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeTooltip();
+    });
+    
+    // إغلاق عند الضغط خارج النافذة
+    document.addEventListener('click', function(e) {
+        if (LIKEWIKIIDAFA_tooltip.classList.contains('active') && 
+            !e.target.closest('.LIKEWIKIIDAFA-content') && 
+            !e.target.closest('.LIKEWIKIIDAFA-tooltip')) {
+            closeTooltip();
+        }
+    });
+    
+    // إغلاق بالضغط على زر ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && LIKEWIKIIDAFA_tooltip.classList.contains('active')) {
+            closeTooltip();
+        }
+    });
+    
+    function closeTooltip() {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        LIKEWIKIIDAFA_tooltip.classList.remove('active');
+    }
+    
+    // منع التمرير عند فتح النافذة على الأجهزة المحمولة
+    document.querySelector('.LIKEWIKIIDAFA-content').addEventListener('touchmove', function(e) {
+        if (LIKEWIKIIDAFA_tooltip.classList.contains('active')) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+});
+</script>
+
+
     <!DOCTYPE html>
     <html lang="ar" dir="rtl">
     <head>
@@ -766,17 +1049,17 @@
             margin-top: 50px;
             text-shadow: 2px 2px 10px rgba(0, 150, 255, 0.5);
         }
+#studyMessage {
+    display: none;
+    font-size: 18px;
+    margin-top: 15px;
+    color: #FFD700;
+    font-weight: bold; /* ← تمت إضافتها */
+    text-align: center;
+}
 
-        #studyMessage {
-            display: none;
-            font-size: 18px;
-            margin-top: 15px;
-            color: #FFD700;
-            font-style: italic;
 
 
-            text-align: center;
-        }
     </style>
 </head>
 <body>
@@ -807,8 +1090,9 @@
         <img id="doctorImage" src="" alt="صورة الطبيب" style="width: 60px; height: 60px; border-radius: 50%;">
         <h1 id="greeting" style="margin: 0; font-size: 22px;"></h1>
     </div>
-    <p id="studyMessage"></p>
-    <p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px;         text-align: center;"></p>
+    <p id="studyMessage" style= " text-align: center; background-color: black;"></p>
+    <BR>
+<p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px; text-align: center; background-color: black;"></p>
     
     <script>
         let selectedGender = "";
@@ -3440,57 +3724,6 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <br><br><br><br><br><br><br>
 
 
@@ -5789,6 +6022,59 @@ body.dark-mode .tooltip-caption {
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
