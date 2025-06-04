@@ -294,643 +294,740 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { passive: false });
 });
 </script>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة حماية العين</title>
+    <style>
+        /* تحسينات عامة */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
+        /* إعدادات الصفحة الأساسية */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #edf2f7;
+            color: #333;
+            transition: all 0.5s ease;
+        }
+    
+        header, main {
+            padding: 20px;
+            text-align: center;
+        }
+    
+        header h1 {
+            font-size: 2rem;
+            color: #444;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.2s ease-in-out;
+        }
+    
+        main h2 {
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+    
+        main p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+        }
+    
+        /* الحاوية */
+        #controlPanel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, #e0e5ec, #ffffff);
+            border-radius: 50px;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 60px;
+            height: 60px;
+            overflow: hidden;
+            transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+        }
+    
+        #controlPanel.expanded {
+            width: auto; /* ستتحدد بناءً على المحتوى والاستعلامات أدناه */
+            min-width: 280px; /* حد أدنى لعرض اللوحة الموسعة */
+            height: auto;
+            max-height: 75vh; /* حد أقصى لارتفاع اللوحة على شاشات الهاتف */
+            overflow-y: auto; /* إضافة تمرير إذا تجاوز المحتوى الارتفاع الأقصى */
+            border-radius: 20px;
+            padding-bottom: 10px; /* إضافة حشو سفلي للوحة الموسعة */
+            box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
+        }
+    
+        /* الزر */
+        #toggleButton {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            flex-shrink: 0; /* منع الزر من الانكماش */
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 
+                        5px 5px 10px rgba(0,0,0,0.2), 
+                        -5px -5px 10px rgba(255,255,255,0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        #toggleButton:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 
+                        8px 8px 20px rgba(0,0,0,0.2), 
+                        -8px -8px 20px rgba(255,255,255,0.5);
+            background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+        }
+    
+        #emoji {
+            font-size: 32px;
+            line-height: 1;
+            animation: bounce 2s infinite ease-in-out;
+        }
+    
+        #toggleText {
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            bottom: -20px;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+    
+        #toggleButton:hover #toggleText {
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+    
+        /* شريط التمرير */
+        .slider-container {
+            width: 90%;
+            max-width: 280px; /* حد أقصى لعرض حاوية الشريط */
+            margin: 10px auto; /* توسيط وتعديل الهامش */
+            position: relative;
+        }
+        
+        .color-spectrum {
+            width: 100%;
+            height: 20px;
+            border-radius: 10px;
+            background: linear-gradient(to right, 
+                #ff9a3c, /* 1700K */
+                #ffb347, /* 2000K */
+                #ffcc6a, /* 2300K */
+                #ffe08c, /* 2700K */
+                #f5f5f5  /* أبيض محايد (للتوضيح، القيمة الفعلية للفلتر قد تختلف) */
+            );
+            margin-bottom: 5px;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        #colorTempSlider {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none; /* لمتصفحات WebKit */
+            height: 12px;
+            background: transparent; /* جعل مسار الشريط شفافًا */
+            border-radius: 6px;
+            outline: none;
+            cursor: pointer;
+            position: absolute;
+            top: 4px; /* تعديل ليتمركز فوق color-spectrum */
+            left: 0;
+        }
+    
+        #colorTempSlider::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            background: var(--thumb-color, radial-gradient(circle, #4caf50, #388e3c)); /* استخدام متغير CSS */
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+            transition: transform 0.2s ease-in-out, background 0.3s ease;
+        }
+         #colorTempSlider::-moz-range-thumb { /* لمتصفح Firefox */
+            width: 22px;
+            height: 22px;
+            background: var(--thumb-color, radial-gradient(circle, #4caf50, #388e3c));
+            border-radius: 50%;
+            cursor: pointer;
+            border: none; /* إزالة الحدود الافتراضية في Firefox */
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+            transition: transform 0.2s ease-in-out, background 0.3s ease;
+        }
+    
+        #colorTempSlider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        #colorTempSlider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+        }
+    
+        .temp-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 11px;
+            color: #555;
+            margin-top: 25px; /* ليكون أسفل شريط التمرير والطيف */
+        }
+    
+        .small-slider {
+            width: 80px;
+            height: 8px;
+        }
+    
+        #label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            display: none;
+            text-align: center;
+            margin-top: 5px; /* هامش علوي بسيط */
+            animation: fadeIn 0.8s ease-in-out;
+        }
+    
+        .expanded #label {
+            display: block;
+        }
+    
+        /* خيارات إضافية */
+        .options {
+            display: none;
+            width: 100%;
+            padding: 0 15px 10px; /* تقليل الحشو السفلي قليلاً */
+            flex-direction: column;
+            gap: 12px; /* زيادة طفيفة في الفجوة لتحسين اللمس */
+        }
+    
+        .expanded .options {
+            display: flex;
+        }
+    
+        .option-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .option-label {
+            font-size: 13px;
+            color: #555;
+        }
+    
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            flex-shrink: 0; /* منع الانكماش */
+        }
+    
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+    
+        .slider { /* هذا اسم الكلاس لمحول التبديل، وليس شريط التمرير الرئيسي */
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+    
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; /* زيادة طفيفة لحجم المقبض */
+            width: 18px;  /* زيادة طفيفة لحجم المقبض */
+            left: 3px;    /* تعديل الموقع ليتناسب مع الحجم الجديد */
+            bottom: 3px;  /* تعديل الموقع ليتناسب مع الحجم الجديد */
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+    
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+    
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    
+        /* معلومات علمية */
+        .science-info {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 15px;
+            font-size: 12px;
+            color: #555;
+            border-right: 3px solid #4CAF50;
+        }
+    
+        .expanded .science-info {
+            display: block;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+    
+        .science-title {
+            font-weight: bold;
+            color: #388e3c;
+            margin-bottom: 5px;
+        }
+    
+        /* الإشعارات */
+        .notification {
+            position: fixed;
+            bottom: 100px; /* تعديل الموضع ليكون أعلى من اللوحة في حالة توسعها */
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: slideIn 0.5s ease-out;
+            z-index: 1001;
+        }
+    
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
 
-    <!DOCTYPE html>
-    <html lang="ar" dir="rtl">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>أداة حماية العين</title>
-        <style>
-            /* إعدادات الصفحة الأساسية */
-            body {
-                margin: 0;
-                font-family: 'Arial', sans-serif;
-                background-color: #edf2f7;
-                color: #333;
-                transition: all 0.5s ease;
-            }
-        
-            header, main {
-                padding: 20px;
-                text-align: center;
-            }
-        
-            header h1 {
-                font-size: 2rem;
-                color: #444;
-                margin-bottom: 20px;
-                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-                animation: fadeIn 1.2s ease-in-out;
-            }
-        
-            main h2 {
-                font-size: 1.5rem;
-                color: #555;
-                margin-bottom: 10px;
-            }
-        
-            main p {
-                font-size: 1rem;
-                line-height: 1.6;
-                color: #666;
-            }
-        
-            /* الحاوية */
+        /* فواصل للموبايل (تم نقلها من داخل body) */
+        .mobile-breaks {
+          display: none;
+        }
+    
+        /* الرسوم المتحركة */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); } /* تقليل مقدار الارتداد */
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    
+        /* تحسين التوافق مع الهواتف */
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            main h2 { font-size: 1.3rem; }
+
             #controlPanel {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background: linear-gradient(145deg, #e0e5ec, #ffffff);
-                border-radius: 50px;
-                box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
-                z-index: 1000;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-                width: 60px;
-                height: 60px;
-                overflow: hidden;
-                transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+                bottom: 10px;
+                right: 10px;
+                gap: 8px; /* تقليل الفجوة قليلاً */
             }
-        
             #controlPanel.expanded {
-                width: 340px;
-                height: auto;
-                border-radius: 20px;
-                box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
+                width: 300px; /* عرض ثابت للتابلت والهواتف الكبيرة نسبياً */
+                padding-bottom: 15px;
             }
-        
-            /* الزر */
             #toggleButton {
-                width: 60px;
-                height: 60px;
-                background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c);
-                border: none;
-                border-radius: 50%;
-                color: white;
-                font-size: 28px;
-                cursor: pointer;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 
-                            5px 5px 10px rgba(0,0,0,0.2), 
-                            -5px -5px 10px rgba(255,255,255,0.5);
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
             }
-        
-            #toggleButton:hover {
-                transform: scale(1.1) rotate(5deg);
-                box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 
-                            8px 8px 20px rgba(0,0,0,0.2), 
-                            -8px -8px 20px rgba(255,255,255,0.5);
-                background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+            #emoji { font-size: 28px; }
+            .notification {
+                bottom: 80px; /* تعديل المسافة من الأسفل للوحة التحكم الأصغر */
+                right: 10px;
+                padding: 10px 15px;
             }
-        
-            #emoji {
-                font-size: 32px;
-                line-height: 1;
-                animation: bounce 2s infinite ease-in-out;
-            }
-        
-            #toggleText {
-                font-size: 14px;
-                color: white;
-                position: absolute;
-                bottom: -20px;
-                opacity: 0;
-                transition: opacity 0.3s ease, transform 0.3s ease;
-            }
-        
-            #toggleButton:hover #toggleText {
-                opacity: 1;
-                transform: translateY(-5px);
-            }
-        
-            /* شريط التمرير */
-            .slider-container {
-                width: 90%;
-                margin: 10px 0;
-                position: relative;
-            }
-            
-            .color-spectrum {
-                width: 100%;
-                height: 20px;
-                border-radius: 10px;
-                background: linear-gradient(to right, 
-                    #ff9a3c, /* 1700K - برتقالي دافئ جداً */
-                    #ffb347, /* 2000K */
-                    #ffcc6a, /* 2300K */
-                    #ffe08c, /* 2700K - أصفر دافئ */
-                    #f5f5f5  /* أبيض محايد */
-                );
-                margin-bottom: 5px;
-                box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
-            }
-            
-            #colorTempSlider {
-                width: 100%;
-                appearance: none;
-                height: 12px;
-                background: transparent;
-                border-radius: 6px;
-                outline: none;
-                cursor: pointer;
-                position: absolute;
-                top: 20px;
-                left: 0;
-            }
-        
-            #colorTempSlider::-webkit-slider-thumb {
-                appearance: none;
-                width: 22px;
-                height: 22px;
-                background: radial-gradient(circle, #4caf50, #388e3c);
-                border-radius: 50%;
-                cursor: pointer;
-                box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
-                transition: transform 0.2s ease-in-out;
-            }
-        
-            #colorTempSlider::-webkit-slider-thumb:hover {
-                transform: scale(1.2);
-            }
-        
-            .temp-labels {
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-                font-size: 11px;
-                color: #555;
-                margin-top: 25px;
-            }
-        
-            .small-slider {
-                width: 80px;
-                height: 8px;
-            }
-        
-            #label {
-                font-size: 14px;
-                font-weight: bold;
-                color: #333;
-                display: none;
-                text-align: center;
-                animation: fadeIn 0.8s ease-in-out;
-            }
-        
-            .expanded #label {
+            .mobile-breaks {
                 display: block;
+                height: 1.5em; /* تقليل الارتفاع قليلاً */
             }
-        
-            /* خيارات إضافية */
+            .temp-labels span { font-size: 10px; }
+            #label { font-size: 0.875rem; } /* 14px */
+           .option-label { font-size: 0.8125rem; } /* 13px */
+        }
+    
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.6rem; }
+            main h2 { font-size: 1.2rem; }
+            main p { font-size: 0.9rem; }
+
+            #controlPanel.expanded {
+                width: 90%; /* استخدام نسبة مئوية للشاشات الصغيرة جداً */
+                right: 5%;
+                bottom: 10px;
+                gap: 5px; /* تقليل إضافي للفجوة */
+                padding-bottom: 10px;
+            }
             .options {
-                display: none;
-                width: 100%;
-                padding: 0 15px 15px;
-                flex-direction: column;
+                padding: 0 10px 10px;
                 gap: 10px;
             }
-        
-            .expanded .options {
-                display: flex;
+            .slider-container {
+                margin: 5px auto;
             }
-        
-            .option-row {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+            .temp-labels {
+                flex-wrap: wrap; /* السماح بالالتفاف إذا ضاقت المساحة */
+                justify-content: center; /* توسيط العناصر عند الالتفاف */
+                gap: 5px; /* فجوة بين العناصر الملتفة */
             }
-        
-            .option-label {
-                font-size: 13px;
-                color: #555;
-            }
-        
-            .switch {
-                position: relative;
-                display: inline-block;
-                width: 50px;
-                height: 24px;
-            }
-        
-            .switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-        
-            .slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: #ccc;
-                transition: .4s;
-                border-radius: 24px;
-            }
-        
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 13px;
-                width: 13px;
-                left: 4px;
-                bottom: 4px;
-                background-color: white;
-                transition: .4s;
-                border-radius: 50%;
-            }
-        
-            input:checked + .slider {
-                background-color: #4CAF50;
-            }
-        
-            input:checked + .slider:before {
-                transform: translateX(26px);
-            }
-        
-            /* معلومات علمية */
+            .temp-labels span { font-size: 0.7rem; } /* تصغير إضافي */
+            #label { font-size: 0.8rem; } 
+            .option-label { font-size: 0.75rem; } /* 12px */
             .science-info {
-                display: none;
-                background: #f8f9fa;
-                border-radius: 10px;
-                padding: 10px;
-                margin: 10px 15px;
-                font-size: 12px;
-                color: #555;
-                border-right: 3px solid #4CAF50;
+                font-size: 11px;
+                margin: 5px 10px;
+                padding: 8px;
             }
-        
-            .expanded .science-info {
-                display: block;
-                animation: fadeIn 0.8s ease-in-out;
+        }
+        @media (max-width: 360px) {
+             header h1 { font-size: 1.5rem; }
+            .option-row {
+                flex-direction: column; /* جعل الخيارات تحت بعضها */
+                align-items: flex-start;
+                gap: 5px; /* فجوة بين الملصق والمفتاح */
             }
-        
-            .science-title {
-                font-weight: bold;
-                color: #388e3c;
-                margin-bottom: 5px;
+            .option-row .switch {
+                margin-top: 3px; /* هامش بسيط للمفتاح */
             }
-        
-            /* الإشعارات */
-            .notification {
-                position: fixed;
-                bottom: 100px;
-                right: 20px;
-                background: #4CAF50;
-                color: white;
-                padding: 12px 20px;
-                border-radius: 5px;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                animation: slideIn 0.5s ease-out;
-                z-index: 1001;
+            #controlPanel.expanded {
+                gap: 3px;
             }
-        
-            .fade-out {
-                animation: fadeOut 0.5s ease-out forwards;
-            }
-        
-            /* الرسوم المتحركة */
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        
-            @keyframes bounce {
-                0%, 100% {
-                    transform: translateY(0);
-                }
-                50% {
-                    transform: translateY(-10px);
-                }
-            }
-        
-            @keyframes slideIn {
-                from {
-                    transform: translateX(100px);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-        
-            @keyframes fadeOut {
-                from {
-                    opacity: 1;
-                }
-                to {
-                    opacity: 0;
-                }
-            }
-        
-            /* تحسين التوافق مع الهواتف */
-            @media (max-width: 768px) {
-                #controlPanel {
-                    bottom: 10px;
-                    right: 10px;
-                }
-                #toggleButton {
-                    width: 50px;
-                    height: 50px;
-                    font-size: 24px;
-                }
-                #controlPanel.expanded {
-                    width: 300px;
-                }
-            }
-        
-            @media (max-width: 480px) {
-                #controlPanel.expanded {
-                    width: 90%;
-                    right: 5%;
-                    bottom: 10px;
-                }
-                
-                .options {
-                    padding: 0 10px 10px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <!-- أداة التحكم -->
-        <div id="controlPanel">
-            <button id="toggleButton">
-                <span id="emoji">🌙</span>
-                <span id="toggleText">تشغيل</span>
-            </button>
-            <label id="label" for="colorTempSlider">درجة حرارة اللون (1700K-2700K):</label>
-            
-            <div class="slider-container">
-                <div class="color-spectrum"></div>
-                <input type="range" id="colorTempSlider" min="1700" max="2700" step="100" value="2700">
-                <div class="temp-labels">
-                    <span>1700K</span>
-                    <span>2000K</span>
-                    <span>2300K</span>
-                    <span>2700K</span>
-                </div>
-            </div>
-            
-            <div class="science-info">
-                <div class="science-title">معلومات علمية:</div>
-                <p>• درجات الحرارة المرتفعة (>5000K) تسبب انتباه الأشخاص وزيادة التركيز</p>
-                <p>• درجات الحرارة المنخفضة (2700K-3000K) تشعر الأشخاص بالاسترخاء والنعاس</p>
-                <p>• الضوء الأزرق (380-550 نانومتر) يؤثر على الساعة البيولوجية</p>
-            </div>
-            
-            <div class="options">
-                <div class="option-row">
-                    <span class="option-label">الوضع الليلي التلقائي</span>
-                    <label class="switch">
-                        <input type="checkbox" id="autoNightMode">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="option-row">
-                    <span class="option-label">تقليل الوهج</span>
-                    <label class="switch">
-                        <input type="checkbox" id="reduceGlare" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="option-row">
-                    <span class="option-label">تعتيم النص</span>
-                    <label class="switch">
-                        <input type="checkbox" id="darkenText">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="option-row">
-                    <span class="option-label">ضبط السطوع</span>
-                    <input type="range" id="brightnessSlider" min="50" max="100" value="100" class="small-slider">
-                  </div>
-                  <div class="mobile-breaks"></div>
+        }
 
-                  <style>    .mobile-breaks {
-                    display: none;
-                  }
-                  
-                  @media (max-width: 768px) {
-                    .mobile-breaks {
-                      display: block;
-                      height: 2em; /* تعادل تقريبا سطرين فارغين */
-                    }
-                  }</style>
-              
-                  
+    </style>
+</head>
+<body>
+    
+
+
+    <div id="controlPanel">
+        <button id="toggleButton">
+            <span id="emoji">🌙</span>
+            <span id="toggleText">تشغيل</span>
+        </button>
+        <label id="label" for="colorTempSlider">درجة حرارة اللون (1700K-2700K):</label>
+        
+        <div class="slider-container">
+            <div class="color-spectrum"></div>
+            <input type="range" id="colorTempSlider" min="1700" max="2700" step="100" value="2700">
+            <div class="temp-labels">
+                <span>1700K</span>
+                <span>2000K</span>
+                <span>2300K</span>
+                <span>2700K</span>
             </div>
         </div>
+        
+        <div class="science-info">
+            <div class="science-title">معلومات علمية:</div>
+            <p>• درجات الحرارة المرتفعة (&gt;5000K) تسبب انتباه الأشخاص وزيادة التركيز.</p>
+            <p>• درجات الحرارة المنخفضة (2700K-3000K) تشعر الأشخاص بالاسترخاء والنعاس.</p>
+            <p>• الضوء الأزرق (380-550 نانومتر) يؤثر على الساعة البيولوجية.</p>
+        </div>
+        
+        <div class="options">
+            <div class="option-row">
+                <span class="option-label">الوضع الليلي التلقائي</span>
+                <label class="switch">
+                    <input type="checkbox" id="autoNightMode">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="option-row">
+                <span class="option-label">تقليل الوهج</span>
+                <label class="switch">
+                    <input type="checkbox" id="reduceGlare" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="option-row">
+                <span class="option-label">تعتيم النص</span>
+                <label class="switch">
+                    <input type="checkbox" id="darkenText">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="option-row">
+                <span class="option-label">ضبط السطوع</span>
+                <input type="range" id="brightnessSlider" min="50" max="100" value="100" class="small-slider">
+            </div>
+            <div class="mobile-breaks"></div>
+        </div>
+    </div>
+
+    <script>
+        const controlPanel = document.getElementById('controlPanel');
+        const toggleButton = document.getElementById('toggleButton');
+        const emoji = document.getElementById('emoji');
+        const toggleText = document.getElementById('toggleText');
+        const colorTempSliderElement = document.getElementById('colorTempSlider'); // تم تغيير الاسم لتمييزه
+        const autoNightMode = document.getElementById('autoNightMode');
+        const reduceGlare = document.getElementById('reduceGlare');
+        const darkenText = document.getElementById('darkenText');
+        const brightnessSlider = document.getElementById('brightnessSlider');
     
-        <script>
-            const controlPanel = document.getElementById('controlPanel');
-            const toggleButton = document.getElementById('toggleButton');
-            const emoji = document.getElementById('emoji');
-            const toggleText = document.getElementById('toggleText');
-            const slider = document.getElementById('colorTempSlider');
-            const autoNightMode = document.getElementById('autoNightMode');
-            const reduceGlare = document.getElementById('reduceGlare');
-            const darkenText = document.getElementById('darkenText');
-            const brightnessSlider = document.getElementById('brightnessSlider');
+        let isEyeProtectionEnabled = false;
+        let autoNightModeInterval;
     
-            let isEyeProtectionEnabled = false;
-            let autoNightModeInterval;
-    
-            // تحميل التفضيلات المحفوظة
-            window.addEventListener('DOMContentLoaded', () => {
-                const preferences = JSON.parse(localStorage.getItem('eyeProtectionPrefs')) || {};
-                if (preferences.autoNightMode) autoNightMode.checked = true;
-                if (preferences.reduceGlare) reduceGlare.checked = true;
-                if (preferences.darkenText) darkenText.checked = true;
-                if (preferences.enabled) enableEyeProtection();
-                if (preferences.brightness) brightnessSlider.value = preferences.brightness;
-                if (preferences.colorTemp) slider.value = preferences.colorTemp;
-    
-                // تحقق من وقت اليوم عند التحميل
-                checkTimeOfDay();
-            });
-    
-            toggleButton.addEventListener('click', () => {
-                controlPanel.classList.toggle('expanded');
-    
-                if (isEyeProtectionEnabled) {
-                    disableEyeProtection();
-                } else {
-                    enableEyeProtection();
-                    setTimeout(() => {
-                        controlPanel.classList.remove('expanded');
-                    }, 5000);
-                }
-                
-                savePreferences();
-            });
-    
-            slider.addEventListener('input', function() {
-                updateFilter();
-                updateSliderColor(this.value);
-            });
+        // تحميل التفضيلات المحفوظة
+        window.addEventListener('DOMContentLoaded', () => {
+            const preferences = JSON.parse(localStorage.getItem('eyeProtectionPrefs')) || {};
+            if (preferences.autoNightMode) autoNightMode.checked = true;
+            if (preferences.reduceGlare === false) reduceGlare.checked = false; // معالجة القيمة false صراحة
+            else reduceGlare.checked = true; // القيمة الافتراضية أو true
+            if (preferences.darkenText) darkenText.checked = true;
             
-            // تحديث لون شريط التمرير بناء على القيمة
-            function updateSliderColor(value) {
-                const percent = (value - 1700) / (2700 - 1700) * 100;
-                const thumb = document.querySelector('#colorTempSlider::-webkit-slider-thumb');
-                
-                // تغيير لون الإبهام حسب الموقع على الطيف
-                if (thumb) {
-                    if (percent < 30) {
-                        thumb.style.background = 'radial-gradient(circle, #ff9a3c, #e07c2e)';
-                    } else if (percent < 70) {
-                        thumb.style.background = 'radial-gradient(circle, #ffb347, #e0953a)';
-                    } else {
-                        thumb.style.background = 'radial-gradient(circle, #ffe08c, #e0c87a)';
-                    }
-                }
+            if (preferences.brightness) {
+                brightnessSlider.value = preferences.brightness;
+                document.body.style.opacity = preferences.brightness / 100;
             }
-            
-            autoNightMode.addEventListener('change', function() {
-                if (this.checked) {
-                    startAutoNightMode();
-                    if (isEyeProtectionEnabled) {
-                        updateFilter();
-                    }
-                } else {
-                    stopAutoNightMode();
-                }
-                savePreferences();
-            });
-    
-            reduceGlare.addEventListener('change', function() {
-                if (isEyeProtectionEnabled) {
-                    updateFilter();
-                }
-                savePreferences();
-            });
-    
-            darkenText.addEventListener('change', function() {
-                if (isEyeProtectionEnabled) {
-                    updateFilter();
-                }
-                savePreferences();
-            });
-    
-            brightnessSlider.addEventListener('input', function() {
-                document.body.style.opacity = this.value / 100;
-                savePreferences();
-            });
-    
-            function enableEyeProtection() {
-                isEyeProtectionEnabled = true;
-                emoji.textContent = '🛡️';
-                toggleText.textContent = 'إيقاف';
-                updateFilter();
-                updateSliderColor(slider.value);
-                showNotification('تم تفعيل حماية العين');
+            if (preferences.colorTemp) colorTempSliderElement.value = preferences.colorTemp;
+
+            // يجب تفعيل الحماية بعد تحميل الإعدادات المتعلقة بها
+            if (preferences.enabled) {
+                enableEyeProtection(); // يستدعي updateFilter و updateSliderColor
+            } else {
+                // إذا لم تكن مفعلة، لا يزال يجب تحديث لون المقبض بناءً على القيمة المحملة
+                updateSliderColor(colorTempSliderElement.value);
             }
     
-            function disableEyeProtection() {
-                isEyeProtectionEnabled = false;
-                emoji.textContent = '🌙';
-                toggleText.textContent = 'تشغيل';
-                document.documentElement.style.filter = 'none';
-                document.body.style.color = '';
-                showNotification('تم إيقاف حماية العين');
-            }
-    
-            function updateFilter() {
-                if (!isEyeProtectionEnabled) return;
-    
-                const temp = slider.value;
-                const warmth = (temp - 1700) / (2700 - 1700);
-                const sepia = 0.4 + 0.6 * (1 - warmth);
-                const brightness = 1 - 0.2 * warmth;
-                const contrast = reduceGlare.checked ? 1.1 : 1;
-                const grayscale = reduceGlare.checked ? 0.1 : 0;
-                
-                let filter = `sepia(${sepia}) brightness(${brightness}) contrast(${contrast}) grayscale(${grayscale})`;
-                
-                document.documentElement.style.filter = filter;
-                
-                if (darkenText.checked) {
-                    document.body.style.color = `hsl(0, 0%, ${70 - (warmth * 30)}%)`;
-                } else {
-                    document.body.style.color = '';
-                }
-            }
-    
-            function checkTimeOfDay() {
-                const hour = new Date().getHours();
-                const isNightTime = hour >= 18 || hour <= 6;
-                
-                if (isNightTime) {
-                    slider.value = 2000;
-                    if (autoNightMode.checked && !isEyeProtectionEnabled) {
-                        enableEyeProtection();
-                        showNotification('تم تفعيل الوضع الليلي تلقائياً');
-                    }
-                } else {
-                    slider.value = 2700;
-                }
-                updateFilter();
-                updateSliderColor(slider.value);
-            }
-    
-            function startAutoNightMode() {
-                checkTimeOfDay();
-                autoNightModeInterval = setInterval(checkTimeOfDay, 30 * 60 * 1000); // كل 30 دقيقة
-            }
-    
-            function stopAutoNightMode() {
-                clearInterval(autoNightModeInterval);
-            }
-    
-            function showNotification(message) {
-                const notif = document.createElement('div');
-                notif.className = 'notification';
-                notif.textContent = message;
-                document.body.appendChild(notif);
-                
-                setTimeout(() => {
-                    notif.classList.add('fade-out');
-                    setTimeout(() => notif.remove(), 500);
-                }, 3000);
-            }
-    
-            function savePreferences() {
-                localStorage.setItem('eyeProtectionPrefs', JSON.stringify({
-                    autoNightMode: autoNightMode.checked,
-                    reduceGlare: reduceGlare.checked,
-                    darkenText: darkenText.checked,
-                    enabled: isEyeProtectionEnabled,
-                    brightness: brightnessSlider.value,
-                    colorTemp: slider.value
-                }));
-            }
-    
-            // تفعيل الوضع الليلي التلقائي إذا كان الوقت ليلاً
-            if (autoNightMode.checked) {
+            // تحقق من وقت اليوم عند التحميل
+            if (autoNightMode.checked) { // فقط إذا كان الوضع التلقائي محدداً
+                checkTimeOfDay(); // هذا قد يفعل الحماية إذا كان الوقت ليلاً
                 startAutoNightMode();
             }
+        });
+    
+        toggleButton.addEventListener('click', () => {
+            controlPanel.classList.toggle('expanded');
+    
+            if (isEyeProtectionEnabled) {
+                disableEyeProtection();
+            } else {
+                enableEyeProtection();
+                // لا تغلق اللوحة تلقائيًا إذا فتحها المستخدم يدويًا للتو
+                // يمكن إبقاء هذا السلوك أو إزالته حسب الرغبة
+                // setTimeout(() => {
+                //     if (isEyeProtectionEnabled) { // فقط أغلق إذا كانت الحماية لا تزال مفعلة
+                //        controlPanel.classList.remove('expanded');
+                //     }
+                // }, 7000); // زيادة الوقت قليلاً
+            }
+            savePreferences();
+        });
+    
+        colorTempSliderElement.addEventListener('input', function() {
+            updateFilter();
+            updateSliderColor(this.value);
+            savePreferences(); // حفظ عند تغيير شريط التمرير أيضًا
+        });
+        
+        // تحديث لون مقبض شريط التمرير بناء على القيمة باستخدام متغير CSS
+        function updateSliderColor(value) {
+            const percent = (value - 1700) / (2700 - 1700); // النسبة من 0 إلى 1
+            let newThumbColor = 'radial-gradient(circle, #4caf50, #388e3c)'; // لون افتراضي
+
+            // الألوان تتدرج من البرتقالي (دافئ جداً) إلى الأصفر (دافئ)
+            // 1700K هو الأكثر دفئًا (برتقالي), 2700K هو الأقل دفئًا في هذا النطاق (أصفر فاتح)
+            if (percent < 0.33) { // الثلث الأول (الأكثر دفئًا)
+                newThumbColor = 'radial-gradient(circle, #ff9a3c, #e07c2e)'; 
+            } else if (percent < 0.66) { // الثلث الأوسط
+                newThumbColor = 'radial-gradient(circle, #ffb347, #e0953a)'; 
+            } else { // الثلث الأخير (الأقل دفئًا)
+                newThumbColor = 'radial-gradient(circle, #ffe08c, #e0c87a)'; 
+            }
+            // تطبيق اللون على متغير CSS الذي يستخدمه مقبض شريط التمرير
+            colorTempSliderElement.style.setProperty('--thumb-color', newThumbColor);
+        }
+        
+        autoNightMode.addEventListener('change', function() {
+            if (this.checked) {
+                startAutoNightMode();
+                 // لا حاجة لاستدعاء updateFilter هنا مباشرة، سيتم استدعاؤه من checkTimeOfDay إذا لزم الأمر
+            } else {
+                stopAutoNightMode();
+                // إذا تم إلغاء الوضع التلقائي وكان ليلاً، قد نرغب في إبقاء الفلتر أو إزالته بناءً على حالة isEyeProtectionEnabled
+            }
+            savePreferences();
+        });
+    
+        reduceGlare.addEventListener('change', function() {
+            if (isEyeProtectionEnabled) {
+                updateFilter();
+            }
+            savePreferences();
+        });
+    
+        darkenText.addEventListener('change', function() {
+            if (isEyeProtectionEnabled) {
+                updateFilter();
+            }
+            savePreferences();
+        });
+    
+        brightnessSlider.addEventListener('input', function() {
+            document.body.style.opacity = this.value / 100;
+            savePreferences();
+        });
+    
+        function enableEyeProtection() {
+            isEyeProtectionEnabled = true;
+            emoji.textContent = '🛡️';
+            toggleText.textContent = 'إيقاف';
+            updateFilter();
+            updateSliderColor(colorTempSliderElement.value); // تحديث لون المقبض عند التفعيل
+            showNotification('تم تفعيل حماية العين');
+            savePreferences(); // حفظ الحالة الجديدة
+        }
+    
+        function disableEyeProtection() {
+            isEyeProtectionEnabled = false;
+            emoji.textContent = '🌙';
+            toggleText.textContent = 'تشغيل';
+            document.documentElement.style.filter = 'none';
+            document.body.style.color = ''; // استعادة اللون الأصلي للنص
+            // استعادة السطوع الافتراضي إذا لم يكن المستخدم قد ضبطه يدوياً
+            // brightnessSlider.value = 100; // أو قيمة محفوظة مسبقًا
+            // document.body.style.opacity = 1; 
+            showNotification('تم إيقاف حماية العين');
+            savePreferences(); // حفظ الحالة الجديدة
+        }
+    
+        function updateFilter() {
+            if (!isEyeProtectionEnabled) return;
+    
+            const temp = colorTempSliderElement.value;
+            const warmth = (temp - 1700) / (2700 - 1700); // 0 (أكثر دفئًا) إلى 1 (أقل دفئًا)
             
-            // تحديث لون شريط التمرير عند التحميل
-            updateSliderColor(slider.value);
-        </script>
-    </body>
-    </html>
+            const sepiaValue = Math.min(1, 0.3 + 0.7 * (1 - warmth)); // زيادة تأثير السيبيا للألوان الدافئة
+            const brightnessValue = 1 - 0.15 * (1 - warmth); // تقليل السطوع قليلاً مع الألوان الدافئة
+            const contrastValue = reduceGlare.checked ? 1.05 : 1; // زيادة طفيفة للتباين عند تقليل الوهج
+            const grayscaleValue = reduceGlare.checked ? 0.05 : 0; // مسحة رمادية خفيفة عند تقليل الوهج
+            
+            let filterString = `sepia(${sepiaValue}) brightness(${brightnessValue}) contrast(${contrastValue}) grayscale(${grayscaleValue})`;
+            
+            document.documentElement.style.filter = filterString;
+            
+            if (darkenText.checked) {
+                // تعتيم النص بناءً على الدفء، النص يصبح أغمق مع الألوان الأكثر دفئًا
+                document.body.style.color = `hsl(0, 0%, ${60 - ( (1-warmth) * 25)}%)`; 
+            } else {
+                document.body.style.color = ''; // استعادة اللون الافتراضي المحدد في CSS
+            }
+        }
+    
+        function checkTimeOfDay() {
+            const hour = new Date().getHours();
+            const isNightTime = hour >= 18 || hour <= 6; // من 6 مساءً حتى 6 صباحًا
+            
+            if (autoNightMode.checked) { // تحقق فقط إذا كان الوضع التلقائي نشطًا
+                if (isNightTime) {
+                    colorTempSliderElement.value = Math.max(1700, Math.min(colorTempSliderElement.value, 2000)); // ضبط لدرجة أكثر دفئًا ليلاً، لا تتجاوز 2000K
+                    if (!isEyeProtectionEnabled) {
+                        enableEyeProtection();
+                        showNotification('تم تفعيل الوضع الليلي تلقائياً');
+                    } else {
+                        updateFilter(); // تحديث الفلتر إذا كان مفعلاً بالفعل
+                    }
+                } else { // وقت النهار
+                    colorTempSliderElement.value = Math.min(2700, Math.max(colorTempSliderElement.value, 2400)); // درجة أقل دفئًا نهارًا، لا تقل عن 2400K
+                    // يمكنك اختيارياً إيقاف الحماية تلقائيًا في النهار إذا كانت مفعلة بواسطة الوضع الليلي
+                    // if (isEyeProtectionEnabled) {
+                    //    disableEyeProtection();
+                    //    showNotification('تم إيقاف الوضع الليلي تلقائياً (النهار)');
+                    // }
+                    if (isEyeProtectionEnabled) updateFilter();
+                }
+                updateSliderColor(colorTempSliderElement.value);
+            }
+        }
+    
+        function startAutoNightMode() {
+            checkTimeOfDay(); // تحقق فورًا
+            if (autoNightModeInterval) clearInterval(autoNightModeInterval); // مسح المؤقت القديم إذا وجد
+            autoNightModeInterval = setInterval(checkTimeOfDay, 30 * 60 * 1000); // كل 30 دقيقة
+        }
+    
+        function stopAutoNightMode() {
+            clearInterval(autoNightModeInterval);
+            autoNightModeInterval = null;
+        }
+    
+        function showNotification(message) {
+            // إزالة أي إشعار موجود أولاً
+            const existingNotif = document.querySelector('.notification');
+            if (existingNotif) existingNotif.remove();
+
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.classList.add('fade-out');
+                setTimeout(() => notif.remove(), 500);
+            }, 3000);
+        }
+    
+        function savePreferences() {
+            localStorage.setItem('eyeProtectionPrefs', JSON.stringify({
+                autoNightMode: autoNightMode.checked,
+                reduceGlare: reduceGlare.checked,
+                darkenText: darkenText.checked,
+                enabled: isEyeProtectionEnabled,
+                brightness: brightnessSlider.value,
+                colorTemp: colorTempSliderElement.value
+            }));
+        }
+        
+        // إغلاق اللوحة عند الضغط خارجها (باستثناء زر التبديل نفسه)
+        document.addEventListener('click', function(event) {
+            const isClickInsidePanel = controlPanel.contains(event.target);
+            const isClickOnToggleButton = toggleButton.contains(event.target) || toggleButton === event.target;
+
+            if (controlPanel.classList.contains('expanded') && !isClickInsidePanel && !isClickOnToggleButton) {
+                controlPanel.classList.remove('expanded');
+            }
+        });
+
+    </script>
+</body>
+</html>
   <style>
         body {
             font-family: 'Poppins', 'Amiri', serif;
