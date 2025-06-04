@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب معدل السنة الثانية طب - من طرف  </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --primary-color-dark: #00408f;
+            --secondary-color: #28a745;
+            --secondary-color-dark: #218838;
+            --danger-color: #dc3545;
+            --danger-color-dark: #c82333;
+            --neutral-color: #6c757d;
+            --neutral-color-dark: #5a6268;
+            --light-gray: #f7f9fc;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #333;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --input-padding: 8px;
+            --font-family: 'Tajawal', 'Arial', sans-serif;
+            --table-header-bg: #4CAF50;
+            --table-border-color: black;
+            --above-ten-bg: lightgreen;
+            --below-ten-bg: lightcoral;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 10px;
+            background-color: var(--light-gray);
+            direction: rtl;
+            line-height: 1.6;
+        }
+
+        .container {
+            background-color: var(--white);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 950px;
+            margin: 10px auto;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 22px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+        }
+        h3 {
+            color: var(--dark-gray);
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            padding-bottom: 5px;
+            text-align: right;
+        }
+
+        .input-table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        .grades-input-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto 20px auto;
+            font-size: 14px;
+        }
+
+        .grades-input-table th,
+        .grades-input-table td {
+            border: 1px solid var(--table-border-color);
+            padding: var(--input-padding);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .grades-input-table th {
+            background-color: var(--table-header-bg);
+            color: var(--white);
+            font-weight: bold;
+        }
+        .grades-input-table .unit-module-header th {
+            background-color: #5a8f5c;
+        }
+
+        .grades-input-table td[data-label="البيان"] {
+            text-align: right;
+            font-weight: bold;
+            min-width: 150px;
+        }
+        .grades-input-table td[data-label="العلامة"] {
+            min-width: 100px;
+        }
+        .grades-input-table td[data-label="المعدل المحسوب"] {
+            min-width: 80px;
+            font-weight: bold;
+        }
+
+        .grades-input-table input[type="number"] {
+            width: 100%;
+            padding: var(--input-padding);
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
+        .grades-input-table input[type="number"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
+            outline: none;
+        }
+        
+        .calculated-avg-cell.above-ten { background-color: var(--above-ten-bg); color: #1d421e; }
+        .calculated-avg-cell.below-ten { background-color: var(--below-ten-bg); color: #5c2121; }
+
+        @media (max-width: 768px) {
+            .grades-input-table thead {
+                /* display: none; */ /* Keeping headers visible if simple */
+            }
+            .grades-input-table,
+            .grades-input-table tbody,
+            .grades-input-table tr,
+            .grades-input-table td {
+                display: block;
+                width: 100% !important;
+                box-sizing: border-box;
+            }
+            .grades-input-table tr {
+                margin-bottom: 10px;
+                border: 1px solid var(--table-border-color);
+            }
+            .grades-input-table .unit-module-header th {
+                display: block;
+                width: 100% !important;
+                text-align: center !important;
+                padding: 10px;
+            }
+            .grades-input-table td {
+                text-align: right;
+                padding-left: 50%; 
+                position: relative;
+                border: none;
+                border-bottom: 1px dotted var(--medium-gray);
+            }
+            .grades-input-table td:last-child {
+                border-bottom: none;
+            }
+            .grades-input-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                right: 5px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 45%;
+                padding-left: 10px; 
+                font-weight: bold;
+                text-align: left;
+                white-space: nowrap;
+            }
+            .grades-input-table td[data-label="العلامة"] input[type="number"] {
+                width: 100%;
+            }
+            .grades-input-table td[data-label="البيان"] {
+                padding-left: 0; 
+                text-align: right; /* Content of البيان cell */
+            }
+            .grades-input-table td[data-label="البيان"]:before {
+                display: none;
+            }
+        }
+        @media (max-width: 480px) {
+            .grades-input-table { font-size: 13px; }
+            .grades-input-table input[type="number"] { font-size: 13px; padding: 6px;}
+            .grades-input-table td { padding-left: 40%; }
+            .grades-input-table td:before { width: 35%; }
+        }
+
+        .main-actions-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .main-actions-group button {
+            flex: 1; /* Distribute space equally */
+            padding: 14px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: var(--font-family);
+        }
+        .main-actions-group button#calculateButton { 
+             background-color: var(--primary-color);
+             color: var(--white);
+        }
+        .main-actions-group button#calculateButton:hover {
+             background-color: var(--primary-color-dark);
+        }
+        .main-actions-group button#clearAllButton {
+            background-color: var(--neutral-color);
+            color: var(--white);
+        }
+        .main-actions-group button#clearAllButton:hover {
+            background-color: var(--neutral-color-dark);
+        }
+
+        @media (max-width: 600px) {
+            .main-actions-group {
+                flex-direction: column;
+            }
+            .main-actions-group button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .main-actions-group button:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
+        button.full-width-button { 
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: var(--font-family);
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .capture-button { background-color: var(--secondary-color); color: var(--white); }
+        .capture-button:hover { background-color: var(--secondary-color-dark); }
+        
+        .back-button-container { margin-top: 20px; text-align: center; }
+        .back-button {
+            display: inline-block; width: auto; padding: 10px 25px; background-color: var(--neutral-color);
+            color: var(--white); font-size: 15px; transition: background-color 0.3s ease;
+            border: none; border-radius: var(--border-radius); font-family: var(--font-family); cursor: pointer;
+        }
+        .back-button:hover { background-color: var(--neutral-color-dark); }
+
+        .result-container {
+            margin-top: 25px; padding: 20px; background-color: #f0f5ff;
+            border-radius: var(--border-radius); box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+            text-align: right;
+        }
+        .result-container h3.result-title {font-size: 18px; color: var(--dark-gray); margin-top: 0; margin-bottom: 10px; border-bottom: none;}
+        .result-container p {font-size: 16px; color: var(--dark-gray); margin: 8px 0; line-height: 1.6;}
+        .result-container .unit-result-detail {font-size: 15px; padding-right: 10px;}
+        .final-grade-emphasis {font-weight: bold; font-size: 1.1em; color: var(--primary-color);}
+        .motivational-message {font-size: 17px; font-weight: bold; margin-top: 20px; padding: 10px; border-radius: var(--border-radius);}
+        .positive { color: green; font-weight: bold; }
+        .negative { color: red; font-weight: bold; }
+        
+        .results-summary-table {width: 100%; margin-top: 20px; border-collapse: collapse; font-size: 14px;}
+        .results-summary-table th, .results-summary-table td {border: 1px solid var(--medium-gray); padding: 8px; text-align: right;}
+        .results-summary-table th {background-color: #e9ecef; font-weight: bold;}
+        .results-summary-table td.highlight {font-weight: bold;}
+        @media (max-width: 600px) {
+            .results-summary-table, .results-summary-table th, .results-summary-table td { font-size: 12px; padding: 5px; }
+        }
+        @media (max-width: 480px) {
+            .results-summary-table { font-size: 11px; }
+            .results-summary-table th, .results-summary-table td { padding: 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="captureArea">
+        <h2>حساب معدل السنة الثانية طب مقدم من أداة علم</h2>
+
+        <h3>الوحدات الأساسية</h3>
+        <div class="input-table-container">
+            <table class="grades-input-table" id="units-input-table">
+                <thead>
+                    <tr>
+                        <th>البيان</th>
+                        <th>العلامة</th>
+                        <th>المعدل المحسوب للوحدة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+        <h3>الموديلات الإضافية</h3>
+        <div class="input-table-container">
+            <table class="grades-input-table" id="modules-input-table">
+                <thead>
+                    <tr>
+                        <th>البيان</th>
+                        <th>العلامة</th>
+                        </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="main-actions-group">
+            <button id="calculateButton" onclick="calculateAllResults()">احسب المعدل السنوي</button>
+            <button id="clearAllButton" onclick="clearAllInputs()">محو جميع الخانات</button>
+        </div>
+
+        <div class="result-container" id="result-container" style="display: none;">
+            <h3 class="result-title">تفاصيل معدلات الوحدات والموديلات:</h3>
+            <div id="units_results_details"></div>
+            
+            <h3 class="result-title" style="margin-top:20px;">ملخص المعدل السنوي:</h3>
+            <table class="results-summary-table" id="annual_summary_table">
+                <thead><tr><th>المادة/الوحدة</th><th>المعدل/العلامة</th><th>المعامل</th><th>المجموع (المعدل × المعامل)</th></tr></thead>
+                <tbody></tbody>
+                <tfoot></tbody>
+            </table>
+            <p style="margin-top: 20px;"><strong>المعدل السنوي الكلي: <span id="total_annual_grade" class="final-grade-emphasis">--</span></strong></p>
+            <p id="missing_points_to_10_container" style="display:none;">النقاط المطلوبة للوصول إلى 10 في المعدل السنوي: <span id="missing_points_to_10" class="negative">--</span></p>
+            <div id="motivational_message" class="motivational-message" style="display:none;"></div>
+        </div>
+
+        <button class="capture-button full-width-button" onclick="captureScreen()">التقاط صورة للنتائج</button>
+        <div class="back-button-container">
+             <button class="back-button" onclick="window.location.href='MED02.html';">العودة للصفحة السابقة</button>
+        </div>
+    </div>
+
+    <script>
+        const unitsData = [
+            { id: 'unit1', name: 'وحدة Cardio (القلب والأوعية)', name_short: 'Cardio', coeff: 4 },
+            { id: 'unit2', name: 'وحدة Digestif (الجهاز الهضمي)', name_short: 'Digestif', coeff: 4 },
+            { id: 'unit3', name: 'وحدة Urinaire (الجهاز البولي)', name_short: 'Urinaire', coeff: 4 },
+            { id: 'unit4', name: 'وحدة Endocrine (الغدد الصماء)', name_short: 'Endocrine', coeff: 4 },
+            { id: 'unit5', name: 'وحدة Neuro (الجهاز العصبي)', name_short: 'Neuro', coeff: 4 }
+        ];
+        const modulesData = [
+            { id: 'genetics', name: 'موديل الجيناتيك', name_short: 'Génétique', coeff: 2 },
+            { id: 'immunology', name: 'موديل المناعة', name_short: 'Immunologie', coeff: 2 }
+        ];
+
+        function generateInputTables() {
+            const unitsTbody = document.getElementById('units-input-table').getElementsByTagName('tbody')[0];
+            unitsTbody.innerHTML = '';
+            unitsData.forEach(unit => {
+                let headerRow = `<tr class="unit-module-header"><th colspan="3">${unit.name} (المعامل: ${unit.coeff})</th></tr>`;
+                unitsTbody.innerHTML += headerRow;
+                unitsTbody.innerHTML += `
+                    <tr>
+                        <td data-label="البيان">علامة الامتحان النظري (${unit.name_short}):</td>
+                        <td data-label="العلامة"><input type="number" id="${unit.id}_exam_theory" class="grade-input exam_theory" min="0" max="20" step="0.01" placeholder="0-20" oninput="updateUnitAvgDisplay('${unit.id}')"></td>
+                        <td data-label="المعدل المحسوب" rowspan="3" id="${unit.id}_unit_avg_display_cell" class="calculated-avg-cell">--</td>
+                    </tr>
+                    <tr>
+                        <td data-label="البيان">علامة TP أناتومي (${unit.name_short}):</td>
+                        <td data-label="العلامة"><input type="number" id="${unit.id}_tp_anato" class="grade-input tp_anato" min="0" max="20" step="0.01" placeholder="0-20" oninput="updateUnitAvgDisplay('${unit.id}')"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="البيان">علامة TP هيستولوجيا (${unit.name_short}):</td>
+                        <td data-label="العلامة"><input type="number" id="${unit.id}_tp_histo" class="grade-input tp_histo" min="0" max="20" step="0.01" placeholder="0-20" oninput="updateUnitAvgDisplay('${unit.id}')"></td>
+                    </tr>`;
+            });
+
+            const modulesTbody = document.getElementById('modules-input-table').getElementsByTagName('tbody')[0];
+            modulesTbody.innerHTML = '';
+            modulesData.forEach(module => {
+                modulesTbody.innerHTML += `
+                    <tr class="unit-module-header"><th colspan="2">${module.name} (المعامل: ${module.coeff})</th></tr>
+                    <tr>
+                        <td data-label="البيان">علامة ${module.name_short}:</td>
+                        <td data-label="العلامة"><input type="number" id="${module.id}_grade" class="grade-input module_grade" min="0" max="20" step="0.01" placeholder="0-20"></td>
+                    </tr>`;
+                
+                const moduleInput = document.getElementById(`${module.id}_grade`);
+                if (moduleInput) {
+                    moduleInput.addEventListener('input', function() {
+                        if (this.value.trim() === '') {
+                            localStorage.removeItem(this.id);
+                        } else {
+                            localStorage.setItem(this.id, this.value);
+                        }
+                    });
+                }
+            });
+        }
+        
+        function loadSavedData() {
+            const inputs = document.querySelectorAll('.grade-input');
+            inputs.forEach(input => {
+                const savedValue = localStorage.getItem(input.id);
+                if (savedValue !== null) {
+                    input.value = savedValue;
+                }
+            });
+
+            unitsData.forEach(unit => {
+                const examTheoryInput = document.getElementById(`${unit.id}_exam_theory`);
+                const tpAnatoInput = document.getElementById(`${unit.id}_tp_anato`);
+                const tpHistoInput = document.getElementById(`${unit.id}_tp_histo`);
+
+                if ((examTheoryInput && examTheoryInput.value) || (tpAnatoInput && tpAnatoInput.value) || (tpHistoInput && tpHistoInput.value)) {
+                     updateUnitAvgDisplay(unit.id); // This will also handle saving for these pre-filled unit inputs
+                }
+            });
+             // For module inputs, their values are loaded. Saving is handled by their direct event listeners.
+        }
+
+        window.onload = function() {
+            generateInputTables();
+            loadSavedData();
+        };
+
+        function getInputValue(id) {
+            const inputElement = document.getElementById(id);
+            if (!inputElement || inputElement.value.trim() === '') return 0;
+            const value = parseFloat(inputElement.value);
+            return isNaN(value) || value < 0 ? 0 : (value > 20 ? 20 : value);
+        }
+
+        function calculateUnitAverageInternal(examTheory, tpAnato, tpHisto) {
+            const avgTp = (tpAnato + tpHisto) / 2;
+            return (avgTp + (examTheory * 4)) / 5;
+        }
+
+        function updateUnitAvgDisplay(unitId) {
+            const unit = unitsData.find(u => u.id === unitId);
+            if (!unit) return;
+
+            const examTheoryEl = document.getElementById(`${unit.id}_exam_theory`);
+            const tpAnatoEl = document.getElementById(`${unit.id}_tp_anato`);
+            const tpHistoEl = document.getElementById(`${unit.id}_tp_histo`);
+
+            // Save to localStorage for each input that triggered this
+            if (examTheoryEl) { examTheoryEl.value.trim() === '' ? localStorage.removeItem(examTheoryEl.id) : localStorage.setItem(examTheoryEl.id, examTheoryEl.value); }
+            if (tpAnatoEl) { tpAnatoEl.value.trim() === '' ? localStorage.removeItem(tpAnatoEl.id) : localStorage.setItem(tpAnatoEl.id, tpAnatoEl.value); }
+            if (tpHistoEl) { tpHistoEl.value.trim() === '' ? localStorage.removeItem(tpHistoEl.id) : localStorage.setItem(tpHistoEl.id, tpHistoEl.value); }
+            
+            const examTheory = getInputValue(`${unit.id}_exam_theory`);
+            const tpAnato = getInputValue(`${unit.id}_tp_anato`);
+            const tpHisto = getInputValue(`${unit.id}_tp_histo`);
+            
+            const unitAverage = calculateUnitAverageInternal(examTheory, tpAnato, tpHisto);
+            const displayCell = document.getElementById(`${unit.id}_unit_avg_display_cell`);
+            if (displayCell) {
+                displayCell.textContent = unitAverage.toFixed(2);
+                displayCell.classList.remove('above-ten', 'below-ten');
+                if (unitAverage >= 10) {
+                    displayCell.classList.add('above-ten');
+                } else {
+                    displayCell.classList.add('below-ten');
+                }
+            }
+        }
+
+        function calculateAllResults() {
+            let totalWeightedSum = 0;
+            const totalCoefficients = 24;
+            let resultsDetailsHtml = ''; 
+
+            const summaryTableBody = document.getElementById('annual_summary_table').getElementsByTagName('tbody')[0];
+            summaryTableBody.innerHTML = ''; 
+
+            unitsData.forEach(unit => {
+                const examTheory = getInputValue(`${unit.id}_exam_theory`);
+                const tpAnato = getInputValue(`${unit.id}_tp_anato`);
+                const tpHisto = getInputValue(`${unit.id}_tp_histo`);
+                const unitAverage = calculateUnitAverageInternal(examTheory, tpAnato, tpHisto);
+                
+                const displayCell = document.getElementById(`${unit.id}_unit_avg_display_cell`);
+                 if (displayCell) {
+                    displayCell.textContent = unitAverage.toFixed(2);
+                    displayCell.classList.remove('above-ten', 'below-ten');
+                    if (unitAverage >= 10) displayCell.classList.add('above-ten');
+                    else displayCell.classList.add('below-ten');
+                }
+
+                const weightedScore = unitAverage * unit.coeff;
+                totalWeightedSum += weightedScore;
+
+                let status = '';
+                if (unitAverage < 10) status = `<span class="negative">(ينقصك: ${(10 - unitAverage).toFixed(2)})</span>`;
+                else if (unitAverage > 10) status = `<span class="positive">(لديك زيادة: ${(unitAverage - 10).toFixed(2)})</span>`;
+                else status = `(10 بالضبط!)`;
+                resultsDetailsHtml += `<p class="unit-result-detail"><strong>${unit.name}:</strong> ${unitAverage.toFixed(2)} ${status}</p>`;
+                
+                let row = summaryTableBody.insertRow();
+                row.insertCell().textContent = unit.name;
+                row.insertCell().textContent = unitAverage.toFixed(2);
+                row.insertCell().textContent = unit.coeff;
+                row.insertCell().textContent = weightedScore.toFixed(2);
+            });
+            
+            modulesData.forEach(module => {
+                const grade = getInputValue(`${module.id}_grade`);
+                const weightedScore = grade * module.coeff;
+                totalWeightedSum += weightedScore;
+
+                let moduleStatus = ''; 
+                if (grade < 10) {
+                    moduleStatus = `<span class="negative">(ينقصك: ${(10 - grade).toFixed(2)})</span>`;
+                } else if (grade > 10) {
+                    moduleStatus = `<span class="positive">(لديك زيادة: ${(grade - 10).toFixed(2)})</span>`;
+                } else {
+                    moduleStatus = `(10 بالضبط!)`;
+                }
+                resultsDetailsHtml += `<p class="unit-result-detail"><strong>${module.name}:</strong> ${grade.toFixed(2)} ${moduleStatus}</p>`;
+
+                let row = summaryTableBody.insertRow();
+                row.insertCell().textContent = module.name;
+                row.insertCell().textContent = grade.toFixed(2);
+                row.insertCell().textContent = module.coeff;
+                row.insertCell().textContent = weightedScore.toFixed(2);
+            });
+
+            document.getElementById('units_results_details').innerHTML = resultsDetailsHtml;
+
+            const annualAverage = totalWeightedSum / totalCoefficients;
+            document.getElementById('total_annual_grade').textContent = annualAverage.toFixed(3);
+
+            let tfoot = document.getElementById('annual_summary_table').tFoot;
+            if (!tfoot) tfoot = document.getElementById('annual_summary_table').createTFoot();
+            tfoot.innerHTML = ''; 
+            let totalRow = tfoot.insertRow();
+            totalRow.insertCell().textContent = 'المجموع الكلي / المعدل السنوي';
+            totalRow.insertCell().textContent = annualAverage.toFixed(3); 
+            let cellCoeff = totalRow.insertCell();
+            cellCoeff.textContent = totalCoefficients; cellCoeff.classList.add('highlight');
+            let cellTotalWeighted = totalRow.insertCell();
+            cellTotalWeighted.textContent = totalWeightedSum.toFixed(2); cellTotalWeighted.classList.add('highlight');
+            
+            const missingPointsContainer = document.getElementById('missing_points_to_10_container');
+            const missingPointsEl = document.getElementById('missing_points_to_10');
+            const motivationalMessageEl = document.getElementById('motivational_message');
+
+            if (annualAverage < 10) {
+                missingPointsEl.textContent = (10 - annualAverage).toFixed(3);
+                missingPointsContainer.style.display = 'block';
+                motivationalMessageEl.innerHTML = "لا تستسلم! لديك القدرة على تحسين نتائجك. ركز على نقاط ضعفك واجتهد أكثر في المرة القادمة. كل نقطة تقربك من هدفك!";
+                motivationalMessageEl.style.color = "#c0392b"; motivationalMessageEl.style.backgroundColor = "#ffebee"; motivationalMessageEl.style.border = "1px solid #c0392b";
+            } else {
+                missingPointsContainer.style.display = 'none';
+                motivationalMessageEl.innerHTML = `ممتاز! معدلك ${annualAverage.toFixed(3)}. أنت على الطريق الصحيح. واصل هذا الأداء الرائع!`;
+                motivationalMessageEl.style.color = "var(--secondary-color)"; motivationalMessageEl.style.backgroundColor = "#e6ffed"; motivationalMessageEl.style.border = "1px solid var(--secondary-color)";
+            }
+            motivationalMessageEl.style.display = 'block';
+            document.getElementById('result-container').style.display = 'block';
+        }
+
+        function clearAllInputs() {
+            const inputs = document.querySelectorAll('.grade-input');
+            inputs.forEach(input => {
+                input.value = '';
+                localStorage.removeItem(input.id);
+            });
+
+            unitsData.forEach(unit => {
+                const displayCell = document.getElementById(`${unit.id}_unit_avg_display_cell`);
+                if (displayCell) {
+                    displayCell.textContent = '--';
+                    displayCell.classList.remove('above-ten', 'below-ten');
+                }
+            });
+
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('units_results_details').innerHTML = '';
+            const summaryTableBody = document.getElementById('annual_summary_table').getElementsByTagName('tbody')[0];
+            summaryTableBody.innerHTML = '';
+            const summaryTableFoot = document.getElementById('annual_summary_table').tFoot;
+            if (summaryTableFoot) {
+                summaryTableFoot.innerHTML = '';
+            }
+            document.getElementById('total_annual_grade').textContent = '--';
+            document.getElementById('missing_points_to_10_container').style.display = 'none';
+            document.getElementById('motivational_message').style.display = 'none';
+            console.log("All fields, stored data, and results cleared.");
+        }
+
+        function captureScreen() {
+            const captureArea = document.getElementById('captureArea');
+            const originalBackgroundColor = captureArea.style.backgroundColor;
+            captureArea.style.backgroundColor = 'var(--white)'; 
+            html2canvas(captureArea, { scrollY: -window.scrollY, windowWidth: document.documentElement.scrollWidth, windowHeight: document.documentElement.scrollHeight, useCORS: true, logging: true })
+            .then(canvas => {
+                captureArea.style.backgroundColor = originalBackgroundColor; 
+                let link = document.createElement('a');
+                link.download = 'نتائج_معدل_السنة_الثانية_طب.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(error => {
+                 captureArea.style.backgroundColor = originalBackgroundColor; 
+                console.error("html2canvas failed:", error);
+                alert("حدث خطأ أثناء التقاط الشاشة. قد تكون هناك مشكلة في تحميل الصور أو الموارد الخارجية إذا كانت الصفحة تحتوي عليها.");
+            });
+        }
+    </script>
+</body>
+</html>
