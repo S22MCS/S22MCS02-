@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1200, initial-scale=1.0, user-scalable=yes">
     <title>حساب معدل السنة الأولى طب - مقدم من أداة علم</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -19,18 +19,22 @@
             --medium-gray: #e0e0e0;
             --dark-gray: #333;
             --white: #ffffff;
-            --border-radius: 8px;
-            --input-padding: 8px; /* تم تقليل الحشو قليلاً هنا ليتناسب مع خانات أكثر */
+            --border-radius: 10px;
+            --input-padding: 12px;
             --font-family: 'Tajawal', 'Arial', sans-serif;
-            --table-header-bg: #007bff; /* استخدام لون أزرق متناسق مع الأولي */
-            --table-border-color: #dee2e6; /* لون حدود أفتح للجدول */
-            --above-ten-bg: #d4edda; /* أخضر فاتح للنجاح */
+            --table-header-bg: #007bff;
+            --table-border-color: #dee2e6;
+            --above-ten-bg: #d4edda;
             --above-ten-color: #155724;
-            --below-ten-bg: #f8d7da; /* أحمر فاتح لعدم النجاح */
+            --below-ten-bg: #f8d7da;
             --below-ten-color: #721c24;
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             font-family: var(--font-family);
@@ -40,6 +44,8 @@
             direction: rtl;
             line-height: 1.6;
             color: var(--dark-gray);
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
         }
 
         .container {
@@ -48,48 +54,52 @@
             border-radius: var(--border-radius);
             box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 1000px; /* زيادة طفيفة للعرض الأقصى لاستيعاب الجدول */
+            max-width: 1000px;
             margin: 10px auto;
-            box-sizing: border-box;
+            transform: scale(1);
+            transform-origin: top center;
         }
 
         h2 {
             color: var(--primary-color);
-            font-size: 22px;
+            font-size: 24px;
             margin-bottom: 20px;
             font-weight: 700;
             text-align: center;
         }
+
         h3 {
             color: var(--dark-gray);
-            font-size: 18px;
+            font-size: 20px;
             margin-top: 25px;
             margin-bottom: 15px;
             font-weight: 700;
             padding-bottom: 5px;
             text-align: right;
-            border-bottom: 2px solid var(--primary-color-light, #e0e0e0);
+            border-bottom: 2px solid var(--medium-gray);
         }
 
         .input-table-container {
             width: 100%;
-            overflow-x: auto; /* دائماً يسمح بالتمرير الأفقي إذا احتاج الجدول */
+            overflow-x: auto;
             margin-bottom: 20px;
-            -webkit-overflow-scrolling: touch; /* تمرير سلس على iOS */
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
         }
 
         .grades-input-table {
             width: 100%;
-            min-width: 700px; /* حد أدنى لعرض الجدول قبل أن يبدأ التمرير */
+            min-width: 700px;
             border-collapse: collapse;
-            margin: 0 auto 20px auto;
-            font-size: 14px;
+            margin: 0 auto;
+            font-size: 16px;
         }
 
         .grades-input-table th,
         .grades-input-table td {
             border: 1px solid var(--table-border-color);
-            padding: var(--input-padding);
+            padding: 12px;
             text-align: center;
             vertical-align: middle;
         }
@@ -97,191 +107,436 @@
         .grades-input-table th {
             background-color: var(--table-header-bg);
             color: var(--white);
-            font-weight: 500; /* خط أثقل قليلاً للعناوين */
+            font-weight: 500;
+            font-size: 16px;
         }
 
         .grades-input-table td[data-label="المقياس"] {
             text-align: right;
             font-weight: 500;
-            min-width: 180px; /* مساحة كافية لاسم المقياس */
+            min-width: 180px;
         }
+
         .grades-input-table td[data-label="المعامل"],
         .grades-input-table td[data-label="إدراج TP؟"] {
-            min-width: 70px;
+            min-width: 80px;
         }
+
         .grades-input-table td[data-label="معدل المقياس"],
         .grades-input-table td[data-label="ينقصك للمقياس"] {
-            min-width: 90px;
+            min-width: 100px;
             font-weight: bold;
         }
 
         .grades-input-table input[type="number"] {
-            width: 100%; /* يملأ الخلية */
-            max-width: 75px; /* لكن له حد أقصى للعرض */
-            padding: 6px; /* تقليل الحشو الداخلي قليلاً */
+            width: 100%;
+            max-width: 90px;
+            padding: 10px;
             border: 1px solid var(--medium-gray);
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 16px;
             text-align: center;
-            box-sizing: border-box;
             font-family: var(--font-family);
+            height: 45px;
         }
+
         .grades-input-table input[type="number"]:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
             outline: none;
         }
+
         .grades-input-table input[type="checkbox"] {
-            width: auto;
-            height: auto;
-            transform: scale(1.2);
+            width: 25px;
+            height: 25px;
             cursor: pointer;
         }
-        
-        .calculated-avg-cell.above-ten { background-color: var(--above-ten-bg); color: var(--above-ten-color); }
-        .calculated-avg-cell.below-ten { background-color: var(--below-ten-bg); color: var(--below-ten-color); }
-        
-        .positive { color: var(--secondary-color); font-weight: bold; }
-        .negative { color: var(--danger-color); font-weight: bold; }
 
-        /* Responsive table for mobile */
+        .calculated-avg-cell.above-ten {
+            background-color: var(--above-ten-bg);
+            color: var(--above-ten-color);
+        }
+
+        .calculated-avg-cell.below-ten {
+            background-color: var(--below-ten-bg);
+            color: var(--below-ten-color);
+        }
+
+        .positive {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .negative {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+
+        /* تحسينات للهواتف الصغيرة */
         @media (max-width: 768px) {
-            .grades-input-table thead {
-                 /* يمكن إخفاء الرؤوس التقليدية إذا أردت، لكن data-label ستقوم بالعمل */
-                 /* display: none; */
+            body {
+                padding: 8px;
+                font-size: 15px;
             }
+
+            .container {
+                padding: 12px;
+            }
+
+            h2 {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+            h3 {
+                font-size: 18px;
+                margin-top: 20px;
+                margin-bottom: 12px;
+            }
+
+            .grades-input-table th,
+            .grades-input-table td {
+                padding: 10px;
+                font-size: 15px;
+            }
+
+            .grades-input-table input[type="number"] {
+                padding: 8px;
+                font-size: 15px;
+                height: 40px;
+            }
+
+            .grades-input-table input[type="checkbox"] {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+                padding: 5px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 17px;
+            }
+
+            .grades-input-table thead {
+                display: none;
+            }
+
             .grades-input-table,
             .grades-input-table tbody,
             .grades-input-table tr,
             .grades-input-table td {
                 display: block;
-                width: 100% !important;
-                box-sizing: border-box;
+                width: 100%;
             }
+
             .grades-input-table tr {
                 margin-bottom: 15px;
                 border: 1px solid var(--table-border-color);
                 border-radius: var(--border-radius);
-                overflow: hidden; /* لضمان تطبيق border-radius على الخلايا الداخلية */
+                overflow: hidden;
             }
+
             .grades-input-table td {
-                text-align: left; /* ليتناسب مع data-label على اليمين */
-                padding-left: 50%; 
+                text-align: left;
+                padding-left: 50%;
                 position: relative;
                 border: none;
-                border-bottom: 1px dotted var(--medium-gray);
-                min-width: auto !important; /* إلغاء min-width للخلايا في وضع الهاتف */
+                border-bottom: 1px solid var(--medium-gray);
+                min-width: auto !important;
             }
+
             .grades-input-table td:last-child {
                 border-bottom: none;
             }
+
             .grades-input-table td:before {
                 content: attr(data-label);
                 position: absolute;
-                right: 10px; /* المحاذاة لليمين */
+                right: 10px;
                 top: 50%;
                 transform: translateY(-50%);
-                width: 45%; /* عرض الـ label */
-                padding-left: 10px; 
+                width: 45%;
+                padding-left: 10px;
                 font-weight: bold;
-                text-align: right; /* محاذاة نص الـ label لليمين */
+                text-align: right;
                 white-space: nowrap;
-                font-size: 13px;
+                font-size: 14px;
+                color: var(--primary-color);
             }
+
             .grades-input-table input[type="number"] {
-                max-width: 100px; /* يمكن أن تكون أوسع قليلاً في هذا الوضع */
-                font-size: 13px;
+                max-width: 100%;
+                font-size: 15px;
+                height: 38px;
             }
+
             .grades-input-table td[data-label="المقياس"] {
-                padding-left: 10px; /* تعديل خاص لاسم المقياس */
-                text-align: right; /* محاذاة اسم المقياس لليمين */
-                font-size: 15px; /* تكبير اسم المقياس قليلاً */
-                background-color: #f8f9fa; /* خلفية بسيطة لتمييزه */
+                padding: 15px;
+                text-align: right;
+                font-size: 16px;
+                background-color: #f8f9fa;
+                font-weight: bold;
             }
+
             .grades-input-table td[data-label="المقياس"]:before {
-                display: none; /* لا نحتاج data-label لاسم المقياس لأنه واضح */
+                display: none;
+            }
+
+            .grades-input-table td[data-label="إدراج TP؟"] input[type="checkbox"] {
+                float: left;
+                margin-top: -3px;
             }
         }
-        @media (max-width: 480px) {
-            .grades-input-table { font-size: 13px; }
-            .grades-input-table input[type="number"] { font-size: 13px; padding: 6px;}
-            .grades-input-table td { padding-left: 40%; font-size: 13px; }
-            .grades-input-table td:before { width: 35%; font-size: 12px; }
+
+        @media screen and (max-width: 1200px) {
+            body {
+                zoom: 0.8;
+                overflow-x: auto;
+            }
+            .container {
+                min-width: 1000px;
+            }
         }
 
         .main-actions-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             margin-top: 25px;
             margin-bottom: 25px;
+            flex-wrap: wrap;
         }
+
         .main-actions-group button {
             flex: 1;
-            padding: 14px;
+            min-width: 200px;
+            padding: 15px;
             border: none;
             border-radius: var(--border-radius);
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.1s ease;
             font-family: var(--font-family);
         }
+
         .main-actions-group button:active {
             transform: scale(0.98);
         }
-        .main-actions-group button#calculateButton { background-color: var(--primary-color); color: var(--white); }
-        .main-actions-group button#calculateButton:hover { background-color: var(--primary-color-dark); }
-        .main-actions-group button#clearAllButton { background-color: var(--neutral-color); color: var(--white); }
-        .main-actions-group button#clearAllButton:hover { background-color: var(--neutral-color-dark); }
 
-        @media (max-width: 600px) {
-            .main-actions-group { flex-direction: column; }
-            .main-actions-group button { width: 100%; margin-bottom: 10px; }
-            .main-actions-group button:last-child { margin-bottom: 0; }
+        .main-actions-group button#calculateButton {
+            background-color: var(--primary-color);
+            color: var(--white);
         }
-        
+
+        .main-actions-group button#calculateButton:hover {
+            background-color: var(--primary-color-dark);
+        }
+
+        .main-actions-group button#clearAllButton {
+            background-color: var(--neutral-color);
+            color: var(--white);
+        }
+
+        .main-actions-group button#clearAllButton:hover {
+            background-color: var(--neutral-color-dark);
+        }
+
         button.full-width-button {
-            width: 100%; padding: 14px; border: none; border-radius: var(--border-radius);
-            font-size: 16px; font-weight: 700; cursor: pointer;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
             transition: background-color 0.3s ease, transform 0.1s ease;
-            font-family: var(--font-family); margin-top: 15px; margin-bottom: 15px;
+            font-family: var(--font-family);
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
-        button.full-width-button:active { transform: scale(0.98); }
 
-        .capture-button { background-color: var(--secondary-color); color: var(--white); }
-        .capture-button:hover { background-color: var(--secondary-color-dark); }
-        
-        .back-button-container { margin-top: 20px; text-align: center; }
-        .back-button {
-            display: inline-block; width: auto; padding: 10px 25px; background-color: var(--neutral-color);
-            color: var(--white); font-size: 15px; transition: background-color 0.3s ease;
-            border: none; border-radius: var(--border-radius); font-family: var(--font-family); cursor: pointer;
+        button.full-width-button:active {
+            transform: scale(0.98);
         }
-        .back-button:hover { background-color: var(--neutral-color-dark); }
+
+        .capture-button {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .capture-button:hover {
+            background-color: var(--secondary-color-dark);
+        }
+
+        .back-button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-button {
+            display: inline-block;
+            width: auto;
+            padding: 12px 30px;
+            background-color: var(--neutral-color);
+            color: var(--white);
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            border: none;
+            border-radius: var(--border-radius);
+            font-family: var(--font-family);
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: var(--neutral-color-dark);
+        }
 
         .result-container {
-            margin-top: 25px; padding: 20px; background-color: #f0f5ff; /* خلفية أفتح قليلاً للنتائج */
-            border-radius: var(--border-radius); box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f0f5ff;
+            border-radius: var(--border-radius);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
             text-align: right;
         }
-        .result-container h3.result-title {font-size: 18px; color: var(--dark-gray); margin-top: 0; margin-bottom: 15px; border-bottom: none;}
-        .result-container p {font-size: 16px; color: var(--dark-gray); margin: 8px 0; line-height: 1.7;}
-        .result-container .unit-result-detail {font-size: 15px; padding-right: 10px; margin-bottom: 5px;}
-        .final-grade-emphasis {font-weight: bold; font-size: 1.2em; color: var(--primary-color);}
-        .motivational-message {font-size: 17px; font-weight: bold; margin-top: 20px; padding: 15px; border-radius: var(--border-radius);}
-        
-        .results-summary-table {width: 100%; margin-top: 20px; border-collapse: collapse; font-size: 14px;}
-        .results-summary-table th, .results-summary-table td {border: 1px solid var(--medium-gray); padding: 8px; text-align: right;}
-        .results-summary-table th {background-color: #e9ecef; font-weight: bold;}
-        .results-summary-table td.highlight {font-weight: bold; color: var(--primary-color);}
-        @media (max-width: 600px) {
-            .results-summary-table, .results-summary-table th, .results-summary-table td { font-size: 12px; padding: 6px; }
-             .results-summary-table { display: block; overflow-x: auto; white-space: nowrap; }
-             .results-summary-table th, .results-summary-table td { white-space: normal; }
+
+        .result-container h3.result-title {
+            font-size: 20px;
+            color: var(--dark-gray);
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: none;
         }
+
+        .result-container p {
+            font-size: 17px;
+            color: var(--dark-gray);
+            margin: 10px 0;
+            line-height: 1.7;
+        }
+
+        .result-container .unit-result-detail {
+            font-size: 16px;
+            padding-right: 10px;
+            margin-bottom: 8px;
+        }
+
+        .final-grade-emphasis {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: var(--primary-color);
+        }
+
+        .motivational-message {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+
+        .results-summary-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+
+        .results-summary-table th,
+        .results-summary-table td {
+            border: 1px solid var(--medium-gray);
+            padding: 10px;
+            text-align: right;
+        }
+
+        .results-summary-table th {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+
+        .results-summary-table td.highlight {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 600px) {
+            .main-actions-group {
+                flex-direction: column;
+            }
+
+            .main-actions-group button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .main-actions-group button:last-child {
+                margin-bottom: 0;
+            }
+
+            .results-summary-table {
+                font-size: 14px;
+            }
+
+            .results-summary-table th,
+            .results-summary-table td {
+                padding: 8px;
+            }
+
+            .result-container p {
+                font-size: 15px;
+            }
+
+            .motivational-message {
+                font-size: 16px;
+            }
+        }
+
         @media (max-width: 480px) {
-            .results-summary-table { font-size: 11px; }
-            .results-summary-table th, .results-summary-table td { padding: 4px; }
+            .results-summary-table {
+                font-size: 13px;
+            }
+
+            .results-summary-table th,
+            .results-summary-table td {
+                padding: 6px;
+            }
+
+            .result-container h3.result-title {
+                font-size: 18px;
+            }
+
+            .result-container .unit-result-detail {
+                font-size: 15px;
+            }
+
+            .motivational-message {
+                font-size: 15px;
+                padding: 12px;
+            }
+
+            button.full-width-button,
+            .main-actions-group button {
+                font-size: 16px;
+                padding: 14px;
+            }
+
+            .back-button {
+                padding: 10px 25px;
+                font-size: 15px;
+            }
         }
     </style>
 </head>
@@ -305,7 +560,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    </tbody>
+                </tbody>
             </table>
         </div>
 
@@ -356,15 +611,15 @@
             firstYearModules.forEach(mod => {
                 const exam2InputHtml = mod.singleExam
                     ? `<td data-label="امتحان 2">-</td>`
-                    : `<td data-label="امتحان 2"><input type="number" id="${mod.id}_exam2" class="grade-input exam2" min="0" max="20" step="0.01" placeholder="0-20"></td>`;
+                    : `<td data-label="امتحان 2"><input type="number" id="${mod.id}_exam2" class="grade-input exam2" min="0" max="20" step="0.01" placeholder="0-20" inputmode="decimal"></td>`;
 
                 modulesTbody.innerHTML += `
                     <tr>
                         <td data-label="المقياس">${mod.name}</td>
                         <td data-label="المعامل">${mod.coef}</td>
-                        <td data-label="امتحان 1"><input type="number" id="${mod.id}_exam1" class="grade-input exam1" min="0" max="20" step="0.01" placeholder="0-20"></td>
+                        <td data-label="امتحان 1"><input type="number" id="${mod.id}_exam1" class="grade-input exam1" min="0" max="20" step="0.01" placeholder="0-20" inputmode="decimal"></td>
                         ${exam2InputHtml}
-                        <td data-label="علامة TP"><input type="number" id="${mod.id}_tp" class="grade-input tp" min="0" max="20" step="0.01" placeholder="0-20"></td>
+                        <td data-label="علامة TP"><input type="number" id="${mod.id}_tp" class="grade-input tp" min="0" max="20" step="0.01" placeholder="0-20" inputmode="decimal"></td>
                         <td data-label="إدراج TP؟"><input type="checkbox" id="${mod.id}_include_tp" class="grade-input include_tp" checked></td>
                         <td data-label="معدل المقياس" id="${mod.id}_module_avg_display" class="calculated-avg-cell">--</td>
                         <td data-label="ينقصك للمقياس" id="${mod.id}_module_missing_display">--</td>
@@ -375,11 +630,27 @@
                 const eventType = input.type === 'checkbox' ? 'change' : 'input';
                 input.addEventListener(eventType, function() {
                     saveSpecificInput(this.id, this.type === 'checkbox' ? this.checked : this.value);
-                    const moduleId = this.id.split('_')[0]; // استخلاص id المقياس
+                    const moduleId = this.id.split('_')[0]; 
                     if (firstYearModules.some(m => m.id === moduleId)) {
                          updateModuleAverage(moduleId);
                     }
                 });
+                
+                if (input.type === 'number') {
+                    input.addEventListener('blur', function() {
+                        let value = parseFloat(this.value);
+                        if (isNaN(value) || value < 0) {
+                            this.value = '';
+                        } else if (value > 20) {
+                            this.value = '20';
+                        }
+                         saveSpecificInput(this.id, this.value);
+                         const moduleId = this.id.split('_')[0];
+                         if (firstYearModules.some(m => m.id === moduleId)) {
+                            updateModuleAverage(moduleId);
+                         }
+                    });
+                }
             });
         }
 
@@ -401,27 +672,25 @@
 
             if (inputElement.value.trim() === '') return 0;
             let value = parseFloat(inputElement.value);
-            
-            if (isNaN(value) || value < 0) value = 0;
-            if (value > 20) value = 20;
-            // Format to 2 decimal places for display in input if needed, but keep number for calculation
-            // inputElement.value = value.toFixed(2); // This can be problematic for ongoing input
-            return value;
+            return isNaN(value) ? 0 : value;
         }
 
         function updateModuleAverage(moduleId) {
             const mod = firstYearModules.find(m => m.id === moduleId);
             if (!mod) return;
 
-            const exam1 = getInputValue(`${mod.id}_exam1`);
-            const exam2 = mod.singleExam ? exam1 : getInputValue(`${mod.id}_exam2`); // If single exam, exam2 value isn't used in avg but getInputValue would return 0 if element doesn't exist
-            const tp = getInputValue(`${mod.id}_tp`);
+            let exam1 = getInputValue(`${mod.id}_exam1`);
+            let exam2 = mod.singleExam ? exam1 : getInputValue(`${mod.id}_exam2`);
+            let tp = getInputValue(`${mod.id}_tp`);
             const includeTp = getInputValue(`${mod.id}_include_tp`);
+
+            exam1 = Math.min(20, Math.max(0, exam1));
+            if (!mod.singleExam) exam2 = Math.min(20, Math.max(0, exam2));
+            tp = Math.min(20, Math.max(0, tp));
 
             let examsAverage = mod.singleExam ? exam1 : ((exam1 + exam2) / 2);
             let moduleAverage = includeTp ? (examsAverage + tp) / 2 : examsAverage;
             moduleAverage = Math.min(20, Math.max(0, moduleAverage));
-
 
             const avgDisplayCell = document.getElementById(`${mod.id}_module_avg_display`);
             const missingDisplayCell = document.getElementById(`${mod.id}_module_missing_display`);
@@ -433,30 +702,39 @@
             }
 
             if (missingDisplayCell) {
-                const missingPoints = moduleAverage < 10 ? (10 - moduleAverage).toFixed(2) : "0.00";
-                missingDisplayCell.textContent = missingPoints;
-                missingDisplayCell.className = moduleAverage < 10 ? 'negative' : 'positive';
+                const missingPoints = moduleAverage < 10 ? (10 - moduleAverage) : 0;
+                missingDisplayCell.textContent = missingPoints.toFixed(2);
+                missingDisplayCell.className = 'calculated-avg-cell';
+                if (moduleAverage < 10 && missingPoints > 0) {
+                     missingDisplayCell.classList.add('negative');
+                } else if (moduleAverage >= 10) {
+                     missingDisplayCell.classList.add('positive');
+                     missingDisplayCell.textContent = "✔";
+                } else {
+                     missingDisplayCell.textContent = "0.00";
+                }
             }
         }
         
         function loadSavedData() {
             firstYearModules.forEach(mod => {
                 document.querySelectorAll(`#${mod.id}_exam1, #${mod.id}_exam2, #${mod.id}_tp`).forEach(el => {
-                    if(el && localStorage.getItem(el.id) !== null) el.value = localStorage.getItem(el.id);
+                    if(el && localStorage.getItem(el.id) !== null) {
+                        el.value = localStorage.getItem(el.id);
+                    }
                 });
 
                 const includeTpCheckbox = document.getElementById(`${mod.id}_include_tp`);
-                if (includeTpCheckbox && localStorage.getItem(includeTpCheckbox.id) !== null) {
-                    includeTpCheckbox.checked = localStorage.getItem(includeTpCheckbox.id) === 'true';
+                if (includeTpCheckbox) {
+                    if (localStorage.getItem(includeTpCheckbox.id) !== null) {
+                        includeTpCheckbox.checked = localStorage.getItem(includeTpCheckbox.id) === 'true';
+                    } else {
+                        includeTpCheckbox.checked = true;
+                    }
                 }
                 updateModuleAverage(mod.id);
             });
         }
-
-        window.onload = function() {
-            generateInputTables();
-            loadSavedData();
-        };
 
         function calculateAllResults() {
             let totalWeightedSum = 0;
@@ -468,12 +746,16 @@
             let modulesResultsDetailsHtml = '';
 
             firstYearModules.forEach(mod => {
-                updateModuleAverage(mod.id); // Ensure module average is up-to-date
+                updateModuleAverage(mod.id); 
 
-                const exam1 = getInputValue(`${mod.id}_exam1`);
-                const exam2 = mod.singleExam ? exam1 : getInputValue(`${mod.id}_exam2`);
-                const tp = getInputValue(`${mod.id}_tp`);
+                let exam1 = getInputValue(`${mod.id}_exam1`);
+                let exam2 = mod.singleExam ? exam1 : getInputValue(`${mod.id}_exam2`);
+                let tp = getInputValue(`${mod.id}_tp`);
                 const includeTp = getInputValue(`${mod.id}_include_tp`);
+
+                exam1 = Math.min(20, Math.max(0, exam1));
+                if (!mod.singleExam) exam2 = Math.min(20, Math.max(0, exam2));
+                tp = Math.min(20, Math.max(0, tp));
 
                 let examsAverage = mod.singleExam ? exam1 : ((exam1 + exam2) / 2);
                 let moduleAverage = includeTp ? (examsAverage + tp) / 2 : examsAverage;
@@ -482,12 +764,14 @@
                 const weightedScore = moduleAverage * mod.coef;
                 totalWeightedSum += weightedScore;
 
-                let status = moduleAverage < 10 ? `<span class="negative">(ينقصك: ${(10 - moduleAverage).toFixed(2)})</span>` : `<span class="positive">(فوق 10)</span>`;
+                let status = moduleAverage < 10 ? `<span class="negative">(ينقصك: ${(10 - moduleAverage).toFixed(2)})</span>` : `<span class="positive">(ناجح ✔)</span>`;
                 modulesResultsDetailsHtml += `<p class="unit-result-detail"><strong>${mod.name}:</strong> ${moduleAverage.toFixed(2)} ${status}</p>`;
                 
                 let row = summaryTableBody.insertRow();
                 row.insertCell().textContent = mod.name_short;
-                row.insertCell().textContent = moduleAverage.toFixed(2);
+                let avgCell = row.insertCell();
+                avgCell.textContent = moduleAverage.toFixed(2);
+                avgCell.className = moduleAverage >= 10 ? 'above-ten' : 'below-ten';
                 row.insertCell().textContent = mod.coef;
                 row.insertCell().textContent = weightedScore.toFixed(2);
             });
@@ -495,14 +779,27 @@
             document.getElementById('modules_results_details').innerHTML = modulesResultsDetailsHtml;
 
             const annualAverage = totalCoefficients > 0 ? totalWeightedSum / totalCoefficients : 0;
-            document.getElementById('total_annual_grade').textContent = annualAverage.toFixed(3);
+            const finalGradeSpan = document.getElementById('total_annual_grade');
+            finalGradeSpan.textContent = annualAverage.toFixed(3);
+            finalGradeSpan.className = 'final-grade-emphasis';
+            if (annualAverage >= 10) {
+                finalGradeSpan.classList.add('positive');
+            } else {
+                finalGradeSpan.classList.add('negative');
+            }
 
             let tfoot = document.getElementById('annual_summary_table').tFoot;
             if (!tfoot) tfoot = document.getElementById('annual_summary_table').createTFoot();
             tfoot.innerHTML = ''; 
             let totalRow = tfoot.insertRow();
-            totalRow.insertCell().innerHTML = `<strong>المجموع الكلي / المعدل السنوي</strong>`;
-            totalRow.insertCell().innerHTML = `<strong>${annualAverage.toFixed(3)}</strong>`;
+            let headerCell = totalRow.insertCell();
+            headerCell.innerHTML = `<strong>المجموع الكلي / المعدل السنوي</strong>`;
+            headerCell.colSpan = 1;
+
+            let avgTotalCell = totalRow.insertCell();
+            avgTotalCell.innerHTML = `<strong>${annualAverage.toFixed(3)}</strong>`;
+            avgTotalCell.className = annualAverage >=10 ? 'positive' : 'negative';
+
             let cellCoeff = totalRow.insertCell();
             cellCoeff.innerHTML = `<strong>${totalCoefficients}</strong>`; cellCoeff.classList.add('highlight');
             let cellTotalWeighted = totalRow.insertCell();
@@ -515,26 +812,27 @@
             if (annualAverage < 10) {
                 missingPointsEl.textContent = (10 - annualAverage).toFixed(3);
                 missingPointsContainer.style.display = 'block';
-                motivationalMessageEl.innerHTML = "لا تستسلم! لديك القدرة على تحسين نتائجك. ركز على نقاط ضعفك واجتهد أكثر في المرة القادمة. كل نقطة تقربك من هدفك!";
+                motivationalMessageEl.innerHTML = "لا تستسلم! لديك القدرة على تحسين نتائجك. ركز على نقاط ضعفك واجتهد أكثر في المرة القادمة. كل نقطة تقربك من هدفك! 💪";
                 motivationalMessageEl.style.color = "var(--danger-color)"; 
                 motivationalMessageEl.style.backgroundColor = "var(--below-ten-bg)"; 
                 motivationalMessageEl.style.border = "1px solid var(--danger-color)";
             } else {
                 missingPointsContainer.style.display = 'none';
-                motivationalMessageEl.innerHTML = `ممتاز! معدلك ${annualAverage.toFixed(3)}. أنت على الطريق الصحيح. واصل هذا الأداء الرائع!`;
+                motivationalMessageEl.innerHTML = `ممتاز! معدلك ${annualAverage.toFixed(3)}. أنت على الطريق الصحيح. واصل هذا الأداء الرائع! 🎉`;
                 motivationalMessageEl.style.color = "var(--secondary-color)"; 
                 motivationalMessageEl.style.backgroundColor = "var(--above-ten-bg)"; 
                 motivationalMessageEl.style.border = "1px solid var(--secondary-color)";
             }
             motivationalMessageEl.style.display = 'block';
             document.getElementById('result-container').style.display = 'block';
+            document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
         }
 
         function clearAllInputs() {
             const inputs = document.querySelectorAll('.grade-input');
             inputs.forEach(input => {
                 if (input.type === 'checkbox') {
-                    input.checked = true; 
+                    input.checked = true;
                 } else {
                     input.value = '';
                 }
@@ -542,6 +840,7 @@
             });
 
             firstYearModules.forEach(mod => {
+                updateModuleAverage(mod.id);
                 const avgDisplayCell = document.getElementById(`${mod.id}_module_avg_display`);
                 if (avgDisplayCell) {
                     avgDisplayCell.textContent = '--';
@@ -550,10 +849,10 @@
                 const missingDisplayCell = document.getElementById(`${mod.id}_module_missing_display`);
                 if (missingDisplayCell) {
                     missingDisplayCell.textContent = '--';
-                    missingDisplayCell.classList.remove('positive', 'negative');
+                    missingDisplayCell.className = 'calculated-avg-cell';
                 }
             });
-
+            
             document.getElementById('result-container').style.display = 'none';
             document.getElementById('modules_results_details').innerHTML = '';
             document.getElementById('annual_summary_table').getElementsByTagName('tbody')[0].innerHTML = '';
@@ -562,43 +861,64 @@
             document.getElementById('total_annual_grade').textContent = '--';
             document.getElementById('missing_points_to_10_container').style.display = 'none';
             document.getElementById('motivational_message').style.display = 'none';
-            console.log("All fields, stored data, and results cleared for First Year.");
         }
 
         function captureScreen() {
             const captureArea = document.getElementById('captureArea');
-            const originalBackgroundColor = captureArea.style.backgroundColor;
-            // Temporarily set a consistent background for capture if needed, or ensure CSS is sufficient
-            // captureArea.style.backgroundColor = 'var(--white)'; 
+            const resultContainer = document.getElementById('result-container');
             
-            // Show results before capturing if hidden
-            const resultsWereHidden = document.getElementById('result-container').style.display === 'none';
-            if (resultsWereHidden) {
-                 // Briefly show results, but this might be too fast for rendering
-                 // A better approach is to ensure calculateAllResults() was called and results are visible
+            if (resultContainer.style.display === 'none') {
+                alert("يرجى حساب المعدل أولاً لعرض النتائج قبل التقاط الصورة.");
+                return;
             }
 
             html2canvas(captureArea, { 
-                scrollY: -window.scrollY, // Accounts for page scroll
-                windowWidth: document.documentElement.scrollWidth, 
-                windowHeight: document.documentElement.scrollHeight, 
+                scrollY: -window.scrollY, 
+                windowWidth: captureArea.scrollWidth,
+                windowHeight: captureArea.scrollHeight,
                 useCORS: true, 
-                logging: true,
-                backgroundColor: getComputedStyle(document.body).backgroundColor // Use body background for transparent areas
+                logging: false,
+                backgroundColor: getComputedStyle(document.body).backgroundColor 
             })
             .then(canvas => {
-                // captureArea.style.backgroundColor = originalBackgroundColor; 
                 let link = document.createElement('a');
                 link.download = 'نتائج_معدل_السنة_الأولى_طب.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                URL.revokeObjectURL(link.href); // Clean up blob URL
+                URL.revokeObjectURL(link.href); 
             }).catch(error => {
-                // captureArea.style.backgroundColor = originalBackgroundColor;
                 console.error("html2canvas failed:", error);
-                alert("حدث خطأ أثناء التقاط الشاشة. يرجى التأكد من حساب المعدل أولاً وظهور النتائج.");
+                alert("حدث خطأ أثناء التقاط الشاشة. يرجى المحاولة مرة أخرى أو التأكد من أن جميع النتائج ظاهرة.");
             });
         }
+
+        // منع تكبير/تصغير الصفحة على الأجهزة المحمولة
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        // ضبط حجم الخط الأساسي بناءً على حجم الشاشة
+        function adjustBaseFontSize() {
+            const screenWidth = window.innerWidth;
+            const baseSize = Math.min(16, Math.max(12, screenWidth / 60));
+            document.documentElement.style.fontSize = baseSize + 'px';
+        }
+
+        window.addEventListener('resize', adjustBaseFontSize);
+
+        window.onload = function() {
+            generateInputTables();
+            loadSavedData();
+            firstYearModules.forEach(mod => updateModuleAverage(mod.id));
+            adjustBaseFontSize();
+            
+            // تعطيل تكييف الهاتف المحمول وإجبار عرض سطح المكتب
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                document.querySelector('meta[name="viewport"]').content = 'width=1200, initial-scale=1.0, user-scalable=yes';
+                document.body.style.zoom = "0.8";
+                document.body.style.overflowX = "auto";
+            }
+        };
     </script>
 </body>
 </html>
