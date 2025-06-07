@@ -911,6 +911,16 @@
 
 
 
+<!--القسم الذي سينتقل إليه المستخدم عند الضغط-->
+<section style="padding:20px;display:flex;justify-content:center;align-items:center;">
+  <nav>
+    <a href="JADAWL_2MED.html" style="display:block;text-decoration:none;background-color:#4CAF50;color:white;padding:15px 25px;border-radius:10px;font-size:18px;text-align:center;transition:background-color 0.3s ease;max-width:90vw;box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+      <span style="display:inline-block;line-height:1.5;">برامج الدراسة والتحضير للاختبارات وتقسيم الدروس</span>
+    </a>
+  </nav>
+</section>
+
+
 
 <br>
 
@@ -1755,24 +1765,305 @@
 
 
 
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 
+<style>
+  /* ------------------------------------ */
+  /* --- 1. إعدادات أساسية ومتغيرات --- */
+  /* ------------------------------------ */
+  :root {
+    /* -- لوحة الألوان -- */
+    --color-primary: #0077b6; /* أزرق أساسي للعناوين */
+    --color-secondary: #00796b; /* أخضر للأزرار */
+    --color-secondary-dark: #004d40; /* أخضر داكن عند التفاعل */
+    --color-text: #333; /* لون النص الرئيسي */
+    --color-text-light: #555; /* لون النص الفرعي */
+    --color-background: #f0f3f5; /* لون خلفية الصفحة */
+    --color-surface: #ffffff; /* لون خلفية البطاقات والأقسام */
+    --color-accent: #ffeb3b; /* لون تمييز للنصوص المهمة */
+    --color-border: #e0e0e0; /* لون الحواف */
+    --color-success: #4caf50; /* لون للنجاح أو الإيجابية */
+    --color-success-light: #e8f5e9;
 
+    /* -- الخطوط -- */
+    --font-primary: 'Arial', sans-serif; /* الخط العام */
+    --font-secondary: 'Amiri', serif;   /* الخط المزخرف للعناوين الخاصة */
 
+    /* -- التباعد والقياسات -- */
+    --spacing-s: 8px;
+    --spacing-m: 16px;
+    --spacing-l: 24px;
+    --spacing-xl: 40px;
+    --border-radius-m: 12px; /* نصف قطر الحواف المتوسط */
+    --border-radius-l: 25px; /* نصف قطر الحواف الكبير للأزرار */
+    --max-width: 1000px; /* أقصى عرض للمحتوى */
 
+    /* -- الظلال -- */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.07);
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ------------------------------------ */
+  /* --- 2. الأنماط العامة للصفحة --- */
+  /* ------------------------------------ */
+  main {
+    font-family: var(--font-primary);
+    color: var(--color-text);
+    background-color: var(--color-background);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--spacing-l);
+    direction: rtl;
+  }
+
+  /* ------------------------------------ */
+  /* --- 3. مكونات وعناصر التصميم --- */
+  /* ------------------------------------ */
+
+  /* الأقسام الرئيسية */
+  .lesson-section {
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius-m);
+    padding: var(--spacing-l);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+  }
+
+  /* عنوان القسم */
+  .section-title {
+    text-align: center;
+    color: var(--color-primary);
+    /* استخدام clamp لجعل حجم الخط مرنًا ويتكيف مع حجم الشاشة */
+    font-size: clamp(1.25rem, 4vw, 1.6rem);
+    font-weight: bold;
+    padding: var(--spacing-m);
+    margin: 0 auto var(--spacing-l) auto;
+    line-height: 1.7;
+    border-bottom: 2px solid var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-s);
+  }
+
+  .section-title img {
+    width: clamp(25px, 6vw, 35px); /* حجم أيقونة مرن */
+    vertical-align: middle;
+  }
+
+  /* معلومات الدرس */
+  .lesson-info {
+    text-align: center;
+    margin: var(--spacing-m) 0;
+    font-size: clamp(0.9rem, 2.5vw, 1rem); /* حجم خط مرن */
+    color: var(--color-text-light);
+  }
+
+  /* حاوية الدروس (للتوسيط) */
+  .lesson-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-m);
+    align-items: center;
+    margin: var(--spacing-l) 0;
+  }
+
+  /* زر الدرس المخصص */
+  .custom-button {
+    background: linear-gradient(145deg, var(--color-secondary), var(--color-secondary-dark));
+    color: var(--color-surface);
+    font-family: var(--font-primary);
+    font-size: clamp(1rem, 4vw, 1.1rem); /* حجم خط مرن */
+    border: none;
+    border-radius: var(--border-radius-l);
+    padding: var(--spacing-m) var(--spacing-l);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .custom-button:hover,
+  .custom-button:focus-visible { /* تحسين التفاعل مع لوحة المفاتيح */
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .custom-button .arabic-text {
+    color: var(--color-accent);
+    font-size: clamp(1.1rem, 4.5vw, 1.25rem); /* حجم خط مرن */
+    margin-bottom: var(--spacing-s);
+    font-weight: bold;
+  }
+
+  /* قائمة الدروس المنسدلة */
+  .lesson-list {
+    display: none;
+    padding: 0;
+    margin-top: var(--spacing-m);
+    list-style: none;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .lesson-item {
+    background: var(--color-surface);
+    border-radius: var(--border-radius-m);
+    padding: var(--spacing-m);
+    margin-bottom: var(--spacing-s);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 5px solid var(--color-success);
+  }
+
+  .lesson-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .lesson-link {
+    text-decoration: none;
+    font-size: clamp(0.95rem, 3vw, 1.05rem);
+    font-weight: 500;
+    color: var(--color-secondary-dark);
+    display: block;
+    text-align: center;
+  }
+
+  /* معلومات إضافية للدرس (ميتا) */
+  .lesson-meta {
+    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+    color: var(--color-text-light);
+    margin-top: var(--spacing-s);
+    text-align: center;
+  }
+
+  /* ترويسة الفصل */
+  .chapter-header {
+    text-align: center;
+    margin: var(--spacing-l) auto;
+    padding: var(--spacing-l);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-m);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    max-width: 95%;
+    font-family: var(--font-secondary);
+  }
+
+  .chapter-header h1 {
+    font-size: clamp(1.2rem, 5vw, 1.5rem);
+    color: var(--color-primary);
+    font-weight: bold;
+    margin-bottom: var(--spacing-s);
+  }
+
+  .chapter-header h2 {
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    color: var(--color-text);
+    font-weight: bold;
+    margin-bottom: var(--spacing-s);
+  }
+
+  .chapter-header h3 {
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    color: var(--color-text-light);
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* الصور */
+  .section-image {
+    display: block;
+    margin: var(--spacing-l) auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-m);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* ------------------------------------ */
+  /* --- 4. التجاوب مع الشاشات (Responsive) --- */
+  /* ------------------------------------ */
+
+  /* للشاشات الأصغر من 768px (الأجهزة اللوحية والهواتف الكبيرة) */
+  @media (max-width: 768px) {
+    main {
+      padding: var(--spacing-m);
+    }
+
+    .lesson-section {
+      padding: var(--spacing-m);
+    }
+  }
+
+  /* للشاشات الأصغر من 480px (معظم الهواتف) */
+  @media (max-width: 480px) {
+    main {
+      padding: var(--spacing-s);
+    }
+
+    .lesson-section {
+      /* إزالة الظل والحواف على الشاشات الصغيرة جدًا لمظهر أنظف */
+      box-shadow: none;
+      border: none;
+      padding: var(--spacing-s) 0;
+    }
+    
+    .chapter-header {
+      padding: var(--spacing-m);
+    }
+  }
+</style>
 
 
 
 
           <main>
 
-            <section id="cardiorespiratoireanatomie" class="lesson-section">
-          
-              <h2> 🫀 Cardio 🫁Respiratoire  🦴Anatomie🦴🌬️</h2>
-              <img src="QCMPIC/EMECARDIO RESPIRATOIREANATOMIE.jpg" alt="صورة علم التشريح" width="300" height="250">
-              <div class="lesson-info">
-                  <p>عدد الدروس: 12</p>
-                  <p>تم رفع الملخصات  </p>
-              </div>
+  
+                <section id="SYSTNERVOANATOMIE" class="lesson-section">
+                  <h2 style="
+                    text-align: center; 
+                    direction: rtl; 
+                    color: #0077b6; 
+                    font-size: clamp(18px, 4vw, 24px); 
+                    font-weight: bold; 
+                    background-color: #f0f8ff; 
+                    padding: 15px; 
+                    border-radius: 10px; 
+                    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+                    width: 90%; 
+                    margin: 10px auto;
+                    line-height: 1.8;">
+                
+                   🫀🫁
+                     <br>
+                       الجِهَازُ القَلْبِيّ
+                     وَالتَنَفُّسِيّ
+              
+                  🫁🫀
+                    <br> 🦴 مقياس التشريح 🦴 
+                  </h2>
+              
+                
+              
+                <img src="QCMPIC/EMECARDIO RESPIRATOIREANATOMIE.jpg" alt="صورة علم التشريح" width="300" height="250">
+                <div class="lesson-info">
+                    <p>عدد الدروس: 21</p>
+                    <p>تم رفع  الدروس والاختبارات           </p>
+                </div>
+            
+            
+                    
+            
           
           
                   
@@ -1785,170 +2076,6 @@
               </div>
               <ul id="Cardio-VasculairePHYSIOLOGIE-lessons" class="lessons-list">
                 
-              
-                <br>
-                <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-              <style>
-              /* عزل التنسيق عن بقية الموقع */
-              .lesson-container {
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-              align-items: center;
-              }
-              
-              .custom-button {
-              background: linear-gradient(145deg, #00796b, #004d40);
-              color: #fff;
-              font-size: 14px;
-              font-family: 'Arial', sans-serif;
-              border: none;
-              border-radius: 20px;
-              padding: 10px 20px;
-              cursor: pointer;
-              transition: all 0.3s ease;
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-              letter-spacing: 0.8px;
-              width: 100%;
-              max-width: 400px;
-              text-align: center;
-              }
-              
-              .custom-button:hover {
-              background: linear-gradient(145deg, #004d40, #00332e);
-              transform: scale(1.05);
-              box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-              }
-              
-              .custom-button span {
-              font-weight: bold;
-              }
-              
-              .custom-button .arabic-text {
-              color: #ffeb3b;
-              font-size: 16px;
-              margin-top: 4px;
-              }
-              
-              .lesson-list {
-              display: none;
-              padding: 0;
-              margin-top: 10px;
-              list-style: none;
-              width: 100%;
-              max-width: 400px;
-              }
-              
-              .college-item {
-              background: #f0f8ff;
-              border-radius: 10px;
-              padding: 10px;
-              margin-bottom: 5px;
-              text-align: center;
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-              }
-              
-              .college-item a {
-              color: #00796b;
-              font-weight: bold;
-              text-decoration: none;
-              }
-              
-              .college-item p {
-              font-size: 12px;
-              color: #555;
-              margin-top: 5px;
-              }
-              
-              @media (max-width: 600px) {
-              .custom-button {
-              font-size: 13px;
-              padding: 8px 16px;
-              }
-              
-              .custom-button .arabic-text {
-              font-size: 14px;
-              }
-              
-              .college-item {
-              padding: 8px;
-              }
-              }
-              </style>
-              
-              
-              
-              
-              
-              
-              <style>
-                /* تنسيق الحاوية الرئيسية */
-                .ملخص {
-                 list-style: none;
-                 background-color: #1e1e1e; /* خلفية رمادية داكنة */
-                 padding: 20px;
-                 border-radius: 10px;
-                 text-align: center;
-                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
-                 max-width: 350px;
-                 margin: auto;
-                 border: 1px solid #444; /* إضافة إطار رفيع */
-                }
-                
-                /* تصميم الرابط */
-                .ملخص-رابط {
-                 display: inline-block;
-                 padding: 12px 18px;
-                 border-radius: 8px;
-                 background-color: #000; /* خلفية سوداء */
-                 color: #fff; /* نص أبيض */
-                 font-weight: bold;
-                 font-size: 18px;
-                 text-decoration: none;
-                 transition: background 0.3s, transform 0.2s;
-                }
-                
-                /* تأثير عند مرور الفأرة */
-                .ملخص-رابط:hover {
-                 background-color: #444;
-                 transform: scale(1.05);
-                }
-                
-                /* تنسيق كلمة "ملخص" */
-                .ملخص-كلمة {
-                 color: #fff; /* اللون الأبيض */
-                 font-size: 20px; /* حجم أكبر */
-                }
-                
-                /* تنسيق صندوق الإصدار */
-                .اصدار {
-                 background-color: #333; /* خلفية داكنة */
-                 color: #fff;
-                 padding: 10px;
-                 border-radius: 6px;
-                 display: inline-block;
-                 margin-top: 12px;
-                 font-size: 14px;
-                 font-weight: bold;
-                 border: 1px solid #555; /* إطار رفيع */
-                }
-                
-                @media (max-width: 600px) {
-                 .ملخص {
-                   padding: 15px;
-                   max-width: 300px;
-                 }
-                
-                 .ملخص-رابط {
-                   font-size: 16px;
-                   padding: 10px 14px;
-                 }
-                
-                 .اصدار {
-                   font-size: 12px;
-                 }
-                }
-                </style>
               
               <!-- كود الجافا سكريبت لعرض القائمة -->
               <script>
@@ -2622,6 +2749,10 @@
           
           <section id="cardiorespiratoirePHYSIOLOGIE" class="lesson-section">
           
+
+
+
+          
             <h2> 🫀 Cardio 🫁Respiratoire  PHYSIOLOGIE🦴🌬️</h2>
             <img src="QCMPIC/EMECARDIO RESPIRATOIREANATOMIE.jpg" alt="صورة علم التشريح" width="300" height="250">
             <div class="lesson-info">
@@ -2638,191 +2769,6 @@
           <button onclick="toggleLessons('Cardio-VasculairePHYSIOLOGIE-lessons')">عرض الدروس</button>
           </div>
           <ul id="Cardio-VasculairePHYSIOLOGIE-lessons" class="lessons-list">
-          
-          
-          <br>
-          <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-          <style>
-          /* عزل التنسيق عن بقية الموقع */
-          .lesson-container {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          align-items: center;
-          }
-          
-          .custom-button {
-          background: linear-gradient(145deg, #00796b, #004d40);
-          color: #fff;
-          font-size: 14px;
-          font-family: 'Arial', sans-serif;
-          border: none;
-          border-radius: 20px;
-          padding: 10px 20px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-          letter-spacing: 0.8px;
-          width: 100%;
-          max-width: 400px;
-          text-align: center;
-          }
-          
-          .custom-button:hover {
-          background: linear-gradient(145deg, #004d40, #00332e);
-          transform: scale(1.05);
-          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-          }
-          
-          .custom-button span {
-          font-weight: bold;
-          }
-          
-          .custom-button .arabic-text {
-          color: #ffeb3b;
-          font-size: 16px;
-          margin-top: 4px;
-          }
-          
-          .lesson-list {
-          display: none;
-          padding: 0;
-          margin-top: 10px;
-          list-style: none;
-          width: 100%;
-          max-width: 400px;
-          }
-          
-          .college-item {
-          background: #f0f8ff;
-          border-radius: 10px;
-          padding: 10px;
-          margin-bottom: 5px;
-          text-align: center;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-          }
-          
-          .college-item a {
-          color: #00796b;
-          font-weight: bold;
-          text-decoration: none;
-          }
-          
-          .college-item p {
-          font-size: 12px;
-          color: #555;
-          margin-top: 5px;
-          }
-          
-          @media (max-width: 600px) {
-          .custom-button {
-          font-size: 13px;
-          padding: 8px 16px;
-          }
-          
-          .custom-button .arabic-text {
-          font-size: 14px;
-          }
-          
-          .college-item {
-          padding: 8px;
-          }
-          }
-          </style>
-          
-          
-          
-          
-          
-          
-          <style>
-          /* تنسيق الحاوية الرئيسية */
-          .ملخص {
-          list-style: none;
-          background-color: #1e1e1e; /* خلفية رمادية داكنة */
-          padding: 20px;
-          border-radius: 10px;
-          text-align: center;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
-          max-width: 350px;
-          margin: auto;
-          border: 1px solid #444; /* إضافة إطار رفيع */
-          }
-          
-          /* تصميم الرابط */
-          .ملخص-رابط {
-          display: inline-block;
-          padding: 12px 18px;
-          border-radius: 8px;
-          background-color: #000; /* خلفية سوداء */
-          color: #fff; /* نص أبيض */
-          font-weight: bold;
-          font-size: 18px;
-          text-decoration: none;
-          transition: background 0.3s, transform 0.2s;
-          }
-          
-          /* تأثير عند مرور الفأرة */
-          .ملخص-رابط:hover {
-          background-color: #444;
-          transform: scale(1.05);
-          }
-          
-          /* تنسيق كلمة "ملخص" */
-          .ملخص-كلمة {
-          color: #fff; /* اللون الأبيض */
-          font-size: 20px; /* حجم أكبر */
-          }
-          
-          /* تنسيق صندوق الإصدار */
-          .اصدار {
-          background-color: #333; /* خلفية داكنة */
-          color: #fff;
-          padding: 10px;
-          border-radius: 6px;
-          display: inline-block;
-          margin-top: 12px;
-          font-size: 14px;
-          font-weight: bold;
-          border: 1px solid #555; /* إطار رفيع */
-          }
-          
-          @media (max-width: 600px) {
-          .ملخص {
-          padding: 15px;
-          max-width: 300px;
-          }
-          
-          .ملخص-رابط {
-          font-size: 16px;
-          padding: 10px 14px;
-          }
-          
-          .اصدار {
-          font-size: 12px;
-          }
-          }
-          </style>
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
           
           
           
@@ -2938,37 +2884,6 @@
           </li>
           </ul>
           </div>
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          Anatomie Fonctionnelle du Système Cardio-Vasculaire
-          التشريح الوظيفي للجهاز القلبي الوعائي
-          
-          
-          
-          Electrophysiologie cardiaque
-          
-          الفيزيولوجيا الكهربائية للقلب  
-          
-          الدورة القلبية 
-          
-          
-          
-          
-          
-          
-          
           
           
           
@@ -3290,95 +3205,6 @@
           
                  
           
-                      <br>
-               <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-          <style>
-          /* عزل التنسيق عن بقية الموقع */
-          .lesson-container {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          align-items: center;
-          }
-          
-          .custom-button {
-          background: linear-gradient(145deg, #00796b, #004d40);
-          color: #fff;
-          font-size: 14px;
-          font-family: 'Arial', sans-serif;
-          border: none;
-          border-radius: 20px;
-          padding: 10px 20px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-          letter-spacing: 0.8px;
-          width: 100%;
-          max-width: 400px;
-          text-align: center;
-          }
-          
-          .custom-button:hover {
-          background: linear-gradient(145deg, #004d40, #00332e);
-          transform: scale(1.05);
-          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-          }
-          
-          .custom-button span {
-          font-weight: bold;
-          }
-          
-          .custom-button .arabic-text {
-          color: #ffeb3b;
-          font-size: 16px;
-          margin-top: 4px;
-          }
-          
-          .lesson-list {
-          display: none;
-          padding: 0;
-          margin-top: 10px;
-          list-style: none;
-          width: 100%;
-          max-width: 400px;
-          }
-          
-          .college-item {
-          background: #f0f8ff;
-          border-radius: 10px;
-          padding: 10px;
-          margin-bottom: 5px;
-          text-align: center;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-          }
-          
-          .college-item a {
-          color: #00796b;
-          font-weight: bold;
-          text-decoration: none;
-          }
-          
-          .college-item p {
-          font-size: 12px;
-          color: #555;
-          margin-top: 5px;
-          }
-          
-          @media (max-width: 600px) {
-          .custom-button {
-          font-size: 13px;
-          padding: 8px 16px;
-          }
-          
-          .custom-button .arabic-text {
-          font-size: 14px;
-          }
-          
-          .college-item {
-          padding: 8px;
-          }
-          }
-          </style>
           
           <!-- المحتوى المعزول: الزر مع القائمة -->
           <div class="lesson-container">
@@ -3403,75 +3229,7 @@
             </li>
           </ul>
           
-          <style>
-            /* تنسيق الحاوية الرئيسية */
-            .ملخص {
-              list-style: none;
-              background-color: #1e1e1e; /* خلفية رمادية داكنة */
-              padding: 20px;
-              border-radius: 10px;
-              text-align: center;
-              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
-              max-width: 350px;
-              margin: auto;
-              border: 1px solid #444; /* إضافة إطار رفيع */
-            }
-          
-            /* تصميم الرابط */
-            .ملخص-رابط {
-              display: inline-block;
-              padding: 12px 18px;
-              border-radius: 8px;
-              background-color: #000; /* خلفية سوداء */
-              color: #fff; /* نص أبيض */
-              font-weight: bold;
-              font-size: 18px;
-              text-decoration: none;
-              transition: background 0.3s, transform 0.2s;
-            }
-          
-            /* تأثير عند مرور الفأرة */
-            .ملخص-رابط:hover {
-              background-color: #444;
-              transform: scale(1.05);
-            }
-          
-            /* تنسيق كلمة "ملخص" */
-            .ملخص-كلمة {
-              color: #fff; /* اللون الأبيض */
-              font-size: 20px; /* حجم أكبر */
-            }
-          
-            /* تنسيق صندوق الإصدار */
-            .اصدار {
-              background-color: #333; /* خلفية داكنة */
-              color: #fff;
-              padding: 10px;
-              border-radius: 6px;
-              display: inline-block;
-              margin-top: 12px;
-              font-size: 14px;
-              font-weight: bold;
-              border: 1px solid #555; /* إطار رفيع */
-            }
-          
-            @media (max-width: 600px) {
-              .ملخص {
-                padding: 15px;
-                max-width: 300px;
-              }
-          
-              .ملخص-رابط {
-                font-size: 16px;
-                padding: 10px 14px;
-              }
-          
-              .اصدار {
-                font-size: 12px;
-              }
-            }
-          </style>
-          
+        
           
           
           
@@ -3542,189 +3300,6 @@
           
           
           
-          
-          
-          
-          
-                      <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-          <style>
-          /* عزل التنسيق عن بقية الموقع */
-          .lesson-container {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          align-items: center;
-          }
-          
-          .custom-button {
-          background: linear-gradient(145deg, #00796b, #004d40);
-          color: #fff;
-          font-size: 14px;
-          font-family: 'Arial', sans-serif;
-          border: none;
-          border-radius: 20px;
-          padding: 10px 20px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-          letter-spacing: 0.8px;
-          width: 100%;
-          max-width: 400px;
-          text-align: center;
-          }
-          
-          .custom-button:hover {
-          background: linear-gradient(145deg, #004d40, #00332e);
-          transform: scale(1.05);
-          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-          }
-          
-          .custom-button span {
-          font-weight: bold;
-          }
-          
-          .custom-button .arabic-text {
-          color: #ffeb3b;
-          font-size: 16px;
-          margin-top: 4px;
-          }
-          
-          .lesson-list {
-          display: none;
-          padding: 0;
-          margin-top: 10px;
-          list-style: none;
-          width: 100%;
-          max-width: 400px;
-          }
-          
-          .college-item {
-          background: #f0f8ff;
-          border-radius: 10px;
-          padding: 10px;
-          margin-bottom: 5px;
-          text-align: center;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-          }
-          
-          .college-item a {
-          color: #00796b;
-          font-weight: bold;
-          text-decoration: none;
-          }
-          
-          .college-item p {
-          font-size: 12px;
-          color: #555;
-          margin-top: 5px;
-          }
-          
-          @media (max-width: 600px) {
-          .custom-button {
-          font-size: 13px;
-          padding: 8px 16px;
-          }
-          
-          .custom-button .arabic-text {
-          font-size: 14px;
-          }
-          
-          .college-item {
-          padding: 8px;
-          }
-          }
-          </style>
-          
-          <!-- المحتوى المعزول: الزر مع القائمة -->
-          <div class="lesson-container">
-          <!-- زر الدرس -->
-          <button class="custom-button" onclick="toggleLessons('ThymusLessons')">
-          <span class="arabic-text">الغدة الصعترية</span>
-          <span>The Thymus</span>  <!-- الإنجليزية -->
-          <span>Le Thymus</span>  <!-- الفرنسية -->
-          </button>
-          
-          <!-- قائمة الدروس -->
-          <ul id="ThymusLessons" class="lesson-list">
-          <li class="college-item">
-          
-          
-          
-          <ul>
-            <li class="ملخص">
-              <a href="MED02_U1_HISTOLOGIE_الغشاء البلوري.html" class="ملخص-رابط">🔻 <span class="ملخص-كلمة">الملخص</span> 🔻</a>
-              <p class="اصدار">إصدار 04 رمضان 1446 موافق لـ 03 مارس 2025</p>
-            </li>
-          </ul>
-          
-          <style>
-            /* تنسيق الحاوية الرئيسية */
-            .ملخص {
-              list-style: none;
-              background-color: #1e1e1e; /* خلفية رمادية داكنة */
-              padding: 20px;
-              border-radius: 10px;
-              text-align: center;
-              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
-              max-width: 350px;
-              margin: auto;
-              border: 1px solid #444; /* إضافة إطار رفيع */
-            }
-          
-            /* تصميم الرابط */
-            .ملخص-رابط {
-              display: inline-block;
-              padding: 12px 18px;
-              border-radius: 8px;
-              background-color: #000; /* خلفية سوداء */
-              color: #fff; /* نص أبيض */
-              font-weight: bold;
-              font-size: 18px;
-              text-decoration: none;
-              transition: background 0.3s, transform 0.2s;
-            }
-          
-            /* تأثير عند مرور الفأرة */
-            .ملخص-رابط:hover {
-              background-color: #444;
-              transform: scale(1.05);
-            }
-          
-            /* تنسيق كلمة "ملخص" */
-            .ملخص-كلمة {
-              color: #fff; /* اللون الأبيض */
-              font-size: 20px; /* حجم أكبر */
-            }
-          
-            /* تنسيق صندوق الإصدار */
-            .اصدار {
-              background-color: #333; /* خلفية داكنة */
-              color: #fff;
-              padding: 10px;
-              border-radius: 6px;
-              display: inline-block;
-              margin-top: 12px;
-              font-size: 14px;
-              font-weight: bold;
-              border: 1px solid #555; /* إطار رفيع */
-            }
-          
-            @media (max-width: 600px) {
-              .ملخص {
-                padding: 15px;
-                max-width: 300px;
-              }
-          
-              .ملخص-رابط {
-                font-size: 16px;
-                padding: 10px 14px;
-              }
-          
-              .اصدار {
-                font-size: 12px;
-              }
-            }
-          </style>
           
           
           
@@ -3812,95 +3387,6 @@
                     <ul id="BIOPHYSICSOFCIRCULATIONPALASTINELessons" class="lessons-list">
                       
                     
-                      <br>
-                      <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-                    <style>
-                    /* عزل التنسيق عن بقية الموقع */
-                    .lesson-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    align-items: center;
-                    }
-                    
-                    .custom-button {
-                    background: linear-gradient(145deg, #00796b, #004d40);
-                    color: #fff;
-                    font-size: 14px;
-                    font-family: 'Arial', sans-serif;
-                    border: none;
-                    border-radius: 20px;
-                    padding: 10px 20px;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                    letter-spacing: 0.8px;
-                    width: 100%;
-                    max-width: 400px;
-                    text-align: center;
-                    }
-                    
-                    .custom-button:hover {
-                    background: linear-gradient(145deg, #004d40, #00332e);
-                    transform: scale(1.05);
-                    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-                    }
-                    
-                    .custom-button span {
-                    font-weight: bold;
-                    }
-                    
-                    .custom-button .arabic-text {
-                    color: #ffeb3b;
-                    font-size: 16px;
-                    margin-top: 4px;
-                    }
-                    
-                    .lesson-list {
-                    display: none;
-                    padding: 0;
-                    margin-top: 10px;
-                    list-style: none;
-                    width: 100%;
-                    max-width: 400px;
-                    }
-                    
-                    .college-item {
-                    background: #f0f8ff;
-                    border-radius: 10px;
-                    padding: 10px;
-                    margin-bottom: 5px;
-                    text-align: center;
-                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-                    }
-                    
-                    .college-item a {
-                    color: #00796b;
-                    font-weight: bold;
-                    text-decoration: none;
-                    }
-                    
-                    .college-item p {
-                    font-size: 12px;
-                    color: #555;
-                    margin-top: 5px;
-                    }
-                    
-                    @media (max-width: 600px) {
-                    .custom-button {
-                    font-size: 13px;
-                    padding: 8px 16px;
-                    }
-                    
-                    .custom-button .arabic-text {
-                    font-size: 14px;
-                    }
-                    
-                    .college-item {
-                    padding: 8px;
-                    }
-                    }
-                    </style>
                     
                     
                     
@@ -4688,59 +4174,6 @@
                 </div>
               </div>
               
-              <style>
-                .college-item {
-                  margin: 8px auto;
-                  padding: 14px;
-                  background: #eafff5;
-                  border: 1px solid #10b981;
-                  border-radius: 10px;
-                  box-shadow: 0 3px 6px rgba(16, 185, 129, 0.2);
-                  text-align: center;
-                  display: flex;
-                  flex-direction: column;
-                  gap: 12px;
-                  justify-content: center;
-                  align-items: center;
-                  transition: all 0.3s ease-in-out;
-                  width: 100%;
-                  max-width: 600px;
-                }
-              
-                .college-item a {
-                  text-decoration: none;
-                  color: #0f5132;
-                  font-weight: bold;
-                  font-size: 15px;
-                  transition: color 0.3s;
-                }
-              
-                .college-item p {
-                  margin: 0;
-                  color: #374151;
-                  font-style: italic;
-                  font-weight: bold;
-                  font-size: 13px;
-                }
-              
-                @media (max-width: 600px) {
-                  .college-item a {
-                    font-size: 14px;
-                  }
-              
-                  .college-item p {
-                    font-size: 12px;
-                  }
-                }
-              </style>
-              
-              <script>
-                function toggleLessons(id) {
-                  const lessons = document.getElementById(id);
-                  lessons.style.display = lessons.style.display === "none" || !lessons.style.display ? "block" : "none";
-                }
-              </script>
-          
           
           </ul>
           </section>
@@ -4991,52 +4424,6 @@
               </div>
             </div>
             
-            <style>
-              .college-item {
-                margin: 8px auto;
-                padding: 14px;
-                background: #eafff5;
-                border: 1px solid #10b981;
-                border-radius: 10px;
-                box-shadow: 0 3px 6px rgba(16, 185, 129, 0.2);
-                text-align: center;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                justify-content: center;
-                align-items: center;
-                transition: all 0.3s ease-in-out;
-                width: 100%;
-                max-width: 600px;
-              }
-            
-              .college-item a {
-                text-decoration: none;
-                color: #0f5132;
-                font-weight: bold;
-                font-size: 15px;
-                transition: color 0.3s;
-              }
-            
-              .college-item p {
-                margin: 0;
-                color: #374151;
-                font-style: italic;
-                font-weight: bold;
-                font-size: 13px;
-              }
-            
-              @media (max-width: 600px) {
-                .college-item a {
-                  font-size: 14px;
-                }
-            
-                .college-item p {
-                  font-size: 12px;
-                }
-              }
-            </style>
-          
             <script>
               function toggleLessons(id) {
                 const lessons = document.getElementById(id);
@@ -5416,181 +4803,6 @@
               </div>
               <ul id="anatou4-lessons" class="lessons-list">
                 
-              
-                <br>
-                <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-              <style>
-              /* عزل التنسيق عن بقية الموقع */
-              .lesson-container {
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-              align-items: center;
-              }
-              
-              .custom-button {
-              background: linear-gradient(145deg, #00796b, #004d40);
-              color: #fff;
-              font-size: 14px;
-              font-family: 'Arial', sans-serif;
-              border: none;
-              border-radius: 20px;
-              padding: 10px 20px;
-              cursor: pointer;
-              transition: all 0.3s ease;
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-              letter-spacing: 0.8px;
-              width: 100%;
-              max-width: 400px;
-              text-align: center;
-              }
-              
-              .custom-button:hover {
-              background: linear-gradient(145deg, #004d40, #00332e);
-              transform: scale(1.05);
-              box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-              }
-              
-              .custom-button span {
-              font-weight: bold;
-              }
-              
-              .custom-button .arabic-text {
-              color: #ffeb3b;
-              font-size: 16px;
-              margin-top: 4px;
-              }
-              
-              .lesson-list {
-              display: none;
-              padding: 0;
-              margin-top: 10px;
-              list-style: none;
-              width: 100%;
-              max-width: 400px;
-              }
-              
-              .college-item {
-              background: #f0f8ff;
-              border-radius: 10px;
-              padding: 10px;
-              margin-bottom: 5px;
-              text-align: center;
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-              }
-              
-              .college-item a {
-              color: #00796b;
-              font-weight: bold;
-              text-decoration: none;
-              }
-              
-              .college-item p {
-              font-size: 12px;
-              color: #555;
-              margin-top: 5px;
-              }
-              
-              @media (max-width: 600px) {
-              .custom-button {
-              font-size: 13px;
-              padding: 8px 16px;
-              }
-              
-              .custom-button .arabic-text {
-              font-size: 14px;
-              }
-              
-              .college-item {
-              padding: 8px;
-              }
-              }
-              </style>
-              
-              
-              
-              
-              
-              
-              <style>
-                /* تنسيق الحاوية الرئيسية */
-                .ملخص {
-                 list-style: none;
-                 background-color: #1e1e1e; /* خلفية رمادية داكنة */
-                 padding: 20px;
-                 border-radius: 10px;
-                 text-align: center;
-                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
-                 max-width: 350px;
-                 margin: auto;
-                 border: 1px solid #444; /* إضافة إطار رفيع */
-                }
-                
-                /* تصميم الرابط */
-                .ملخص-رابط {
-                 display: inline-block;
-                 padding: 12px 18px;
-                 border-radius: 8px;
-                 background-color: #000; /* خلفية سوداء */
-                 color: #fff; /* نص أبيض */
-                 font-weight: bold;
-                 font-size: 18px;
-                 text-decoration: none;
-                 transition: background 0.3s, transform 0.2s;
-                }
-                
-                /* تأثير عند مرور الفأرة */
-                .ملخص-رابط:hover {
-                 background-color: #444;
-                 transform: scale(1.05);
-                }
-                
-                /* تنسيق كلمة "ملخص" */
-                .ملخص-كلمة {
-                 color: #fff; /* اللون الأبيض */
-                 font-size: 20px; /* حجم أكبر */
-                }
-                
-                /* تنسيق صندوق الإصدار */
-                .اصدار {
-                 background-color: #333; /* خلفية داكنة */
-                 color: #fff;
-                 padding: 10px;
-                 border-radius: 6px;
-                 display: inline-block;
-                 margin-top: 12px;
-                 font-size: 14px;
-                 font-weight: bold;
-                 border: 1px solid #555; /* إطار رفيع */
-                }
-                
-                @media (max-width: 600px) {
-                 .ملخص {
-                   padding: 15px;
-                   max-width: 300px;
-                 }
-                
-                 .ملخص-رابط {
-                   font-size: 16px;
-                   padding: 10px 14px;
-                 }
-                
-                 .اصدار {
-                   font-size: 12px;
-                 }
-                }
-                </style>
-              
-              <!-- كود الجافا سكريبت لعرض القائمة -->
-              <script>
-                function toggleLessons(id) {
-                var list = document.getElementById(id);
-                list.style.display = list.style.display === "none" || list.style.display === "" ? "block" : "none";
-                }
-                </script>
-                
-                
-              
               
               
               
@@ -6438,167 +5650,6 @@
 
 
 
-                      <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-               <style>
-                /* عزل التنسيق عن بقية الموقع */
-                .lesson-container {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                align-items: center;
-                }
-                
-                .custom-button {
-                background: linear-gradient(145deg, #00796b, #004d40);
-                color: #fff;
-                font-size: 14px;
-                font-family: 'Arial', sans-serif;
-                border: none;
-                border-radius: 20px;
-                padding: 10px 20px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                letter-spacing: 0.8px;
-                width: 100%;
-                max-width: 400px;
-                text-align: center;
-                }
-                
-                .custom-button:hover {
-                background: linear-gradient(145deg, #004d40, #00332e);
-                transform: scale(1.05);
-                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-                }
-                
-                .custom-button span {
-                font-weight: bold;
-                }
-                
-                .custom-button .arabic-text {
-                color: #ffeb3b;
-                font-size: 16px;
-                margin-top: 4px;
-                }
-                
-                .lesson-list {
-                display: none;
-                padding: 0;
-                margin-top: 10px;
-                list-style: none;
-                width: 100%;
-                max-width: 400px;
-                }
-                
-                .college-item {
-                background: #f0f8ff;
-                border-radius: 10px;
-                padding: 10px;
-                margin-bottom: 5px;
-                text-align: center;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-                }
-                
-                .college-item a {
-                color: #00796b;
-                font-weight: bold;
-                text-decoration: none;
-                }
-                
-                .college-item p {
-                font-size: 12px;
-                color: #555;
-                margin-top: 5px;
-                }
-                
-                @media (max-width: 600px) {
-                .custom-button {
-                font-size: 13px;
-                padding: 8px 16px;
-                }
-                
-                .custom-button .arabic-text {
-                font-size: 14px;
-                }
-                
-                .college-item {
-                padding: 8px;
-                }
-                }
-                </style>
-                    <style>
-                      /* تنسيق الحاوية الرئيسية */
-                      .ملخص {
-                        list-style: none;
-                        background-color: #1e1e1e; /* خلفية رمادية داكنة */
-                        padding: 20px;
-                        border-radius: 10px;
-                        text-align: center;
-                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
-                        max-width: 350px;
-                        margin: auto;
-                        border: 1px solid #444; /* إضافة إطار رفيع */
-                      }
-                    
-                      /* تصميم الرابط */
-                      .ملخص-رابط {
-                        display: inline-block;
-                        padding: 12px 18px;
-                        border-radius: 8px;
-                        background-color: #000; /* خلفية سوداء */
-                        color: #fff; /* نص أبيض */
-                        font-weight: bold;
-                        font-size: 18px;
-                        text-decoration: none;
-                        transition: background 0.3s, transform 0.2s;
-                      }
-                    
-                      /* تأثير عند مرور الفأرة */
-                      .ملخص-رابط:hover {
-                        background-color: #444;
-                        transform: scale(1.05);
-                      }
-                    
-                      /* تنسيق كلمة "ملخص" */
-                      .ملخص-كلمة {
-                        color: #fff; /* اللون الأبيض */
-                        font-size: 20px; /* حجم أكبر */
-                      }
-                    
-                      /* تنسيق صندوق الإصدار */
-                      .اصدار {
-                        background-color: #333; /* خلفية داكنة */
-                        color: #fff;
-                        padding: 10px;
-                        border-radius: 6px;
-                        display: inline-block;
-                        margin-top: 12px;
-                        font-size: 14px;
-                        font-weight: bold;
-                        border: 1px solid #555; /* إطار رفيع */
-                      }
-                    
-                      @media (max-width: 600px) {
-                        .ملخص {
-                          padding: 15px;
-                          max-width: 300px;
-                        }
-                    
-                        .ملخص-رابط {
-                          font-size: 16px;
-                          padding: 10px 14px;
-                        }
-                    
-                        .اصدار {
-                          font-size: 12px;
-                        }
-                      }
-                    </style>
-                    
-
-
-
-
           
                       <li>
                                  <!-- تضمين خط "Amiri" من Google Fonts -->
@@ -6898,99 +5949,6 @@
                     <ul id="BIOPHYSICSOFCIRCULATIONPALASTINELessons" class="lessons-list">
                       
                     
-                      <br>
-                      <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-                    <style>
-                    /* عزل التنسيق عن بقية الموقع */
-                    .lesson-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    align-items: center;
-                    }
-                    
-                    .custom-button {
-                    background: linear-gradient(145deg, #00796b, #004d40);
-                    color: #fff;
-                    font-size: 14px;
-                    font-family: 'Arial', sans-serif;
-                    border: none;
-                    border-radius: 20px;
-                    padding: 10px 20px;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                    letter-spacing: 0.8px;
-                    width: 100%;
-                    max-width: 400px;
-                    text-align: center;
-                    }
-                    
-                    .custom-button:hover {
-                    background: linear-gradient(145deg, #004d40, #00332e);
-                    transform: scale(1.05);
-                    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-                    }
-                    
-                    .custom-button span {
-                    font-weight: bold;
-                    }
-                    
-                    .custom-button .arabic-text {
-                    color: #ffeb3b;
-                    font-size: 16px;
-                    margin-top: 4px;
-                    }
-                    
-                    .lesson-list {
-                    display: none;
-                    padding: 0;
-                    margin-top: 10px;
-                    list-style: none;
-                    width: 100%;
-                    max-width: 400px;
-                    }
-                    
-                    .college-item {
-                    background: #f0f8ff;
-                    border-radius: 10px;
-                    padding: 10px;
-                    margin-bottom: 5px;
-                    text-align: center;
-                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-                    }
-                    
-                    .college-item a {
-                    color: #00796b;
-                    font-weight: bold;
-                    text-decoration: none;
-                    }
-                    
-                    .college-item p {
-                    font-size: 12px;
-                    color: #555;
-                    margin-top: 5px;
-                    }
-                    
-                    @media (max-width: 600px) {
-                    .custom-button {
-                    font-size: 13px;
-                    padding: 8px 16px;
-                    }
-                    
-                    .custom-button .arabic-text {
-                    font-size: 14px;
-                    }
-                    
-                    .college-item {
-                    padding: 8px;
-                    }
-                    }
-                    </style>
-                    
-                    
-                    
-                    
                     
                     <!-- المحتوى المعزول: الزر مع القائمة -->
           <div class="lesson-container">
@@ -7099,8 +6057,8 @@
               
                 <img src="QCMPIC/U4 ANATMIE.png" alt="صورة علم التشريح" width="300" height="250">
                 <div class="lesson-info">
-                    <p>عدد الدروس: 06</p>
-                    <p>تم رفع  الدروس والاختبارات   </p>
+                    <p>عدد الدروس: 21</p>
+                    <p>تم رفع  الدروس والاختبارات           </p>
                 </div>
             
             
@@ -7115,178 +6073,6 @@
                 <ul id="NEUROSENSORYUNIT-lessons" class="lessons-list">
                   
                 
-                  <br>
-                  <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-                <style>
-                /* عزل التنسيق عن بقية الموقع */
-                .lesson-container {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                align-items: center;
-                }
-                
-                .custom-button {
-                background: linear-gradient(145deg, #00796b, #004d40);
-                color: #fff;
-                font-size: 14px;
-                font-family: 'Arial', sans-serif;
-                border: none;
-                border-radius: 20px;
-                padding: 10px 20px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                letter-spacing: 0.8px;
-                width: 100%;
-                max-width: 400px;
-                text-align: center;
-                }
-                
-                .custom-button:hover {
-                background: linear-gradient(145deg, #004d40, #00332e);
-                transform: scale(1.05);
-                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-                }
-                
-                .custom-button span {
-                font-weight: bold;
-                }
-                
-                .custom-button .arabic-text {
-                color: #ffeb3b;
-                font-size: 16px;
-                margin-top: 4px;
-                }
-                
-                .lesson-list {
-                display: none;
-                padding: 0;
-                margin-top: 10px;
-                list-style: none;
-                width: 100%;
-                max-width: 400px;
-                }
-                
-                .college-item {
-                background: #f0f8ff;
-                border-radius: 10px;
-                padding: 10px;
-                margin-bottom: 5px;
-                text-align: center;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-                }
-                
-                .college-item a {
-                color: #00796b;
-                font-weight: bold;
-                text-decoration: none;
-                }
-                
-                .college-item p {
-                font-size: 12px;
-                color: #555;
-                margin-top: 5px;
-                }
-                
-                @media (max-width: 600px) {
-                .custom-button {
-                font-size: 13px;
-                padding: 8px 16px;
-                }
-                
-                .custom-button .arabic-text {
-                font-size: 14px;
-                }
-                
-                .college-item {
-                padding: 8px;
-                }
-                }
-                </style>
-                
-                
-                
-                
-                
-                
-                <style>
-                  /* تنسيق الحاوية الرئيسية */
-                  .ملخص {
-                   list-style: none;
-                   background-color: #1e1e1e; /* خلفية رمادية داكنة */
-                   padding: 20px;
-                   border-radius: 10px;
-                   text-align: center;
-                   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
-                   max-width: 350px;
-                   margin: auto;
-                   border: 1px solid #444; /* إضافة إطار رفيع */
-                  }
-                  
-                  /* تصميم الرابط */
-                  .ملخص-رابط {
-                   display: inline-block;
-                   padding: 12px 18px;
-                   border-radius: 8px;
-                   background-color: #000; /* خلفية سوداء */
-                   color: #fff; /* نص أبيض */
-                   font-weight: bold;
-                   font-size: 18px;
-                   text-decoration: none;
-                   transition: background 0.3s, transform 0.2s;
-                  }
-                  
-                  /* تأثير عند مرور الفأرة */
-                  .ملخص-رابط:hover {
-                   background-color: #444;
-                   transform: scale(1.05);
-                  }
-                  
-                  /* تنسيق كلمة "ملخص" */
-                  .ملخص-كلمة {
-                   color: #fff; /* اللون الأبيض */
-                   font-size: 20px; /* حجم أكبر */
-                  }
-                  
-                  /* تنسيق صندوق الإصدار */
-                  .اصدار {
-                   background-color: #333; /* خلفية داكنة */
-                   color: #fff;
-                   padding: 10px;
-                   border-radius: 6px;
-                   display: inline-block;
-                   margin-top: 12px;
-                   font-size: 14px;
-                   font-weight: bold;
-                   border: 1px solid #555; /* إطار رفيع */
-                  }
-                  
-                  @media (max-width: 600px) {
-                   .ملخص {
-                     padding: 15px;
-                     max-width: 300px;
-                   }
-                  
-                   .ملخص-رابط {
-                     font-size: 16px;
-                     padding: 10px 14px;
-                   }
-                  
-                   .اصدار {
-                     font-size: 12px;
-                   }
-                  }
-                  </style>
-                
-                <!-- كود الجافا سكريبت لعرض القائمة -->
-                <script>
-                  function toggleLessons(id) {
-                  var list = document.getElementById(id);
-                  list.style.display = list.style.display === "none" || list.style.display === "" ? "block" : "none";
-                  }
-                  </script>
-                  
                 
                 
                 
@@ -7294,130 +6080,6 @@
  
   
   
-                  
-
-<style>
-  .lesson-container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 0.5rem;
-  }
-  
-  .custom-button {
-    background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 1rem;
-    width: 100%;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .custom-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    background: linear-gradient(135deg, #1b5e20 0%, #388e3c 100%);
-  }
-  
-  .arabic-text {
-    font-size: 1.2rem;
-    margin-bottom: 0.3rem;
-  }
-  
-  .lesson-list {
-    list-style: none;
-    padding: 0.5rem;
-    margin: 0;
-    display: none;
-    flex-direction: column;
-    gap: 0.8rem;
-    background-color: #f5f7fa;
-    max-width: 100%;
-    box-sizing: border-box;
-    border-radius: 16px;
-  }
-  
-  .lesson-item {
-    background: white;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border-left: 4px solid #4caf50;
-    transition: all 0.2s ease;
-  }
-  
-  .lesson-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-  
-  .lesson-link {
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-    color: #2e7d32;
-  }
-  
-  .lesson-meta {
-    font-size: 0.85rem;
-    color: #616161;
-    margin-top: 0.3rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .tags-container {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-  
-  .tag {
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    background-color: #e8f5e9;
-    color: #2e7d32;
-  }
-  
-  .tag.blue {
-    background-color: #e3f2fd;
-    color: #1565c0;
-  }
-  
-  .tag.yellow {
-    background-color: #fff8e1;
-    color: #ff8f00;
-  }
-  
-  @media (max-width: 480px) {
-    .custom-button {
-      padding: 0.8rem;
-      font-size: 0.9rem;
-    }
-    
-    .arabic-text {
-      font-size: 1.1rem;
-    }
-    
-    .lesson-item {
-      padding: 0.8rem;
-    }
-  }
-</style>
 <!-- زر 1: العمود الفقري -->
 <div class="lesson-container">
   <button class="custom-button" onclick="toggleLessons('LERACHISNEUROSENSORYUNI')">
@@ -7663,6 +6325,7 @@
   </ul>
 </div>
 
+
 <!-- زر 18: العصب الوجهي -->
 <div class="lesson-container">
   <button class="custom-button" onclick="toggleLessons('NERFFACIAL')">
@@ -7680,7 +6343,43 @@
     <span>🔻VAGUS NERVE🔻</span><br>
     <span>🔻NERF PNEUMOGASTRIQUE🔻</span>
   </button>
-  <ul id="NERFPNNEUMOGASTRIQUE" class="lesson-list"></ul>
+  <ul id="NERFPNNEUMOGASTRIQUE" class="lesson-list">
+    <!-- الملخص -->
+    <li class="lesson-item">
+      <a href="EL MOLAKHS_MED02_U5_ANATOMY_العصب الثلاثي التوائم.html" class="lesson-link">
+        <div style="text-align: center; font-family: Arial; font-size: 14px; margin: 20px 0;">
+          <span style="font-size: 1.3rem;">🔻</span>
+          <span style="font-size: 1.3rem;">الملخص</span>
+          <span style="font-size: 1.3rem;">🔻</span>
+        </div>
+      </a>
+      <p class="lesson-meta">إصدار 22 رمضان 1446 موافق لـ 22 مارس 2025</p>
+    </li>
+
+    <!-- اختبار كلية عنابة -->
+    <li class="lesson-item">
+      <a href="EXAM_MED02_U5_ANATOMY_العصب الثلاثي المبهم_ANNABA_.html" class="lesson-link">
+        <span style="font-size: 1.2rem;">📝</span> اختبارات - ANNABA - كلية عنابة
+      </a>
+      <p class="lesson-meta">2024 - 2016</p>
+      <div class="tags-container">
+        <div class="tag">عدد الاسئلة</div>
+        <div class="tag yellow">اسئلة أداة علم الاضافية</div>
+      </div>
+    </li>
+
+    <!-- اختبار كلية سيدي بلعباس -->
+    <li class="lesson-item">
+      <a href="#" class="lesson-link">
+        <span style="font-size: 1.2rem;">📝</span> اختبارات - SIDI BEL ABBÈS - كلية سيدي بلعباس
+      </a>
+      <p class="lesson-meta">2024 - 2016</p>
+      <div class="tags-container">
+        <div class="tag blue">0 عدد الاسئلة</div>
+        <div class="tag yellow">اسئلة أداة علم الاضافية</div>
+      </div>
+    </li>
+  </ul>
 </div>
 
 <!-- زر 20: تنظِيم الجهاز العصبي المركزي -->
@@ -7734,6 +6433,7 @@
     element.classList.toggle('show');
   }
 </script>
+
             </section>
 
 
@@ -7813,165 +6513,6 @@
                           
     
   
-    
-                          <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-                   <style>
-                    /* عزل التنسيق عن بقية الموقع */
-                    .lesson-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    align-items: center;
-                    }
-                    
-                    .custom-button {
-                    background: linear-gradient(145deg, #00796b, #004d40);
-                    color: #fff;
-                    font-size: 14px;
-                    font-family: 'Arial', sans-serif;
-                    border: none;
-                    border-radius: 20px;
-                    padding: 10px 20px;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                    letter-spacing: 0.8px;
-                    width: 100%;
-                    max-width: 400px;
-                    text-align: center;
-                    }
-                    
-                    .custom-button:hover {
-                    background: linear-gradient(145deg, #004d40, #00332e);
-                    transform: scale(1.05);
-                    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-                    }
-                    
-                    .custom-button span {
-                    font-weight: bold;
-                    }
-                    
-                    .custom-button .arabic-text {
-                    color: #ffeb3b;
-                    font-size: 16px;
-                    margin-top: 4px;
-                    }
-                    
-                    .lesson-list {
-                    display: none;
-                    padding: 0;
-                    margin-top: 10px;
-                    list-style: none;
-                    width: 100%;
-                    max-width: 400px;
-                    }
-                    
-                    .college-item {
-                    background: #f0f8ff;
-                    border-radius: 10px;
-                    padding: 10px;
-                    margin-bottom: 5px;
-                    text-align: center;
-                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-                    }
-                    
-                    .college-item a {
-                    color: #00796b;
-                    font-weight: bold;
-                    text-decoration: none;
-                    }
-                    
-                    .college-item p {
-                    font-size: 12px;
-                    color: #555;
-                    margin-top: 5px;
-                    }
-                    
-                    @media (max-width: 600px) {
-                    .custom-button {
-                    font-size: 13px;
-                    padding: 8px 16px;
-                    }
-                    
-                    .custom-button .arabic-text {
-                    font-size: 14px;
-                    }
-                    
-                    .college-item {
-                    padding: 8px;
-                    }
-                    }
-                    </style>
-                        <style>
-                          /* تنسيق الحاوية الرئيسية */
-                          .ملخص {
-                            list-style: none;
-                            background-color: #1e1e1e; /* خلفية رمادية داكنة */
-                            padding: 20px;
-                            border-radius: 10px;
-                            text-align: center;
-                            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* ظل خفيف لإبراز العنصر */
-                            max-width: 350px;
-                            margin: auto;
-                            border: 1px solid #444; /* إضافة إطار رفيع */
-                          }
-                        
-                          /* تصميم الرابط */
-                          .ملخص-رابط {
-                            display: inline-block;
-                            padding: 12px 18px;
-                            border-radius: 8px;
-                            background-color: #000; /* خلفية سوداء */
-                            color: #fff; /* نص أبيض */
-                            font-weight: bold;
-                            font-size: 18px;
-                            text-decoration: none;
-                            transition: background 0.3s, transform 0.2s;
-                          }
-                        
-                          /* تأثير عند مرور الفأرة */
-                          .ملخص-رابط:hover {
-                            background-color: #444;
-                            transform: scale(1.05);
-                          }
-                        
-                          /* تنسيق كلمة "ملخص" */
-                          .ملخص-كلمة {
-                            color: #fff; /* اللون الأبيض */
-                            font-size: 20px; /* حجم أكبر */
-                          }
-                        
-                          /* تنسيق صندوق الإصدار */
-                          .اصدار {
-                            background-color: #333; /* خلفية داكنة */
-                            color: #fff;
-                            padding: 10px;
-                            border-radius: 6px;
-                            display: inline-block;
-                            margin-top: 12px;
-                            font-size: 14px;
-                            font-weight: bold;
-                            border: 1px solid #555; /* إطار رفيع */
-                          }
-                        
-                          @media (max-width: 600px) {
-                            .ملخص {
-                              padding: 15px;
-                              max-width: 300px;
-                            }
-                        
-                            .ملخص-رابط {
-                              font-size: 16px;
-                              padding: 10px 14px;
-                            }
-                        
-                            .اصدار {
-                              font-size: 12px;
-                            }
-                          }
-                        </style>
-                        
-    
     
     
     
@@ -8114,18 +6655,6 @@
                           <br>
                  
          
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                           
@@ -8584,130 +7113,72 @@
                         <ul id="BIOPHYSICSSNOSLessons" class="lessons-list">
                           
                     
-                          <br>
-                          <!-- تضمين تنسيق مخصص فقط للزر والقائمة -->
-                        <style>
-                        /* عزل التنسيق عن بقية الموقع */
-                        .lesson-container {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 10px;
-                        align-items: center;
-                        }
-                        
-                        .custom-button {
-                        background: linear-gradient(145deg, #00796b, #004d40);
-                        color: #fff;
-                        font-size: 14px;
-                        font-family: 'Arial', sans-serif;
-                        border: none;
-                        border-radius: 20px;
-                        padding: 10px 20px;
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                        letter-spacing: 0.8px;
-                        width: 100%;
-                        max-width: 400px;
-                        text-align: center;
-                        }
-                        
-                        .custom-button:hover {
-                        background: linear-gradient(145deg, #004d40, #00332e);
-                        transform: scale(1.05);
-                        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-                        }
-                        
-                        .custom-button span {
-                        font-weight: bold;
-                        }
-                        
-                        .custom-button .arabic-text {
-                        color: #ffeb3b;
-                        font-size: 16px;
-                        margin-top: 4px;
-                        }
-                        
-                        .lesson-list {
-                        display: none;
-                        padding: 0;
-                        margin-top: 10px;
-                        list-style: none;
-                        width: 100%;
-                        max-width: 400px;
-                        }
-                        
-                        .college-item {
-                        background: #f0f8ff;
-                        border-radius: 10px;
-                        padding: 10px;
-                        margin-bottom: 5px;
-                        text-align: center;
-                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-                        }
-                        
-                        .college-item a {
-                        color: #00796b;
-                        font-weight: bold;
-                        text-decoration: none;
-                        }
-                        
-                        .college-item p {
-                        font-size: 12px;
-                        color: #555;
-                        margin-top: 5px;
-                        }
-                        
-                        @media (max-width: 600px) {
-                        .custom-button {
-                        font-size: 13px;
-                        padding: 8px 16px;
-                        }
-                        
-                        .custom-button .arabic-text {
-                        font-size: 14px;
-                        }
-                        
-                        .college-item {
-                        padding: 8px;
-                        }
-                        }
-                        </style>
                         
                         
-                        
-                        
-                        
-                        <!-- المحتوى المعزول: الزر مع القائمة -->
+
               <div class="lesson-container">
-                <!-- زر الدرس -->
-                <button class="custom-button" onclick="toggleLessons('BIOPHYSICSOFCIRCULATIONLessons')">
-                    <span class="arabic-text">  الفيزياء الحيوية للدورة الدموية
-              
-                      كلية عنابة 
-                    </span>
-                    <br>
-                    <span>🔻BIOPHYSICS OF CIRCULATION🔻
-                      كلية عنابة 
-                    </span>
-                    <br>
-                    <span>🔻BIOPHYSIQUE DE LA CIRCULATION🔻
-                      كلية عنابة 
-                    </span> <!-- الفرنسية -->
-                </button>
-              
-                <!-- قائمة الدروس -->
-                <ul id="BIOPHYSICSOFCIRCULATIONLessons" class="lesson-list">
-              
-                    <li class="college-item">
-              
-                </ul>
-              </div>
-              
+  <!-- زر الدرس -->
+  <button class="custom-button" onclick="toggleLessons('BIOPHYSIQUENEUROSENSORIELLELessons')">
+    <span class="arabic-text"> الفيزياء الحيوية العصبية الحسية<br>كلية عنابة </span>
+    <br>
+    <span>🔻NEUROSENSORY BIOPHYSICS🔻<br>Annaba Faculty</span>
+    <br>
+    <span>🔻BIOPHYSIQUE NEURO SENSORIELLE🔻<br>Faculté d’Annaba</span>
+  </button>
+
+  <!-- قائمة الدروس -->
+  <ul id="BIOPHYSIQUENEUROSENSORIELLELessons" class="lesson-list">
+    <li class="college-item">
+
+          <p style="font-weight: bold; font-size: 18px;">📜 تصريح الطالب:</p>
+
+
+      <p>السلام عليكم ورحمة الله وبركاته</p>
+      <p>الحمد لله وفضله، تم شرح <strong>Biophysique Neuro sensorielle</strong> في فيديو واحد.</p>
+      <p>📌 <strong>اتفاق مبدئي على 6 نقاط:</strong></p>
+      <ol>
+        <li>الشرح تم في هذا التوقيت حتى يتبقى للجميع سمانتين تريفزو ✨ <strong>وقتكم يهمنا</strong> ✨</li>
+        <li>⏱️ <strong>مدة الفيديو:</strong> 4 ساعات و57 دقيقة فقط (4:57:28)</li>
+        <li>📍 الفيديو من <strong>كوندي ❤️💙</strong></li>
+        <li>📢 إذا فهمت اللهجة تقدر تدير الفيديو بسرعة 2x، وإذا لا: (الإعدادات ← اللغات ← العربية ← اللهجات)</li>
+        <li>📒 حاولت نلخص لكن كل شيء مهم في الكور، الأفضلية للي يعرفوا يحفظوا. فيه:
+          <ul>
+            <li>4 أسئلة حسابية</li>
+            <li>8 أسئلة كور (Questions de cours)</li>
+            <li>ملاحظة: في التصحيحات ستجد s.12 = الشريحة رقم 12</li>
+          </ul>
+        </li>
+        <li>📦 محتوى الفيديو:
+          <ul>
+            <li>📹 <strong>الفيديو الكامل:</strong> <a href="https://youtu.be/HkUDIqIfuEE" target="_blank">https://youtu.be/HkUDIqIfuEE</a></li>
+            <li>📘 <strong>PDF الكورس:</strong> <a href="https://drive.google.com/file/d/1Y_S98Nl3gbJS2DtIfNishOtZpsmxCuy-/view?usp=drivesdk" target="_blank">رابط PDF</a></li>
+            <li>🟦 <strong>Biophysique de l'Audition:</strong>
+              <ul>
+                <li>🔴 Cour: <a href="https://youtu.be/HkUDIqIfuEE?t=316" target="_blank">https://youtu.be/HkUDIqIfuEE?t=316</a></li>
+                <li>🔴 QCM: <a href="https://youtu.be/HkUDIqIfuEE?t=11133" target="_blank">https://youtu.be/HkUDIqIfuEE?t=11133</a></li>
+              </ul>
+            </li>
+            <li>🟦 <strong>Biophysique de la Vision:</strong>
+              <ul>
+                <li>🔴 Cour: <a href="https://youtu.be/HkUDIqIfuEE?t=12271" target="_blank">https://youtu.be/HkUDIqIfuEE?t=12271</a></li>
+                <li>🔴 QCM: <a href="https://youtu.be/HkUDIqIfuEE?t=17180" target="_blank">https://youtu.be/HkUDIqIfuEE?t=17180</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ol>
+      <p>📿 <strong>لا تنسوه من دعائكم، جزاه الله خيرًا</strong></p>
+   
+
+
+
+                    <p>قناة الطالب على التيلجرام:</p>
+                    <a href="https://t.me/biophysique_annaba">قناة الطالب على التيلجرام</a>
+                </li>
+  </ul>
+</div>
+
                      
-                        </ul>
-                        </div>
-                        
                         
                                               
                 </ul>
@@ -8741,175 +7212,389 @@
           
           
           
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          <!-- الفوتر الجديد -->
-           <!-- فوتر S22MARKET الجذاب -->
-           <footer style="background-color: #1E88E5; color: white; padding: 30px 20px; text-align: center; font-family: 'Arial', sans-serif; position: relative; overflow: hidden;">
-              <!-- القسم الداخلي ذو الخلفية السوداء -->
-              <div style="background-color: black; padding: 20px; border-radius: 10px; margin: 0 auto; max-width: 90%;">
-                <!-- النص المتحرك -->
-                <div style="overflow: hidden; position: relative; height: 80px; margin-bottom: 30px;">
-                  <div id="neonText" style="display: inline-block; white-space: nowrap; font-size: 2.5rem; font-weight: bold; direction: rtl;">
-                      <span class="neon-char">🌟</span>
-                      <span class="neon-char">زوروا</span>
-                      <span class="neon-char">متجرنا</span>
-                      <span class="neon-char">🛒</span>
-                      <span class="neon-char">S22MARKET</span>
-                      <span class="neon-char">🛒</span>
-                      <span class="neon-char">كل</span>
-                      <span class="neon-char">ما</span>
-                      <span class="neon-char">تحتاجه</span>
-                      <span class="neon-char">في</span>
-                      <span class="neon-char">مكان</span>
-                      <span class="neon-char">واحد</span>
-                      <span class="neon-char">🔥</span>
-                  </div>
-                </div>
             
-                <!-- روابط الصف الأول -->
-                <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 20px;">
-                  <!-- الموقع الإلكتروني -->
-                  <div style="text-align: center;">
-                    <a href="https://s22market.github.io/S22MARKET/" target="_blank" style="text-decoration: none;">
-                      <img src="S22MARKETSITELOGO.png" alt="Website" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                    </a>
-                    <p style="color: #1565C0; margin-top: 5px; font-size: 14px;">الموقع الإلكتروني</p>
-                  </div>
-                  <!-- التطبيق معنا -->
-                  <div style="text-align: center;">
-                    <a href="https://s22market.github.io/S22MARKET/S22MARKET_app_site.html" target="_blank" style="text-decoration: none;">
-                      <img src="APPICON.png" alt="App" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                    </a>
-                    <p style="color: #00C853; margin-top: 5px; font-size: 14px;">حمّل التطبيق</p>
-                  </div>
-                </div>
             
-                <!-- روابط الصف الثاني -->
-                <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
-                  <!-- فيسبوك -->
-                  <div style="text-align: center;">
-                    <a href="https://www.facebook.com/profile.php?id=61563869504735" target="_blank" style="text-decoration: none;">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                    </a>
-                    <p style="color: #1E88E5; margin-top: 5px; font-size: 14px;">فيسبوك</p>
-                  </div>
-                  <!-- إنستغرام -->
-                  <div style="text-align: center;">
-                    <a href="https://www.instagram.com/s22market2?igsh=d2VtM3h4M3A5N250" target="_blank" style="text-decoration: none;">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                    </a>
-                    <p style="color: #E1306C; margin-top: 5px; font-size: 14px;">إنستغرام</p>
-                  </div>
-                  <!-- تيك توك -->
-                  <div style="text-align: center;">
-                    <a href="https://tiktok.com/@s22market" target="_blank" style="text-decoration: none;">
-                      <img src="TIKTOK.png" alt="TikTok" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                    </a>
-                    <p style="color: #ffffff; margin-top: 5px; font-size: 14px;">تيك توك</p>
-                  </div>
-                  <!-- تيليجرام -->
-                  <div style="text-align: center;">
-                    <a href="https://t.me/S22MARKET" target="_blank" style="text-decoration: none;">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                    </a>
-                    <p style="color: #0088CC; margin-top: 5px; font-size: 14px;">تيليجرام</p>
-                  </div>
-                  <!-- بوت مساعد -->
-                  <div style="text-align: center;">
-                    <a href="https://t.me/s22market_bot" target="_blank" style="text-decoration: none;">
-                      <img src="BOT.jpg" alt="Bot" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                    </a>
-                    <p style="color: #00CC66; margin-top: 5px; font-size: 14px;">بوت مساعد</p>
-                  </div>
-                </div>
-              </div>
-            </footer>
             
-            <!-- CSS -->
-            <style>
-              #neonText {
-                animation: slide 10s linear infinite;
-              }
             
-              .neon-char {
-                display: inline-block;
-                color: #fff;
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px #1E88E5, 0 0 40px #1E88E5, 0 0 50px #1565C0;
-                animation: flicker 1.5s infinite alternate;
-              }
-            
-              @keyframes slide {
-                from {
-                  transform: translateX(100%);
-                }
-                to {
-                  transform: translateX(-100%);
-                }
-              }
-            
-              @keyframes flicker {
-                0% {
-                  opacity: 1;
-                  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px #1E88E5, 0 0 20px #1565C0;
-                }
-                50% {
-                  opacity: 0.8;
-                  text-shadow: 0 0 7px rgba(255, 255, 255, 0.9), 0 0 15px #1E88E5, 0 0 30px #1565C0;
-                }
-                100% {
-                  opacity: 1;
-                  text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 25px #1E88E5, 0 0 40px #1565C0;
-                }
-              }
-            
-              a img:hover {
-                transform: scale(1.2);
-              }
-            </style>
-            
-          <!-- فوتر S22MARKET الجذاب -->
-          
-          
-          
-          
-          
-          
+            <main>
+
+
+
+
+
+          <section id="IMMUNOLOGY" class="lesson-section">
+
+    <h2 class="section-title">
+        <img src="QCMPIC/immunotherapy.png" alt="مناعة" style="width: 35px;">
+        
+        <span style="margin: 0 15px;">علم المناعة</span>
+        
+        <img src="QCMPIC/antibodies.png" alt="أجسام مضادة" style="width: 35px;">
+    </h2>
+
+
+    
+                    
+
+  <img src="QCMPIC/U4 BIOCHEIE.png" alt="صورة علم التشريح" width="300" height="250">
+                    <div class="lesson-info">
+                        <p>عدد الدروس: 4</p>
+                        <p>الفيزياء الحيوية: جزى الله خيرًا الطالب الذي قدم المحتوى الخاص بالمقياس. ستجد الروابط في الأسفل.</p>
+                      </div>
                 
+                         
+                        
+                        <div class="buttons">
+                          <button onclick="toggleLessons('immunology-lessons')">عرض الدروس</button>
+                        </div>
+                        <ul id="immunology-lessons" class="lessons-list">
+                          
+
+            
+        
+
+              
+                
+               
+
+        
+                    
 
 
- </section>
+
+
+<!-- زر 1: مقدمة في علم المناعة -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('INTROIMMUNO')">
+    <span class="arabic-text">مُقَدِّمَةٌ فِي عِلْمِ المَنَاعَة</span><br>
+    <span>🔻INTRODUCTION TO IMMUNOLOGY🔻</span><br>
+    <span>🔻INTRODUCTION À L'IMMUNOLOGIE🔻</span>
+  </button>
+  <ul id="INTROIMMUNO" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 2: الأعضاء اللمفاوية -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('ORGANESLYMPHOIDES')">
+    <span class="arabic-text">الأَعْضَاءُ اللِّمْفَاوِيَّة</span><br>
+    <span>🔻LYMPHOID ORGANS🔻</span><br>
+    <span>🔻ORGANES LYMPHOÏDES🔻</span>
+  </button>
+  <ul id="ORGANESLYMPHOIDES" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 3: الخلية البائية ومستقبلاتها -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('LB_BCR')">
+    <span class="arabic-text">الخَلِيَّةُ البَائِيَّة وَمُسْتَقْبِلُهَا</span><br>
+    <span>🔻B LYMPHOCYTE AND BCR🔻</span><br>
+    <span>🔻LE LYMPHOCYTE B ET LE BCR🔻</span>
+  </button>
+  <ul id="LB_BCR" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 4: الخلية التائية ومستقبلاتها -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('LT_TCR')">
+    <span class="arabic-text">الخَلِيَّةُ التَّائِيَّة وَمُسْتَقْبِلُهَا</span><br>
+    <span>🔻T LYMPHOCYTE AND TCR🔻</span><br>
+    <span>🔻LE LYMPHOCYTE T ET LE TCR🔻</span>
+  </button>
+  <ul id="LT_TCR" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 5: الغلوبولينات المناعية -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('IMMUNOGLOBULINS')">
+    <span class="arabic-text">الغْلُوبُولِيناتُ المَنَاعِيَّة</span><br>
+    <span>🔻IMMUNOGLOBULINS🔻</span><br>
+    <span>🔻LES IMMUNOGLOBULINES🔻</span>
+  </button>
+  <ul id="IMMUNOGLOBULINS" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 6: المعقد الرئيسي للتوافق النسيجي -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('CMH')">
+    <span class="arabic-text">المُعَقَّدُ الرَّئِيسِيُّ لِلتَّوافُقِ النَّسِيجِيّ</span><br>
+    <span>🔻MAJOR HISTOCOMPATIBILITY COMPLEX🔻</span><br>
+    <span>🔻LE COMPLEXE MAJEUR D’HISTOCOMPATIBILITÉ🔻</span>
+  </button>
+  <ul id="CMH" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 7: المستضدات -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('ANTIGENES')">
+    <span class="arabic-text">المُسْتَضِدَّات</span><br>
+    <span>🔻ANTIGENS🔻</span><br>
+    <span>🔻LES ANTIGÈNES🔻</span>
+  </button>
+  <ul id="ANTIGENES" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 8: نظام المتممة -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('COMPLEMENT')">
+    <span class="arabic-text">نِظَامُ المُتَمِّمَة</span><br>
+    <span>🔻COMPLEMENT SYSTEM🔻</span><br>
+    <span>🔻LE SYSTÈME DU COMPLÉMENT🔻</span>
+  </button>
+  <ul id="COMPLEMENT" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 9: السيتوكينات والكيموكينات ومستقبلاتها -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('CYTOKINES')">
+    <span class="arabic-text">السِّيتُوكِينَات وَالكِيمُوكِينَات وَمُسْتَقْبِلَاتُهَا</span><br>
+    <span>🔻CYTOKINES, CHEMOKINES & RECEPTORS🔻</span><br>
+    <span>🔻CYTOKINES, CHIMIOKINES ET RÉCEPTEURS🔻</span>
+  </button>
+  <ul id="CYTOKINES" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 10: جزيئات الالتصاق -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('ADHESION')">
+    <span class="arabic-text">جُزَيئَاتُ الاِلْتِصَاق</span><br>
+    <span>🔻ADHESION MOLECULES🔻</span><br>
+    <span>🔻LES MOLÉCULES D’ADHÉSION🔻</span>
+  </button>
+  <ul id="ADHESION" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 11: التفاعلات الخلوية أثناء الاستجابة المناعية -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('INTERACTIONS')">
+    <span class="arabic-text">التَّفَاعُلَاتُ الخَلَوِيَّة فِي الاسْتِجَابَةِ المَنَاعِيَّة</span><br>
+    <span>🔻CELLULAR INTERACTIONS IN IMMUNE RESPONSE🔻</span><br>
+    <span>🔻INTERACTIONS CELLULAIRES LORS DES RÉPONSES IMMUNITAIRES🔻</span>
+  </button>
+  <ul id="INTERACTIONS" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 12: المناعة الفطرية -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('INNEE')">
+    <span class="arabic-text">المَنَاعَةُ الفِطْرِيَّة</span><br>
+    <span>🔻INNATE IMMUNITY🔻</span><br>
+    <span>🔻IMMUNITÉ INNÉE🔻</span>
+  </button>
+  <ul id="INNEE" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 13: الجوانب المناعية للالتهاب -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('INFLAMMATION')">
+    <span class="arabic-text">الجَوَانِبُ المَنَاعِيَّةُ لِلالْتِهَاب</span><br>
+    <span>🔻IMMUNOLOGICAL ASPECTS OF INFLAMMATION🔻</span><br>
+    <span>🔻LES ASPECTS IMMUNITAIRES DE L’INFLAMMATION🔻</span>
+  </button>
+  <ul id="INFLAMMATION" class="lesson-list"></ul>
+</div>
+<br>
+
+
+          </section>
+
+
+
+           <section id="IMMUNOLOGY" class="lesson-section">
+
+    <h2 class="section-title">
+        <img src="QCMPIC/immunotherapy.png" alt="مناعة" style="width: 35px;">
+        
+        <span style="margin: 0 15px;">علم  الوراثة قربيبا </span>
+        
+        <img src="QCMPIC/antibodies.png" alt="أجسام مضادة" style="width: 35px;">
+    </h2>
+
+                           
+
+  <img src="QCMPIC/U4 BIOCHEIE.png" alt="صورة علم التشريح" width="300" height="250">
+                    <div class="lesson-info">
+                        <p>عدد الدروس: 4</p>
+                        <p>الفيزياء الحيوية: جزى الله خيرًا الطالب الذي قدم المحتوى الخاص بالمقياس. ستجد الروابط في الأسفل.</p>
+                      </div>
+                
+                         
+                        
+                        <div class="buttons">
+                          <button onclick="toggleLessons('immunology-lessons')">عرض الدروس</button>
+                        </div>
+                        <ul id="immunology-lessons" class="lessons-list">
+                          
+
+            
+        
+
+            
+                    
+
+
+
+
+<!-- زر 1: مقدمة في علم المناعة -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('INTROIMMUNO')">
+    <span class="arabic-text">مُقَدِّمَةٌ فِي عِلْمِ المَنَاعَة</span><br>
+    <span>🔻INTRODUCTION TO IMMUNOLOGY🔻</span><br>
+    <span>🔻INTRODUCTION À L'IMMUNOLOGIE🔻</span>
+  </button>
+  <ul id="INTROIMMUNO" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 2: الأعضاء اللمفاوية -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('ORGANESLYMPHOIDES')">
+    <span class="arabic-text">الأَعْضَاءُ اللِّمْفَاوِيَّة</span><br>
+    <span>🔻LYMPHOID ORGANS🔻</span><br>
+    <span>🔻ORGANES LYMPHOÏDES🔻</span>
+  </button>
+  <ul id="ORGANESLYMPHOIDES" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 3: الخلية البائية ومستقبلاتها -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('LB_BCR')">
+    <span class="arabic-text">الخَلِيَّةُ البَائِيَّة وَمُسْتَقْبِلُهَا</span><br>
+    <span>🔻B LYMPHOCYTE AND BCR🔻</span><br>
+    <span>🔻LE LYMPHOCYTE B ET LE BCR🔻</span>
+  </button>
+  <ul id="LB_BCR" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 4: الخلية التائية ومستقبلاتها -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('LT_TCR')">
+    <span class="arabic-text">الخَلِيَّةُ التَّائِيَّة وَمُسْتَقْبِلُهَا</span><br>
+    <span>🔻T LYMPHOCYTE AND TCR🔻</span><br>
+    <span>🔻LE LYMPHOCYTE T ET LE TCR🔻</span>
+  </button>
+  <ul id="LT_TCR" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 5: الغلوبولينات المناعية -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('IMMUNOGLOBULINS')">
+    <span class="arabic-text">الغْلُوبُولِيناتُ المَنَاعِيَّة</span><br>
+    <span>🔻IMMUNOGLOBULINS🔻</span><br>
+    <span>🔻LES IMMUNOGLOBULINES🔻</span>
+  </button>
+  <ul id="IMMUNOGLOBULINS" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 6: المعقد الرئيسي للتوافق النسيجي -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('CMH')">
+    <span class="arabic-text">المُعَقَّدُ الرَّئِيسِيُّ لِلتَّوافُقِ النَّسِيجِيّ</span><br>
+    <span>🔻MAJOR HISTOCOMPATIBILITY COMPLEX🔻</span><br>
+    <span>🔻LE COMPLEXE MAJEUR D’HISTOCOMPATIBILITÉ🔻</span>
+  </button>
+  <ul id="CMH" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 7: المستضدات -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('ANTIGENES')">
+    <span class="arabic-text">المُسْتَضِدَّات</span><br>
+    <span>🔻ANTIGENS🔻</span><br>
+    <span>🔻LES ANTIGÈNES🔻</span>
+  </button>
+  <ul id="ANTIGENES" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 8: نظام المتممة -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('COMPLEMENT')">
+    <span class="arabic-text">نِظَامُ المُتَمِّمَة</span><br>
+    <span>🔻COMPLEMENT SYSTEM🔻</span><br>
+    <span>🔻LE SYSTÈME DU COMPLÉMENT🔻</span>
+  </button>
+  <ul id="COMPLEMENT" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 9: السيتوكينات والكيموكينات ومستقبلاتها -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('CYTOKINES')">
+    <span class="arabic-text">السِّيتُوكِينَات وَالكِيمُوكِينَات وَمُسْتَقْبِلَاتُهَا</span><br>
+    <span>🔻CYTOKINES, CHEMOKINES & RECEPTORS🔻</span><br>
+    <span>🔻CYTOKINES, CHIMIOKINES ET RÉCEPTEURS🔻</span>
+  </button>
+  <ul id="CYTOKINES" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 10: جزيئات الالتصاق -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('ADHESION')">
+    <span class="arabic-text">جُزَيئَاتُ الاِلْتِصَاق</span><br>
+    <span>🔻ADHESION MOLECULES🔻</span><br>
+    <span>🔻LES MOLÉCULES D’ADHÉSION🔻</span>
+  </button>
+  <ul id="ADHESION" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 11: التفاعلات الخلوية أثناء الاستجابة المناعية -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('INTERACTIONS')">
+    <span class="arabic-text">التَّفَاعُلَاتُ الخَلَوِيَّة فِي الاسْتِجَابَةِ المَنَاعِيَّة</span><br>
+    <span>🔻CELLULAR INTERACTIONS IN IMMUNE RESPONSE🔻</span><br>
+    <span>🔻INTERACTIONS CELLULAIRES LORS DES RÉPONSES IMMUNITAIRES🔻</span>
+  </button>
+  <ul id="INTERACTIONS" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 12: المناعة الفطرية -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('INNEE')">
+    <span class="arabic-text">المَنَاعَةُ الفِطْرِيَّة</span><br>
+    <span>🔻INNATE IMMUNITY🔻</span><br>
+    <span>🔻IMMUNITÉ INNÉE🔻</span>
+  </button>
+  <ul id="INNEE" class="lesson-list"></ul>
+</div>
+<br>
+
+<!-- زر 13: الجوانب المناعية للالتهاب -->
+<div class="lesson-container">
+  <button class="custom-button" onclick="toggleLessons('INFLAMMATION')">
+    <span class="arabic-text">الجَوَانِبُ المَنَاعِيَّةُ لِلالْتِهَاب</span><br>
+    <span>🔻IMMUNOLOGICAL ASPECTS OF INFLAMMATION🔻</span><br>
+    <span>🔻LES ASPECTS IMMUNITAIRES DE L’INFLAMMATION🔻</span>
+  </button>
+  <ul id="INFLAMMATION" class="lesson-list"></ul>
+</div>
+<br>
+
+
+          </section>
+  </main>
+          
+          
+          
 
  <!DOCTYPE html>
  <html lang="ar" dir="rtl">
@@ -9087,44 +7772,13 @@
        </div>
      </div>
  
-     <p>مخصص <span>لطلبة السنة الثانية طب</span> - جميع الحقوق محفوظة &copy; 2025</p>
+     <p>مخصص <span>لطلبة السنة ثانية  طب</span> - جميع الحقوق محفوظة &copy; 2025</p>
    </footer>
  </body>
  </html>
  
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-
-          
-          
-          
-          
           
           
           

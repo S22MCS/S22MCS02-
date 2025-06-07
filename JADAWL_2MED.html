@@ -8,80 +8,192 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px; /* حشوة للصفحة بأكملها */
+            padding: 20px;
             background-color: #f5f5f5;
-            line-height: 1.6; /* تحسين مقروئية النص */
+            line-height: 1.6;
         }
         .container {
             max-width: 800px;
-            margin: 20px auto; /* هامش بين الحاويات وأعلى/أسفل الصفحة */
+            margin: 20px auto;
             background-color: white;
-            padding: 15px; /* تقليل الحشوة قليلاً لمساحة محتوى أكبر */
+            padding: 20px; /* زيادة الحشوة قليلاً لمظهر أفضل */
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
-        h1 { /* تنسيق عام للعناوين إذا أضفت واحداً */
+        h1, h2 {
             color: #2c3e50;
             text-align: center;
             margin-bottom: 20px;
         }
-        .unit-title { /* تنسيق لنص وصف الوحدة */
-            font-size: 1.1em; /* حجم خط نسبي */
+        .unit-title {
+            font-size: 1.2em; /* تكبير الخط قليلاً للوضوح */
             color: #333;
             margin-bottom: 15px;
+            text-align: center; /* توسيط عناوين الوحدات */
         }
-        .content { /* تم الإبقاء عليه إذا كنت تخطط لاستخدامه */
-            margin: 20px 0;
+        /* --- تعديل هيكلي جديد: حاوية للروابط --- */
+        .links-container {
+            display: flex;
+            flex-direction: column; /* ترتيب الروابط بشكل عمودي */
+            gap: 10px; /* مسافة بين الروابط */
         }
         .back-link {
-            display: block; /* يأخذ العرض الكامل */
+            display: block;
             text-align: center;
-            margin-top: 15px;
-            padding: 10px 15px; /* حشوة شبيهة بالزر */
-            background-color: #3498db; /* لون السمة للزر */
-            color: white;
-            text-decoration: none;
-            border-radius: 5px; /* زوايا دائرية للزر */
-            transition: background-color 0.3s ease; /* تأثير انتقال سلس عند المرور */
-        }
-        .back-link:hover {
-            background-color: #2980b9; /* درجة أغمق عند المرور */
-        }
-
-        /* تنسيقات الجدول - تم الإبقاء عليها كما كانت في الأصل، في حال الحاجة إليها لاحقًا */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
+            padding: 12px 15px; /* تعديل الحشوة لتكون أكثر راحة للنقر */
             background-color: #3498db;
             color: white;
+            text-decoration: none;
+            border-radius: 8px; /* زوايا أكثر دائرية */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 1.1em;
         }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .back-link:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px); /* تأثير رفع بسيط عند المرور */
         }
 
-        /* استعلام وسائط للشاشات الصغيرة (مثل الهواتف) */
-        @media (max-width: 600px) {
+        /* --- تعديل هيكلي جديد: قسم المناعة --- */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px; /* مسافة بين الأيقونات والنص */
+            margin-bottom: 20px;
+        }
+        .section-header h2 {
+            margin: 0; /* إزالة الهامش من العنوان داخل Flexbox */
+            font-size: 1.5em;
+        }
+        .section-header img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #007bff, #66ccff);
+            color: #fff;
+            text-align: center;
+            padding: 2rem 1rem; /* تعديل الحشوة */
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+        }
+        footer .social-group {
+            margin-bottom: 1.5rem; /* زيادة الهامش السفلي */
+        }
+        footer .social-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.2rem; /* زيادة المسافة بين الأيقونات */
+        }
+        footer .social-links a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.3s ease;
+        }
+        footer .social-links a:hover {
+            transform: scale(1.1);
+        }
+        footer .social-links a img {
+            width: 35px;
+            height: 35px;
+            margin-bottom: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            padding: 8px;
+        }
+        footer .social-links a.instagram img { background-color: #e1306c; }
+        footer .social-links a.telegram img { background-color: #0088cc; }
+        footer .social-links a.facebook img { background-color: #1877f2; }
+        footer .social-links a.tiktok img { background-color: #000000; }
+        footer .social-links a.twitter img { background-color: #1DA1F2; } /* لون تويتر الأزرق */
+        footer .social-links a.youtube img { background-color: #ff0000; }
+        footer .social-links span {
+            font-size: 1rem; 
+            font-weight: bold;
+        }
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+            color: #e0e0e0; 
+        }
+        footer p span {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* --- استعلامات الوسائط المحسّنة (Media Queries) --- */
+
+        /* للهواتف والأجهزة اللوحية الصغيرة (أقل من 768px) */
+        @media (max-width: 768px) {
             body {
-                padding: 10px; /* تقليل حشوة الجسم على الشاشات الصغيرة */
+                padding: 10px;
             }
             .container {
-                padding: 10px; /* تقليل حشوة الحاوية على الشاشات الصغيرة */
-                margin: 10px auto; /* تقليل الهامش بين الحاويات */
+                padding: 15px;
+                margin: 15px auto;
             }
             .unit-title {
-                font-size: 1em; /* تعديل حجم الخط إذا لزم الأمر */
+                font-size: 1.1em;
             }
             .back-link {
-                padding: 12px 10px; /* تعديل الحشوة لمساحة نقر أفضل */
+                padding: 12px 10px;
+                font-size: 1em;
+            }
+            .section-header h2 {
+                font-size: 1.3em;
+            }
+            .section-header img {
+                width: 35px;
+                height: 35px;
+            }
+            footer .social-links {
+                gap: 1rem;
+                /* --- تحسين التمرير الأفقي للأيقونات --- */
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 15px;
+                -webkit-overflow-scrolling: touch; /* تمرير سلس على iOS */
+                scrollbar-width: none; /* إخفاء شريط التمرير لـ Firefox */
+            }
+            footer .social-links::-webkit-scrollbar {
+                display: none; /* إخفاء شريط التمرير لـ Chrome/Safari */
+            }
+            footer .social-links a {
+                min-width: 80px; /* ضمان مساحة كافية لكل أيقونة */
+            }
+             footer .social-group {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* للهواتف الصغيرة (أقل من 480px) */
+        @media (max-width: 480px) {
+            .unit-title {
+                font-size: 1em;
+            }
+            .back-link {
                 font-size: 0.95em;
+            }
+            .section-header h2 {
+                font-size: 1.1em;
+            }
+            .section-header img {
+                width: 30px;
+                height: 30px;
+            }
+            footer .social-links span {
+                font-size: 0.85rem;
+            }
+            footer p {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -89,18 +201,108 @@
 <body>
 
     <div class="container">
-        <p class="unit-title">الوحدة الخامسة: وحدة الجهاز العصبي</p>
-        <a href="JADAWL_2MED_unity05_NORO_FI_03AYAM.html" class="back-link">برنامج الثلاث ايام</a>
+        <p class="unit-title">الوحدة الخامسة: الحواس الأعصاب, الجِهَازُ العَصَبِيُّ وَأَعْضَاءُ الحَوَاسِّ</p>
+        <div class="links-container">
+            <a href="JADAWL_2MED_unity05_NORO_FI_03AYAM.html" class="back-link">برنامج الثلاثة أيام</a>
+            <a href="JADAWL_2MED_unity05_NORO_FI_04AYAM .html" class="back-link">برنامج الأربعة أيام</a>
+        </div>
     </div>
 
     <div class="container">
-        <p class="unit-title">الوحدة الخامسة: وحدة الجهاز القلبي</p>
-        <a href="JADAWL_2MED_unity05_NORO_FI_03AYAM.html" class="back-link">برنامج الثلاث ايام</a>
+        <p class="unit-title">الوحدة الاولى : وحدة الجهاز القلبي</p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج الثلاثة أيام</a>
+        </div>
     </div>
 
     <div class="container">
-        <p class="unit-title">الوحدة الخامسة: وحدة الجهاز الهضمي</p> <a href="JADAWL_2MED_unity05_NORO_FI_03AYAM.html" class="back-link">برنامج الثلاث ايام</a>
+        <p class="unit-title">الوحدة الثانية : وحدة الجهاز الهضمي</p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج الثلاثة أيام</a>
+        </div>
     </div>
+    
+    <div class="container">
+        <p class="unit-title">الوحدة الرابعة: 🧠 الجهاز الصمّاوي و ♂️ الجهاز التناسلي ♀️</p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج الثلاثة أيام</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">الوحدة الثالثة: الجهاز البولي ♀️</p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج الثلاثة أيام</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="section-header">
+            <img src="QCMPIC/immunotherapy.png" alt="مناعة">
+            <h2>علم المناعة</h2>
+            <img src="QCMPIC/antibodies.png" alt="أجسام مضادة">
+        </div>
+        <div class="links-container">
+            <a href="JADAWL_2MED_علم المناعة__FI_06AYAM.html" class="back-link">برنامج ستة أيام</a>
+            <a href="JADAWL_2MED_علم المناعة__FI_04AYAM.html" class="back-link">برنامج الأربعة أيام</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-group s22mcs-group">
+            <div class="social-links">
+                <a href="https://instagram.com/s22mcs?igshid=NzZlODBkYWE4Ng" target="_blank" class="instagram">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram">
+                    <span>S22MCS</span>
+                </a>
+                <a href="https://t.me/S22MCS" target="_blank" class="telegram">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png" alt="Telegram">
+                    <span>S22MCS</span>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61552919247921&mibextid=ZbWKwL" target="_blank" class="facebook">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook">
+                    <span>S22MCS</span>
+                </a>
+                <a href="https://www.tiktok.com/@s22mcs?_t=8kfut6Df4lC&_r=1" target="_blank" class="tiktok">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok">
+                    <span>S22MCS</span>
+                </a>
+                <a href="https://x.com/S22MCS?t=a7d9JIT0p_r-26CRAkYo0A&s=09" target="_blank" class="twitter">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/twitter.png" alt="X (Twitter)"> <span>S22MCS</span>
+                </a>
+                <a href="#" target="_blank" class="youtube">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube">
+                    <span>S22MCS</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="social-group alat-alm-group">
+            <div class="social-links">
+                <a href="https://www.instagram.com/adat_ealm/profilecard/?igsh=bGNlZHBxenEzM2Uw" target="_blank" class="instagram">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram">
+                    <span>أداة علم</span>
+                </a>
+                <a href="https://www.telegram.org" target="_blank" class="telegram">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png" alt="Telegram">
+                    <span>أداة علم</span>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61560859966476" target="_blank" class="facebook">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook">
+                    <span>أداة علم</span>
+                </a>
+                <a href="https://www.tiktok.com" target="_blank" class="tiktok">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok">
+                    <span>أداة علم</span>
+                </a>
+                <a href="#" target="_blank" class="youtube">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube">
+                    <span>أداة علم</span>
+                </a>
+            </div>
+        </div>
+        <p>مخصص <span>لطلبة السنة الثانية طب</span> - جميع الحقوق محفوظة © 2025</p>
+    </footer>
 
 </body>
 </html>
