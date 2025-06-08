@@ -337,6 +337,80 @@
       .container { padding: 0 5px; }
       .task-actions > div { flex-direction: column; }
     }
+
+      </style>
+<style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .completed {
+  background-color: #e8f5e9;
+  position: relative;
+}
+
+.completed::after {
+  content: "✓";
+  color: #2e7d32;
+  font-weight: bold;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 1.2em;
+}
+
+.completed .task-title {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.completed .btn-complete {
+  display: none;
+}
+
+.progress-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+.progress-bar {
+  height: 20px;
+  background-color: #4caf50;
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
   </style>
 </head>
 <body>
@@ -454,33 +528,189 @@
   
 </div>
 
-<script>
-// IMPORTANT: The following is a placeholder for the required JavaScript logic.
-// You need to implement the functions for the countdown timers, task completion,
-// progress bar updates, and date displays for the table to be fully interactive.
+<script>document.addEventListener('DOMContentLoaded', function() {
+  // Initialize the application
+  updateDates();
+  loadProgress();
+  updateProgressBar();
+  updateStats();
+  startEndOfDayCountdown();
 
-// --- JavaScript Logic Goes Here ---
-
-// Example structure for your functions:
-/*
-document.addEventListener('DOMContentLoaded', function() {
-  // Functions to update dates, load saved progress, etc.
+  // Update dates every minute
+  setInterval(updateDates, 60000);
+  // Update end of day countdown every second
+  setInterval(startEndOfDayCountdown, 1000);
 });
 
+// Global variables to track tasks
+let completedTasks = 0;
+const totalTasks = 30;
+let taskStatus = {};
+let activeTimers = {};
+
+// Update Gregorian and Hijri dates
+function updateDates() {
+  const now = new Date();
+  
+  // Gregorian date
+  const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const gregorianDate = now.toLocaleDateString('ar-EG', gregorianOptions);
+  document.getElementById('gregorianDateDisplay').innerHTML = `<i class="fas fa-calendar-alt"></i> ${gregorianDate}`;
+  
+  // Hijri date (using Intl.DateTimeFormat for Islamic calendar)
+  const hijriOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', calendar: 'islamic' };
+  const hijriDate = new Intl.DateTimeFormat('ar-EG-u-ca-islamic', hijriOptions).format(now);
+  document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> ${hijriDate}`;
+}
+
+// Countdown to end of day (midnight)
+function startEndOfDayCountdown() {
+  const now = new Date();
+  const endOfDay = new Date();
+  endOfDay.setHours(24, 0, 0, 0);
+  
+  const diff = endOfDay - now;
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  
+  document.getElementById('countdownToEndOfDay').innerHTML = 
+    `<i class="fas fa-hourglass-end"></i> ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Start countdown timer for a task
 function startCountdown(timerId, durationInSeconds, taskId) {
-  // Logic to start a countdown timer for a specific task.
+  // If there's already an active timer for this task, stop it
+  if (activeTimers[timerId]) {
+    clearInterval(activeTimers[timerId]);
+  }
+  
+  let remainingTime = durationInSeconds;
+  const timerElement = document.getElementById(timerId);
+  
+  // Update timer immediately
+  updateTimerDisplay(timerElement, remainingTime);
+  
+  // Start the countdown
+  activeTimers[timerId] = setInterval(() => {
+    remainingTime--;
+    updateTimerDisplay(timerElement, remainingTime);
+    
+    if (remainingTime <= 0) {
+      clearInterval(activeTimers[timerId]);
+      delete activeTimers[timerId];
+      // Auto-complete the task when timer reaches zero
+      if (!taskStatus[taskId] || !taskStatus[taskId].completed) {
+        completeTask(taskId);
+      }
+    }
+  }, 1000);
 }
 
+// Update timer display
+function updateTimerDisplay(element, seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  
+  element.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Mark a task as complete
 function completeTask(taskId) {
-  // Logic to mark a task as complete, update progress bar, and stats.
+  const taskElement = document.getElementById(taskId);
+  
+  // Only complete if not already completed
+  if (!taskStatus[taskId] || !taskStatus[taskId].completed) {
+    taskElement.classList.add('completed');
+    taskStatus[taskId] = { completed: true };
+    completedTasks++;
+    
+    // Save to localStorage
+    saveProgress();
+    
+    // Update stats and progress bar
+    updateStats();
+    updateProgressBar();
+  }
 }
 
+// Reset a task to incomplete
 function resetTask(taskId, timerId) {
-  // Logic to reset a task to its initial state.
+  const taskElement = document.getElementById(taskId);
+  
+  // Reset task status
+  taskElement.classList.remove('completed');
+  
+  // If this task was previously completed, decrement completed count
+  if (taskStatus[taskId] && taskStatus[taskId].completed) {
+    completedTasks--;
+  }
+  
+  taskStatus[taskId] = { completed: false };
+  
+  // Reset timer display
+  if (timerId) {
+    document.getElementById(timerId).textContent = '';
+    if (activeTimers[timerId]) {
+      clearInterval(activeTimers[timerId]);
+      delete activeTimers[timerId];
+    }
+  }
+  
+  // Save to localStorage
+  saveProgress();
+  
+  // Update stats and progress bar
+  updateStats();
+  updateProgressBar();
 }
 
-// And other necessary functions for stats, progress, and date displays.
-*/
+// Update progress bar based on completed tasks
+function updateProgressBar() {
+  const progress = (completedTasks / totalTasks) * 100;
+  document.getElementById('progressBar').style.width = `${progress}%`;
+}
+
+// Update statistics display
+function updateStats() {
+  document.getElementById('completedTasks').textContent = completedTasks;
+  
+  // Calculate total study time (80 hours is the base, but could be adjusted based on actual progress)
+  const totalHours = 80;
+  const remainingHours = Math.round(totalHours * (1 - (completedTasks / totalTasks)));
+  document.getElementById('totalStudyTimeDisplay').textContent = `${remainingHours} ساعة`;
+}
+
+// Save progress to localStorage
+function saveProgress() {
+  localStorage.setItem('studyPlannerProgress', JSON.stringify({
+    completedTasks: completedTasks,
+    taskStatus: taskStatus
+  }));
+}
+
+// Load progress from localStorage
+function loadProgress() {
+  const savedProgress = localStorage.getItem('studyPlannerProgress');
+  if (savedProgress) {
+    const progress = JSON.parse(savedProgress);
+    completedTasks = progress.completedTasks || 0;
+    taskStatus = progress.taskStatus || {};
+    
+    // Apply completed status to tasks in the UI
+    for (const taskId in taskStatus) {
+      if (taskStatus[taskId].completed) {
+        document.getElementById(taskId).classList.add('completed');
+      }
+    }
+  } else {
+    // Initialize all tasks as incomplete
+    for (let i = 1; i <= totalTasks; i++) {
+      taskStatus[`task${i}`] = { completed: false };
+    }
+  }
+}
 </script>
 
 </body>
