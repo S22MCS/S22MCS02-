@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خطة مراجعة | الجهاز البولي والغدد الصماء</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2980b9; /* A blue for urinary theme */
+      --secondary-color: #34495e;
+      --accent-color: #8e44ad; /* A purple for endocrine theme */
+      --danger-color: #e74c3c;
+      --light-color: #ecf0f1;
+      --dark-color: #333;
+      --white: #ffffff;
+      --success-color: #27ae60;
+      --border-color: #bdc3c7;
+    }
+    
+    body {
+      font-family: 'Tajawal', 'Arial', sans-serif;
+      background-color: var(--light-color);
+      margin: 0;
+      padding: 20px;
+      color: var(--dark-color);
+      line-height: 1.7;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 30px;
+      font-size: 2.2em;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+      border-radius: 3px;
+    }
+
+    .page-info {
+      background-color: var(--white);
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+      text-align: center;
+      border-left: 5px solid var(--primary-color);
+    }
+
+    .page-info div {
+      margin-bottom: 10px;
+      font-size: 1em;
+      color: var(--secondary-color);
+    }
+    .page-info div:last-child { margin-bottom: 0; }
+    .page-info .countdown, .page-info .date-display {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .progress-container {
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      margin: 25px 0;
+      height: 22px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      width: 0;
+      transition: width 0.5s ease-in-out;
+      border-radius: 10px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 12px 15px;
+      text-align: right;
+      vertical-align: top;
+      transition: background-color 0.3s ease;
+    }
+    
+    th {
+      background-color: var(--primary-color);
+      color: var(--white);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    tr:nth-child(even) td { background-color: #f8f9fa; }
+    tr:hover td { background-color: #ebf5fa; } /* Light blue hover */
+    td { background-color: var(--white); }
+    
+    td .timer {
+      color: var(--danger-color);
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+      font-size: 0.9em;
+    }
+    
+    .task-title {
+      font-weight: 700;
+      color: var(--secondary-color);
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+    .task-title i { margin-left: 8px; color: var(--accent-color); }
+    
+    ul {
+      padding-right: 20px;
+      margin-top: 5px;
+      list-style: none;
+    }
+    
+    ul li {
+      margin-bottom: 8px;
+      position: relative;
+      padding-right: 20px;
+      font-size: 0.95em;
+    }
+    
+    ul li::before {
+      content: "🧪";
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: var(--primary-color);
+    }
+    
+    .task-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .btn {
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 0.85em;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-width: 80px;
+      font-weight: 500;
+    }
+    
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .btn-start { background-color: var(--accent-color); }
+    .btn-start:hover { background-color: #7d3c98; }
+    .btn-complete { background-color: var(--primary-color); }
+    .btn-complete:hover { background-color: #2471a3; }
+    .btn-reset { background-color: var(--secondary-color); }
+    .btn-reset:hover { background-color: #1a252f; }
+    
+    .completed {
+      position: relative;
+      background-color: #e8f5e9 !important;
+      text-decoration: line-through;
+      color: #777;
+    }
+    .completed .task-title, .completed ul li { color: #555; }
+    
+    .completed::after {
+      content: "✓ مُكتَمِلَة";
+      color: var(--success-color);
+      font-weight: bold;
+      font-size: 0.8em;
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      background: white;
+      padding: 3px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--success-color);
+    }
+    
+    .day-header {
+      font-weight: bold;
+      color: var(--primary-color);
+      font-size: 1.2em;
+      background-color: #ebf5fa !important;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .stat-card {
+      background-color: var(--white);
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      flex: 1;
+      min-width: 180px;
+      text-align: center;
+      border-top: 4px solid var(--accent-color);
+    }
+    .stat-card h3 {
+      margin: 0 0 10px 0;
+      color: var(--primary-color);
+      font-size: 1em;
+    }
+    .stat-value {
+      font-size: 1.8em;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+    
+    /* === RESPONSIVE DESIGN FOR MOBILE === */
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      h1 { font-size: 1.8em; }
+      h1::after { width: 120px; }
+
+      table, thead, tbody, th, td, tr { 
+        display: block; 
+      }
+      thead tr { 
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      tr { 
+        border: none;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        background-color: var(--white);
+      }
+      td { 
+        border: none;
+        border-bottom: 1px solid #eee; 
+        position: relative;
+        padding: 15px;
+        text-align: right;
+      }
+      td:last-child { border-bottom: 0; }
+      
+      td[data-label]::before { 
+        content: attr(data-label);
+        display: block;
+        font-weight: bold;
+        color: var(--primary-color);
+        font-size: 0.9em;
+        margin-bottom: 10px;
+      }
+      
+      .day-header {
+        padding: 15px !important;
+        text-align: center !important;
+        font-size: 1.3em !important;
+        background-color: var(--primary-color) !important;
+        color: var(--white);
+        border-radius: 12px 12px 0 0;
+      }
+      .day-header::before { content: "" !important; }
+
+      .task-actions { 
+        flex-direction: column; 
+        align-items: stretch;
+      }
+      .task-actions > div {
+          display: flex;
+          gap: 8px;
+          width: 100%;
+      }
+      .btn { flex: 1; padding: 10px; }
+      td .timer { text-align: center; margin-bottom: 10px; }
+
+      .completed::after { top: 10px; left: 10px; }
+      .stats { flex-direction: column; gap: 10px; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.5em; }
+      h1::after { width: 100px; }
+      body { padding: 5px; }
+      .container { padding: 0 5px; }
+      .task-actions > div { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1><i class="fa-solid fa-flask-vial"></i> <strong>خُطَّة مُرَاجَعَة (4 أَيَّام) | الجِهَازُ البَوْلِيُّ وَالغُدَدُ الصَّمَّاءُ</strong></h1>
+
+  <div class="page-info">
+    <div id="gregorianDateDisplay"><i class="fas fa-calendar-alt"></i> ...</div>
+    <div id="hijriDateDisplay"><i class="fas fa-moon"></i> ...</div>
+    <div id="countdownToEndOfDay"><i class="fas fa-hourglass-end"></i> ...</div>
+  </div>
+  
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  
+  <div class="stats">
+    <div class="stat-card">
+      <h3><i class="fas fa-tasks"></i> إِجْمَالِيُّ المَهَامِّ</h3>
+      <div class="stat-value" id="totalTasks">12</div>
+    </div>
+    <div class="stat-card">
+      <h3><i class="fas fa-check-circle"></i> المَهَامُّ المُكْتَمِلَةُ</h3>
+      <div class="stat-value" id="completedTasks">0</div>
+    </div>
+    <div class="stat-card">
+      <h3><i class="fas fa-hourglass-half"></i> إِجْمَالِيُّ وَقْتِ الدِّرَاسَةِ</h3>
+      <div class="stat-value" id="totalStudyTimeDisplay">32 سَاعَة</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>اليَوْمُ</th>
+        <th>08:00 – 11:00 (3 سَاعَاتٍ)</th>
+        <th>13:00 – 16:00 (3 سَاعَاتٍ)</th>
+        <th>18:00 – 20:00 (سَاعَتَانِ)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="day-header" colspan="4"><strong>اليَوْمُ الأَوَّلُ:</strong> تَشْرِيحُ وَفِيزْيُولُوجْيَا الجِهَازِ البَوْلِيِّ (1)</td></tr>
+      <tr>
+        <td data-label="اليَوْمُ">الأَوَّلُ</td>
+        <td id="task1" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-kidney"></i> تَشْرِيحُ الجِهَازِ البَوْلِيِّ</span><ul><li>Unité III: Appareil Urinaire ANATOMIE: Reins, Uretères</li><li>Chapitre V: Appareil urinaire: Le Rein, Les Voies Urinaires</li></ul><div class="task-actions"><span class="timer" id="t1"></span><div><button class="btn btn-start" onclick="startCountdown('t1', 10800, 'task1')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task1')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task1', 't1')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+        <td id="task2" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-vial"></i> فِيزْيُولُوجْيَا الكُلَى: التَّشْرِيحُ الوَظِيفِيُّ وَالتَّرْشِيحُ</span><ul><li>Chapitre VI: Physiologie Rénale: Anatomie Fonctionnelle du Rein</li><li>Chapitre VI: Physiologie Rénale: Débit Sanguin Rénal</li><li>Chapitre VI: Physiologie Rénale: Filtration Glomérulaire</li></ul><div class="task-actions"><span class="timer" id="t2"></span><div><button class="btn btn-start" onclick="startCountdown('t2', 10800, 'task2')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task2')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task2', 't2')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+        <td id="task3" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-baby"></i> عِلْمُ أَجِنَّةِ الجِهَازِ البَوْلِيِّ وَمُرَاجَعَةٌ</span><ul><li>Chapitre V: Appareil urinaire: Embryologie de l'Appareil Urinaire</li><li>مُرَاجَعَةٌ شَامِلَةٌ لِدُرُوسِ اليَوْمِ الأَوَّلِ</li><li>حَلُّ أَسْئِلَةِ الخِيَارَاتِ المُتَعَدِّدَةِ (QCM)</li></ul><div class="task-actions"><span class="timer" id="t3"></span><div><button class="btn btn-start" onclick="startCountdown('t3', 7200, 'task3')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task3')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task3', 't3')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+      </tr>
+      <tr><td class="day-header" colspan="4"><strong>اليَوْمُ الثَّانِي:</strong> فِيزْيُولُوجْيَا الجِهَازِ البَوْلِيِّ (2) وَالكِيمْيَاءُ الحَيَوِيَّةُ</td></tr>
+      <tr>
+        <td data-label="اليَوْمُ">الثَّانِي</td>
+        <td id="task4" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-water"></i> فِيزْيُولُوجْيَا الكُلَى: إِعَادَةُ الاِمْتِصَاصِ وَالإِفْرَازِ</span><ul><li>Chapitre VI: Physiologie Rénale: Réabsorption tubulaire (Métabolisme du sodium)</li><li>Chapitre VI: Physiologie Rénale: Réabsorption tubulaire (Autres Molécules)</li><li>Chapitre VI: Physiologie Rénale: Excrétion tubulaire</li></ul><div class="task-actions"><span class="timer" id="t4"></span><div><button class="btn btn-start" onclick="startCountdown('t4', 10800, 'task4')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task4')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task4', 't4')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+        <td id="task5" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-balance-scale"></i> فِيزْيُولُوجْيَا الكُلَى: التَّرْكِيزُ وَالتَّوَازُنُ الحِمْضِيُّ القَاعِدِيُّ</span><ul><li>Chapitre VI: Physiologie Rénale: Pouvoir de Concentration - Dilution des Urines</li><li>Chapitre VI: Physiologie Rénale: Rôle du Rein dans l'Equilibre Acido-basique</li></ul><div class="task-actions"><span class="timer" id="t5"></span><div><button class="btn btn-start" onclick="startCountdown('t5', 10800, 'task5')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task5')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task5', 't5')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+        <td id="task6" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-flask"></i> الكِيمْيَاءُ الحَيَوِيَّةُ لِلجِهَازِ البَوْلِيِّ</span><ul><li>Biochimie: Exploration Equilibre Acido-Basique</li><li>Biochimie: Exploration Biochimique du Rein</li></ul><div class="task-actions"><span class="timer" id="t6"></span><div><button class="btn btn-start" onclick="startCountdown('t6', 7200, 'task6')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task6', 't6')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+      </tr>
+      <tr><td class="day-header" colspan="4"><strong>اليَوْمُ الثَّالِثُ:</strong> الغُدَدُ الصَّمَّاءُ (1)</td></tr>
+      <tr>
+        <td data-label="اليَوْمُ">الثَّالِثُ</td>
+        <td id="task7" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-brain"></i> المُعَقَّدُ الوِطَائِيُّ-النُّخَامِيُّ</span><ul><li>Chapitre VI: Glandes Endocrines: Le Complexe Hypothalamo-Hypophysaire</li></ul><div class="task-actions"><span class="timer" id="t7"></span><div><button class="btn btn-start" onclick="startCountdown('t7', 10800, 'task7')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task7')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task7', 't7')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+        <td id="task8" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-lungs"></i> الغُدَّةُ الدَّرَقِيَّةُ وَالغُدَدُ جَارَاتُ الدَّرَقِيَّةِ</span><ul><li>Chapitre VI: Glandes Endocrines: La Thyroide</li><li>Chapitre VI: Glandes Endocrines: Les Parathyroides</li></ul><div class="task-actions"><span class="timer" id="t8"></span><div><button class="btn btn-start" onclick="startCountdown('t8', 10800, 'task8')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task8')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task8', 't8')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+        <td id="task9" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-mitten"></i> الغُدَّةُ الكَظْرِيَّةُ</span><ul><li>Chapitre VI: Glandes Endocrines: La Surrénale</li></ul><div class="task-actions"><span class="timer" id="t9"></span><div><button class="btn btn-start" onclick="startCountdown('t9', 7200, 'task9')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task9')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task9', 't9')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+      </tr>
+      <tr><td class="day-header" colspan="4"><strong>اليَوْمُ الرَّابِعُ:</strong> الغُدَدُ الصَّمَّاءُ (2) وَمُرَاجَعَةٌ شَامِلَةٌ</td></tr>
+      <tr>
+        <td data-label="اليَوْمُ">الرَّابِعُ</td>
+        <td id="task10" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-apple-alt"></i> البَنْكِرْيَاسُ الصَّمَّاوِيُّ وَالغُدَّةُ الصَّنَوْبَرِيَّةُ</span><ul><li>Chapitre VI: Glandes Endocrines: Pancreas Endocrine</li><li>Chapitre VI: Glandes Endocrines: Glande Pinéale</li></ul><div class="task-actions"><span class="timer" id="t10"></span><div><button class="btn btn-start" onclick="startCountdown('t10', 10800, 'task10')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task10')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task10', 't10')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+        <td id="task11" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-redo-alt"></i> مُرَاجَعَةٌ شَامِلَةٌ لِلْوَحْدَةِ</span><ul><li>مُرَاجَعَةٌ سَرِيعَةٌ لِأَهَمِّ النِّقَاطِ فِي الجِهَازِ البَوْلِيِّ وَالغُدَدِ الصَّمَّاءِ</li></ul><div class="task-actions"><span class="timer" id="t11"></span><div><button class="btn btn-start" onclick="startCountdown('t11', 10800, 'task11')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task11')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task11', 't11')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+        <td id="task12" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-award"></i> حَلٌّ مُكَثَّفٌ لِأَسْئِلَةِ الخِيَارَاتِ المُتَعَدِّدَةِ</span><ul><li>حَلُّ أَكْبَرِ عَدَدٍ مُمْكِنٍ مِنْ أَسْئِلَةِ (QCMs) عَلَى الوَحْدَةِ كَامِلَةً</li></ul><div class="task-actions"><span class="timer" id="t12"></span><div><button class="btn btn-start" onclick="startCountdown('t12', 7200, 'task12')"><i class="fas fa-play"></i> بَدْء</button><button class="btn btn-complete" onclick="completeTask('task12')"><i class="fas fa-check"></i> إِكْمَال</button><button class="btn btn-reset" onclick="resetTask('task12', 't12')"><i class="fas fa-redo"></i> إِعَادَة</button></div></div></td>
+      </tr>
+    </tbody>
+  </table>
+  
+</div>
+
+<script>
+// Global variables
+const totalTasks = 12;
+let completedTasks = 0;
+let activeTimers = {};
+let endOfDayTimerInterval;
+
+// Define unique keys for this specific schedule
+const LS_KEYS = {
+  STATUS: 'tasksStatus_urinaryEndocrine_4days',
+  TIMERS: 'activeTimers_urinaryEndocrine_4days'
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadState();
+  updateProgress();
+  updateTotalStudyTimeDisplay();
+  displayDates();
+  startEndOfDayCountdown();
+});
+
+function displayDates() {
+  const gregorianDateDisplay = document.getElementById('gregorianDateDisplay');
+  const hijriDateDisplay = document.getElementById('hijriDateDisplay');
+  
+  const today = new Date();
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  gregorianDateDisplay.innerHTML = `<i class="fas fa-calendar-alt"></i> ${today.toLocaleDateString('ar-DZ', options)}`;
+
+  try {
+    const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    }).format(today);
+    hijriDateDisplay.innerHTML = `<i class="fas fa-moon"></i> ${hijriDate}`;
+  } catch (e) {
+    hijriDateDisplay.innerHTML = `<i class="fas fa-moon"></i> تعذر عرض التاريخ الهجري`;
+  }
+}
+
+function startEndOfDayCountdown() {
+  const countdownElement = document.getElementById('countdownToEndOfDay');
+  if (endOfDayTimerInterval) clearInterval(endOfDayTimerInterval);
+
+  const updateCountdown = () => {
+    const now = new Date();
+    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+    const timeLeft = endOfDay.getTime() - now.getTime();
+
+    if (timeLeft < 0) {
+      countdownElement.innerHTML = `<i class="fas fa-hourglass-end"></i> انتهى اليوم!`;
+      clearInterval(endOfDayTimerInterval);
+      return;
+    }
+
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    countdownElement.innerHTML = `<i class="fas fa-hourglass-end"></i> الوقت المتبقي لنهاية اليوم: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+
+  updateCountdown();
+  endOfDayTimerInterval = setInterval(updateCountdown, 1000);
+}
+
+function updateProgress() {
+  const progressBar = document.getElementById('progressBar');
+  const completedTasksSpan = document.getElementById('completedTasks');
+  
+  completedTasks = document.querySelectorAll('td.completed').length;
+  const percentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+  
+  progressBar.style.width = percentage + '%';
+  completedTasksSpan.textContent = completedTasks;
+  document.getElementById('totalTasks').textContent = totalTasks;
+}
+
+function updateTotalStudyTimeDisplay() {
+  const totalStudyTime = (3 * 2 * 4) + (2 * 1 * 4); // 32 hours
+  document.getElementById('totalStudyTimeDisplay').textContent = `${Math.round(totalStudyTime)} سَاعَة`;
+}
+
+function startCountdown(timerId, duration, taskId) {
+  let timerElement = document.getElementById(timerId);
+  if (activeTimers[timerId] && activeTimers[timerId].interval) {
+    clearInterval(activeTimers[timerId].interval);
+  }
+
+  const startTime = Date.now();
+  const endTime = startTime + duration * 1000;
+
+  activeTimers[timerId] = {
+    interval: null,
+    endTime: endTime,
+    taskId: taskId
+  };
+
+  const updateTimer = () => {
+    const now = Date.now();
+    const remainingSeconds = Math.max(0, Math.floor((endTime - now) / 1000));
+
+    if (remainingSeconds <= 0) {
+      timerElement.textContent = "انْتَهَى الوَقْتُ!";
+      clearInterval(activeTimers[timerId].interval);
+      delete activeTimers[timerId];
+      completeTask(taskId);
+      saveState();
+      return;
+    }
+
+    const hours = Math.floor(remainingSeconds / 3600);
+    const minutes = Math.floor((remainingSeconds % 3600) / 60);
+    const seconds = remainingSeconds % 60;
+
+    timerElement.textContent = `الوقت المتبقي: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    saveState();
+  };
+
+  activeTimers[timerId].interval = setInterval(updateTimer, 1000);
+  updateTimer();
+}
+
+function completeTask(taskId) {
+  const taskElement = document.getElementById(taskId);
+  if (!taskElement.classList.contains('completed')) {
+    taskElement.classList.add('completed');
+    updateProgress();
+    for (const timerId in activeTimers) {
+      if (activeTimers[timerId].taskId === taskId) {
+        clearInterval(activeTimers[timerId].interval);
+        document.getElementById(timerId).textContent = "مُكْتَمِلَة!";
+        delete activeTimers[timerId];
+        break;
+      }
+    }
+    saveState();
+  }
+}
+
+function resetTask(taskId, timerId) {
+  const taskElement = document.getElementById(taskId);
+  taskElement.classList.remove('completed');
+  updateProgress();
+  
+  if (activeTimers[timerId] && activeTimers[timerId].interval) {
+    clearInterval(activeTimers[timerId].interval);
+    delete activeTimers[timerId];
+  }
+  document.getElementById(timerId).textContent = "";
+  saveState();
+}
+
+function saveState() {
+  const tasksStatus = {};
+  document.querySelectorAll('td[id^="task"]').forEach(taskElement => {
+    tasksStatus[taskElement.id] = taskElement.classList.contains('completed');
+  });
+  localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(tasksStatus));
+
+  const timersToSave = {};
+  for (const timerId in activeTimers) {
+    if (activeTimers[timerId].interval) { 
+      timersToSave[timerId] = {
+        endTime: activeTimers[timerId].endTime,
+        taskId: activeTimers[timerId].taskId
+      };
+    }
+  }
+  localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersToSave));
+}
+
+function loadState() {
+  const savedTasksStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS));
+  if (savedTasksStatus) {
+    for (const taskId in savedTasksStatus) {
+      const taskElement = document.getElementById(taskId);
+      if (taskElement && savedTasksStatus[taskId]) {
+        taskElement.classList.add('completed');
+        const timerId = `t${taskId.replace('task', '')}`;
+        const timerElement = document.getElementById(timerId);
+        if (timerElement) timerElement.textContent = "مُكْتَمِلَة!";
+      }
+    }
+  }
+
+  const savedTimers = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS));
+  if (savedTimers) {
+    activeTimers = {};
+    for (const timerId in savedTimers) {
+      const savedTimer = savedTimers[timerId];
+      const remainingSeconds = Math.max(0, Math.floor((savedTimer.endTime - Date.now()) / 1000));
+      const taskElement = document.getElementById(savedTimer.taskId);
+
+      if (taskElement && !taskElement.classList.contains('completed')) {
+        if (remainingSeconds > 0) {
+          startCountdown(timerId, remainingSeconds, savedTimer.taskId);
+        } else {
+          completeTask(savedTimer.taskId);
+        }
+      } else if (taskElement && taskElement.classList.contains('completed')) {
+        const timerElement = document.getElementById(timerId);
+        if (timerElement) timerElement.textContent = "مُكْتَمِلَة!";
+      }
+    }
+  }
+}
+</script>
+
+</body>
+</html>
