@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>جدول مراجعة محسن - الجهاز البولي والغدد الصماء</title>
+  <title>Bilingual Review Schedule - Urinary & Endocrine Systems</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-color: #2980b9; /* A blue for urinary theme */
-      --secondary-color: #34495e;
-      --accent-color: #8e44ad; /* A purple for endocrine theme */
+      --primary-color: #2980b9; /* Blue for urinary theme */
+      --secondary-color: #34495e; /* Dark blue-gray */
+      --accent-color: #8e44ad; /* Purple for endocrine theme */
       --danger-color: #e74c3c;
-      --light-color: #ecf0f1;
+      --light-color: #f4f7f9;
       --dark-color: #333;
       --white: #ffffff;
       --success-color: #27ae60;
-      --border-color: #bdc3c7;
+      --border-color: #dee2e6;
+      --english-text-color: #566573;
     }
     
     *, *::before, *::after {
@@ -61,6 +62,16 @@
       background: linear-gradient(to right, var(--primary-color), var(--accent-color));
       border-radius: 3px;
     }
+    
+    .bilingual-title .english-subtitle {
+        display: block;
+        font-size: 0.7em;
+        font-weight: 500;
+        color: var(--secondary-color);
+        direction: ltr;
+        margin-top: 5px;
+        font-family: 'Roboto', sans-serif;
+    }
 
     .page-info {
       background-color: var(--white);
@@ -78,10 +89,6 @@
       color: var(--secondary-color);
     }
     .page-info div:last-child { margin-bottom: 0; }
-    .page-info .countdown, .page-info .date-display {
-      font-weight: bold;
-      color: var(--primary-color);
-    }
     
     .progress-container {
       background-color: #e0e0e0;
@@ -113,7 +120,7 @@
     
     th, td {
       border: 1px solid var(--border-color);
-      padding: 12px 15px;
+      padding: 15px 20px;
       text-align: right;
       vertical-align: top;
       transition: background-color 0.3s ease;
@@ -123,15 +130,19 @@
       background-color: var(--primary-color);
       color: var(--white);
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
       position: sticky;
       top: 0;
       z-index: 10;
     }
+
+    th .english-text {
+        font-size: 0.85em;
+        font-weight: 400;
+        opacity: 0.9;
+    }
     
     tr:nth-child(even) td { background-color: #f8f9fa; }
-    tr:hover td { background-color: #ebf5fa; } /* Light blue hover */
+    tr:hover td { background-color: #ebf5fa; }
     td { background-color: var(--white); }
     
     td.timer {
@@ -140,16 +151,18 @@
       margin-top: 10px;
       display: block;
       font-size: 0.9em;
+      direction: ltr;
+      text-align: center;
     }
     
     .task-title {
       font-weight: 700;
       color: var(--secondary-color);
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-size: 1.1em;
     }
-    .task-title i { margin-left: 8px; color: var(--accent-color); }
+    .task-title i { margin-left: 10px; color: var(--accent-color); }
     
     ul {
       padding-right: 20px;
@@ -158,10 +171,9 @@
     }
     
     ul li {
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       position: relative;
-      padding-right: 25px;
-      font-size: 0.95em;
+      padding-right: 28px;
     }
     
     ul li::before {
@@ -170,7 +182,24 @@
       right: 0;
       top: 0;
       color: var(--primary-color);
-      font-size: 1.1em;
+      font-size: 1.2em;
+    }
+
+    .arabic-text {
+        display: block;
+        font-size: 0.95em;
+        line-height: 1.6;
+    }
+
+    .english-text {
+        display: block;
+        font-size: 0.85em;
+        color: var(--english-text-color);
+        direction: ltr;
+        text-align: right; /* Aligns the LTR text block to the right */
+        margin-top: 4px;
+        font-family: 'Roboto', sans-serif;
+        font-style: italic;
     }
     
     .task-actions {
@@ -196,15 +225,13 @@
       gap: 5px;
       min-width: 80px;
       font-weight: 500;
+      font-family: 'Tajawal', sans-serif;
     }
     
     .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     .btn-start { background-color: var(--accent-color); }
-    .btn-start:hover { background-color: #7d3c98; }
     .btn-complete { background-color: var(--primary-color); }
-    .btn-complete:hover { background-color: #2471a3; }
     .btn-reset { background-color: var(--secondary-color); }
-    .btn-reset:hover { background-color: #1a252f; }
     
     .completed {
       position: relative;
@@ -212,7 +239,7 @@
       text-decoration: line-through;
       color: #777;
     }
-    .completed .task-title, .completed ul li { color: #555; }
+    .completed .task-title, .completed ul li, .completed .english-text { color: #6c757d; }
     
     .completed::after {
       content: "✓ مكتمل";
@@ -246,7 +273,7 @@
     .stat-card {
       background-color: var(--white);
       border-radius: 10px;
-      padding: 15px;
+      padding: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       flex: 1;
       min-width: 180px;
@@ -256,20 +283,20 @@
     .stat-card h3 {
       margin: 0 0 10px 0;
       color: var(--primary-color);
-      font-size: 1em;
+      font-size: 1.1em;
     }
     .stat-value {
       font-size: 1.8em;
       font-weight: 700;
       color: var(--secondary-color);
+      direction: ltr;
     }
-    
+
     /* === RESPONSIVE DESIGN FOR MOBILE === */
     @media (max-width: 768px) {
       body { padding: 10px; }
       h1 { font-size: 1.8em; }
-      h1::after { width: 120px; }
-
+      
       table, thead, tbody, th, td, tr { 
         display: block; 
       }
@@ -290,8 +317,7 @@
         border: none;
         border-bottom: 1px solid #eee; 
         position: relative;
-        padding: 15px;
-        text-align: right;
+        padding: 20px 15px;
       }
       td:last-child { border-bottom: 0; }
       
@@ -300,7 +326,7 @@
         display: block;
         font-weight: bold;
         color: var(--primary-color);
-        font-size: 0.9em;
+        font-size: 1em;
         margin-bottom: 10px;
       }
       
@@ -313,110 +339,17 @@
         border-radius: 12px 12px 0 0;
       }
       .day-header::before { content: "" !important; }
-
-      .task-actions { 
-        flex-direction: column; 
-        align-items: stretch;
-      }
-      .task-actions > div {
-          display: flex;
-          gap: 8px;
-          width: 100%;
-      }
-      .btn { flex: 1; padding: 10px; }
-      td.timer { text-align: center; margin-bottom: 10px; }
-
-      .completed::after { top: 10px; left: 10px; }
-      .stats { flex-direction: column; gap: 10px; }
+      .day-header .english-text { color: var(--light-color); opacity: 0.9; }
     }
-
-    @media (max-width: 480px) {
-      h1 { font-size: 1.5em; }
-      h1::after { width: 100px; }
-      body { padding: 5px; }
-      .container { padding: 0 5px; }
-      .task-actions > div { flex-direction: column; }
-    }
-
-      </style>
-<style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    .completed {
-  background-color: #e8f5e9;
-  position: relative;
-}
-
-.completed::after {
-  content: "✓";
-  color: #2e7d32;
-  font-weight: bold;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  font-size: 1.2em;
-}
-
-.completed .task-title {
-  text-decoration: line-through;
-  opacity: 0.7;
-}
-
-.completed .btn-complete {
-  display: none;
-}
-
-.progress-container {
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 4px;
-  margin: 20px 0;
-}
-
-.progress-bar {
-  height: 20px;
-  background-color: #4caf50;
-  border-radius: 4px;
-  width: 0%;
-  transition: width 0.3s ease;
-}
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1><i class="fa-solid fa-flask"></i> جدول مراجعة - 10 أيام لوحدة الجهاز البولي والغدد الصماء</h1>
+  <h1 class="bilingual-title">
+    <span class="arabic-title"><i class="fa-solid fa-flask"></i> جدول مراجعة - 10 أيام لوحدة الجهاز البولي والغدد الصماء</span>
+    <span class="english-subtitle">Review Schedule - 10 Days for the Urinary & Endocrine Systems Unit</span>
+  </h1>
 
   <div class="page-info">
     <div id="gregorianDateDisplay"><i class="fas fa-calendar-alt"></i> ...</div>
@@ -430,105 +363,884 @@
   
   <div class="stats">
     <div class="stat-card">
-      <h3><i class="fas fa-tasks"></i> المهام الكلية</h3>
+      <h3><i class="fas fa-tasks"></i> المهام الكلية <br><span class="english-text" style="text-align:center; direction:ltr; font-style:normal;">Total Tasks</span></h3>
       <div class="stat-value" id="totalTasks">30</div>
     </div>
     <div class="stat-card">
-      <h3><i class="fas fa-check-circle"></i> المكتملة</h3>
+      <h3><i class="fas fa-check-circle"></i> المكتملة <br><span class="english-text" style="text-align:center; direction:ltr; font-style:normal;">Completed</span></h3>
       <div class="stat-value" id="completedTasks">0</div>
     </div>
     <div class="stat-card">
-      <h3><i class="fas fa-hourglass-half"></i> الوقت الإجمالي</h3>
-      <div class="stat-value" id="totalStudyTimeDisplay">80 ساعة</div>
+      <h3><i class="fas fa-hourglass-half"></i> الوقت المتبقي <br><span class="english-text" style="text-align:center; direction:ltr; font-style:normal;">Remaining Time</span></h3>
+      <div class="stat-value" id="totalStudyTimeDisplay">80h</div>
     </div>
   </div>
 
-  <table>
+ <table>
     <thead>
-      <tr>
-        <th>اليوم (Day)</th>
-        <th>08:00 – 11:00 (3 ساعات)</th>
-        <th>13:00 – 16:00 (3 ساعات)</th>
-        <th>18:00 – 20:00 (ساعتان)</th>
-      </tr>
+        <tr>
+            <th>
+                <span class="arabic-text">اليوم</span><br>
+                <span class="english-text">Day</span><br>
+                <span class="french-text">Jour</span>
+            </th>
+            <th>
+                <span class="arabic-text">08:00 – 11:00 (3 ساعات)</span><br>
+                <span class="english-text">08:00 – 11:00 (3 hours)</span><br>
+                <span class="french-text">08:00 – 11:00 (3 heures)</span>
+            </th>
+            <th>
+                <span class="arabic-text">13:00 – 16:00 (3 ساعات)</span><br>
+                <span class="english-text">13:00 – 16:00 (3 hours)</span><br>
+                <span class="french-text">13:00 – 16:00 (3 heures)</span>
+            </th>
+            <th>
+                <span class="arabic-text">18:00 – 20:00 (ساعتان)</span><br>
+                <span class="english-text">18:00 – 20:00 (2 hours)</span><br>
+                <span class="french-text">18:00 – 20:00 (2 heures)</span>
+            </th>
+        </tr>
     </thead>
     <tbody>
-      <tr><td class="day-header" colspan="4">اليوم الأول: تشريح الجهاز البولي (I)</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم الأول</td>
-        <td id="task1" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-kidney"></i> تشريح الكلى</span><ul><li>Unité III: Appareil Urinaire (الوحدة 3: الجهاز البولي) / ANATOMIE (التشريح): Reins (الكلى) (Aspect externe (المظهر الخارجي), interne (الداخلي), vascularisation (التوعية الدموية))</li></ul><div class="task-actions"><span class="timer" id="t1"></span><div><button class="btn btn-start" onclick="startCountdown('t1', 10800, 'task1')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task1')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task1', 't1')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task2" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-road"></i> تشريح المسالك البولية</span><ul><li>Chapitre V: Appareil urinaire (الفصل 5: الجهاز البولي): Les Voies Urinaires (المسالك البولية) (Uretères (الحالبان), Vessie (المثانة), Urètre (الإحليل))</li></ul><div class="task-actions"><span class="timer" id="t2"></span><div><button class="btn btn-start" onclick="startCountdown('t2', 10800, 'task2')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task2')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task2', 't2')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task3" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-baby"></i> جنين الجهاز البولي</span><ul><li>Chapitre V: Appareil urinaire (الفصل 5: الجهاز البولي): Embryologie de l'Appareil Urinaire (علم أجنة الجهاز البولي)</li><li>مراجعة تشريح اليوم وحل QCMs (أسئلة الاختيار من متعدد)</li></ul><div class="task-actions"><span class="timer" id="t3"></span><div><button class="btn btn-start" onclick="startCountdown('t3', 7200, 'task3')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task3')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task3', 't3')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
-      <tr><td class="day-header" colspan="4">اليوم الثاني: نسيج وفيزيولوجيا الجهاز البولي (I)</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم الثاني</td>
-        <td id="task4" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-microscope"></i> نسيج الكلية (Histologie)</span><ul><li>Histologie (علم الأنسجة): Le Néphron (النفرون) (Glomérule (الكبيبة), Tube contourné proximal (الأنبوب الملتوي القريب), Anse de Henlé (عروة هنلي), Tube contourné distal (الأنبوب الملتوي البعيد))</li><li>Histologie (علم الأنسجة): Tissu interstitiel (النسيج الخلالي) et Appareil juxta-glomérulaire (الجهاز المجاور للكبيبات)</li></ul><div class="task-actions"><span class="timer" id="t4"></span><div><button class="btn btn-start" onclick="startCountdown('t4', 10800, 'task4')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task4')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task4', 't4')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task5" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-vial"></i> التشريح الوظيفي والترشيح</span><ul><li>Chapitre VI: Physiologie Rénale (الفصل 6: فيزيولوجيا الكلى): Anatomie Fonctionnelle du Rein (التشريح الوظيفي للكلية) & Débit Sanguin Rénal (التدفق الدموي الكلوي)</li><li>Chapitre VI: Physiologie Rénale (الفصل 6: فيزيولوجيا الكلى): Filtration Glomérulaire (الترشيح الكبيبي)</li></ul><div class="task-actions"><span class="timer" id="t5"></span><div><button class="btn btn-start" onclick="startCountdown('t5', 10800, 'task5')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task5')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task5', 't5')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task6" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-check-double"></i> مراجعة وحل أسئلة</span><ul><li>مراجعة نسيج وفيزيولوجيا الترشيح</li><li>حل أسئلة QCMs على مواضيع اليومين الأول والثاني</li></ul><div class="task-actions"><span class="timer" id="t6"></span><div><button class="btn btn-start" onclick="startCountdown('t6', 7200, 'task6')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task6')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task6', 't6')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
-      <tr><td class="day-header" colspan="4">اليوم الثالث: فيزيولوجيا الجهاز البولي (II)</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم الثالث</td>
-        <td id="task7" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-exchange-alt"></i> إعادة الامتصاص الأنبوبي (I)</span><ul><li>Chapitre VI: Physiologie Rénale (الفصل 6: فيزيولوجيا الكلى): Réabsorption tubulaire (إعادة الامتصاص الأنبوبي) (Introduction (مقدمة), Transport trans-épithélial (النقل عبر الظهاري))</li><li>Réabsorption du Sodium, Chlore et Eau (إعادة امتصاص الصوديوم، الكلور والماء)</li></ul><div class="task-actions"><span class="timer" id="t7"></span><div><button class="btn btn-start" onclick="startCountdown('t7', 10800, 'task7')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task7')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task7', 't7')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task8" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-dna"></i> إعادة الامتصاص الأنبوبي (II)</span><ul><li>Chapitre VI: Physiologie Rénale (الفصل 6: فيزيولوجيا الكلى): Réabsorption tubulaire (إعادة الامتصاص الأنبوبي) (Glucose (الجلوكوز), Acides aminés (الأحماض الأمينية), Urée (اليوريا), autres solutés (المذابات الأخرى))</li></ul><div class="task-actions"><span class="timer" id="t8"></span><div><button class="btn btn-start" onclick="startCountdown('t8', 10800, 'task8')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task8')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task8', 't8')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task9" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-arrow-up"></i> الإفراز الأنبوبي</span><ul><li>Chapitre VI: Physiologie Rénale (الفصل 6: فيزيولوجيا الكلى): Excrétion tubulaire (الإفراز الأنبوبي) (Potassium (البوتاسيوم), Hydrogène (الهيدروجين), substances organiques (المواد العضوية))</li></ul><div class="task-actions"><span class="timer" id="t9"></span><div><button class="btn btn-start" onclick="startCountdown('t9', 7200, 'task9')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task9')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task9', 't9')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
-        <tr><td class="day-header" colspan="4">اليوم الرابع: فيزيولوجيا الجهاز البولي (III) والكيمياء الحيوية</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم الرابع</td>
-        <td id="task10" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-water"></i> تركيز وتخفيف البول</span><ul><li>Chapitre VI: Physiologie Rénale (الفصل 6: فيزيولوجيا الكلى): Pouvoir de Concentration - Dilution des Urines (قدرة تركيز وتخفيف البول) (Mécanisme à contre-courant (آلية التيار المعاكس))</li></ul><div class="task-actions"><span class="timer" id="t10"></span><div><button class="btn btn-start" onclick="startCountdown('t10', 10800, 'task10')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task10')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task10', 't10')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task11" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-balance-scale-right"></i> التوازن الحمضي القاعدي</span><ul><li>Chapitre VI: Physiologie Rénale (الفصل 6: فيزيولوجيا الكلى): Rôle du Rein dans l'Equilibre Acido-basique (دور الكلية في التوازن الحمضي القاعدي)</li></ul><div class="task-actions"><span class="timer" id="t11"></span><div><button class="btn btn-start" onclick="startCountdown('t11', 10800, 'task11')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task11')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task11', 't11')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task12" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-flask-vial"></i> الكيمياء الحيوية الكلوية</span><ul><li>Biochimie (الكيمياء الحيوية): Exploration Biochimique du Rein (الاستكشاف الكيميائي الحيوي للكلية)</li><li>Biochimie (الكيمياء الحيوية): Exploration Equilibre Acido-Basique (استكشاف التوازن الحمضي القاعدي)</li></ul><div class="task-actions"><span class="timer" id="t12"></span><div><button class="btn btn-start" onclick="startCountdown('t12', 7200, 'task12')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task12')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task12', 't12')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
-      <tr><td class="day-header" colspan="4">اليوم الخامس: مراجعة الجهاز البولي وبداية الغدد الصماء</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم الخامس</td>
-        <td id="task13" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-tasks"></i> مراجعة شاملة للجهاز البولي</span><ul><li>مراجعة سريعة لأهم نقاط التشريح، النسيج والفيزيولوجيا</li><li>التركيز على الآليات المعقدة (الترشيح، التوازن الحمضي القاعدي)</li></ul><div class="task-actions"><span class="timer" id="t13"></span><div><button class="btn btn-start" onclick="startCountdown('t13', 10800, 'task13')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task13')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task13', 't13')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task14" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-question-circle"></i> حل أسئلة مكثفة (الجهاز البولي)</span><ul><li>حل أكبر عدد ممكن من أسئلة QCMs و Cas cliniques (حالات سريرية)</li></ul><div class="task-actions"><span class="timer" id="t14"></span><div><button class="btn btn-start" onclick="startCountdown('t14', 10800, 'task14')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task14')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task14', 't14')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task15" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-lightbulb"></i> مقدمة للغدد الصماء</span><ul><li>Chapitre VI: Glandes Endocrines (الفصل 6: الغدد الصماء): Introduction (مقدمة), Classification des hormones (تصنيف الهرمونات)</li></ul><div class="task-actions"><span class="timer" id="t15"></span><div><button class="btn btn-start" onclick="startCountdown('t15', 7200, 'task15')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task15')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task15', 't15')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
-      <tr><td class="day-header" colspan="4">اليوم السادس: المعقد تحت المهاد-النخامي</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم السادس</td>
-        <td id="task16" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-brain"></i> تشريح ووظيفة المحور</span><ul><li>Chapitre VI: Glandes Endocrines (الفصل 6: الغدد الصماء): Le Complexe Hypothalamo-Hypophysaire (المعقد الوطائي-النخامي) (Anatomie (التشريح), Histologie (علم الأنسجة))</li></ul><div class="task-actions"><span class="timer" id="t16"></span><div><button class="btn btn-start" onclick="startCountdown('t16', 10800, 'task16')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task16')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task16', 't16')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task17" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-sitemap"></i> هرمونات الغدة النخامية الأمامية</span><ul><li>Physiologie du lobe antérieur de l'hypophyse (فيزيولوجيا الفص الأمامي للغدة النخامية) (GH, TSH, ACTH, FSH, LH, Prolactine)</li></ul><div class="task-actions"><span class="timer" id="t17"></span><div><button class="btn btn-start" onclick="startCountdown('t17', 10800, 'task17')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task17')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task17', 't17')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task18" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-project-diagram"></i> هرمونات الغدة النخامية الخلفية</span><ul><li>Physiologie du lobe postérieur de l'hypophyse (فيزيولوجيا الفص الخلفي للغدة النخامية) (ADH, Ocytocine)</li><li>مراجعة المحور وحل QCMs</li></ul><div class="task-actions"><span class="timer" id="t18"></span><div><button class="btn btn-start" onclick="startCountdown('t18', 7200, 'task18')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task18')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task18', 't18')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
-      <tr><td class="day-header" colspan="4">اليوم السابع: الغدة الدرقية وجارات الدرقية</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم السابع</td>
-        <td id="task19" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-lungs"></i> الغدة الدرقية (Thyroïde)</span><ul><li>Chapitre VI: Glandes Endocrines (الفصل 6: الغدد الصماء): La Thyroide (الغدة الدرقية) (Anatomie (التشريح), Histologie (علم الأنسجة))</li><li>Synthèse et sécrétion des hormones thyroïdiennes (تخليق وإفراز هرمونات الغدة الدرقية)</li></ul><div class="task-actions"><span class="timer" id="t19"></span><div><button class="btn btn-start" onclick="startCountdown('t19', 10800, 'task19')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task19')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task19', 't19')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task20" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-cogs"></i> وظائف هرمونات الدرقية</span><ul><li>Actions physiologiques et régulation des hormones thyroïdiennes (التأثيرات الفيزيولوجية وتنظيم هرمونات الغدة الدرقية)</li></ul><div class="task-actions"><span class="timer" id="t20"></span><div><button class="btn btn-start" onclick="startCountdown('t20', 10800, 'task20')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task20')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task20', 't20')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task21" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-bone"></i> الغدد جارات الدرقية (Parathyroïdes)</span><ul><li>Chapitre VI: Glandes Endocrines (الفصل 6: الغدد الصماء): Les Parathyroides (الغدد جارات الدرقية)</li><li>Régulation du métabolisme du calcium et du phosphate (تنظيم استقلاب الكالسيوم والفوسفات) (PTH, Calcitonine, Vitamine D)</li></ul><div class="task-actions"><span class="timer" id="t21"></span><div><button class="btn btn-start" onclick="startCountdown('t21', 7200, 'task21')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task21')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task21', 't21')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
-      <tr><td class="day-header" colspan="4">اليوم الثامن: الغدة الكظرية والبنكرياس الصماوي</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم الثامن</td>
-        <td id="task22" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-mitten"></i> قشرة الغدة الكظرية (Corticosurrénale)</span><ul><li>Chapitre VI: Glandes Endocrines (الفصل 6: الغدد الصماء): La Surrénale (Cortex) (الغدة الكظرية (القشرة))</li><li>Glucocorticoïdes (الكورتيكوستيرويدات السكرية) (Cortisol), Minéralocorticoïdes (الكورتيكوستيرويدات المعدنية) (Aldostérone)</li></ul><div class="task-actions"><span class="timer" id="t22"></span><div><button class="btn btn-start" onclick="startCountdown('t22', 10800, 'task22')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task22')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task22', 't22')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task23" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-bolt"></i> لب الغدة الكظرية (Médullosurrénale)</span><ul><li>Chapitre VI: Glandes Endocrines (الفصل 6: الغدد الصماء): La Surrénale (Médulla) (الغدة الكظرية (اللب))</li><li>Catécholamines (الكاتيكولامينات) (Adrénaline (الأدرينالين), Noradrénaline (النورأدرينالين))</li></ul><div class="task-actions"><span class="timer" id="t23"></span><div><button class="btn btn-start" onclick="startCountdown('t23', 10800, 'task23')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task23')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task23', 't23')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task24" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-apple-alt"></i> البنكرياس الصماوي</span><ul><li>Chapitre VI: Glandes Endocrines (الفصل 6: الغدد الصماء): Pancreas Endocrine (البنكرياس الصماوي) (Insuline (الأنسولين), Glucagon (الجلوكاجون))</li></ul><div class="task-actions"><span class="timer" id="t24"></span><div><button class="btn btn-start" onclick="startCountdown('t24', 7200, 'task24')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task24')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task24', 't24')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
-      <tr><td class="day-header" colspan="4">اليوم التاسع: مراجعة الغدد الصماء والتكامل</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم التاسع</td>
-        <td id="task25" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-moon"></i> غدد أخرى ومراجعة (I)</span><ul><li>Chapitre VI: Glandes Endocrines (الفصل 6: الغدد الصماء): Glande Pinéale (الغدة الصنوبرية)</li><li>مراجعة محور النخامية، الدرقية، جارات الدرقية</li></ul><div class="task-actions"><span class="timer" id="t25"></span><div><button class="btn btn-start" onclick="startCountdown('t25', 10800, 'task25')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task25')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task25', 't25')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task26" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-puzzle-piece"></i> تكامل ومراجعة (II)</span><ul><li>مراجعة الغدة الكظرية والبنكرياس</li><li>التكامل بين الأنظمة الهرمونية المختلفة</li></ul><div class="task-actions"><span class="timer" id="t26"></span><div><button class="btn btn-start" onclick="startCountdown('t26', 10800, 'task26')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task26')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task26', 't26')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task27" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-question"></i> حل أسئلة (الغدد الصماء)</span><ul><li>حل أسئلة QCMs و Cas cliniques (حالات سريرية) على الغدد الصماء</li></ul><div class="task-actions"><span class="timer" id="t27"></span><div><button class="btn btn-start" onclick="startCountdown('t27', 7200, 'task27')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task27')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task27', 't27')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
-      <tr><td class="day-header" colspan="4">اليوم العاشر: المراجعة النهائية والتحضير للامتحان</td></tr>
-      <tr>
-        <td data-label="اليوم">اليوم العاشر</td>
-        <td id="task28" data-label="08:00 – 11:00"><span class="task-title"><i class="fas fa-redo-alt"></i> مراجعة شاملة للوحدة (I)</span><ul><li>مراجعة سريعة لأهم النقاط في الجهاز البولي</li><li>مراجعة سريعة لأهم النقاط في الغدد الصماء</li></ul><div class="task-actions"><span class="timer" id="t28"></span><div><button class="btn btn-start" onclick="startCountdown('t28', 10800, 'task28')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task28')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task28', 't28')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task29" data-label="13:00 – 16:00"><span class="task-title"><i class="fas fa-award"></i> حل QCMs مكثفة على الوحدة كاملة</span><ul><li>حل امتحانات سابقة وأسئلة شاملة للوحدتين</li></ul><div class="task-actions"><span class="timer" id="t29"></span><div><button class="btn btn-start" onclick="startCountdown('t29', 10800, 'task29')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task29')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task29', 't29')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-        <td id="task30" data-label="18:00 – 20:00"><span class="task-title"><i class="fas fa-bed"></i> مراجعة أخيرة وراحة</span><ul><li>مراجعة الأخطاء في الأسئلة التي تم حلها</li><li>مراجعة خفيفة للخرائط الذهنية والملخصات</li><li>الاستعداد النفسي والراحة قبل الامتحان</li></ul><div class="task-actions"><span class="timer" id="t30"></span><div><button class="btn btn-start" onclick="startCountdown('t30', 7200, 'task30')" title="بدء المؤقت"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task30')" title="إكمال المهمة"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task30', 't30')" title="إعادة ضبط المهمة"><i class="fas fa-redo"></i> إعادة</button></div></div></td>
-      </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم الأول: تشريح الجهاز البولي (I)</span><br>
+                <span class="english-text">Day 1: Anatomy of the Urinary System (I)</span><br>
+                <span class="french-text">Jour 1 : Anatomie du système urinaire (I)</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 1">
+                <span class="arabic-text">اليوم الأول</span><br>
+                <span class="english-text">Day 1</span><br>
+                <span class="french-text">Jour 1</span>
+            </td>
+            <td id="task1" data-label="08:00-11:00 | Kidney Anatomy">
+                <span class="task-title"><i class="fas fa-kidney"></i>
+                    <span class="arabic-text">تشريح الكلى</span><br>
+                    <span class="english-text">Kidney Anatomy</span><br>
+                    <span class="french-text">Anatomie du rein</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الوحدة 3: الجهاز البولي / التشريح: الكلى (المظهر الخارجي, الداخلي, التوعية الدموية)</span><br>
+                        <span class="english-text">Unit III: Urinary System / ANATOMY: Kidneys (External aspect, internal, vascularization)</span><br>
+                        <span class="french-text">Unité III : Appareil Urinaire / ANATOMIE : Reins (Aspect externe, interne, vascularisation)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t1"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t1', 10800, 'task1')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task1')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task1', 't1')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task2" data-label="13:00-16:00 | Urinary Tract Anatomy">
+                <span class="task-title"><i class="fas fa-road"></i>
+                    <span class="arabic-text">تشريح المسالك البولية</span><br>
+                    <span class="english-text">Urinary Tract Anatomy</span><br>
+                    <span class="french-text">Anatomie des voies urinaires</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 5: الجهاز البولي: المسالك البولية (الحالبان, المثانة, الإحليل)</span><br>
+                        <span class="english-text">Chapter V: Urinary System: The Urinary Tract (Ureters, Bladder, Urethra)</span><br>
+                        <span class="french-text">Chapitre V : Appareil urinaire : Les Voies Urinaires (Uretères, Vessie, Urètre)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t2"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t2', 10800, 'task2')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task2')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task2', 't2')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task3" data-label="18:00-20:00 | Embryology & Review">
+                <span class="task-title"><i class="fas fa-baby"></i>
+                    <span class="arabic-text">علم أجنة الجهاز البولي</span><br>
+                    <span class="english-text">Embryology of the Urinary System</span><br>
+                    <span class="french-text">Embryologie du système urinaire</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 5: الجهاز البولي: علم أجنة الجهاز البولي</span><br>
+                        <span class="english-text">Chapter V: Urinary System: Embryology of the Urinary System</span><br>
+                        <span class="french-text">Chapitre V : Appareil urinaire : Embryologie de l'Appareil Urinaire</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">مراجعة تشريح اليوم وحل أسئلة الاختيار من متعدد (QCMs)</span><br>
+                        <span class="english-text">Review today's anatomy and solve MCQs</span><br>
+                        <span class="french-text">Révision de l'anatomie du jour et résolution de QCM</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t3"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t3', 7200, 'task3')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task3')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task3', 't3')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم الثاني: نسيج وفيزيولوجيا الجهاز البولي (I)</span><br>
+                <span class="english-text">Day 2: Histology & Physiology of the Urinary System (I)</span><br>
+                <span class="french-text">Jour 2 : Histologie & Physiologie du système urinaire (I)</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 2">
+                <span class="arabic-text">اليوم الثاني</span><br>
+                <span class="english-text">Day 2</span><br>
+                <span class="french-text">Jour 2</span>
+            </td>
+            <td id="task4" data-label="08:00-11:00 | Kidney Histology">
+                <span class="task-title"><i class="fas fa-microscope"></i>
+                    <span class="arabic-text">نسيج الكلية</span><br>
+                    <span class="english-text">Kidney Histology</span><br>
+                    <span class="french-text">Histologie du rein</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">علم الأنسجة: النفرون (الكبيبة، الأنبوب الملتوي الداني، عروة هنلي، الأنبوب الملتوي القاصي)</span><br>
+                        <span class="english-text">Histology: The Nephron (Glomerulus, Proximal convoluted tubule, Loop of Henle, Distal convoluted tubule)</span><br>
+                        <span class="french-text">Histologie : Le Néphron (Glomérule, Tube contourné proximal, Anse de Henlé, Tube contourné distal)</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">علم الأنسجة: النسيج الخلالي والجهاز المجاور للكبيبات</span><br>
+                        <span class="english-text">Histology: Interstitial tissue and Juxtaglomerular apparatus</span><br>
+                        <span class="french-text">Histologie : Tissu interstitiel et Appareil juxta-glomérulaire</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t4"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t4', 10800, 'task4')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task4')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task4', 't4')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task5" data-label="13:00-16:00 | Functional Anatomy & Filtration">
+                <span class="task-title"><i class="fas fa-vial"></i>
+                    <span class="arabic-text">التشريح الوظيفي والترشيح</span><br>
+                    <span class="english-text">Functional Anatomy & Filtration</span><br>
+                    <span class="french-text">Anatomie fonctionnelle & Filtration</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: فيزيولوجيا الكلى: التشريح الوظيفي للكلية و تدفق الدم الكلوي</span><br>
+                        <span class="english-text">Chapter VI: Renal Physiology: Functional Anatomy of the Kidney & Renal Blood Flow</span><br>
+                        <span class="french-text">Chapitre VI : Physiologie Rénale : Anatomie Fonctionnelle du Rein & Débit Sanguin Rénal</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">الفصل 6: فيزيولوجيا الكلى: الترشيح الكبيبي</span><br>
+                        <span class="english-text">Chapter VI: Renal Physiology: Glomerular Filtration</span><br>
+                        <span class="french-text">Chapitre VI : Physiologie Rénale : Filtration Glomérulaire</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t5"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t5', 10800, 'task5')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task5')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task5', 't5')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task6" data-label="18:00-20:00 | Review & QCMs">
+                <span class="task-title"><i class="fas fa-check-double"></i>
+                    <span class="arabic-text">مراجعة وحل الأسئلة</span><br>
+                    <span class="english-text">Review & Problem Solving</span><br>
+                    <span class="french-text">Révision & Résolution de problèmes</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">مراجعة نسيج وفيزيولوجيا الترشيح</span><br>
+                        <span class="english-text">Review of histology and filtration physiology</span><br>
+                        <span class="french-text">Révision de l'histologie et de la physiologie de la filtration</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">حل أسئلة QCMs على مواضيع اليومين الأول والثاني</span><br>
+                        <span class="english-text">Solve MCQs on topics from Day 1 & 2</span><br>
+                        <span class="french-text">Résoudre les QCM sur les sujets des jours 1 & 2</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t6"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t6', 7200, 'task6')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task6', 't6')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم الثالث: فيزيولوجيا الجهاز البولي (II)</span><br>
+                <span class="english-text">Day 3: Physiology of the Urinary System (II)</span><br>
+                <span class="french-text">Jour 3 : Physiologie du système urinaire (II)</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 3">
+                <span class="arabic-text">اليوم الثالث</span><br>
+                <span class="english-text">Day 3</span><br>
+                <span class="french-text">Jour 3</span>
+            </td>
+            <td id="task7" data-label="08:00-11:00 | Tubular Reabsorption (I)">
+                <span class="task-title"><i class="fas fa-exchange-alt"></i>
+                    <span class="arabic-text">إعادة الامتصاص الأنبوبي (I)</span><br>
+                    <span class="english-text">Tubular Reabsorption (I)</span><br>
+                    <span class="french-text">Réabsorption tubulaire (I)</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: فيزيولوجيا الكلى: إعادة الامتصاص الأنبوبي (مقدمة، النقل عبر الظهارة)</span><br>
+                        <span class="english-text">Chapter VI: Renal Physiology: Tubular Reabsorption (Introduction, Trans-epithelial transport)</span><br>
+                        <span class="french-text">Chapitre VI : Physiologie Rénale : Réabsorption tubulaire (Introduction, Transport trans-épithélial)</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">إعادة امتصاص الصوديوم والكلور والماء</span><br>
+                        <span class="english-text">Reabsorption of Sodium, Chloride, and Water</span><br>
+                        <span class="french-text">Réabsorption du Sodium, Chlore et Eau</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t7"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t7', 10800, 'task7')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task7')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task7', 't7')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task8" data-label="13:00-16:00 | Tubular Reabsorption (II)">
+                <span class="task-title"><i class="fas fa-dna"></i>
+                    <span class="arabic-text">إعادة الامتصاص الأنبوبي (II)</span><br>
+                    <span class="english-text">Tubular Reabsorption (II)</span><br>
+                    <span class="french-text">Réabsorption tubulaire (II)</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: فيزيولوجيا الكلى: إعادة الامتصاص الأنبوبي (الجلوكوز، الأحماض الأمينية، اليوريا، المذابات الأخرى)</span><br>
+                        <span class="english-text">Chapter VI: Renal Physiology: Tubular Reabsorption (Glucose, Amino acids, Urea, other solutes)</span><br>
+                        <span class="french-text">Chapitre VI : Physiologie Rénale : Réabsorption tubulaire (Glucose, Acides aminés, Urée, autres solutés)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t8"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t8', 10800, 'task8')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task8')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task8', 't8')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task9" data-label="18:00-20:00 | Tubular Secretion">
+                <span class="task-title"><i class="fas fa-arrow-up"></i>
+                    <span class="arabic-text">الإفراز الأنبوبي</span><br>
+                    <span class="english-text">Tubular Secretion</span><br>
+                    <span class="french-text">Sécrétion tubulaire</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: فيزيولوجيا الكلى: الإفراز الأنبوبي (البوتاسيوم، الهيدروجين، المواد العضوية)</span><br>
+                        <span class="english-text">Chapter VI: Renal Physiology: Tubular Secretion (Potassium, Hydrogen, organic substances)</span><br>
+                        <span class="french-text">Chapitre VI : Physiologie Rénale : Excrétion tubulaire (Potassium, Hydrogène, substances organiques)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t9"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t9', 7200, 'task9')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task9')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task9', 't9')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم الرابع: فيزيولوجيا الجهاز البولي (III) والكيمياء الحيوية</span><br>
+                <span class="english-text">Day 4: Urinary Physiology (III) & Biochemistry</span><br>
+                <span class="french-text">Jour 4 : Physiologie urinaire (III) & Biochimie</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 4">
+                <span class="arabic-text">اليوم الرابع</span><br>
+                <span class="english-text">Day 4</span><br>
+                <span class="french-text">Jour 4</span>
+            </td>
+            <td id="task10" data-label="08:00-11:00 | Urine Concentration">
+                <span class="task-title"><i class="fas fa-water"></i>
+                    <span class="arabic-text">تركيز وتخفيف البول</span><br>
+                    <span class="english-text">Urine Concentration and Dilution</span><br>
+                    <span class="french-text">Concentration et dilution de l'urine</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: فيزيولوجيا الكلى: قدرة تركيز - تخفيف البول (آلية التيار المعاكس)</span><br>
+                        <span class="english-text">Chapter VI: Renal Physiology: Urine Concentrating and Diluting Ability (Counter-current mechanism)</span><br>
+                        <span class="french-text">Chapitre VI : Physiologie Rénale : Pouvoir de Concentration - Dilution des Urines (Mécanisme à contre-courant)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t10"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t10', 10800, 'task10')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task10')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task10', 't10')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task11" data-label="13:00-16:00 | Acid-Base Balance">
+                <span class="task-title"><i class="fas fa-balance-scale-right"></i>
+                    <span class="arabic-text">التوازن الحمضي القاعدي</span><br>
+                    <span class="english-text">Acid-Base Balance</span><br>
+                    <span class="french-text">Équilibre acido-basique</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: فيزيولوجيا الكلى: دور الكلى في التوازن الحمضي القاعدي</span><br>
+                        <span class="english-text">Chapter VI: Renal Physiology: Role of the Kidney in Acid-Base Balance</span><br>
+                        <span class="french-text">Chapitre VI : Physiologie Rénale : Rôle du Rein dans l'Equilibre Acido-basique</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t11"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t11', 10800, 'task11')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task11')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task11', 't11')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task12" data-label="18:00-20:00 | Renal Biochemistry">
+                <span class="task-title"><i class="fas fa-flask-vial"></i>
+                    <span class="arabic-text">الكيمياء الحيوية الكلوية</span><br>
+                    <span class="english-text">Renal Biochemistry</span><br>
+                    <span class="french-text">Biochimie rénale</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الكيمياء الحيوية: الاستكشاف الكيميائي الحيوي للكلية</span><br>
+                        <span class="english-text">Biochemistry: Biochemical Exploration of the Kidney</span><br>
+                        <span class="french-text">Biochimie : Exploration Biochimique du Rein</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">الكيمياء الحيوية: استكشاف التوازن الحمضي القاعدي</span><br>
+                        <span class="english-text">Biochemistry: Exploration of Acid-Base Balance</span><br>
+                        <span class="french-text">Biochimie : Exploration Equilibre Acido-Basique</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t12"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t12', 7200, 'task12')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task12')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task12', 't12')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم الخامس: مراجعة الجهاز البولي وبداية الغدد الصماء</span><br>
+                <span class="english-text">Day 5: Urinary System Review & Intro to Endocrinology</span><br>
+                <span class="french-text">Jour 5 : Révision du système urinaire & Introduction à l'endocrinologie</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 5">
+                <span class="arabic-text">اليوم الخامس</span><br>
+                <span class="english-text">Day 5</span><br>
+                <span class="french-text">Jour 5</span>
+            </td>
+            <td id="task13" data-label="08:00-11:00 | Urinary System Review">
+                <span class="task-title"><i class="fas fa-tasks"></i>
+                    <span class="arabic-text">مراجعة شاملة للجهاز البولي</span><br>
+                    <span class="english-text">Comprehensive Urinary System Review</span><br>
+                    <span class="french-text">Révision complète du système urinaire</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">مراجعة سريعة لأهم نقاط التشريح، النسيج والفيزيولوجيا</span><br>
+                        <span class="english-text">Quick review of key points in anatomy, histology, and physiology</span><br>
+                        <span class="french-text">Révision rapide des points clés en anatomie, histologie et physiologie</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">التركيز على الآليات المعقدة (الترشيح، التوازن الحمضي القاعدي)</span><br>
+                        <span class="english-text">Focus on complex mechanisms (filtration, acid-base balance)</span><br>
+                        <span class="french-text">Concentration sur les mécanismes complexes (filtration, équilibre acido-basique)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t13"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t13', 10800, 'task13')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task13')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task13', 't13')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task14" data-label="13:00-16:00 | Intensive Q&A">
+                <span class="task-title"><i class="fas fa-question-circle"></i>
+                    <span class="arabic-text">حل أسئلة مكثفة (الجهاز البولي)</span><br>
+                    <span class="english-text">Intensive Q&A (Urinary System)</span><br>
+                    <span class="french-text">Questions/Réponses intensives (Système urinaire)</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">حل أكبر عدد ممكن من أسئلة QCMs و الحالات السريرية</span><br>
+                        <span class="english-text">Solve as many MCQs and Clinical Cases as possible</span><br>
+                        <span class="french-text">Résoudre le plus de QCM et de cas cliniques possible</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t14"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t14', 10800, 'task14')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task14')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task14', 't14')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task15" data-label="18:00-20:00 | Intro to Endocrinology">
+                <span class="task-title"><i class="fas fa-lightbulb"></i>
+                    <span class="arabic-text">مقدمة في علم الغدد الصماء</span><br>
+                    <span class="english-text">Introduction to Endocrinology</span><br>
+                    <span class="french-text">Introduction à l'endocrinologie</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: الغدد الصماء: مقدمة، تصنيف الهرمونات</span><br>
+                        <span class="english-text">Chapter VI: Endocrine Glands: Introduction, Classification of hormones</span><br>
+                        <span class="french-text">Chapitre VI : Glandes Endocrines : Introduction, Classification des hormones</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t15"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t15', 7200, 'task15')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task15')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task15', 't15')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم السادس: المعقد الوطائي النخامي</span><br>
+                <span class="english-text">Day 6: The Hypothalamo-Hypophysial Complex</span><br>
+                <span class="french-text">Jour 6 : Le complexe hypothalamo-hypophysaire</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 6">
+                <span class="arabic-text">اليوم السادس</span><br>
+                <span class="english-text">Day 6</span><br>
+                <span class="french-text">Jour 6</span>
+            </td>
+            <td id="task16" data-label="08:00-11:00 | Axis Anatomy & Function">
+                <span class="task-title"><i class="fas fa-brain"></i>
+                    <span class="arabic-text">تشريح ووظيفة المحور</span><br>
+                    <span class="english-text">Anatomy & Function of the Axis</span><br>
+                    <span class="french-text">Anatomie & Fonction de l'axe</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: الغدد الصماء: المعقد الوطائي النخامي (التشريح، علم الأنسجة)</span><br>
+                        <span class="english-text">Chapter VI: Endocrine Glands: The Hypothalamo-Hypophysial Complex (Anatomy, Histology)</span><br>
+                        <span class="french-text">Chapitre VI : Glandes Endocrines : Le Complexe Hypothalamo-Hypophysaire (Anatomie, Histologie)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t16"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t16', 10800, 'task16')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task16')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task16', 't16')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task17" data-label="13:00-16:00 | Anterior Pituitary Hormones">
+                <span class="task-title"><i class="fas fa-sitemap"></i>
+                    <span class="arabic-text">هرمونات الغدة النخامية الأمامية</span><br>
+                    <span class="english-text">Anterior Pituitary Hormones</span><br>
+                    <span class="french-text">Hormones de l'antéhypophyse</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">فيزيولوجيا الفص الأمامي للغدة النخامية (هرمون النمو، الهرمون المنبه للدرقية، الهرمون الموجه لقشر الكظر، الهرمون المنبه للجريب، الهرمون الملوتن، البرولاكتين)</span><br>
+                        <span class="english-text">Physiology of the anterior lobe of the pituitary (GH, TSH, ACTH, FSH, LH, Prolactin)</span><br>
+                        <span class="french-text">Physiologie du lobe antérieur de l'hypophyse (GH, TSH, ACTH, FSH, LH, Prolactine)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t17"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t17', 10800, 'task17')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task17')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task17', 't17')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task18" data-label="18:00-20:00 | Posterior Pituitary Hormones">
+                <span class="task-title"><i class="fas fa-project-diagram"></i>
+                    <span class="arabic-text">هرمونات الغدة النخامية الخلفية</span><br>
+                    <span class="english-text">Posterior Pituitary Hormones</span><br>
+                    <span class="french-text">Hormones de la posthypophyse</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">فيزيولوجيا الفص الخلفي للغدة النخامية (الهرمون المضاد لإدرار البول، الأوكسيتوسين)</span><br>
+                        <span class="english-text">Physiology of the posterior lobe of the pituitary (ADH, Oxytocin)</span><br>
+                        <span class="french-text">Physiologie du lobe postérieur de l'hypophyse (ADH, Ocytocine)</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">مراجعة المحور وحل QCMs</span><br>
+                        <span class="english-text">Review the axis and solve MCQs</span><br>
+                        <span class="french-text">Révision de l'axe et résolution de QCM</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t18"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t18', 7200, 'task18')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task18')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task18', 't18')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم السابع: الغدة الدرقية وجارات الدرقية</span><br>
+                <span class="english-text">Day 7: Thyroid & Parathyroid Glands</span><br>
+                <span class="french-text">Jour 7 : Glandes thyroïde et parathyroïdes</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 7">
+                <span class="arabic-text">اليوم السابع</span><br>
+                <span class="english-text">Day 7</span><br>
+                <span class="french-text">Jour 7</span>
+            </td>
+            <td id="task19" data-label="08:00-11:00 | Thyroid Gland">
+                <span class="task-title"><i class="fas fa-lungs"></i>
+                    <span class="arabic-text">الغدة الدرقية</span><br>
+                    <span class="english-text">The Thyroid Gland</span><br>
+                    <span class="french-text">La glande thyroïde</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: الغدد الصماء: الغدة الدرقية (التشريح، علم الأنسجة)</span><br>
+                        <span class="english-text">Chapter VI: Endocrine Glands: The Thyroid (Anatomy, Histology)</span><br>
+                        <span class="french-text">Chapitre VI : Glandes Endocrines : La Thyroïde (Anatomie, Histologie)</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">تخليق وإفراز هرمونات الغدة الدرقية</span><br>
+                        <span class="english-text">Synthesis and secretion of thyroid hormones</span><br>
+                        <span class="french-text">Synthèse et sécrétion des hormones thyroïdiennes</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t19"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t19', 10800, 'task19')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task19')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task19', 't19')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task20" data-label="13:00-16:00 | Thyroid Hormone Functions">
+                <span class="task-title"><i class="fas fa-cogs"></i>
+                    <span class="arabic-text">وظائف هرمونات الدرقية</span><br>
+                    <span class="english-text">Thyroid Hormone Functions</span><br>
+                    <span class="french-text">Fonctions des hormones thyroïdiennes</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الأفعال الفسيولوجية وتنظيم هرمونات الغدة الدرقية</span><br>
+                        <span class="english-text">Physiological actions and regulation of thyroid hormones</span><br>
+                        <span class="french-text">Actions physiologiques et régulation des hormones thyroïdiennes</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t20"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t20', 10800, 'task20')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task20')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task20', 't20')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task21" data-label="18:00-20:00 | Parathyroid Glands">
+                <span class="task-title"><i class="fas fa-bone"></i>
+                    <span class="arabic-text">الغدد جارات الدرقية</span><br>
+                    <span class="english-text">Parathyroid Glands</span><br>
+                    <span class="french-text">Glandes parathyroïdes</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: الغدد الصماء: الغدد جارات الدرقية</span><br>
+                        <span class="english-text">Chapter VI: Endocrine Glands: The Parathyroids</span><br>
+                        <span class="french-text">Chapitre VI : Glandes Endocrines : Les Parathyroïdes</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">تنظيم استقلاب الكالسيوم والفوسفات (الهرمون جار الدرقي، الكالسيتونين، فيتامين د)</span><br>
+                        <span class="english-text">Regulation of calcium and phosphate metabolism (PTH, Calcitonin, Vitamin D)</span><br>
+                        <span class="french-text">Régulation du métabolisme du calcium et du phosphate (PTH, Calcitonine, Vitamine D)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t21"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t21', 7200, 'task21')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task21')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task21', 't21')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم الثامن: الغدة الكظرية والبنكرياس الصماوي</span><br>
+                <span class="english-text">Day 8: Adrenal Gland & Endocrine Pancreas</span><br>
+                <span class="french-text">Jour 8 : Glande surrénale & Pancréas endocrine</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 8">
+                <span class="arabic-text">اليوم الثامن</span><br>
+                <span class="english-text">Day 8</span><br>
+                <span class="french-text">Jour 8</span>
+            </td>
+            <td id="task22" data-label="08:00-11:00 | Adrenal Cortex">
+                <span class="task-title"><i class="fas fa-mitten"></i>
+                    <span class="arabic-text">قشرة الغدة الكظرية</span><br>
+                    <span class="english-text">Adrenal Cortex</span><br>
+                    <span class="french-text">Cortex surrénalien</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: الغدد الصماء: الغدة الكظرية (القشرة)</span><br>
+                        <span class="english-text">Chapter VI: Endocrine Glands: The Adrenal Gland (Cortex)</span><br>
+                        <span class="french-text">Chapitre VI : Glandes Endocrines : La Surrénale (Cortex)</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">القشرانيات السكرية (الكورتيزول)، القشرانيات المعدنية (الألدوستيرون)</span><br>
+                        <span class="english-text">Glucocorticoids (Cortisol), Mineralocorticoids (Aldosterone)</span><br>
+                        <span class="french-text">Glucocorticoïdes (Cortisol), Minéralocorticoïdes (Aldostérone)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t22"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t22', 10800, 'task22')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task22')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task22', 't22')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task23" data-label="13:00-16:00 | Adrenal Medulla">
+                <span class="task-title"><i class="fas fa-bolt"></i>
+                    <span class="arabic-text">لب الغدة الكظرية</span><br>
+                    <span class="english-text">Adrenal Medulla</span><br>
+                    <span class="french-text">Médullosurrénale</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: الغدد الصماء: الغدة الكظرية (اللب)</span><br>
+                        <span class="english-text">Chapter VI: Endocrine Glands: The Adrenal Gland (Medulla)</span><br>
+                        <span class="french-text">Chapitre VI : Glandes Endocrines : La Surrénale (Médulla)</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">الكاتيكولامينات (الأدرينالين، النورأدرينالين)</span><br>
+                        <span class="english-text">Catecholamines (Adrenaline, Noradrenaline)</span><br>
+                        <span class="french-text">Catécholamines (Adrénaline, Noradrénaline)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t23"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t23', 10800, 'task23')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task23')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task23', 't23')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task24" data-label="18:00-20:00 | Endocrine Pancreas">
+                <span class="task-title"><i class="fas fa-apple-alt"></i>
+                    <span class="arabic-text">البنكرياس الصماوي</span><br>
+                    <span class="english-text">Endocrine Pancreas</span><br>
+                    <span class="french-text">Pancréas endocrine</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: الغدد الصماء: البنكرياس الصماوي (الإنسولين، الجلوكاجون)</span><br>
+                        <span class="english-text">Chapter VI: Endocrine Glands: Endocrine Pancreas (Insulin, Glucagon)</span><br>
+                        <span class="french-text">Chapitre VI : Glandes Endocrines : Pancréas Endocrine (Insuline, Glucagon)</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t24"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t24', 7200, 'task24')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task24')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task24', 't24')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم التاسع: مراجعة الغدد الصماء والتكامل</span><br>
+                <span class="english-text">Day 9: Endocrine Review & Integration</span><br>
+                <span class="french-text">Jour 9 : Révision de l'endocrinologie & Intégration</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 9">
+                <span class="arabic-text">اليوم التاسع</span><br>
+                <span class="english-text">Day 9</span><br>
+                <span class="french-text">Jour 9</span>
+            </td>
+            <td id="task25" data-label="08:00-11:00 | Other Glands & Review (I)">
+                <span class="task-title"><i class="fas fa-moon"></i>
+                    <span class="arabic-text">غدد أخرى ومراجعة (I)</span><br>
+                    <span class="english-text">Other Glands & Review (I)</span><br>
+                    <span class="french-text">Autres glandes & Révision (I)</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">الفصل 6: الغدد الصماء: الغدة الصنوبرية</span><br>
+                        <span class="english-text">Chapter VI: Endocrine Glands: Pineal Gland</span><br>
+                        <span class="french-text">Chapitre VI : Glandes Endocrines : Glande Pinéale</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">مراجعة محور النخامية، الدرقية، جارات الدرقية</span><br>
+                        <span class="english-text">Review of Pituitary, Thyroid, Parathyroid axis</span><br>
+                        <span class="french-text">Révision de l'axe hypophysaire, thyroïdien, parathyroïdien</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t25"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t25', 10800, 'task25')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task25')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task25', 't25')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task26" data-label="13:00-16:00 | Integration & Review (II)">
+                <span class="task-title"><i class="fas fa-puzzle-piece"></i>
+                    <span class="arabic-text">تكامل ومراجعة (II)</span><br>
+                    <span class="english-text">Integration & Review (II)</span><br>
+                    <span class="french-text">Intégration & Révision (II)</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">مراجعة الغدة الكظرية والبنكرياس</span><br>
+                        <span class="english-text">Review of Adrenal gland and Pancreas</span><br>
+                        <span class="french-text">Révision de la glande surrénale et du pancréas</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">التكامل بين الأنظمة الهرمونية المختلفة</span><br>
+                        <span class="english-text">Integration between different hormonal systems</span><br>
+                        <span class="french-text">Intégration entre les différents systèmes hormonaux</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t26"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t26', 10800, 'task26')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task26')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task26', 't26')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            <td id="task27" data-label="18:00-20:00 | Endocrine Q&A">
+                <span class="task-title"><i class="fas fa-question"></i>
+                    <span class="arabic-text">حل أسئلة (الغدد الصماء)</span><br>
+                    <span class="english-text">Q&A (Endocrine System)</span><br>
+                    <span class="french-text">Q&A (Système endocrinien)</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">حل أسئلة QCMs و الحالات السريرية على الغدد الصماء</span><br>
+                        <span class="english-text">Solve MCQs and Clinical Cases on the Endocrine System</span><br>
+                        <span class="french-text">Résoudre les QCM et les cas cliniques sur le système endocrinien</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t27"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t27', 7200, 'task27')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task27')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task27', 't27')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="day-header" colspan="4">
+                <span class="arabic-text">اليوم العاشر: المراجعة النهائية والتحضير للامتحان</span><br>
+                <span class="english-text">Day 10: Final Review & Exam Preparation</span><br>
+                <span class="french-text">Jour 10 : Révision finale & Préparation à l'examen</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-label="Day 10">
+                <span class="arabic-text">اليوم العاشر</span><br>
+                <span class="english-text">Day 10</span><br>
+                <span class="french-text">Jour 10</span>
+            </td>
+            <td id="task28" data-label="08:00-11:00 | Final Review (I)">
+                <span class="task-title"><i class="fas fa-redo-alt"></i>
+                    <span class="arabic-text">مراجعة شاملة للوحدة (I)</span><br>
+                    <span class="english-text">Comprehensive Unit Review (I)</span><br>
+                    <span class="french-text">Révision complète de l'unité (I)</span>
+                </span>
+                <ul>
+                    <li>
+                        <span class="arabic-text">مراجعة سريعة لأهم النقاط في الجهاز البولي</span><br>
+                        <span class="english-text">Quick review of key points in the Urinary System</span><br>
+                        <span class="french-text">Révision rapide des points clés du système urinaire</span>
+                    </li>
+                    <li>
+                        <span class="arabic-text">مراجعة سريعة لأهم النقاط في الغدد الصماء</span><br>
+                        <span class="english-text">Quick review of key points in the Endocrine System</span><br>
+                        <span class="french-text">Révision rapide des points clés du système endocrinien</span>
+                    </li>
+                </ul>
+                <div class="task-actions">
+                    <span class="timer" id="t28"></span>
+                    <div>
+                        <button class="btn btn-start" onclick="startCountdown('t28', 10800, 'task28')"><i class="fas fa-play"></i> ابدأ</button>
+                        <button class="btn btn-complete" onclick="completeTask('task28')"><i class="fas fa-check"></i> إكمال</button>
+                        <button class="btn btn-reset" onclick="resetTask('task28', 't28')"><i class="fas fa-redo"></i> إعادة</button>
+                    </div>
+                </div>
+            </td>
+            </tr>
     </tbody>
-  </table>
-  
+</table>
 </div>
 
-<script>document.addEventListener('DOMContentLoaded', function() {
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
   // Initialize the application
   updateDates();
   loadProgress();
@@ -544,7 +1256,7 @@
 
 // Global variables to track tasks
 let completedTasks = 0;
-const totalTasks = 30;
+const totalTasks = 30; // Total number of tasks
 let taskStatus = {};
 let activeTimers = {};
 
@@ -552,15 +1264,19 @@ let activeTimers = {};
 function updateDates() {
   const now = new Date();
   
-  // Gregorian date
+  // Gregorian date (using English for wider compatibility)
   const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const gregorianDate = now.toLocaleDateString('ar-EG', gregorianOptions);
-  document.getElementById('gregorianDateDisplay').innerHTML = `<i class="fas fa-calendar-alt"></i> ${gregorianDate}`;
+  const gregorianDate = now.toLocaleDateString('en-US', gregorianOptions);
+  if(document.getElementById('gregorianDateDisplay')) {
+    document.getElementById('gregorianDateDisplay').innerHTML = `<i class="fas fa-calendar-alt"></i> ${gregorianDate}`;
+  }
   
-  // Hijri date (using Intl.DateTimeFormat for Islamic calendar)
+  // Hijri date (using Arabic)
   const hijriOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', calendar: 'islamic' };
-  const hijriDate = new Intl.DateTimeFormat('ar-EG-u-ca-islamic', hijriOptions).format(now);
-  document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> ${hijriDate}`;
+  const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', hijriOptions).format(now);
+  if(document.getElementById('hijriDateDisplay')) {
+    document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> ${hijriDate}`;
+  }
 }
 
 // Countdown to end of day (midnight)
@@ -574,15 +1290,17 @@ function startEndOfDayCountdown() {
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
   
-  document.getElementById('countdownToEndOfDay').innerHTML = 
-    `<i class="fas fa-hourglass-end"></i> ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  if(document.getElementById('countdownToEndOfDay')) {
+    document.getElementById('countdownToEndOfDay').innerHTML = 
+      `<i class="fas fa-hourglass-end"></i> ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
 }
 
 // Start countdown timer for a task
 function startCountdown(timerId, durationInSeconds, taskId) {
-  // If there's already an active timer for this task, stop it
+  // If there's an active timer for this task, do nothing until reset.
   if (activeTimers[timerId]) {
-    clearInterval(activeTimers[timerId]);
+    return;
   }
   
   let remainingTime = durationInSeconds;
@@ -609,6 +1327,7 @@ function startCountdown(timerId, durationInSeconds, taskId) {
 
 // Update timer display
 function updateTimerDisplay(element, seconds) {
+  if (!element) return;
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
@@ -619,67 +1338,82 @@ function updateTimerDisplay(element, seconds) {
 // Mark a task as complete
 function completeTask(taskId) {
   const taskElement = document.getElementById(taskId);
-  
+  if (!taskElement) return;
+
   // Only complete if not already completed
   if (!taskStatus[taskId] || !taskStatus[taskId].completed) {
     taskElement.classList.add('completed');
     taskStatus[taskId] = { completed: true };
     completedTasks++;
     
-    // Save to localStorage
-    saveProgress();
+    // Stop the timer if it's running
+    const timerId = `t${taskId.replace('task', '')}`;
+    if (activeTimers[timerId]) {
+      clearInterval(activeTimers[timerId]);
+      delete activeTimers[timerId];
+    }
     
-    // Update stats and progress bar
+    saveProgress();
     updateStats();
     updateProgressBar();
   }
 }
 
-// Reset a task to incomplete
-function resetTask(taskId, timerId) {
+// Reset a task to incomplete (This function was in the original file but not connected in the new layout, I'll add it for completeness)
+function resetTask(taskId) {
   const taskElement = document.getElementById(taskId);
-  
-  // Reset task status
-  taskElement.classList.remove('completed');
-  
+  if (!taskElement) return;
+
   // If this task was previously completed, decrement completed count
   if (taskStatus[taskId] && taskStatus[taskId].completed) {
     completedTasks--;
   }
   
+  taskElement.classList.remove('completed');
   taskStatus[taskId] = { completed: false };
   
-  // Reset timer display
+  // Reset timer
+  const timerId = `t${taskId.replace('task', '')}`;
   if (timerId) {
-    document.getElementById(timerId).textContent = '';
+    const timerElement = document.getElementById(timerId);
+    if (timerElement) {
+        const defaultDuration = timerElement.textContent.includes('03:00:00') ? 10800 : 7200; // Reset based on original duration
+        updateTimerDisplay(timerElement, defaultDuration);
+    }
     if (activeTimers[timerId]) {
       clearInterval(activeTimers[timerId]);
       delete activeTimers[timerId];
     }
   }
   
-  // Save to localStorage
   saveProgress();
-  
-  // Update stats and progress bar
   updateStats();
   updateProgressBar();
 }
 
+
 // Update progress bar based on completed tasks
 function updateProgressBar() {
-  const progress = (completedTasks / totalTasks) * 100;
-  document.getElementById('progressBar').style.width = `${progress}%`;
+  const progressBar = document.getElementById('progressBar');
+  if (!progressBar) return;
+  const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+  progressBar.style.width = `${progress}%`;
 }
 
 // Update statistics display
 function updateStats() {
-  document.getElementById('completedTasks').textContent = completedTasks;
-  
-  // Calculate total study time (80 hours is the base, but could be adjusted based on actual progress)
-  const totalHours = 80;
-  const remainingHours = Math.round(totalHours * (1 - (completedTasks / totalTasks)));
-  document.getElementById('totalStudyTimeDisplay').textContent = `${remainingHours} ساعة`;
+  const completedTasksEl = document.getElementById('completedTasks');
+  const totalStudyTimeEl = document.getElementById('totalStudyTimeDisplay');
+  const totalTasksEl = document.getElementById('totalTasks');
+
+  if(completedTasksEl) completedTasksEl.textContent = completedTasks;
+  if(totalTasksEl) totalTasksEl.textContent = totalTasks;
+
+  if(totalStudyTimeEl) {
+    const totalHours = 80;
+    const remainingHours = Math.round(totalHours * (1 - (completedTasks / totalTasks)));
+    totalStudyTimeEl.textContent = `${remainingHours}h`;
+  }
 }
 
 // Save progress to localStorage
@@ -700,8 +1434,9 @@ function loadProgress() {
     
     // Apply completed status to tasks in the UI
     for (const taskId in taskStatus) {
-      if (taskStatus[taskId].completed) {
-        document.getElementById(taskId).classList.add('completed');
+      if (taskStatus[taskId] && taskStatus[taskId].completed) {
+        const el = document.getElementById(taskId);
+        if (el) el.classList.add('completed');
       }
     }
   } else {
@@ -715,3 +1450,14 @@ function loadProgress() {
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
