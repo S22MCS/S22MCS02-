@@ -3691,147 +3691,279 @@ function closeFourthModal() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>خيارات</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            -webkit-text-size-adjust: 100%;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 15px;
-        }
-        
-        .options-box {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .option-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        .option-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .continue {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        .bac {
-            background-color: #2196F3;
-            color: white;
-        }
-        
-        .exit {
-            background-color: #f44336;
-            color: white;
-        }
-        
-        /* تحسينات للشاشات الصغيرة جدًا */
-        @media (max-width: 480px) {
-            .options-box {
-                padding: 15px;
-            }
-            
-            .option-btn {
-                padding: 12px;
-                font-size: 15px;
-                margin: 8px 0;
-            }
-        }
-        
-        /* منع التكبير/التصغير على iOS */
-        @supports (-webkit-touch-callout: none) {
-            body {
-                touch-action: manipulation;
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرحبا بكم في أداة علم</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-    <div class="overlay" id="overlay">
-        <div class="options-box">
-            <button class="option-btn continue" id="continueBtn">الدخول إلى الموقع</button>
-            <button class="option-btn bac" id="bacBtn">موقع الباكالوريا</button>
-            <button class="option-btn exit" id="exitBtn">مغادرة الموقع</button>
-        </div>
+
+<style>
+    /* أنماط الشاشة الرئيسية */
+    #adatealm-main-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #111827;
+        z-index: 9999;
+        display: flex; /* استخدام Flexbox لإنشاء تخطيط من قسمين */
+        justify-content: space-around; /* توزيع المساحة حول العناصر */
+        align-items: center; /* محاذاة العناصر عمودياً في المنتصف */
+        padding: 2rem;
+        gap: 2rem; /* مسافة بين قسم النص وقسم الفيديو */
+        font-family: 'Cairo', sans-serif;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+
+    /* قسم المحتوى على اليسار */
+    .content-section {
+        background-color: #1f2937;
+        padding: 30px 25px;
+        border-radius: 15px;
+        text-align: center;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        border: 1px solid #374151;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .content-section .options-title {
+        color: #ffffff;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    .content-section .option-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 700;
+        font-family: 'Cairo', sans-serif;
+        color: white;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .content-section .option-btn:last-child {
+        margin-bottom: 0;
+    }
+
+    /* قسم الفيديو على اليمين */
+    .video-frame-container {
+        width: 45%;
+        max-width: 600px;
+        aspect-ratio: 16 / 9; /* للحفاظ على أبعاد الفيديو 16:9 */
+        border: 3px solid #374151;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        overflow: hidden; /* لإخفاء أي أجزاء من الفيديو تخرج عن الإطار */
+        background-color: #111; /* لون خلفية الإطار أثناء تحميل الفيديو */
+    }
+    
+    .video-frame-container video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* لملء الفيديو للإطار دون تشويه */
+    }
+
+    /* أنماط الأزرار والأيقونات */
+    .option-btn.continue { background-color: #22c55e; }
+    .option-btn.bac { background-color: #3b82f6; }
+    .option-btn.exit { background-color: #ef4444; }
+    .option-btn .icon { font-size: 1.2rem; }
+
+    .option-btn:active {
+        transform: scale(0.97);
+        opacity: 0.9;
+    }
+
+    @media (hover: hover) {
+        .option-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+    }
+
+    /* --- التجاوب مع الشاشات الصغيرة (الهواتف) --- */
+    @media (max-width: 992px) {
+        #adatealm-main-screen {
+            flex-direction: column; /* تغيير اتجاه التوزيع إلى عمودي */
+            justify-content: center; /* لتركيز المحتوى في وسط الشاشة */
+            overflow-y: auto; /* السماح بالتمرير إذا كانت الشاشة قصيرة جداً */
+        }
+
+        .content-section {
+            order: 1; /* التأكد من أن النص يظهر أولاً */
+            width: 90%;
+            max-width: 420px;
+        }
+
+        .video-frame-container {
+            order: 2; /* التأكد من أن الفيديو يظهر ثانياً */
+            width: 90%;
+            max-width: 420px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .content-section .options-title { font-size: 1.5rem; }
+        .content-section .option-btn { padding: 12px; font-size: 0.95rem; }
+    }
+</style>
+
+<div id="adatealm-main-screen">
+    
+    <div class="content-section">
+        <h2 class="options-title">مرحبا بكم في أداة علم</h2>
+        
+
+        
+
+
+ <style>
+  .options-title {
+    font-size: 1em;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .popup-content {
+    text-align: center;
+    background-color: #3e0b10;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 110%;
+    margin: 8px auto;
+    font-family: 'Arial', sans-serif;
+    color: #b71c1c;
+  }
+
+  .popup-content p {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #d32f2f;
+    margin: 10px 0;
+  }
+
+  .popup-content img {
+    max-width: 95%;
+    height: auto;
+    border: none;
+    outline: 2px solid #0b04fb;
+    border-radius: 4px;
+  }
+
+  /* Media Queries for very small screens */
+  @media (max-width: 480px) {
+    .options-title {
+      font-size: 0.85em;
+    }
+
+    .popup-content p {
+      font-size: 0.85em;
+    }
+
+    .popup-content {
+      padding: 8px;
+      max-width: 98%;
+    }
+  }
+</style>
+
+
+<div class="popup-content">
+  <p>عدُوكَ لَنْ يَنْتَظِرَك بِطَبَقٍ مِنْ وُرُود</p>
+
+  <a href="https://t.me/S22MCS" target="_blank">
+    <img src="adatealm/S⚡2⚡2MCS.jpg" alt="Updated Image">
+  </a>
+
+  <p>لَا تَفْصِل عِلْمَك الدُنْيَوِي عَن دِين الإسْلام</p>
+</div>
+
+
+
+
+
+
+
+
+
+        <h1 class="options-title">اختر وجهتك</h1>
+        
+      
+
+
+        <button class="option-btn continue" id="adatealmContinueBtn">
+            <i class="fas fa-university icon"></i>
+            <span>موقع الطلبة الجامعيين</span>
+        </button>
+        
+        <button class="option-btn bac" id="adatealmBacBtn">
+            <i class="fas fa-graduation-cap icon"></i>
+            <span>موقع البكالوريا</span>
+        </button>
+        
+        <button class="option-btn exit" id="adatealmExitBtn">
+            <i class="fas fa-sign-out-alt icon"></i>
+            <span>مغادرة الموقع</span>
+        </button>
     </div>
 
+    <div class="video-frame-container">
+        <video autoplay muted loop playsinline>
+            <source src="S22MCS PARTS/LOGO VIDIO ADATEALM.mp4" type="video/mp4">
+            متصفحك لا يدعم الفيديو.
+        </video>
+    </div>
 
+</div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainScreen = document.getElementById('adatealm-main-screen');
+        const continueBtn = document.getElementById('adatealmContinueBtn');
+        const bacBtn = document.getElementById('adatealmBacBtn');
+        const exitBtn = document.getElementById('adatealmExitBtn');
 
+        // عند الضغط على "الدخول إلى الموقع"، يتم إخفاء الشاشة
+        continueBtn.addEventListener('click', function() {
+            mainScreen.style.display = 'none';
+        });
+        
+        // توجيه إلى موقع البكالوريا
+        bacBtn.addEventListener('click', function() {
+            window.location.href = 'https://adatealm.github.io/BAC/';
+        });
+        
+        // مغادرة الموقع
+        exitBtn.addEventListener('click', function() {
+            window.location.href = 'about:blank';
+        });
+    });
+</script>
 
-
-
-
+</body>
+</html>
