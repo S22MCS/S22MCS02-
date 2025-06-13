@@ -7251,16 +7251,6 @@
                           
 
             
-        
-
-              
-                
-               
-
-        
-                    
-
-
 
 
 <!-- زر 1: مقدمة في علم المناعة -->
@@ -7786,6 +7776,17 @@
 
 
 
+ 
+
+
+
+
+
+
+
+
+
+
 
 
 <!DOCTYPE html>
@@ -7793,1129 +7794,493 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إشعارات هامة</title>
+    <title>زر التواصل المنبثق</title>
     <style>
+        /* === الخطوط الأساسية (اختياري، لكن يحسن المظهر) === */
         body {
-            font-family: Arial, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
-        .custom-modal {
+
+        /* === 1. الزر العائم === */
+        .floating-btn {
+            position: fixed;
+            /* تصحيح: قيمة معقولة لوضع الزر أسفل يمين الشاشة */
+            top: 70px;
+            right: 06px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .floating-btn img {
+            width: 50px; /* زيادة طفيفة للحجم */
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .floating-btn:hover img {
+            transform: scale(1.1);
+        }
+
+        /* === 2. النافذة المنبثقة (Popup) === */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; /* مرن ليناسب الهواتف */
+            max-width: 340px; /* حد أقصى للعرض على الشاشات الكبيرة */
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            display: none; /* يبقى مخفياً حتى يتم تفعيله بـ JS */
+            animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden; /* لإخفاء أي محتوى يتجاوز الحواف الدائرية */
+        }
+        
+        .popup-content {
+            padding: 25px;
+            text-align: center;
+        }
+        
+        /* === 3. محتوى النافذة المنبثقة === */
+        .popup-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .popup-header h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+            font-weight: 700;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: -10px;
+            left: 0; /* تم التعديل ليتناسب مع RTL */
+            background: transparent;
+            border: none;
+            font-size: 28px;
+            color: #aaa;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 1;
+            padding: 5px;
+        }
+        
+        .close-btn:hover {
+            color: #e74c3c;
+        }
+
+        .popup-body p {
+            font-size: 16px;
+            color: #555;
+            margin: 0 0 20px 0;
+            line-height: 1.6;
+        }
+
+        .social-links {
             display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px; /* المسافة بين الأيقونة والنص */
+            text-decoration: none;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .social-btn img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* ألوان الأزرار */
+        .telegram-btn { background-color: #0088cc; }
+        .instagram-btn { background-color: #e4405f; }
+        .facebook-btn { background-color: #3b5998; }
+        
+        /* تأثير الظهور للنافذة */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -45%) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="floating-btn" id="floating-btn" onclick="togglePopup()">
+        <img src="img/ai-assistant.gif" alt="تواصل معنا">
+    </button>
+
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>📩 تواصل معنا</h3>
+                <button class="close-btn" onclick="togglePopup()">×</button>
+            </div>
+            
+            <div class="popup-body">
+                <p>إذا واجهتك مشكلة أو كان لديك اقتراح، لا تتردد في التواصل معنا.</p>
+                
+                <div class="social-links">
+                    <a href="http://t.me/ADATEALM_bot" target="_blank" class="social-btn telegram-btn">
+                        <img src="img/direct.gif" alt="بوت تيليغرام">
+                        <span>بوت تيليغرام</span>
+                    </a>
+                    
+                    <a href="https://t.me/adatealm" target="_blank" class="social-btn telegram-btn">
+                        <img src="img/telegram.png" alt="تيليغرام">
+                        <span>قناة تيليغرام</span>
+                    </a>
+                    
+                    <a href="https://www.facebook.com/share/1BFTe2mWNL/" target="_blank" class="social-btn facebook-btn">
+                        <img src="img/facebook.png" alt="فيسبوك">
+                        <span>فيسبوك</span>
+                    </a>
+                    
+                    <a href="https://www.instagram.com/adat_ealm?igsh=djg1eXlwMTJvM2xw" target="_blank" class="social-btn instagram-btn">
+                        <img src="img/social.png" alt="إنستغرام">
+                        <span>إنستغرام</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePopup() {
+            var popup = document.getElementById("popup");
+            if (popup.style.display === "block") {
+                popup.style.display = "none";
+            } else {
+                popup.style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إشعارات هامة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* متغيرات الألوان الأساسية (مظهر واحد فقط) */
+        :root {
+            --primary-color: #0d6e62;
+            --secondary-color: #d4af37; /* Gold */
+            --accent-color: #28a79c;
+            --text-color: #2d3436;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --button-gradient-start: #0d6e62;
+            --button-gradient-end: #28a79c;
+            --hover-gradient-start: #28a79c;
+            --hover-gradient-end: #0d6e62;
+            --box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            --border-radius: 10px;
+            --font-main: 'Tajawal', 'Amiri', serif;
+            --font-quranic: 'Amiri', serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        /* تصميم النافذة المنبثقة (Modal) */
+        .modal {
             position: fixed;
             z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.65);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            display: none; /* يتم التحكم به عبر JS */
             align-items: center;
-            padding: 10px;
+            justify-content: center;
+            padding: 15px;
         }
-        .custom-modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 15px;
+
+        .modal-content {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            margin: auto;
+            padding: 25px;
+            border: 1px solid var(--primary-color);
             width: 90%;
-            max-width: 350px;
+            max-width: 500px;
+            border-radius: var(--border-radius);
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.3s ease-in-out;
+            box-shadow: var(--box-shadow);
+            animation: fadeInModal 0.4s ease-out;
+            position: relative;
         }
-        .custom-button {
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            text-align: center;
-            cursor: pointer;
+
+        @keyframes fadeInModal {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content h1 {
+            font-family: var(--font-main);
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+            font-weight: 700;
+        }
+
+        .modal-content p {
+            font-family: var(--font-quranic);
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+            line-height: 1.9;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        
+        .modal-content p.hadith-text {
+             font-weight: bold;
+             color: var(--accent-color);
+        }
+        
+        .modal-content p.hadith-source {
+            font-family: var(--font-main);
+            font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+            color: var(--text-color);
+            opacity: 0.8;
+            border-top: 1px dashed var(--accent-color);
+            padding-top: 10px;
+            margin-top: 15px;
+        }
+
+        .modal-content .buttons-modal-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+            align-items: center;
+        }
+
+        .modal-button {
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white !important;
+            padding: 12px 25px;
+            font-size: clamp(0.9rem, 2.8vw, 1.05rem);
+            font-weight: 500;
             border: none;
-            transition: background 0.3s, transform 0.2s;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 180px;
+            width: auto;
+            max-width: 100%;
+            box-sizing: border-box;
         }
-        .btn-close {
-            background-color: #d9534f;
-            color: white;
+
+        .modal-button:hover {
+            background: linear-gradient(135deg, var(--hover-gradient-start), var(--hover-gradient-end));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .btn-close:hover {
-            background-color: #c9302c;
-            transform: scale(1.05);
+
+        .modal-button.btn-close-modal {
+            background: linear-gradient(135deg, #a94442, #d9534f);
+        }
+
+        .modal-button.btn-close-modal:hover {
+            background: linear-gradient(135deg, #d9534f, #c9302c);
+        }
+
+        .modal-content audio {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+        }
+        
+        @media (min-width: 481px) {
+            .modal-content .buttons-modal-container {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- إشعار سورة الكهف -->
-    <div id="kahfModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            <h1> فضل سورة الكهف </h1>
-            <p>من قرأ سورةَ ( الكهفِ ) في يومِ الجمعةِ أضاء له من النورِ ما بين الجمُعَتَين
-              الراوي : أبو سعيد الخدري | المحدث : الألباني | المصدر : صحيح الترغيب | الصفحة أو الرقم : 736 | خلاصة حكم المحدث : صحيح | التخريج : أخرجه البيهقي (6209) واللفظ له، وأخرجه الحاكم (3392) باختلاف يسير</p>
-           
-
-
-
-
-            <button onclick="window.location.href='سورة الكهف مكتوبة.html'" class="custom-button">انتقل إليها الآن</button>
-           <br><br>
-           <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
+    <div id="kahfModal" class="modal">
+        <div class="modal-content">
+            <h1>فضل سورة الكهف</h1>
+            <p class="hadith-text">"من قرأ سورةَ الكهفِ في يومِ الجمعةِ أضاء له من النورِ ما بين الجمُعَتَين."</p>
+            <p class="hadith-source">الراوي: أبو سعيد الخدري | المحدث: الألباني | المصدر: صحيح الترغيب | الرقم: 736 | صحيح</p>
+            <div class="buttons-modal-container">
+                <button onclick="window.location.href='سورة الكهف مكتوبة.html'" class="modal-button">قراءة السورة الآن</button>
+                <button class="modal-button btn-close-modal" onclick="closeModal('kahfModal')">إغلاق</button>
+            </div>
         </div>
     </div>
     
-    <!-- إشعار صلاة الجمعة -->
-    <div id="jumaaModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            <h1> فضل صلاة الجمعة </h1>
-            <audio id="jumaaAudio">
+    <div id="jumaaModal" class="modal">
+        <div class="modal-content">
+            <h1>فضل صلاة الجمعة</h1>
+            <audio id="jumaaAudio" controls preload="metadata">
                 <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
                 متصفحك لا يدعم تشغيل الصوت.
             </audio>
-
-
-
-
-            <p>
-            
-من غسَّلَ يومَ الجمعةِ واغتسلَ ثمَّ بَكَّرَ وابتَكرَ ومشى ولم يرْكب ودنا منَ الإمامِ فاستمعَ ولم يلغُ كانَ لَهُ بِكلِّ خطوةٍ عملُ سنةٍ أجرُ صيامِها وقيامِها
-الراوي : أوس بن أبي أوس وقيل أوس بن أوس والد عمرو | المحدث : الألباني | المصدر : صحيح أبي داود
-الصفحة أو الرقم: 345 | خلاصة حكم المحدث : صحيح
-
-</p>
-       
-
-              الصَّلَوَاتُ الخَمْسُ، وَالْجُمْعَةُ إلى الجُمْعَةِ، وَرَمَضَانُ إلى رَمَضَانَ، مُكَفِّرَاتٌ ما بيْنَهُنَّ إِذَا اجْتَنَبَ الكَبَائِرَ.
-  الراوي : أبو هريرة | المحدث : مسلم | المصدر : صحيح مسلم
-  الصفحة أو الرقم: 233 | خلاصة حكم المحدث : [صحيح]
-  </p>
-
-
-            <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها"
-              .   [صحيح] - [رواه مسلم] - [صحيح مسلم - 854]
-            </p>
-
-
-        
-
-            <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
+            <p class="hadith-text">"من غسَّلَ يومَ الجمعةِ واغتسلَ ثمَّ بَكَّرَ وابتَكرَ ومشى ولم يرْكب ودنا منَ الإمامِ فاستمعَ ولم يلغُ كانَ لَهُ بِكلِّ خطوةٍ عملُ سنةٍ أجرُ صيامِها وقيامِها."</p>
+            <p class="hadith-source">الراوي: أوس بن أبي أوس | المحدث: الألباني | المصدر: صحيح أبي داود | الرقم: 345 | صحيح</p>
+            <p class="hadith-text">"الصَّلَوَاتُ الخَمْسُ، وَالْجُمْعَةُ إلى الجُمْعَةِ، وَرَمَضَانُ إلى رَمَضَانَ، مُكَفِّرَاتٌ ما بيْنَهُنَّ إِذَا اجْتَنَبَ الكَبَائِرَ."</p>
+            <p class="hadith-source">الراوي: أبو هريرة | المحدث: مسلم | المصدر: صحيح مسلم | الرقم: 233 | صحيح</p>
+            <div class="buttons-modal-container">
+                <button class="modal-button btn-close-modal" onclick="closeModal('jumaaModal')">إغلاق</button>
+            </div>
         </div>
     </div>
 
-    <!-- الإشعار العام -->
-    <div id="generalModal" class="custom-modal" style="display: none;">
-        <div class="custom-modal-content">
-            
-        
+    <div id="generalModal" class="modal">
+        <div class="modal-content">
             <h1>⚡ أَدَاة عِلْم ⚡</h1>
             <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
-            <p>المزيد قادم  والتحديثات يومية ان شاء الله </p>
-            <p>  نذكركم ان التجربة على اجهزة الكمبيوتر افضل بكثير على الهواتف وسنحاول  باذم الله تحسين تجربة  على الهواتف </p>
-            <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
+            <p>نذكركم أن التجربة على أجهزة الكمبيوتر أفضل، ونسعى لتحسينها على الهواتف قريبًا بإذن الله.</p>
+            <div class="buttons-modal-container">
+                <button class="modal-button btn-close-modal" onclick="closeModal('generalModal')">حسنًا، فهمت</button>
+            </div>
         </div>
     </div>
     
     <script>
-      function closeModal(modalId) {
-          document.getElementById(modalId).style.display = "none";
-      }
-  
-      function showModals() {
-          let today = new Date();
-          let dayOfWeek = today.getDay();
-          let hours = today.getHours();
-  
-          // ✅ عرض الإشعار العام فورًا
-          document.getElementById("generalModal").style.display = "flex";
-  
-          if (dayOfWeek === 5) { // الجمعة فقط
-              document.getElementById("kahfModal").style.display = "flex"; // إشعار سورة الكهف
-  
-              if (hours < 14) { // قبل 14:00 فقط
-                  document.getElementById("jumaaModal").style.display = "flex"; // إشعار صلاة الجمعة
-                  
-                  let audio = document.getElementById("jumaaAudio");
-                  if (audio && !audio.dataset.played) { // تشغيل الصوت عند ظهور الإشعار
-                      let playAudio = () => {
-                          audio.play().then(() => {
-                              audio.dataset.played = "true"; // منع التكرار
-                              console.log("تم تشغيل صوت صلاة الجمعة.");
-                          }).catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
-                      };
-  
-                      if (document.hasFocus()) {
-                          playAudio();
-                      } else {
-                          document.addEventListener("click", playAudio, { once: true });
-                          document.addEventListener("touchstart", playAudio, { once: true });
-                      }
-  
-                      audio.onended = function () {
-                          console.log("انتهى تشغيل ملف الصوت.");
-                      };
-                  }
-              }
-          }
-      }
-  
-      document.addEventListener("DOMContentLoaded", function() {
-          let today = new Date();
-          let dayOfWeek = today.getDay();
-          let hours = today.getHours();
-  
-          if (dayOfWeek === 5 && hours < 14) { // تشغيل الصوت فقط يوم الجمعة قبل 14:00
-              let audio = document.getElementById("jumaaAudio");
-              if (audio) {
-                  document.body.addEventListener("click", function() {
-                      if (audio.paused) {
-                          audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
-                      }
-                  }, { once: true });
-              }
-          }
-      });
-  
-      // ✅ تشغيل `showModals` دائمًا لإظهار الإشعار العام مباشرةً
-      window.onload = showModals;
-  </script>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-  <style>
-      /* زر عائم صغير */
-      .floating-btn {
-          position: fixed;
-          bottom: 450px;
-          right: 8px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          z-index: 1000;
-      }
-  
-      /* صورة الزر بحجم أصغر */
-      .floating-btn img {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-          transition: transform 0.2s ease-in-out;
-      }
-  
-      .floating-btn img:hover {
-          transform: scale(1.1);
-      }
-  
-      /* نافذة منبثقة في وسط الشاشة */
-      .popup {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 250px;
-          background: #ffffff;
-          padding: 20px;
-          border-radius: 15px;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-          text-align: center;
-          z-index: 1001;
-          display: none;
-          animation: fadeIn 0.3s ease-in-out;
-      }
-  
-      /* زر الإغلاق بشكل أنيق */
-      .close-btn {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background: transparent;
-          border: none;
-          font-size: 22px;
-          color: #ff4d4d;
-          cursor: pointer;
-          font-weight: bold;
-      }
-  
-      .close-btn:hover {
-          color: #cc0000;
-      }
-  
-      /* عنوان النافذة */
-      .popup h3 {
-          margin-top: 0;
-          font-size: 20px;
-          color: #333;
-          border-bottom: 2px solid #007bff;
-          padding-bottom: 10px;
-          font-weight: bold;
-      }
-  
-      /* أزرار التواصل بتصميم عصري */
-      .popup a {
-          display: block;
-          margin: 10px auto;
-          text-decoration: none;
-          color: white;
-          padding: 12px;
-          border-radius: 8px;
-          font-size: 16px;
-          font-weight: bold;
-          transition: background-color 0.3s, transform 0.2s;
-          width: 90%;
-          text-align: center;
-      }
-  
-      .popup a:hover {
-          opacity: 0.9;
-          transform: scale(1.05);
-      }
-  
-      .telegram-btn { background-color: #0088cc; }
-      .instagram-btn { background-color: #e4405f; }
-      .facebook-btn { background-color: #3b5998; }
-  
-      /* تأثير الظهور */
-      @keyframes fadeIn {
-          from { opacity: 0; transform: translate(-50%, -45%); }
-          to { opacity: 1; transform: translate(-50%, -50%); }
-      }
-  
-      /* تحسين مظهر النافذة للهواتف */
-      @media (max-width: 500px) {
-          .popup {
-              width: 90%;
-          }
-      }
-  </style>
-  </head>
-  <body>
-  
-  <!-- زر عائم بصيغة GIF -->
-  <button class="floating-btn" id="floating-btn" onclick="togglePopup()">
-      <img src="img/ai-assistant.gif" alt="تواصل معنا">
-  </button>
-  
-  <!-- النافذة المنبثقة -->
-  <div class="popup" id="popup">
-      <button class="close-btn" onclick="togglePopup()">✖</button>
-      <div class="contact-container">
-          <h3 class="contact-title">📩 تواصل معنا</h3>
-          <p class="contact-text">في حالة توفر مشكلة أو لديك اقتراح سواء حول اختبار أو غيره تواصل معنا</p>
-          
-          <div class="social-links">
-              <a href="http://t.me/ADATEALM_bot" target="_blank" class="btn telegram-btn">
-                  <img src="img/direct.gif" alt="بوت تيليغرام"> بوت تيليغرام
-              </a>
-              
-              <a href="https://t.me/adatealm" target="_blank" class="btn telegram-btn">
-                  <img src="img/telegram.png" alt="تيليغرام"> تيليغرام
-              </a>
-              
-              <a href="https://www.facebook.com/share/1BFTe2mWNL/" target="_blank" class="btn facebook-btn">
-                  <img src="img/facebook.png" alt="فيسبوك"> فيسبوك
-              </a>
-              
-              <a href="https://www.instagram.com/adat_ealm?igsh=djg1eXlwMTJvM2xw" target="_blank" class="btn instagram-btn">
-                  <img src="img/social.png" alt="إنستغرام"> إنستغرام
-              </a>
-          </div>
-      </div>
-      
-      <style>
-      .contact-container {
-          text-align: center;
-          background: #f9f9f9;
-          padding: 20px;
-          border-radius: 12px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          width: 90%;
-          max-width: 400px;
-          margin: auto;
-      }
-      
-      .contact-title {
-          font-size: 22px;
-          margin-bottom: 10px;
-      }
-      
-      .contact-text {
-          font-size: 16px;
-          color: #333;
-          margin-bottom: 15px;
-      }
-      
-      .social-links {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-      }
-      
-      .btn {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 10px;
-          border-radius: 8px;
-          text-decoration: none;
-          font-size: 16px;
-          font-weight: bold;
-          color: white;
-          transition: 0.3s;
-      }
-      
-      .btn img {
-          width: 24px;
-          height: 24px;
-          margin-left: 10px;
-      }
-      
-      .telegram-btn { background: #0088cc; }
-      .facebook-btn { background: #1877f2; }
-      .instagram-btn { background: #e1306c; }
-      
-      .btn:hover {
-          opacity: 0.8;
-      }
-      </style>
-      
-  
-  
-  
-  
-  <script>
-      function togglePopup() {
-          var popup = document.getElementById("popup");
-          popup.style.display = (popup.style.display === "block") ? "none" : "block";
-      }
-  </script>
-  
-  </body>
-  </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>طائرة - S22MCS والقرآن</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Tajawal', Arial, sans-serif;
-    }
-    body {
-      background-color: #f0f8ff;
-      overflow-x: hidden;
-      min-height: 100vh;
-      font-size: 16px;
-    }
+        // --- Modal Logic ---
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = "none";
+                // عند إغلاق نافذة الجمعة، أوقف الصوت
+                if (modalId === 'jumaaModal') {
+                    const audio = document.getElementById("jumaaAudio");
+                    if (audio && !audio.paused) {
+                        audio.pause();
+                    }
+                }
+            }
+        }
     
-    /* أنماط طائرة S22MCS */
-    .flying-container {
-      position: fixed;
-      top: 15%;
-      left: -500px;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      animation: flyAcross 40s linear forwards;
-      filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
-      direction: ltr;
-      opacity: 0;
-      transition: opacity 1s ease;
-      pointer-events: none;
-    }
-    .flying-container.show {
-      opacity: 1;
-    }
-    @keyframes flyAcross {
-      0% { transform: scale(0.9) translateX(0) translateY(0) rotate(0deg); left: -500px; opacity: 0; }
-      5% { opacity: 1; }
-      20% { transform: scale(1) translateX(0) translateY(-10px) rotate(-2deg); }
-      40% { transform: scale(1.02) translateX(0) translateY(5px) rotate(1deg); }
-      60% { transform: scale(1.03) translateX(0) translateY(-5px) rotate(-1deg); }
-      80% { transform: scale(1.05) translateX(0) translateY(8px) rotate(2deg); }
-      95% { opacity: 1; }
-      100% { left: 100vw; opacity: 0; }
-    }
-    .rope {
-      width: 40px;
-      height: 4px;
-      background: #546e7a;
-      margin: 0 5px;
-      position: relative;
-    }
-    .rope::before, .rope::after {
-      content: '';
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #546e7a;
-      border-radius: 50%;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    .rope::before { left: -3px; }
-    .rope::after { right: -3px; }
-    .airplane {
-      width: 80px;
-      height: 80px;
-      position: relative;
-      z-index: 1;
-    }
-    .airplane img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .banner {
-      position: relative;
-      width: 280px;
-      min-height: 100px;
-      background: rgba(30, 136, 229, 0.5);
-      backdrop-filter: blur(10px);
-      border-radius: 20px 0 0 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.4s ease-in-out;
-      pointer-events: auto;
-    }
-    .banner:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-    }
-    .banner-title {
-      font-weight: 700;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      color: #ffffff;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
-    }
-    .banner-links {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .banner-link {
-      background: rgba(255,255,255,0.1);
-      padding: 10px 14px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 500;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      box-shadow: inset 0 0 5px rgba(255,255,255,0.1);
-    }
-    .banner-link:hover {
-      background: rgba(255,255,255,0.2);
-      transform: scale(1.02);
-    }
-    .banner-link i {
-      margin-left: 10px;
-      font-size: 1.2rem;
-      color: #e3f2fd;
-    }
-
-    /* أنماط طائرة القرآن */
-    .flying-container-quran {
-      position: fixed;
-      top: 15%;
-      left: -500px;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      animation: flyAcrossQuran 30s linear forwards;
-      filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
-      direction: ltr;
-      opacity: 0;
-      transition: opacity 1s ease;
-      pointer-events: none;
-    }
-    .flying-container-quran.show {
-      opacity: 1;
-    }
-    @keyframes flyAcrossQuran {
-      0% { transform: scale(0.9) translateX(0) translateY(0) rotate(0deg); left: -500px; opacity: 0; }
-      5% { opacity: 1; }
-      20% { transform: scale(1) translateX(0) translateY(-10px) rotate(-2deg); }
-      40% { transform: scale(1.02) translateX(0) translateY(5px) rotate(1deg); }
-      60% { transform: scale(1.03) translateX(0) translateY(-5px) rotate(-1deg); }
-      80% { transform: scale(1.05) translateX(0) translateY(8px) rotate(2deg); }
-      95% { opacity: 1; }
-      100% { left: 100vw; opacity: 0; }
-    }
-    .rope-quran {
-      width: 40px;
-      height: 4px;
-      background: #2e7d32;
-      margin: 0 5px;
-      position: relative;
-    }
-    .rope-quran::before, .rope-quran::after {
-      content: '';
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #2e7d32;
-      border-radius: 50%;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    .rope-quran::before { left: -3px; }
-    .rope-quran::after { right: -3px; }
-    .airplane-quran {
-      width: 80px;
-      height: 80px;
-      position: relative;
-      z-index: 1;
-    }
-    .airplane-quran img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .banner-quran {
-      position: relative;
-      width: 280px;
-      min-height: 100px;
-      background: linear-gradient(135deg, rgba(46, 125, 50, 0.95) 0%, rgba(27, 94, 32, 0.95) 100%);
-      backdrop-filter: blur(10px);
-      border-radius: 20px 0 0 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.4s ease-in-out;
-      pointer-events: auto;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .banner-quran:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-    }
-    .banner-title-quran {
-      font-weight: 700;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-      color: #ffffff;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-    .banner-links-quran {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .banner-link-quran {
-      background: rgba(255,255,255,0.15);
-      padding: 10px 12px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 500;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .banner-link-quran:hover {
-      background: rgba(255,255,255,0.25);
-      transform: translateX(5px);
-    }
-    .banner-link-quran i {
-      margin-left: 10px;
-      font-size: 1.1rem;
-      color: #e8f5e9;
-    }
-    .banner-link-quran::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
-      transform: translateX(-100%);
-      transition: transform 0.6s;
-    }
-    .banner-link-quran:hover::after {
-      transform: translateX(100%);
-    }
-
-    /* تحسينات للهواتف */
-    @media (max-width: 768px) {
-      .airplane, .airplane-quran {
-        width: 60px;
-        height: 60px;
-      }
-      .rope, .rope-quran {
-        width: 30px;
-      }
-      .banner, .banner-quran {
-        width: 220px;
-        padding: 12px;
-        min-height: 85px;
-      }
-      .banner-title, .banner-title-quran {
-        font-size: 1rem;
-      }
-      .banner-link, .banner-link-quran {
-        font-size: 0.85rem;
-        padding: 8px 10px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        font-size: 14px;
-      }
-      .flying-container, .flying-container-quran {
-        top: 10%;
-      }
-    }
-  </style>
-</head>
-<body>
-  <!-- مشهد الطائرة الأولى (S22MCS) -->
-  <div class="flying-container" id="fly">
-    <div class="banner">
-      <div class="banner-title"><i class="fas fa-paper-plane"></i> تابع ال S22MCS</div>
-      <div class="banner-links">
-        <a href="https://t.me/S22MCS" class="banner-link" target="_blank"><i class="fab fa-telegram"></i> التيليجرام الرسمي</a>
-        <a href="https://www.instagram.com/s22mcs/profilecard" class="banner-link" target="_blank"><i class="fab fa-instagram"></i> الانتستقرام الرسمي</a>
-        <a href="https://www.facebook.com/profile.php?id=61552919247921" class="banner-link" target="_blank"><i class="fab fa-facebook"></i> الفيس الرسمي</a>
-        <a href="https://www.tiktok.com/@s22mcs" class="banner-link" target="_blank"><i class="fab fa-tiktok"></i> التيك توك الرسمي</a>
-        <a href="https://x.com/S22MCS" class="banner-link" target="_blank"><i class="fab fa-twitter"></i> التويتر الرسمي</a>
-      </div>
-    </div>
-    <div class="rope"></div>
-    <div class="airplane" style="width: 120px; height: 120px;">
-      <video src="adatealm/flying-airplane.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
-    </div>
-  </div>
-
-  <!-- مشهد الطائرة الثانية (القرآن) -->
-  <div class="flying-container-quran" id="flyQuran">
-    <div class="banner-quran">
-      <div class="banner-title-quran"><i class="fas fa-book-quran"></i> السلام عليكم نذكركم بتحدي ختم القرآن</div>
-      <div class="banner-links-quran">
-        <a href="index_KHATM_WARCH_30YOM.html" class="banner-link-quran" target="_blank"><i class="fas fa-play"></i> ابدأ تحدي  ختم القران الآن</a>
-        <a href="https://adatealm.github.io/khtam-alqaran/" class="banner-link-quran" target="_blank"><i class="fas fa-globe"></i>    الموقع الإلكتروني لختم القران</a>
-        <a href="https://t.me/adatealm/197" class="banner-link-quran" target="_blank"><i class="fab fa-android"></i> تحميل  تطبيق ختم القران للاندرويد</a>
-        <a href="https://t.me/adatealm/230" class="banner-link-quran" target="_blank"><i class="fab fa-telegram"></i>  قناة التليجرام لاداة علم</a>
-      </div>
-    </div>
-   
-        <div class="airplane-quran"style="width: 120px; height: 120px;">
-            <video src="adatealm/flying-airplane.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
-          </div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const flyingContainer = document.getElementById('fly');
-      const flyingContainerQuran = document.getElementById('flyQuran');
-      
-      // إعدادات التحليق
-      const settings = {
-        initialDelay: 3000,       // تأخير البدء الأولي (3 ثواني)
-        flightDuration: 40000,    // مدة التحليق (40 ثانية)
-        quranFlightDuration: 30000, // مدة تحليق القرآن (30 ثانية)
-        minHeight: 10,           // أقل ارتفاع للطائرة (بالمئة)
-        maxHeight: 30            // أعلى ارتفاع للطائرة (بالمئة)
-      };
-      
-      // دالة لبدء التحليق
-      function startFlight(container, duration, isQuran = false) {
-        // إعادة تعيين الطائرة
-        container.style.animation = 'none';
-        container.style.left = '-500px';
-        container.style.opacity = '0';
-        container.classList.remove('show');
-        
-        // إعادة حساب العرض لضمان التمرير الصحيح
-        void container.offsetWidth;
-
-        // وضع عشوائي للارتفاع
-        const randomHeight = Math.random() * (settings.maxHeight - settings.minHeight) + settings.minHeight;
-        container.style.top = randomHeight + '%';
-
-        // بدء التحليق بعد تأخير بسيط
-        setTimeout(() => {
-          const animationName = isQuran ? 'flyAcrossQuran' : 'flyAcross';
-          container.style.animation = `${animationName} ${duration/1000}s linear forwards`;
-          container.classList.add('show');
-        }, 100);
-      }
-      
-      // دالة لإدارة التحليق المتناوب
-      function manageFlights() {
-        // بدء تحليق الطائرة الأولى
-        startFlight(flyingContainer, settings.flightDuration);
-        
-        // بعد انتهاء تحليق الطائرة الأولى، ابدأ تحليق القرآن
-        setTimeout(() => {
-          startFlight(flyingContainerQuran, settings.quranFlightDuration, true);
-          
-          // بعد انتهاء تحليق القرآن، ابدأ الدورة من جديد
-          setTimeout(() => {
-            manageFlights();
-          }, settings.quranFlightDuration + 30000); // تأخير 30 ثانية بين التحليقات
-        }, settings.flightDuration + 30000); // تأخير 30 ثانية بين التحليقات
-      }
-      
-      // بدء التحليق الأول بعد التأخير الأولي
-      setTimeout(() => {
-        manageFlights();
-      }, settings.initialDelay);
-    });
-  </script>
+        function showModals() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0=الأحد, 5=الجمعة
+            const hours = today.getHours();
+    
+            // عرض الإشعار العام دائمًا عند التحميل
+            const generalModal = document.getElementById("generalModal");
+            if(generalModal) generalModal.style.display = "flex";
+    
+            // التحقق إذا كان اليوم هو الجمعة
+            if (dayOfWeek === 5) {
+                const kahfModal = document.getElementById("kahfModal");
+                if (kahfModal) kahfModal.style.display = "flex";
+    
+                // قبل الساعة 2 ظهرًا (14:00) يوم الجمعة
+                if (hours < 14) {
+                    const jumaaModal = document.getElementById("jumaaModal");
+                    if (jumaaModal) jumaaModal.style.display = "flex";
+                    
+                    const audio = document.getElementById("jumaaAudio");
+                    // محاولة تشغيل الصوت (قد تمنعه بعض المتصفحات)
+                    if (audio && audio.paused) { 
+                        const playPromise = audio.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(error => {
+                                console.log("تشغيل الصوت التلقائي ممنوع. يتطلب تفاعل المستخدم.");
+                                // يمكن إضافة زر "تشغيل الصوت" كحل بديل
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    
+        // تشغيل الدالة عند تحميل الصفحة بالكامل
+        window.onload = showModals;
+    </script>
 </body>
 </html>
