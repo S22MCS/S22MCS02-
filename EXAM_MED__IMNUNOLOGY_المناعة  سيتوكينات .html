@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار السيتوكينات التفاعلي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg-pro: #fff0f0; /* Light red for pro-inflammatory */
+            --card-border-pro: #ffc0c0;
+            --card-header-pro: #e63946;
+            
+            --card-bg-anti: #efffff; /* Light blue for anti-inflammatory */
+            --card-border-anti: #b3e0ff;
+            --card-header-anti: #1d3557;
+
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+        }
+        
+        h1, h2, h3, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .quiz-card {
+            background-color: transparent;
+            min-height: 250px;
+            perspective: 1000px;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+
+        /* Flip on hover for desktop and focus for mobile */
+        .quiz-card:hover .card-inner,
+        .quiz-card:focus .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ffffff, #e9e9e9);
+            border: 2px solid #ddd;
+            color: #333;
+        }
+        
+        .card-front h2 {
+           font-size: 1.5rem;
+           color: var(--card-header-pro);
+           margin-bottom: 15px;
+        }
+        
+        .card-front p {
+            font-size: 1rem;
+        }
+        
+        .card-front p:last-child {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: var(--card-bg-pro);
+            border: 2px solid var(--card-border-pro);
+            color: var(--text-color);
+            justify-content: flex-start;
+            align-items: stretch;
+            text-align: right;
+            overflow-y: auto;
+        }
+        
+        .card-back.anti-inflammatory-back {
+             background-color: var(--card-bg-anti);
+             border: 2px solid var(--card-border-anti);
+        }
+
+        .card-back h3 {
+            text-align: center;
+            color: var(--card-header-pro);
+            margin-bottom: 10px;
+        }
+
+        .anti-inflammatory-back h3 {
+            color: var(--card-header-anti);
+        }
+
+        .card-back p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .card-back hr {
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+            margin: 10px 0;
+        }
+        
+        .card-back strong {
+            display: inline-block;
+            min-width: 120px; /* For alignment */
+        }
+        
+        .card-back p strong:first-child{
+            color: #555;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h1>🧪 اختبار السيتوكينات التفاعلي (Quiz Interactif sur les Cytokines)</h1>
+        <p>انقر على البطاقة (أو مرر الفأرة فوقها) لكشف المعلومات.</p>
+
+        <div class="cards-grid">
+            <div class="quiz-card" tabindex="0">
+              <div class="card-inner">
+                <div class="card-front">
+                  <h2>🧬 Interleukine-1 (IL-1)</h2>
+                  <p>ما هي خصائصه الرئيسية؟</p>
+                  <p>(Cliquez pour voir les détails)</p>
+                </div>
+                <div class="card-back">
+                  <h3>Interleukine-1 (IL-1)</h3>
+                  <p><strong>النوع (Type):</strong> محفز للالتهاب (Pro-inflammatoire)</p>
+                  <p><strong>المصدر الرئيسي (Source):</strong> البلاعم (Macrophages)، الخلايا الوحيدة (Monocytes).</p>
+                  <p><strong>الوظيفة الرئيسية (Fonction):</strong> يسبب الحمى (fièvre)، ينشط الخلايا التائية (lymphocytes T) والبطانة الوعائية (endothélium vasculaire).</p>
+                  <hr>
+                  <p><strong>معلومات إضافية (Infos+):</strong>
+                    <br><strong>AR:</strong> يوجد على شكلين رئيسيين (IL-1α و IL-1β). يلعب دوراً محورياً في أمراض المناعة الذاتية مثل التهاب المفاصل الروماتويدي.
+                    <br><strong>FR:</strong> Il existe deux formes, IL-1α et IL-1β. Il joue un rôle clé dans les maladies auto-immunes comme la polyarthrite rhumatoïde.
+                  </p>
+                </div>
+              </div>
+            </div>
+        
+            <div class="quiz-card" tabindex="0">
+              <div class="card-inner">
+                <div class="card-front">
+                  <h2>🧬 Interleukine-6 (IL-6)</h2>
+                  <p>ما هي خصائصه الرئيسية؟</p>
+                  <p>(Cliquez pour voir les détails)</p>
+                </div>
+                <div class="card-back">
+                  <h3>Interleukine-6 (IL-6)</h3>
+                  <p><strong>النوع (Type):</strong> محفز للالتهاب (Pro-inflammatoire)</p>
+                  <p><strong>المصدر الرئيسي (Source):</strong> البلاعم (Macrophages)، الخلايا التائية (Lymphocytes T).</p>
+                  <p><strong>الوظيفة الرئيسية (Fonction):</strong> يزيد إنتاج بروتينات الطور الحاد من الكبد (protéines de la phase aiguë) مثل CRP.</p>
+                  <hr>
+                  <p><strong>معلومات إضافية (Infos+):</strong>
+                    <br><strong>AR:</strong> يحفز تمايز الخلايا البائية (B) إلى خلايا بلازمية منتجة للأجسام المضادة، مما يجعله مهماً في الاستجابة المناعية الخلطية.
+                    <br><strong>FR:</strong> Stimule la différenciation des lymphocytes B en plasmocytes producteurs d'anticorps, jouant un rôle dans l'immunité humorale.
+                  </p>
+                </div>
+              </div>
+            </div>
+        
+            <div class="quiz-card" tabindex="0">
+              <div class="card-inner">
+                <div class="card-front">
+                  <h2>🧬 TNF-α</h2>
+                  <p>ما هي خصائصه الرئيسية؟</p>
+                  <p>(Cliquez pour voir les détails)</p>
+                </div>
+                <div class="card-back">
+                  <h3>TNF-α (Facteur de Nécrose Tumorale)</h3>
+                  <p><strong>النوع (Type):</strong> محفز للالتهاب (Pro-inflammatoire)</p>
+                  <p><strong>المصدر الرئيسي (Source):</strong> البلاعم (Macrophages)، الخلايا التائية (Lymphocytes T).</p>
+                  <p><strong>الوظيفة الرئيسية (Fonction):</strong> يزيد نفاذية الأوعية، يسبب الحمى، ويحفز موت الخلايا المبرمج (apoptose).</p>
+                  <hr>
+                  <p><strong>معلومات إضافية (Infos+):</strong>
+                    <br><strong>AR:</strong> إنتاجه المفرط يمكن أن يؤدي إلى الصدمة الإنتانية (septic shock). الأدوية التي تستهدفه تستخدم لعلاج أمراض مثل داء كرون والتهاب المفاصل الروماتويدي.
+                    <br><strong>FR:</strong> Une production excessive peut causer un choc septique. Les médicaments anti-TNF sont utilisés pour traiter la maladie de Crohn et la polyarthrite rhumatoïde.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="quiz-card" tabindex="0">
+                <div class="card-inner">
+                  <div class="card-front">
+                    <h2>🧬 IFN-γ</h2>
+                    <p>ما هي خصائصه الرئيسية؟</p>
+                    <p>(Cliquez pour voir les détails)</p>
+                  </div>
+                  <div class="card-back">
+                    <h3>IFN-γ (Interféron-gamma)</h3>
+                    <p><strong>النوع (Type):</strong> محفز للالتهاب (Pro-inflammatoire)</p>
+                    <p><strong>المصدر الرئيسي (Source):</strong> الخلايا التائية المساعدة 1 (Th1)، الخلايا القاتلة الطبيعية (NK).</p>
+                    <p><strong>الوظيفة الرئيسية (Fonction):</strong> ينشط البلاعم بقوة، ويعزز عرض المستضدات (MHC I/II).</p>
+                    <hr>
+                    <p><strong>معلومات إضافية (Infos+):</strong>
+                      <br><strong>AR:</strong> حاسم في الدفاع ضد الميكروبات داخل الخلوية (مثل الفيروسات والبكتيريا)، حيث يزيد من القدرة القاتلة للخلايا البلعمية.
+                      <br><strong>FR:</strong> Crucial pour la défense contre les pathogènes intracellulaires (virus, bactéries) en augmentant la capacité microbicide des macrophages.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+            <div class="quiz-card" tabindex="0">
+                <div class="card-inner">
+                  <div class="card-front">
+                    <h2>🧬 IL-12</h2>
+                    <p>ما هي خصائصه الرئيسية؟</p>
+                    <p>(Cliquez pour voir les détails)</p>
+                  </div>
+                  <div class="card-back">
+                    <h3>Interleukine-12 (IL-12)</h3>
+                    <p><strong>النوع (Type):</strong> محفز للالتهاب (Pro-inflammatoire)</p>
+                    <p><strong>المصدر الرئيسي (Source):</strong> البلاعم، الخلايا المتغصنة (Cellules dendritiques).</p>
+                    <p><strong>الوظيفة الرئيسية (Fonction):</strong> يحفز تمايز الخلايا Th1 وإنتاج IFN-γ، وينشط خلايا NK.</p>
+                    <hr>
+                    <p><strong>معلومات إضافية (Infos+):</strong>
+                      <br><strong>AR:</strong> يعمل كجسر بين المناعة الفطرية والتكيفية، ويوجه الاستجابة نحو المناعة الخلوية ( لمحاربة الفيروسات والخلايا السرطانية).
+                      <br><strong>FR:</strong> Agit comme un pont entre l'immunité innée et adaptative, orientant la réponse vers l'immunité cellulaire (anti-virale et anti-tumorale).
+                    </p>
+                  </div>
+                </div>
+              </div>
+        
+            <div class="quiz-card" tabindex="0">
+              <div class="card-inner">
+                <div class="card-front">
+                  <h2>🧬 Interleukine-10 (IL-10)</h2>
+                  <p>ما هي خصائصه الرئيسية؟</p>
+                  <p>(Cliquez pour voir les détails)</p>
+                </div>
+                <div class="card-back anti-inflammatory-back">
+                  <h3>Interleukine-10 (IL-10)</h3>
+                  <p><strong>النوع (Type):</strong> مضاد للالتهاب (Anti-inflammatoire)</p>
+                  <p><strong>المصدر الرئيسي (Source):</strong> البلاعم، الخلايا التائية (Th2, Treg).</p>
+                  <p><strong>الوظيفة الرئيسية (Fonction):</strong> يثبط إنتاج السيتوكينات المحفزة للالتهاب (IL-1, TNF-α)، ويقلل نشاط البلاعم.</p>
+                  <hr>
+                  <p><strong>معلومات إضافية (Infos+):</strong>
+                    <br><strong>AR:</strong> يُعرف أيضاً باسم "عامل تثبيط تخليق السيتوكين" (CSIF). يمنع الاستجابات المناعية المفرطة ويحافظ على تحمل المناعة.
+                    <br><strong>FR:</strong> Aussi connu comme "CSIF". Prévient les réponses immunitaires excessives et maintient la tolérance immunitaire.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="quiz-card" tabindex="0">
+                <div class="card-inner">
+                  <div class="card-front">
+                    <h2>🧬 TGF-β</h2>
+                    <p>ما هي خصائصه الرئيسية؟</p>
+                    <p>(Cliquez pour voir les détails)</p>
+                  </div>
+                  <div class="card-back anti-inflammatory-back">
+                    <h3>TGF-β (Facteur de Croissance Transformant)</h3>
+                    <p><strong>النوع (Type):</strong> مضاد للالتهاب (Anti-inflammatoire)</p>
+                    <p><strong>المصدر الرئيسي (Source):</strong> العديد من الخلايا (Pleiades de cellules) بما في ذلك الخلايا التائية المنظمة (Treg).</p>
+                    <p><strong>الوظيفة الرئيسية (Fonction):</strong> يثبط الالتهاب والمناعة، ويحفز التئام الأنسجة وتكوين التليف (fibrose).</p>
+                    <hr>
+                    <p><strong>معلومات إضافية (Infos+):</strong>
+                      <br><strong>AR:</strong> له وظائف متعددة (pleiotropic). بينما يثبط المناعة، يمكن أن يساهم في تليف الأعضاء في الحالات المرضية.
+                      <br><strong>FR:</strong> A des fonctions pléiotropes. Bien qu'immunosuppresseur, il peut contribuer à la fibrose d'organes dans des contextes pathologiques.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+            <div class="quiz-card" tabindex="0">
+                <div class="card-inner">
+                  <div class="card-front">
+                    <h2>🧬 Interleukine-4 (IL-4)</h2>
+                    <p>ما هي خصائصه الرئيسية؟</p>
+                    <p>(Cliquez pour voir les détails)</p>
+                  </div>
+                  <div class="card-back anti-inflammatory-back">
+                    <h3>Interleukine-4 (IL-4)</h3>
+                    <p><strong>النوع (Type):</strong> مضاد للالتهاب (Anti-inflammatoire)</p>
+                    <p><strong>المصدر الرئيسي (Source):</strong> الخلايا التائية المساعدة 2 (Th2)، الخلايا البدينة (Mastocytes).</p>
+                    <p><strong>الوظيفة الرئيسية (Fonction):</strong> يحفز تمايز Th2، ويشجع الاستجابة الخلطية (إنتاج الأجسام المضادة).</p>
+                    <hr>
+                    <p><strong>معلومات إضافية (Infos+):</strong>
+                      <br><strong>AR:</strong> لاعب رئيسي في تفاعلات الحساسية (Allergie) من خلال تحفيز إنتاج الأجسام المضادة من نوع IgE، ومهم في الدفاع ضد الطفيليات الدودية.
+                      <br><strong>FR:</strong> Acteur majeur des allergies en stimulant la production d'IgE. Important dans la défense contre les parasites (helminthes).
+                    </p>
+                  </div>
+                </div>
+              </div>
+        
+          </div>
+          <p class="footer-note">✅ تم التحقق من المعلومات الأساسية وتنسيقها عبر أداة علم.</p>
+    </div>
+
+</body>
+</html>

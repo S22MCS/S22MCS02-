@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار تفاعلي: السيتوكينات</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --primary-color: #0056d2;
+            --secondary-color: #f0f2f5;
+            --background-color: #ffffff;
+            --text-color: #333;
+            --correct-color: #28a745;
+            --incorrect-color: #dc3545;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-wrapper {
+            width: 100%;
+            max-width: 800px;
+            background: var(--background-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        #start-screen h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        #start-screen p {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            color: #555;
+        }
+        .settings {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .setting-item { flex: 1; min-width: 200px; }
+        .setting-item label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        .setting-item input[type="number"], .setting-item select {
+            width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px;
+        }
+        .shuffle-item { display: flex; align-items: center; gap: 0.5rem; }
+        .btn {
+            display: block; width: 100%; padding: 1rem; margin-top: 1rem; font-size: 1.1rem;
+            font-family: 'Cairo', sans-serif; font-weight: bold; color: white;
+            background: linear-gradient(135deg, var(--primary-color), #007bff);
+            border: none; border-radius: 8px; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 86, 210, 0.3); }
+        .btn-secondary { background: linear-gradient(135deg, #6c757d, #5a6268); }
+        .btn-secondary:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+        #question-container { text-align: center; }
+        .question-text { font-size: 1.3rem; margin: 2rem 0; font-weight: bold; }
+        .options { list-style: none; padding: 0; margin: 0; }
+        .option {
+            display: block; padding: 1rem; margin: 0.75rem 0; background: #f8f9fa;
+            border: 2px solid #e9ecef; border-radius: 8px; cursor: pointer;
+            transition: all 0.2s ease; text-align: right;
+        }
+        .option:hover { border-color: var(--primary-color); background: #e9f2ff; }
+        .option.selected {
+            background-color: #d4e4ff; border-color: var(--primary-color);
+            font-weight: bold; color: var(--primary-color);
+        }
+        .option.correct { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .option.incorrect { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        
+        #progress-indicator { position: sticky; top: 0; background: var(--background-color); padding: 1rem 0; z-index: 10; }
+        .progress-info { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+        #timer { font-weight: bold; color: var(--primary-color); }
+        .progress-bar-container-main { width: 100%; background: #e9ecef; border-radius: 20px; }
+        #question-progress { height: 10px; background: var(--primary-color); border-radius: 20px; transition: width 0.3s; }
+
+        #result-section h2 { text-align: center; color: var(--primary-color); margin-bottom: 1.5rem; }
+        .score-summary { text-align: center; margin-bottom: 2rem; }
+        .progress-bar-container { background: #e9ecef; border-radius: 20px; overflow: hidden; }
+        #progress-bar { height: 20px; background: var(--correct-color); border-radius: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .stat-card { background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; }
+        .stat-card h4 { margin-bottom: 0.5rem; }
+        .stat-card i { color: var(--primary-color); margin-left: 5px; }
+        .chart-container { max-width: 300px; margin: 2rem auto; }
+        .question-review { border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; }
+        .question-review.correct { background-color: #f0fff4; border-left: 5px solid var(--correct-color); }
+        .question-review.incorrect { background-color: #fff5f5; border-left: 5px solid var(--incorrect-color); }
+        .user-answer, .correct-answer { margin: 0.5rem 0; }
+        .correct-answer { font-weight: bold; }
+        .explanation { background: #f8f9fa; padding: 1rem; margin-top: 1rem; border-radius: 8px; }
+
+        /* Modal Styles */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+            width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+        .modal.active { display: flex; justify-content: center; align-items: center; }
+        .modal-content {
+            background-color: #fefefe; margin: auto; padding: 2rem;
+            border: 1px solid #888; width: 90%; max-width: 600px;
+            border-radius: var(--border-radius); text-align: right;
+            position: relative; animation: slideIn 0.3s;
+        }
+        .close-btn { color: #aaa; position: absolute; left: 1rem; top: 1rem; font-size: 28px; font-weight: bold; cursor: pointer; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(-50px); } to { transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-wrapper">
+        <div id="start-screen">
+            <h1>🧪 اختبار تفاعلي: السيتوكينات</h1>
+            <p>اختبر معلوماتك في علم المناعة. اختر الإعدادات المناسبة ثم ابدأ.</p>
+            <div class="settings">
+                <div class="setting-item">
+                    <label for="question-count">عدد الأسئلة:</label>
+                    <select id="question-count">
+                        <option value="5">5</option>
+                        <option value="8" selected>الكل (8)</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="custom-duration">مدة الاختبار (دقائق):</label>
+                    <input type="number" id="custom-duration" value="10" min="1">
+                </div>
+                <div class="setting-item shuffle-item">
+                    <input type="checkbox" id="shuffle-questions" checked>
+                    <label for="shuffle-questions">عرض عشوائي للأسئلة</label>
+                </div>
+            </div>
+            <button id="start-btn" class="btn">🚀 ابدأ الاختبار الرئيسي</button>
+            <button id="quick-test-btn" class="btn btn-secondary">⚡ اختبار سريع (5 أسئلة)</button>
+        </div>
+    
+        <div id="question-container" style="display:none;"></div>
+    
+        <div id="result-section" style="display:none;">
+            <h2>نتائج الاختبار</h2>
+            <div class="score-summary">
+                <p><strong>نتيجتك النهائية:</strong> <span id="score-display"></span></p>
+                <div class="progress-bar-container"><div id="progress-bar" style="width: 0%;"></div></div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card"><h4><i class="fas fa-clock"></i> إجمالي الوقت</h4><p id="total-time"></p></div>
+                <div class="stat-card"><h4><i class="fas fa-chart-line"></i> متوسط الوقت/سؤال</h4><p id="average-time"></p></div>
+                <div class="stat-card"><h4><i class="fas fa-rabbit-fast"></i> أسرع إجابة</h4><p id="fastest-time"></p></div>
+                <div class="stat-card"><h4><i class="fas fa-turtle"></i> أبطأ إجابة</h4><p id="slowest-time"></p></div>
+            </div>
+            <div class="chart-container"><canvas id="results-chart"></canvas></div>
+            <h3>مراجعة الإجابات</h3>
+            <div id="results-container"></div>
+            <button onclick="location.reload()" class="btn">إعادة الاختبار</button>
+        </div>
+    
+        <div id="progress-indicator" style="display:none;">
+            <div class="progress-info">
+                <span id="progress-text"></span>
+                <span id="timer">00:00</span>
+            </div>
+            <div class="progress-bar-container-main">
+                <div id="question-progress" style="width: 0%;"></div>
+            </div>
+        </div>
+    
+        <div id="explanation-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeExplanation()">&times;</span>
+                <h3 id="modal-title"></h3>
+                <div id="explanation-text"></div>
+                <button class="btn" onclick="closeExplanation()" style="margin-top: 1.5rem;">السؤال التالي &larr;</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    // =======================================================
+    // مجموعة الأسئلة
+    // =======================================================
+    const allQuestions = [
+        {
+            text: "أي من التالي هو الدور الرئيسي للسيتوكين Interleukin-1 (IL-1)؟",
+            options: [
+                "يثبط المناعة ويحفز التئام الأنسجة",
+                "يسبب الحمى وينشط الخلايا التائية",
+                "يحفز تمايز الخلايا البائية (B-cells)",
+                "ينشط البلاعم بقوة للدفاع ضد الفيروسات"
+            ],
+            correct: [1],
+            explanation: "<strong>AR:</strong> الـ IL-1 هو سيتوكين محفز للالتهاب بقوة، ومن أشهر أدواره هو إحداث الحمى كجزء من الاستجابة الفطرية، بالإضافة إلى تنشيط الخلايا المناعية الأخرى. <br><strong>FR:</strong> L'IL-1 est une cytokine pro-inflammatoire puissante. L'un de ses rôles les plus connus est l'induction de la fièvre dans le cadre de la réponse innée.",
+            type: "single"
+        },
+        {
+            text: "ما هي الوظيفة الأساسية للسيتوكين Interleukin-6 (IL-6)؟",
+            options: [
+                "زيادة إنتاج بروتينات الطور الحاد من الكبد (مثل CRP)",
+                "تثبيط إنتاج السيتوكينات المحفزة للالتهاب",
+                "تحفيز إنتاج الأجسام المضادة من نوع IgE",
+                "التسبب في موت الخلايا المبرمج (Apoptosis)"
+            ],
+            correct: [0],
+            explanation: "<strong>AR:</strong> الـ IL-6 يحفز الكبد لإنتاج بروتينات الطور الحاد، والتي تعتبر علامات مهمة على وجود التهاب في الجسم. <br><strong>FR:</strong> L'IL-6 stimule le foie à produire les protéines de la phase aiguë (comme la CRP), qui sont des marqueurs importants de l'inflammation.",
+            type: "single"
+        },
+        {
+            text: "السيتوكين TNF-α (عامل نخر الورم ألفا) معروف بقدرته على:",
+            options: [
+                "توجيه الاستجابة المناعية نحو Th2",
+                "زيادة نفاذية الأوعية الدموية والتسبب بالحمى",
+                "تثبيط نشاط البلاعم بشكل كبير",
+                "تحفيز التئام الأنسجة ومنع التليف"
+            ],
+            correct: [1],
+            explanation: "<strong>AR:</strong> الـ TNF-α هو سيتوكين مركزي في الالتهاب الحاد، حيث يزيد من نفاذية الأوعية للسماح للخلايا المناعية بالوصول لموقع الإصابة، وهو أيضاً مسبب قوي للحمى. <br><strong>FR:</strong> Le TNF-α est une cytokine centrale de l'inflammation aiguë. Il augmente la perméabilité vasculaire et est un puissant pyrogène (induit la fièvre).",
+            type: "single"
+        },
+        {
+            text: "أي سيتوكين يعتبر حاسماً في تنشيط البلاعم وتعزيز المناعة الخلوية ضد الميكروبات داخل الخلوية؟",
+            options: [ "IL-4", "TGF-β", "IL-10", "IFN-γ" ],
+            correct: [3],
+            explanation: "<strong>AR:</strong> إنترفيرون-غاما (IFN-γ) هو المنشط الرئيسي للبلاعم، مما يعزز قدرتها على قتل الميكروبات التي تعيش داخل الخلايا مثل الفيروسات وبعض أنواع البكتيريا. <br><strong>FR:</strong> L'interféron-gamma (IFN-γ) est l'activateur le plus puissant des macrophages, améliorant leur capacité à tuer les pathogènes intracellulaires.",
+            type: "single"
+        },
+        {
+            text: "ما هو الدور الرئيسي للسيتوكين Interleukin-12 (IL-12)؟",
+            options: [
+                "يعمل كمضاد للالتهاب",
+                "يحفز تمايز الخلايا التائية إلى النوع Th1",
+                "يشجع على إنتاج الأجسام المضادة للحساسية (IgE)",
+                "يثبط نشاط الخلايا القاتلة الطبيعية (NK)"
+            ],
+            correct: [1],
+            explanation: "<strong>AR:</strong> الـ IL-12 يلعب دور الجسر بين المناعة الفطرية والتكيفية، حيث يوجه الخلايا التائية المساعدة لتصبح من النوع Th1، وهو أمر ضروري للمناعة الخلوية. <br><strong>FR:</strong> L'IL-12 est crucial pour orienter la différenciation des lymphocytes T vers le phénotype Th1, essentiel pour l'immunité à médiation cellulaire.",
+            type: "single"
+        },
+        {
+            text: "أي من السيتوكينات التالية يُصنف على أنه مضاد للالتهاب ويثبط إنتاج IL-1 و TNF-α؟",
+            options: [ "IL-6", "IFN-γ", "IL-10", "IL-12" ],
+            correct: [2],
+            explanation: "<strong>AR:</strong> الـ IL-10 هو سيتوكين تنظيمي رئيسي، وظيفته هي كبح الاستجابات المناعية المفرطة عن طريق تثبيط إنتاج السيتوكينات المحفزة للالتهاب. <br><strong>FR:</strong> L'IL-10 est une cytokine régulatrice majeure dont la fonction est de limiter les réponses immunitaires excessives en inhibant la production de cytokines pro-inflammatoires.",
+            type: "single"
+        },
+        {
+            text: "السيتوكين TGF-β له وظائف متعددة، لكن دوره الرئيسي في المناعة هو:",
+            options: [
+                "تنشيط الخلايا البدينة (Mast cells)",
+                "تحفيز الحمى الشديدة",
+                "تثبيط المناعة والالتهاب وتعزيز التئام الأنسجة",
+                "زيادة عرض المستضدات على الخلايا"
+            ],
+            correct: [2],
+            explanation: "<strong>AR:</strong> الـ TGF-β هو مثبط مناعي قوي. يمنع تكاثر الخلايا اللمفاوية ويشارك في عمليات الإصلاح النسيجي، ولكن زيادته قد تؤدي للتليف. <br><strong>FR:</strong> Le TGF-β est un puissant immunosuppresseur. Il inhibe la prolifération des lymphocytes et favorise la réparation tissulaire, mais peut aussi conduire à la fibrose.",
+            type: "single"
+        },
+        {
+            text: "أي سيتوكين يلعب دوراً رئيسياً في تفاعلات الحساسية (Allergy) عن طريق تحفيز إنتاج الأجسام المضادة من نوع IgE؟",
+            options: [ "IL-1", "IL-12", "IFN-γ", "IL-4" ],
+            correct: [3],
+            explanation: "<strong>AR:</strong> الـ IL-4 هو المحرك الرئيسي للاستجابة المناعية من نوع Th2، والتي ترتبط بالحساسية والدفاع ضد الطفيليات. يحفز الخلايا البائية على إنتاج IgE. <br><strong>FR:</strong> L'IL-4 est la cytokine clé de la réponse Th2, associée aux allergies et à la défense anti-parasitaire. Elle induit la production d'anticorps de type IgE par les lymphocytes B.",
+            type: "single"
+        }
+    ];
+
+    // =======================================================
+    // الشيفرة البرمجية لتشغيل الاختبار (نفس الشيفرة المقدمة)
+    // =======================================================
+    let currentQuestionIndex = 0;
+    let selectedAnswers = [];
+    let timer;
+    let timeLeft;
+    let totalTime = 0;
+    let quizDuration = 0;
+    let questionStartTime;
+    let timePerQuestion = [];
+    let questions = [];
+
+    const startScreen = document.getElementById("start-screen");
+    const startBtn = document.getElementById("start-btn");
+    const quickTestBtn = document.getElementById("quick-test-btn");
+    const questionContainer = document.getElementById("question-container");
+    const resultSection = document.getElementById("result-section");
+    const resultsContainer = document.getElementById("results-container");
+    const scoreDisplay = document.getElementById("score-display");
+    const progressBar = document.getElementById("progress-bar");
+    const questionProgress = document.getElementById("question-progress");
+    const progressIndicator = document.getElementById("progress-indicator");
+    const timerElement = document.getElementById("timer");
+    const totalTimeElement = document.getElementById("total-time");
+    const averageTimeElement = document.getElementById("average-time");
+    const fastestTimeElement = document.getElementById("fastest-time");
+    const slowestTimeElement = document.getElementById("slowest-time");
+    const explanationModal = document.getElementById("explanation-modal");
+
+    document.addEventListener('DOMContentLoaded', function() {
+        startBtn.addEventListener("click", startQuiz);
+        quickTestBtn.addEventListener("click", startQuickTest);
+    });
+    
+    function startQuiz() {
+        const durationInput = parseInt(document.getElementById("custom-duration").value) || 10;
+        const questionCount = document.getElementById("question-count").value;
+        const shuffleQuestions = document.getElementById("shuffle-questions").checked;
+        
+        quizDuration = durationInput * 60;
+        selectedAnswers = [];
+        timePerQuestion = [];
+        totalTime = 0;
+        currentQuestionIndex = 0;
+
+        let tempQuestions = [...allQuestions];
+        if (shuffleQuestions) {
+            tempQuestions = shuffleArray(tempQuestions);
+        }
+        
+        if (questionCount !== "all" && tempQuestions.length >= parseInt(questionCount)) {
+            questions = tempQuestions.slice(0, parseInt(questionCount));
+        } else {
+            questions = tempQuestions; // Use all if "all" or not enough questions
+        }
+
+        startTest();
+    }
+    
+    function startQuickTest() {
+        quizDuration = 5 * 60; // 5 minutes
+        selectedAnswers = [];
+        timePerQuestion = [];
+        totalTime = 0;
+        currentQuestionIndex = 0;
+        
+        questions = getRandomQuestions(5, true);
+        startTest();
+    }
+    
+    function startTest() {
+        startScreen.style.display = "none";
+        questionContainer.style.display = "block";
+        resultSection.style.display = "none";
+        progressIndicator.style.display = "block";
+        loadQuestion();
+        startTimer();
+    }
+    
+    function getRandomQuestions(count, shuffle = true) {
+        const shuffled = shuffle ? shuffleArray([...allQuestions]) : [...allQuestions];
+        return shuffled.slice(0, count);
+    }
+    
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+    
+    function loadQuestion() {
+        if (currentQuestionIndex >= questions.length) {
+            finishQuiz();
+            return;
+        }
+
+        const question = questions[currentQuestionIndex];
+        questionStartTime = new Date().getTime();
+        
+        // Update progress
+        const progressPercent = (currentQuestionIndex / questions.length) * 100;
+        questionProgress.style.width = `${progressPercent}%`;
+        document.getElementById("progress-text").textContent = `السؤال ${currentQuestionIndex + 1} من ${questions.length}`;
+
+        const optionsHTML = question.options.map((option, index) => `
+            <li onclick="selectOption(this, ${index})" class="option" role="button" tabindex="0">${option}</li>
+        `).join('');
+
+        questionContainer.innerHTML = `
+            <div class="question-text"><p>${question.text}</p></div>
+            <ul class="options">${optionsHTML}</ul>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <button class="btn" onclick="submitAnswer()" id="submit-btn" disabled>تأكيد الإجابة</button>
+                <button class="btn btn-secondary" onclick="showExplanation()" id="explain-btn" style="display: none;">
+                    <i class="fas fa-lightbulb"></i> شرح الإجابة
+                </button>
+            </div>`;
+    }
+    
+    function selectOption(element, optionIndex) {
+        const question = questions[currentQuestionIndex];
+        const submitBtn = document.getElementById('submit-btn');
+
+        if (question.type === "multi") {
+            element.classList.toggle("selected");
+            if (!Array.isArray(selectedAnswers[currentQuestionIndex])) {
+                selectedAnswers[currentQuestionIndex] = [];
+            }
+            const findIndex = selectedAnswers[currentQuestionIndex].indexOf(optionIndex);
+            if (findIndex > -1) {
+                selectedAnswers[currentQuestionIndex].splice(findIndex, 1);
+            } else {
+                selectedAnswers[currentQuestionIndex].push(optionIndex);
+            }
+        } else {
+            const options = document.querySelectorAll(".options li");
+            options.forEach(opt => opt.classList.remove("selected"));
+            element.classList.add("selected");
+            selectedAnswers[currentQuestionIndex] = optionIndex;
+        }
+        
+        submitBtn.disabled = false;
+    }
+    
+    function submitAnswer() {
+        const question = questions[currentQuestionIndex];
+        const endTime = new Date().getTime();
+        const timeSpent = Math.floor((endTime - questionStartTime) / 1000);
+        
+        question.timeSpent = timeSpent;
+        timePerQuestion.push(timeSpent);
+        totalTime += timeSpent;
+        
+        const options = document.querySelectorAll(".options li");
+        
+        // Disable further clicks
+        options.forEach(opt => opt.style.pointerEvents = "none");
+        
+        let isCorrect;
+        if (question.type === "multi") {
+            isCorrect = arraysEqual(selectedAnswers[currentQuestionIndex], question.correct);
+        } else {
+            isCorrect = selectedAnswers[currentQuestionIndex] === question.correct[0];
+        }
+
+        options.forEach((option, index) => {
+            if (question.correct.includes(index)) {
+                option.classList.add("correct");
+            } else if ( (Array.isArray(selectedAnswers[currentQuestionIndex]) && selectedAnswers[currentQuestionIndex].includes(index)) || selectedAnswers[currentQuestionIndex] === index ) {
+                option.classList.add("incorrect");
+            }
+        });
+        
+        document.getElementById("submit-btn").style.display = "none";
+        document.getElementById("explain-btn").style.display = "inline-block";
+    }
+    
+    function arraysEqual(a, b) {
+        if (!a || !b) return false;
+        if (a.length !== b.length) return false;
+        const sortedA = [...a].sort();
+        const sortedB = [...b].sort();
+        return sortedA.every((val, index) => val === sortedB[index]);
+    }
+    
+    function showExplanation() {
+        const question = questions[currentQuestionIndex];
+        document.getElementById("modal-title").textContent = `شرح السؤال ${currentQuestionIndex + 1}`;
+        document.getElementById("explanation-text").innerHTML = `
+            <p><strong>السؤال:</strong> ${question.text}</p>
+            <p><strong>الإجابة الصحيحة:</strong> ${question.correct.map(i => question.options[i]).join("، ")}</p>
+            <hr>
+            <p>${question.explanation}</p>
+        `;
+        explanationModal.classList.add("active");
+    }
+    
+    function closeExplanation() {
+        explanationModal.classList.remove("active");
+        nextQuestion();
+    }
+    
+    function nextQuestion() {
+        currentQuestionIndex++;
+        loadQuestion();
+    }
+    
+    function finishQuiz() {
+        clearInterval(timer);
+        questionContainer.style.display = "none";
+        resultSection.style.display = "block";
+        progressIndicator.style.display = "none";
+        displayResults();
+    }
+    
+    function displayResults() {
+        let correctAnswersCount = 0;
+        resultsContainer.innerHTML = "";
+        
+        questions.forEach((question, index) => {
+            let isCorrect;
+            if (question.type === "multi") {
+                isCorrect = arraysEqual(selectedAnswers[index], question.correct);
+            } else {
+                isCorrect = selectedAnswers[index] === question.correct[0];
+            }
+            if (isCorrect) correctAnswersCount++;
+            
+            const userAnswerText = (selectedAnswers[index] !== undefined)
+                ? (Array.isArray(selectedAnswers[index]) 
+                    ? selectedAnswers[index].map(i => question.options[i]).join("، ") 
+                    : question.options[selectedAnswers[index]])
+                : "لم تتم الإجابة";
+            
+            resultsContainer.innerHTML += `
+                <div class="question-review ${isCorrect ? 'correct' : 'incorrect'}">
+                    <h3>السؤال ${index + 1}: ${question.text}</h3>
+                    <p class="user-answer"><strong>إجابتك:</strong> ${userAnswerText}</p>
+                    ${!isCorrect ? `<p class="correct-answer"><strong>الإجابة الصحيحة:</strong> ${question.correct.map(i => question.options[i]).join("، ")}</p>` : ''}
+                    <div class="explanation">
+                      <p>${question.explanation}</p>
+                      <small>الوقت المستغرق: ${formatTime(question.timeSpent)}</small>
+                    </div>
+                </div>`;
+        });
+        
+        const percentage = questions.length > 0 ? Math.round((correctAnswersCount / questions.length) * 100) : 0;
+        scoreDisplay.textContent = `${correctAnswersCount} / ${questions.length} (${percentage}%)`;
+        progressBar.style.width = `${percentage}%`;
+        
+        totalTimeElement.textContent = formatTime(totalTime);
+        const averageTime = questions.length > 0 ? Math.round(totalTime / questions.length) : 0;
+        averageTimeElement.textContent = formatTime(averageTime);
+        fastestTimeElement.textContent = formatTime(Math.min(...timePerQuestion, Infinity));
+        slowestTimeElement.textContent = formatTime(Math.max(...timePerQuestion, 0));
+        
+        renderResultsChart(correctAnswersCount, questions.length - correctAnswersCount);
+    }
+    
+    function renderResultsChart(correct, incorrect) {
+        const ctx = document.getElementById('results-chart').getContext('2d');
+        if (window.resultsChart) window.resultsChart.destroy();
+        window.resultsChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['إجابات صحيحة', 'إجابات خاطئة'],
+                datasets: [{
+                    data: [correct, incorrect],
+                    backgroundColor: ['#28a745', '#dc3545'],
+                    borderColor: ['#ffffff'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom', labels: {font: {family: 'Cairo'}}} },
+                cutout: '70%'
+            }
+        });
+    }
+
+    function startTimer() {
+        timeLeft = quizDuration;
+        updateTimerDisplay();
+        timer = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                Swal.fire('انتهى الوقت!', 'لقد انتهى الوقت المخصص للاختبار.', 'warning');
+                finishQuiz();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        timerElement.textContent = formatTime(timeLeft);
+        if (timeLeft <= 10) timerElement.style.color = '#dc3545';
+    }
+
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    </script>
+</body>
+</html>
