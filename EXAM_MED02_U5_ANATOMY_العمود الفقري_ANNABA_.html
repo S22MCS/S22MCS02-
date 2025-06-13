@@ -8750,8 +8750,6 @@ window.addEventListener('load', function() {
 
 
 
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -8771,8 +8769,7 @@ window.addEventListener('load', function() {
             --dark-bg: #111827;
             --panel-bg: #1f2937;
             --border-color: #374151;
-            --text-light: #ffffff;
-            --text-accent: #fbe9e7;
+        
             --red-dark: #3e0b10;
             --red-border: #b71c1c;
             --blue: #3b82f6;
@@ -8969,10 +8966,11 @@ window.addEventListener('load', function() {
     
     <div class="left-panel">
 
-
-           <div class="content-section">
-        <h1 class="main-title">مَرْحَبًا بِكُمْ فِي أَدَاة عِلْم</h1>
-        <h2 class="sub-title">اختر وجهتك</h2>
+<div class="content-section">
+    <h1 style=" color: #ffffff; " class="main-title">
+        مَرْحَبًا بِكُمْ فِي أَدَاة عِلْم
+    </h1>
+    <h2  style=" color: #ffffff;" class="sub-title">اختر وجهتك</h2>
 
 
       <button class="option-btn" id="adatealmContinueBtn">
@@ -9015,7 +9013,7 @@ window.addEventListener('load', function() {
     <div class="right-panel">
 
         <div class="popup-frame">
-            <div class="popup-content">
+            <div  style=" color: #ffffff; " class="popup-content">
                 <p>عَدُوُّكَ لَنْ يَنْتَظِرَكَ بِطَبَقٍ مِنْ وُرُود</p>
                 <a href="https://t.me/S22MCS" target="_blank">
                     <img src="adatealm/S⚡2⚡2MCS.jpg" alt="S22MCS Telegram Channel">
@@ -9062,5 +9060,191 @@ window.addEventListener('load', function() {
     });
 </script>
 
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة متجاوبة بوضع ليلي/نهاري</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2980b9;
+        --success-color: #27ae60;
+        --danger-color: #c0392b;
+        --text-color: #34495e;
+        /* === هذا هو السطر الذي تم تعديله === */
+        --body-bg-color: #e9ecef; /* لون خلفية الصفحة (رمادي أكثر وضوحاً) */
+        --container-bg-color: #ffffff; /* لون الحاوية (أبيض نقي) */
+        --container-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        --border-color: #dee2e6;
+      }
+
+      .dark-mode {
+        --text-color: #ecf0f1;
+        --body-bg-color: #121212;
+        --container-bg-color: #1e1e1e;
+        --container-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+        --border-color: #3a3a3a;
+      }
+
+      body {
+        background-color: var(--body-bg-color);
+        color: var(--text-color);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 1rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .container {
+        background-color: var(--container-bg-color);
+        color: var(--text-color);
+        box-shadow: var(--container-shadow);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem auto;
+        max-width: 900px;
+      }
+
+      .options li {
+        background-color: var(--container-bg-color);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        list-style: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+      }
+
+      .options li:hover {
+        background-color: var(--secondary-color);
+        color: #ffffff;
+        transform: translateY(-2px);
+      }
+
+      .options li.selected { background-color: var(--primary-color); color: white; }
+      .options li.correct { background-color: var(--success-color); color: white; }
+      .options li.incorrect { background-color: var(--danger-color); color: white; }
+
+      .theme-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: var(--primary-color);
+        color: white;
+        font-size: 24px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .theme-toggle:hover {
+        transform: scale(1.1) rotate(15deg);
+        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+      }
+
+      @media (max-width: 768px) {
+        body { padding: 0.5rem; }
+        .container { padding: 1rem; margin: 0.5rem auto; }
+      }
+
+      @media (max-width: 480px) {
+        body { padding: 0; }
+        .container {
+          border-radius: 0;
+          margin: 0;
+          width: 100%;
+          max-width: 100%;
+          border-left: none;
+          border-right: none;
+        }
+        .theme-toggle { bottom: 15px; right: 15px; }
+      }
+    </style>
+</head>
+<body>
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleButton ? themeToggleButton.querySelector('i') : null;
+        if (!themeToggleButton || !themeIcon) {
+          console.error("خطأ: لم يتم العثور على زر تبديل الوضع.");
+          return;
+        }
+        const applyTheme = (isDark) => {
+          if (isDark) {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'dark');
+          } else {
+            document.body.classList.remove('dark-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'light');
+          }
+        };
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDarkScheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme)) {
+          applyTheme(true);
+        } else {
+          applyTheme(false);
+        }
+        themeToggleButton.addEventListener('click', () => {
+          const isCurrentlyDark = document.body.classList.contains('dark-mode');
+          applyTheme(!isCurrentlyDark);
+        });
+      });
+    </script>
 </body>
 </html>
