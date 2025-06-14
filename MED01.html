@@ -2751,40 +2751,16 @@
        </div>
      </div>
  
-     <p>مخصص <span>لطلبة السنة اولى طب</span> - جميع الحقوق محفوظة &copy; 2025</p>
+     <p>مخصص <span>لطلبة السنة ثانية  طب</span> - جميع الحقوق محفوظة &copy; 2025</p>
    </footer>
  </body>
  </html>
  
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-
+          
+          
+          
 
 
 
@@ -3342,54 +3318,51 @@
 
 
 
-
-
-
-
-            
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تنبيه طبي - INFATM</title>
     <style>
         /* CSS Variables for easier theme management */
         :root {
             --primary-color: #e74c3c;
             --primary-dark-color: #c0392b;
-            --secondary-color: white;
+            --secondary-color: #ffffff;
             --text-color: #333;
             --light-bg-color: #f5f5f5;
             --overlay-bg-color: rgba(0, 0, 0, 0.8);
             --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* General Reset */
+        /* General Reset & Overflow Prevention */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
         
-        body {
+        /* The most important fix: prevent horizontal scrolling */
+        html, body {
             font-family: var(--font-family);
             -webkit-text-size-adjust: 100%;
             touch-action: manipulation;
-            overflow: auto; 
+            overflow-x: hidden; /* Prevents horizontal scrollbars */
         }
 
+        /* Lock body scroll when popup is open */
         body.popup-open {
-            overflow: hidden;
+            overflow-y: hidden;
         }
 
         /* Floating Danger Button */
         .danger-btn {
             position: fixed;
-         top: 65px;
-            left: 20px;
-            width: 55px;
-            height: 55px;
+            top: 4rem; /* 64px */
+            left: 1.25rem; /* 20px */
+            width: 3.5rem;  /* 56px */
+            height: 3.5rem; /* 56px */
             background: linear-gradient(135deg, var(--primary-color), var(--primary-dark-color));
             color: var(--secondary-color);
             font-size: 1.75rem;
@@ -3399,7 +3372,7 @@
             align-items: center;
             cursor: pointer;
             border: 2px solid var(--secondary-color);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
+            box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4), 
                         inset 0 2px 4px rgba(255, 255, 255, 0.3);
             transition: transform 0.2s ease, background 0.2s ease;
             z-index: 1000;
@@ -3410,7 +3383,7 @@
 
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(220, 20, 60, 0); }
+            70% { box-shadow: 0 0 0 1rem rgba(220, 20, 60, 0); }
             100% { box-shadow: 0 0 0 0 rgba(220, 20, 60, 0); }
         }
 
@@ -3424,8 +3397,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
             background-color: var(--overlay-bg-color);
             z-index: 1001;
             opacity: 0;
@@ -3440,23 +3413,22 @@
             visibility: visible;
         }
 
-        /* Popup Container - ALWAYS FULLSCREEN */
+        /* Popup Container - Fullscreen */
         .popup-container {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            z-index: 10002;
+            z-index: 8002;
             background: var(--secondary-color);
             transform: scale(0.95);
             opacity: 0;
             visibility: hidden;
             transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
             overscroll-behavior: contain;
-            /* No border-radius as it's fullscreen */
         }
 
         .popup-container.active {
@@ -3493,12 +3465,12 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            left: 15px;
+            left: 1rem; /* 16px */
             background: rgba(255, 255, 255, 0.2);
             color: var(--secondary-color);
             border: none;
-            width: 36px;
-            height: 36px;
+            width: 2.25rem;  /* 36px */
+            height: 2.25rem; /* 36px */
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -3522,28 +3494,26 @@
             align-items: center;
             justify-content: center;
             height: 100%;
-            padding: 20px;
+            padding: 1.25rem;
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
+            width: 3.125rem;  /* 50px */
+            height: 3.125rem; /* 50px */
             border: 5px solid rgba(231, 76, 60, 0.2);
             border-top: 5px solid var(--primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
         .loader p {
             color: #7f8c8d;
             font-size: 1.1rem;
-            margin-top: 10px;
+            margin-top: 1rem;
         }
         
         /* Disable hover effects on touch devices for a better UX */
@@ -3557,7 +3527,6 @@
                 background: rgba(0, 0, 0, 0.2);
             }
         }
-
     </style>
 </head>
 <body>
@@ -3572,6 +3541,7 @@
         <h2 id="popupTitle">تنبيه - محتوى INFATM</h2>
     </div>
     <div class="popup-content" id="contentContainer">
+        <!-- Content will be loaded here -->
         <div class="loader">
             <div class="spinner"></div>
             <p>جاري تحميل المحتوى...</p>
@@ -3593,11 +3563,7 @@
     // Toggle popup visibility
     function togglePopup() {
         const isActive = popupContainer.classList.contains('active');
-        if (isActive) {
-            closePopup();
-        } else {
-            openPopup();
-        }
+        isActive ? closePopup() : openPopup();
     }
     
     function openPopup() {
@@ -3622,33 +3588,41 @@
     
     // Load content via iframe
     function loadContent() {
-        try {
-            showIframeContent();
-            isContentLoaded = true;
-        } catch (error) {
-            console.error("Content loading error:", error);
-            showError(error);
-        }
+        // Simple try-catch is not effective for iframe loading errors.
+        // The iframe will show its own error page if the URL fails.
+        // We'll proceed to create the iframe.
+        showIframeContent();
+        isContentLoaded = true;
     }
     
     // Display content using an iframe
     function showIframeContent() {
-        contentContainer.innerHTML = `
-            <iframe src="${TARGET_URL}" 
-                    style="width:100%; height:100%; border:none;"
-                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-                    loading="lazy"
-                    title="محتوى طبي خارجي">
-            </iframe>
-        `;
+        // Clear loader before inserting iframe
+        contentContainer.innerHTML = ''; 
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = TARGET_URL;
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.sandbox = "allow-same-origin allow-scripts allow-popups allow-forms";
+        iframe.loading = "lazy";
+        iframe.title = "محتوى طبي خارجي";
+        
+        // Handle loading errors
+        iframe.onerror = () => {
+             showError({ message: 'فشل تحميل المحتوى. يرجى التحقق من اتصالك بالإنترنت.' });
+        };
+
+        contentContainer.appendChild(iframe);
     }
     
     // Display an error message
     function showError(error) {
         contentContainer.innerHTML = `
             <div class="loader">
-                <div style="color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
-                <p style="margin-bottom: 20px; color: #555;">${error.message}</p>
+                <div style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 1.25rem; color: #555;">${error.message}</p>
                 <button onclick="retryLoading()" 
                         style="padding: 10px 25px; background: var(--primary-color); color: white; border: none; border-radius: 30px; font-size: 1rem; box-shadow: 0 3px 10px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s;">
                     إعادة المحاولة
@@ -3666,6 +3640,8 @@
                 <p>جاري إعادة تحميل المحتوى...</p>
             </div>
         `;
+        // Reset state and try again
+        isContentLoaded = false;
         setTimeout(loadContent, 500);
     }
     
@@ -3678,16 +3654,10 @@
         }
     });
     
-    popupContainer.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-    
     // Haptic feedback function
     function vibrate(duration_ms) {
-        if ('vibrate' in navigator) {
-            if (!('connection' in navigator && navigator.connection.saveData)) {
-                navigator.vibrate(duration_ms);
-            }
+        if ('vibrate' in navigator && !('connection' in navigator && navigator.connection.saveData)) {
+            navigator.vibrate(duration_ms);
         }
     }
     
@@ -3697,6 +3667,30 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3933,7 +3927,7 @@
 
 <div class="content-section">
     <h1 style=" color: #ffffff;" class="main-title">
-        مَرْحَبًا بِكُمْ فِي  قسم السنة الأولى للطب  التابع ل أَدَاة عِلْم
+        مَرْحَبًا بِكُمْ فِي  قسم   السنة  الأولى   للطب  التابع ل أَدَاة عِلْم
     </h1>
     <h2  style=" color: #ffffff;" class="sub-title">اختر وجهتك</h2>
 
@@ -3961,8 +3955,6 @@
         </button>
      </div>
 </div>
-
-
 
 
 
