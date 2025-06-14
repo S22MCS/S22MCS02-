@@ -1,1014 +1,450 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحليل أسئلة علم المناعة</title>
+    <title>تحليل احترافي لأسئلة علم المناعة</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     
     <style>
         :root {
-            --primary-color: #2c7be5;
-            --secondary-color: #6c757d;
-            --bg-color: #f8f9fa;
-            --card-bg-color: #ffffff;
-            --font-color: #12263f;
-            --border-color: #e3ebf6;
-            --highlight-color: #ff6b6b;
+            --primary-color: #3B82F6;
+            --secondary-color: #10B981;
+            --bg-color: #F3F4F6;
+            --card-bg-color: #FFFFFF;
+            --font-color: #1F2937;
+            --border-color: #E5E7EB;
+            --header-font-weight: 800;
+            --body-font-weight: 500;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --card-radius: 16px;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #60A5FA;
+            --secondary-color: #34D399;
+            --bg-color: #111827;
+            --card-bg-color: #1F2937;
+            --font-color: #D1D5DB;
+            --border-color: #374151;
         }
         
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
+        html { scroll-behavior: smooth; }
+
         body {
             font-family: 'Tajawal', sans-serif;
             background-color: var(--bg-color);
             color: var(--font-color);
-            margin: 0;
-            padding: 10px;
-            line-height: 1.6;
-            font-size: 15px;
+            line-height: 1.7;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
         }
         
-        .container { max-width: 100%; margin: auto; padding: 0 5px; }
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
         
-        h1 { color: var(--primary-color); text-align: center; font-size: 1.6rem; margin: 15px 0; font-weight: 700; }
-        
-        h2 { color: var(--font-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 8px; margin-top: 25px; font-size: 1.3rem; font-weight: 600; }
-        
-        h3 { text-align: center; color: var(--secondary-color); font-size: 1.1rem; margin: 15px 0; font-weight: 500; }
+        h1, h2 {
+            font-weight: var(--header-font-weight);
+            text-align: center;
+        }
+        h1 { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px; }
+        h2 { font-size: 2rem; color: var(--font-color); margin: 40px 0 20px 0; }
+        h3 { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 15px; }
 
         .card {
             background-color: var(--card-bg-color);
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+            border-radius: var(--card-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
             border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, background-color 0.3s, border-color 0.3s;
         }
         
-        .intro-card { background-color: #f0f7ff; border-left: 4px solid var(--primary-color); }
-        .intro-card p { font-size: 0.95rem; line-height: 1.7; margin: 0; color: #3a4e6b; }
-        .intro-card strong { color: var(--primary-color); font-weight: 700; }
-        
-        .table-wrapper { 
-            overflow-x: auto; 
-            -webkit-overflow-scrolling: touch; 
-            margin: 0 -5px; 
-            padding: 0 5px; 
-            max-width: 100%;
-        }
-        
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-size: 13px; 
-            min-width: 600px; 
-        }
-        
-        th, td { 
-            border: 1px solid var(--border-color); 
-            padding: 8px 10px; 
-            text-align: center; 
-            white-space: nowrap;
-        }
-        
-        thead th {
-            background-color: var(--primary-color);
-            color: white;
-            font-size: 13px;
-            position: sticky;
-            top: 0;
-            font-weight: 500;
-        }
-        
-        tbody tr:nth-of-type(odd) { background-color: #f9fbfe; }
-        tbody tr:hover { background-color: #f0f5ff; }
-        
-        tfoot td { font-weight: bold; font-size: 14px; background-color: #e9f2ff; }
-        
-        td:first-child, th:first-child {
-            text-align: right;
-            font-weight: 600;
-            background-color: #f5f9ff;
-            position: sticky;
-            right: 0;
-            left: auto;
-            border-left: 2px solid var(--primary-color);
-            white-space: normal;
-            min-width: 140px;
-        }
-        
-        thead th:first-child { z-index: 3; background-color: var(--primary-color); }
-
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        .chart-container { 
-            position: relative; 
-            height: 280px; 
-            width: 100%; 
-            margin: 0 auto;
-        }
-        
-        .highlight { color: var(--highlight-color); font-weight: 700; }
-        
-        .summary-card { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 10px; 
-            justify-content: center; 
-            margin: 15px 0; 
-        }
-        
-        .summary-item {
-            background: #f0f5ff;
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--primary-color);
-            flex: 1 1 120px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            min-width: 120px;
-        }
-        
-        .summary-item span { display: block; font-weight: 700; font-size: 16px; color: var(--font-color); }
-
-        /* Heatmap Styles */
-        .heatmap-table td { font-weight: bold; color: var(--font-color); }
-        .heat-0 { background-color: #f8f9fa; color: #adb5bd !important; }
-        .heat-1 { background-color: #cfe2ff; }
-        .heat-2 { background-color: #9ec5fe; }
-        .heat-3 { background-color: #6ea8fe; }
-        .heat-4 { background-color: #3d8bfd; color: white; }
-        .heat-5 { background-color: #0d6efd; color: white; }
-        
-        /* Language Toggle */
-        .language-toggle {
-            display: flex;
-            justify-content: center;
-            margin: 15px 0;
-            gap: 10px;
-        }
-        
-        .language-btn {
-            padding: 8px 15px;
-            border-radius: 20px;
-            background: #e9f2ff;
-            color: var(--primary-color);
-            border: none;
-            font-family: 'Tajawal', sans-serif;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .language-btn.active {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .language-content {
-            display: none;
-        }
-        
-        .language-content.active {
-            display: block;
-        }
-        
-        /* Responsive Styles */
-        @media (max-width: 600px) {
-            .summary-item {
-                flex: 1 1 100px;
-                min-width: 100px;
-                padding: 6px 8px;
-                font-size: 12px;
-            }
-            
-            .summary-item span {
-                font-size: 14px;
-            }
-            
-            h1 {
-                font-size: 1.4rem;
-            }
-            
-            h2 {
-                font-size: 1.2rem;
-            }
-            
-            .chart-container {
-                height: 250px;
-            }
-            
-            td:first-child, th:first-child {
-                min-width: 120px;
-            }
-        }
-        
-        @media (min-width: 768px) {
-            body { font-size: 16px; padding: 15px; }
-            .container { max-width: 750px; }
-            h1 { font-size: 1.8rem; margin: 20px 0; }
-            h2 { font-size: 1.5rem; margin-top: 35px; }
-            .card { padding: 20px; border-radius: 14px; }
-            .intro-card p { font-size: 1.05rem; }
-            .chart-container { height: 320px; }
-            table { font-size: 14px; }
-            th, td { padding: 10px 12px; }
-            .charts-grid { grid-template-columns: 1fr 1fr; }
-        }
-        
-        @media (min-width: 992px) {
-            .container { max-width: 970px; }
-        }
-        
-        @media (min-width: 1200px) {
-            .container { max-width: 1140px; }
-        }
-        
-        /* Trend Analysis Cards */
-        .trend-analysis {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        @media (min-width: 768px) {
-            .trend-analysis {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        
-        .trend-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .trend-title {
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 10px;
+        /* Theme Toggle */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: var(--card-bg-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
         }
-        
-        .trend-title i {
-            margin-left: 8px;
-            font-size: 18px;
+        .theme-switcher svg { width: 24px; height: 24px; color: var(--primary-color); }
+        #moon-icon { display: none; }
+        [data-theme="dark"] #moon-icon { display: block; }
+        [data-theme="dark"] #sun-icon { display: none; }
+
+        /* Table */
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+        th, td { border: 1px solid var(--border-color); padding: 12px 15px; text-align: center; transition: background-color 0.3s; }
+        thead th { background-color: var(--primary-color); color: white; position: sticky; top: 0; z-index: 2; }
+        td:first-child, th:first-child { text-align: right; font-weight: 700; background-color: var(--card-bg-color); position: sticky; right: 0; border-right: 3px solid var(--secondary-color); }
+        thead th:first-child { z-index: 3; }
+        tbody tr:hover td { background-color: rgba(59, 130, 246, 0.1); }
+        tfoot td { font-weight: 700; background-color: rgba(59, 130, 246, 0.2); }
+
+        /* Accordion */
+        .accordion-header {
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            text-align: right;
+            border: none;
+            outline: none;
+            transition: background-color 0.4s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg-color);
+            border-bottom: 1px solid var(--border-color);
         }
-        
-        .trend-desc {
-            font-size: 14px;
-            color: var(--secondary-color);
-            line-height: 1.6;
+        .accordion-header h2 { margin: 0; font-size: 1.7rem; }
+        .accordion-header .icon { transition: transform 0.3s ease; font-size: 1.5rem; color: var(--secondary-color); }
+        .accordion-header.active .icon { transform: rotate(180deg); }
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background-color: var(--card-bg-color);
         }
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            padding: 25px 0;
+        }
+        .chart-container { position: relative; height: 350px; width: 100%; }
+
+        /* Back to Top Button */
+        #to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: var(--shadow);
+        }
+        #to-top-btn.show { display: flex; opacity: 1; transform: translateY(0); }
         
-        .trend-highlight {
-            color: var(--highlight-color);
-            font-weight: 700;
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2, .accordion-header h2 { font-size: 1.5rem; }
+            .container { padding: 10px; }
+            .card, .accordion-header { padding: 15px; }
+            .charts-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+    
+    <div class="theme-switcher" id="theme-switcher" title="تبديل المظهر">
+        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg>
+        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" /></svg>
+    </div>
 
     <div class="container">
-        <h1>تحليل أسئلة علم المناعة (Immunologie) للسنة الثانية طب</h1>
+        <h1>تحليل احترافي لأسئلة المناعة (2013-2023)</h1>
 
-        <div class="language-toggle">
-            <button class="language-btn active" data-lang="ar">العربية</button>
-            <button class="language-btn" data-lang="en">English</button>
-            <button class="language-btn" data-lang="fr">Français</button>
+        <div class="card">
+            <h2 style="margin-top:0;">الجدول الإحصائي</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الدرس</th>
+                            <th>2023</th><th>2022</th><th>2021</th><th>2020</th><th>2019</th><th>2018</th><th>2017</th><th>2016</th><th>2015</th><th>2014</th><th>2013</th><th>الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Immunoglobulines</td><td>6</td><td>6</td><td>7</td><td>19</td><td>14</td><td>11</td><td>9</td><td>13</td><td>16</td><td>22</td><td>1</td><td><b>124</b></td></tr>
+                        <tr><td>Lymphocytes T et TCR</td><td>3</td><td>6</td><td>0</td><td>9</td><td>2</td><td>2</td><td>10</td><td>3</td><td>3</td><td>3</td><td>3</td><td><b>44</b></td></tr>
+                        <tr><td>Système HLA</td><td>6</td><td>2</td><td>5</td><td>7</td><td>0</td><td>6</td><td>1</td><td>6</td><td>4</td><td>0</td><td>0</td><td><b>37</b></td></tr>
+                        <tr><td>Immunité innée</td><td>2</td><td>6</td><td>6</td><td>1</td><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>3</td><td>0</td><td><b>34</b></td></tr>
+                        <tr><td>Organes Lymphoïdes</td><td>2</td><td>6</td><td>6</td><td>1</td><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>3</td><td>0</td><td><b>34</b></td></tr>
+                        <tr><td>Antigènes</td><td>2</td><td>5</td><td>5</td><td>3</td><td>2</td><td>4</td><td>0</td><td>1</td><td>3</td><td>3</td><td>0</td><td><b>28</b></td></tr>
+                        <tr><td>Lymphocytes B</td><td>4</td><td>4</td><td>5</td><td>5</td><td>1</td><td>0</td><td>1</td><td>0</td><td>3</td><td>2</td><td>1</td><td><b>26</b></td></tr>
+                        <tr><td>Système du Complément</td><td>3</td><td>1</td><td>4</td><td>4</td><td>4</td><td>2</td><td>1</td><td>5</td><td>0</td><td>0</td><td>0</td><td><b>24</b></td></tr>
+                        <tr><td>Cytokines, Chimiokines</td><td>6</td><td>3</td><td>5</td><td>5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>19</b></td></tr>
+                        <tr><td>Réponse Immunitaire</td><td>3</td><td>0</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>8</b></td></tr>
+                        <tr><td>Réaction Inflammatoire</td><td>1</td><td>1</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>4</b></td></tr>
+                        <tr><td>Molécules d'Adhésion</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>3</b></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr><td>الإجمالي السنوي</td><td>40</td><td>41</td><td>46</td><td>64</td><td>29</td><td>31</td><td>28</td><td>34</td><td>37</td><td>36</td><td>5</td><td><b>459</b></td></tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
-
-        <div class="language-content active" id="ar-content">
-            <div class="card intro-card">
-                <p>
-                    هذا التحليل الإحصائي يستند على مجموعة من أسئلة الامتحانات (QCM) السابقة الموجهة لطلبة <strong>السنة الثانية بكلية الطب - عنابة</strong>.
-                    البيانات المجمعة تغطي عدة سنوات وصولًا إلى <strong>امتحانات سنة 2023</strong>، وتهدف إلى توضيح أهم الدروس والمحاور التي يتم التركيز عليها بشكل متكرر في مقياس <strong>علم المناعة (Immunologie)</strong>.
-                </p>
-            </div>
-
-            <div class="summary-card">
-                <div class="summary-item">إجمالي الأسئلة<br><span>326</span></div>
-                <div class="summary-item">عدد السنوات<br><span>12</span></div>
-                <div class="summary-item">أكثر درس تكرراً<br><span>Immunoglobulines</span></div>
-                <div class="summary-item">سنة الأكثر أسئلة<br><span>2020 (49)</span></div>
-            </div>
-
-            <div class="card">
-                <h2>الجدول الإحصائي التفصيلي</h2>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>الدرس</th>
-                                <th>2023</th><th>2022</th><th>2021</th><th>2020</th><th>2019</th><th>2018</th><th>2017</th><th>2016</th><th>2015</th><th>2014</th><th>2013</th><th>2012</th><th>2011</th><th>الإجمالي</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Immunoglobulines</td><td>6</td><td>6</td><td>5</td><td>16</td><td>11</td><td>7</td><td>5</td><td>8</td><td>6</td><td>17</td><td>1</td><td>0</td><td>3</td><td><b>91</b></td></tr>
-                            <tr><td>Cytokines et Récepteurs</td><td>12</td><td>5</td><td>9</td><td>5</td><td>0</td><td>6</td><td>1</td><td>6</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>48</b></td></tr>
-                            <tr><td>Lymphocytes T et TCR</td><td>3</td><td>6</td><td>0</td><td>6</td><td>2</td><td>2</td><td>8</td><td>3</td><td>3</td><td>3</td><td>4</td><td>0</td><td>0</td><td><b>40</b></td></tr>
-                            <tr><td>Immunité innée</td><td>2</td><td>6</td><td>6</td><td>1</td><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>3</td><td>0</td><td>0</td><td>0</td><td><b>33</b></td></tr>
-                            <tr><td>Organes Lymphoïdes</td><td>2</td><td>3</td><td>0</td><td>7</td><td>2</td><td>2</td><td>5</td><td>1</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td><td><b>30</b></td></tr>
-                            <tr><td>Lymphocytes B</td><td>4</td><td>5</td><td>5</td><td>4</td><td>1</td><td>0</td><td>1</td><td>0</td><td>3</td><td>2</td><td>1</td><td>0</td><td>0</td><td><b>26</b></td></tr>
-                            <tr><td>Système du Complément</td><td>2</td><td>5</td><td>4</td><td>2</td><td>2</td><td>3</td><td>0</td><td>1</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td><td><b>25</b></td></tr>
-                            <tr><td>Réponse Immunitaire</td><td>3</td><td>1</td><td>3</td><td>4</td><td>3</td><td>2</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>21</b></td></tr>
-                            <tr><td>Réaction Inflammatoire</td><td>3</td><td>0</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>8</b></td></tr>
-                            <tr><td>Molécules d'Adhésion</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>3</b></td></tr>
-                            <tr><td>Antigènes</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>1</b></td></tr>
-                        </tbody>
-                        <tfoot>
-                            <tr><td>الإجمالي السنوي</td><td>39</td><td>39</td><td>33</td><td>49</td><td>24</td><td>25</td><td>24</td><td>25</td><td>27</td><td>32</td><td>6</td><td>0</td><td>3</td><td><b>326</b></td></tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>الخريطة الحرارية لتوزيع الأسئلة</h2>
-                <p style="text-align: center; color: var(--secondary-color); margin-bottom: 15px; font-size: 14px;">
-                    نظرة سريعة على تركيز الأسئلة. كلما كان اللون أزرق داكن، زاد عدد الأسئلة في تلك السنة.
-                </p>
-                <div class="table-wrapper">
-                    <table class="heatmap-table" id="heatmap-ar">
-                        <thead>
-                            <tr>
-                                <th>الدرس</th>
-                                <th>2023</th><th>2022</th><th>2021</th><th>2020</th><th>2019</th><th>2018</th><th>2017</th><th>2016</th><th>2015</th><th>2014</th><th>2013</th><th>2012</th><th>2011</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                             <tr><td>Immunoglobulines</td><td>6</td><td>6</td><td>5</td><td>16</td><td>11</td><td>7</td><td>5</td><td>8</td><td>6</td><td>17</td><td>1</td><td>0</td><td>3</td></tr>
-                            <tr><td>Cytokines et Récepteurs</td><td>12</td><td>5</td><td>9</td><td>5</td><td>0</td><td>6</td><td>1</td><td>6</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Lymphocytes T et TCR</td><td>3</td><td>6</td><td>0</td><td>6</td><td>2</td><td>2</td><td>8</td><td>3</td><td>3</td><td>3</td><td>4</td><td>0</td><td>0</td></tr>
-                            <tr><td>Immunité innée</td><td>2</td><td>6</td><td>6</td><td>1</td><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>3</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Organes Lymphoïdes</td><td>2</td><td>3</td><td>0</td><td>7</td><td>2</td><td>2</td><td>5</td><td>1</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Lymphocytes B</td><td>4</td><td>5</td><td>5</td><td>4</td><td>1</td><td>0</td><td>1</td><td>0</td><td>3</td><td>2</td><td>1</td><td>0</td><td>0</td></tr>
-                            <tr><td>Système du Complément</td><td>2</td><td>5</td><td>4</td><td>2</td><td>2</td><td>3</td><td>0</td><td>1</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Réponse Immunitaire</td><td>3</td><td>1</td><td>3</td><td>4</td><td>3</td><td>2</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Réaction Inflammatoire</td><td>3</td><td>0</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Molécules d'Adhésion</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Antigènes</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>نظرة عامة على الدروس والسنوات</h2>
-                <div class="charts-grid">
-                    <div>
-                        <h3>أهم الدروس (إجمالي)</h3>
-                        <div class="chart-container">
-                            <canvas id="totalQuestionsColumnChart-ar"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>تطور الأسئلة عبر السنوات (إجمالي)</h3>
-                        <div class="chart-container">
-                            <canvas id="questionsByYearChart-ar"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2>تحليل تكرار أهم الدروس عبر السنوات</h2>
-                <p style="text-align: center; color: var(--secondary-color); margin-bottom: 25px; font-size: 14px;">
-                    رسوم بيانية توضح كيف تغير عدد أسئلة الدروس الأكثر أهمية على مدار السنوات.
-                </p>
-                <div class="charts-grid">
-                    <div>
-                        <h3>Immunoglobulines</h3>
-                        <div class="chart-container">
-                            <canvas id="immunoTrendChart-ar"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Cytokines et Récepteurs</h3>
-                        <div class="chart-container">
-                            <canvas id="cytoTrendChart-ar"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Lymphocytes T et TCR</h3>
-                        <div class="chart-container">
-                            <canvas id="lymphoTTrendChart-ar"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Immunité innée</h3>
-                        <div class="chart-container">
-                            <canvas id="inneeTrendChart-ar"></canvas>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="trend-analysis">
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📊</i> تحليل Immunoglobulines
-                        </div>
-                        <div class="trend-desc">
-                            كان هذا الدرس الأكثر تكراراً على مدار السنوات بإجمالي <span class="trend-highlight">91 سؤالاً</span>.
-                            شهدت السنوات <span class="trend-highlight">2014 و2020</span> أعلى تركيز للأسئلة مع 17 و16 سؤالاً على التوالي.
-                            يظهر هذا الدرس باستمرار في الامتحانات مما يشير إلى أهميته الأساسية في المنهج.
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📈</i> تحليل Cytokines et Récepteurs
-                        </div>
-                        <div class="trend-desc">
-                            ظهرت أسئلة هذا الدرس بشكل كبير في السنوات الأخيرة خاصة <span class="trend-highlight">2023 و2021</span> مع 12 و9 أسئلة.
-                            إجمالي الأسئلة وصل إلى <span class="trend-highlight">48 سؤالاً</span> رغم غيابه تماماً في بعض السنوات مثل 2019 و2014.
-                            هذا يشير إلى تزايد أهميته في المنهج الحديث.
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📉</i> تحليل Lymphocytes T et TCR
-                        </div>
-                        <div class="trend-desc">
-                            بلغ إجمالي الأسئلة <span class="trend-highlight">40 سؤالاً</span> مع تذبذب ملحوظ بين السنوات.
-                            سنة <span class="trend-highlight">2017</span> شهدت أعلى عدد أسئلة (8) بينما غاب تماماً في 2021.
-                            يظهر نمطاً متقطعاً مما قد يشير إلى اعتماده على مدرس المادة كل سنة.
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📊</i> تحليل Immunité innée
-                        </div>
-                        <div class="trend-desc">
-                            حصل هذا الدرس على <span class="trend-highlight">33 سؤالاً</span> إجمالاً مع وجوده المستمر في معظم السنوات.
-                            السنوات <span class="trend-highlight">2022 و2021</span> شهدت أعلى تركيز مع 6 أسئلة في كل منهما.
-                            يبدو أن هذا الدرس يحظى باهتمام ثابت نسبياً عبر السنوات.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="text-align: center; background-color: #f8fafd; border-left: 4px solid var(--primary-color);">
-                <p style="margin: 0; font-size: 14px; color: var(--secondary-color);">
-                    تحليل إحصائي لأسئلة علم المناعة - كلية الطب عنابة<br>
-                    آخر تحديث: 2023 | عدد الأسئلة المحللة: <span class="highlight">326 سؤال</span>
-                </p>
+        
+        <div class="card">
+            <h2>مقارنة تطور جميع الدروس</h2>
+            <div class="chart-container" style="height: 500px;">
+                <canvas class="lazy-chart" id="comprehensiveMultiLineChart"></canvas>
             </div>
         </div>
 
-        <div class="language-content" id="en-content">
-            <div class="card intro-card">
-                <p>
-                    This statistical analysis is based on a collection of past exam questions (QCM) for <strong>second-year medical students at Annaba Medical School</strong>.
-                    The compiled data covers several years up to <strong>2023 exams</strong>, aiming to highlight the most frequently emphasized topics in the <strong>Immunology (Immunologie)</strong> course.
-                </p>
+        <div class="card accordion">
+            <div class="accordion-header">
+                <h2>تحليل كل درس عبر السنوات</h2>
+                <span class="icon">▼</span>
             </div>
-
-            <div class="summary-card">
-                <div class="summary-item">Total Questions<br><span>326</span></div>
-                <div class="summary-item">Years Covered<br><span>12</span></div>
-                <div class="summary-item">Most Frequent Topic<br><span>Immunoglobulines</span></div>
-                <div class="summary-item">Year with Most Questions<br><span>2020 (49)</span></div>
-            </div>
-
-            <div class="card">
-                <h2>Detailed Statistical Table</h2>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Topic</th>
-                                <th>2023</th><th>2022</th><th>2021</th><th>2020</th><th>2019</th><th>2018</th><th>2017</th><th>2016</th><th>2015</th><th>2014</th><th>2013</th><th>2012</th><th>2011</th><th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Immunoglobulines</td><td>6</td><td>6</td><td>5</td><td>16</td><td>11</td><td>7</td><td>5</td><td>8</td><td>6</td><td>17</td><td>1</td><td>0</td><td>3</td><td><b>91</b></td></tr>
-                            <tr><td>Cytokines et Récepteurs</td><td>12</td><td>5</td><td>9</td><td>5</td><td>0</td><td>6</td><td>1</td><td>6</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>48</b></td></tr>
-                            <tr><td>Lymphocytes T et TCR</td><td>3</td><td>6</td><td>0</td><td>6</td><td>2</td><td>2</td><td>8</td><td>3</td><td>3</td><td>3</td><td>4</td><td>0</td><td>0</td><td><b>40</b></td></tr>
-                            <tr><td>Immunité innée</td><td>2</td><td>6</td><td>6</td><td>1</td><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>3</td><td>0</td><td>0</td><td>0</td><td><b>33</b></td></tr>
-                            <tr><td>Organes Lymphoïdes</td><td>2</td><td>3</td><td>0</td><td>7</td><td>2</td><td>2</td><td>5</td><td>1</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td><td><b>30</b></td></tr>
-                            <tr><td>Lymphocytes B</td><td>4</td><td>5</td><td>5</td><td>4</td><td>1</td><td>0</td><td>1</td><td>0</td><td>3</td><td>2</td><td>1</td><td>0</td><td>0</td><td><b>26</b></td></tr>
-                            <tr><td>Système du Complément</td><td>2</td><td>5</td><td>4</td><td>2</td><td>2</td><td>3</td><td>0</td><td>1</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td><td><b>25</b></td></tr>
-                            <tr><td>Réponse Immunitaire</td><td>3</td><td>1</td><td>3</td><td>4</td><td>3</td><td>2</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>21</b></td></tr>
-                            <tr><td>Réaction Inflammatoire</td><td>3</td><td>0</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>8</b></td></tr>
-                            <tr><td>Molécules d'Adhésion</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>3</b></td></tr>
-                            <tr><td>Antigènes</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>1</b></td></tr>
-                        </tbody>
-                        <tfoot>
-                            <tr><td>Annual Total</td><td>39</td><td>39</td><td>33</td><td>49</td><td>24</td><td>25</td><td>24</td><td>25</td><td>27</td><td>32</td><td>6</td><td>0</td><td>3</td><td><b>326</b></td></tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Questions Distribution Heatmap</h2>
-                <p style="text-align: center; color: var(--secondary-color); margin-bottom: 15px; font-size: 14px;">
-                    Quick overview of question concentration. Darker blue indicates more questions in that year.
-                </p>
-                <div class="table-wrapper">
-                    <table class="heatmap-table" id="heatmap-en">
-                        <thead>
-                            <tr>
-                                <th>Topic</th>
-                                <th>2023</th><th>2022</th><th>2021</th><th>2020</th><th>2019</th><th>2018</th><th>2017</th><th>2016</th><th>2015</th><th>2014</th><th>2013</th><th>2012</th><th>2011</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                             <tr><td>Immunoglobulines</td><td>6</td><td>6</td><td>5</td><td>16</td><td>11</td><td>7</td><td>5</td><td>8</td><td>6</td><td>17</td><td>1</td><td>0</td><td>3</td></tr>
-                            <tr><td>Cytokines et Récepteurs</td><td>12</td><td>5</td><td>9</td><td>5</td><td>0</td><td>6</td><td>1</td><td>6</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Lymphocytes T et TCR</td><td>3</td><td>6</td><td>0</td><td>6</td><td>2</td><td>2</td><td>8</td><td>3</td><td>3</td><td>3</td><td>4</td><td>0</td><td>0</td></tr>
-                            <tr><td>Immunité innée</td><td>2</td><td>6</td><td>6</td><td>1</td><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>3</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Organes Lymphoïdes</td><td>2</td><td>3</td><td>0</td><td>7</td><td>2</td><td>2</td><td>5</td><td>1</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Lymphocytes B</td><td>4</td><td>5</td><td>5</td><td>4</td><td>1</td><td>0</td><td>1</td><td>0</td><td>3</td><td>2</td><td>1</td><td>0</td><td>0</td></tr>
-                            <tr><td>Système du Complément</td><td>2</td><td>5</td><td>4</td><td>2</td><td>2</td><td>3</td><td>0</td><td>1</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Réponse Immunitaire</td><td>3</td><td>1</td><td>3</td><td>4</td><td>3</td><td>2</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Réaction Inflammatoire</td><td>3</td><td>0</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Molécules d'Adhésion</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Antigènes</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Overview of Topics and Years</h2>
-                <div class="charts-grid">
-                    <div>
-                        <h3>Most Important Topics (Total)</h3>
-                        <div class="chart-container">
-                            <canvas id="totalQuestionsColumnChart-en"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Questions Evolution Over Years (Total)</h3>
-                        <div class="chart-container">
-                            <canvas id="questionsByYearChart-en"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2>Analysis of Key Topics Frequency Over Years</h2>
-                <p style="text-align: center; color: var(--secondary-color); margin-bottom: 25px; font-size: 14px;">
-                    Charts showing how the number of questions for the most important topics changed over the years.
-                </p>
-                <div class="charts-grid">
-                    <div>
-                        <h3>Immunoglobulines</h3>
-                        <div class="chart-container">
-                            <canvas id="immunoTrendChart-en"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Cytokines et Récepteurs</h3>
-                        <div class="chart-container">
-                            <canvas id="cytoTrendChart-en"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Lymphocytes T et TCR</h3>
-                        <div class="chart-container">
-                            <canvas id="lymphoTTrendChart-en"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Immunité innée</h3>
-                        <div class="chart-container">
-                            <canvas id="inneeTrendChart-en"></canvas>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="trend-analysis">
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📊</i> Immunoglobulines Analysis
-                        </div>
-                        <div class="trend-desc">
-                            This was the most frequent topic across years with a total of <span class="trend-highlight">91 questions</span>.
-                            Years <span class="trend-highlight">2014 and 2020</span> saw the highest concentration with 17 and 16 questions respectively.
-                            It consistently appears in exams, indicating its fundamental importance in the curriculum.
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📈</i> Cytokines et Récepteurs Analysis
-                        </div>
-                        <div class="trend-desc">
-                            Questions from this topic surged in recent years especially in <span class="trend-highlight">2023 and 2021</span> with 12 and 9 questions.
-                            Total questions reached <span class="trend-highlight">48</span> despite being completely absent in some years like 2019 and 2014.
-                            This suggests growing importance in the modern curriculum.
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📉</i> Lymphocytes T et TCR Analysis
-                        </div>
-                        <div class="trend-desc">
-                            Total questions reached <span class="trend-highlight">40</span> with noticeable fluctuations between years.
-                            Year <span class="trend-highlight">2017</span> had the highest number (8) while being completely absent in 2021.
-                            Shows an intermittent pattern that may depend on the course instructor each year.
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📊</i> Immunité innée Analysis
-                        </div>
-                        <div class="trend-desc">
-                            This topic received <span class="trend-highlight">33 questions</span> total with consistent presence in most years.
-                            Years <span class="trend-highlight">2022 and 2021</span> saw the highest concentration with 6 questions each.
-                            Appears to have relatively stable attention across years.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="text-align: center; background-color: #f8fafd; border-left: 4px solid var(--primary-color);">
-                <p style="margin: 0; font-size: 14px; color: var(--secondary-color);">
-                    Statistical Analysis of Immunology Questions - Annaba Medical School<br>
-                    Last Update: 2023 | Analyzed Questions: <span class="highlight">326 questions</span>
-                </p>
+            <div class="accordion-content">
+                <div class="charts-grid" id="lesson-charts-container"></div>
             </div>
         </div>
 
-        <div class="language-content" id="fr-content">
-            <div class="card intro-card">
-                <p>
-                    Cette analyse statistique est basée sur un ensemble de questions d'examen (QCM) antérieures destinées aux étudiants de <strong>deuxième année de médecine à l'Université d'Annaba</strong>.
-                    Les données compilées couvrent plusieurs années jusqu'aux <strong>examens de 2023</strong>, visant à mettre en évidence les sujets et axes les plus fréquemment mis en avant dans le module d'<strong>Immunologie</strong>.
-                </p>
+        <div class="card accordion">
+            <div class="accordion-header">
+                <h2>توزيع الأسئلة في كل سنة</h2>
+                <span class="icon">▼</span>
             </div>
-
-            <div class="summary-card">
-                <div class="summary-item">Total des Questions<br><span>326</span></div>
-                <div class="summary-item">Nombre d'Années<br><span>12</span></div>
-                <div class="summary-item">Sujet le Plus Fréquent<br><span>Immunoglobulines</span></div>
-                <div class="summary-item">Année avec Plus de Questions<br><span>2020 (49)</span></div>
-            </div>
-
-            <div class="card">
-                <h2>Tableau Statistique Détaillé</h2>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Sujet</th>
-                                <th>2023</th><th>2022</th><th>2021</th><th>2020</th><th>2019</th><th>2018</th><th>2017</th><th>2016</th><th>2015</th><th>2014</th><th>2013</th><th>2012</th><th>2011</th><th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Immunoglobulines</td><td>6</td><td>6</td><td>5</td><td>16</td><td>11</td><td>7</td><td>5</td><td>8</td><td>6</td><td>17</td><td>1</td><td>0</td><td>3</td><td><b>91</b></td></tr>
-                            <tr><td>Cytokines et Récepteurs</td><td>12</td><td>5</td><td>9</td><td>5</td><td>0</td><td>6</td><td>1</td><td>6</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>48</b></td></tr>
-                            <tr><td>Lymphocytes T et TCR</td><td>3</td><td>6</td><td>0</td><td>6</td><td>2</td><td>2</td><td>8</td><td>3</td><td>3</td><td>3</td><td>4</td><td>0</td><td>0</td><td><b>40</b></td></tr>
-                            <tr><td>Immunité innée</td><td>2</td><td>6</td><td>6</td><td>1</td><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>3</td><td>0</td><td>0</td><td>0</td><td><b>33</b></td></tr>
-                            <tr><td>Organes Lymphoïdes</td><td>2</td><td>3</td><td>0</td><td>7</td><td>2</td><td>2</td><td>5</td><td>1</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td><td><b>30</b></td></tr>
-                            <tr><td>Lymphocytes B</td><td>4</td><td>5</td><td>5</td><td>4</td><td>1</td><td>0</td><td>1</td><td>0</td><td>3</td><td>2</td><td>1</td><td>0</td><td>0</td><td><b>26</b></td></tr>
-                            <tr><td>Système du Complément</td><td>2</td><td>5</td><td>4</td><td>2</td><td>2</td><td>3</td><td>0</td><td>1</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td><td><b>25</b></td></tr>
-                            <tr><td>Réponse Immunitaire</td><td>3</td><td>1</td><td>3</td><td>4</td><td>3</td><td>2</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>21</b></td></tr>
-                            <tr><td>Réaction Inflammatoire</td><td>3</td><td>0</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>8</b></td></tr>
-                            <tr><td>Molécules d'Adhésion</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>3</b></td></tr>
-                            <tr><td>Antigènes</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>1</b></td></tr>
-                        </tbody>
-                        <tfoot>
-                            <tr><td>Total Annuel</td><td>39</td><td>39</td><td>33</td><td>49</td><td>24</td><td>25</td><td>24</td><td>25</td><td>27</td><td>32</td><td>6</td><td>0</td><td>3</td><td><b>326</b></td></tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Carte Thermique de Répartition des Questions</h2>
-                <p style="text-align: center; color: var(--secondary-color); margin-bottom: 15px; font-size: 14px;">
-                    Aperçu rapide de la concentration des questions. Plus la couleur est bleu foncé, plus le nombre de questions est élevé pour cette année.
-                </p>
-                <div class="table-wrapper">
-                    <table class="heatmap-table" id="heatmap-fr">
-                        <thead>
-                            <tr>
-                                <th>Sujet</th>
-                                <th>2023</th><th>2022</th><th>2021</th><th>2020</th><th>2019</th><th>2018</th><th>2017</th><th>2016</th><th>2015</th><th>2014</th><th>2013</th><th>2012</th><th>2011</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                             <tr><td>Immunoglobulines</td><td>6</td><td>6</td><td>5</td><td>16</td><td>11</td><td>7</td><td>5</td><td>8</td><td>6</td><td>17</td><td>1</td><td>0</td><td>3</td></tr>
-                            <tr><td>Cytokines et Récepteurs</td><td>12</td><td>5</td><td>9</td><td>5</td><td>0</td><td>6</td><td>1</td><td>6</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Lymphocytes T et TCR</td><td>3</td><td>6</td><td>0</td><td>6</td><td>2</td><td>2</td><td>8</td><td>3</td><td>3</td><td>3</td><td>4</td><td>0</td><td>0</td></tr>
-                            <tr><td>Immunité innée</td><td>2</td><td>6</td><td>6</td><td>1</td><td>3</td><td>3</td><td>3</td><td>2</td><td>4</td><td>3</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Organes Lymphoïdes</td><td>2</td><td>3</td><td>0</td><td>7</td><td>2</td><td>2</td><td>5</td><td>1</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Lymphocytes B</td><td>4</td><td>5</td><td>5</td><td>4</td><td>1</td><td>0</td><td>1</td><td>0</td><td>3</td><td>2</td><td>1</td><td>0</td><td>0</td></tr>
-                            <tr><td>Système du Complément</td><td>2</td><td>5</td><td>4</td><td>2</td><td>2</td><td>3</td><td>0</td><td>1</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Réponse Immunitaire</td><td>3</td><td>1</td><td>3</td><td>4</td><td>3</td><td>2</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Réaction Inflammatoire</td><td>3</td><td>0</td><td>1</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Molécules d'Adhésion</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                            <tr><td>Antigènes</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Vue d'Ensemble des Sujets et Années</h2>
-                <div class="charts-grid">
-                    <div>
-                        <h3>Sujets les Plus Importants (Total)</h3>
-                        <div class="chart-container">
-                            <canvas id="totalQuestionsColumnChart-fr"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Évolution des Questions par Année (Total)</h3>
-                        <div class="chart-container">
-                            <canvas id="questionsByYearChart-fr"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2>Analyse de la Fréquence des Sujets Clés par Année</h2>
-                <p style="text-align: center; color: var(--secondary-color); margin-bottom: 25px; font-size: 14px;">
-                    Graphiques montrant l'évolution du nombre de questions pour les sujets les plus importants au fil des années.
-                </p>
-                <div class="charts-grid">
-                    <div>
-                        <h3>Immunoglobulines</h3>
-                        <div class="chart-container">
-                            <canvas id="immunoTrendChart-fr"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Cytokines et Récepteurs</h3>
-                        <div class="chart-container">
-                            <canvas id="cytoTrendChart-fr"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Lymphocytes T et TCR</h3>
-                        <div class="chart-container">
-                            <canvas id="lymphoTTrendChart-fr"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h3>Immunité innée</h3>
-                        <div class="chart-container">
-                            <canvas id="inneeTrendChart-fr"></canvas>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="trend-analysis">
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📊</i> Analyse des Immunoglobulines
-                        </div>
-                        <div class="trend-desc">
-                            Ce sujet était le plus fréquent au fil des années avec un total de <span class="trend-highlight">91 questions</span>.
-                            Les années <span class="trend-highlight">2014 et 2020</span> ont vu la plus forte concentration avec 17 et 16 questions respectivement.
-                            Il apparaît régulièrement dans les examens, ce qui indique son importance fondamentale dans le programme.
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📈</i> Analyse des Cytokines et Récepteurs
-                        </div>
-                        <div class="trend-desc">
-                            Les questions sur ce sujet ont augmenté ces dernières années, notamment en <span class="trend-highlight">2023 et 2021</span> avec 12 et 9 questions.
-                            Le total des questions a atteint <span class="trend-highlight">48</span> malgré une absence totale certaines années comme 2019 et 2014.
-                            Cela suggère une importance croissante dans le programme moderne.
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📉</i> Analyse des Lymphocytes T et TCR
-                        </div>
-                        <div class="trend-desc">
-                            Le total des questions a atteint <span class="trend-highlight">40</span> avec des fluctuations notables entre les années.
-                            L'année <span class="trend-highlight">2017</span> a eu le plus grand nombre (8) alors qu'elles étaient totalement absentes en 2021.
-                            Montre un modèle intermittent qui peut dépendre de l'enseignant du cours chaque année.
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <div class="trend-title">
-                            <i>📊</i> Analyse de l'Immunité innée
-                        </div>
-                        <div class="trend-desc">
-                            Ce sujet a reçu <span class="trend-highlight">33 questions</span> au total avec une présence constante la plupart des années.
-                            Les années <span class="trend-highlight">2022 et 2021</span> ont vu la plus forte concentration avec 6 questions chacune.
-                            Semble avoir une attention relativement stable au fil des années.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="text-align: center; background-color: #f8fafd; border-left: 4px solid var(--primary-color);">
-                <p style="margin: 0; font-size: 14px; color: var(--secondary-color);">
-                    Analyse Statistique des Questions d'Immunologie - Faculté de Médecine d'Annaba<br>
-                    Dernière Mise à Jour: 2023 | Questions Analysées: <span class="highlight">326 questions</span>
-                </p>
+            <div class="accordion-content">
+                <div class="charts-grid" id="year-charts-container"></div>
             </div>
         </div>
     </div>
 
+    <button id="to-top-btn" title="العودة للأعلى">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="24" height="24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" /></svg>
+    </button>
+
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Language toggle functionality
-    const languageBtns = document.querySelectorAll('.language-btn');
-    const languageContents = document.querySelectorAll('.language-content');
-    
-    languageBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const lang = this.getAttribute('data-lang');
-            
-            // Update active button
-            languageBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Show selected language content
-            languageContents.forEach(content => content.classList.remove('active'));
-            document.getElementById(`${lang}-content`).classList.add('active');
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- DATA ---
+        const lessons = ['Immunoglobulines', 'Lymphocytes T et TCR', 'Système HLA', 'Immunité innée', 'Organes Lymphoïdes', 'Antigènes', 'Lymphocytes B', 'Système du Complément', 'Cytokines, Chimiokines', 'Réponse Immunitaire', 'Réaction Inflammatoire', "Molécules d'Adhésion"];
+        const years = ['2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013'];
+        const yearsReversed = years.slice().reverse();
+        const fullData = [[6,6,7,19,14,11,9,13,16,22,1],[3,6,0,9,2,2,10,3,3,3,3],[6,2,5,7,0,6,1,6,4,0,0],[2,6,6,1,3,3,3,3,4,3,0],[2,6,6,1,3,3,3,3,4,3,0],[2,5,5,3,2,4,0,1,3,3,0],[4,4,5,5,1,0,1,0,3,2,1],[3,1,4,4,4,2,1,5,0,0,0],[6,3,5,5,0,0,0,0,0,0,0],[3,0,1,4,0,0,0,0,0,0,0],[1,1,2,0,0,0,0,0,0,0,0],[2,1,0,0,0,0,0,0,0,0,0]];
+        const chartColors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#22C55E', '#EC4899', '#F97316', '#6366F1', '#A855F7', '#6B7280', '#D946EF'];
+
+        // --- THEME SWITCHER ---
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const html = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        themeSwitcher.onclick = () => {
+            const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            // Must update charts to adapt to new theme colors
+            Chart.instances.forEach(chart => chart.destroy());
+            initCharts();
+        };
+
+        // --- ACCORDION ---
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                header.classList.toggle('active');
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 50 + "px";
+                }
+            });
         });
-    });
 
-    // Set default font for all charts
-    Chart.defaults.font.family = "'Tajawal', sans-serif";
-    Chart.defaults.color = '#6e84a3';
-    Chart.defaults.borderColor = 'rgba(228, 234, 244, 0.7)';
-
-    const lessons = [
-        'Immunoglobulines', 'Cytokines et Récepteurs', 'Lymphocytes T et TCR', 'Immunité innée', 'Organes Lymphoïdes', 
-        'Lymphocytes B', 'Système du Complément', 'Réponse Immunitaire', 'Réaction Inflammatoire', 'Molécules d\'Adhésion', 'Antigènes'
-    ];
-    
-    const totals = [91, 48, 40, 33, 30, 26, 25, 21, 8, 3, 1];
-    const years = ['2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011'];
-    const annualTotals = [39, 39, 33, 49, 24, 25, 24, 25, 27, 32, 6, 0, 3];
-    
-    const yearlyData = {
-        'Immunoglobulines':     [6, 6, 5, 16, 11, 7, 5, 8, 6, 17, 1, 0, 3],
-        'Cytokines et Récepteurs':[12, 5, 9, 5, 0, 6, 1, 6, 4, 0, 0, 0, 0],
-        'Lymphocytes T et TCR': [3, 6, 0, 6, 2, 2, 8, 3, 3, 3, 4, 0, 0],
-        'Immunité innée':       [2, 6, 6, 1, 3, 3, 3, 2, 4, 3, 0, 0, 0]
-    };
-
-    const chartColors = ['#2c7be5', '#00d97e', '#f6c343', '#e63757', '#8bc8f6', '#02a8b5', '#798bff', '#f59762', '#80e6c1', '#a78df5'];
-    
-    // Function to create charts for each language
-    const createChartsForLanguage = (lang) => {
-        // Main Column Chart
-        const ctxColumn = document.getElementById(`totalQuestionsColumnChart-${lang}`).getContext('2d');
-        new Chart(ctxColumn, {
-            type: 'bar',
-            data: { 
-                labels: lessons, 
-                datasets: [{
-                    label: lang === 'ar' ? 'إجمالي الأسئلة' : (lang === 'en' ? 'Total Questions' : 'Total des Questions'),
-                    data: totals, 
-                    backgroundColor: chartColors, 
-                    borderRadius: 6 
-                }] 
-            },
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                plugins: { 
-                    legend: { display: false } 
-                }, 
-                scales: { 
-                    y: { beginAtZero: true }, 
-                    x: { ticks: { display: false } } 
-                } 
+        // --- BACK TO TOP BUTTON ---
+        const toTopBtn = document.getElementById('to-top-btn');
+        window.onscroll = () => {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                toTopBtn.classList.add('show');
+            } else {
+                toTopBtn.classList.remove('show');
             }
-        });
+        };
+        toTopBtn.onclick = () => window.scrollTo({top: 0});
 
-        // Main Line Chart
-        const ctxYear = document.getElementById(`questionsByYearChart-${lang}`).getContext('2d');
-        new Chart(ctxYear, {
-            type: 'line',
-            data: {
-                labels: years.slice().reverse(),
-                datasets: [{
-                    label: lang === 'ar' ? 'إجمالي عدد الأسئلة' : (lang === 'en' ? 'Total Number of Questions' : 'Nombre Total de Questions'),
-                    data: annualTotals.slice().reverse(), 
-                    backgroundColor: 'rgba(44, 123, 229, 0.1)', 
-                    borderColor: 'rgba(44, 123, 229, 1)', 
-                    borderWidth: 3, 
-                    fill: true, 
-                    tension: 0.3 
-                }]
-            },
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                plugins: { 
-                    legend: { display: false } 
-                }, 
-                scales: { 
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { stepSize: 10 } 
-                    }, 
-                    x: { 
-                        grid: { display: false } 
-                    } 
-                } 
-            }
-        });
-        
-        // Function to create individual trend charts
-        const createTrendChart = (canvasId, lessonName, data, color) => {
-            const ctx = document.getElementById(canvasId).getContext('2d');
+        // --- CHART INITIALIZATION ---
+        function getChartColors() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            return {
+                fontColor: theme === 'dark' ? '#D1D5DB' : '#1F2937',
+                gridColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+            };
+        }
+
+        function createComprehensiveChart() {
+            const ctx = document.getElementById('comprehensiveMultiLineChart')?.getContext('2d');
+            if (!ctx) return;
+            const colors = getChartColors();
+            const datasets = lessons.map((lesson, i) => ({
+                label: lesson, data: fullData[i].slice().reverse(),
+                borderColor: chartColors[i], fill: false, tension: 0.4, borderWidth: 2.5
+            }));
             new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: years.slice().reverse(),
-                    datasets: [{
-                        label: lang === 'ar' ? 'عدد الأسئلة' : (lang === 'en' ? 'Number of Questions' : 'Nombre de Questions'),
-                        data: data.slice().reverse(),
-                        backgroundColor: color,
-                        borderColor: 'white',
-                        borderWidth: 1,
-                        borderRadius: 4
-                    }]
-                },
+                type: 'line', data: { labels: yearsReversed, datasets: datasets },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: colors.fontColor }}},
                     scales: {
-                        y: { beginAtZero: true, ticks: { precision: 0 } },
-                        x: { grid: { display: false } }
+                        y: { beginAtZero: true, title: { display: true, text: 'عدد الأسئلة', color: colors.fontColor }, ticks: { color: colors.fontColor }, grid: { color: colors.gridColor } },
+                        x: { title: { display: true, text: 'السنوات', color: colors.fontColor }, ticks: { color: colors.fontColor }, grid: { color: colors.gridColor } }
                     }
                 }
             });
-        };
+        }
 
-        // Create the 4 individual charts for each language
-        createTrendChart(`immunoTrendChart-${lang}`, 'Immunoglobulines', yearlyData['Immunoglobulines'], chartColors[0]);
-        createTrendChart(`cytoTrendChart-${lang}`, 'Cytokines et Récepteurs', yearlyData['Cytokines et Récepteurs'], chartColors[1]);
-        createTrendChart(`lymphoTTrendChart-${lang}`, 'Lymphocytes T et TCR', yearlyData['Lymphocytes T et TCR'], chartColors[2]);
-        createTrendChart(`inneeTrendChart-${lang}`, 'Immunité innée', yearlyData['Immunité innée'], chartColors[3]);
-    };
+        function createLessonCharts() {
+            const container = document.getElementById('lesson-charts-container');
+            if(!container) return;
+            container.innerHTML = ''; // Clear previous charts
+            const colors = getChartColors();
+            lessons.forEach((lesson, i) => {
+                const id = `lesson-chart-${i}`;
+                container.innerHTML += `<div class="chart-container"><canvas class="lazy-chart" id="${id}"></canvas></div>`;
+            });
+            lessons.forEach((lesson, i) => {
+                const ctx = document.getElementById(`lesson-chart-${i}`).getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: { labels: yearsReversed, datasets: [{ label: lesson, data: fullData[i].slice().reverse(), borderColor: chartColors[i], backgroundColor: chartColors[i] + '33', fill: true }] },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: true, labels: { color: colors.fontColor }}},
+                        scales: {
+                           y: { beginAtZero: true, ticks: { color: colors.fontColor }, grid: { color: colors.gridColor }},
+                           x: { ticks: { color: colors.fontColor }, grid: { color: colors.gridColor }}
+                        }
+                    }
+                });
+            });
+        }
 
-    // Create charts for all languages
-    createChartsForLanguage('ar');
-    createChartsForLanguage('en');
-    createChartsForLanguage('fr');
+        function createYearCharts() {
+            const container = document.getElementById('year-charts-container');
+            if(!container) return;
+            container.innerHTML = '';
+            const colors = getChartColors();
+            years.forEach((year, i) => {
+                const id = `year-chart-${i}`;
+                container.innerHTML += `<div class="chart-container"><canvas class="lazy-chart" id="${id}"></canvas></div>`;
+            });
+            years.forEach((year, i) => {
+                const ctx = document.getElementById(`year-chart-${i}`).getContext('2d');
+                const yearData = fullData.map(row => row[i]);
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: lessons.map(l => l.substring(0,10)), datasets: [{ label: `أسئلة سنة ${year}`, data: yearData, backgroundColor: chartColors }] },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: true, labels: { color: colors.fontColor }}},
+                        scales: {
+                           y: { beginAtZero: true, ticks: { color: colors.fontColor }, grid: { color: colors.gridColor }},
+                           x: { ticks: { color: colors.fontColor }, grid: { color: colors.gridColor }}
+                        }
+                    }
+                });
+            });
+        }
 
-    // Heatmap coloring function for all languages
-    const colorHeatmap = (lang) => {
-        const heatmap = document.getElementById(`heatmap-${lang}`);
-        const cells = heatmap.getElementsByTagName('td');
-        for (let cell of cells) {
-            const value = parseInt(cell.innerText, 10);
-            if (!isNaN(value)) {
-                let heatLevel = 0;
-                if (value === 0) { heatLevel = 0; }
-                else if (value >= 1 && value <= 3) { heatLevel = 1; }
-                else if (value >= 4 && value <= 6) { heatLevel = 2; }
-                else if (value >= 7 && value <= 10) { heatLevel = 3; }
-                else if (value >= 11 && value <= 15) { heatLevel = 4; }
-                else if (value > 15) { heatLevel = 5; }
-                cell.classList.add('heat-' + heatLevel);
+        // --- LAZY LOADING OBSERVER & INIT ---
+        let chartObserver;
+        function initCharts() {
+            const chartElements = document.querySelectorAll('.lazy-chart');
+            const chartCreationMap = {
+                'comprehensiveMultiLineChart': createComprehensiveChart,
+                'lesson-charts-container': createLessonCharts,
+                'year-charts-container': createYearCharts
+            };
+            
+            // Create a map for containers to avoid recreating all charts in a container at once
+            const containerMap = {
+                'lesson-charts-container': createLessonCharts,
+                'year-charts-container': createYearCharts
+            };
+
+            const singleChartMap = {
+                'comprehensiveMultiLineChart': createComprehensiveChart,
+            };
+
+            chartObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const chartId = entry.target.id;
+                        const parentId = entry.target.parentElement?.id;
+
+                        if (singleChartMap[chartId]) {
+                             singleChartMap[chartId]();
+                             observer.unobserve(entry.target);
+                        } else if (containerMap[parentId]){
+                            containerMap[parentId]();
+                             observer.unobserve(entry.target);
+                        }
+                    }
+                });
+            }, { rootMargin: '0px 0px -50px 0px' });
+            
+            // Observe single charts
+            const singleChart = document.getElementById('comprehensiveMultiLineChart');
+            if(singleChart) chartObserver.observe(singleChart);
+
+            // Add placeholder canvases for container-based charts to be observed
+            const lessonContainer = document.getElementById('lesson-charts-container');
+            if(lessonContainer) {
+                const placeholder = document.createElement('canvas');
+                placeholder.className = 'lazy-chart';
+                lessonContainer.appendChild(placeholder);
+                chartObserver.observe(placeholder);
+            }
+            const yearContainer = document.getElementById('year-charts-container');
+            if(yearContainer) {
+                const placeholder = document.createElement('canvas');
+                placeholder.className = 'lazy-chart';
+                yearContainer.appendChild(placeholder);
+                chartObserver.observe(placeholder);
             }
         }
-    };
-    
-    // Apply heatmap coloring to all language tables
-    colorHeatmap('ar');
-    colorHeatmap('en');
-    colorHeatmap('fr');
-});
+        
+        initCharts();
+    });
 </script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
