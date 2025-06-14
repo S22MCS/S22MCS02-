@@ -1049,3 +1049,405 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إشعارات هامة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* --- متغيرات الألوان والخطوط الأساسية --- */
+        :root {
+            --primary-colorISHARE: #0d6e62;
+            --secondary-colorISHARE: #d4af37; /* Gold */
+            --accent-colorISHARE: #28a79c;
+            --text-colorISHARE: #2d3436;
+            --bg-colorISHARE: #f0f4f8;
+            --card-bgISHARE: #ffffff;
+            --danger-color-startISHARE: #d9534f;
+            --danger-color-endISHARE: #c9302c;
+            --button-gradient-startISHARE: #0d6e62;
+            --button-gradient-endISHARE: #28a79c;
+            --hover-gradient-startISHARE: #28a79c;
+            --hover-gradient-endISHARE: #0d6e62;
+            --box-shadowISHARE: 0 6px 18px rgba(0, 0, 0, 0.08);
+            --border-radiusISHARE: 12px; /* زيادة بسيطة للنعومة */
+            --font-mainISHARE: 'Tajawal', sans-serif;
+            --font-quranicISHARE: 'Amiri', serif;
+        }
+
+        /* --- إعدادات أساسية للصفحة --- */
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { /* تبسيط المحدد (selector) */
+            font-family: var(--font-mainISHARE);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-colorISHARE);
+            color: var(--text-colorISHARE);
+            line-height: 1.7;
+        }
+
+        /* --- تصميم النافذة المنبثقة (Modal) --- */
+        .modalISHARE {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.65);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            display: none; /* يتم التحكم به عبر JS */
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            animation: fadeInBackdropISHARE 0.4s ease-out;
+        }
+        
+        @keyframes fadeInBackdropISHARE {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-contentISHARE {
+            background-color: var(--card-bgISHARE);
+            color: var(--text-colorISHARE);
+            margin: auto;
+            padding: 30px;
+            border-top: 5px solid var(--primary-colorISHARE);
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--border-radiusISHARE);
+            text-align: center;
+            box-shadow: var(--box-shadowISHARE);
+            position: relative;
+            animation: fadeInModalISHARE 0.4s ease-out;
+        }
+        
+        /* تحسين: إضافة حركة عند إغلاق النافذة */
+        .modalISHARE.is-closing .modal-contentISHARE {
+            animation: fadeOutModalISHARE 0.3s ease-in forwards;
+        }
+        
+        @keyframes fadeInModalISHARE {
+            from { opacity: 0; transform: translateY(-20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        @keyframes fadeOutModalISHARE {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(20px) scale(0.98); }
+        }
+        
+        /* تحسين: زر الإغلاق في الزاوية */
+        .modal-close-iconISHARE {
+            position: absolute;
+            top: 10px;
+            left: 10px; /* في اليسار لأن الصفحة RTL */
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            color: #888;
+            cursor: pointer;
+            padding: 5px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        
+        .modal-close-iconISHARE:hover {
+            color: var(--danger-color-startISHARE);
+        }
+
+        .modal-contentISHARE h1 {
+            font-family: var(--font-mainISHARE);
+            color: var(--primary-colorISHARE);
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+            font-weight: 700;
+        }
+
+        .modal-contentISHARE p {
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+            line-height: 1.9;
+            margin-bottom: 15px;
+            color: var(--text-colorISHARE);
+        }
+        
+        .modal-contentISHARE p.quranic-text { /* اسم أوضح */
+            font-family: var(--font-quranicISHARE);
+        }
+        
+        .modal-contentISHARE .hadith-blockISHARE {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .modal-contentISHARE .hadith-blockISHARE:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .modal-contentISHARE p.hadith-textISHARE {
+            font-weight: bold;
+            color: var(--accent-colorISHARE);
+            font-family: var(--font-quranicISHARE);
+        }
+        
+        .modal-contentISHARE p.hadith-sourceISHARE {
+            font-family: var(--font-mainISHARE);
+            font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+            color: var(--text-colorISHARE);
+            opacity: 0.8;
+            border-top: 1px dashed var(--accent-colorISHARE);
+            padding-top: 10px;
+            margin-top: 15px;
+        }
+        
+        /* --- تصميم الأزرار وحاويتها --- */
+        .modal-contentISHARE .buttons-modal-containerISHARE {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+            align-items: center;
+        }
+
+        .modal-buttonISHARE {
+            background: linear-gradient(135deg, var(--button-gradient-startISHARE), var(--button-gradient-endISHARE));
+            color: white; /* إزالة !important */
+            padding: 12px 25px;
+            font-size: clamp(0.9rem, 2.8vw, 1.05rem);
+            font-weight: 500;
+            font-family: var(--font-mainISHARE);
+            border: none;
+            border-radius: var(--border-radiusISHARE);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 180px;
+            width: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .modal-buttonISHARE:hover {
+            background: linear-gradient(135deg, var(--hover-gradient-startISHARE), var(--hover-gradient-endISHARE));
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .modal-buttonISHARE.btn-close-modalISHARE {
+            background: linear-gradient(135deg, var(--danger-color-startISHARE), var(--danger-color-endISHARE));
+        }
+
+        .modal-buttonISHARE.btn-close-modalISHARE:hover {
+            background: linear-gradient(135deg, var(--danger-color-endISHARE), #a94442);
+        }
+
+        .modal-contentISHARE audio {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radiusISHARE);
+        }
+        
+        /* --- تصميم متجاوب (Responsive) --- */
+        @media (min-width: 481px) {
+            .modal-contentISHARE .buttons-modal-containerISHARE {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="kahfModalISHARE" class="modalISHARE" role="dialog" aria-modal="true" aria-labelledby="kahfModalTitle">
+        <div class="modal-contentISHARE">
+            <button type="button" class="modal-close-iconISHARE" aria-label="إغلاق">&times;</button>
+            <h1 id="kahfModalTitle">فضل سورة الكهف يوم الجمعة</h1>
+            <p class="hadith-textISHARE quranic-text">"من قرأ سورةَ الكهفِ في يومِ الجمعةِ أضاء له من النورِ ما بين الجمُعَتَين."</p>
+            <p class="hadith-sourceISHARE">الراوي: أبو سعيد الخدري | المحدث: الألباني | المصدر: صحيح الترغيب | الرقم: 736 | صحيح</p>
+            <div class="buttons-modal-containerISHARE">
+                <a href="سورة الكهف مكتوبة.html" class="modal-buttonISHARE">قراءة السورة الآن</a>
+                <button type="button" class="modal-buttonISHARE btn-close-modalISHARE">إغلاق</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="jumaaModalISHARE" class="modalISHARE" role="dialog" aria-modal="true" aria-labelledby="jumaaModalTitle">
+        <div class="modal-contentISHARE">
+            <button type="button" class="modal-close-iconISHARE" aria-label="إغلاق">&times;</button>
+            <h1 id="jumaaModalTitle">فضل يوم وصلاة الجمعة</h1>
+            <audio id="jumaaAudioISHARE" controls preload="metadata">
+                <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل الصوت.
+            </audio>
+            <div class="hadith-blockISHARE">
+                 <p class="hadith-textISHARE quranic-text">"من غسَّلَ يومَ الجمعةِ واغتسلَ ثمَّ بَكَّرَ وابتَكرَ ومشى ولم يرْكب ودنا منَ الإمامِ فاستمعَ ولم يلغُ كانَ لَهُ بِكلِّ خطوةٍ عملُ سنةٍ أجرُ صيامِها وقيامِها."</p>
+                 <p class="hadith-sourceISHARE">الراوي: أوس بن أبي أوس | المحدث: الألباني | المصدر: صحيح أبي داود | الرقم: 345 | صحيح</p>
+            </div>
+            <div class="hadith-blockISHARE">
+                 <p class="hadith-textISHARE quranic-text">"الصَّلَوَاتُ الخَمْسُ، وَالْجُمْعَةُ إلى الجُمْعَةِ، وَرَمَضَانُ إلى رَمَضَانَ، مُكَفِّرَاتٌ ما بيْنَهُنَّ إِذَا اجْتَنَبَ الكَبَائِرَ."</p>
+                 <p class="hadith-sourceISHARE">الراوي: أبو هريرة | المحدث: مسلم | المصدر: صحيح مسلم | الرقم: 233 | صحيح</p>
+            </div>
+            <div class="buttons-modal-containerISHARE">
+                <button type="button" class="modal-buttonISHARE btn-close-modalISHARE">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="generalModalISHARE" class="modalISHARE" role="dialog" aria-modal="true" aria-labelledby="generalModalTitle">
+        <div class="modal-contentISHARE">
+            <button type="button" class="modal-close-iconISHARE" aria-label="إغلاق">&times;</button>
+            <h1 id="generalModalTitle">⚡ أَدَاة عِلْم ⚡</h1>
+            <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
+            <p>نذكركم أن التجربة على أجهزة الكمبيوتر أفضل حاليًا، ونسعى لتحسينها على الهواتف قريبًا بإذن الله.</p>
+            <div class="buttons-modal-containerISHARE">
+                <button type="button" class="modal-buttonISHARE btn-close-modalISHARE">حسنًا، فهمت</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="lModalISHARE" class="modalISHARE" role="dialog" aria-modal="true" aria-labelledby="lModalTitle">
+        <div class="modal-contentISHARE">
+            <button type="button" class="modal-close-iconISHARE" aria-label="إغلاق">&times;</button>
+            <h1 id="lModalTitle">⚡ أداة علمية مساعدة ⚡</h1>
+            <p>
+                تُقدم هذه الأداة تحليلات إحصائية للمساعدة فقط، وهي لا تُمثل جزمًا مطلقًا. العلم الكامل وعلم الغيب هو عند الله وحده عز وجل.
+            </p>
+            <p>
+                لذلك، ننصحك بالاجتهاد في دراسة المنهج قدر استطاعتك. وفقنا الله وإياكم لما يحب ويرضى.
+            </p>
+            <div class="buttons-modal-containerISHARE">
+                <button type="button" class="modal-buttonISHARE btn-close-modalISHARE">حسنًا، فهمت</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // تحسين: استخدام 'DOMContentLoaded' لبدء أسرع
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- نظام إدارة النوافذ المنبثقة المحسّن ---
+        
+        const modalQueue = [];
+        let activeModal = null;
+
+        // دالة لإظهار نافذة بناءً على معرفها
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            
+            activeModal = modal;
+            modal.style.display = "flex";
+
+            // تحسين: إمكانية إغلاق النافذة بالضغط على الخلفية أو زر الإغلاق
+            const closeElements = modal.querySelectorAll('.btn-close-modalISHARE, .modal-close-iconISHARE');
+            
+            const clickToClose = (e) => {
+                if (e.target === modal || Array.from(closeElements).includes(e.target)) {
+                    closeActiveModal();
+                }
+            };
+            
+            modal.addEventListener('click', clickToClose);
+
+            // تشغيل الصوت إذا كانت نافذة الجمعة
+            if (modalId === 'jumaaModalISHARE') {
+                const audio = document.getElementById("jumaaAudioISHARE");
+                if (audio) {
+                    audio.play().catch(error => console.log("تشغيل الصوت التلقائي يتطلب تفاعل المستخدم الأول."));
+                }
+            }
+        }
+
+        // دالة لإغلاق النافذة النشطة حاليًا
+        function closeActiveModal() {
+            if (!activeModal) return;
+
+            // إيقاف الصوت عند الإغلاق
+            const audio = activeModal.querySelector("audio");
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+
+            // تحسين: إضافة كلاس لتشغيل حركة الإغلاق
+            activeModal.classList.add('is-closing');
+            
+            // إخفاء النافذة بعد انتهاء حركة الإغلاق
+            setTimeout(() => {
+                if(activeModal) {
+                    activeModal.style.display = "none";
+                    activeModal.classList.remove('is-closing');
+                    activeModal = null;
+                }
+                // إظهار النافذة التالية في الطابور
+                showNextModalInQueue();
+            }, 300); // مدة تتوافق مع حركة CSS
+        }
+        
+        // تحسين: إمكانية إغلاق النافذة بمفتاح 'Escape'
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && activeModal) {
+                closeActiveModal();
+            }
+        });
+
+        // دالة لإظهار النافذة التالية في طابور العرض
+        function showNextModalInQueue() {
+            if (modalQueue.length > 0) {
+                const nextModalId = modalQueue.shift(); // أخذ أول عنصر من الطابور
+                showModal(nextModalId);
+            }
+        }
+        
+        // --- المنطق الرئيسي لتحديد النوافذ التي ستظهر ---
+
+        function initializeModals() {
+            // إضافة الإشعارات الدائمة إلى الطابور
+            modalQueue.push('generalModalISHARE');
+            modalQueue.push('lModalISHARE');
+
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0=الأحد, 5=الجمعة
+            const hours = today.getHours();
+
+            // التحقق من إشعارات يوم الجمعة
+            if (dayOfWeek === 5) {
+                // إضافة نافذة سورة الكهف إلى بداية الطابور لتظهر أولاً
+                modalQueue.unshift('kahfModalISHARE');
+                
+                // إذا كان الوقت قبل صلاة الجمعة (مثلاً قبل 2 ظهرًا)
+                if (hours < 14) {
+                    // إضافة نافذة فضل صلاة الجمعة
+                    modalQueue.unshift('jumaaModalISHARE');
+                }
+            }
+            
+            // بدء عرض أول نافذة في الطابور
+            showNextModalInQueue();
+        }
+
+        // تشغيل الدالة
+        initializeModals();
+    });
+    </script>
+</body>
+</html>
