@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-color: #2980b9; /* A calming blue for science */
+      --primary-color: #2980b9; 
       --secondary-color: #2c3e50;
       --accent-color: #e67e22;
       --danger-color: #c0392b;
@@ -56,27 +56,6 @@
       border-radius: 3px;
     }
 
-    .page-info {
-      background-color: var(--white);
-      padding: 15px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
-      text-align: center;
-      border-left: 5px solid var(--primary-color);
-    }
-
-    .page-info div {
-      margin-bottom: 10px;
-      font-size: 1em;
-      color: var(--secondary-color);
-    }
-    .page-info div:last-child { margin-bottom: 0; }
-    .page-info .countdown, .page-info .date-display {
-      font-weight: bold;
-      color: var(--primary-color);
-    }
-    
     .progress-container {
       background-color: #e0e0e0;
       border-radius: 10px;
@@ -257,7 +236,6 @@
       color: var(--secondary-color);
     }
     
-    /* === RESPONSIVE DESIGN FOR MOBILE === */
     @media (max-width: 768px) {
       body { padding: 10px; }
       h1 { font-size: 1.8em; }
@@ -288,7 +266,6 @@
       }
       td:last-child { border-bottom: 0; }
       
-      /* Add labels to table cells using data-label attribute */
       td[data-label]::before { 
         content: attr(data-label);
         display: block;
@@ -336,15 +313,7 @@
 <body>
 
 <div class="container">
-  <h1><i class="fa-solid fa-calendar-days"></i> جدول مراجعة منظم - 4 أيام لمادة علم المناعة</h1>
-  <h1><i class="fa-solid fa-calendar-days"></i> Organized Review Schedule - 4 Days for Immunology</h1>
-  <h1><i class="fa-solid fa-calendar-days"></i> Calendrier de révision organisé - 4 jours pour l'immunologie</h1>
-
-  <div class="page-info">
-    <div id="gregorianDateDisplay"><i class="fas fa-calendar-alt"></i> ...</div>
-    <div id="hijriDateDisplay"><i class="fas fa-moon"></i> ...</div>
-    <div id="countdownToEndOfDay"><i class="fas fa-hourglass-end"></i> ...</div>
-  </div>
+  <h1><i class="fa-solid fa-shield-virus"></i> جدول مراجعة مركز لعلم المناعة</h1>
 
   <div class="progress-container">
     <div class="progress-bar" id="progressBar"></div>
@@ -353,20 +322,14 @@
   <div class="stats">
     <div class="stat-card">
       <h3><i class="fas fa-tasks"></i> المهام الكلية</h3>
-      <h3><i class="fas fa-tasks"></i> Total Tasks</h3>
-      <h3><i class="fas fa-tasks"></i> Tâches totales</h3>
       <div class="stat-value" id="totalTasks">12</div>
     </div>
     <div class="stat-card">
       <h3><i class="fas fa-check-circle"></i> المكتملة</h3>
-      <h3><i class="fas fa-check-circle"></i> Completed</h3>
-      <h3><i class="fas fa-check-circle"></i> Terminées</h3>
       <div class="stat-value" id="completedTasks">0</div>
     </div>
     <div class="stat-card">
       <h3><i class="fas fa-hourglass-half"></i> الوقت الإجمالي</h3>
-      <h3><i class="fas fa-hourglass-half"></i> Total Time</h3>
-      <h3><i class="fas fa-hourglass-half"></i> Temps total</h3>
       <div class="stat-value" id="totalStudyTimeDisplay">32 ساعة</div>
     </div>
   </div>
@@ -375,191 +338,131 @@
     <thead>
       <tr>
         <th>اليوم<br>Day<br>Jour</th>
-        <th>08:00 – 11:00 (3 ساعات<br>Hours<br>Heures)</th>
-        <th>13:00 – 16:00 (3 ساعات<br>Hours<br>Heures)</th>
-        <th>18:00 – 20:00 (ساعتان<br>Hours<br>Heures)</th>
+        <th>08:00 – 11:00 (3 ساعات)</th>
+        <th>13:00 – 16:00 (3 ساعات)</th>
+        <th>18:00 – 20:00 (ساعتان)</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="day-header" colspan="4">اليوم الأول: أسس المناعة والتعرف<br>Day 1: Fundamentals of Immunology & Recognition<br>Jour 1 : Fondamentaux de l'immunologie et reconnaissance</td>
+        <td class="day-header" colspan="4">اليوم الأول: الأهمية القصوى وأساسيات المناعة</td>
       </tr>
       <tr>
-        <td class="day-header-mobile">اليوم الأول<br>Day 1<br>Jour 1</td>
-        <td id="task1" data-label="08:00 – 11:00 | مقدمة والمناعة الفطرية">
-          <span class="task-title"><i class="fas fa-book-open"></i> مقدمة، الأعضاء اللمفاوية والمناعة الفطرية</span>
-          <span class="task-title"><i class="fas fa-book-open"></i> Intro, Lymphoid Organs & Innate Immunity</span>
-          <span class="task-title"><i class="fas fa-book-open"></i> Intro, Organes lymphoïdes & Immunité innée</span>
+        <td class="day-header-mobile">اليوم الأول</td>
+        <td id="task1" data-label="08:00 – 11:00 | أساسيات المناعة">
+          <span class="task-title"><i class="fas fa-book-open"></i> الأعضاء اللمفاوية والمناعة الفطرية</span>
           <ul>
-            <li>مقدمة في علم المناعة والأعضاء اللمفاوية</li>
-            <li>Introduction to Immunology and Lymphoid Organs</li>
-            <li>Introduction à l'Immunologie - Organes lymphoïdes</li>
-            <hr>
-            <li>المناعة الفطرية</li>
-            <li>Innate Immunity</li>
+            <li>Organes Lymphoïdes</li>
             <li>Immunité innée</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t1"></span> <div> <button class="btn btn-start" onclick="startCountdown('t1', 10800, 'task1')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task1')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task1', 't1')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
-        <td id="task2" data-label="13:00 – 16:00 | المستضدات و CMH">
-          <span class="task-title"><i class="fas fa-fingerprint"></i> المستضدات ومركب التوافق النسيجي الكبير</span>
-          <span class="task-title"><i class="fas fa-fingerprint"></i> Antigens & Major Histocompatibility Complex</span>
-          <span class="task-title"><i class="fas fa-fingerprint"></i> Antigènes & Complexe majeur d'histocompatibilité</span>
-          <ul>
-            <li>المستضدات</li>
-            <li>Antigens</li>
-            <li>Les antigènes</li>
-            <hr>
-            <li>مركب التوافق النسيجي الكبير (CMH)</li>
-            <li>Major Histocompatibility Complex (MHC)</li>
-            <li>Le Complexe majeur d'histocompatibilité (CMH)</li>
-          </ul>
+        <td id="task2" data-label="13:00 – 16:00 | الموضوع الأهم">
+          <span class="task-title"><i class="fas fa-star"></i> الغلوبولينات المناعية (الأجسام المضادة)</span>
+            <ul>
+              <li>Immunoglobulines</li>
+              <li>التركيز على الأنواع، البنية، والوظائف</li>
+            </ul>
           <div class="task-actions"> <span class="timer" id="t2"></span> <div> <button class="btn btn-start" onclick="startCountdown('t2', 10800, 'task2')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task2')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task2', 't2')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
-        <td id="task3" data-label="18:00 – 20:00 | مراجعة اليوم الأول">
-            <span class="task-title"><i class="fas fa-magnifying-glass"></i> مراجعة أساسيات المناعة</span>
-            <span class="task-title"><i class="fas fa-magnifying-glass"></i> Review of Immunology Basics</span>
-            <span class="task-title"><i class="fas fa-magnifying-glass"></i> Révision des bases de l'immunologie</span>
+        <td id="task3" data-label="18:00 – 20:00 | تطبيقات اليوم الأول">
+            <span class="task-title"><i class="fas fa-magnifying-glass"></i> تطبيقات وحالات سريرية</span>
           <ul>
-            <li>مراجعة سريعة لكل ما تمت دراسته اليوم</li>
-            <li>Quick review of everything studied today</li>
-            <li>Révision rapide de tout ce qui a été étudié aujourd'hui</li>
+            <li>دراسة حالات للمناعة الفطرية</li>
+            <li>تحليل وظائف الأجسام المضادة عمليًا</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t3"></span> <div> <button class="btn btn-start" onclick="startCountdown('t3', 7200, 'task3')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task3')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task3', 't3')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
       </tr>
 
       <tr>
-        <td class="day-header" colspan="4">اليوم الثاني: المناعة التكيفية (الخلايا B و T)<br>Day 2: Adaptive Immunity (B & T Cells)<br>Jour 2 : Immunité adaptative (Cellules B et T)</td>
+        <td class="day-header" colspan="4">اليوم الثاني: المناعة التكيفية والتعرف على المستضد</td>
       </tr>
       <tr>
-        <td class="day-header-mobile">اليوم الثاني<br>Day 2<br>Jour 2</td>
-        <td id="task4" data-label="08:00 – 11:00 | المناعة الخلطية">
-          <span class="task-title"><i class="fas fa-syringe"></i> المناعة الخلطية (الخلايا B والأجسام المضادة)</span>
-          <span class="task-title"><i class="fas fa-syringe"></i> Humoral Immunity (B-Cells & Antibodies)</span>
-          <span class="task-title"><i class="fas fa-syringe"></i> Immunité humorale (Cellules B & Anticorps)</span>
+        <td class="day-header-mobile">اليوم الثاني</td>
+        <td id="task4" data-label="08:00 – 11:00 | المناعة الخلوية">
+          <span class="task-title"><i class="fas fa-people-arrows"></i> اللمفاويات التائية ومستقبلها (TCR)</span>
           <ul>
-            <li>اللمفاوية البائية ومستقبلها (BCR)</li>
-            <li>The B lymphocyte and its BCR</li>
-            <li>Le lymphocyte B et le BCR</li>
-            <hr>
-            <li>الغلوبولينات المناعية (الأجسام المضادة)</li>
-            <li>Immunoglobulins (Antibodies)</li>
-            <li>Les immunoglobulines</li>
+            <li>Lymphocytes T et TCR</li>
+            <li>الأنواع الفرعية (CD4, CD8) والنضج</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t4"></span> <div> <button class="btn btn-start" onclick="startCountdown('t4', 10800, 'task4')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task4')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task4', 't4')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
-        <td id="task5" data-label="13:00 – 16:00 | المناعة الخلوية">
-          <span class="task-title"><i class="fas fa-people-arrows"></i> المناعة الخلوية (الخلايا T والتفاعلات)</span>
-          <span class="task-title"><i class="fas fa-people-arrows"></i> Cellular Immunity (T-Cells & Interactions)</span>
-          <span class="task-title"><i class="fas fa-people-arrows"></i> Immunité cellulaire (Cellules T & Interactions)</span>
+        <td id="task5" data-label="13:00 – 16:00 | عرض المستضد">
+          <span class="task-title"><i class="fas fa-fingerprint"></i> نظام HLA والمستضدات</span>
           <ul>
-            <li>اللمفاوية التائية ومستقبلها (TCR)</li>
-            <li>The T lymphocyte and its TCR</li>
-            <li>Le lymphocyte T et le TCR</li>
-            <hr>
-            <li>التفاعلات الخلوية</li>
-            <li>Cellular interactions</li>
-            <li>Interactions cellulaires</li>
+            <li>Système HLA (CMH)</li>
+            <li>Antigènes</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t5"></span> <div> <button class="btn btn-start" onclick="startCountdown('t5', 10800, 'task5')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task5')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task5', 't5')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
-        <td id="task6" data-label="18:00 – 20:00 | مراجعة">
-          <span class="task-title"><i class="fas fa-crosshairs"></i> مراجعة المناعة التكيفية</span>
-          <span class="task-title"><i class="fas fa-crosshairs"></i> Review of Adaptive Immunity</span>
-          <span class="task-title"><i class="fas fa-crosshairs"></i> Révision de l'immunité adaptative</span>
+        <td id="task6" data-label="18:00 – 20:00 | آليات التفعيل">
+          <span class="task-title"><i class="fas fa-crosshairs"></i> آليات التعرف وتفعيل الخلايا التائية</span>
           <ul>
-            <li>ربط المفاهيم: خلية B ← أجسام مضادة، خلية T ← تفاعلات</li>
-            <li>Connecting concepts: B-cell → Abs, T-cell → Interactions</li>
-            <li>Lier les concepts : Cellule B → Ac, Cellule T → Interactions</li>
+            <li>مسار عرض المستضد عبر HLA</li>
+            <li>تفعيل الخلايا التائية المساعدة والسامة</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t6"></span> <div> <button class="btn btn-start" onclick="startCountdown('t6', 7200, 'task6')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task6', 't6')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
       </tr>
 
       <tr>
-        <td class="day-header" colspan="4">اليوم الثالث: أنظمة الدعم والتواصل<br>Day 3: Support & Communication Systems<br>Jour 3 : Systèmes de support et de communication</td>
+        <td class="day-header" colspan="4">اليوم الثالث: أنظمة الدعم والتواصل الخلوي</td>
       </tr>
       <tr>
-        <td class="day-header-mobile">اليوم الثالث<br>Day 3<br>Jour 3</td>
-        <td id="task7" data-label="08:00 – 11:00 | المتممة والسيتوكينات">
-          <span class="task-title"><i class="fas fa-sitemap"></i> نظام المتممة والسيتوكينات</span>
-          <span class="task-title"><i class="fas fa-sitemap"></i> Complement System & Cytokines</span>
-          <span class="task-title"><i class="fas fa-sitemap"></i> Système du complément & Cytokines</span>
+        <td class="day-header-mobile">اليوم الثالث</td>
+        <td id="task7" data-label="08:00 – 11:00 | المناعة الخلطية">
+            <span class="task-title"><i class="fas fa-syringe"></i> اللمفاويات البائية ونظام المتممة</span>
           <ul>
-            <li>نظام المتممة</li>
-            <li>The Complement System</li>
-            <li>Le système du complément</li>
-            <hr>
-            <li>السيتوكينات - الكيموكينات ومستقبلاتها</li>
-            <li>Cytokines - Chemokines and receptors</li>
-            <li>Cytokines - Chimiokines et récepteurs</li>
+            <li>Lymphocytes B</li>
+            <li>Système du Complément</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t7"></span> <div> <button class="btn btn-start" onclick="startCountdown('t7', 10800, 'task7')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task7')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task7', 't7')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
-        <td id="task8" data-label="13:00 – 16:00 | الالتهاب والالتصاق">
-          <span class="task-title"><i class="fas fa-fire"></i> الالتهاب وجزيئات الالتصاق</span>
-          <span class="task-title"><i class="fas fa-fire"></i> Inflammation & Adhesion Molecules</span>
-          <span class="task-title"><i class="fas fa-fire"></i> Inflammation & Molécules d'adhésion</span>
+        <td id="task8" data-label="13:00 – 16:00 | رسائل الجهاز المناعي">
+          <span class="task-title"><i class="fas fa-sitemap"></i> السيتوكينات والكيموكينات</span>
           <ul>
-            <li>الجوانب المناعية لحدوث الالتهاب</li>
-            <li>The immune aspects of inflammation</li>
-            <li>Les aspects immunitaires de l'inflammation</li>
-            <hr>
-            <li>جزيئات الالتصاق</li>
-            <li>Adhesion molecules</li>
-            <li>Les molécules d'adhésion</li>
+            <li>Cytokines, Chimiokines et Récepteurs</li>
+            <li>أدوارها في تنظيم الاستجابة المناعية</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t8"></span> <div> <button class="btn btn-start" onclick="startCountdown('t8', 10800, 'task8')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task8')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task8', 't8')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
-        <td id="task9" data-label="18:00 – 20:00 | مراجعة">
-          <span class="task-title"><i class="fas fa-brain"></i> مراجعة أنظمة التواصل</span>
-          <span class="task-title"><i class="fas fa-brain"></i> Review of Communication Systems</span>
-          <span class="task-title"><i class="fas fa-brain"></i> Révision des systèmes de communication</span>
+        <td id="task9" data-label="18:00 – 20:00 | تكامل الأنظمة">
+          <span class="task-title"><i class="fas fa-brain"></i> التكامل بين المناعة الخلطية والوسائط</span>
           <ul>
-            <li>مراجعة دور المتممة والسيتوكينات في الالتهاب</li>
-            <li>Review the role of complement and cytokines in inflammation</li>
-            <li>Réviser le rôle du complément et des cytokines dans l'inflammation</li>
+              <li>العلاقة بين الخلايا B والمتممة والسيتوكينات</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t9"></span> <div> <button class="btn btn-start" onclick="startCountdown('t9', 7200, 'task9')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task9')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task9', 't9')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
       </tr>
 
       <tr>
-        <td class="day-header" colspan="4">اليوم الرابع: تجميع وتطبيق نهائي<br>Day 4: Final Consolidation & Application<br>Jour 4 : Consolidation et application finales</td>
+        <td class="day-header" colspan="4">اليوم الرابع: التفاعلات، الالتهاب، والتحليل النهائي</td>
       </tr>
       <tr>
-        <td class="day-header-mobile">اليوم الرابع<br>Day 4<br>Jour 4</td>
-        <td id="task10" data-label="08:00 – 11:00 | ربط الأفكار">
-          <span class="task-title"><i class="fas fa-link"></i> ربط المناعة الفطرية بالتكيفية</span>
-          <span class="task-title"><i class="fas fa-link"></i> Linking Innate & Adaptive Immunity</span>
-          <span class="task-title"><i class="fas fa-link"></i> Lier l'immunité innée et adaptative</span>
+        <td class="day-header-mobile">اليوم الرابع</td>
+        <td id="task10" data-label="08:00 – 11:00 | الصورة الكبرى">
+          <span class="task-title"><i class="fas fa-link"></i> التفاعلات الخلوية، الالتهاب، والالتصاق</span>
           <ul>
-            <li>مراجعة شاملة لكيفية تفعيل المناعة التكيفية</li>
-            <li>Comprehensive review of adaptive immunity activation</li>
-            <li>Révision complète de l'activation de l'immunité adaptative</li>
+            <li>Interactions cellulaires</li>
+            <li>Réaction Inflammatoire</li>
+            <li>Molécules d'Adhésion</li>
           </ul>
-          <div class="task-actions"> <span class="timer" id="t10"></span> <div> <button class="btn btn-start" onclick="startCountdown('t10', 10800, 'task10')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task10')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('t10', 't10')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
+          <div class="task-actions"> <span class="timer" id="t10"></span> <div> <button class="btn btn-start" onclick="startCountdown('t10', 10800, 'task10')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task10')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task10', 't10')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
-        <td id="task11" data-label="13:00 – 16:00 | حل أسئلة 1">
-          <span class="task-title"><i class="fas fa-file-signature"></i> حل أسئلة (MCQs) - الجزء الأول</span>
-          <span class="task-title"><i class="fas fa-file-signature"></i> Solving MCQs - Part 1</span>
-          <span class="task-title"><i class="fas fa-file-signature"></i> Résolution de QCM - Partie 1</span>
+        <td id="task11" data-label="13:00 – 16:00 | تحليل أسئلة 1">
+          <span class="task-title"><i class="fas fa-file-signature"></i> تحليل معمق لأسئلة الامتحانات (ج1)</span>
           <ul>
-            <li>التركيز على أسئلة المواضيع الأساسية</li>
-            <li>Focus on questions from core topics</li>
-            <li>Se concentrer sur les questions des sujets de base</li>
+            <li>تحليل أسئلة تغطي المواضيع ذات الأهمية العالية</li>
+            <li>استنتاج الأفكار المتكررة وأنماط الأسئلة</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t11"></span> <div> <button class="btn btn-start" onclick="startCountdown('t11', 10800, 'task11')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task11')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task11', 't11')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
-        <td id="task12" data-label="18:00 – 20:00 | حل أسئلة 2">
-          <span class="task-title"><i class="fas fa-award"></i> حل أسئلة (MCQs) - الجزء الثاني</span>
-          <span class="task-title"><i class="fas fa-award"></i> Solving MCQs - Part 2</span>
-          <span class="task-title"><i class="fas fa-award"></i> Résolution de QCM - Partie 2</span>
+        <td id="task12" data-label="18:00 – 20:00 | تحليل أسئلة 2">
+          <span class="task-title"><i class="fas fa-award"></i> تحليل معمق لأسئلة الامتحانات (ج2)</span>
           <ul>
-            <li>التركيز على أسئلة المواضيع المتقدمة ومراجعة الأخطاء</li>
-            <li>Focus on advanced topics & reviewing mistakes</li>
-            <li>Se concentrer sur les sujets avancés et la révision des erreurs</li>
+              <li>التركيز على الحالات السريرية والأسئلة المعقدة</li>
+              <li>وضع استراتيجيات للإجابة السريعة والدقيقة</li>
           </ul>
           <div class="task-actions"> <span class="timer" id="t12"></span> <div> <button class="btn btn-start" onclick="startCountdown('t12', 7200, 'task12')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task12')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task12', 't12')"><i class="fas fa-redo"></i> إعادة</button> </div> </div>
         </td>
@@ -574,21 +477,17 @@
 const totalTasks = 12;
 let completedTasks = 0;
 let activeTimers = {};
-let endOfDayTimerInterval;
 
 // Define unique keys for this specific schedule
 const LS_KEYS = {
-  COMPLETED: 'completedTasks_immunology_4days',
-  STATUS: 'tasksStatus_immunology_4days',
-  TIMERS: 'activeTimers_immunology_4days'
+  COMPLETED: 'completedTasks_immunology_4days_v2',
+  STATUS: 'tasksStatus_immunology_4days_v2',
+  TIMERS: 'activeTimers_immunology_4days_v2'
 };
 
 document.addEventListener('DOMContentLoaded', function() {
   loadState();
   updateProgress();
-  updateTotalStudyTimeDisplay();
-  displayDates();
-  startEndOfDayCountdown();
   
   // Restore timers if they were running
   for (const timerId in activeTimers) {
@@ -608,192 +507,110 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-function displayDates() {
-  const now = new Date();
-  const gregorianFormatter = new Intl.DateTimeFormat('ar-EG', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-  });
-  document.getElementById('gregorianDateDisplay').innerHTML = `<i class="fas fa-calendar-alt"></i> الميلادي: ${gregorianFormatter.format(now)}`;
+function startCountdown(timerId, duration, taskId, isRestoring = false) {
+    const taskElement = document.getElementById(taskId);
+    if (taskElement.classList.contains('completed')) return;
 
-  try {
-    const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
-      year: 'numeric', month: 'long', day: 'numeric'
-    });
-    document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> الهجري: ${hijriFormatter.format(now)}`;
-  } catch (e) {
-    console.error("Hijri date formatting not supported or error:", e);
-    document.getElementById('hijriDateDisplay').style.display = 'none';
-  }
-}
-
-function startEndOfDayCountdown() {
-  if (endOfDayTimerInterval) clearInterval(endOfDayTimerInterval);
-  
-  const countdownElement = document.getElementById('countdownToEndOfDay');
-  function updateCountdown() {
-    const now = new Date();
-    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
-    const totalSecondsRemaining = Math.floor((endOfDay - now) / 1000);
-
-    if (totalSecondsRemaining < 0) {
-      countdownElement.innerHTML = `<i class="fas fa-hourglass-end"></i> انتهى اليوم!`;
-      clearInterval(endOfDayTimerInterval);
-      return;
+    if (activeTimers[timerId] && activeTimers[timerId].interval) {
+        clearInterval(activeTimers[timerId].interval);
     }
-    let hours = Math.floor(totalSecondsRemaining / 3600);
-    let minutes = Math.floor((totalSecondsRemaining % 3600) / 60);
-    let seconds = totalSecondsRemaining % 60;
-    countdownElement.innerHTML = `<i class="fas fa-hourglass-end"></i> نهاية اليوم بعد: ${hours}س ${minutes}د ${seconds}ث`;
-  }
-  updateCountdown();
-  endOfDayTimerInterval = setInterval(updateCountdown, 1000);
-}
 
-function startCountdown(timerElementId, seconds, taskId, isRestart = false) {
-  if (activeTimers[timerElementId] && activeTimers[timerElementId].interval) {
-    clearInterval(activeTimers[timerElementId].interval);
-  }
+    const endTime = isRestoring ? activeTimers[timerId].endTime : Date.now() + duration * 1000;
+    
+    activeTimers[timerId] = {
+        interval: setInterval(update, 1000),
+        endTime: endTime,
+        taskId: taskId
+    };
 
-  const taskElement = document.getElementById(taskId);
-  if (taskElement && taskElement.classList.contains('completed')) {
-    document.getElementById(timerElementId).textContent = 'مكتمل';
-    return;
-  }
+    function update() {
+        const remaining = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
+        const hours = Math.floor(remaining / 3600);
+        const minutes = Math.floor((remaining % 3600) / 60);
+        const seconds = remaining % 60;
+        document.getElementById(timerId).textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-  let endTime;
-  if (isRestart && activeTimers[timerElementId] && activeTimers[timerElementId].endTime) {
-    endTime = activeTimers[timerElementId].endTime;
-  } else {
-    endTime = Date.now() + seconds * 1000;
-  }
-  
-  let timerDisplayElement = document.getElementById(timerElementId);
-  
-  function updateTimerDisplay() {
-    let remaining = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
-    let h = Math.floor(remaining / 3600);
-    let m = Math.floor((remaining % 3600) / 60);
-    let s = remaining % 60;
-    timerDisplayElement.innerHTML = `<i class="fas fa-clock"></i> ${h}س ${m}د ${s}ث`;
-    if (remaining <= 0) {
-      timerDisplayElement.innerHTML = '<i class="fas fa-bell"></i> انتهى الوقت!';
-      clearInterval(activeTimers[timerElementId].interval);
+        if (remaining === 0) {
+            clearInterval(activeTimers[timerId].interval);
+            document.getElementById(timerId).innerHTML = '<i class="fas fa-bell"></i> انتهى الوقت!';
+            delete activeTimers[timerId];
+        }
+        saveState();
     }
-  }
-
-  activeTimers[timerElementId] = {
-    interval: setInterval(updateTimerDisplay, 1000),
-    taskId: taskId,
-    initialSeconds: seconds,
-    endTime: endTime
-  };
-  
-  updateTimerDisplay();
-  saveState();
+    update();
 }
 
 function completeTask(taskId) {
-  const taskElement = document.getElementById(taskId);
-  if (!taskElement || taskElement.classList.contains('completed')) return;
-  
-  taskElement.classList.add('completed');
-  completedTasks++;
-  updateProgress();
-  
-  for (const timerId in activeTimers) {
-    if (activeTimers[timerId] && activeTimers[timerId].taskId === taskId) {
-      if (activeTimers[timerId].interval) {
+    const taskElement = document.getElementById(taskId);
+    if (taskElement.classList.contains('completed')) return;
+
+    taskElement.classList.add('completed');
+    completedTasks++;
+    
+    const timerId = 't' + taskId.replace('task', '');
+    if (activeTimers[timerId] && activeTimers[timerId].interval) {
         clearInterval(activeTimers[timerId].interval);
-      }
-      document.getElementById(timerId).textContent = 'مكتمل';
-      break;
+        delete activeTimers[timerId];
+        document.getElementById(timerId).textContent = 'مكتمل';
     }
-  }
-  saveState();
+    
+    updateProgress();
+    saveState();
 }
 
 function resetTask(taskId, timerId) {
-  const taskElement = document.getElementById(taskId);
-  if (!taskElement) return;
-  
-  if (taskElement.classList.contains('completed')) {
-    taskElement.classList.remove('completed');
-    completedTasks--;
+    const taskElement = document.getElementById(taskId);
+    if (taskElement.classList.contains('completed')) {
+        taskElement.classList.remove('completed');
+        completedTasks--;
+    }
+    
+    if (activeTimers[timerId] && activeTimers[timerId].interval) {
+        clearInterval(activeTimers[timerId].interval);
+    }
+    delete activeTimers[timerId];
+    document.getElementById(timerId).textContent = '';
+    
     updateProgress();
-  }
-  
-  if (activeTimers[timerId] && activeTimers[timerId].interval) {
-    clearInterval(activeTimers[timerId].interval);
-  }
-  delete activeTimers[timerId];
-  
-  document.getElementById(timerId).textContent = '';
-  saveState();
+    saveState();
 }
 
 function updateProgress() {
-  const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
-  document.getElementById('progressBar').style.width = `${progress}%`;
-  document.getElementById('completedTasks').textContent = completedTasks;
-  document.getElementById('totalTasks').textContent = totalTasks;
-}
-
-function updateTotalStudyTimeDisplay() {
-  document.getElementById('totalStudyTimeDisplay').textContent = '32 ساعة';
+    document.getElementById('completedTasks').textContent = completedTasks;
+    const progress = (completedTasks / totalTasks) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
 }
 
 function saveState() {
-  localStorage.setItem(LS_KEYS.COMPLETED, completedTasks.toString());
-  
-  let tasksStatus = {};
-  for (let i = 1; i <= totalTasks; i++) {
-    const taskId = 'task' + i;
-    const taskElement = document.getElementById(taskId);
-    if(taskElement) {
-       tasksStatus[taskId] = taskElement.classList.contains('completed');
+    localStorage.setItem(LS_KEYS.COMPLETED, completedTasks);
+    
+    const tasksStatus = {};
+    for(let i = 1; i <= totalTasks; i++) {
+        tasksStatus['task' + i] = document.getElementById('task' + i).classList.contains('completed');
     }
-  }
-  localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(tasksStatus));
-  
-  const timersToSave = {};
-  for (const timerId in activeTimers) {
-    if (activeTimers[timerId] && activeTimers[timerId].endTime) {
-      timersToSave[timerId] = {
-        taskId: activeTimers[timerId].taskId,
-        endTime: activeTimers[timerId].endTime
-      };
+    localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(tasksStatus));
+    
+    const timersToSave = {};
+    for (const timerId in activeTimers) {
+        timersToSave[timerId] = { endTime: activeTimers[timerId].endTime, taskId: activeTimers[timerId].taskId };
     }
-  }
-  localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersToSave));
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersToSave));
 }
 
 function loadState() {
-  const savedCompletedTasks = localStorage.getItem(LS_KEYS.COMPLETED);
-  if (savedCompletedTasks !== null) {
-    completedTasks = parseInt(savedCompletedTasks, 10);
-  }
-
-  const savedTasksStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS));
-  if (savedTasksStatus) {
-    for (let i = 1; i <= totalTasks; i++) {
-      const taskId = 'task' + i;
-      if (savedTasksStatus[taskId]) {
-        const taskElement = document.getElementById(taskId);
-        if(taskElement) taskElement.classList.add('completed');
-        
-        const timerSpanId = 't' + i;
-        const timerElement = document.getElementById(timerSpanId);
-        if (timerElement) timerElement.textContent = 'مكتمل';
-      }
+    completedTasks = parseInt(localStorage.getItem(LS_KEYS.COMPLETED)) || 0;
+    
+    const tasksStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS));
+    if (tasksStatus) {
+        for(let i = 1; i <= totalTasks; i++) {
+            if(tasksStatus['task' + i]) {
+                document.getElementById('task' + i).classList.add('completed');
+            }
+        }
     }
-  }
-  
-  const savedTimers = localStorage.getItem(LS_KEYS.TIMERS);
-  if (savedTimers) {
-    activeTimers = JSON.parse(savedTimers); 
-  }
+    
+    activeTimers = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
 }
 </script>
-
 </body>
 </html>
