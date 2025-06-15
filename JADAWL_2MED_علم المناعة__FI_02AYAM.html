@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جدول مراجعة مكثف - يومان لعلم المناعة</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #0077b6; 
+      --secondary-color: #023047;
+      --accent-color: #fb8500;
+      --danger-color: #d62828;
+      --light-color: #f8f9fa;
+      --dark-color: #343a40;
+      --white: #ffffff;
+      --success-color: #2a9d8f;
+      --border-color: #dee2e6;
+    }
+    
+    body {
+      font-family: 'Tajawal', 'Arial', sans-serif;
+      background-color: var(--light-color);
+      margin: 0;
+      padding: 20px;
+      color: var(--dark-color);
+      line-height: 1.8;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--white);
+      padding: 20px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+    
+    h1 {
+      text-align: center;
+      color: var(--secondary-color);
+      margin-bottom: 30px;
+      font-size: 2.4em;
+      font-weight: 800;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border-radius: 2px;
+    }
+
+    .progress-container {
+      background-color: #e9ecef;
+      border-radius: 50px;
+      margin: 25px 0;
+      height: 18px;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+      width: 0;
+      transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+      border-radius: 50px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+    }
+    
+    th, td {
+      padding: 16px 20px;
+      text-align: right;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    th {
+      background-color: var(--secondary-color);
+      color: var(--white);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background-color: #f1faff; }
+    
+    td.timer {
+      color: var(--danger-color);
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+      font-size: 1em;
+      text-align: center;
+    }
+    
+    .task-title {
+      font-weight: 700;
+      color: var(--primary-color);
+      display: block;
+      margin-bottom: 12px;
+      font-size: 1.15em;
+    }
+    .task-title i { margin-left: 10px; }
+    
+    .lesson-details ol {
+        padding-right: 20px;
+        margin: 0;
+    }
+    .lesson-details li {
+        margin-bottom: 12px;
+        list-style-type: '— ';
+    }
+    .lesson-details .lang-ar {
+        display: block;
+        font-weight: 500;
+        color: var(--dark-color);
+        font-size: 1em;
+    }
+    .lesson-details .lang-en {
+        display: block;
+        font-size: 0.9em;
+        color: #6c757d;
+    }
+    .lesson-details .lang-fr {
+        display: block;
+        font-size: 0.85em;
+        color: #6c757d;
+        font-style: italic;
+    }
+    
+    .task-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+    
+    .btn {
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 0.9em;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+    
+    .btn:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+    .btn:active { transform: translateY(-1px); }
+    .btn-start { background-color: var(--accent-color); }
+    .btn-complete { background-color: var(--primary-color); }
+    .btn-reset { background-color: var(--secondary-color); }
+    
+    .completed {
+      position: relative;
+      background-color: #f0fff4 !important;
+    }
+    .completed .task-title, .completed .lesson-details span {
+        text-decoration: line-through;
+        text-decoration-color: var(--success-color);
+        color: #999;
+    }
+    
+    .completed::after {
+      content: "✓";
+      color: var(--white);
+      background-color: var(--success-color);
+      font-weight: bold;
+      font-size: 1em;
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(42, 157, 143, 0.5);
+    }
+    
+    .day-header {
+      font-weight: 700;
+      color: var(--secondary-color);
+      font-size: 1.3em;
+      background-color: #e9ecef !important;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .stat-card {
+      background-color: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+    }
+    .stat-card h3 {
+      margin: 0 0 10px 0;
+      color: var(--primary-color);
+      font-size: 1em;
+      font-weight: 500;
+    }
+    .stat-card h3 i {
+        margin-right: 5px;
+    }
+    .stat-value {
+      font-size: 2em;
+      font-weight: 800;
+      color: var(--secondary-color);
+    }
+    
+    @media (max-width: 768px) {
+      body { padding: 5px; }
+      .container { padding: 15px; border-radius: 0;}
+      h1 { font-size: 1.8em; }
+
+      table, thead, tbody, th, td, tr { display: block; }
+      thead tr { position: absolute; top: -9999px; left: -9999px; }
+      tr {
+        margin-bottom: 20px;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        box-shadow: none;
+      }
+      td { border: none; border-bottom: 1px solid #eee; }
+      td:last-child { border-bottom: 0; }
+      
+      td[data-label]::before { 
+        content: attr(data-label);
+        display: block; font-weight: bold; color: var(--primary-color);
+        font-size: 0.9em; margin-bottom: 10px;
+      }
+      
+      td.day-header {
+        text-align: center !important; font-size: 1.3em !important;
+        background-color: var(--secondary-color) !important; color: var(--white);
+      }
+      td.day-header::before { display: none; }
+      .completed::after { top: 10px; left: 10px; width: 24px; height: 24px; font-size: 0.8em;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1><i class="fa-solid fa-shield-virus"></i> جدول مراجعة علم المناعة (يومان)</h1>
+
+  <div class="stats">
+    <div class="stat-card">
+      <h3><i class="fas fa-bullseye"></i> المهام الكلية</h3>
+      <div class="stat-value" id="totalTasks">6</div>
+    </div>
+    <div class="stat-card">
+      <h3><i class="fas fa-check-double"></i> المهام المكتملة</h3>
+      <div class="stat-value" id="completedTasks">0</div>
+    </div>
+    <div class="stat-card">
+      <h3><i class="fas fa-stopwatch"></i> الوقت الإجمالي (ساعة)</h3>
+      <div class="stat-value" id="totalStudyTimeDisplay">16</div>
+    </div>
+  </div>
+  
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>اليوم</th>
+        <th>08:00 – 11:00 (3 ساعات)</th>
+        <th>13:00 – 16:00 (3 ساعات)</th>
+        <th>18:00 – 20:00 (ساعتان)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="day-header" colspan="4">اليوم الأول: مكونات الجهاز المناعي الأساسية</td>
+      </tr>
+      <tr>
+        <td class="day-header-mobile">اليوم الأول</td>
+        <td id="task1" data-label="08:00 – 11:00 | المناعة الفطرية">
+          <span class="task-title"><i class="fas fa-book-open"></i> أساسيات المناعة الفطرية ومكوناتها</span>
+          <div class="lesson-details">
+            <ol>
+                <li><span class="lang-ar">الأعضاء اللمفاوية والمناعة الفطرية</span><span class="lang-en">Lymphoid Organs & Innate Immunity</span><span class="lang-fr">Organes Lymphoïdes, Immunité innée</span></li>
+                <li><span class="lang-ar">نظام المتممة</span><span class="lang-en">Complement System</span><span class="lang-fr">Système du Complément</span></li>
+            </ol>
+          </div>
+          <div class="task-actions"> <button class="btn btn-start" onclick="startCountdown('t1', 10800, 'task1')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task1')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task1', 't1')"><i class="fas fa-redo"></i> إعادة</button> </div>
+          <span class="timer" id="t1"></span>
+        </td>
+        <td id="task2" data-label="13:00 – 16:00 | المناعة التكيفية">
+          <span class="task-title"><i class="fas fa-people-arrows"></i> خلايا المناعة التكيفية الرئيسية</span>
+           <div class="lesson-details">
+            <ol>
+                <li><span class="lang-ar">اللمفاويات التائية (T) ومستقبلاتها</span><span class="lang-en">T Lymphocytes & TCR</span><span class="lang-fr">Lymphocytes T et TCR</span></li>
+                <li><span class="lang-ar">اللمفاويات البائية (B)</span><span class="lang-en">B Lymphocytes</span><span class="lang-fr">Lymphocytes B</span></li>
+            </ol>
+          </div>
+          <div class="task-actions"> <button class="btn btn-start" onclick="startCountdown('t2', 10800, 'task2')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task2')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task2', 't2')"><i class="fas fa-redo"></i> إعادة</button> </div>
+          <span class="timer" id="t2"></span>
+        </td>
+        <td id="task3" data-label="18:00 – 20:00 | التعرف على المستضد">
+            <span class="task-title"><i class="fas fa-fingerprint"></i> عرض المستضد والتعرف عليه</span>
+            <div class="lesson-details">
+                <ol>
+                    <li><span class="lang-ar">المستضدات ونظام HLA/CMH</span><span class="lang-en">Antigens & HLA/MHC System</span><span class="lang-fr">Antigènes, Système HLA (CMH)</span></li>
+                </ol>
+            </div>
+            <div class="task-actions"> <button class="btn btn-start" onclick="startCountdown('t3', 7200, 'task3')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task3')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task3', 't3')"><i class="fas fa-redo"></i> إعادة</button> </div>
+            <span class="timer" id="t3"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="day-header" colspan="4">اليوم الثاني: آليات العمل، الاستجابة والمراجعة النهائية</td>
+      </tr>
+      <tr>
+        <td class="day-header-mobile">اليوم الثاني</td>
+        <td id="task4" data-label="08:00 – 11:00 | الأجسام المضادة والتواصل">
+          <span class="task-title"><i class="fas fa-sitemap"></i> الأجسام المضادة والتواصل الخلوي</span>
+           <div class="lesson-details">
+                <ol>
+                    <li><span class="lang-ar">الغلوبولينات المناعية (الأجسام المضادة)</span><span class="lang-en">Immunoglobulins (Antibodies)</span><span class="lang-fr">Immunoglobulines</span></li>
+                    <li><span class="lang-ar">السيتوكينات والتفاعلات الخلوية</span><span class="lang-en">Cytokines & Cellular Interactions</span><span class="lang-fr">Cytokines, Interactions cellulaires</span></li>
+                </ol>
+          </div>
+          <div class="task-actions"> <button class="btn btn-start" onclick="startCountdown('t4', 10800, 'task4')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task4')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task4', 't4')"><i class="fas fa-redo"></i> إعادة</button> </div>
+          <span class="timer" id="t4"></span>
+        </td>
+        <td id="task5" data-label="13:00 – 16:00 | الالتهاب والتطبيقات">
+          <span class="task-title"><i class="fas fa-fire"></i> الاستجابة الالتهابية وتطبيقات</span>
+           <div class="lesson-details">
+                <ol>
+                    <li><span class="lang-ar">التفاعل الالتهابي</span><span class="lang-en">The Inflammatory Reaction</span><span class="lang-fr">Réaction Inflammatoire</span></li>
+                    <li><span class="lang-ar">تحليل أسئلة (الجزء الأول)</span><span class="lang-en">Exam Questions Analysis (Pt. 1)</span><span class="lang-fr">Analyse des QCMs (Partie 1)</span></li>
+                </ol>
+          </div>
+          <div class="task-actions"> <button class="btn btn-start" onclick="startCountdown('t5', 10800, 'task5')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task5')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task5', 't5')"><i class="fas fa-redo"></i> إعادة</button> </div>
+          <span class="timer" id="t5"></span>
+        </td>
+        <td id="task6" data-label="18:00 – 20:00 | المراجعة النهائية">
+          <span class="task-title"><i class="fas fa-award"></i> مراجعة شاملة وحالات سريرية</span>
+           <div class="lesson-details">
+                <ol>
+                    <li><span class="lang-ar">مراجعة نهائية للحالات السريرية والأسئلة المعقدة</span><span class="lang-en">Final Review: Clinical Cases & Complex Questions</span><span class="lang-fr">Révision finale: Cas cliniques & QCMs complexes</span></li>
+                </ol>
+          </div>
+          <div class="task-actions"> <button class="btn btn-start" onclick="startCountdown('t6', 7200, 'task6')"><i class="fas fa-play"></i> ابدأ</button> <button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i> إكمال</button> <button class="btn btn-reset" onclick="resetTask('task6', 't6')"><i class="fas fa-redo"></i> إعادة</button> </div>
+          <span class="timer" id="t6"></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script>
+// Global variables
+const totalTasks = 6;
+let completedTasks = 0;
+let activeTimers = {};
+
+const LS_KEYS = {
+  COMPLETED: 'completedTasks_immunology_2days_v1',
+  STATUS: 'tasksStatus_immunology_2days_v1',
+  TIMERS: 'activeTimers_immunology_2days_v1'
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadState();
+  updateProgress();
+  
+  for (const timerId in activeTimers) {
+    if (activeTimers[timerId] && activeTimers[timerId].endTime) {
+      const remainingSeconds = Math.max(0, Math.floor((activeTimers[timerId].endTime - Date.now()) / 1000));
+      const taskElement = document.getElementById(activeTimers[timerId].taskId);
+      if (taskElement && !taskElement.classList.contains('completed')) {
+          if (remainingSeconds > 0) {
+            startCountdown(timerId, remainingSeconds, activeTimers[timerId].taskId, true);
+          } else {
+            document.getElementById(timerId).innerHTML = '<i class="fas fa-bell"></i> انتهى الوقت!';
+          }
+      } else if (taskElement && taskElement.classList.contains('completed')) {
+         const timerEl = document.getElementById(timerId);
+         if(timerEl) timerEl.textContent = '';
+      }
+    }
+  }
+});
+
+function startCountdown(timerId, duration, taskId, isRestoring = false) {
+    const taskElement = document.getElementById(taskId);
+    if (taskElement.classList.contains('completed')) return;
+
+    if (activeTimers[timerId] && activeTimers[timerId].interval) {
+        clearInterval(activeTimers[timerId].interval);
+    }
+
+    const endTime = isRestoring ? activeTimers[timerId].endTime : Date.now() + duration * 1000;
+    
+    activeTimers[timerId] = {
+        interval: setInterval(update, 1000),
+        endTime: endTime,
+        taskId: taskId
+    };
+
+    function update() {
+        const remaining = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
+        const hours = Math.floor(remaining / 3600);
+        const minutes = Math.floor((remaining % 3600) / 60);
+        const seconds = remaining % 60;
+        const timerEl = document.getElementById(timerId);
+        if (timerEl) {
+          timerEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+        
+        if (remaining === 0) {
+            clearInterval(activeTimers[timerId].interval);
+            if (timerEl) timerEl.innerHTML = '<i class="fas fa-bell"></i> انتهى الوقت!';
+            delete activeTimers[timerId];
+        }
+        saveState();
+    }
+    update();
+}
+
+function completeTask(taskId) {
+    const taskElement = document.getElementById(taskId);
+    if (taskElement.classList.contains('completed')) return;
+
+    taskElement.classList.add('completed');
+    completedTasks++;
+    
+    const timerId = 't' + taskId.replace('task', '');
+    if (activeTimers[timerId] && activeTimers[timerId].interval) {
+        clearInterval(activeTimers[timerId].interval);
+        delete activeTimers[timerId];
+    }
+    const timerEl = document.getElementById(timerId);
+    if (timerEl) timerEl.textContent = '';
+    
+    updateProgress();
+    saveState();
+}
+
+function resetTask(taskId, timerId) {
+    const taskElement = document.getElementById(taskId);
+    if (taskElement.classList.contains('completed')) {
+        taskElement.classList.remove('completed');
+        completedTasks--;
+    }
+    
+    if (activeTimers[timerId] && activeTimers[timerId].interval) {
+        clearInterval(activeTimers[timerId].interval);
+    }
+    delete activeTimers[timerId];
+    const timerEl = document.getElementById(timerId);
+    if (timerEl) timerEl.textContent = '';
+    
+    updateProgress();
+    saveState();
+}
+
+function updateProgress() {
+    document.getElementById('completedTasks').textContent = completedTasks;
+    const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+    document.getElementById('progressBar').style.width = progress + '%';
+}
+
+function saveState() {
+    localStorage.setItem(LS_KEYS.COMPLETED, completedTasks);
+    
+    const tasksStatus = {};
+    for(let i = 1; i <= totalTasks; i++) {
+        tasksStatus['task' + i] = document.getElementById('task' + i).classList.contains('completed');
+    }
+    localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(tasksStatus));
+    
+    const timersToSave = {};
+    for (const timerId in activeTimers) {
+        timersToSave[timerId] = { endTime: activeTimers[timerId].endTime, taskId: activeTimers[timerId].taskId };
+    }
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersToSave));
+}
+
+function loadState() {
+    completedTasks = parseInt(localStorage.getItem(LS_KEYS.COMPLETED)) || 0;
+    
+    const tasksStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS));
+    if (tasksStatus) {
+        for(let i = 1; i <= totalTasks; i++) {
+            const taskEl = document.getElementById('task' + i);
+            if(taskEl && tasksStatus['task' + i]) {
+                taskEl.classList.add('completed');
+            }
+        }
+    }
+    
+    activeTimers = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+}
+</script>
+</body>
+</html>
