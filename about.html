@@ -8,28 +8,22 @@
     <meta content="أداة علم, تواصل, وسائل تواصل, تعليم, بوت تليجرام" name="keywords">
     <meta content="صفحة التواصل الرسمية لأداة علم - تواصل معنا عبر مختلف وسائل التواصل الاجتماعي وبوت التليجرام" name="description">
 
-    <!-- Favicon -->
     <link href="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" rel="icon">
 
-    <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    
+
     <style>
         :root {
             --primary-color: #fb873f;
@@ -37,17 +31,36 @@
             --light-color: #f8f9fa;
             --dark-color: #343a40;
         }
-        
+
         body {
             font-family: 'Tajawal', sans-serif;
             background-color: #f5f5f5;
+            line-height: 1.6; /* Improved readability */
+            color: #333;
         }
-        
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--secondary-color);
+        }
+
+        p {
+            color: #555;
+        }
+
         .contact-header {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('S22MCS PIC/s22mcs/S22MCS BLUE.jpg') no-repeat center center;
             background-size: cover;
+            padding: 80px 0; /* More padding for better spacing */
+            color: white;
+            text-align: center;
         }
-        
+
+        .contact-header h1 {
+            color: white;
+            font-size: 2.5rem; /* Larger heading */
+            margin-bottom: 15px;
+        }
+
         .contact-icon {
             width: 70px;
             height: 70px;
@@ -61,12 +74,12 @@
             margin-bottom: 15px;
             transition: all 0.3s ease;
         }
-        
+
         .contact-icon:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-        
+
         .social-media-wrapper {
             display: flex;
             flex-wrap: wrap;
@@ -74,7 +87,7 @@
             gap: 20px;
             margin-top: 40px;
         }
-        
+
         .social-icon {
             width: 70px;
             height: 70px;
@@ -86,14 +99,14 @@
             font-size: 30px;
             transition: all 0.3s ease;
             position: relative;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         .social-icon:hover {
             transform: translateY(-10px) scale(1.1);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
-        
+
         .social-tooltip {
             position: absolute;
             top: -50px;
@@ -106,13 +119,14 @@
             transition: all 0.3s ease;
             white-space: nowrap;
             font-weight: 500;
+            pointer-events: none; /* Allows clicks to pass through */
         }
-        
+
         .social-icon:hover .social-tooltip {
             opacity: 1;
             top: -60px;
         }
-        
+
         .telegram { background-color: #0088cc; }
         .telegram-bot { background-color: #2AABEE; }
         .facebook { background-color: #3b5998; }
@@ -121,50 +135,407 @@
         .tiktok { background-color: #000000; }
         .twitter { background-color: #1da1f2; }
         .email { background-color: #D44638; }
-        
+
         .bot-section {
             background-color: #f8f9fa;
             border-radius: 10px;
-            padding: 20px;
+            padding: 30px; /* Increased padding */
             margin-top: 30px;
             border-left: 5px solid var(--primary-color);
         }
-        
+
+        /* General layout for sections */
+        .section {
+            padding: 60px 0; /* Consistent section padding */
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header .title {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .section-header .title::before {
+            content: attr(data-title);
+            display: block;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .column-1, .column-2 {
+            padding: 15px;
+        }
+
+        .header-content .column-2.image {
+            text-align: center;
+        }
+
+        .header-content .img-element {
+            max-width: 80%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .title-sm {
+            font-size: 1.4rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #e06e2a; /* Slightly darker primary color */
+            transform: translateY(-2px);
+        }
+
+        /* Navbar Specifics */
+        .navbar-brand img {
+            max-height: 40px; /* Adjust as needed */
+            margin-left: 10px;
+        }
+
+        .navbar-nav .nav-item .nav-link {
+            font-weight: 500;
+            padding: 10px 15px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-item .nav-link:hover,
+        .navbar-nav .nav-item .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+
+        /* Majors Section Styling */
+        .majors-container {
+            padding: 2rem;
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .majors-container .section-heading {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .majors-container .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: flex-start;
+            justify-content: center; /* Center content on smaller screens */
+        }
+
+        .majors-list {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .majors-container .image-container {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .majors-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-height: 500px;
+            object-fit: contain; /* Ensures image fits without cropping */
+        }
+
+        .majors {
+            margin-top: 1rem;
+        }
+
+        .major-item {
+            margin-bottom: 1.5rem;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+        .major-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .major-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .major-name {
+            color: #34495e;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .students-count {
+            color: #3498db;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            height: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #3498db;
+            border-radius: 5px;
+            width: 0;
+            transition: width 1s ease-in-out;
+        }
+
+        .action-button {
+            display: block; /* Make it a block element to take full width */
+            margin: 1.5rem auto 0; /* Center the button */
+            padding: 0.8rem 2rem;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            max-width: 250px; /* Limit button width */
+        }
+
+        .action-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer Styling */
+        .footer {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            padding-top: 3rem;
+            font-size: 0.9rem;
+        }
+
+        .footer h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer p, .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer .btn-social {
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .footer .btn-social:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .footer .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 2.5rem;
+            text-align: center;
+        }
+
+        /* Back to Top button */
+        .back-to-top {
+            position: fixed;
+            display: none;
+            right: 30px;
+            bottom: 30px;
+            z-index: 99;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .back-to-top:hover {
+            background-color: #e06e2a;
+        }
+
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 992px) {
+            .navbar-nav {
+                background-color: white;
+                padding-bottom: 15px;
+            }
+            .navbar-nav .nav-item .nav-link {
+                padding: 10px 20px;
+                text-align: center;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .header-content .column-2.image {
+                order: -1; /* Move image above text on smaller screens */
+                margin-bottom: 30px;
+            }
+            .section-header .title {
+                font-size: 1.8rem;
+            }
+            .contact-header {
+                padding: 60px 0;
+            }
+            .contact-header h1 {
+                font-size: 2rem;
+            }
+            .footer .col-lg-4 {
+                margin-bottom: 30px;
+            }
+        }
+
         @media (max-width: 768px) {
             .social-media-wrapper {
                 gap: 15px;
             }
-            
             .social-icon {
                 width: 60px;
                 height: 60px;
                 font-size: 25px;
             }
-            
             .contact-icon {
                 width: 60px;
                 height: 60px;
                 font-size: 24px;
             }
-            
             .contact-info {
                 text-align: center;
                 margin-bottom: 30px;
+            }
+            .majors-container .content-wrapper {
+                flex-direction: column-reverse; /* Image below list on small screens */
+            }
+            .majors-container .image-container {
+                margin-bottom: 2rem;
+            }
+            .majors-container .section-heading {
+                font-size: 1.5rem;
+            }
+            .major-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .students-count {
+                margin-top: 0.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 0.9rem;
+            }
+            .majors-container {
+                padding: 1rem;
+            }
+            .major-name {
+                font-size: 1rem;
+            }
+            .students-count {
+                font-size: 0.8rem;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+            .contact-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            .navbar-brand p {
+                font-size: 20px !important;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">تحميل...</span>
         </div>
     </div>
-    <!-- Spinner End -->
-
-    <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <p class="m-0 fw-bold" style="font-size: 25px;"><img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" alt="" height="50px">أداة علم<span style="color: #fb873f;"></span></p>
@@ -174,7 +545,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <a href="index.html" class="nav-item nav-link">الرئيسية</a>
+                <a href="index.html" class="nav-item nav-link">الرئيسية</a>
                 <a href="about.html" class="nav-item nav-link">من نحن</a>
                 <a href="index.html" class="nav-item nav-link">أقسامنا</a>
                 <div class="nav-item dropdown">
@@ -186,7 +557,7 @@
                 </div>
                 <a href="contact.html" class="nav-item nav-link active">تواصل معنا</a>
                 <a href="https://adatealm.github.io/ADATEALM/" class="nav-item nav-link">تحميل تطبيقنا</a>
-                    <a href="MACHRI3NA.html" class="nav-item nav-link">مشاريعنا </a>
+                <a href="MACHRI3NA.html" class="nav-item nav-link">مشاريعنا </a>
                 <a href="login.html" class="nav-item nav-link"><i class="fa fa-user"></i></a>
                 <a href="#" class="nav-item nav-link">
                     <div id="google_translate_element"></div>
@@ -194,2744 +565,246 @@
             </div>
         </div>
     </nav>
-    <!-- Navbar End -->
-
-<!DOCTYPE html>
-<style>
-:root {
-  --dark-one: #333;
-  --dark-two: #7a7a7a;
-  --main-color: #784cfb;
-  --light-one: #fff;
-  --light-two: #f9fafb;
-  --light-three: #f6f7fb;
-}
-
-/* Genral Styles */
-
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body,
-button,
-input,
-textarea {
-  font-family: "Poppins", sans-serif;
-}
-
-a {
-  text-decoration: none;
-}
-
-ul {
-  list-style: none;
-}
-
-img {
-  width: 100%;
-}
-
-.container {
-  position: relative;
-  z-index: 5;
-  max-width: 92rem;
-  padding: 0 4rem;
-  margin: 0 auto;
-}
-
-.stop-scrolling {
-  height: 100%;
-  overflow: hidden;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  align-items: center;
-  justify-content: center;
-}
-
-.text {
-  font-size: 1.25rem;
-  color: var(--dark-two);
-  line-height: 1.6;
-}
-
-.column-1 {
-  margin-right: 1.5rem;
-}
-
-.column-2 {
-  margin-left: 1.5rem;
-}
-
-.image {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.z-index {
-  position: relative;
-  z-index: 2;
-}
-
-.overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  top: 0;
-  left: 0;
-}
-
-.overlay .shape {
-  width: initial;
-  opacity: 0.13;
-  position: absolute;
-}
-
-.overlay.overlay-lg .shape {
-  height: 55px;
-}
-
-.overlay.overlay-lg .shape.wave {
-  height: initial;
-  width: 88px;
-}
-
-.overlay.overlay-lg .shape.xshape {
-  height: 38px;
-}
-
-.overlay.overlay-sm .shape {
-  filter: brightness(0) invert(1);
-  opacity: 0.15;
-  height: 40px;
-}
-
-.overlay.overlay-sm .shape.wave {
-  height: initial;
-  width: 70px;
-}
-
-.overlay.overlay-sm .shape.xshape {
-  height: 30px;
-}
-
-.points {
-  opacity: 0.3;
-  position: absolute;
-}
-
-.section {
-  padding: 7rem 0;
-  overflow: hidden;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.title {
-  position: relative;
-  display: inline-block;
-  padding-bottom: 1rem;
-  line-height: 1;
-  font-size: 2.8rem;
-  margin-bottom: 0.6rem;
-}
-
-.title:before {
-  content: attr(data-title);
-  display: block;
-  margin-bottom: 0.4rem;
-  color: var(--main-color);
-  font-size: 1.15rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-}
-
-.title:after {
-  content: "";
-  position: absolute;
-  width: 90px;
-  height: 5px;
-  border-radius: 3px;
-  background-color: var(--main-color);
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.section-header .text {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.title-sm {
-  color: var(--dark-one);
-  font-weight: 600;
-  font-size: 1.6rem;
-}
-
-.points-sq {
-  width: 210px;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.85rem 2rem;
-  background-color: var(--main-color);
-  color: var(--light-one);
-  border-radius: 2rem;
-  font-size: 1.05rem;
-  text-transform: uppercase;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  background-color: #6b44e0;
-}
-
-.btn.small {
-  padding: 0.7rem 1.8rem;
-  font-size: 1rem;
-}
-
-/* End Genral Styles */
-
-/* Header */
-
-header {
-  width: 100%;
-  background-color: var(--light-three);
-  overflow: hidden;
-  position: relative;
-}
-
-nav {
-  width: 100%;
-  position: relative;
-  z-index: 50;
-}
-
-nav .container {
-  display: flex;
-  justify-content: space-between;
-  height: 6rem;
-  align-items: center;
-}
-
-.logo {
-  width: 80px;
-  display: flex;
-  align-items: center;
-}
-
-.links ul {
-  display: flex;
-}
-
-.links a {
-  display: inline-block;
-  padding: 0.9rem 1.2rem;
-  color: var(--dark-one);
-  font-size: 1.05rem;
-  text-transform: uppercase;
-  font-weight: 500;
-  line-height: 1;
-  transition: 0.3s;
-}
-
-.links a.active {
-  background-color: var(--main-color);
-  color: var(--light-one);
-  border-radius: 2rem;
-  font-size: 1rem;
-  padding: 0.9rem 2.1rem;
-  margin-left: 1rem;
-}
-
-.links a:hover {
-  color: var(--main-color);
-}
-
-.links a.active:hover {
-  color: var(--light-one);
-  background-color: #6b44e0;
-}
-
-.hamburger-menu {
-  width: 2.7rem;
-  height: 3rem;
-  z-index: 100;
-  position: relative;
-  display: none;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.hamburger-menu .bar {
-  position: relative;
-  width: 2.1rem;
-  height: 3px;
-  border-radius: 3px;
-  background-color: var(--dark-one);
-  transition: 0.5s;
-}
-
-.bar:before,
-.bar:after {
-  content: "";
-  position: absolute;
-  width: 2.1rem;
-  height: 3px;
-  border-radius: 3px;
-  background-color: var(--dark-one);
-  transition: 0.5s;
-}
-
-.bar:before {
-  transform: translateY(-9px);
-}
-
-.bar:after {
-  transform: translateY(9px);
-}
-
-nav.open .hamburger-menu .bar {
-  background-color: transparent;
-  transform: rotate(360deg);
-}
-
-nav.open .hamburger-menu .bar:before {
-  transform: translateY(0) rotate(45deg);
-  background-color: var(--light-one);
-}
-
-nav.open .hamburger-menu .bar:after {
-  transform: translateY(0) rotate(-45deg);
-  background-color: var(--light-one);
-}
-
-nav.open .links {
-  transform: translateX(0);
-}
-
-.header-content .container.grid-2 {
-  grid-template-columns: 2.5fr 3.5fr;
-  min-height: calc(100vh - 6rem);
-  padding-bottom: 2.5rem;
-  text-align: left;
-}
-
-.header-title {
-  font-size: 3.8rem;
-  line-height: 0.8;
-  color: var(--dark-one);
-}
-
-.header-content .text {
-  margin: 2.15rem 0;
-}
-
-.header-content .image .img-element {
-  max-width: 750px;
-}
-
-header .points1 {
-  width: 420px;
-  bottom: -75px;
-  left: -150px;
-}
-
-header .points2 {
-  width: 70%;
-  top: 65%;
-  left: 71%;
-}
-
-header .square {
-  right: 68%;
-  top: 71%;
-}
-
-header .triangle {
-  right: 7%;
-  bottom: 75%;
-}
-
-header .xshape {
-  right: 4%;
-  bottom: 50%;
-}
-
-header .half-circle1 {
-  left: 50%;
-  bottom: 82%;
-}
-
-header .half-circle2 {
-  left: 5%;
-  top: 67%;
-}
-
-header .wave1 {
-  bottom: 75%;
-  left: 20%;
-}
-
-header .wave2 {
-  bottom: 8%;
-  right: 55%;
-}
-
-header .circle {
-  left: 38%;
-  bottom: 63%;
-}
-
-.letters {
-  position: absolute;
-  width: 13.5%;
-  top: -5px;
-  left: 15px;
-  opacity: 0.06;
-}
-
-/* End header */
-
-/* Services */
-
-.cards {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.card-wrap {
-  position: relative;
-  margin: 1.7rem 0.8rem;
-}
-
-.card {
-  position: relative;
-  width: 100%;
-  max-width: 390px;
-  min-height: 520px;
-  background-color: var(--light-three);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 3rem 2rem;
-  overflow: hidden;
-  transition: 0.3s;
-}
-
-.card:before {
-  content: attr(data-card);
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  font-size: 6rem;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--main-color);
-  opacity: 0.025;
-}
-
-.card:after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 0px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--main-color);
-  transition: 0.3s;
-}
-
-.card-wrap:hover .card {
-  transform: translateY(-15px);
-}
-
-.card-wrap:hover .card:after {
-  height: 8px;
-}
-
-.icon {
-  width: 90px;
-  margin-bottom: 1.7rem;
-}
-
-.card .title-sm {
-  line-height: 0.8;
-}
-
-.card .text {
-  font-size: 1.15rem;
-  margin: 1.8rem 0;
-}
-
-.services .points1 {
-  bottom: -50px;
-  left: -125px;
-  opacity: 0.2;
-  pointer-events: none;
-}
-
-.services .points2 {
-  bottom: -70px;
-  right: -65px;
-  opacity: 0.2;
-  pointer-events: none;
-}
-
-/* End Services */
-
-/* Portfolio */
-
-.portfolio {
-  position: relative;
-  width: 100%;
-  background-color: var(--light-two);
-}
-
-.background-bg {
-  position: absolute;
-  width: 100%;
-  height: 520px;
-  top: 0;
-  left: 0;
-  background-color: var(--main-color);
-}
-
-.portfolio .title,
-.portfolio .title:before {
-  color: var(--light-one);
-}
-
-.portfolio .title:after {
-  background-color: var(--light-one);
-}
-
-.filter {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  margin: 0.45rem 0.4rem;
-  padding: 0.85rem 1.8rem;
-  color: var(--light-one);
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 1.1rem;
-  line-height: 1;
-  cursor: pointer;
-  border-radius: 2rem;
-  transition: 0.3s;
-}
-
-.filter-btn.active {
-  background-color: var(--light-one);
-  color: var(--main-color);
-}
-
-.portfolio .square {
-  top: 28%;
-  left: 20%;
-}
-
-.portfolio .circle {
-  top: 8%;
-  right: 35%;
-}
-
-.portfolio .triangle {
-  bottom: 10%;
-  right: 4%;
-}
-
-.portfolio .half-circle1 {
-  bottom: 13%;
-  left: 5%;
-}
-
-.portfolio .half-circle2 {
-  top: 35%;
-  right: 20%;
-}
-
-.portfolio .xshape {
-  top: 10%;
-  right: 8%;
-}
-
-.portfolio .wave {
-  top: 38%;
-  left: 6%;
-}
-
-.grid {
-  width: 100%;
-  margin: 1.5rem 0;
-}
-
-.grid-item {
-  width: 33.33%;
-  padding: 1rem 1.2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.gallery-image {
-  position: relative;
-  overflow: hidden;
-  border-radius: 16px;
-  height: 330px;
-  width: 100%;
-  cursor: pointer;
-}
-
-.gallery-image img {
-  position: absolute;
-  height: 115%;
-  width: initial;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transform-origin: center;
-  transition: 0.5s;
-}
-
-.gallery-image .img-overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  color: var(--light-one);
-  background-color: rgba(120, 76, 251, 0.55);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 2rem 3.2rem;
-  opacity: 0;
-  transition: 0.5s;
-}
-
-.img-overlay .plus {
-  position: relative;
-  margin: auto 0;
-}
-
-.plus:before,
-.plus:after {
-  content: "";
-  position: absolute;
-  width: 4.5rem;
-  height: 3px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--light-one);
-  border-radius: 3px;
-}
-
-.plus:before {
-  transform: translate(-50%, -50%) rotate(-90deg);
-}
-
-.img-description {
-  width: 100%;
-}
-
-.img-overlay h3 {
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 1.5rem;
-}
-
-.img-overlay h5 {
-  font-size: 1.15rem;
-  font-weight: 300;
-}
-
-.gallery-image:hover .img-overlay {
-  opacity: 1;
-}
-
-.gallery-image:hover img {
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
-.more-folio {
-  display: flex;
-  justify-content: center;
-}
-
-/* End Portfolio */
-
-/* About */
-
-.about {
-  overflow: hidden;
-}
-
-.about img {
-  max-width: 600px;
-}
-
-.about .text {
-  margin-top: 1rem;
-}
-
-.skills {
-  margin: 1.5rem 0 2.5rem 0;
-}
-
-.skill {
-  margin: 1rem 0;
-}
-
-.skill-title {
-  color: #555;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.skill-bar {
-  width: 70%;
-  height: 8px;
-  border-radius: 4px;
-  background-color: #ece6fa;
-  position: relative;
-  overflow: hidden;
-}
-
-.skill-progress {
-  position: absolute;
-  height: 100%;
-  width: 0%;
-  top: 0;
-  left: 0;
-  background-color: var(--main-color);
-  transition: 1s;
-}
-
-.about .column-1 {
-  position: relative;
-}
-
-.about .column-1:before {
-  content: "About";
-  position: absolute;
-  font-size: 8rem;
-  font-weight: 800;
-  color: var(--main-color);
-  opacity: 0.04;
-  top: 20px;
-  left: 0;
-  line-height: 0;
-}
-
-.about .points {
-  width: 300px;
-  top: 65%;
-  left: 80%;
-  opacity: 0.1;
-}
-
-/* End About */
-
-/* Records */
-
-.records {
-  position: relative;
-  background-color: var(--main-color);
-  padding: 5.2rem 0;
-}
-
-.records .container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  grid-column-gap: 1.5rem;
-  grid-row-gap: 2rem;
-}
-
-.record-circle {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  margin: 0 auto;
-  border: 4px solid var(--light-one);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: var(--light-one);
-}
-
-.record-circle.active {
-  background-color: var(--light-one);
-  color: var(--dark-one);
-  box-shadow: 0 0 0 15px rgb(255, 255, 255, 0.5);
-}
-
-.number {
-  font-weight: 400;
-  font-size: 2.35rem;
-}
-
-.sub-title {
-  font-weight: 400;
-  font-size: 1.12rem;
-  text-transform: uppercase;
-}
-
-.records .square1 {
-  left: 8%;
-  top: 10%;
-}
-
-.records .square2 {
-  right: 90px;
-  bottom: 70px;
-}
-
-.records .xshape {
-  top: 45px;
-  right: 120px;
-}
-
-.records .circle {
-  left: 7%;
-  bottom: 50px;
-}
-
-.records .triangle {
-  left: 65%;
-  bottom: 35px;
-}
-
-.records .wave1 {
-  top: 35px;
-  right: 30%;
-}
-
-.records .wave2 {
-  bottom: 40px;
-  left: 28%;
-}
-
-.records .half-circle {
-  top: 30px;
-  right: 50%;
-}
-
-/* End Records */
-
-/* Blog */
-
-.blog-wrapper {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.blog-wrap {
-  position: relative;
-  margin: 1.3rem 0.5rem;
-}
-
-.blog-card {
-  max-width: 420px;
-  width: 100%;
-  overflow: hidden;
-  background-color: var(--light-two);
-  transition: 0.3s;
-  position: relative;
-}
-
-.blog-card:after {
-  content: "";
-  position: absolute;
-  width: 1100%;
-  height: 0px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--main-color);
-  transition: 0.3s;
-}
-
-.blog-image {
-  width: 100%;
-  height: 270px;
-  position: relative;
-  overflow: hidden;
-}
-
-.blog-image img {
-  position: absolute;
-  height: 105%;
-  width: initial;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: 0.5s;
-}
-
-.blog-content {
-  padding: 2.1rem 2.2rem 2.7rem 2.2rem;
-}
-
-.blog-info {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-}
-
-.blog-info h5 {
-  color: var(--main-color);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: 1.05rem;
-  letter-spacing: 2px;
-}
-
-.blog-date {
-  margin-right: 2rem;
-}
-
-.blog-user i {
-  margin-right: 0.2rem;
-  font-size: 1rem;
-}
-
-.blog-text {
-  margin: 0.5rem 0 1.5rem 0;
-  font-size: 1.2rem;
-  line-height: 1.6;
-  color: #666;
-}
-
-.blog-card:hover {
-  transform: translateY(-15px);
-}
-
-.blog-card:hover:after {
-  height: 8px;
-}
-
-.blog-card:hover .blog-image img {
-  transform: translate(-50%, -50%) scale(1.15);
-}
-
-.blog .points {
-  top: 72%;
-  right: 71%;
-  opacity: 0.15;
-}
-
-/* End Blog */
-
-/* Testimonials */
-
-.testimonials {
-  background-color: var(--light-two);
-  overflow: hidden;
-}
-
-.testi-content {
-  margin-top: 6rem;
-}
-
-.reviews {
-  overflow: hidden;
-}
-
-.review {
-  position: relative;
-  padding: 2rem 1.5rem;
-}
-
-.quote {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: var(--main-color);
-  opacity: 0.04;
-  font-size: 8rem;
-}
-
-.rate {
-  display: flex;
-  font-size: 1.4rem;
-  color: #ebc000;
-  margin-bottom: 1.5rem;
-}
-
-.rate i {
-  margin-right: 0.3rem;
-}
-
-.review-text {
-  font-size: 1.35rem;
-  font-weight: 300;
-  color: #444;
-  line-height: 1.7;
-}
-
-.review-info {
-  margin-top: 2rem;
-}
-
-.review-name {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--dark-one);
-}
-
-.review-job {
-  font-size: 1.15rem;
-  font-weight: 300;
-  color: #777;
-}
-
-.review-nav {
-  bottom: 2.2rem;
-  top: initial;
-  font-size: 1.8rem;
-  color: var(--main-color);
-}
-
-.swiper-button-next {
-  right: 2rem;
-  left: initial;
-}
-
-.swiper-button-prev {
-  right: 4.5rem;
-  left: initial;
-}
-
-.swiper-button-prev:after,
-.swiper-button-next:after {
-  display: none;
-}
-
-/* End Testimonials */
-
-/* Contact */
-
-.contact {
-  position: relative;
-  width: 100%;
-  padding: 13.5rem 0 8.5rem;
-}
-
-.contact:before,
-.contact:after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  z-index: -1;
-  left: 0;
-}
-
-.contact:before {
-  top: 0;
-  height: 40%;
-  background: url("../img/map.png") center center / cover;
-}
-
-.contact:after {
-  top: 40%;
-  height: 60%;
-  background: url("../img/contact-bg.png") center bottom / cover;
-}
-
-.contact-box {
-  width: 100%;
-  background-color: var(--light-one);
-  width: 100%;
-  border-radius: 45px;
-  padding: 5.5rem 4.5rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.contact-info {
-  padding-right: 2rem;
-}
-
-.contact-form {
-  padding-left: 2rem;
-}
-
-.contact-info .title:after {
-  left: 0;
-  transform: initial;
-}
-
-.information-wrap {
-  margin-top: 2rem;
-}
-
-.information {
-  display: flex;
-  align-items: center;
-}
-
-.information:not(:last-child) {
-  margin-bottom: 1.3rem;
-}
-
-.contact-icon {
-  min-width: 67px;
-  height: 67px;
-  display: inline-block;
-  border-radius: 50%;
-  background-color: var(--main-color);
-  color: var(--light-one);
-  text-align: center;
-  font-size: 1.4rem;
-  margin-right: 1rem;
-}
-
-.contact-icon i {
-  line-height: 67px;
-}
-
-.info-text {
-  font-size: 1.3rem;
-  display: inline-block;
-}
-
-.contact-form .title:after {
-  display: none;
-}
-
-.contact-form .title {
-  margin: 0;
-}
-
-.contact-form .row {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  grid-column-gap: 0.6rem;
-}
-
-.contact-input {
-  padding: 1.2rem 2.1rem;
-  margin: 0.6rem 0;
-  border: none;
-  outline: none;
-  background: #f3f3f3;
-  border-radius: 4rem;
-  font-weight: 600;
-  font-size: 1.25rem;
-  transition: 0.3s;
-}
-
-.contact-input::placeholder {
-  font-weight: 400;
-}
-
-.contact-input.textarea {
-  resize: none;
-  min-height: 280px;
-  border-radius: 2rem;
-}
-
-.contact-input:hover {
-  background: #ececec;
-}
-
-.contact-input:focus {
-  background: #eaeaea;
-}
-
-.contact-input .btn {
-  margin-top: 0.6rem;
-}
-
-/* End Contact */
-
-/* Hire me */
-
-.hireme {
-  padding: 12rem 0;
-}
-
-.hireme .container {
-  text-align: center;
-}
-
-.hireme .title {
-  margin-bottom: 1.3rem;
-}
-
-.hireme .text {
-  max-width: 1000px;
-  margin: 0 auto 1.6rem auto;
-}
-
-/* End Hire me */
-
-/* Footer */
-
-.footer {
-  background-color: #222;
-  padding: 6rem 0;
-}
-
-.footer .grid-4 {
-  display: grid;
-  grid-template-columns: 3.5fr 2fr 2fr 3fr;
-}
-
-.grid-4-col {
-  padding: 0 1.7rem;
-}
-
-.footer .title-sm {
-  color: #fafafa;
-  margin-bottom: 0.9rem;
-}
-
-.footer .text {
-  color: #aaa;
-}
-
-.footer-links a {
-  color: #888;
-  font-size: 1.25rem;
-  display: inline-block;
-  margin-bottom: 0.4rem;
-  transition: 0.3s;
-}
-
-.footer-links a:hover {
-  color: var(--main-color);
-}
-
-.footer-input-wrap {
-  display: grid;
-  grid-template-columns: auto 50px;
-  width: 100%;
-  height: 50px;
-  border-radius: 30px;
-  overflow: hidden;
-  margin-top: 1.2rem;
-}
-
-.footer-input {
-  background: #373737;
-  color: #333;
-  outline: none;
-  border: none;
-  padding: 0 1.5rem;
-  font-size: 1.1rem;
-  transition: 0.3s;
-}
-
-.input-arrow {
-  color: #fff;
-  background-color: var(--main-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.45rem;
-  transition: 0.3s;
-}
-
-.input-arrow:hover {
-  background-color: #6b44e0;
-}
-
-.focus {
-  background: #fff;
-}
-
-.bottom-footer {
-  margin-top: 5.5rem;
-  padding: 0 1.7rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.copyright .text {
-  color: #7b7b7b;
-  font-size: 1.2rem;
-  display: inline-block;
-  text-align: center;
-}
-
-.copyright .text span {
-  color: var(--main-color);
-  cursor: pointer;
-}
-
-.followme-wrap {
-  display: flex;
-}
-
-.followme {
-  display: flex;
-  align-items: center;
-}
-
-.followme h3 {
-  color: #7b7b7b;
-  font-weight: 500;
-  font-size: 1.3rem;
-}
-
-.followme .footer-line {
-  width: 60px;
-  height: 2px;
-  background-color: #7b7b7b;
-  margin: 0 1.2rem;
-  display: inline-block;
-}
-
-.social-media a {
-  color: #7b7b7b;
-  font-size: 1.3rem;
-  margin-right: 0.4rem;
-  transition: 0.3s;
-}
-
-.social-media a:hover {
-  color: var(--main-color);
-}
-
-.back-btn-wrap {
-  position: relative;
-  margin-left: 2.5rem;
-}
-
-.back-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 55px;
-  width: 55px;
-  background-color: var(--main-color);
-  border-radius: 50%;
-  color: #fff;
-  font-size: 1.2rem;
-  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.15);
-  transition: 0.3s;
-  position: relative;
-  z-index: 2;
-}
-
-.back-btn:hover {
-  background-color: #6b44e0;
-}
-
-.back-btn-wrap:before {
-  content: "";
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  background-color: #fff;
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.7);
-  border-radius: 50%;
-  opacity: 0.08;
-  animation: scale 1.2s ease-out infinite 1s;
-}
-
-@keyframes scale {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.15;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(1.6);
-    opacity: 0;
-  }
-}
-
-/* End Footer */
-
-/* Responsive */
-
-@media (max-width: 1280px) {
-  .text {
-    font-size: 1rem;
-  }
-
-  .title {
-    font-size: 2.1rem;
-    padding-bottom: 0.65rem;
-  }
-
-  .title:before {
-    margin-bottom: 0.2rem;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-  }
-
-  .title:after {
-    height: 3.5px;
-    width: 70px;
-  }
-
-  .title-sm {
-    font-size: 1.2rem;
-  }
-
-  .btn {
-    padding: 0.75rem 1.7rem;
-    font-size: 0.8rem;
-  }
-
-  .btn.small {
-    padding: 0.65rem 1.6rem;
-    font-size: 0.7rem;
-  }
-
-  .section-header .text {
-    max-width: 500px;
-  }
-
-  .section {
-    padding: 4.5rem 0;
-  }
-
-  .column-1 {
-    margin-right: 1rem;
-  }
-
-  .column-2 {
-    margin-left: 1rem;
-  }
-
-  .overlay.overlay-lg .shape {
-    height: 35px;
-  }
-
-  .overlay.overlay-lg .shape.wave {
-    height: initial;
-    width: 63px;
-  }
-
-  .overlay.overlay-lg .shape.xshape {
-    height: 24px;
-  }
-
-  .overlay.overlay-sm .shape {
-    height: 24px;
-  }
-
-  .overlay.overlay-sm .shape.wave {
-    height: initial;
-    width: 39px;
-  }
-
-  .overlay.overlay-sm .shape.xshape {
-    height: 19px;
-  }
-
-  header .points1 {
-    width: 270px;
-    bottom: -50px;
-    left: -75px;
-  }
-
-  header .points2 {
-    width: 340px;
-  }
-
-  header .letters {
-    width: 11%;
-  }
-
-  .header-content .image .img-element {
-    max-width: 500px;
-  }
-
-  nav .container {
-    height: 4.5rem;
-  }
-
-  .header-content .container.grid-2 {
-    min-height: calc(100vh - 4.5rem);
-    padding-bottom: 1.5rem;
-  }
-
-  .logo {
-    width: 65px;
-  }
-
-  .links a {
-    font-size: 0.8rem;
-    padding: 0.65rem 0.7rem;
-  }
-
-  .links a.active {
-    font-size: 0.7rem;
-    padding: 0.7rem 1.7rem;
-    margin-left: 0.6rem;
-  }
-
-  .header-title {
-    font-size: 2.6rem;
-  }
-
-  .header-content .text {
-    margin: 1.1rem 0;
-  }
-
-  .card {
-    min-height: 390px;
-    max-width: 290px;
-    padding: 2.2rem 1.5rem;
-  }
-
-  .icon {
-    width: 65px;
-    margin-bottom: 0.8rem;
-  }
-
-  .card .text {
-    font-size: 0.9rem;
-    margin: 1rem 0;
-  }
-
-  .card:before {
-    font-size: 5rem;
-  }
-
-  .card-wrap {
-    margin: 1rem 0.6rem;
-  }
-
-  .services .points1 {
-    left: -60px;
-  }
-
-  .points-sq {
-    width: 150px;
-  }
-
-  .grid {
-    margin: 0.8rem 0;
-  }
-
-  .grid-item {
-    padding: 0.8rem;
-  }
-
-  .gallery-image {
-    height: 250px;
-    max-width: 325px;
-  }
-
-  .gallery-image .img-overlay {
-    padding: 1.4rem 2rem;
-  }
-
-  .plus:before,
-  .plus:after {
-    width: 2.8rem;
-  }
-
-  .img-overlay h3 {
-    font-size: 1.1rem;
-  }
-
-  .img-overlay h5 {
-    font-size: 0.8rem;
-  }
-
-  .background-bg {
-    height: 370px;
-  }
-
-  .filter-btn {
-    padding: 0.6rem 1.45rem;
-    font-size: 0.7rem;
-  }
-
-  .about img {
-    max-width: 420px;
-  }
-
-  .about .text {
-    margin-top: 0.7rem;
-  }
-
-  .skills {
-    margin: 0.9rem 0 1.7rem 0;
-  }
-
-  .skill-title {
-    font-size: 1rem;
-  }
-
-  .skill-bar {
-    height: 6px;
-  }
-
-  .about .column-1:before {
-    font-size: 6rem;
-    top: 13px;
-  }
-
-  .about .points {
-    width: 230px;
-    left: 65%;
-  }
-
-  .record-circle {
-    width: 150px;
-    height: 150px;
-    border-width: 3px;
-  }
-
-  .record-circle .number {
-    font-size: 1.8rem;
-  }
-
-  .record-circle .sub-title {
-    font-size: 0.9rem;
-  }
-
-  .blog-wrap {
-    margin: 0.7rem 0.5rem;
-  }
-
-  .blog-card {
-    max-width: 315px;
-  }
-
-  .blog-image {
-    height: 200px;
-  }
-
-  .blog-content {
-    padding: 1.8rem 1.7rem 1.9rem 1.7rem;
-  }
-
-  .blog-info {
-    margin-bottom: 0.2rem;
-  }
-
-  .blog-info > * {
-    font-size: 0.75rem !important;
-  }
-
-  .blog-user i {
-    font-size: 0.8rem;
-  }
-
-  .blog-text {
-    font-size: 0.9rem;
-    margin: 0.2rem 0 0.8rem 0;
-  }
-
-  .rate {
-    font-size: 1.15rem;
-    margin-bottom: 1.1rem;
-  }
-
-  .review-text {
-    font-size: 1.05rem;
-  }
-
-  .review-info {
-    margin-top: 1.1rem;
-  }
-
-  .review-name {
-    font-size: 1.05rem;
-  }
-
-  .review-job {
-    font-size: 0.85rem;
-  }
-
-  .quote {
-    font-size: 6.5rem;
-  }
-
-  .review-nav {
-    font-size: 1.55rem;
-  }
-
-  .swiper-button-next {
-    right: 2.5rem;
-  }
-
-  .swiper-button-prev {
-    right: 4.5rem;
-  }
-
-  .contact {
-    padding: 9rem 0 6rem 0;
-  }
-
-  .contact-form {
-    padding-left: 1rem;
-  }
-
-  .contact-info {
-    padding-right: 1rem;
-  }
-
-  .contact-box {
-    padding: 3.6rem 3rem;
-  }
-
-  .information-wrap {
-    margin-top: 1.2rem;
-  }
-
-  .contact-icon {
-    min-width: 50px;
-    height: 50px;
-    font-size: 1rem;
-    margin-right: 0.8rem;
-  }
-
-  .contact-icon i {
-    line-height: 50px;
-  }
-
-  .info-text {
-    font-size: 1.05rem;
-  }
-
-  .contact-input {
-    font-size: 0.9rem;
-    padding: 0.9rem 1.6rem;
-    margin: 0.4rem 0;
-  }
-
-  .hireme {
-    padding: 8rem 0;
-  }
-
-  .footer {
-    padding: 4rem 0;
-  }
-
-  .footer-links a {
-    font-size: 1rem;
-  }
-
-  .footer .title-sm {
-    margin-bottom: 0.5rem;
-  }
-
-  .footer-input-wrap {
-    height: 36px;
-    margin-top: 0.8rem;
-  }
-
-  .footer-input {
-    font-size: 0.9rem;
-    padding: 0 1.2rem;
-  }
-
-  .input-arrow {
-    font-size: 1.2rem;
-  }
-
-  .copyright .text {
-    font-size: 0.95rem;
-  }
-
-  .followme h3 {
-    font-size: 1.05rem;
-  }
-
-  .followme .footer-line {
-    margin: 0 0.8rem;
-  }
-
-  .social-media a {
-    font-size: 1.05rem;
-  }
-
-  .back-btn-wrap {
-    margin-left: 1.3rem;
-  }
-
-  .back-btn {
-    width: 43px;
-    height: 43px;
-    font-size: 0.9rem;
-  }
-
-  .back-btn-wrap:before {
-    width: 45px;
-    height: 45px;
-  }
-}
-
-@media (max-width: 850px) {
-  .grid-2 {
-    grid-template-columns: 1fr !important;
-  }
-
-  .column-1 {
-    margin-right: 0;
-    margin-bottom: 1rem;
-  }
-
-  .column-2 {
-    margin-left: 0;
-    margin-top: 1rem;
-  }
-
-  .hamburger-menu {
-    display: flex;
-  }
-
-  .header-content {
-    margin-top: 1rem;
-  }
-
-  .header-title {
-    font-size: 2.3rem;
-  }
-
-  .header-content .image {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  header .column-1 {
-    max-width: 550px;
-    margin: 0 auto;
-  }
-
-  .links {
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    top: 0;
-    right: 0;
-    background-color: #252525;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    transform: translateX(100%);
-    transition: 0.5s;
-  }
-
-  .links ul {
-    flex-direction: column;
-  }
-
-  .links a {
-    color: var(--light-one);
-  }
-
-  .links a.active {
-    margin-left: 0;
-    margin: 0.5rem 0;
-  }
-
-  .header-content .container.grid-2 {
-    min-height: 80vh;
-  }
-
-  .letters,
-  header .half-circle2,
-  header .points1,
-  header .wave2 {
-    display: none;
-  }
-
-  header .half-circle1 {
-    bottom: 55%;
-    left: 23%;
-  }
-
-  header .circle {
-    left: 8%;
-    bottom: 40%;
-  }
-
-  header .wave1 {
-    bottom: 87%;
-    left: 75%;
-  }
-
-  header .square {
-    top: initial;
-    bottom: 5%;
-    left: 13%;
-  }
-
-  header .triangle {
-    right: 14%;
-    bottom: 63%;
-  }
-
-  header .points2 {
-    width: 280px;
-    bottom: -10px;
-    left: 60%;
-  }
-
-  header .xshape {
-    left: 90%;
-    top: 54%;
-  }
-
-  .grid-item {
-    width: 50%;
-  }
-
-  .gallery-image {
-    height: 210px;
-    max-width: 270px;
-  }
-
-  .background-bg {
-    height: 340px;
-  }
-
-  .portfolio .half-circle1,
-  .portfolio .triangle,
-  .portfolio .half-circle2 {
-    display: none;
-  }
-
-  .portfolio .square {
-    top: 10%;
-    left: 14%;
-  }
-
-  .portfolio .wave {
-    top: 33%;
-  }
-
-  .portfolio .circle {
-    right: 20%;
-  }
-
-  .portfolio .xshape {
-    top: 25%;
-  }
-
-  .skill-bar {
-    width: 100%;
-  }
-
-  .about .column-1:before {
-    font-size: 5rem;
-  }
-
-  .about .points {
-    top: 60%;
-    left: 59%;
-  }
-
-  .records .wave1,
-  .records .triangle {
-    display: none;
-  }
-
-  .records .container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .records .wave2 {
-    left: 48%;
-  }
-
-  .records .sqaure2 {
-    bottom: 45%;
-    right: 50px;
-  }
-
-  .testi-content {
-    margin-top: 1.7rem;
-  }
-
-  .testi-content .image {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .review-nav {
-    bottom: 3rem;
-  }
-
-  .contact-box {
-    grid-template-columns: 1fr;
-    padding: 3.2rem 2.7rem;
-  }
-
-  .contact-info {
-    padding-right: 0;
-    padding-bottom: 0.5rem;
-  }
-
-  .contact-form {
-    padding-left: 0;
-    padding-top: 0.5rem;
-  }
-
-  .information-wrap {
-    margin-top: 0.7rem;
-  }
-
-  .information:not(:last-child) {
-    margin-bottom: 0.8rem;
-  }
-
-  .contact-input.textarea {
-    min-height: 220px;
-  }
-
-  .contact:before {
-    height: 25%;
-  }
-
-  .contact:after {
-    height: 75%;
-    top: 25%;
-  }
-
-  .footer .grid-4 {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 500px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .footer-about {
-    grid-column: 1 / 3;
-  }
-
-  .footer-newstletter {
-    grid-column: 1 / 3;
-  }
-
-  .grid-4-col {
-    margin: 1rem 0;
-    padding: 0;
-  }
-
-  .footer-input-wrap {
-    max-width: 300px;
-    margin: 0.95rem auto 0 auto;
-    grid-template-columns: auto 45px;
-  }
-
-  .bottom-footer {
-    flex-direction: column;
-    justify-items: center;
-    align-items: center;
-    padding: 1.5rem 0 0 0;
-    margin-top: 2.5rem;
-    position: relative;
-  }
-
-  .bottom-footer:before {
-    content: "";
-    position: absolute;
-    width: 90%;
-    max-width: 500px;
-    height: 1px;
-    background-color: #7b7b7b;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .followme-wrap {
-    margin-top: 0.8rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .grid-item {
-    width: 100%;
-  }
-}
-
-@media (max-width: 560px) {
-  .container {
-    padding: 0 2rem;
-  }
-
-  .title {
-    font-size: 1.8rem;
-  }
-
-  .text {
-    font-size: 0.92rem;
-  }
-
-  .overlay.overlay-lg .shape {
-    height: 28px;
-  }
-
-  .overlay.overlay-lg .shape.wave {
-    height: initial;
-    width: 52px;
-  }
-
-  .overlay.overlay-lg .shape.xshape {
-    height: 22px;
-  }
-
-  .records .container {
-    grid-template-columns: 1fr;
-  }
-
-  .records .half-circle {
-    top: 50%;
-    left: 50px;
-  }
-
-  .records .wave2 {
-    bottom: 50%;
-    right: 20px;
-    left: initial;
-  }
-
-  .records .xshape {
-    right: 70px;
-  }
-
-  .records .square2 {
-    bottom: 90px;
-    right: 40px;
-  }
-
-  .testi-content {
-    margin-top: 1rem;
-  }
-
-  .review {
-    padding: 1.5rem 1rem;
-  }
-
-  .review-text {
-    font-size: 0.9rem;
-  }
-
-  .review-nav {
-    bottom: 1.5rem;
-    font-size: 1.3rem;
-  }
-
-  .swiper-button-next {
-    right: 1.3rem;
-  }
-
-  .swiper-button-prev {
-    right: 3rem;
-  }
-
-  .contact {
-    padding: 8rem 0 5rem 0;
-  }
-
-  .contact-info {
-    display: none;
-  }
-
-  .contact-box {
-    padding: 2.3rem 2rem;
-    border-radius: 30px;
-  }
-
-  .contact:before {
-    background-size: 200%;
-  }
-
-  .contact-form .row {
-    grid-column-gap: 0.3rem;
-  }
-
-  .contact-input {
-    font-size: 0.8rem;
-    padding: 0.8rem 1.4rem;
-    margin: 0.25rem 0;
-  }
-}
-
-/* End Responsive */
-</style>
-
-<main>
-  <header id="header">
-    <nav>
-      <div class="container">
-<div class="logo" dir="rtl">
-  <span class="logo-text">
-    <span class="word1">أداة</span>
-    <span class="word2">علم</span>
-  </span>
-</div>
-
-<style>
-.logo-text {
-  font-size: 2rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  font-family: "Poppins", sans-serif;
-  position: relative;
-  padding: 0 10px;
-  gap: 0.5rem;
-}
-
-.word1 {
-  color: #0099cc; /* أزرق غامق */
-}
-
-.word2 {
-  color: #0099cc; /* أزرق فاتح أو مختلف */
-}
-
-/* تأثير الخط العلوي والسفلي */
-.logo-text:before,
-.logo-text:after {
-  content: "";
-  position: absolute;
-  height: 3px;
-  width: 100%;
-  background: #003366;
-  left: 0;
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
-
-.logo-text:before {
-  top: 0;
-  transform-origin: right;
-}
-
-.logo-text:after {
-  bottom: 0;
-  transform-origin: left;
-}
-
-.logo:hover .logo-text:before,
-.logo:hover .logo-text:after {
-  transform: scaleX(1);
-}
-</style>
-
-
-        <div class="links">
-          <ul>
-            <li><a href="#header">الرئيسية</a></li>
-            <li><a href="#about">من نحن</a></li>
-            <li><a href="#contact">اتصل بنا</a></li>
-          </ul>
+    <header class="header-content">
+        <div class="container grid-2">
+            <div class="column-1">
+                <h1 class="header-title">أداة علم</h1>
+                <p class="text" style="text-align: right;">
+                    <span style="font-weight: bold; direction: ltr;"> ط.22.ح.ط.ع (S22MCS)</span>
+                    <span>  الجناح الدراسي الخاص بـ </span>
+                    <br>
+                    منصة تعليمية متكاملة تقدم الدعم الأكاديمي للطلاب في مختلف التخصصات العلمية، وخاصة في المجال الطبي.
+                </p>
+                <a href="#" class="btn">تصفح المكتبة</a>
+            </div>
+
+            <div class="column-2 image">
+                <img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" class="img-element z-index" alt="صورة تعليمية" />
+            </div>
         </div>
+    </header>
 
-        <div class="hamburger-menu">
-          <div class="bar"></div>
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="title" data-title="تعرف علينا">من نحن</h2>
+                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                    <p class="text" style="font-family: 'Tajawal', sans-serif; font-size: 18px; line-height: 1.8;">
+                        مرحبا بكم في <strong>أداة علم</strong>
+                        <br>
+                        <span style="font-weight: bold; direction: ltr; display: inline-block;"> ط.22.ح.ط.ع (S22MCS)</span>
+                        <br>
+                        <span>الجناح الدراسي الخاص بـ</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="column-1">
+                    <h3 class="title-sm">رؤيتنا</h3>
+                    <p class="text">
+                        نؤمن بأن المعرفة يجب أن تكون متاحة للجميع، ونسعى لخلق مجتمع تعليمي متكامل يدعم الطلاب في رحلتهم الأكاديمية.
+                    </p>
+
+                    <h3 class="title-sm">سعينا</h3>
+                    <p class="text">
+                        نسعى إلى التعاون التام بين أعضائنا وتعزيز التكامل الدراسي والعلمي في مختلف المجالات، خاصة على المستويات الأكاديمية والعملية.
+                    </p>
+
+                    <h3 class="title-sm">هدفنا</h3>
+                    <p class="text">
+                        أن نكون منزلًا لطلاب العلوم ومركزًا داعمًا للباحثين، من خلال توفير فرص التعلم والتواصل والدعم الأكاديمي.
+                    </p>
+                </div>
+
+                <div class="column-2">
+                    <h3 class="title-sm">غايتنا</h3>
+                    <p class="text">
+                        تسهيل التواصل بين الأعضاء وتوفير منصة فعالة لتبادل المعلومات والأفكار والموارد التعليمية.
+                    </p>
+
+                    <h3 class="title-sm">خدماتنا</h3>
+                    <p class="text">
+                        نقدم المراجع العلمية، الكتب، الملخصات، اختبارات السنوات السابقة، والتطبيقات العملية لكل ما يحتاجه الطالب وخاصة في التخصصات الطبية والعلمية.
+                    </p>
+
+                    <h3 class="title-sm">قيمنا</h3>
+                    <p class="text">
+                        نؤمن بالتحسين المستمر ونسعى دائمًا لتطوير أدواتنا بناءً على ملاحظات أعضائنا، لنبقى دائمًا مواكبين لاحتياجات المجتمع التعليمي.
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
-    </nav>
+    </section>
 
-    <div class="header-content">
-      <div class="container grid-2">
-        <div class="column-1">
-          <h1 class="header-title">أداة علم</h1>
- 
+    <div class="majors-container" dir="rtl">
+        <div class="majors-content">
+            <h3 class="section-heading">التخصصات المتاحة لدينا</h3>
 
-<p class="text" style="text-align: right;">
+            <div class="content-wrapper">
+                <div class="majors-list">
+                    <div class="majors">
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">الطب</h4>
+                                <span class="students-count">6,8 الف</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="6800" data-max="10000"></div>
+                            </div>
+                        </div>
 
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">الصيدلة</h4>
+                                <span class="students-count">405 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="405" data-max="10000"></div>
+                            </div>
+                        </div>
 
-    <span style="font-weight: bold; direction: ltr;">S22MCS
-</span>
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">طب الأسنان</h4>
+                                <span class="students-count">1,200 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="1200" data-max="10000"></div>
+                            </div>
+                        </div>
 
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">القابلة</h4>
+                                <span class="students-count">0 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="0" data-max="10000"></div>
+                            </div>
+                        </div>
 
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">الشبه الطبي</h4>
+                                <span class="students-count">0 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="0" data-max="10000"></div>
+                            </div>
+                        </div>
 
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">علم تصحيح النطق</h4>
+                                <span class="students-count">0 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="0" data-max="10000"></div>
+                            </div>
+                        </div>
 
-<span>  الجناح الدراسي الخاص بـ </span>
-  
-<BR>
-     منصة تعليمية متكاملة تقدم الدعم الأكاديمي للطلاب في مختلف التخصصات العلمية، وخاصة في المجال الطبي.
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">البيولوجيا</h4>
+                                <span class="students-count">0 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="0" data-max="10000"></div>
+                            </div>
+                        </div>
 
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">العلوم الفلاحية</h4>
+                                <span class="students-count">10 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="10" data-max="10000"></div>
+                            </div>
+                        </div>
 
-</p>
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">الإعلام الآلي</h4>
+                                <span class="students-count">4,500 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="4500" data-max="10000"></div>
+                            </div>
+                        </div>
 
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">المتعدد التقنيات</h4>
+                                <span class="students-count">3,400 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="3400" data-max="10000"></div>
+                            </div>
+                        </div>
 
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">المدرسة العليا للتكنولوجيا الصناعية</h4>
+                                <span class="students-count">0 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="0" data-max="10000"></div>
+                            </div>
+                        </div>
 
-          <a href="#" class="btn">تصفح المكتبة</a>
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">اللغة الألمانية</h4>
+                                <span class="students-count">6 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="6" data-max="10000"></div>
+                            </div>
+                        </div>
+
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">اللغة الإنجليزية</h4>
+                                <span class="students-count">0 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="0" data-max="10000"></div>
+                            </div>
+                        </div>
+
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">الحقوق</h4>
+                                <span class="students-count">2 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="2" data-max="10000"></div>
+                            </div>
+                        </div>
+
+                        <div class="major-item">
+                            <div class="major-info">
+                                <h4 class="major-name">المشروعات </h4>
+                                <span class="students-count">0 طالب</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" data-students="0" data-max="10000"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#" class="action-button">المزيد قريبا </a>
+                </div>
+
+                <div class="image-container">
+                    <img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" alt="تخصصات أكاديمية متنوعة مع أعداد الطلاب" class="majors-image">
+                </div>
+            </div>
         </div>
-
-        <div class="column-2 image">
-          <img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" class="img-element z-index" alt="صورة تعليمية" />
-        </div>
-      </div>
     </div>
-  </header>
 
-  <!-- قسم من نحن -->
-  <section id="about" class="section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="title" data-title="تعرف علينا">من نحن</h2>
-
-<div style="display: flex; justify-content: center; align-items: center;  text-align: center;">
-  <p class="text" style="font-family: 'Arial', sans-serif; font-size: 18px; line-height: 1.8;">
-    مرحبا بكم في <strong>أداة علم</strong>
-    <br>
-    <span style="font-weight: bold; direction: ltr; display: inline-block;">S22MCS</span>
-    <br>
-    <span>الجناح الدراسي الخاص بـ</span>
-  </p>
-</div>
-
-
-
-
-          
-      </div>
-
-      <div class="grid-2">
-        <div class="column-1">
-          <h3 class="title-sm">رؤيتنا</h3>
-          <p class="text">
-            نؤمن بأن المعرفة يجب أن تكون متاحة للجميع، ونسعى لخلق مجتمع تعليمي متكامل يدعم الطلاب في رحلتهم الأكاديمية.
-          </p>
-          
-          <h3 class="title-sm">سعينا</h3>
-          <p class="text">
-            نسعى إلى التعاون التام بين أعضائنا وتعزيز التكامل الدراسي والعلمي في مختلف المجالات، خاصة على المستويات الأكاديمية والعملية.
-          </p>
-          
-          <h3 class="title-sm">هدفنا</h3>
-          <p class="text">
-            أن نكون منزلًا لطلاب العلوم ومركزًا داعمًا للباحثين، من خلال توفير فرص التعلم والتواصل والدعم الأكاديمي.
-          </p>
-        </div>
-
-        <div class="column-2">
-          <h3 class="title-sm">غايتنا</h3>
-          <p class="text">
-            تسهيل التواصل بين الأعضاء وتوفير منصة فعالة لتبادل المعلومات والأفكار والموارد التعليمية.
-          </p>
-          
-          <h3 class="title-sm">خدماتنا</h3>
-          <p class="text">
-            نقدم المراجع العلمية، الكتب، الملخصات، اختبارات السنوات السابقة، والتطبيقات العملية لكل ما يحتاجه الطالب وخاصة في التخصصات الطبية والعلمية.
-          </p>
-          
-          <h3 class="title-sm">قيمنا</h3>
-          <p class="text">
-            نؤمن بالتحسين المستمر ونسعى دائمًا لتطوير أدواتنا بناءً على ملاحظات أعضائنا، لنبقى دائمًا مواكبين لاحتياجات المجتمع التعليمي.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-
-
-
-
-
-<div class="majors-container" dir="rtl">
-  <div class="majors-content">
-    <h3 class="section-heading">التخصصات المتاحة لدينا</h3>
-    
-    <div class="content-wrapper">
-      <div class="majors-list">
-        <!-- قائمة التخصصات مع أعداد الطلاب -->
-        <div class="majors">
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">الطب</h4>
-              <span class="students-count">6,9 الف</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="1000" data-max="1000"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">الصيدلة</h4>
-              <span class="students-count">4,000 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="4000" data-max="5000"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">طب الأسنان</h4>
-              <span class="students-count">3,200 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="3200" data-max="4000"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">القابلة</h4>
-              <span class="students-count">2,500 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="2500" data-max="3500"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">الشبه الطبي</h4>
-              <span class="students-count">3,800 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="3800" data-max="4500"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">علم تصحيح النطق</h4>
-              <span class="students-count">1,200 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="1200" data-max="2000"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">البيولوجيا</h4>
-              <span class="students-count">2,300 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="2300" data-max="3000"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">العلوم الفلاحية</h4>
-              <span class="students-count">1,800 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="1800" data-max="2500"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">الإعلام الآلي</h4>
-              <span class="students-count">4,500 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="4500" data-max="5000"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">المتعدد التقنيات</h4>
-              <span class="students-count">3,400 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="3400" data-max="4000"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">المدرسة العليا للتكنولوجيا الصناعية</h4>
-              <span class="students-count">3,600 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="3600" data-max="4500"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">اللغة الألمانية</h4>
-              <span class="students-count">1,400 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="1400" data-max="2500"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">اللغة الإنجليزية</h4>
-              <span class="students-count">2,800 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="2800" data-max="3500"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">الحقوق</h4>
-              <span class="students-count">2,100 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="2100" data-max="3000"></div>
-            </div>
-          </div>
-          
-          <div class="major-item">
-            <div class="major-info">
-              <h4 class="major-name">التطبيقات</h4>
-              <span class="students-count">4,200 طالب</span>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar" data-students="4200" data-max="5000"></div>
-            </div>
-          </div>
-        </div>
-        
-        <a href="#" class="action-button">المزيد قريبا  </a>
-      </div>
-      
-      <div class="image-container">
-        <img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" alt="تخصصات أكاديمية متنوعة مع أعداد الطلاب" class="majors-image">
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-  /* التنسيقات العامة */
-  .majors-container {
-    padding: 2rem;
-    font-family: 'Tahoma', 'Arial', sans-serif;
-    background-color: #f9f9f9;
-  }
-  
-  .section-heading {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
-  }
-  
-  .content-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    align-items: flex-start;
-  }
-  
-  .majors-list {
-    flex: 1;
-    min-width: 300px;
-  }
-  
-  .image-container {
-    flex: 1;
-    min-width: 300px;
-    text-align: center;
-  }
-  
-  .majors-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-height: 500px;
-  }
-  
-  /* تنسيقات التخصصات */
-  .majors {
-    margin-top: 1rem;
-  }
-  
-  .major-item {
-    margin-bottom: 1.5rem;
-    background-color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .major-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-  }
-  
-  .major-name {
-    color: #34495e;
-    font-size: 1.1rem;
-    margin: 0;
-  }
-  
-  .students-count {
-    color: #3498db;
-    font-weight: bold;
-    font-size: 0.9rem;
-  }
-  
-  .progress-container {
-    height: 10px;
-    background: #ecf0f1;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  
-  .progress-bar {
-    height: 100%;
-    background: #3498db;
-    border-radius: 5px;
-    width: 0;
-    transition: width 1s ease-in-out;
-  }
-  
-  .action-button {
-    display: inline-block;
-    margin-top: 1.5rem;
-    padding: 0.8rem 2rem;
-    background: #3498db;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s;
-    text-align: center;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .action-button:hover {
-    background: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* التجاوب مع أحجام الشاشات */
-  @media (max-width: 768px) {
-    .content-wrapper {
-      flex-direction: column-reverse;
-    }
-    
-    .image-container {
-      margin-bottom: 2rem;
-    }
-    
-    .section-heading {
-      font-size: 1.5rem;
-    }
-    
-    .major-info {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .students-count {
-      margin-top: 0.3rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .majors-container {
-      padding: 1rem;
-    }
-    
-    .major-name {
-      font-size: 1rem;
-    }
-    
-    .students-count {
-      font-size: 0.8rem;
-    }
-  }
-</style>
-
-<script>
-  // تنشيط أشرطة التقدم بناء على أعداد الطلاب
-  document.addEventListener('DOMContentLoaded', function() {
-    const progressBars = document.querySelectorAll('.progress-bar');
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const students = parseInt(entry.target.getAttribute('data-students'));
-          const max = parseInt(entry.target.getAttribute('data-max'));
-          const percentage = (students / max) * 100;
-          entry.target.style.width = percentage + '%';
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    
-    progressBars.forEach(bar => {
-      observer.observe(bar);
-    });
-  });
-</script>
-
-    
-
-
-
-
-          </div>
-        </div>
-      </section>
-
-
-
-
-
-
-    <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
@@ -2977,18 +850,14 @@ header .circle {
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="index.html">أداة علم</a>, جميع الحقوق محفوظة.
+                        © <a class="border-bottom" href="index.html">أداة علم</a>, جميع الحقوق محفوظة.
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Footer End -->
-
-    <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-    <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
@@ -2996,7 +865,46 @@ header .circle {
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-    <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script>
+        // تنشيط أشرطة التقدم بناء على أعداد الطلاب
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBars = document.querySelectorAll('.progress-bar');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const students = parseInt(entry.target.getAttribute('data-students'));
+                        const max = parseInt(entry.target.getAttribute('data-max'));
+                        // Ensure max is not zero to prevent division by zero errors
+                        const percentage = max > 0 ? (students / max) * 100 : 0;
+                        entry.target.style.width = percentage + '%';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 }); /* Adjust threshold as needed */
+
+            progressBars.forEach(bar => {
+                observer.observe(bar);
+            });
+        });
+
+        // Initialize WOW.js for animations
+        new WOW().init();
+
+        // Back to Top button functionality
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('.back-to-top').fadeIn('slow');
+            } else {
+                $('.back-to-top').fadeOut('slow');
+            }
+        });
+        $('.back-to-top').click(function () {
+            $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+            return false;
+        });
+    </script>
 </body>
+
 </html>
