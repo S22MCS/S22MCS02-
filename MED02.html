@@ -1048,970 +1048,442 @@
 
 
 
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تصميم متجاوب مع أزرار تفاعلية</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>أزرار الوحدات الدراسية</title>
     <style>
-        /* ضبط الخطوط والألوان الأساسية */
-        html, body {
+        :root {
+            --cardio: #00897b;
+            --digestive: #d32f2f;
+            --urinary: #0077b6;
+            --endocrine: #6a1b9a;
+            --nervous: #1e3a8a;
+            --immunology: #ff8f00;
+            --genetics: #2e7d32;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', 'Amiri', sans-serif;
-            background-color: #f3f4f6;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding: 15px;
             text-align: center;
-            height: 100%;
-            box-sizing: border-box;
             overflow-x: hidden;
+            touch-action: manipulation;
         }
         
-        /* الحاوية الرئيسية */
-        .main-container {
+        .main-buttons-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            width: 100%;
-            box-sizing: border-box;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 800px;
+            margin: 0 auto;
+            will-change: transform;
         }
         
-        /* شبكة الأزرار */
-        .button-grid {
+        .unit-button {
+            position: relative;
+            width: 100%;
+            transform: translateZ(0);
+        }
+        
+        .main-button {
+            color: white;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: right;
+            transition: transform 0.1s ease, opacity 0.2s ease;
+            transform: translateZ(0);
+            will-change: transform;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .main-button:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: relative;
+            background-color: #f9f9f9;
+            width: 100%;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 0 0 8px 8px;
+            padding: 8px;
+            margin-top: -4px;
+            animation: fadeIn 0.2s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .sub-buttons-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            width: 100%;
-            max-width: 1200px;
-            padding: 10px;
-            box-sizing: border-box;
+            gap: 8px;
+            padding: 8px;
         }
         
-        /* تصميم متجاوب */
-        @media (max-width: 900px) {
-            .button-grid {
-                grid-template-columns: repeat(3, 1fr);
+        .sub-button {
+            background-color: #e7e7e7;
+            color: black;
+            padding: 10px 8px;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 6px;
+            transition: background-color 0.15s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+        
+        .sub-button:active {
+            transform: scale(0.96);
+        }
+        
+        .sub-button .english {
+            font-size: 0.7rem;
+            color: #555;
+            margin-top: 4px;
+        }
+        
+        /* ألوان الوحدات */
+        .cardio-respiratory { background-color: var(--cardio); }
+        .digestive { background-color: var(--digestive); }
+        .urinary { background-color: var(--urinary); }
+        .endocrine { background-color: var(--endocrine); }
+        .nervous { background-color: var(--nervous); }
+        .immunology { background-color: var(--immunology); }
+        .genetics { background-color: var(--genetics); }
+        
+        .button-icon {
+            width: 22px;
+            height: 22px;
+            margin: 0 4px;
+            flex-shrink: 0;
+        }
+        
+        .button-content {
+            flex: 1;
+            padding: 0 5px;
+        }
+        
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
             }
-        }
-        
-        @media (max-width: 650px) {
-            .button-grid {
+            
+            .main-button {
+                padding: 12px 15px;
+                font-size: 0.95rem;
+            }
+            
+            .sub-buttons-container {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
         
-        @media (max-width: 400px) {
-            .button-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-                padding: 5px;
+        @media (max-width: 480px) {
+            .main-button {
+                padding: 12px;
+                font-size: 0.9rem;
             }
             
-            .action-button {
-                padding: 12px;
-                font-size: 16px;
-                min-height: 70px;
+            .button-icon {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .sub-button {
+                padding: 8px 6px;
+                font-size: 0.8rem;
+            }
+            
+            .sub-button .english {
+                font-size: 0.65rem;
             }
         }
         
-        @media (max-width: 320px) {
-            .action-button {
-                padding: 10px;
-                font-size: 14px;
-                min-height: 60px;
+        @media (max-width: 360px) {
+            .sub-buttons-container {
+                grid-template-columns: 1fr;
             }
-        }
-        
-        /* تصميم الأزرار */
-        .action-button {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-weight: bold;
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 18px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-            min-height: 80px;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-        
-        .action-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* ألوان الأزرار */
-        .button-cardio { background: linear-gradient(145deg, #00897b, #004d40); }
-        .button-digestif { background: linear-gradient(135deg, #d32f2f, #ff9800); }
-        .button-urinaire { background: linear-gradient(135deg, #0077b6, #00a896); }
-        .button-endocrine { background: linear-gradient(135deg, #6a1b9a, #311b92); }
-        .button-nervous { background: linear-gradient(135deg, #1e3a8a, #0a0a0a); }
-        
-        .button-immuno {
-  background: linear-gradient(135deg, #2e7d32, #1b5e20); /* أخضر مناعي */
-}
-
-.button-genetics {
-  background: linear-gradient(135deg, #6a1b9a, #4a148c); /* بنفسجي وراثي */
-}
-
-        /* زر عائم */
-        .floating-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 60px;
-            height: 60px;
-            border: none;
-            border-radius: 50%;
-            background: url('adatealm/shelves.gif') center/cover no-repeat;
-            background-color: transparent;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            transition: 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        
-        .floating-button:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-        
-        /* تحسينات للشاشات الصغيرة */
-        @media (max-width: 480px) {
-            .floating-button {
-                width: 50px;
-                height: 50px;
-                bottom: 15px;
-                left: 15px;
-            }
-        }
-        
-        /* تحسين النصوص العربية */
-        .arabic-text {
-            font-family: 'Amiri', serif;
-            font-weight: bold;
-            font-size: 22px;
-            text-align: center;
-            color: #ffffff;
-            direction: rtl;
-        }
-        
-        /* تحسين النصوص الجانبية */
-        .side-text {
-            font-size: 11px;
-            writing-mode: vertical-rl;
-            font-weight: bold;
-            color: #6A6A6A;
-        }
-        
-        /* تحسين الصور */
-        .button-icon {
-            width: 28px;
-            height: 28px;
-            vertical-align: middle;
         }
     </style>
 </head>
-
 <body>
-    <!-- زر عائم -->
-    <button class="floating-button" onclick="scrollToSection('main-container')"></button>
+
+<div class="main-buttons-container">
+    <!-- زر وحدة الجهاز القلبي التنفسي -->
+    <div class="unit-button">
+        <button class="main-button cardio-respiratory" onclick="toggleDropdown(this)">
+               <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon" loading="lazy">
+            <div class="button-content">
+                <div>وحدة الجهاز القلبي والتنفسي</div>
+                <div class="english">Cardio-Respiratory System</div>
+            </div>
+            <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon" loading="lazy">
+        </button>
+        <div class="dropdown-content">
+            <div class="sub-buttons-container">
+                <a href="#ANATOMY-CARDIO" class="sub-button">
+                    🦴 التشريح
+                    <div class="english">🔻ANATOMY🔻</div>
+                </a>
+                <a href="#HISTOLOGY-CARDIO" class="sub-button">
+                    🔬 علم الأنسجة
+                    <div class="english">🔻HISTOLOGY🔻</div>
+                </a>
+                <a href="#PHYSIOLOGY-CARDIO" class="sub-button">
+                    🌬️ علم وظائف الأعضاء
+                    <div class="english">🔻PHYSIOLOGY🔻</div>
+                </a>
+                <a href="#BIOPHYSICS-CARDIO" class="sub-button">
+                    ⚛️ الفيزياء الحيوية
+                    <div class="english">🔻BIOPHYSICS🔻</div>
+                </a>
+            </div>
+        </div>
+    </div>
     
-    <div class="main-container">
-        <div class="button-grid">
-            <!-- أزرار وحدة الجهاز القلبي التنفسي -->
+    <!-- زر وحدة الجهاز الهضمي -->
+    <div class="unit-button">
+        <button class="main-button digestive" onclick="toggleDropdown(this)">
+                      <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" class="button-icon" loading="lazy">
+            <div class="button-content">
+                <div>وحدة الجهاز الهضمي</div>
+                <div class="english">Digestive System</div>
+            </div>
+            <img src="adatealm/gastrointestinal-tract.png" alt="الجهاز الهضمي" class="button-icon" loading="lazy">
+        </button>
+        <div class="dropdown-content">
+            <div class="sub-buttons-container">
+                <a href="#ANATOMY-DIGESTIVE" class="sub-button">
+                    🦴 التشريح
+                    <div class="english">🔻ANATOMY🔻</div>
+                </a>
+                <a href="#HISTOLOGY-DIGESTIVE" class="sub-button">
+                    🔬 علم الأنسجة
+                    <div class="english">🔻HISTOLOGY🔻</div>
+                </a>
+                <a href="#BIOCHEMISTRY-DIGESTIVE" class="sub-button">
+                    🧪 الكيمياء الحيوية
+                    <div class="english">🔻BIOCHEMISTRY🔻</div>
+                </a>
+                <a href="#PHYSIOLOGY-DIGESTIVE" class="sub-button">
+                    🌬️ علم وظائف الأعضاء
+                    <div class="english">🔻PHYSIOLOGY🔻</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- زر وحدة الجهاز البولي -->
+    <div class="unit-button">
+        <button class="main-button urinary" onclick="toggleDropdown(this)">
+                      <img src="adatealm/endocrine-system.png" alt="الجهاز البولي" class="button-icon" loading="lazy">
+            <div class="button-content">
+                <div>وحدة الجهاز البولي</div>
+                <div class="english">Urinary System</div>
+            </div>
+            <img src="adatealm/endocrine-system.png" alt="الجهاز البولي" class="button-icon" loading="lazy">
+        </button>
+        <div class="dropdown-content">
+            <div class="sub-buttons-container">
+                <a href="#ANATOMY-URINARY" class="sub-button">
+                    🦴 التشريح
+                    <div class="english">🔻ANATOMY🔻</div>
+                </a>
+                <a href="#HISTOLOGY-URINARY" class="sub-button">
+                    🔬 علم الأنسجة
+                    <div class="english">🔻HISTOLOGY🔻</div>
+                </a>
+                <a href="#BIOCHEMISTRY-URINARY" class="sub-button">
+                    🧪 الكيمياء الحيوية
+                    <div class="english">🔻BIOCHEMISTRY🔻</div>
+                </a>
+                <a href="#PHYSIOLOGY-URINARY" class="sub-button">
+                    🌬️ علم وظائف الأعضاء
+                    <div class="english">🔻PHYSIOLOGY🔻</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- زر وحدة الجهاز الصماوي والتناسلي -->
+    <div class="unit-button">
+        <button class="main-button endocrine" onclick="toggleDropdown(this)">
+                      <img src="adatealm/endocrine-system.png" alt="الجهاز التناسلي" class="button-icon" loading="lazy">
+                      <img src="adatealm/gender.png" alt="الجهاز التناسلي" class="button-icon" loading="lazy">
+            <div class="button-content">
+                <div>وحدة الجهاز الصماوي والتناسلي</div>
+                <div class="english">Endocrine & Reproductive System</div>
+            </div>
+            <img src="adatealm/gender.png" alt="الجهاز التناسلي" class="button-icon" loading="lazy">
+            <img src="adatealm/endocrine-system.png" alt="الجهاز التناسلي" class="button-icon" loading="lazy">
+          </button>
+        <div class="dropdown-content">
+            <div class="sub-buttons-container">
+                <a href="#ANATOMY-ENDOCRINE" class="sub-button">
+                    🦴 التشريح
+                    <div class="english">🔻ANATOMY🔻</div>
+                </a>
+                <a href="#HISTOLOGY-ENDOCRINE" class="sub-button">
+                    🔬 علم الأنسجة
+                    <div class="english">🔻HISTOLOGY🔻</div>
+                </a>
+                <a href="#BIOCHEMISTRY-ENDOCRINE" class="sub-button">
+                    🧪 الكيمياء الحيوية
+                    <div class="english">🔻BIOCHEMISTRY🔻</div>
+                </a>
+                <a href="#PHYSIOLOGY-ENDOCRINE" class="sub-button">
+                    🌬️ علم وظائف الأعضاء
+                    <div class="english">🔻PHYSIOLOGY🔻</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- زر وحدة الجهاز العصبي -->
+    <div class="unit-button">
+        <button class="main-button nervous" onclick="toggleDropdown(this)">
+                      <img src="adatealm/neurons.png" alt="الجهاز العصبي" class="button-icon" loading="lazy">
+                      <img src="adatealm/five-senses.png" alt="الجهاز العصبي" class="button-icon" loading="lazy">
+            <div class="button-content">
+                <div>وحدة الجهاز العصبي وأعضاء الحواس</div>
+                <div class="english">Nervous System & Sensory Organs</div>
+            </div>
+                <img src="adatealm/five-senses.png" alt="الجهاز العصبي" class="button-icon" loading="lazy">
+            <img src="adatealm/neurons.png" alt="الجهاز العصبي" class="button-icon" loading="lazy">
+        </button>
+        <div class="dropdown-content">
+            <div class="sub-buttons-container">
+                <a href="#ANATOMY-NERVOUS" class="sub-button">
+                    🦴 التشريح
+                    <div class="english">🔻ANATOMY🔻</div>
+                </a>
+                <a href="#HISTOLOGY-NERVOUS" class="sub-button">
+                    🔬 علم الأنسجة
+                    <div class="english">🔻HISTOLOGY🔻</div>
+                </a>
+                <a href="#BIOPHYSICS-NERVOUS" class="sub-button">
+                    ⚛️ الفيزياء الحيوية
+                    <div class="english">🔻BIOPHYSICS🔻</div>
+                </a>
+                <a href="#PHYSIOLOGY-NERVOUS" class="sub-button">
+                    🌬️ علم وظائف الأعضاء
+                    <div class="english">🔻PHYSIOLOGY🔻</div>
+                </a>
+            </div>
+        </div>
+    </div>
 
-
-
-
-            <a href="#histologie" class="action-button button-cardio">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                    <span class="side-text">
-                        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                        A N A T O M Y
-                        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                    </span>
-                    
-                    <span class="arabic-text">
-                        <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon">
-                        <br>
-                        اَلْقَلْبُ وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
-                        <br>
-                        <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon">
-                        <br><br>
-                        <span>🦴 اَلتَّشْرِيحُ 🦴</span>
-                    </span>
-                    
-                    <span class="side-text" style="transform: rotate(180deg);">
-                        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                        A N A T O M I E
-                        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                    </span>
-                </div>
-            </a>
-
-
-
-
-            <a href="#histologie" class="action-button button-cardio">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                    <span class="side-text">
-                        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                        H I S T O L O G Y
-                        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                    </span>
-                    
-                    <span class="arabic-text">
-                        <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon">
-                        <br>
-                        اَلْقَلْبُ وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
-                        <br>
-                        <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon">
-                        <br><br>
-                        <span>🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-                    </span>
-                    
-                    <span class="side-text" style="transform: rotate(180deg);">
-                        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                        H I S T O L O G I E
-                  <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                    </span>
-                </div>
-            </a>
-
-
-
-            <a href="#histologie" class="action-button button-cardio">
-              <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                  <span class="side-text">
-                      <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                      P H Y S I O L O G Y 
-                      <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                  </span>
-                  
-                  <span class="arabic-text">
-                      <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon">
-                      <br>
-                      اَلْقَلْبُ وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
-                      <br>
-                      <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon">
-                      <br><br>
-                      <span>🌬️عِلْمُ الوَظَائِفِ🌬️</span>
-                  </span>
-                  
-                  <span class="side-text" style="transform: rotate(180deg);">
-                      <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                      P H Y S I O L O G I E  
-                      <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                  </span>
-              </div>
-          </a>
-            
-
-
-          <a href="#histologie" class="action-button button-cardio">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-                <span class="side-text">
-                    <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                    B I O P H Y S I C S
-                    <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                </span>
-                
-                <span class="arabic-text">
-                    <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon">
-                    <br>
-                    اَلْقَلْبُ وَ اَلْجِهَازُ اَلتَّنَفُّسِيِّ 
-                    <br>
-                    <img src="adatealm/CARDIO.png" alt="القلب والجهاز التنفسي" class="button-icon">
-                    <br><br>
-                    <span>⚛️ الفِيزْيَاءِ الحَيَوِيَّةِ ⚛️</span>
-                </span>
-                
-                <span class="side-text" style="transform: rotate(180deg);">
-                    <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                    B I O P H Y S I Q U E
-                    <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-                </span>
+    <!-- زر مقياس المناعة والجهاز المناعي -->
+    <div class="unit-button">
+        <a href="#IMMUNOLOGY" class="main-button immunology" style="text-decoration: none; display: block;">
+            <div class="button-content">
+                <div>🦠 عِلْمُ المَنَاعَةِ 🦠</div>
+                <div class="english">🧬 I M M U N O L O G Y 🧬</div>
             </div>
         </a>
-
-
-
-
-<!-- ازرار وحدة الجهاز الهضمي -->
-
-
-
-
-   <a href="#histologie" class="action-button button-digestif">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-        <span class="side-text">
-            <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-            A N A T O M Y
-            <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        </span>
-        
-        <span class="arabic-text">
-            <img src="adatealm/gastrointestinal-tract.png" alt="القلب والجهاز التنفسي" class="button-icon">
-            <br>
-            اَلْجِهَازُ اَلْهَضْمِيُّ
-            <br>
-            <img src="adatealm/gastrointestinal-tract.png" alt="القلب والجهاز التنفسي" class="button-icon">
-            <br><br>
-            <span>🦴 اَلتَّشْرِيحُ 🦴</span>
-        </span>
-        
-        <span class="side-text" style="transform: rotate(180deg);">
-            <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-            A N A T O M I E
-            <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        </span>
     </div>
-</a>
-
-
-
-
-
-
-<a href="#histologie" class="action-button button-digestif">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span class="side-text">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          H I S T O L O G Y
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-      
-      <span class="arabic-text">
-          <img src="adatealm/gastrointestinal-tract.png" alt="القلب والجهاز التنفسي" class="button-icon">
-          <br>
-          اَلْجِهَازُ اَلْهَضْمِيُّ
-          <br>
-          <img src="adatealm/gastrointestinal-tract.png" alt="القلب والجهاز التنفسي" class="button-icon">
-          <br><br>
-          <span>🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-      </span>
-      
-      <span class="side-text" style="transform: rotate(180deg);">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          H I S T O L O G I E
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-  </div>
-</a>
-
-
-
-
-
-<a href="#histologie" class="action-button button-digestif">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span class="side-text">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          B I O C H E M I S T R Y
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-      
-      <span class="arabic-text">
-          <img src="adatealm/gastrointestinal-tract.png" alt="القلب والجهاز التنفسي" class="button-icon">
-          <br>
-          اَلْجِهَازُ اَلْهَضْمِيُّ
-          <br>
-          <img src="adatealm/gastrointestinal-tract.png" alt="القلب والجهاز التنفسي" class="button-icon">
-          <br><br>
-          <span>🧪اَلْكِيمْيَاءِ اَلْحَيَوِيَّة🧪</span>
-      </span>
-      
-      <span class="side-text" style="transform: rotate(180deg);">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          B I O C H I M I E
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-  </div>
-</a>
-
-
-
-
-<a href="#histologie" class="action-button button-digestif">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span class="side-text">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          P H Y S I O L O G Y 
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-      
-      <span class="arabic-text">
-          <img src="adatealm/gastrointestinal-tract.png" alt="القلب والجهاز التنفسي" class="button-icon">
-          <br>
-          اَلْجِهَازُ اَلْهَضْمِيُّ
-          <br>
-          <img src="adatealm/gastrointestinal-tract.png" alt="القلب والجهاز التنفسي" class="button-icon">
-          <br><br>
-          <span>🌬️عِلْمُ الوَظَائِفِ🌬️</span>
-      </span>
-      
-      <span class="side-text" style="transform: rotate(180deg);">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          P H Y S I O L O G I E
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-  </div>
-</a>
-
-
-
-
-
-
-
-<!-- ازرار وحدة الجهاز البولي -->
-
-
-
-
-<a href="#histologie" class="action-button button-urinaire ">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span class="side-text">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          A N A T O M Y
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-      
-      <span class="arabic-text">
-        <img src="adatealm/urinary-tract-infection.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <br>
-        الجِهَازُ البَوْلِي
-        <br>
-        <img src="adatealm/urinary-tract-infection.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <br><br>
-          <span>🦴 اَلتَّشْرِيحُ 🦴</span>
-      </span>
-      
-      <span class="side-text" style="transform: rotate(180deg);">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          A N A T O M I E
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-  </div>
-</a>
-
-
-
-
-
-
-<a href="#histologie" class="action-button button-urinaire ">
-<div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G Y
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
     
-    <span class="arabic-text">
-      <img src="adatealm/urinary-tract-infection.png" alt="القلب والجهاز التنفسي" class="button-icon">
-      <br>
-      الجِهَازُ البَوْلِي
-      <br>
-      <img src="adatealm/urinary-tract-infection.png" alt="القلب والجهاز التنفسي" class="button-icon">
-      <br><br>
-        <span>🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-    </span>
-    
-    <span class="side-text" style="transform: rotate(180deg);">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G I E
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
+    <!-- زر مقياس عِلْمُ الوِرَاثَةِ -->
+    <div class="unit-button">
+        <a href="#GENETICS" class="main-button genetics" style="text-decoration: none; display: block;">
+            <div class="button-content">
+                <div>🦠 عِلْمُ الوِرَاثَةِ 🦠</div>
+                <div class="english">🧬 G E N E T I C S 🧬</div>
+            </div>
+        </a>
+    </div>
 </div>
-</a>
 
-
-
-
-
-<a href="#histologie" class="action-button button-urinaire ">
-<div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        B I O C H E M I S T R Y
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-    
-    <span class="arabic-text">
-      <img src="adatealm/urinary-tract-infection.png" alt="القلب والجهاز التنفسي" class="button-icon">
-      <br>
-      الجِهَازُ البَوْلِي
-      <br>
-      <img src="adatealm/urinary-tract-infection.png" alt="القلب والجهاز التنفسي" class="button-icon">
-      <br><br>
-        <span>🧪اَلْكِيمْيَاءِ اَلْحَيَوِيَّة🧪</span>
-    </span>
-    
-    <span class="side-text" style="transform: rotate(180deg);">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        B I O C H I M I E
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-</div>
-</a>
-
-
-
-
-<a href="#histologie" class="action-button button-urinaire ">
-<div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        P H Y S I O L O G Y 
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-    
-    <span class="arabic-text">
-        <img src="adatealm/urinary-tract-infection.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <br>
-        الجِهَازُ البَوْلِي
-        <br>
-        <img src="adatealm/urinary-tract-infection.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <br><br>
-        <span>🌬️عِلْمُ الوَظَائِفِ🌬️</span>
-    </span>
-    
-    <span class="side-text" style="transform: rotate(180deg);">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        P H Y S I O L O G I E
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-</div>
-</a>
-
-
-
-
-
-
-<!-- ازرار وحدة الجهاز الصماوي والتناسلي  -->
-
-
-
-
-<a href="#ENDOANATOMIE" class="action-button button-endocrine">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span class="side-text">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          A N A T O M Y
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-      
-      <span class="arabic-text">
-      
-        <img src="adatealm/endocrine-system.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/gender.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br>
-        <br>   الجِهَازُ الصُّمَّاوِيُّ 
-        <br>
-        وَالأَعْضَاءُ التَّنَاسُلِيَّةُ <br> 
-       
-        <br>
-       
-        <img src="adatealm/gender.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/endocrine-system.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br><br>
-          <span>🦴 اَلتَّشْرِيحُ 🦴</span>
-      </span>
-      
-      <span class="side-text" style="transform: rotate(180deg);">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          A N A T O M I E
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-  </div>
-</a>
-
-
-
-
-
-
-<a href="#ENDOHISTOLOGIE" class="action-button button-endocrine">
-<div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G Y
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-    
-    <span class="arabic-text">
-      <img src="adatealm/endocrine-system.png" alt="القلب والجهاز التنفسي" class="button-icon">
-      <img src="adatealm/gender.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-      <br>
-      <br>   الجِهَازُ الصُّمَّاوِيُّ 
-      <br>
-      وَالأَعْضَاءُ التَّنَاسُلِيَّةُ <br> 
-     
-      <br>
-     
-      <img src="adatealm/gender.png" alt="القلب والجهاز التنفسي" class="button-icon">
-      <img src="adatealm/endocrine-system.png" alt="القلب والجهاز التنفسي" class="button-icon">
-<br><br>
-        <span>🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-    </span>
-    
-    <span class="side-text" style="transform: rotate(180deg);">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G I E
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-</div>
-</a>
-
-
-
-
-
-<a href="#ENDOBIOCHIMIE" class="action-button button-endocrine">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        B I O C H E M I S T R Y
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-    
-    <span class="arabic-text">
-      <img src="adatealm/endocrine-system.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/gender.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br>
-        <br>   الجِهَازُ الصُّمَّاوِيُّ 
-        <br>
-        وَالأَعْضَاءُ التَّنَاسُلِيَّةُ <br> 
-       
-        <br>
-       
-        <img src="adatealm/gender.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/endocrine-system.png" alt="القلب والجهاز التنفسي" class="button-icon">
- <br><br>
-        <span>🧪اَلْكِيمْيَاءِ اَلْحَيَوِيَّة🧪</span>
-    </span>
-    
-    <span class="side-text" style="transform: rotate(180deg);">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        B I O C H I M I E
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-</div>
-</a>
-
-
-
-
-<a href="#ENDOPHYSIOLOGIE" class="action-button button-endocrine">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        P H Y S I O L O G Y 
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-    
-    <span class="arabic-text">
-      <img src="adatealm/endocrine-system.png" alt="القلب والجهاز التنفسي" class="button-icon">
-      <img src="adatealm/gender.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-      <br>
-      <br>   الجِهَازُ الصُّمَّاوِيُّ 
-      <br>
-      وَالأَعْضَاءُ التَّنَاسُلِيَّةُ <br> 
-     
-      <br>
-     
-      <img src="adatealm/gender.png" alt="القلب والجهاز التنفسي" class="button-icon">
-      <img src="adatealm/endocrine-system.png" alt="القلب والجهاز التنفسي" class="button-icon">
- <br><br>
-        <span>🌬️عِلْمُ الوَظَائِفِ🌬️</span>
-    </span>
-    
-    <span class="side-text" style="transform: rotate(180deg);">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        P H Y S I O L O G I E
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-</div>
-</a>
-
-
-
-
+<script>
+    // تحسين الأداء للهواتف
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.main-button');
+        
+        buttons.forEach(button => {
+            // تحسين الاستجابة لللمس
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+                this.style.opacity = '0.9';
+            }, {passive: true});
             
-
-
-
-
-
-
-
-
-
-<!-- ازرار وحدة الجهاز العصبي   -->
-
-
-
-<a href="#SYSTNERVOANATOMIE" class="action-button button-nervous">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-      <span class="side-text">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          A N A T O M Y
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-      
-      <span class="arabic-text">
-      
-        <img src="adatealm/five-senses.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/neurons.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br>
-        <br>  الجِهَازُ العَصَبِيُّ
-     
-        <br>
-        وَأَعْضَاءُ الحَوَاسِّ<br> 
-       
-        <br>
-   
-        <img src="adatealm/neurons.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/five-senses.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br><br>
-          <span>🦴 اَلتَّشْرِيحُ 🦴</span>
-      </span>
-      
-      <span class="side-text" style="transform: rotate(180deg);">
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-          A N A T O M I E
-          <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-      </span>
-  </div>
-</a>
-
-
-
-
-
-
-<a href="#ENDOSYSNERVO" class="action-button button-nervous">
-<div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G Y
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
+            button.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+                this.style.opacity = '1';
+            }, {passive: true});
+        });
+    });
     
-    <span class="arabic-text">
-    
-      <img src="adatealm/five-senses.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/neurons.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br>
-        <br>  الجِهَازُ العَصَبِيُّ
-     
-        <br>
-        وَأَعْضَاءُ الحَوَاسِّ<br> 
-       
-        <br>
-   
-        <img src="adatealm/neurons.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/five-senses.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br><br>
-        <span>🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-    </span>
-    
-    <span class="side-text" style="transform: rotate(180deg);">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G I E
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-</div>
-</a>
-
-    
-
-<a href="#ENDOSYSNERVO" class="action-button button-nervous">
-<div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G Y
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-    
-    <span class="arabic-text">
-    
-      <img src="adatealm/five-senses.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/neurons.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br>
-        <br>  الجِهَازُ العَصَبِيُّ
-     
-        <br>
-        وَأَعْضَاءُ الحَوَاسِّ<br> 
-       
-        <br>
-   
-        <img src="adatealm/neurons.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/five-senses.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br><br>
-        <span>🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-    </span>
-    
-    <span class="side-text" style="transform: rotate(180deg);">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G I E
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-</div>
-</a>
-
-
-<a href="#ENDOSYSNERVO" class="action-button button-nervous">
-<div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G Y
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-    
-    <span class="arabic-text">
-    
-      <img src="adatealm/five-senses.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/neurons.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br>
-        <br>  الجِهَازُ العَصَبِيُّ
-     
-        <br>
-        وَأَعْضَاءُ الحَوَاسِّ<br> 
-       
-        <br>
-   
-        <img src="adatealm/neurons.png" alt="القلب والجهاز التنفسي" class="button-icon">
-        <img src="adatealm/five-senses.png" alt="القلب والجهاز التنفسي" class="button-icon">
-
-        <br><br>
-        <span>🔬عِلْمُ اَلْأَنْسِجَةِ🔬</span>
-    </span>
-    
-    <span class="side-text" style="transform: rotate(180deg);">
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-        H I S T O L O G I E
-        <span style="transform: rotate(90deg); display: inline-block;">🔻</span>
-    </span>
-</div>
-</a>
-
-
-
-
-
-
-<!-- زر علم المناعة -->
-
-
-
-<a href="#IMMUNOLOGY" class="action-button button-immuno">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    
-    <span class="side-text">
-      <span style="transform: rotate(90deg); display: inline-block;">🧬</span>
-      I M M U N O L O G Y
-      <span style="transform: rotate(90deg); display: inline-block;">🧬</span>
-    </span>
-
-    <span class="arabic-text">
-      <img src="adatealm/shield.png" alt="المناعة" class="button-icon">
-      <img src="adatealm/antibodies.png" alt="المناعة" class="button-icon">
-      <br><br>الجِهَازُ المَنَاعِيُّ<br>  
-      وَعِلْمُ المَنَاعَةِ<br><br>
-
-      <img src="adatealm/antibodies.png" alt="المناعة" class="button-icon">
-      <img src="adatealm/shield.png" alt="المناعة" class="button-icon">
-
-      <br><br>
-      <span>🦠عِلْمُ اَلْمَنَاعَةِ🦠</span>
-    </span>
-
-    <span class="side-text" style="transform: rotate(180deg);">
-      <span style="transform: rotate(90deg); display: inline-block;">🧬</span>
-      I M M U N O L O G Y
-      <span style="transform: rotate(90deg); display: inline-block;">🧬</span>
-    </span>
-
-</div>
-</a>
-
-
-
-<!-- زر علم الوراثة -->
-<a href="#GENETIQUE" class="action-button button-genetics">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;">
-    <span class="side-text">
-      <span style="transform: rotate(90deg); display: inline-block;">🧬</span>
-      G E N E T I Q U E
-      <span style="transform: rotate(90deg); display: inline-block;">🧬</span>
-    </span>
-
-    <span class="arabic-text">
-      <img src="adatealm/dna.png" alt="الوراثة" class="button-icon">
-      <img src="adatealm/chromosome.png" alt="الوراثة" class="button-icon">
-
-      <br><br>عِلْمُ الوِرَاثَةِ<br>  
-      وَالجِينَاتُ<br><br>
-
-      <img src="adatealm/chromosome.png" alt="الوراثة" class="button-icon">
-      <img src="adatealm/dna.png" alt="الوراثة" class="button-icon">
-
-      <br><br>
-      <span>🧬الـوِرَاثَـة🧬</span>
-    </span>
-
-    <span class="side-text" style="transform: rotate(180deg);">
-      <span style="transform: rotate(90deg); display: inline-block;">🧬</span>
-      G E N E T I Q U E
-      <span style="transform: rotate(90deg); display: inline-block;">🧬</span>
-    </span>
-  </div>
-</a>
- </div> </div>
-    <script>
-    function scrollToSection(className) {
-        let element = document.querySelector('.' + className);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+    function toggleDropdown(button) {
+        // إغلاق جميع القوائم المنسدلة الأخرى أولاً
+        const allDropdowns = document.querySelectorAll('.dropdown-content');
+        allDropdowns.forEach(dropdown => {
+            if (dropdown !== button.nextElementSibling) {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+        // تبديل القائمة المنسدلة الحالية
+        const dropdown = button.nextElementSibling;
+        if (dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+        } else {
+            dropdown.style.display = 'block';
         }
+        
+        // منع إعادة التحميل غير الضرورية
+        event.preventDefault();
+        event.stopPropagation();
     }
-    </script>
+    
+    // إغلاق القوائم المنسدلة عند النقر خارجها
+    document.addEventListener('click', function(event) {
+        if (!event.target.matches('.main-button')) {
+            const dropdowns = document.querySelectorAll('.dropdown-content');
+            dropdowns.forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+        }
+    }, {passive: true});
+    
+    // تحسين الأداء للتمرير على الهواتف
+    document.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+    }, {passive: false});
+</script>
+
 </body>
 </html>
+
 
 
 
