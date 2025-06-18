@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق كم بَقي لي؟</title>
+    <link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+        /* --- متغيرات الألوان والستايل --- */
+        :root {
+            --light-bg: #f4f7f9;
+            --light-card-bg: rgba(255, 255, 255, 0.65);
+            --light-text: #333;
+            --light-heading: #1a253c;
+            --light-accent: #007bff;
+            --light-accent-danger: #dc3545;
+            --light-shadow: rgba(0, 0, 0, 0.1);
+            --light-border: rgba(255, 255, 255, 0.2);
+            
+            --dark-bg: #1a1a1a;
+            --dark-card-bg: rgba(40, 40, 40, 0.65);
+            --dark-text: #e0e0e0;
+            --dark-heading: #ffffff;
+            --dark-accent: #00aaff;
+            --dark-accent-danger: #ff4757;
+            --dark-shadow: rgba(0, 0, 0, 0.5);
+            --dark-border: rgba(255, 255, 255, 0.15);
+
+            --bg-color: var(--light-bg);
+            --card-bg-color: var(--light-card-bg);
+            --text-color: var(--light-text);
+            --heading-color: var(--light-heading);
+            --accent-color: var(--light-accent);
+            --accent-danger: var(--light-accent-danger);
+            --shadow-color: var(--light-shadow);
+            --border-color: var(--light-border);
+            
+            --border-radius: 18px;
+            --transition-speed: 0.4s;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-danger) 100%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* --- الوضع الداكن --- */
+        body.dark-mode {
+            --bg-color: var(--dark-bg);
+            --card-bg-color: var(--dark-card-bg);
+            --text-color: var(--dark-text);
+            --heading-color: var(--dark-heading);
+            --accent-color: var(--dark-accent);
+            --accent-danger: var(--dark-accent-danger);
+            --shadow-color: var(--dark-shadow);
+            --border-color: var(--dark-border);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--card-bg-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 15px 40px var(--shadow-color);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-speed);
+        }
+
+        /* --- الهيدر والتواريخ --- */
+        header { text-align: center; margin-bottom: 30px; }
+        header h1 {
+            color: var(--heading-color);
+            margin: 0 0 15px 0;
+            font-size: 2.2rem;
+        }
+        .date-group { margin-bottom: 10px; }
+        .date-display { font-size: 1.1em; color: var(--accent-color); transition: color var(--transition-speed); margin: 0; font-weight: 700; }
+        .date-display-en { font-size: 0.9em; opacity: 0.8; margin-top: 4px; font-family: 'Segoe UI', sans-serif; }
+        .hijri-date { font-size: 0.9em; color: var(--text-color); opacity: 0.7; margin-top: 8px; }
+
+        /* --- تصميم الكروت الداخلية --- */
+        .card {
+            background-color: rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-speed);
+        }
+        
+        body.dark-mode .card {
+             background-color: rgba(255,255,255,0.05);
+        }
+
+        .card h3 { margin-top: 0; margin-bottom: 15px; color: var(--heading-color); font-size: 1.3rem;}
+        .timer {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            transition: color var(--transition-speed);
+        }
+        
+        /* --- عداد الاختبار --- */
+        #exam-countdown .timer { color: var(--accent-danger); }
+        .timer-units {
+            font-size: 0.4em;
+            font-weight: normal;
+            display: flex;
+            justify-content: space-around;
+            gap: 5px;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+        
+        .input-group {
+            position: relative; /* مهم لتحديد موضع زر المسح */
+        }
+
+        #exam-date-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1em;
+            background-color: transparent;
+            color: var(--text-color);
+            box-sizing: border-box;
+            transition: all var(--transition-speed);
+            text-align: right;
+            cursor: pointer;
+        }
+        #exam-date-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); }
+        
+        .clear-btn {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; font-size: 1.6em;
+            color: var(--text-color); cursor: pointer; opacity: 0.5;
+            transition: opacity var(--transition-speed); padding: 0 5px;
+        }
+        .clear-btn:hover { opacity: 1; }
+        
+        /* --- نصيحة هامة --- */
+        .reminder {
+            background-color: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            color: #ac6100;
+            padding: 15px; border-radius: 10px;
+            text-align: center; margin-top: 25px;
+            font-size: 0.95em; line-height: 1.6;
+        }
+        footer { text-align: center; margin-top: 30px; font-size: 0.9em; opacity: 0.7; }
+
+        /* --- زر تبديل الوضع --- */
+        .theme-switch-wrapper { display: flex; align-items: center; justify-content: center; margin-bottom: 25px; }
+        .theme-switch { display: inline-block; height: 34px; position: relative; width: 60px; }
+        .theme-switch input { display:none; }
+        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 26px; left: 4px; position: absolute; transition: .4s; width: 26px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: var(--accent-color); }
+        input:checked + .slider:before { transform: translateX(26px); }
+
+        /* --- تصميم متجاوب لشاشات الهواتف --- */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px 10px;
+            }
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .card h3 {
+                font-size: 1.1rem;
+            }
+            .timer {
+                font-size: 2.2em;
+                letter-spacing: 1px;
+            }
+            .timer-units {
+                font-size: 0.35em;
+            }
+            #exam-date-input {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+            .reminder {
+                padding: 12px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox" title="تبديل الوضع">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider"></div>
+            </label>
+        </div>
+
+        <header>
+            <h1>كم بَقي لي؟</h1>
+            <div class="date-group">
+                <p id="gregorian-date" class="date-display"></p>
+                <p id="gregorian-date-en" class="date-display-en"></p>
+            </div>
+            <p id="hijri-date" class="hijri-date"></p>
+        </header>
+
+        <section class="card">
+            <h3>باقي على انتهاء اليوم</h3>
+            <div id="day-countdown" class="timer">00:00:00</div>
+        </section>
+
+        <main class="card">
+            <h3>العد التنازلي لاختبارك</h3>
+            <div class="input-group">
+                <input type="datetime-local" id="exam-date-input" title="حدد تاريخ ووقت اختبارك">
+                <button id="clear-exam-date" class="clear-btn" title="مسح التاريخ">×</button>
+            </div>
+            
+            <div id="exam-countdown" style="display: none; margin-top: 20px;">
+                <h4>الوقت المتبقي:</h4>
+                <div id="exam-timer" class="timer">...</div>
+                <div id="exam-timer-units" class="timer-units">
+                    <span>يوم</span>
+                    <span>ساعة</span>
+                    <span>دقيقة</span>
+                    <span>ثانية</span>
+                </div>
+            </div>
+        </main>
+        
+        <div class="reminder">
+            <p>💡 <strong>نصيحة هامة:</strong>   
+    استعد جيدًا! خطط للوصول إلى مكان الاختبار قبل ساعة على الأقل. لا تنسَ حساب وقت المواصلات والزحام لتجنب أي توتر أو تأخير.</p>
+        </div>
+        
+
+<br>
+ <div class="reminder">
+            <p>💡 <strong>نصيحة هامة:</strong>   
+ 
+ لا تنسى ان تنقص من موقعد اختبارك الذي تدخله ساعساتين   او اكثر كي تصل الة مقر اجتباز اختبارك 
+            </div>    
+        
+
+<br>
+
+<!-- زر مركزي تمامًا على جميع الشاشات -->
+<div style="display: flex; justify-content: center; align-items: center; padding: 20px;">
+  <button class="danger-btn" onclick="togglePopup()" 
+          style="font-size: 1.5rem; padding: 10px 20px; border: none; border-radius: 8px; background-color: #f44336; color: white; cursor: pointer;">
+    ⚠️
+  </button>
+</div>
+
+        <footer>
+            <p>أتمنى لك كل التوفيق في اختباراتك!  تم بواسطة  أداة علم </p>
+        </footer>
+
+
+
+
+        
+
+    <footer class="bg-dark text-light pt-5 pb-4">
+        <div class="container text-center text-md-end">
+            <div class="row gy-4">
+                <div class="col-md-6 col-lg-4">
+                    <h4 class="text-white mb-3">روابط سريعة</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a class="text-light text-decoration-none" href="about.html">من نحن</a></li>
+                        <li class="mb-2"><a class="text-light text-decoration-none" href="contact.html">تواصل معنا</a></li>
+                        <li class="mb-2"><a class="text-light text-decoration-none" href="#">سياسة الخصوصية</a></li>
+                        <li class="mb-2"><a class="text-light text-decoration-none" href="#">الشروط والأحكام</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <h4 class="text-white mb-3">تواصل معنا</h4>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>adatealm@gmail.com</p>
+                    <p class="mb-3"><i class="fab fa-telegram me-3"></i>@ADATEALM_bot</p>
+                    <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
+                         <a class="btn btn-outline-light btn-social rounded-circle" href="https://t.me/adatealm" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                         <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.facebook.com/profile.php?id=61560859966476" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                         <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.instagram.com/adat_ealm" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                         <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.tiktok.com/@adat_ealm" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- الوصول لعناصر الصفحة ---
+        const gregorianDateEl = document.getElementById('gregorian-date');
+        const gregorianDateEnEl = document.getElementById('gregorian-date-en');
+        const hijriDateEl = document.getElementById('hijri-date');
+        const dayCountdownEl = document.getElementById('day-countdown');
+        const examDateInput = document.getElementById('exam-date-input');
+        const clearExamBtn = document.getElementById('clear-exam-date');
+        const examCountdownSection = document.getElementById('exam-countdown');
+        const examTimerEl = document.getElementById('exam-timer');
+        const examTimerUnitsEl = document.getElementById('exam-timer-units');
+        const themeToggle = document.getElementById('checkbox');
+        const faviconEl = document.getElementById('favicon');
+
+        let examInterval; // متغير لتخزين مؤقت عداد الاختبار
+
+        // --- دالة تحديث التواريخ (الميلادي والهجري) ---
+        function updateDates() {
+            const now = new Date();
+            // التاريخ الميلادي بالعربية
+            gregorianDateEl.textContent = now.toLocaleDateString('ar-EG-u-nu-latn', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            // التاريخ الميلادي بالإنجليزية
+            gregorianDateEnEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            // التاريخ الهجري
+            hijriDateEl.textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', { calendar: 'islamic-umalqura', year: 'numeric', month: 'long', day: 'numeric' }).format(now);
+        }
+
+        // --- دالة تحديث عداد نهاية اليوم ---
+        function updateDayCountdown() {
+            const now = new Date();
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const diff = endOfDay - now;
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            dayCountdownEl.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        // --- دالة تحديث عداد الاختبار ---
+        function updateExamCountdown() {
+            // جلب التاريخ المحفوظ من الـ localStorage
+            const examDateString = localStorage.getItem('savedExamDate');
+            if (!examDateString) {
+                examCountdownSection.style.display = 'none';
+                updateFavicon('📅');
+                return;
+            }
+            
+            const examDate = new Date(examDateString);
+            const now = new Date();
+            const diff = examDate - now;
+
+            if (diff <= 0) {
+                examTimerEl.textContent = "حان وقت الاختبار!";
+                examTimerUnitsEl.style.display = 'none';
+                updateFavicon('✔');
+                clearInterval(examInterval);
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+
+            examTimerEl.innerHTML = `<span>${d}</span>:<span>${String(h).padStart(2, '0')}</span>:<span>${String(m).padStart(2, '0')}</span>:<span>${String(s).padStart(2, '0')}</span>`;
+            examCountdownSection.style.display = 'block';
+            examTimerUnitsEl.style.display = 'flex';
+            updateFavicon(d > 0 ? d : '!');
+        }
+
+        // --- دالة تحديث أيقونة الموقع (Favicon) ---
+        function updateFavicon(text = '📅') {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+            ctx.fillRect(0, 0, 64, 64);
+            ctx.font = 'bold 40px sans-serif';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(String(text), 32, 34);
+            faviconEl.href = canvas.toDataURL('image/png');
+        }
+
+        // --- التعامل مع تغيير تاريخ الاختبار ---
+        function handleDateChange() {
+            const selectedDateValue = examDateInput.value;
+            if (!selectedDateValue) return;
+
+            const selectedDate = new Date(selectedDateValue);
+            if (selectedDate < new Date()) {
+                alert('لا يمكن اختيار تاريخ في الماضي!');
+                examDateInput.value = '';
+                localStorage.removeItem('savedExamDate');
+                return;
+            }
+            
+            // حفظ التاريخ في الـ localStorage
+            localStorage.setItem('savedExamDate', selectedDateValue);
+            if (examInterval) clearInterval(examInterval);
+            
+            updateExamCountdown();
+            examInterval = setInterval(updateExamCountdown, 1000);
+        }
+
+        examDateInput.addEventListener('change', handleDateChange);
+
+        // --- التعامل مع زر مسح التاريخ ---
+        clearExamBtn.addEventListener('click', () => {
+            examDateInput.value = '';
+            localStorage.removeItem('savedExamDate');
+            examCountdownSection.style.display = 'none';
+            if (examInterval) clearInterval(examInterval);
+            updateFavicon('📅');
+        });
+
+        // --- التعامل مع تبديل الوضع ---
+        themeToggle.addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode', this.checked);
+            localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+            // إعادة تحديث العداد والأيقونة لتطبيق الألوان الجديدة
+            updateExamCountdown();
+        });
+
+        // --- دالة التشغيل عند تحميل الصفحة ---
+        function initialize() {
+            // تحميل الوضع المحفوظ (فاتح/داكن)
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                themeToggle.checked = true;
+                document.body.classList.add('dark-mode');
+            }
+            
+            // تحميل تاريخ الاختبار المحفوظ إن وجد
+            const savedDate = localStorage.getItem('savedExamDate');
+            if (savedDate) {
+                examDateInput.value = savedDate;
+                updateExamCountdown();
+                examInterval = setInterval(updateExamCountdown, 1000);
+            } else {
+                 updateFavicon('📅');
+            }
+
+            updateDates();
+            updateDayCountdown();
+            setInterval(updateDayCountdown, 1000);
+            // التأكد من تحديث الأيقونة عند أول تحميل
+            setTimeout(() => updateExamCountdown(), 50);
+        }
+
+        initialize();
+    });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تنبيه طبي - INFATM</title>
+    <style>
+        /* تهيئة عامة */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+        }
+
+        /* زر الخطر الثابت - تصميم جديد */
+        .danger-btn {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #ff0000, #c00000);
+            color: white;
+            font-size: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
+                        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+            z-index: 100;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            animation: pulse 2s infinite;
+            margin: 10px; /* يمكن تعديلها حسب الحاجة */
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        .danger-btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff3333, #d10000);
+        }
+
+        .danger-btn:active {
+            transform: scale(0.95);
+            animation: none;
+        }
+
+        /* طبقة التعتيم */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            display: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* نافذة المحتوى */
+        .popup-container {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1002;
+            display: none;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+
+        .popup-header {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            padding: 18px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: #f5f5f5;
+        }
+
+        /* زر الإغلاق الجديد */
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: white;
+            color: #e74c3c;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+            background: #ffebee;
+        }
+
+        /* مؤشر التحميل */
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 5px solid rgba(231, 76, 60, 0.2);
+            border-top: 5px solid #e74c3c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* المحتوى المعروض */
+        .content-wrapper {
+            padding: 18px;
+            line-height: 1.7;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .danger-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
+            }
+            
+            .popup-header {
+                padding: 15px;
+            }
+            
+            .popup-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .close-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 1rem;
+            }
+        }
+
+        /* تحسينات لللمس على الهواتف */
+        @media (hover: none) {
+            .danger-btn:hover {
+                transform: scale(1);
+                background: linear-gradient(135deg, #ff0000, #c00000);
+            }
+            
+            .close-btn:hover {
+                transform: rotate(0deg);
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- طبقة التعتيم -->
+<div class="overlay" id="overlay"></div>
+
+<!-- نافذة المحتوى -->
+<div class="popup-container" id="popupContainer">
+    <div class="popup-header">
+        <button class="close-btn" onclick="togglePopup()">×</button>
+        <h2>تنبيه  - محتوى </h2>
+    </div>
+    <div class="popup-content" id="contentContainer">
+        <div class="loader">
+            <div class="spinner"></div>
+            <p>جاري تحميل المحتوى ...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // متغيرات التطبيق
+    let contentLoaded = false;
+    const TARGET_URL = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    
+    // عناصر DOM
+    const popupContainer = document.getElementById('popupContainer');
+    const overlay = document.getElementById('overlay');
+    const contentContainer = document.getElementById('contentContainer');
+    const dangerBtn = document.querySelector('.danger-btn');
+    
+    // تبديل عرض/إخفاء النافذة
+    function togglePopup() {
+        if (popupContainer.style.display === 'flex') {
+            closePopup();
+        } else {
+            openPopup();
+        }
+    }
+    
+    function openPopup() {
+        // إيقاف تأثير النبض عند الفتح
+        dangerBtn.style.animation = 'none';
+        
+        overlay.style.display = 'block';
+        popupContainer.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        if (!contentLoaded) {
+            loadContent();
+        }
+    }
+    
+    function closePopup() {
+        // إعادة تشغيل تأثير النبض عند الإغلاق
+        dangerBtn.style.animation = 'pulse 2s infinite';
+        
+        overlay.style.display = 'none';
+        popupContainer.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // تحميل المحتوى
+    async function loadContent() {
+        try {
+            // استخدام iframe كحل أساسي
+            showIframeContent();
+            contentLoaded = true;
+        } catch (error) {
+            showError(error);
+        }
+    }
+    
+    // عرض المحتوى باستخدام iframe
+    function showIframeContent() {
+        contentContainer.innerHTML = `
+            <iframe src="${TARGET_URL}" 
+                    style="width:100%; height:100%; border:none;"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    loading="lazy">
+            </iframe>
+        `;
+    }
+    
+    // عرض رسالة الخطأ
+    function showError(error) {
+        contentContainer.innerHTML = `
+            <div class="loader">
+                <div style="color: #e74c3c; margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 20px; color: #555;">${error.message}</p>
+                <button onclick="retryLoading()" 
+                        style="padding: 10px 20px; 
+                               background: linear-gradient(to right, #e74c3c, #c0392b); 
+                               color: white; 
+                               border: none; 
+                               border-radius: 30px;
+                               font-size: 1rem;
+                               box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+                               transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // إعادة تحميل المحتوى
+    function retryLoading() {
+        contentContainer.innerHTML = `
+            <div class="loader">
+                <div class="spinner"></div>
+                <p>جاري تحميل المحتوى الطبي...</p>
+            </div>
+        `;
+        loadContent();
+    }
+    
+    // إغلاق النافذة عند النقر خارجها
+    overlay.addEventListener('click', closePopup);
+    
+    // منع إغلاق النافذة عند النقر داخلها
+    popupContainer.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
+    // تحسين الأداء للهواتف
+    if ('connection' in navigator) {
+        if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
+            // تحسينات لشبكات الجيل الثاني
+            dangerBtn.style.animation = 'none';
+        }
+    }
+    
+    // إضافة اهتزاز عند النقر (للهواتف)
+    function vibrate() {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(10);
+        }
+    }
+    
+    // إضافة الاهتزاز للأزرار
+    document.querySelector('.danger-btn').addEventListener('click', vibrate);
+    document.querySelector('.close-btn')?.addEventListener('click', vibrate);
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
