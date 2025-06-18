@@ -1,123 +1,398 @@
 <!DOCTYPE html>
-<html lang="ar">
-
-
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="utf-8">
-    <title>أداة  علم  اقسام </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق كم بَقي لي؟</title>
+    <link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
 
-    <title>اداة  علم  اقسام </title>
+        /* --- متغيرات الألوان والستايل --- */
+        :root {
+            --light-bg: #f4f7f9;
+            --light-card-bg: rgba(255, 255, 255, 0.7);
+            --light-text: #333;
+            --light-heading: #1a253c;
+            --light-accent: #007bff;
+            --light-accent-danger: #dc3545;
+            --light-shadow: rgba(0, 0, 0, 0.1);
+            --light-border: rgba(0, 0, 0, 0.1);
+            --light-footer-bg: #e9ecef;
+            --light-footer-text: #454545;
+            --light-link-bg: rgba(0, 0, 0, 0.05);
 
-    <title>اداة  علم   </title>
+            --dark-bg: #1a1a1a;
+            --dark-card-bg: rgba(40, 40, 40, 0.7);
+            --dark-text: #e0e0e0;
+            --dark-heading: #ffffff;
+            --dark-accent: #00aaff;
+            --dark-accent-danger: #ff4757;
+            --dark-shadow: rgba(0, 0, 0, 0.5);
+            --dark-border: rgba(255, 255, 255, 0.15);
+            --dark-footer-bg: #232323;
+            --dark-footer-text: #bbbbbb;
+            --dark-link-bg: rgba(255, 255, 255, 0.1);
 
-    <title>ADAT EALM      </title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+            --bg-color: var(--light-bg);
+            --card-bg-color: var(--light-card-bg);
+            --text-color: var(--light-text);
+            --heading-color: var(--light-heading);
+            --accent-color: var(--light-accent);
+            --accent-danger: var(--light-accent-danger);
+            --shadow-color: var(--light-shadow);
+            --border-color: var(--light-border);
+            --footer-bg-color: var(--light-footer-bg);
+            --footer-text-color: var(--light-footer-text);
+            --link-bg-color: var(--light-link-bg);
 
-    <meta name="keywords" content="موقعي, موقع طبي, تعليم, médecine, site web, cours, anatomie, ADAT EALM, أداة علم, اداة علم,  جامعة, طب, صيدلة, طب أسنان, médecine dentaire, pharmacie, université">
-<meta name="description" content="هذا الموقع يقدم محتوى تعليمي طبي باللغة العربية والفرنسية، يشمل دروسًا في الطب، الصيدلة، وطب الأسنان باستخدام أداة علم ADAT EALM.">
-<meta name="language" content="ar, fr">
+            --border-radius: 18px;
+            --transition-speed: 0.4s;
+        }
 
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-danger) 100%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
 
-    <!-- Favicon -->
-    <link href="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" rel="icon">
+        /* --- الوضع الداكن --- */
+        body.dark-mode {
+            --bg-color: var(--dark-bg);
+            --card-bg-color: var(--dark-card-bg);
+            --text-color: var(--dark-text);
+            --heading-color: var(--dark-heading);
+            --accent-color: var(--dark-accent);
+            --accent-danger: var(--dark-accent-danger);
+            --shadow-color: var(--dark-shadow);
+            --border-color: var(--dark-border);
+            --footer-bg-color: var(--dark-footer-bg);
+            --footer-text-color: var(--dark-footer-text);
+            --link-bg-color: var(--dark-link-bg);
+        }
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
-        rel="stylesheet">
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        .main-content {
+            background-color: var(--card-bg-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 15px 40px var(--shadow-color);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-speed);
+            margin-bottom: 30px;
+        }
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+        header { text-align: center; margin-bottom: 30px; }
+        header h1 {
+            color: var(--heading-color);
+            margin: 0 0 15px 0;
+            font-size: 2.2rem;
+        }
+        .date-group { margin-bottom: 10px; }
+        .date-display { font-size: 1.1em; color: var(--accent-color); transition: color var(--transition-speed); margin: 0; font-weight: 700; }
+        .date-display-en { font-size: 0.9em; opacity: 0.8; margin-top: 4px; font-family: 'Segoe UI', sans-serif; }
+        .hijri-date { font-size: 0.9em; color: var(--text-color); opacity: 0.7; margin-top: 8px; }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-
-</head>
-
-<body>
-    <!-- Spinner Start -->
-    <div id="spinner"
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only"> .....جاري تحميل </span>
-        </div>
-    </div>
-    <!-- Spinner End -->
-
-
-   
-    
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="#" onclick="window.location.href=window.location.href;" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <p class="m-0 fw-bold" style="font-size: 25px;">
-                <img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" alt="" height="50px"> أداة علم  
-                <span style="color: #fb873f;"></span>
-            </p>
-        </a>
+        .card {
+            background-color: rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 14px;
+            border: 1px solid transparent;
+            transition: all var(--transition-speed);
+        }
         
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                 <a href="index.html" class="nav-item nav-link">الرئيسية</a>
-                <a href="about.html" class="nav-item nav-link">من نحن</a>
-                <a href="index.html" class="nav-item nav-link">أقسامنا</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">الصفحات</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="team.html" class="dropdown-item">فريقنا</a>
-                        <a href="testimonial.html" class="dropdown-item">آراء أعضائنا</a>
+        body.dark-mode .card {
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .card h3 { margin-top: 0; margin-bottom: 15px; color: var(--heading-color); font-size: 1.3rem;}
+        .timer {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            transition: color var(--transition-speed);
+        }
+        
+        #exam-countdown .timer { color: var(--accent-danger); }
+        .timer-units {
+            font-size: 0.4em;
+            font-weight: normal;
+            display: flex;
+            justify-content: space-around;
+            gap: 5px;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+        
+        .input-group { position: relative; }
+
+        #exam-date-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1em;
+            background-color: transparent;
+            color: var(--text-color);
+            box-sizing: border-box;
+            transition: all var(--transition-speed);
+            text-align: right;
+            cursor: pointer;
+        }
+        #exam-date-input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); }
+        
+        .clear-btn {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; font-size: 1.6em;
+            color: var(--text-color); cursor: pointer; opacity: 0.5;
+            transition: opacity var(--transition-speed); padding: 0 5px;
+        }
+        .clear-btn:hover { opacity: 1; }
+        .hidden { display: none !important; }
+        #exam-countdown { margin-top: 20px; }
+        
+        .reminder {
+            background-color: rgba(163, 163, 163, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            color: #170d00;
+            padding: 20px; border-radius: 14px;
+            margin-top: 25px;
+            font-size: 0.95em; line-height: 1.7;
+        }
+        .reminder p { margin: 0 0 10px 0; }
+        .reminder ul { padding-right: 20px; margin: 0; text-align: right; }
+        .reminder li { margin-bottom: 8px; }
+        .reminder strong { font-weight: 700; }
+
+        .theme-switch-wrapper { display: flex; align-items: center; justify-content: center; margin-bottom: 25px; }
+        .theme-switch { display: inline-block; height: 34px; position: relative; width: 60px; }
+        .theme-switch input { display:none; }
+        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 26px; left: 4px; position: absolute; transition: .4s; width: 26px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: var(--accent-color); }
+        input:checked + .slider:before { transform: translateX(26px); }
+
+        /* --- التذييل Footer --- */
+        footer {
+            text-align: center;
+            background-color: var(--footer-bg-color);
+            color: var(--footer-text-color);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            transition: all var(--transition-speed);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: right;
+            margin-bottom: 25px;
+        }
+        footer h4 {
+            color: var(--heading-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .social-group .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .social-group a {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background-color: var(--link-bg-color);
+            color: var(--footer-text-color);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .social-group a:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .social-group a:hover svg {
+            fill: white;
+        }
+        .social-group a svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--footer-text-color);
+            transition: fill 0.3s ease;
+        }
+        .social-group a span { font-size: 0.9em; }
+        .footer-credit {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            opacity: 0.8;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .footer-credit span {
+            color: var(--accent-danger);
+            font-weight: bold;
+        }
+
+        @media (max-width: 580px) {
+             .footer-grid { text-align: center; }
+             .social-group .social-links { justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 15px 10px; }
+            .main-content { padding: 20px; }
+            header h1 { font-size: 1.8rem; }
+            .card h3 { font-size: 1.1rem; }
+            .timer { font-size: 2.2em; letter-spacing: 1px; }
+            .timer-units { font-size: 0.35em; }
+            #exam-date-input { padding: 12px; font-size: 0.95rem; }
+            .reminder { padding: 15px; font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox" title="تبديل الوضع">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider"></div>
+                </label>
+            </div>
+
+            <header>
+                <h1>كَمْ بَقِيَ لِي؟</h1>
+                <div class="date-group">
+                    <p id="gregorian-date" class="date-display"></p>
+                    <p id="gregorian-date-en" class="date-display-en"></p>
+                </div>
+                <p id="hijri-date" class="hijri-date"></p>
+            </header>
+
+            <section class="card">
+                <h3>باقي على انتهاء اليوم</h3>
+                <time id="day-countdown" class="timer">00:00:00</time>
+            </section>
+
+            <main class="card">
+                <h3>العد التنازلي لاختبارك</h3>
+                <div class="input-group">
+                    <input type="datetime-local" id="exam-date-input" title="حدد تاريخ ووقت اختبارك">
+                    <button id="clear-exam-date" class="clear-btn" title="مسح التاريخ" aria-label="مسح التاريخ">×</button>
+                </div>
+                
+                <div id="exam-countdown" class="hidden">
+                    <h4>الوقت المتبقي:</h4>
+                    <time id="exam-timer" class="timer">...</time>
+                    <div id="exam-timer-units" class="timer-units">
+                      
+ <span>ثانية</span>
+  <span>دقيقة</span>
+  <span>ساعة</span>
+   <span>يوم</span>
                     </div>
                 </div>
-                <a href="contact.html" class="nav-item nav-link active">تواصل معنا</a>
-                <a href="https://adatealm.github.io/ADATEALM/" class="nav-item nav-link">تحميل تطبيقنا</a>
-                    <a href="MACHRI3NA.html" class="nav-item nav-link">مشاريعنا </a>
-                <a href="login.html" class="nav-item nav-link"><i class="fa fa-user"></i></a>
-                <a href="#" class="nav-item nav-link">
+            </main>
+            
+            <div class="reminder">
+                <p>💡 <strong>نصائح هامة:</strong></p>
+                <ul>
+                    <li>استعد جيدًا! خطط للوصول إلى مكان الاختبار قبل ساعة على الأقل.</li>
+                    <li>لا تنسَ أن تحسب وقت المواصلات والزحام لتجنب أي توتر أو تأخير.</li>
+                    <li>عند تحديد وقت الاختبار، يُنصح بإنقاص ساعتين من الموعد الفعلي ليكون لديك متسع من الوقت للوصول والاستعداد.</li>
+                </ul>
+            </div>
+        </div>
 
-                <div id="google_translate_element">
+        <footer>
+            <div class="footer-grid">
+                <div class="social-group s22mcs-group">
+                    <h4> 
+                        ط.22.ح.ط.ع
+
+                        (S22MCS)
+                        
+                        </h4>
+                    <div class="social-links">
+                        <a href="https://instagram.com/s22mcs?igshid=NzZlODBkYWE4Ng" target="_blank" title="Instagram">
+                             <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            <span>انستقرام </span>
+                        </a>
+                        <a href="https://t.me/S22MCS" target="_blank" title="Telegram">
+                            <svg viewBox="0 0 24 24"><path d="M22 2L11 13L2 9L22 2ZM22 2L18 22L11 13L22 2Z"/></svg>
+                            <span>تيليغرام</span>
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61552919247921&mibextid=ZbWKwL" target="_blank" title="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                            <span>فيسبوك</span>
+                        </a>
+                        <a href="https://www.tiktok.com/@s22mcs?_t=8kfut6Df4lC&_r=1" target="_blank" title="TikTok">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a4 4 0 0 0-4-4h-1a4 4 0 0 0-4 4v10a4 4 0 1 0 4-4Z"/></svg>
+                            <span>تيك توك</span>
+                        </a>
+                        <a href="https://x.com/S22MCS?t=a7d9JIT0p_r-26CRAkYo0A&s=09" target="_blank" title="X (Twitter)">
+                             <svg viewBox="0 0 24 24"><path d="M18 6l-5.32 7.6L6 6h2.5l4.16 5.92L16.5 6H18zm-1.5 12h-2.5L7.84 18H6l6.88-9.84L18 18h-1.5z"/></svg>
+                            <span> اكس  تويتر </span>
+                        </a>
+                        <a href="https://youtube.com/@S22MCS?si=Rejig-EPpBcuvEgD" target="_blank" title="YouTube">
+                            <svg viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.9-1.52-1.76-1.75C18.26 5 12 5 12 5s-6.26 0-7.82.44c-.86.23-1.52.89-1.75 1.75C2 8.74 2 12 2 12s0 3.26.43 4.81c.23.86.89 1.52 1.75 1.75C5.74 19 12 19 12 19s6.26 0 7.82-.44c.86-.23 1.52-.89 1.75-1.75C22 15.26 22 12 22 12s0-3.26-.42-4.81zM9.75 15V9l5.25 3-5.25 3z"/></svg>
+                            <span>يوتيوب</span>
+                        </a>
+                    </div>
                 </div>
 
-
-                </a>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar End -->
-
-
-
-
-
-    <!-- Header Start -->
-    <div class="container-fluid bg-primary py-5 mb-5 page-header">
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown"> اقسامنا </h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item"><a class="text-white" href="index.html">الصفحة الرئيسية<a></li>
-                            <li class="breadcrumb-item text-white active" aria-current="page"> اقسامنا </li>
-                        </ol>
-                    </nav>
+                <div class="social-group alat-alm-group">
+                    <h4>مجموعة أداة علم</h4>
+                    <div class="social-links">
+                       <a href="https://www.instagram.com/adat_ealm/profilecard/?igsh=bGNlZHBxenEzM2Uw" target="_blank" title="Instagram">
+                             <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            <span>انستقرام </span>
+                        </a>
+                        <a href="https://t.me/adatealm" target="_blank" title="Telegram">
+                             <svg viewBox="0 0 24 24"><path d="M22 2L11 13L2 9L22 2ZM22 2L18 22L11 13L22 2Z"/></svg>
+                            <span>تيليغرام</span>
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61560859966476" target="_blank" title="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                            <span>فيسبوك</span>
+                        </a>
+                        <a href="https://www.tiktok.com/@adat_ealm" target="_blank" title="TikTok">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a4 4 0 0 0-4-4h-1a4 4 0 0 0-4 4v10a4 4 0 1 0 4-4Z"/></svg>
+                            <span> اكس  تويتر </span>
+                        </a>
+                        <a href="https://www.youtube.com/@adatealm" target="_blank" title="YouTube">
+                           <svg viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.9-1.52-1.76-1.75C18.26 5 12 5 12 5s-6.26 0-7.82.44c-.86.23-1.52.89-1.75 1.75C2 8.74 2 12 2 12s0 3.26.43 4.81c.23.86.89 1.52 1.75 1.75C5.74 19 12 19 12 19s6.26 0 7.82-.44c.86-.23 1.52-.89 1.75-1.75C22 15.26 22 12 22 12s0-3.26-.42-4.81zM9.75 15V9l5.25 3-5.25 3z"/></svg>
+                            <span>يوتيوب</span>
+                        </a>
+                    </div>
                 </div>
+
             </div>
-        </div>
-    </div>
-    <!-- Header End -->
 
 
 
@@ -129,2111 +404,224 @@
 
 
 
+    <footer>
+  <div class="footer-grid">
+
+                                <div class="social-group alat-alm-group">
+
+
+
+<!-- زر مركزي تمامًا على جميع الشاشات -->
+<div style="display: flex; justify-content: center; align-items: center; height: 4vh; padding: 20px;">
+  <button class="danger-btn" onclick="togglePopup()" 
+          style="font-size: 1.5rem; padding: 10px 20px; border: none; border-radius: 8px; background-color: #f44336; color: white; cursor: pointer;">
+    ⚠️
+  </button>
+</div>
+</div>
+
+</div>
+
+</footer>
+
+
+            <div class="footer-credit">
+                <p>تم  بواسطة <span>  أداة علم</span> - جميع الحقوق محفوظة © 2025</p>
+            </div>
+        </footer>
+
+    </div>
 
 
 
 
-    <div class="container-fluid py-5 bg-light position-relative overflow-hidden">
-        <div class="text-center">
-            <h6 class="section-title bg-white text-center px-3">التخصصات</h6>
-            <h1 class="mb-5" style="color: #fb873f;">التخصصات التي نقوم بتغطيتها</h1>
-        </div>
-    
-        <div class="swiper-container specialties-swiper">
-            <div class="swiper-wrapper">
-                <!-- العناصر هنا كما هي -->
-    
-    
-    
-                <div class="swiper-slide">
-                    <a href="#med" class="specialty-link">
-                        <div class="content shadow-sm">
-                            <img src="S22MCS PARTS/doctor.png" class="img-fluid" alt="الطب">
-                            <h5>الطب</h5>
-                        </div>
-                    </a>
-                </div>
-                
-                <!-- باقي العناصر كما هي -->
-                
 
-    
-    
-    
-    
-    <div class="swiper-slide">
-        <a href="#pharma" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/pharmacist.png" class="img-fluid" alt="الصيدلة">
-                <h5>الصيدلة</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#dent" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/dentist.png" class="img-fluid" alt="طب أسنان">
-                <h5>طب أسنان</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#paramediacal" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/nurse (1).png" class="img-fluid" alt="الشبه الطبي">
-                <h5>الشبه الطبي</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#medwife" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/medwife.png" class="img-fluid" alt="القابلة">
-                <h5>القابلة</h5>
-            </div>
-        </a>
-    </div>
-    
-    
-    
-    
-    <div class="swiper-slide">
-        <a href="#ortophnea" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/ortophonea.png">
-                <h5>(علم تصحيح النطق) العلوم الإجتماعية </h5> 
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#biology" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/biologist.png" class="img-fluid" alt="البيولوجيا">
-                <h5>البيولوجيا</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#agrnomy" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/agriculture.jpg" class="img-fluid" alt="العلوم الفلاحية">
-                <h5>العلوم الفلاحية</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#info" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/coding.png" class="img-fluid" alt="اعلام آلي">
-                <h5>اعلام آلي</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#polytech" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/polytechnic (2).png" class="img-fluid" alt="المتعدد التقنيات">
-                <h5>المتعدد التقنيات</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#st" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/ESTI.png" class="img-fluid" alt="المدرسة العليا للتكنولوجيا الصناعية">
-                <h5>المدرسة العليا للتكنولوجيا الصناعية</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#deutsch" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/teacher.png" class="img-fluid" alt="اللغة الألمانية">
-                <h5>اللغة الألمانية</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#english" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/english.png" class="img-fluid" alt="اللغة الإنجليزية">
-                <h5>اللغة الإنجليزية</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#law" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="S22MCS PARTS/lawyer.png" class="img-fluid" alt="الحقوق">
-                <h5>الحقوق</h5>
-            </div>
-        </a>
-    </div>
-    
-    <div class="swiper-slide">
-        <a href="#app" class="specialty-link">
-            <div class="content shadow-sm">
-                <img src="adatealm/downloads.png" class="img-fluid" alt="التطبيق">
-                <h5>التطبيق</h5>
-            </div>
-        </a>
-    </div>
-            </div>
-    
-            <!-- أزرار التنقل الجانبية -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
-        </div>
-    
-        <!-- نص إرشادي للطالب -->
-        <div class="instruction-container">
-            <p class="instruction-text">
-                <strong>مرر لليمين أو اليسار <span class="arrow-icon">⇆</span> للتنقل بين التخصصات. العرض يتحرك تلقائيًا!</strong>
-            </p>
-        </div>
-    </div>
-    
-    <!-- تضمين مكتبة Swiper.js -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-    
+
+
+
+
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var swiper = new Swiper('.specialties-swiper', {
-            slidesPerView: 'auto', // سيتم ضبطها تلقائياً حسب نقاط التوقف
-            centeredSlides: false,
-            spaceBetween: 15,
-            loop: true,
-            speed: 800,
-            freeMode: {
-                enabled: true,
-                momentum: true,
-                momentumRatio: 0.6,
-                momentumBounce: true,
-                momentumBounceRatio: 0.3
-            },
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-                dynamicBullets: true
-            },
-            breakpoints: {
-                320: {
-                    slidesPerView: 2,
-                    spaceBetween: 10,
-                    freeMode: {
-                        enabled: true,
-                        sticky: true
-                    }
-                },
-                480: {
-                    slidesPerView: 3,
-                    spaceBetween: 12
-                },
-                640: {
-                    slidesPerView: 4,
-                    spaceBetween: 15
-                },
-                768: {
-                    slidesPerView: 5,
-                    spaceBetween: 15
-                },
-                992: {
-                    slidesPerView: 6,
-                    spaceBetween: 18
-                },
-                1200: {
-                    slidesPerView: 8,
-                    spaceBetween: 20
-                },
-                1400: {
-                    slidesPerView: 10,
-                    spaceBetween: 20
-                }
-            },
-            a11y: {
-                enabled: true,
-                prevSlideMessage: 'الشريحة السابقة',
-                nextSlideMessage: 'الشريحة التالية',
-                paginationBulletMessage: 'انتقل إلى الشريحة {{index}}'
-            }
-        });
-    
-        // تحسين تجربة اللمس على الهواتف
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        document.querySelector('.specialties-swiper').addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        }, false);
-        
-        document.querySelector('.specialties-swiper').addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, false);
-        
-        function handleSwipe() {
-            if (touchEndX < touchStartX) {
-                swiper.slideNext();
-            }
-            if (touchEndX > touchStartX) {
-                swiper.slidePrev();
-            }
+        // --- الوصول لعناصر الصفحة ---
+        const gregorianDateEl = document.getElementById('gregorian-date');
+        const gregorianDateEnEl = document.getElementById('gregorian-date-en');
+        const hijriDateEl = document.getElementById('hijri-date');
+        const dayCountdownEl = document.getElementById('day-countdown');
+        const examDateInput = document.getElementById('exam-date-input');
+        const clearExamBtn = document.getElementById('clear-exam-date');
+        const examCountdownSection = document.getElementById('exam-countdown');
+        const examTimerEl = document.getElementById('exam-timer');
+        const examTimerUnitsEl = document.getElementById('exam-timer-units');
+        const themeToggle = document.getElementById('checkbox');
+        const faviconEl = document.getElementById('favicon');
+
+        let examInterval; // متغير لتخزين مؤقت عداد الاختبار
+
+        // --- دالة تحديث التواريخ (الميلادي والهجري) ---
+        function updateDates() {
+            const now = new Date();
+            gregorianDateEl.textContent = now.toLocaleDateString('ar-EG-u-nu-latn', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            gregorianDateEnEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            hijriDateEl.textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', { calendar: 'islamic-umalqura', year: 'numeric', month: 'long', day: 'numeric' }).format(now);
         }
+
+        // --- دالة تحديث عداد نهاية اليوم ---
+        function updateDayCountdown() {
+            const now = new Date();
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const diff = endOfDay - now;
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            dayCountdownEl.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        // --- دالة تحديث عداد الاختبار ---
+        function updateExamCountdown() {
+            const examDateString = localStorage.getItem('savedExamDate');
+            if (!examDateString) {
+                examCountdownSection.classList.add('hidden');
+                updateFavicon('📅');
+                return;
+            }
+            
+            const examDate = new Date(examDateString);
+            const now = new Date();
+            const diff = examDate - now;
+
+            if (diff <= 0) {
+                examTimerEl.textContent = "حان وقت الاختبار!";
+                examTimerUnitsEl.classList.add('hidden');
+                updateFavicon('✔');
+                clearInterval(examInterval);
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+
+            examTimerEl.innerHTML = `<span>${d}</span>:<span>${String(h).padStart(2, '0')}</span>:<span>${String(m).padStart(2, '0')}</span>:<span>${String(s).padStart(2, '0')}</span>`;
+            examCountdownSection.classList.remove('hidden');
+            examTimerUnitsEl.classList.remove('hidden');
+            updateFavicon(d > 0 ? d : '!');
+        }
+
+        // --- دالة تحديث أيقونة الموقع (Favicon) ---
+        function updateFavicon(text = '📅') {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+            
+            ctx.beginPath();
+            ctx.moveTo(10, 0);
+            ctx.lineTo(54, 0);
+            ctx.quadraticCurveTo(64, 0, 64, 10);
+            ctx.lineTo(64, 54);
+            ctx.quadraticCurveTo(64, 64, 54, 64);
+            ctx.lineTo(10, 64);
+            ctx.quadraticCurveTo(0, 64, 0, 54);
+            ctx.lineTo(0, 10);
+            ctx.quadraticCurveTo(0, 0, 10, 0);
+            ctx.closePath();
+            ctx.fillStyle = accentColor;
+            ctx.fill();
+
+            ctx.font = 'bold 40px sans-serif';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(String(text), 32, 34);
+            faviconEl.href = canvas.toDataURL('image/png');
+        }
+
+        // --- التعامل مع تغيير تاريخ الاختبار ---
+        function handleDateChange() {
+            const selectedDateValue = examDateInput.value;
+            if (!selectedDateValue) return;
+
+            const selectedDate = new Date(selectedDateValue);
+            if (selectedDate < new Date()) {
+                alert('لا يمكن اختيار تاريخ في الماضي!');
+                examDateInput.value = '';
+                localStorage.removeItem('savedExamDate');
+                examCountdownSection.classList.add('hidden');
+                if(examInterval) clearInterval(examInterval);
+                updateFavicon('📅');
+                return;
+            }
+            
+            localStorage.setItem('savedExamDate', selectedDateValue);
+            if (examInterval) clearInterval(examInterval);
+            
+            updateExamCountdown();
+            examInterval = setInterval(updateExamCountdown, 1000);
+        }
+
+        examDateInput.addEventListener('change', handleDateChange);
+
+        // --- التعامل مع زر مسح التاريخ ---
+        clearExamBtn.addEventListener('click', () => {
+            examDateInput.value = '';
+            localStorage.removeItem('savedExamDate');
+            examCountdownSection.classList.add('hidden');
+            if (examInterval) clearInterval(examInterval);
+            updateFavicon('📅');
+        });
+
+        // --- التعامل مع تبديل الوضع ---
+        themeToggle.addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode', this.checked);
+            localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+            setTimeout(() => updateFaviconFromCurrentState(), 50);
+        });
+
+        function updateFaviconFromCurrentState() {
+            const examDateString = localStorage.getItem('savedExamDate');
+            if (!examDateString) {
+                updateFavicon('📅');
+                return;
+            }
+            const examDate = new Date(examDateString);
+            const diff = examDate - new Date();
+             if (diff <= 0) {
+                updateFavicon('✔');
+             } else {
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                updateFavicon(d > 0 ? d : '!');
+             }
+        }
+
+        // --- دالة التشغيل عند تحميل الصفحة ---
+        function initialize() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                themeToggle.checked = true;
+                document.body.classList.add('dark-mode');
+            }
+            
+            const savedDate = localStorage.getItem('savedExamDate');
+            if (savedDate) {
+                examDateInput.value = savedDate;
+                handleDateChange();
+            }
+
+            updateDates();
+            updateDayCountdown();
+            setInterval(updateDayCountdown, 1000);
+            
+            setTimeout(() => updateFaviconFromCurrentState(), 100);
+        }
+
+        initialize();
     });
     </script>
-    
-    <style>
-    /* التنسيقات الأساسية */
-    .content {
-        background: #fff;
-        border-radius: 15px;
-        padding: 15px;
-        text-align: center;
-        transition: all 0.3s ease;
-        margin: 5px;
-        min-height: 150px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .content img {
-        max-width: 100%;
-        height: auto;
-        max-height: 60px;
-        transition: transform 0.3s ease;
-        margin-bottom: 10px;
-    }
-    
-    .content h5 {
-        font-size: 0.85rem;
-        color: #333;
-        margin-top: 8px;
-        font-weight: 600;
-        line-height: 1.3;
-    }
-    
-    .content:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .content:hover img {
-        transform: scale(1.1);
-    }
-    
-    .swiper-container {
-        padding: 15px 0 40px;
-        width: 100%;
-        overflow: hidden;
-    }
-    
-    .swiper-slide {
-        width: auto !important;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    /* أزرار التنقل */
-    .swiper-button-next, 
-    .swiper-button-prev {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 50%;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        z-index: 10;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fb873f;
-        transition: all 0.3s ease;
-    }
-    
-    .swiper-button-next {
-        right: 10px;
-    }
-    
-    .swiper-button-prev {
-        left: 10px;
-    }
-    
-    .swiper-button-next:hover, 
-    .swiper-button-prev:hover {
-        background: #fb873f;
-        color: white;
-        transform: translateY(-50%) scale(1.1);
-    }
-    
-    .swiper-button-next::after, 
-    .swiper-button-prev::after {
-        font-size: 1.2rem;
-        font-weight: bold;
-    }
-    
-    /* التنسيقات على الشاشات الصغيرة */
-    @media (max-width: 768px) {
-        .swiper-button-next, 
-        .swiper-button-prev {
-            width: 30px;
-            height: 30px;
-            top: auto;
-            bottom: 5px;
-            transform: none;
-        }
-        
-        .swiper-button-next {
-            right: calc(50% - 40px);
-        }
-        
-        .swiper-button-prev {
-            left: calc(50% - 40px);
-        }
-        
-        .content {
-            padding: 10px;
-            min-height: 120px;
-        }
-        
-        .content img {
-            max-height: 50px;
-        }
-        
-        .content h5 {
-            font-size: 0.75rem;
-        }
-        
-        .instruction-text {
-            font-size: 0.85rem;
-            padding: 8px 15px;
-        }
-    }
-    
-    /* التنسيقات على الشاشات الصغيرة جدًا */
-    @media (max-width: 480px) {
-        .content {
-            min-height: 110px;
-            padding: 8px;
-        }
-        
-        .content img {
-            max-height: 40px;
-        }
-        
-        .content h5 {
-            font-size: 0.7rem;
-        }
-        
-        .instruction-text {
-            font-size: 0.75rem;
-        }
-    }
-    
-    /* المؤشرات */
-    .swiper-pagination {
-        position: relative;
-        bottom: 0;
-        margin-top: 15px;
-    }
-    
-    .swiper-pagination-bullet {
-        width: 10px;
-        height: 10px;
-        background: #ddd;
-        opacity: 1;
-    }
-    
-    .swiper-pagination-bullet-active {
-        background: #fb873f;
-        transform: scale(1.2);
-    }
-    
-    /* النص الإرشادي */
-    .instruction-container {
-        text-align: center;
-        margin-top: 20px;
-        padding: 0 15px;
-    }
-    
-    .instruction-text {
-        display: inline-block;
-        background: #f8f9fa;
-        padding: 10px 20px;
-        border-radius: 30px;
-        font-size: 0.95rem;
-        color: #555;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        direction: rtl;
-    }
-    
-    .arrow-icon {
-        display: inline-block;
-        margin: 0 5px;
-        color: #fb873f;
-        font-weight: bold;
-        animation: bounce 1.5s infinite;
-    }
-    
-    @keyframes bounce {
-        0%, 100% {
-            transform: translateX(0);
-        }
-        50% {
-            transform: translateX(5px);
-        }
-    }
-    </style>
-
-
-
-<!-- الفقرات اضافية  -->
-
-
-
-
-
-    <div class="container-fluid py-5 bg-light position-relative overflow-hidden">
-        <div class="text-center">
-            <h6 class="section-title bg-white text-center px-3">التخصصات</h6>
-            <h1 class="mb-5" style="color: #000ed2;">الاقسام والفقرات اضافية  </h1>
-        </div>
-    
-        <div class="swiper-container specialties-swiper">
-            <div class="swiper-wrapper">
-                <!-- العناصر هنا كما هي -->
-    
-    
- 
-
-<div class="swiper-slide">
-    <a href="#CORAN" class="specialty-link">
-        <div class="content shadow-sm">
-            <img src="S22MCS PARTS/coranIKRA.png" class="img-fluid" alt="الطب">
-            <h5>فقرة ختم القران </h5>
-        </div>
-    </a>
-</div>
-
-<div class="swiper-slide">
-    <a href="#OLAMAMOSLIMOON" class="specialty-link">
-        <div class="content shadow-sm">
-            <img src="S22MCS PARTS/ALMmuslim.png" class="img-fluid" alt="علماء">
-            <h5>فقرة علماء مسلمون </h5>
-        </div>
-    </a>
-</div>
-
-<div class="swiper-slide">
-    <a href="#MOTALAA" class="specialty-link">
-        <div class="content shadow-sm">
-            <img src="S22MCS PARTS/MOTALAA.png" class="img-fluid" alt="طب أسنان">
-            <h5>قسم المطالعة  </h5>
-        </div>
-    </a>
-</div>
-
-
-
-
-
-
-
-
-
-</div>
-
-<!-- أزرار التنقل الجانبية -->
-<div class="swiper-button-next"></div>
-<div class="swiper-button-prev"></div>
-<div class="swiper-pagination"></div>
-</div>
-
-
-
-
-<!-- نص إرشادي للطالب -->
-
-
-
-</div>
-
-<!-- تضمين مكتبة Swiper.js -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
-<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-
-<script>
-var swiper = new Swiper('.swiper-container', {
-    slidesPerView: 5, // عدد الشرائح المرئية
-    spaceBetween: 20, // المسافة بين الشرائح
-    loop: true, // تشغيل التكرار اللانهائي
-    loopedSlides: 20, // عدد الشرائح المكررة (يمكن زيادته إذا زاد عدد الشرائح)
-    speed: 600, // تحسين السلاسة عند التمرير
-    freeMode: true, // تمكين الوضع الحر للسحب اليدوي
-    freeModeMomentum: true, // تحسين التفاعل عند السحب
-    resistanceRatio: 0.65, // تقليل المقاومة لجعل السحب أكثر سلاسة
-    touchReleaseOnEdges: true, // السماح بالسحب حتى عند الحواف
-    autoplay: {
-        delay: 2000, // التمرير التلقائي كل 2.0 ثانية
-        disableOnInteraction: false, // لا يتوقف التمرير التلقائي بعد السحب اليدوي
-        reverseDirection: true, // يسمح بالتبديل التلقائي بين الاتجاهين
-    },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-    pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-    },
-    allowSlidePrev: true, // السماح بالسحب للخلف
-    allowSlideNext: true, // السماح بالسحب للأمام
-    observer: true, // مراقبة التغييرات لمنع الاختفاء
-    observeParents: true, // تحديث عند تغيير الوالد
-    watchSlidesProgress: true, // تتبع التمرير لمنع الاختفاء
-    watchSlidesVisibility: true, // التأكد من بقاء الشرائح مرئية عند التمرير
-    breakpoints: {
-        320: {
-            slidesPerView: 3,
-            spaceBetween: 10
-        },
-        768: {
-            slidesPerView: 4,
-            spaceBetween: 15
-        },
-        1024: {
-            slidesPerView: 5,
-            spaceBetween: 20
-        }
-    }
-});
-</script>
-
-
-<style>
-.content {
-background: #fff;
-border-radius: 15px;
-padding: 18px;
-text-align: center;
-transition: all 0.3s ease-in-out;
-}
-
-.content img {
-max-width: 90px;
-height: auto;
-transition: transform 0.3s ease-in-out;
-}
-
-
-
-
-
-
-.content:hover img {
-transform: scale(1.1);
-}
-
-.content h5 {
-font-size: 1rem;
-color: #333;
-margin-top: 10px;
-}
-
-.swiper-container {
-padding: 20px 0;
-}
-
-
-
-.swiper-slide {
-display: flex;
-justify-content: center;
-align-items: center;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-.swiper-button-next, .swiper-button-prev {
-position: absolute;
-top: auto;  /* إزالة التمركز في الأعلى */
-bottom: -50px;  /* تحريك الأزرار للأسفل */
-transform: translateY(0);  /* تصحيح أي تأثير للتمركز السابق */
-background: rgba(255, 255, 255, 0.8);
-border-radius: 50%;
-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-width: 40px;
-height: 40px;
-}
-
-/* محاذاة الأسهم في المنتصف */
-.swiper-button-next {
-right: 45%;  
-}
-
-.swiper-button-prev {
-left: 45%;  
-}
-
-.swiper-button-next:hover, .swiper-button-prev:hover {
-background: #fb873f;
-color: white;
-}
-
-
-
-
-
-
-
-
-
-.swiper-pagination-bullet-active {
-background: #fb873f;
-}
-
-.specialty-link {
-text-decoration: none;
-}
-
-
-.instruction-container {
-display: flex;
-justify-content: center; /* توسيط أفقي */
-align-items: center; /* توسيط عمودي إذا لزم الأمر */
-text-align: center; /* توسيط النص داخل العنصر */
-margin-top: 15px; /* تباعد من الأعلى */
-}
-
-.instruction-text {
-font-size: 1.1rem;
-font-weight: bold;
-color: #333;
-background: #f8f9fa;
-padding: 12px 20px;
-border-radius: 10px;
-display: inline-block;
-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-text-align: right;
-direction: rtl; /* يجعل اتجاه النص من اليمين إلى اليسار */
-}
-
-.arrow-icon {
-font-size: 1.3rem;
-color: #fb873f;
-}
-
-
-
-
-
-@media (max-width: 768px) {
-.swiper-container {
-padding: 15px 0;
-}
-
-.content {
-padding: 15px;
-}
-
-.content img {
-max-width: 80px;
-}
-
-.content h5 {
-font-size: 0.9rem;
-}
-
-.instruction-text {
-font-size: 0.85rem;
-}
-}
-</style>
-
-
-
-
-
-
-<!-- الفقرات اضافية  -->
-
-
-   
-        <!-- Categories Start -->
-        <div class="container-xxl py-5 category">
-            <div class="container">
-                <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                    <h6 class="section-title bg-white text-center px-3">التخصصات </h6>
-                    <h1 class="mb-5" style="color: #fb873f;">التخصصات التي نقوم بتغطيتها </h1>
-                </div>
-                <div class="row g-2 m-2">
-
-
-
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <a href="#med" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/doctor.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">الطب</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <a href="#pharma" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/pharmacist.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">الصيدلة</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-
-
-
-
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <a href="#dent" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/dentist.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">طب أسنان</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <a href="#medwife" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/medwife.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">القابلة</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <a href="#paramediacal" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/nurse (1).png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">الشبه الطبي</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-                 
-
-
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <a href="#ortophnea" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/ortophonea.png" class="img-fluid" alt="categories">
-                                <h5>(علم تصحيح النطق) العلوم الإجتماعية </h5> 
-                            </div>
-                        </a>
-                    </div>
-                
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <a href="#biology" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/biologist.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">البيولوجيا</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <a href="#agrnomy" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/agriculture.jpg" class="img-fluid" alt="categories">
-                                <h5 class="my-2">العلوم الفلاحية</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-
-
-    
-    
-                    <div  class="col-lg-3 col-md-6 text-center">
-                        <a href="#info" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/coding.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">اعلام آلي</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div  class="col-lg-3 col-md-6 text-center">
-                        <a href="#polytech" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/polytechnic (2).png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">المتعدد التقنيات</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <a href="#st" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/ESTI.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">المدرسة العليا للتكنولوجيا الصناعية</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div   class="col-lg-3 col-md-6 text-center">
-                        <a href="#deutsch" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/teacher.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">اللغة الألمانية</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div   class="col-lg-3 col-md-6 text-center">
-                        <a href="#english" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/english.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">اللغة الإنجليزية</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-    
-                    <div   class="col-lg-3 col-md-6 text-center">
-                        <a href="#law" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="S22MCS PARTS/lawyer.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">الحقوق</h5>
-                            </div>
-                        </a>
-                    </div>
-                    
-
-
-                    <div   class="col-lg-3 col-md-6 text-center">
-                        <a href="#app" class="d-block">
-                            <div class="content shadow p-3 mb-2 wow fadeInUp" data-wow-delay="0.3s">
-                                <img src="adatealm/downloads.png" class="img-fluid" alt="categories">
-                                <h5 class="my-2">التطبيق</h5>
-                            </div>
-                        </a>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-
-<style>
-    @media (max-width: 991px) { /* يخفي القسم على الشاشات الصغيرة حتى 991px */
-        .category {
-            display: none;
-        }
-    }
-    </style>
-        
-        <!-- Categories End -->
-  
-
-
-    <!-- Courses Start -->
-
-    <div class="container-xxl py-5">
-        <div class="container">
-
-
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center px-3">اقسامنا </h6>
-                <h1 class="mb-5" style="color: #fb873f;">  اقسامنا متاحة امام اعضائنا  فقط  يرجى احترام اهل القسم   والاولية لاهل القسم على الضيوف   اي زوار القسم  </h1>
-            </div> 
-           
-            <style>
-                /* تصميم عام ومتجاوب */
-                .container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: center;
-                    gap: 15px; /* مسافة بين العناصر */
-                }
-            
-                .section-container {
-                    width: 100%;
-                    flex: 1 1 calc(50% - 15px); /* افتراضي: عمودان لكل صف */
-                    max-width: 300px; /* تحديد العرض الأقصى */
-                    margin-bottom: 20px;
-                }
-            
-                .course-item {
-                    border-radius: 12px;
-                    overflow: hidden;
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                    position: relative;
-                    background: linear-gradient(135deg, #ffffff, #f9fafc);
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    text-align: center;
-                }
-            
-                .course-item:hover {
-                    transform: scale(1.05) rotate(1deg);
-                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-                }
-            
-                .course-item img {
-                    width: 100%;
-                    height: auto; /* لضمان عرض الصورة بأبعادها الأصلية */
-                    object-fit: contain; /* عرض الصورة بالكامل داخل الإطار */
-                    display: block;
-                    transition: transform 0.3s ease, filter 0.3s ease;
-                }
-            
-                .course-item:hover img {
-                    transform: scale(1.05); /* تأثير تكبير خفيف */
-                    filter: brightness(1.1);
-                }
-            
-                .course-item h5 {
-                    text-align: center;
-                    margin: 15px 0;
-                    font-size: 1.2rem;
-                }
-            
-                .course-item h5 a {
-                    color: #333;
-                    text-decoration: none;
-                    transition: all 0.3s ease;
-                    font-weight: bold;
-                }
-            
-                .course-item h5 a:hover {
-                    background: linear-gradient(45deg, #ffcc80, #ffa726);
-                    color: #fff;
-                    box-shadow: 0 0 15px rgba(255, 152, 0, 0.6);
-                    padding: 5px 10px;
-                    border-radius: 8px;
-                }
-            
-                .course-item .details {
-                    padding: 15px;
-                }
-            
-                .course-item .details small {
-                    display: block;
-                    margin-bottom: 8px;
-                    font-size: 0.9rem;
-                    color: #555;
-                }
-            
-                .course-item .details small i {
-                    color: #f39c12; /* استبدال النجمة بالبرق */
-                }
-            
-                .course-item .buttons {
-                    display: flex;
-                    justify-content: space-between;
-                    gap: 10px;
-                    margin-top: 15px;
-                }
-            
-                .course-item .btn {
-                    flex: 1;
-                    padding: 10px;
-                    text-align: center;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 0.9rem;
-                    transition: all 0.3s ease;
-                    cursor: pointer;
-                    font-weight: bold;
-                    position: relative;
-                    overflow: hidden;
-                }
-            
-                .course-item .btn-channel {
-                    background-color: #28a745;
-                    color: #fff;
-                }
-            
-                .course-item .btn-qcm {
-                    background-color: #007bff;
-                    color: #fff;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 8px;
-                }
-            
-                .btn-channel:hover:before,
-                .btn-qcm:hover:before {
-                    content: "⚡";
-                    margin-right: 5px;
-                }
-            
-                /* الكود العام */
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-.section-container {
-    flex: 1 1 calc(33.33% - 20px); /* عرض 3 أعمدة افتراضيًا */
-    max-width: 300px;
-}
-
-/* استجابة للهواتف */
-@media (max-width: 768px) {
-    .section-container {
-        flex: 1 1 calc(50% - 20px); /* عرض عمودين في الأجهزة المتوسطة */
-    }
-}
-
-@media (max-width: 576px) {
-    .section-container {
-        flex: 1 1 100%; /* عرض عمود واحد في الهواتف */
-    }
-}
-
-            
-                /* استجابة للشاشات الكبيرة */
-                @media (min-width: 1200px) {
-                    .section-container {
-                        flex: 1 1 calc(25% - 15px); /* أربعة أعمدة */
-                    }
-                }
-            </style>
-            
-            <div class="container">
-
-
-                                         <!-- قسم طب  -->
-                <div id="med" class="section-container">
-                    <div class="course-item">
-                        <img src="adatealm/medcinepart.jpg" alt="طب ">
-                        <h5>   <a href="javascript:location.reload();">  👨‍⚕️🩺 قسم طب 🩺👨‍⚕️</a></h5>
-                        <div class="details">
-                       
-                            <small><i class="fa fa-user-graduate me-2"></i>7.3K+ عدد الأعضاء</small>
-                            <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                        </div>
-                        <div class="buttons">
-                            <a href="https://t.me/EMDbyS22MCS" class="btn btn-channel">الانضمام للقناة</a>
-                            <a href="MED01.html" class="btn btn-qcm">🩺 الدراسة والاختبارات </a>
-                        </div>
-                    </div>
-                </div>
-                    <!-- قسم الصيدلة  -->
-                    <div id="pharma" class="section-container">
-                        <div class="course-item">
-                            <img src="adatealm/pharmaciepart.jpg" alt="طب الصيدلة">
-                            <h5>   <a href="javascript:location.reload();"> 👨‍⚕️💊 قسم الصيدلة  💊👨‍⚕️</a></h5>
-                            <div class="details">
-                 
-                                <small><i class="fa fa-user-graduate me-2"></i>540+ عدد الأعضاء</small>
-                                <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                            </div>
-                            <div class="buttons">
-                                <a href="https://t.me/EMDbyS22MCSPHARMACY" class="btn btn-channel">الانضمام للقناة</a>
-                                <a href="PHARMA01.html" class="btn btn-qcm">💊 QCM</a>
-                            </div>
-                        </div>
-                    </div>
-                <!-- قسم طب الأسنان -->
-                <div id="dent" class="section-container">
-                    <div class="course-item">
-                        <img src="adatealm/dentaire.jpg" alt="طب الأسنان">
-                        <h5>   <a href="javascript:location.reload();"> 👨‍⚕️ 🦷 قسم طب الأسنان 🦷 👨‍⚕️</a> </h5>
-                          
-                        <div class="details">
-                            <small><i class="fa fa-user-graduate me-2"></i>620+ عدد الأعضاء</small>
-                            <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                        </div>
-                        <div class="buttons">
-                            <a href="https://t.me/EMDbyS22MCSCHIRUGIEDENTAIRE" class="btn btn-channel">الانضمام للقناة</a>
-                            <a href="DENT01.html" class="btn btn-qcm">🦷 QCM</a>
-                        </div>
-                    </div>
-                </div>
-
-
-                               <!-- قسم القابلة -->
-                               <div id="medwife" class="section-container">
-                                <div class="course-item">
-                                    <img src="adatealm/midwife.jpg" alt="قسم القابلة ">
-                                    <h5>   <a href="javascript:location.reload();">  🧕👶 قسم القابلة 👶🧕</a> </h5>
-                                      
-                                    <div class="details">
-                                        <small><i class="fa fa-user-graduate me-2"></i>20+ عدد الأعضاء</small>
-                                        <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                                    </div>
-                                    <div class="buttons">
-                                        <a href="https://t.me/+Yp8qT_wwHJ9mNjBk" class="btn btn-channel">الانضمام للقناة</a>
-                                
-                                    </div>
-                                </div>
-                            </div>
-            
-        
-                          
-
-
-
-        
-
-                           <!-- قسم الشبه الطبي -->
-                <div id="ortophnea" class="section-container">
-                    <div class="course-item">
-                        <img src="adatealm/paramedicalpart.jpg" alt="قسم الشبه الطبي">
-                        <h5>   <a href="javascript:location.reload();"> 🚑 🩹 قسم الشبه الطبي🩹 🚑</a> </h5>
-                          
-                        <div class="details">
-                            <small><i class="fa fa-user-graduate me-2"></i>20+ عدد الأعضاء</small>
-                            <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية والثالثة </small>
-                        </div>
-                        <div class="buttons">
-                            <a href="https://t.me/paramedical_adat_ealm" class="btn btn-channel">الانضمام للقناة</a>
-                           
-                        </div>
-                    </div>
-                </div>
-
-
-
-                
-                
-
-       
-        
-
-                           <!-- قسم العلوم الاجتماعية علم تصحيح النطق  -->
-                           <div id="paramediacal" class="section-container">
-                            <div class="course-item">
-                                <img src="adatealm/ortophneapic.jpg" alt="  قسم العلوم الاجتماعية علم تصحيح النطق ">
-                                <h5>   <a href="javascript:location.reload();"> 🗣️🎙️👂💬
-                                     قسم  
-                                     العلوم الإجتماعية 
-                                    (علم تصحيح النطق)
-                                    
-                                  
-                                    💬👂🎙️🗣️</a> </h5>
-                                  
-                                <div class="details">
-                                    <small><i class="fa fa-user-graduate me-2"></i>20+ عدد الأعضاء</small>
-                                    <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية والثالثة     
-                                          (علم تصحيح النطق) </small>
-                                </div>
-                                <div class="buttons">
-                                    <a href="https://t.me/+9lJNa6b869Q5OGFk" class="btn btn-channel">الانضمام للقناة</a>
-                                   
-                                </div>
-                            </div>
-                        </div>
-        
-        
-        
-                        
-
-                                <!-- قسم البيولوجي -->
-                <div id="biology" class="section-container">
-                    <div class="course-item">
-                        <img src="adatealm/biologipart.jpg" alt="قسم البيولوجي ">
-                        <h5>   <a href="javascript:location.reload();"> 👨🏻‍🔬 🧫 قسم البيولوجي 🧫 👨🏻‍🔬</a> </h5>
-                          
-                        <div class="details">
-                            <small><i class="fa fa-user-graduate me-2"></i>220+ عدد الأعضاء</small>
-                            <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                        </div>
-                        <div class="buttons">
-                            <a href="https://t.me/+abD98dg1L0pkNGRk" class="btn btn-channel">الانضمام للقناة</a>
-                   
-                        </div>
-                    </div>
-                </div>
-
-                
-
-
-
-                                <!-- قسم العلوم الفلاحية -->
-                                <div  id="agronomy" class="section-container">
-                                    <div class="course-item">
-                                        <img src="adatealm/agropart.jpg" alt="طب الأسنان">
-                                        <h5>   <a href="javascript:location.reload();"> 👨🏻‍🔬 🌱  العلوم الفلاحية 🌱 👨🏻‍🔬</a> </h5>
-                                          
-                                        <div class="details">
-                                            <small><i class="fa fa-user-graduate me-2"></i>147+ عدد الأعضاء</small>
-                                            <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                                        </div>
-                                        <div class="buttons">
-                                            <a href="https://t.me/+PuYt4si6OuFhOTVk" class="btn btn-channel">الانضمام للقناة</a>
-                                     
-                                        </div>
-                                    </div>
-                                </div>
-                
-                
-
-
-              <!--    اعلام الالي -->
-              <div id="info" class="section-container">
-                <div class="course-item">
-                    <img src="adatealm/informatiquepart.jpg" alt="قسم  الاعلام الالي ">
-                    <h5>   <a href="javascript:location.reload();"> 🧑🏻‍💻 🖥️  قسم الاعلام الالي  🖥️ 🧑🏻‍💻</a> </h5>
-                      
-                    <div class="details">
-                        <small><i class="fa fa-user-graduate me-2"></i>220+ عدد الأعضاء</small>
-                        <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                    </div>
-                    <div class="buttons">
-                        <a href="https://t.me/+PuYt4si6OuFhOTVk" class="btn btn-channel">الانضمام للقناة</a>
-               
-                    </div>
-                </div>
-            </div>
-
-
- <!--     قسم المتعددةالتقنيات -->
- <div id="polytech" class="section-container">
-    <div class="course-item">
-        <img src="adatealm/polytechnicpart.jpg" alt="قسم  الاعلام الالي ">
-        <h5>   <a href="javascript:location.reload();">    ⚙️    قسم المتعددالتقنيات   ⚙️</a> </h5>
-          
-        <div class="details">
-            <small><i class="fa fa-user-graduate me-2"></i>220+ عدد الأعضاء</small>
-            <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-        </div>
-        <div class="buttons">
-            <a href="https://t.me/+rJGMGCP7OOo0ODY0" class="btn btn-channel">الانضمام للقناة</a>
-   
-        </div>
-    </div>
-</div>
-
-
-
-                        <!--قسم التكنولوجيا الصناعية  -->
- <div id="st" class="section-container">
-    <div class="course-item">
-        <img src="adatealm/stpart.jpg" alt="قسم  الاعلام الالي ">
-        <h5>   <a href="javascript:location.reload();">    🏭🤖 قسم التكنولوجيا الصناعية  🤖🏭</a> </h5>
-          
-        <div class="details">
-            <small><i class="fa fa-user-graduate me-2"></i>220+ عدد الأعضاء</small>
-            <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-        </div>
-        <div class="buttons">
-            <a href="https://t.me/+70MtlupYyBM2ZWI0" class="btn btn-channel">الانضمام للقناة</a>
-   
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-                        <!--       قسم اللغة الألمانية  -->
-                        <div id="deutsch" class="section-container">
-                            <div class="course-item">
-                                <img src="adatealm/almanipart.jpg" alt="قسم  الاعلام الالي ">
-                                <h5>   <a href="javascript:location.reload();"> 🇩🇪  اللغة الألمانية 🇩🇪</a> </h5>
-                                  
-                                <div class="details">
-                                    <small><i class="fa fa-user-graduate me-2"></i>220+ عدد الأعضاء</small>
-                                    <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                                </div>
-                                <div class="buttons">
-                                    <a href="https://t.me/+6vMuFmSQ_oRkYjk8" class="btn btn-channel">الانضمام للقناة</a>
-                           
-                                </div>
-                            </div>
-                        </div>                          
-                                       <!--قسم اللغة الإنجليزية  -->
-                        <div id="english" class="section-container">
-                            <div class="course-item">
-                                <img src="adatealm/englishpart.jpg" alt="قسم  الاعلام الالي ">
-                                <h5>   <a href="javascript:location.reload();">    🇬🇧 اللغة الإنجليزية 🇬🇧</a> </h5>
-                                  
-                                <div class="details">
-                                    <small><i class="fa fa-user-graduate me-2"></i>220+ عدد الأعضاء</small>
-                                    <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                                </div>
-                                <div class="buttons">
-                                    <a href="https://t.me/+oV2tbzTgOus4YzNk" class="btn btn-channel">الانضمام للقناة</a>
-                           
-                                </div>
-                            </div>
-                        </div>    
-                                                        <!--قسم الحقوق   -->
-                        <div id="law" class="section-container">
-                            <div class="course-item">
-                                <img src="adatealm/lawpart.jpg" alt="قسم الحقوق ">
-                                <h5>   <a href="javascript:location.reload();">    ⚖️ 📜 قسم الحقوق 📜 ⚖️</a> </h5>
-                                  
-                                <div class="details">
-                                    <small><i class="fa fa-user-graduate me-2"></i>220+ عدد الأعضاء</small>
-                                    <small><i class="fa fa-user me-2"></i>لطلاب السنة الأولى والثانية</small>
-                                </div>
-                                <div class="buttons">
-                                    <a href="https://t.me/+H_aPvyHLY4w3YWRk" class="btn btn-channel">الانضمام للقناة</a>
-                           
-                                </div>
-                            </div>
-                        </div>
-                                       
-                                       
-
-
-
-                    
-
-                        
-                  
-                </div>
-                
-                
-                
-             </div>    
-      </div>
-            
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    <!-- Courses Start -->
-
-    <div class="container-xxl py-5">
-        <div class="container">
-
-
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center px-3">اقسامنا </h6>
-              <h1 class="mb-5" style="color: #000ed2;">الاقسام والفقرات اضافية  </h1>            
-           
-            <style>
-                /* تصميم عام ومتجاوب */
-                .container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: center;
-                    gap: 15px; /* مسافة بين العناصر */
-                }
-            
-                .section-container {
-                    width: 100%;
-                    flex: 1 1 calc(50% - 15px); /* افتراضي: عمودان لكل صف */
-                    max-width: 300px; /* تحديد العرض الأقصى */
-                    margin-bottom: 20px;
-                }
-            
-                .course-item {
-                    border-radius: 12px;
-                    overflow: hidden;
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                    position: relative;
-                    background: linear-gradient(135deg, #ffffff, #f9fafc);
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    text-align: center;
-                }
-            
-                .course-item:hover {
-                    transform: scale(1.05) rotate(1deg);
-                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-                }
-            
-                .course-item img {
-                    width: 100%;
-                    height: auto; /* لضمان عرض الصورة بأبعادها الأصلية */
-                    object-fit: contain; /* عرض الصورة بالكامل داخل الإطار */
-                    display: block;
-                    transition: transform 0.3s ease, filter 0.3s ease;
-                }
-            
-                .course-item:hover img {
-                    transform: scale(1.05); /* تأثير تكبير خفيف */
-                    filter: brightness(1.1);
-                }
-            
-                .course-item h5 {
-                    text-align: center;
-                    margin: 15px 0;
-                    font-size: 1.2rem;
-                }
-            
-                .course-item h5 a {
-                    color: #333;
-                    text-decoration: none;
-                    transition: all 0.3s ease;
-                    font-weight: bold;
-                }
-            
-                .course-item h5 a:hover {
-                    background: linear-gradient(45deg, #ffcc80, #ffa726);
-                    color: #fff;
-                    box-shadow: 0 0 15px rgba(255, 152, 0, 0.6);
-                    padding: 5px 10px;
-                    border-radius: 8px;
-                }
-            
-                .course-item .details {
-                    padding: 15px;
-                }
-            
-                .course-item .details small {
-                    display: block;
-                    margin-bottom: 8px;
-                    font-size: 0.9rem;
-                    color: #555;
-                }
-            
-                .course-item .details small i {
-                    color: #f39c12; /* استبدال النجمة بالبرق */
-                }
-            
-                .course-item .buttons {
-                    display: flex;
-                    justify-content: space-between;
-                    gap: 10px;
-                    margin-top: 15px;
-                }
-            
-                .course-item .btn {
-                    flex: 1;
-                    padding: 10px;
-                    text-align: center;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 0.9rem;
-                    transition: all 0.3s ease;
-                    cursor: pointer;
-                    font-weight: bold;
-                    position: relative;
-                    overflow: hidden;
-                }
-            
-                .course-item .btn-channel {
-                    background-color: #28a745;
-                    color: #fff;
-                }
-            
-                .course-item .btn-qcm {
-                    background-color: #007bff;
-                    color: #fff;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 8px;
-                }
-            
-                .btn-channel:hover:before,
-                .btn-qcm:hover:before {
-                    content: "⚡";
-                    margin-right: 5px;
-                }
-            
-                /* الكود العام */
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-.section-container {
-    flex: 1 1 calc(33.33% - 20px); /* عرض 3 أعمدة افتراضيًا */
-    max-width: 300px;
-}
-
-/* استجابة للهواتف */
-@media (max-width: 768px) {
-    .section-container {
-        flex: 1 1 calc(50% - 20px); /* عرض عمودين في الأجهزة المتوسطة */
-    }
-}
-
-@media (max-width: 576px) {
-    .section-container {
-        flex: 1 1 100%; /* عرض عمود واحد في الهواتف */
-    }
-}
-
-            
-                /* استجابة للشاشات الكبيرة */
-                @media (min-width: 1200px) {
-                    .section-container {
-                        flex: 1 1 calc(25% - 15px); /* أربعة أعمدة */
-                    }
-                }
-            </style>
-
-
-
- 
-    <div class="container">
- 
-
-    
-    <div id="CORAN" class="section-container">
-        <div class="course-item">
-            <img src="S22MCS PARTS/ختم القران.jpg" alt="ختم القرآن">
-            <h5>
-                <a href="javascript:location.reload();" style="color: #d4af37; font-weight: bold;">
-                    شارك في ختمة القرآن.. واغتنم الأجر العظيم! 
-                </a>
-            </h5>
-    
-            <p>
-                ورد في الحديث الصحيح أن النبي ﷺ قال لعبدالله بن عمرو -وكان يختم القرآن كل ليلة ويصوم كل يوم- فقال له:  
-                <br> "اختمه في شهر" فقال: إني أطيق أفضل من ذلك، قال: "اختمه في عشرين"، قال: إني أطيق أفضل من ذلك، قال: "اختمه في عشر"، قال: إني أطيق أفضل من ذلك، قال: "اختمه في سبع"، ثم قال له بعد ذلك: "اختمه في ثلاث".  
-                <br> فإذا قرأه في كل شهر فحسن، أو في أربعين يومًا فحسن، فقد ورد في بعض الروايات تحديد الأربعين يومًا.
-            </p>
-    
-            <div class="details">
-                <blockquote>
-                    <strong>﴿ إِنَّ هَٰذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ وَيُبَشِّرُ الْمُؤْمِنِينَ الَّذِينَ يَعْمَلُونَ الصَّالِحَاتِ أَنَّ لَهُمْ أَجْرًا كَبِيرًا ﴾</strong>  
-                    <small>[الإسراء: 9]</small>
-                </blockquote>
-    
-                <blockquote>
-                    <strong>﴿ كِتَابٌ أَنزَلْنَاهُ إِلَيْكَ مُبَارَكٌ لِّيَدَّبَّرُوا آيَاتِهِ وَلِيَتَذَكَّرَ أُوْلُوا الْأَلْبَابِ ﴾</strong>  
-                    <small>[ص: 29]</small>
-                </blockquote>
-    
-                <small>
-                    <i class="fa fa-book quran-icon me-2"></i> لا تفوّت الفرصة.. اجعل القرآن رفيق دربك! 📖
-                </small>
-            </div>
-    
-            <div class="buttons">
-                <a href="index_KHATM_WARCH_30YOM.html" class="btn btn-channel" style="background-color: #d4af37; color: #fff; font-weight: bold; padding: 10px 15px; border-radius: 10px;">
-                     ابدأ الآن ونل بركة التلاوة 
-                </a>
-            </div>
-        </div>
-    </div>
-    
-
-
-
-
-<!-- فقرة علماء مسلمون -->
-<div id="OLAMAMOSLIMOON" class="section-container">
-    <div class="course-item">
-        <img src="S22MCS PARTS/علماء مسلمون.jpg" alt="فقرة علماء مسلمون">
-        <h5>
-            <a href="javascript:location.reload();">فقرة علماء مسلمون</a>  
-        </h5>
-
-        <div class="details">
-            <small>
-                <i class="fa fa-user-graduate me-2"></i>  
-                إذا أدركت أمجاد أمتك، اعتززت بها وساهمت في بنائها.
-            </small>
-            <br>
-            <small>
-                <i class="fa fa-user me-2"></i>  
-                وأولى من تقتدي به هو رسولك الأمين، الشهيد.  
-                فبعد اتباعه، تعرّف على ما قدّمه الصالحون من أمتك،  
-                وسِرْ على خُطاهم بقدر ما استطعت.  
-                فالدنيا أيامٌ معدودة، وسرعان ما تنقضي،  
-                فكن ضيفًا صالحًا يُحسن لنفسه قبل أن يُردّ إلى  
-                عالم الغيب والشهادة.
-            </small>
-        </div>
-
-        <div class="buttons">
-            <a href="فقرة علماء مسلمون رمضانية.html" class="btn btn-channel">اعرف أمتك تعرف دورك</a>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-<!-- قسم المطالعة -->
-<div id="MOTALAA" class="section-container">
-    <div class="course-item">
-        <img src="S22MCS PARTS/قسم المطالعة.jpg" alt="قسم المطالعة">
-        <h5><a href="javascript:location.reload();">📖 قسم المطالعة</a></h5>
-
-        <div class="details">
-            <small><i class="fa fa-user-graduate me-2"></i> عدد الأعضاء: +</small>
-            <br>
-            <small><i class="fa fa-user me-2"></i> 🕌 جميع المسلمين معنيون</small>
-        </div>
-
-        <div class="buttons">
-            <a href="https://t.me/+ymBwGmlq4Zg5ODU8" class="btn btn-channel">
-                <i class="fa fa-telegram"></i> الانضمام إلى القناة على تليجرام
-            </a>
-            <a href="قسم المطالعة.html" class="btn btn-qcm">📚 استكشاف المزيد</a>
-        </div>
-    </div>
-</div>
-
-
-
-                 
-</div>
-
-
-
-</div>    
-</div>
-
-
-
-
-
-    <section id="app" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #6a11cb, #2575fc); text-align: center; padding: 20px; overflow: hidden; position: relative;">
-        <!-- Background Waves -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0;">
-            <svg viewBox="0 0 120 28" preserveAspectRatio="none" style="width: 100%; height: 100%;">
-                <path d="M0,0 C30,10 70,0 100,10 L120,20 L120,30 L0,30 Z" fill="rgba(255, 255, 255, 0.3)">
-                    <animate attributeName="d" dur="10s" repeatCount="indefinite" values="
-                    M0,0 C30,10 70,0 100,10 L120,20 L120,30 L0,30 Z;
-                    M0,0 C40,20 60,-10 100,5 L120,25 L120,30 L0,30 Z;
-                    M0,0 C20,5 90,15 100,10 L120,20 L120,30 L0,30 Z;" />
-                </path>
-                <path d="M0,10 C20,15 50,10 80,20 L120,30 L120,40 L0,40 Z" fill="rgba(255, 255, 255, 0.2)">
-                    <animate attributeName="d" dur="8s" repeatCount="indefinite" values="
-                    M0,10 C20,15 50,10 80,20 L120,30 L120,40 L0,40 Z;
-                    M0,15 C30,25 70,15 90,25 L120,35 L120,40 L0,40 Z;
-                    M0,5 C25,10 60,20 85,15 L120,25 L120,40 L0,40 Z;" />
-                </path>
-            </svg>
-        </div>
-        
-        <!-- Content Box -->
-        <div class="content-box">
-            <img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" alt="تحميل تطبيق أداة علم" class="content-image">
-            <h5 class="content-title">
-                <a href="javascript:location.reload();" class="content-link">⚡🚀 تحميل تطبيق أداة علم</a>
-            </h5>
-            <div class="content-details">
-                <small><i class="fa fa-user-graduate"></i> 👥 إجمالي عدد الأعضاء: <strong>10,500+</strong> 🌟</small>
-                <small><i class="fa fa-user"></i> 🎓📚 لطلاب الجامعيين المتميزين</small>
-            </div>
-            <div class="content-action">
-                <a href="https://adatealm.github.io/ADATEALM/#Download" class="download-button">📥⚡ حمل التطبيق الآن</a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- CSS Styles -->
-    <style>
-        /* General Styles */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-        }
-    
-        .content-box {
-            position: relative;
-            z-index: 1;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            width: 100%;
-            animation: fadeIn 2s ease;
-        }
-    
-        .content-image {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            animation: bounceIn 2s;
-        }
-    
-        .content-title {
-            margin: 15px 0;
-            font-size: 1.5rem;
-            color: #007bff;
-            font-weight: bold;
-            animation: fadeIn 1.5s 0.5s backwards;
-        }
-    
-        .content-link {
-            text-decoration: none;
-            color: #007bff;
-        }
-    
-        .content-details {
-            margin: 15px 0;
-            font-size: 1rem;
-            color: #333;
-            animation: slideIn 2s 0.5s backwards;
-        }
-    
-        .content-details small {
-            display: block;
-            margin-bottom: 5px;
-        }
-    
-        .content-action {
-            margin-top: 20px;
-        }
-    
-        .download-button {
-            display: inline-block;
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-    
-        .download-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-    
-        /* Keyframes for Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-    
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            60% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-    
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .content-box {
-                padding: 15px;
-                max-width: 90%;
-            }
-    
-            .content-title {
-                font-size: 1.3rem;
-            }
-    
-            .download-button {
-                font-size: 0.9rem;
-                padding: 8px 16px;
-            }
-        }
-    
-        @media (max-width: 480px) {
-            .content-box {
-                padding: 10px;
-                max-width: 100%;
-            }
-    
-            .content-title {
-                font-size: 1.2rem;
-            }
-    
-            .download-button {
-                font-size: 0.8rem;
-                padding: 7px 14px;
-            }
-        }
-    </style>
-    
-
-    
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-4 col-md-6">
-                    <h4 class="text-white mb-3">روابط سريعة </h4>
-                    <p><a class="text-light" href="about.html">من نحن </a></p>
-                    <p><a class="text-light" href="contact.html">تواصل معنا </a></p>
-                    <p><a class="text-light" href="">سياسة الخصوصية</a></p>
-                    <p><a class="text-light" href="">الشروط والأحكام</a></p>
-                    <p><a class="text-light" href="">الأسئلة الشائعة والمساعدة</a></p>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <h4 class="text-white mb-3">تواصل معنا</h4>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> غير متوفر حاليا </p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>S22MCS@gmail.com</p>
-
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href="https://t.me/S22MCS"><i class="fab fa-telegram "></i></a>
-                        <a class="btn btn-outline-light btn-social" href="https://youtube.com/@S22MCS?si=Rejig-EPpBcuvEgD"><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href="https://instagram.com/s22mcs?igshid=NzZlODBkYWE4Ng"><i class="fab fa-instagram "></i></a>
-                        <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/profile.php?id=61552919247921&mibextid=ZbWKwL"><i class="fab fa-facebook-f"></i></a>
-
-                         <a class="btn btn-outline-light btn-social" href="https://www.tiktok.com/@s22mcs?_t=8kfut6Df4lC&_r=1"><i class="fab fa-tiktok"></i></a>
-
-                        <a class="btn btn-outline-light btn-social" href="https://www.linkedin.com/in/s-mcs-3b26902ba?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
-                        <a class="btn btn-outline-light btn-social" href="https://x.com/S22MCS?t=a7d9JIT0p_r-26CRAkYo0A&s=09"><i class="fab fa-twitter"></i></a>
-                
-
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <h4 class="text-white mb-3">انضم الى مجتمعنا </h4>
-                    <p>
-                         اشترك الآن وانضم إلى مجتمعنا المتنامي من رواد العلم و  المتعلمين الملتزمين بالتعليم ان شاء الله                     </p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <form action="#">
-                            <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="email"
-                                placeholder="Your email" required>
-                            <button type="submit"
-                                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"><a
-                                    href="mailto:keertidvcorai@gmail.com">انضم </a></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="index.html">S22MCS</a>, جميع الحقوق محفوظة.
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
 </body>
-
-
-
-
-
-
-
-
-
-<script>
-    document.querySelector(".navbar-brand").addEventListener("click", function(event) {
-        event.preventDefault(); // منع التنقل العادي
-        location.reload(); // تحديث الصفحة
-    });
-</script>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2246,407 +634,213 @@ font-size: 0.85rem;
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إشعارات هامة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تنبيه طبي - INFATM</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
-
-        /* Reset and base styles */
+        /* تهيئة عامة */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Amiri', serif;
-            background-color: #f0f0f0;
-            text-align: center;
-            direction: rtl;
-            line-height: 1.6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
         }
 
-        /* Modal container - fixed position covers the whole screen */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 4%;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            overflow: auto;
+        /* زر الخطر الثابت - تصميم جديد */
+        .danger-btn {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #ff0000, #c00000);
+            color: white;
+            font-size: 28px;
+            border-radius: 50%;
+            display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px;
-            animation: fadeIn 0.4s ease-in-out;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
+                        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+            z-index: 100;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            animation: pulse 2s infinite;
+            margin: 10px; /* يمكن تعديلها حسب الحاجة */
         }
 
-        /* Modal content container */
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            position: relative;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        .danger-btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff3333, #d10000);
+        }
+
+        .danger-btn:active {
+            transform: scale(0.95);
+            animation: none;
+        }
+
+        /* طبقة التعتيم */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            display: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* نافذة المحتوى */
+        .popup-container {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
             display: flex;
             flex-direction: column;
-            max-height: 85vh;
+            z-index: 1002;
+            display: none;
             overflow: hidden;
-            margin: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: white;
         }
 
-        #taraweehModal .modal-content {
-            border: 4px solid #007bff;
-        }
-
-        #secondModal .modal-content {
-            border: 4px solid #ffa500;
-        }
-
-        /* Greeting section */
-        .greeting {
-            font-size: 20px;
-            font-weight: bold;
-            background: black;
+        .popup-header {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
             color: white;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            padding: 18px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Main heading */
-        .modal-title {
-            font-size: 24px;
-            margin: 10px 0;
+        .popup-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
-        /* Highlight text */
-        .highlight-text {
-            font-size: 20px;
-            font-weight: bold;
-            color: red;
-            margin: 10px 0;
-        }
-
-        /* Scrollable content area */
-        .modal-body {
-            flex: 1;
+        .popup-content {
+            flex-grow: 1;
             overflow-y: auto;
-            padding: 15px;
-            max-height: 55vh;
-            text-align: right;
-            line-height: 1.8;
-            font-weight: bold;
-            color: #222;
-            border-radius: 10px;
-            border: 2px solid #ddd;
-            background: #f9f9f9;
-            margin: 10px 0;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            hyphens: auto;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            -webkit-overflow-scrolling: touch;
+            background-color: #f5f5f5;
         }
 
-        /* Quran text styling */
-        .quran-text {
-            font-size: 18px;
-            color: #0056b3;
-            font-weight: bold;
-            background: #fff8dc;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #ddd;
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .quran-verse {
-            color: darkgreen;
-            display: block;
-            margin: 15px 0;
-            text-wrap: wrap;
-            word-break: break-word;
-        }
-
-        /* Hadith box styling */
-        .hadith-box {
-            background: black;
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            line-height: 1.8;
-            margin: 15px 0;
-        }
-
-        .hadith-text {
-            font-family: 'Amiri', serif;
-            font-size: 20px;
-            color: #ffcc00;
-            text-wrap: wrap;
-            word-break: break-word;
-        }
-
-        /* Knowledge box */
-        .knowledge-box {
-            text-align: center;
-            background-color: black;
-            padding: 10px 20px;
-            display: inline-block;
-            margin: 15px auto;
-            border-radius: 8px;
-        }
-
-        .knowledge-text {
-            font-family: 'Amiri', serif;
-            font-size: 24px;
-            font-weight: bold;
-            color: #FFD700;
-            text-shadow: 3px 3px 5px rgba(255, 255, 255, 0.2);
-        }
-
-        /* Posts container */
-        .posts-container {
-            list-style: none;
-            padding: 0;
-            margin: 20px auto;
-            max-width: 100%;
-            background: #1c1c1c;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 150, 255, 0.4);
-            text-align: center;
-        }
-
-        .posts-container li {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            transition: transform 0.2s, box-shadow 0.3s;
-            text-align: right;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .posts-container li.title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #00aaff;
-            text-align: center;
-        }
-
-        .posts-container a {
-            color: #00aaff;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-            font-size: 18px;
-            margin: 0 5px;
-            padding: 5px 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-
-        .posts-container a:hover {
-            text-decoration: underline;
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .post-text-ar {
-            direction: rtl;
-            text-align: right;
-            font-family: 'Amiri', serif;
-            font-size: 18px;
-            color: #ffffff;
-            line-height: 1.6;
-        }
-
-        .link-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 10px 0;
-            flex-wrap: wrap;
-        }
-
-        /* Close button */
-        .btn-close {
-            background-color: #ff4d4d;
-            color: white;
+        /* زر الإغلاق الجديد */
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: white;
+            color: #e74c3c;
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            font-size: 22px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-            margin: 20px auto 5px;
-            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
-        }
-
-        .btn-close:hover {
-            background-color: #cc0000;
-            transform: scale(1.15);
-        }
-
-        /* Glowing text effect */
-        .glowing-text {
-            color: red;
+            cursor: pointer;
             font-weight: bold;
-            font-size: 20px;
-            text-decoration: none;
-            transition: text-shadow 0.4s ease-in-out, color 0.4s ease-in-out;
-            display: inline-block;
-            padding: 5px 10px;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
         }
 
-        .glowing-text:hover {
-            color: #ff0000;
-            text-shadow: 0px 0px 15px rgba(255, 0, 0, 0.9), 0px 0px 30px rgba(255, 0, 0, 0.6);
+        .close-btn:hover {
+            transform: rotate(90deg);
+            background: #ffebee;
         }
 
-        /* Bullet points */
-        .bullet-list {
-            text-align: right;
-            padding-right: 25px;
-            margin: 15px 0;
-            list-style-position: outside;
+        /* مؤشر التحميل */
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
         }
 
-        .bullet-list li {
-            margin-bottom: 10px;
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 5px solid rgba(231, 76, 60, 0.2);
+            border-top: 5px solid #e74c3c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
         }
 
-        /* Fade in animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* Responsive adjustments */
+        .loader p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* المحتوى المعروض */
+        .content-wrapper {
+            padding: 18px;
+            line-height: 1.7;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
         @media (max-width: 480px) {
-            .modal-content {
-                padding: 15px 10px;
-                width: 95%;
-                max-height: 90vh;
+            .danger-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
             }
-
-            .modal-title {
-                font-size: 20px;
+            
+            .popup-header {
+                padding: 15px;
             }
-
-            .greeting {
-                font-size: 16px;
-                padding: 8px;
+            
+            .popup-header h2 {
+                font-size: 1.1rem;
             }
-
-            .highlight-text {
-                font-size: 16px;
-            }
-
-            .modal-body {
-                padding: 10px;
-                max-height: 60vh;
-            }
-
-            .quran-text {
-                font-size: 16px;
-                padding: 10px;
-            }
-
-            .quran-verse {
-                font-size: 16px;
-            }
-
-            .hadith-text {
-                font-size: 16px;
-            }
-
-            .hadith-box {
-                padding: 10px;
-            }
-
-            .knowledge-text {
-                font-size: 18px;
-            }
-
-            .posts-container {
-                padding: 10px;
-            }
-
-            .posts-container li.title {
-                font-size: 16px;
-            }
-
-            .posts-container a {
-                font-size: 14px;
-                margin: 3px;
-            }
-
-            .post-text-ar {
-                font-size: 14px;
-            }
-
-            .link-container {
-                gap: 8px;
-            }
-
-            .btn-close {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
+            
+            .close-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 1rem;
             }
         }
 
-        /* Additional responsive fixes for very small screens */
-        @media (max-width: 320px) {
-            .modal-content {
-                padding: 10px 5px;
+        /* تحسينات لللمس على الهواتف */
+        @media (hover: none) {
+            .danger-btn:hover {
+                transform: scale(1);
+                background: linear-gradient(135deg, #ff0000, #c00000);
             }
-
-            .modal-title {
-                font-size: 18px;
-            }
-
-            .greeting {
-                font-size: 14px;
-            }
-
-            .quran-verse {
-                font-size: 14px;
-            }
-
-            .hadith-text {
-                font-size: 14px;
-            }
-
-            .knowledge-text {
-                font-size: 16px;
-            }
-
-            .post-text-ar {
-                font-size: 13px;
+            
+            .close-btn:hover {
+                transform: rotate(0deg);
+                background: white;
             }
         }
     </style>
@@ -2654,913 +848,256 @@ font-size: 0.85rem;
 <body>
 
 
-               <!--  عيد إشعار  صلاة  -->
-               <div id="taraweehModal" class="modal">
-                <div class="modal-content">
-                    <p class="greeting">السلام عليكم ورحمة الله تعالى وبركاته</p>
-                    <h1 class="modal-title">   </h1>
-            
-            
-             
-                    <div class="modal-body">
-                        <div class="quran-text">
-                            <div style="text-align: center;">
-                                <p>سيتم تحديث الموقع  يوميا </p>
-                            </div>
-                            <br>
-                            <div style="text-align: center;">
-                        
-                            </div>
-                                    
-                        
-                        </div>
-            
-            
-            
-            </div>
-            <button class="btn-close" onclick="closeFirstModal()">×</button>
-            </div>
-            </div>
-            
-                
+<!-- طبقة التعتيم -->
+<div class="overlay" id="overlay"></div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
-
-    
-    <!-- إشعار فقرات أداة علم  -->
-    <div id="secondModal" class="modal">
-        <div class="modal-content">
-            <h1 class="modal-title">فقرات أداة علم </h1>
-            <div class="modal-body">
-                <p style="text-align: center;">في شوال هذا العام 1446هـ - 2025م، تقدم أداة علم فقرات مميزة:</p>
-
-                <ul class="bullet-list">
-
-                    <li>فقرة علماء مسلمون سيتم تعويضها بمنشورات S22MCS اليومية</li>
-                </ul>
-
-
-
-
-
-
-
-
-
-                <!-- قائمة المنشورات -->
-                <ul class="posts-container">
-                    <li class="title">📢 منشورات اليوم:</li>
-                
-      
-
-
-
-
-<li>
-    <p class="post-text-ar" style="text-align: center;">📌 <strong>        أول منشور 
-        (لايحتاج تعريفا  للمسلمين )
-     :</strong> تريد فتحه على</p>
-
-
-
-     <strong>
-   
-        <p class="post-text-ar" style="text-align: center;">
-            <a  href="https://t.me/S22MCS/1945"  class="glowing-text">🔻 المقاومة الفلسطينية 🔻</a>
-    
-            <p class="post-text-ar">
-   
-                <strong>
-                    قال رسول الله (ﷺ) : "مَنْ جهَّزَ غَازِيًا في سبيلِ اللَّهِ فَقَدْ غَزَا، ومنْ خَلَفَ غَازيًا في أَهْلِهِ بخَيْر فَقَدْ غزَا"
-        
-                </strong>
-            </p>
-        </p>
-    
-    </strong>
-
-
-
-    <p class="post-text-ar" style="text-align: center;">
-        <a >نتشرف  بان نزف لكم موقع شباب العصر </a>
-
-    </p>
-    <div class="link-container">
-        <a href="https://t.me/shabab_al_easr/12" target="_blank" rel="noopener"> قناة شباب العصر على التيليجرام</a> 
-        <a href="https://t.me/shabab_al_easr" target="_blank" rel="noopener">موقع شباب العصر </a>
-   </div>
-
-   <strong>
-   
-
-
-</strong>
-    <p class="post-text-ar">
-   
-        <strong>
-            قال رسول الله (ﷺ) : "مَنْ جهَّزَ غَازِيًا في سبيلِ اللَّهِ فَقَدْ غَزَا، ومنْ خَلَفَ غَازيًا في أَهْلِهِ بخَيْر فَقَدْ غزَا"
-
-        </strong>
-    </p>
-</li>
-
-
-
-
-                    <li>
-                        <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور الثاني:</strong> تريد فتحه على</p>
-                        <div class="link-container">
-                            <a href="https://t.me/S22MCS/1884" target="_blank" rel="noopener">تيليجرام</a> 
-                            <a href="https://youtu.be/QCY5-tSDyU0?si=YjF9GHv363j1pOKe" target="_blank" rel="noopener">يوتيوب</a>
-                        </div>
-                        <p class="post-text-ar">
-
-                            <strong>عقيدة نسوية | هل تتعارض النسوية مع الإسلام؟ نقاش عميق حول أخطر 15 سؤال نسوي #الاسلام#هيثم_طلعت                            </strong>
-
-                        </p>
-                    </li>
-
-                    <li>
-                        <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور الثالث:</strong> تريد فتحه على</p>
-                        <div class="link-container">
-                            <a href="https://t.me/S22MCS/1937" target="_blank" rel="noopener">تيليجرام</a> 
-                            <a href="https://youtu.be/QZsNAHn7hUY?si=rM-wIzk-fnKcMuZ4" target="_blank" rel="noopener">يوتيوب</a>
-                        </div>
-                        <p class="post-text-ar">
-                            <strong>رحلة اليقين ٤٨: هل الدحيح ينشر العلم أم الإلحاد والخرافات؟</strong>
-                        </p>
-                    </li>
-
-                  
-
-                    <li>
-                        <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور الرابع:</strong> تريد فتحه على</p>
-                        <div class="link-container">
-                            <a href="https://t.me/S22MCS/1706" target="_blank" rel="noopener">تيليجرام</a> 
-                            <a href="https://youtu.be/onxqPZMeOjs?si=x4Ol1nL51tW6F5tU" target="_blank" rel="noopener">يوتيوب</a>
-                        </div>
-                        <p class="post-text-ar">
-                            <strong>الواجبات التي يجب أن يقوم بها المسلم تجاه دينه حازم صلاح أبو اسماعيل</strong>
-                        </p>
-                    </li>
-
-
-
-               
-
-
-                </ul>
-
-                <ul class="bullet-list">
-                    <li>فقرة علماء مسلمون حيث سنعرض باختصار سيرة ومواقف وما قدمه الملسمون على علماء العلوم الدنيوية وفضلهم على مر العصور الذين نجهلهم ويتم تغيبهم عنا</li>
-                </ul>
-                
-                <p style="text-align: center; margin-top: 20px;">لا تفوتوا متابعة هذه الفقرات والاستفادة منها!</p>
-            </div>
-            <button class="btn-close" onclick="closeSecondModal()">×</button>
+<!-- نافذة المحتوى -->
+<div class="popup-container" id="popupContainer">
+    <div class="popup-header">
+        <button class="close-btn" onclick="togglePopup()">×</button>
+        <h2>تنبيه  - محتوى </h2>
+    </div>
+    <div class="popup-content" id="contentContainer">
+        <div class="loader">
+            <div class="spinner"></div>
+            <p>جاري تحميل المحتوى ...</p>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- إعلان ثالث -->
-<div id="thirdModal" class="modal">
-    <div class="modal-content">
-        <h1 class="modal-title">لا تنسَ أننا نوفر تحديًا يوميًا لأعضائنا الكرام لختم القرآن</h1>
-        <div class="modal-body">
-       
-            <p style="text-align: center;">
-                يقول الله عز وجل:
-            </p>
-
-            <div class="quran-text">
-                ﴿ الَّذِينَ آتَيْنَاهُمُ الْكِتَابَ يَتْلُونَهُ حَقَّ تِلَاوَتِهِ أُولَٰئِكَ يُؤْمِنُونَ بِهِ ۗ وَمَن يَكْفُرْ بِهِ فَأُولَٰئِكَ هُمُ الْخَاسِرُونَ ﴾
-                <br>
-                [البقرة: 121]
-            </div>
-<br>
-            <p style="text-align: center; font-weight: bold;">
-                <a href="index_KHATM_WARCH_30YOM.html" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 8px; font-size: 18px;">
-                      ابدأ التحدي اليومي  لتلاوة القران 
-                </a>
-            </p>
-            
-            <div class="hadith-box">
-                <p class="hadith-text">
-                    "مَنْ قرأَ حرفًا من كتابِ اللهِ فله به حسنةٌ، والحسنةُ بعشرِ أمثالِها،
-                    لا أقولُ آلم حرفٌ، ولكن ألِفٌ حرفٌ، ولامٌ حرفٌ، وميمٌ حرفٌ"
-                </p>
-                <p style="margin-top: 10px; font-size: 16px;">
-                    الراوي: عبدالله بن مسعود | المحدث: الألباني | المصدر: صحيح الترمذي<br>
-                    الصفحة أو الرقم: 2910 | خلاصة حكم المحدث: صحيح
-                </p>
-                <p style="margin-top: 5px; font-size: 14px;">
-                    التخريج: أخرجه الترمذي (2910) واللفظ له، وأبو نعيم في ((حلية الأولياء)) (6/263)، والبيهقي في ((شعب الإيمان)) (1983) باختلاف يسير.
-                </p>
-            </div>
-        </div>
-        <button class="btn-close" onclick="closeThirdModal()">×</button>
-    </div>
-</div>
-
-
-
-
-
-
-
-<!-- إعلان رابع -->
-<div id="fourthModal" class="modal">
-    <div class="modal-content">
-        <h1 class="modal-title">إعلان رابع</h1>
-        <div class="modal-body">
-            <p style="text-align: center;">محتوى الإعلان الرابع يظهر هنا.</p>
-        </div>
-        <button class="btn-close" onclick="closeFourthModal()">×</button>
-    </div>
-</div>
-
-
-
-
-
-    <script>
-        // Show first modal on page load with a slight delay for better performance
-        window.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                document.getElementById("taraweehModal").style.display = "flex";
-            }, 100);
-        });
-
-        // إغلاق الإعلان الأول وفتح الإعلان الثاني
-function closeFirstModal() {
-    document.getElementById("taraweehModal").style.display = "none";
-    setTimeout(function() {
-        document.getElementById("secondModal").style.display = "flex";
-    }, 50);
-}
-
-// إغلاق الإعلان الثاني وفتح الإعلان الثالث
-function closeSecondModal() {
-    document.getElementById("secondModal").style.display = "none";
-    setTimeout(function() {
-        document.getElementById("thirdModal").style.display = "flex";
-    }, 50);
-}
-
-// إغلاق الإعلان الثالث وفتح الإعلان الرابع
-function closeThirdModal() {
-    document.getElementById("thirdModal").style.display = "none";
-    setTimeout(function() {
-        document.getElementById("fourthModal").style.display = "flex";
-    }, 50);
-}
-
-// إغلاق الإعلان الرابع
-function closeFourthModal() {
-    document.getElementById("fourthModal").style.display = "none";
-}
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Add touch event listeners for better mobile experience
-        document.querySelectorAll('.btn-close').forEach(function(button) {
-            button.addEventListener('touchstart', function() {
-                this.style.transform = 'scale(0.95)';
-            });
-            
-            button.addEventListener('touchend', function() {
-                this.style.transform = 'scale(1)';
-            });
-        });
-
-        // Prevent zooming on double tap for iOS
-        document.addEventListener('gesturestart', function(e) {
-            e.preventDefault();
-        });
-    </script>
-
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مرحبا بكم في أداة علم</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-</head>
-<body>
-
-<style>
-    /* أنماط الشاشة الرئيسية */
-    #adatealm-main-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #111827;
-        z-index: 9999;
-        display: flex; /* استخدام Flexbox لإنشاء تخطيط من قسمين */
-        justify-content: space-around; /* توزيع المساحة حول العناصر */
-        align-items: center; /* محاذاة العناصر عمودياً في المنتصف */
-        padding: 2rem;
-        gap: 2rem; /* مسافة بين قسم النص وقسم الفيديو */
-        font-family: 'Cairo', sans-serif;
-        -webkit-tap-highlight-color: transparent;
-        touch-action: manipulation;
-    }
-
-    /* قسم المحتوى على اليسار */
-    .content-section {
-        background-color: #1f2937;
-        padding: 30px 25px;
-        border-radius: 15px;
-        text-align: center;
-        width: 100%;
-        max-width: 420px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        border: 1px solid #374151;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .content-section .options-title {
-        color: #ffffff;
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 25px;
-    }
-
-    .content-section .option-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        width: 100%;
-        padding: 15px;
-        margin-bottom: 15px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: 700;
-        font-family: 'Cairo', sans-serif;
-        color: white;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .content-section .option-btn:last-child {
-        margin-bottom: 0;
-    }
-
-    /* قسم الفيديو على اليمين */
-    .video-frame-container {
-        width: 45%;
-        max-width: 600px;
-        aspect-ratio: 16 / 9; /* للحفاظ على أبعاد الفيديو 16:9 */
-        border: 3px solid #374151;
-        border-radius: 15px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        overflow: hidden; /* لإخفاء أي أجزاء من الفيديو تخرج عن الإطار */
-        background-color: #111; /* لون خلفية الإطار أثناء تحميل الفيديو */
-    }
-    
-    .video-frame-container video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* لملء الفيديو للإطار دون تشويه */
-    }
-
-    /* أنماط الأزرار والأيقونات */
-    .option-btn.continue { background-color: #22c55e; }
-    .option-btn.bac { background-color: #3b82f6; }
-    .option-btn.exit { background-color: #ef4444; }
-    .option-btn .icon { font-size: 1.2rem; }
-
-    .option-btn:active {
-        transform: scale(0.97);
-        opacity: 0.9;
-    }
-
-    @media (hover: hover) {
-        .option-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-    }
-
-    /* --- التجاوب مع الشاشات الصغيرة (الهواتف) --- */
-    @media (max-width: 992px) {
-        #adatealm-main-screen {
-            flex-direction: column; /* تغيير اتجاه التوزيع إلى عمودي */
-            justify-content: center; /* لتركيز المحتوى في وسط الشاشة */
-            overflow-y: auto; /* السماح بالتمرير إذا كانت الشاشة قصيرة جداً */
-        }
-
-        .content-section {
-            order: 1; /* التأكد من أن النص يظهر أولاً */
-            width: 90%;
-            max-width: 420px;
-        }
-
-        .video-frame-container {
-            order: 2; /* التأكد من أن الفيديو يظهر ثانياً */
-            width: 90%;
-            max-width: 420px;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .content-section .options-title { font-size: 1.5rem; }
-        .content-section .option-btn { padding: 12px; font-size: 0.95rem; }
-    }
-</style>
-
-<div id="adatealm-main-screen">
-    
-    <div class="content-section">
-<h2 class="options-title">مَرْحَبًا بِكُمْ فِي أَدَاة عِلْم</h2>
-        
-
-        
-
-
- <style>
-  .options-title {
-    font-size: 1em;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  .popup-content {
-    text-align: center;
-    background-color: #3e0b10;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    max-width: 110%;
-    margin: 8px auto;
-    font-family: 'Arial', sans-serif;
-    color: #b71c1c;
-  }
-
-  .popup-content p {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #d32f2f;
-    margin: 10px 0;
-  }
-
-  .popup-content img {
-    max-width: 95%;
-    height: auto;
-    border: none;
-    outline: 2px solid #0b04fb;
-    border-radius: 4px;
-  }
-
-  /* Media Queries for very small screens */
-  @media (max-width: 480px) {
-    .options-title {
-      font-size: 0.85em;
-    }
-
-    .popup-content p {
-      font-size: 0.85em;
-    }
-
-    .popup-content {
-      padding: 8px;
-      max-width: 98%;
-    }
-  }
-</style>
-
-
-<div class="popup-content">
-  <p>عدُوكَ لَنْ يَنْتَظِرَك بِطَبَقٍ مِنْ وُرُود</p>
-
-  <a href="https://t.me/S22MCS" target="_blank">
-    <img src="adatealm/S⚡2⚡2MCS.jpg" alt="Updated Image">
-  </a>
-
-  <p>لَا تَفْصِل عِلْمَك الدُنْيَوِي عَن دِين الإسْلام</p>
-</div>
-
-
-
-
-
-
-
-
-
-        <h1 class="options-title">اختر وجهتك</h1>
-        
-      
-
-
-        <button class="option-btn continue" id="adatealmContinueBtn">
-            <i class="fas fa-university icon"></i>
-            <span>موقع الطلبة الجامعيين</span>
-        </button>
-        
-        <button class="option-btn bac" id="adatealmBacBtn">
-            <i class="fas fa-graduation-cap icon"></i>
-            <span>موقع البكالوريا</span>
-        </button>
-        
-        <button class="option-btn exit" id="adatealmExitBtn">
-            <i class="fas fa-sign-out-alt icon"></i>
-            <span>مغادرة الموقع</span>
-        </button>
-    </div>
-
-    <div class="video-frame-container">
-        <video autoplay muted loop playsinline>
-            <source src="S22MCS PARTS/LOGO VIDIO ADATEALM.mp4" type="video/mp4">
-            متصفحك لا يدعم الفيديو.
-        </video>
-    </div>
-
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const mainScreen = document.getElementById('adatealm-main-screen');
-        const continueBtn = document.getElementById('adatealmContinueBtn');
-        const bacBtn = document.getElementById('adatealmBacBtn');
-        const exitBtn = document.getElementById('adatealmExitBtn');
-
-        // عند الضغط على "الدخول إلى الموقع"، يتم إخفاء الشاشة
-        continueBtn.addEventListener('click', function() {
-            mainScreen.style.display = 'none';
-        });
+    // متغيرات التطبيق
+    let contentLoaded = false;
+    const TARGET_URL = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    
+    // عناصر DOM
+    const popupContainer = document.getElementById('popupContainer');
+    const overlay = document.getElementById('overlay');
+    const contentContainer = document.getElementById('contentContainer');
+    const dangerBtn = document.querySelector('.danger-btn');
+    
+    // تبديل عرض/إخفاء النافذة
+    function togglePopup() {
+        if (popupContainer.style.display === 'flex') {
+            closePopup();
+        } else {
+            openPopup();
+        }
+    }
+    
+    function openPopup() {
+        // إيقاف تأثير النبض عند الفتح
+        dangerBtn.style.animation = 'none';
         
-        // توجيه إلى موقع البكالوريا
-        bacBtn.addEventListener('click', function() {
-            window.location.href = 'https://adatealm.github.io/BAC/';
-        });
+        overlay.style.display = 'block';
+        popupContainer.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
         
-        // مغادرة الموقع
-        exitBtn.addEventListener('click', function() {
-            window.location.href = 'about:blank';
-        });
+        if (!contentLoaded) {
+            loadContent();
+        }
+    }
+    
+    function closePopup() {
+        // إعادة تشغيل تأثير النبض عند الإغلاق
+        dangerBtn.style.animation = 'pulse 2s infinite';
+        
+        overlay.style.display = 'none';
+        popupContainer.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // تحميل المحتوى
+    async function loadContent() {
+        try {
+            // استخدام iframe كحل أساسي
+            showIframeContent();
+            contentLoaded = true;
+        } catch (error) {
+            showError(error);
+        }
+    }
+    
+    // عرض المحتوى باستخدام iframe
+    function showIframeContent() {
+        contentContainer.innerHTML = `
+            <iframe src="${TARGET_URL}" 
+                    style="width:100%; height:100%; border:none;"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    loading="lazy">
+            </iframe>
+        `;
+    }
+    
+    // عرض رسالة الخطأ
+    function showError(error) {
+        contentContainer.innerHTML = `
+            <div class="loader">
+                <div style="color: #e74c3c; margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 20px; color: #555;">${error.message}</p>
+                <button onclick="retryLoading()" 
+                        style="padding: 10px 20px; 
+                               background: linear-gradient(to right, #e74c3c, #c0392b); 
+                               color: white; 
+                               border: none; 
+                               border-radius: 30px;
+                               font-size: 1rem;
+                               box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+                               transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // إعادة تحميل المحتوى
+    function retryLoading() {
+        contentContainer.innerHTML = `
+            <div class="loader">
+                <div class="spinner"></div>
+                <p>جاري تحميل المحتوى الطبي...</p>
+            </div>
+        `;
+        loadContent();
+    }
+    
+    // إغلاق النافذة عند النقر خارجها
+    overlay.addEventListener('click', closePopup);
+    
+    // منع إغلاق النافذة عند النقر داخلها
+    popupContainer.addEventListener('click', (e) => {
+        e.stopPropagation();
     });
+    
+    // تحسين الأداء للهواتف
+    if ('connection' in navigator) {
+        if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
+            // تحسينات لشبكات الجيل الثاني
+            dangerBtn.style.animation = 'none';
+        }
+    }
+    
+    // إضافة اهتزاز عند النقر (للهواتف)
+    function vibrate() {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(10);
+        }
+    }
+    
+    // إضافة الاهتزاز للأزرار
+    document.querySelector('.danger-btn').addEventListener('click', vibrate);
+    document.querySelector('.close-btn')?.addEventListener('click', vibrate);
 </script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
