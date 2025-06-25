@@ -688,215 +688,170 @@ document.addEventListener('DOMContentLoaded', loadUpdatesForPanel);
    <div class="card-container">
 
 
+    <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة التبرع</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            max-width: 550px;
+            width: 100%;
+            text-align: center;
+            border-top: 5px solid #007bff;
+        }
+
+        h1 {
+            color: #0056b3;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        p {
+            font-size: 1.15em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .donation-box {
+            margin: 30px 0;
+            display: flex;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #accountNumber {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-left: none;
+            text-align: left;
+            direction: ltr;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #0056b3;
+            background-color: #f0f8ff;
+            user-select: all; /* Makes text selectable */
+        }
+
+        #copyButton {
+            padding: 12px 25px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #copyButton:hover {
+            background-color: #0056b3;
+        }
+
+        #copyButton:active {
+            transform: scale(0.97);
+        }
+        
+        .final-text {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #28a745;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>ادعمنا لمواصلة الخير</h1>
+        <p>يكفي من كل طالب مبلغ رمزي قدره <strong>300 دج سنوياً</strong>.</p>
+        <p>يمكنكم التبرع لنا مباشرة عبر حساب **بريدي موب** التالي:</p>
+        
+        <div class="donation-box">
+            <input type="text" value="00799999002788082167" id="accountNumber" readonly>
+            <button id="copyButton">نسخ الحساب</button>
+        </div>
+        
+        <p>فإن لم تريد إرساله لنا، يمكنك كبديل أن تتصدق به بوضعه في صناديق الصدقات للمساجد، فإنه لمبلغ زهيد.</p>
+        
+        <p class="final-text">وفقنا الله وإياكم</p>
+    </div>
+
+    <script>
+        // JavaScript Code
+        document.getElementById('copyButton').addEventListener('click', function() {
+            const accountNumberInput = document.getElementById('accountNumber');
+            const button = this;
+
+            // Select the text
+            accountNumberInput.select();
+            accountNumberInput.setSelectionRange(0, 99999); // For mobile devices
+
+            try {
+                // Copy the text to the clipboard
+                navigator.clipboard.writeText(accountNumberInput.value).then(function() {
+                    // Success feedback
+                    const originalText = button.innerHTML;
+                    button.innerHTML = 'تم النسخ!';
+                    button.style.backgroundColor = '#28a745'; // Green color for success
+
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.style.backgroundColor = '#007bff'; // Revert to original color
+                    }, 2000);
+                }).catch(function(err) {
+                    // Fallback for older browsers
+                    handleCopyError(button);
+                });
+
+            } catch (err) {
+                // Fallback for very old browsers
+                handleCopyError(button);
+            }
+        });
+
+        function handleCopyError(button) {
+            const originalText = button.innerHTML;
+            button.innerHTML = 'فشل النسخ';
+            button.style.backgroundColor = '#dc3545'; // Red color for error
+
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.backgroundColor = '#007bff';
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
+   </div>
+
+
 
 
       
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <div class="update-card">
-  <h3>📢 آخر التحديثات</h3>
-  <ul id="updates-list">
-    <li class="loading-item">جارٍ التحميل...</li>
-  </ul>
-</div>
-<style>
-
-/* --- بداية تنسيقات لوحة التحديثات --- */
-
-.update-card {
-  background-color: var(--notif-bg-color);
-  color: var(--notif-text-color);
-  border: 1px solid var(--notif-border-color);
-  border-radius: 12px;
-  padding: 20px;
-  margin: 20px 0; /* يمكنك تعديل الهامش حسب تصميمك */
-  box-shadow: 0 4px 10px var(--notif-shadow-color);
-}
-
-.update-card h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 18px;
-  border-bottom: 1px solid var(--notif-border-color);
-  padding-bottom: 10px;
-}
-
-.update-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.update-card li {
-  display: flex;
-  align-items: center;
-  gap: 15px; /* مسافة بين الأيقونة والنص */
-  padding: 12px 5px;
-  border-bottom: 1px solid var(--notif-border-color);
-  font-size: 15px;
-  transition: background-color 0.2s ease;
-}
-
-.update-card li:last-child {
-  border-bottom: none; /* إزالة الحد من آخر عنصر */
-}
-
-/* لجعل العنصر القابل للنقر يملأ المساحة */
-.update-card li a {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  text-decoration: none;
-  color: inherit; /* يرث لون النص الأب */
-  width: 100%;
-}
-
-.update-card li:hover {
-    background-color: var(--notif-item-hover-bg);
-    border-radius: 6px;
-}
-
-.update-card li i {
-  color: var(--notif-icon-color);
-  font-size: 16px;
-}
-
-.update-card li p {
-    margin: 0;
-    line-height: 1.5;
-}
-
-/* --- نهاية تنسيقات لوحة التحديثات --- */
-</style>
-
-
-
-
-
-   </div>
-</main>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const body = document.body;
-    const overlay = document.querySelector('.overlay');
-
-    // --- القائمة الجانبية (SideBar) ---
-    const sideBar = document.querySelector('.side-bar');
-    const menuBtn = document.querySelector('#menu-btn');
-    const closeBtn = document.querySelector('#close-btn');
-    
-    // --- قائمة البروفايل (Profile Dropdown) ---
-    const profileBtn = document.querySelector('#user-btn');
-    const profileDropdown = document.querySelector('.profile-dropdown');
-
-    const closeAllPopups = () => {
-        sideBar.classList.remove('active');
-        profileDropdown.classList.remove('active');
-        overlay.classList.remove('active');
-        body.style.overflow = 'auto';
-    };
-
-    menuBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeAllPopups(); // إغلاق أي شيء آخر مفتوح أولاً
-        sideBar.classList.add('active');
-        overlay.classList.add('active');
-        body.style.overflow = 'hidden';
-    });
-
-    profileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isAlreadyActive = profileDropdown.classList.contains('active');
-        closeAllPopups(); // إغلاق أي شيء آخر مفتوح أولاً
-        if (!isAlreadyActive) {
-            profileDropdown.classList.add('active');
-        }
-    });
-
-    closeBtn.addEventListener('click', closeAllPopups);
-    overlay.addEventListener('click', closeAllPopups);
-
-    // إغلاق القوائم عند الضغط على مفتاح الهروب (Escape)
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeAllPopups();
-        }
-    });
-    
-    // إغلاق القائمة عند النقر على رابط بداخلها
-    document.querySelectorAll('.side-bar .navbar a').forEach(link => {
-        link.addEventListener('click', closeAllPopups);
-    });
-
-    // --- تسجيل الخروج ---
-    document.querySelector('#logout-btn').addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('تم تسجيل الخروج بنجاح!'); // يمكنك استبدالها بالمنطق الفعلي
-        window.location.href = 'INDEX.html';
-    });
-
-    // --- الوضع الليلي ---
-    const toggleBtn = document.querySelector('#toggle-btn');
-    const themeIcon = toggleBtn.classList.contains('fa-sun') ? 'fa-sun' : 'fa-moon';
-    
-    const applyTheme = (theme) => {
-        if (theme === 'dark') {
-            body.classList.add('dark-mode');
-            toggleBtn.classList.replace('fa-sun', 'fa-moon');
-        } else {
-            body.classList.remove('dark-mode');
-            toggleBtn.classList.replace('fa-moon', 'fa-sun');
-        }
-    };
-
-    const currentTheme = localStorage.getItem('theme');
-    applyTheme(currentTheme);
-
-    toggleBtn.addEventListener('click', () => {
-        let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
-        applyTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-    });
-});
-</script>
-
-</body>
-</html>
 
 
 
