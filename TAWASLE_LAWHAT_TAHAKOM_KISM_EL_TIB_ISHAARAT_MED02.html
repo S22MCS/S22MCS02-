@@ -2,73 +2,496 @@
 <html dir="rtl" lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>لوحة تحكم الإشعارات</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم الإشعارات المحسّنة</title>
   <script type="module">
-    // استيراد Firebase
+    // استيراد وظائف Firebase المطلوبة
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+    // تنبيه: احتفظ بمعلومات الاتصال هذه آمنة ولا تشاركها علنًا
     const firebaseConfig = {
       apiKey: "AIzaSyAJK6IUSw2YbwNVfB_hRNsOFeO08LEp4c8",
       authDomain: "adatealm-nofication.firebaseapp.com",
       projectId: "adatealm-nofication",
-      storageBucket: "adatealm-nofication.firebasestorage.app",
+      storageBucket: "adatealm-nofication.appspot.com", // تصحيح طفيف للمثال القياسي
       messagingSenderId: "216068965336",
       appId: "1:216068965336:web:310c95e8e9fc4561cbe8ad",
       measurementId: "G-PDWFZKRMJP"
     };
 
+    // تهيئة Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const notificationsCollection = collection(db, "notifications");
 
-    async function loadNotifications() {
-      const notifList = document.getElementById("notifList");
-      notifList.innerHTML = "";
-      const querySnapshot = await getDocs(collection(db, "notifications"));
-      querySnapshot.forEach((docSnap) => {
-        const li = document.createElement("li");
-        li.textContent = docSnap.data().text;
-        li.onclick = () => {
-          if (confirm("حذف هذا الإشعار؟")) {
-            deleteDoc(doc(db, "notifications", docSnap.id)).then(loadNotifications);
-          }
-        };
-        notifList.appendChild(li);
-      });
+    let docToDeleteId = null; // متغير لحفظ معرف المستند المراد حذفه
+
+    // --- دوال النافذة المنبثقة (Modal) للحذف ---
+    function showDeleteModal(docId, text) {
+      docToDeleteId = docId;
+      const modal = document.getElementById('deleteModal');
+      const modalText = document.getElementById('deleteModalText');
+      modalText.textContent = `هل أنت متأكد من حذف الإشعار: "${text}"؟`;
+      modal.style.display = 'block';
     }
 
-    async function addNotification() {
-      const input = document.getElementById("notifInput");
-      if (input.value.trim()) {
-        await addDoc(collection(db, "notifications"), { text: input.value });
-        input.value = "";
-        loadNotifications();
+    function hideDeleteModal() {
+      const modal = document.getElementById('deleteModal');
+      modal.style.display = 'none';
+      docToDeleteId = null;
+    }
+
+    // --- دالة التبديل إلى وضع التعديل ---
+    function toggleEditMode(li, docId, currentText) {
+        // إخفاء النص والأزرار الأصلية
+        const textSpan = li.querySelector(".notif-text");
+        const buttonGroup = li.querySelector(".action-buttons");
+        textSpan.style.display = 'none';
+        buttonGroup.style.display = 'none';
+
+        // إنشاء عناصر وضع التعديل
+        const editContainer = document.createElement("div");
+        editContainer.className = 'edit-container';
+        
+        const editInput = document.createElement("input");
+        editInput.type = "text";
+        editInput.value = currentText;
+        editInput.className = 'edit-input';
+
+        const saveBtn = document.createElement("button");
+        saveBtn.textContent = "💾 حفظ";
+        saveBtn.className = 'save-btn';
+        saveBtn.onclick = async (e) => {
+            e.stopPropagation();
+            const newText = editInput.value.trim();
+            if (newText && newText !== currentText) {
+                const notifRef = doc(db, "notifications", docId);
+                await updateDoc(notifRef, { text: newText });
+            }
+            await loadNotifications(); // إعادة تحميل القائمة لإظهار التغييرات أو لإلغاء وضع التعديل
+        };
+
+        const cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "❌ إلغاء";
+        cancelBtn.className = 'cancel-btn';
+        cancelBtn.onclick = async (e) => {
+            e.stopPropagation();
+            await loadNotifications(); // إعادة تحميل القائمة لإلغاء وضع التعديل
+        };
+
+        editContainer.appendChild(editInput);
+        editContainer.appendChild(saveBtn);
+        editContainer.appendChild(cancelBtn);
+        li.prepend(editContainer); // إضافة عناصر التعديل في بداية عنصر القائمة
+        editInput.focus();
+    }
+
+
+    // دالة لعرض الإشعارات
+    async function loadNotifications() {
+      const notifList = document.getElementById("notifList");
+      notifList.innerHTML = "<li>جاري التحميل...</li>";
+      
+      const q = query(notificationsCollection, orderBy("createdAt", "desc"));
+      
+      try {
+        const querySnapshot = await getDocs(q);
+        notifList.innerHTML = "";
+        
+        if (querySnapshot.empty) {
+          notifList.innerHTML = "<li>لا توجد إشعارات حالياً.</li>";
+        } else {
+          querySnapshot.forEach((docSnap) => {
+            const notification = docSnap.data();
+            const li = document.createElement("li");
+            
+            const textSpan = document.createElement("span");
+            textSpan.textContent = notification.text;
+            textSpan.className = "notif-text";
+            textSpan.style.color = notification.color || "black";
+            if (notification.color && notification.color !== 'black') {
+                textSpan.style.fontWeight = 'bold';
+            }
+
+            const buttonsContainer = document.createElement("div");
+            buttonsContainer.className = 'action-buttons';
+
+            // زر التعديل الجديد
+            const editBtn = document.createElement("button");
+            editBtn.textContent = "✏️";
+            editBtn.title = "تعديل الإشعار";
+            editBtn.className = 'edit-btn';
+            editBtn.onclick = (e) => {
+                e.stopPropagation();
+                toggleEditMode(li, docSnap.id, notification.text);
+            };
+            
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "🗑️";
+            deleteBtn.title = "حذف الإشعار";
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.onclick = (e) => {
+              e.stopPropagation();
+              showDeleteModal(docSnap.id, notification.text); // استدعاء النافذة المنبثقة
+            };
+            
+            buttonsContainer.appendChild(editBtn);
+            buttonsContainer.appendChild(deleteBtn);
+
+            li.appendChild(textSpan);
+            li.appendChild(buttonsContainer);
+            notifList.appendChild(li);
+          });
+        }
+      } catch (error) {
+          console.error("خطأ في تحميل الإشعارات:", error);
+          notifList.innerHTML = "<li>حدث خطأ أثناء تحميل البيانات.</li>";
       }
     }
 
-    window.addEventListener("DOMContentLoaded", loadNotifications);
-    window.addNotification = addNotification;
+    // دالة لإضافة إشعار جديد
+    async function addNotification() {
+      const input = document.getElementById("notifInput");
+      const colorSelect = document.getElementById("notifColor");
+      const text = input.value.trim();
+      const color = colorSelect.value;
+
+      if (text) {
+        try {
+          await addDoc(notificationsCollection, {
+            text: text,
+            color: color,
+            createdAt: serverTimestamp() 
+          });
+          input.value = "";
+          await loadNotifications();
+        } catch (error) {
+          console.error("خطأ في إضافة الإشعار: ", error);
+          alert("حدث خطأ أثناء إضافة الإشعار.");
+        }
+      } else {
+        alert("الرجاء إدخال نص للإشعار.");
+      }
+    }
+
+    // ربط الأحداث عند تحميل الصفحة
+    window.addEventListener("DOMContentLoaded", () => {
+        loadNotifications();
+        
+        document.getElementById('addButton').onclick = addNotification;
+        
+        document.getElementById('notifInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                addNotification();
+            }
+        });
+
+        // إعدادات النافذة المنبثقة للحذف
+        const modal = document.getElementById('deleteModal');
+        const closeBtn = document.querySelector('.close-button');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+        closeBtn.onclick = hideDeleteModal;
+        cancelDeleteBtn.onclick = hideDeleteModal;
+        
+        confirmDeleteBtn.onclick = async () => {
+            if (docToDeleteId) {
+                try {
+                    await deleteDoc(doc(db, "notifications", docToDeleteId));
+                    hideDeleteModal();
+                    await loadNotifications();
+                } catch (error) {
+                    console.error("خطأ في حذف المستند: ", error);
+                    alert("حدث خطأ أثناء الحذف.");
+                    hideDeleteModal();
+                }
+            }
+        };
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                hideDeleteModal();
+            }
+        }
+    });
+
   </script>
 
   <style>
-    body { font-family: Arial; background: #f2f2f2; padding: 20px; text-align: right; }
-    input { width: 80%; padding: 10px; font-size: 16px; }
-    button { padding: 10px 20px; font-size: 16px; margin-right: 10px; }
-    ul { list-style: none; padding: 0; margin-top: 20px; }
+    :root {
+      --primary-color: #007bff;
+      --success-color: #28a745;
+      --danger-color: #dc3545;
+      --secondary-color: #6c757d;
+      --light-gray: #f8f9fa;
+      --dark-gray: #343a40;
+      --border-radius: 8px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--light-gray);
+      margin: 0;
+      padding: 15px;
+      text-align: right;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #ffffff;
+      padding: 20px 25px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: var(--dark-gray);
+      border-bottom: 3px solid var(--primary-color);
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+    
+    input[type="text"] {
+      flex-grow: 1;
+      min-width: 200px;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    input[type="text"]:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        outline: none;
+    }
+    
+    select, button {
+      padding: 12px;
+      font-size: 16px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      background-color: #e9ecef;
+      border: 1px solid #ced4da;
+    }
+
+    .add-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+    .add-btn:hover {
+      background-color: #0056b3;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
     li {
       background: #fff;
-      padding: 10px;
+      padding: 12px 15px;
       margin-bottom: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      cursor: pointer;
+      border-radius: var(--border-radius);
+      border-right: 5px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      word-break: break-word;
+      transition: background-color 0.2s, border-color 0.2s;
     }
+    li:hover {
+        background-color: #f1f1f1;
+        border-right-color: var(--primary-color);
+    }
+    
+    li .notif-text {
+        font-size: 1.1em;
+        font-weight: 500;
+        flex-grow: 1;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .delete-btn, .edit-btn {
+        background-color: transparent;
+        padding: 5px 10px;
+        font-size: 20px;
+        border: none;
+        opacity: 0.6;
+        transition: opacity 0.3s, transform 0.3s, color 0.3s;
+    }
+
+    .delete-btn { color: var(--danger-color); }
+    .edit-btn { color: var(--primary-color); }
+
+    .delete-btn:hover, .edit-btn:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    
+    /* --- Edit Mode Styles --- */
+    .edit-container {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    .edit-input {
+        flex-grow: 1;
+        font-size: 1em;
+        padding: 8px;
+        border: 1px solid var(--primary-color);
+        border-radius: var(--border-radius);
+    }
+    .save-btn, .cancel-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+        border: none;
+        color: white;
+    }
+    .save-btn { background-color: var(--success-color); }
+    .cancel-btn { background-color: var(--secondary-color); }
+    .save-btn:hover { background-color: #218838; }
+    .cancel-btn:hover { background-color: #5a6268; }
+
+    /* --- Modal Styles --- */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5);
+        animation: fadeIn 0.3s;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 25px 30px;
+        border: 1px solid #888;
+        width: 90%;
+        max-width: 450px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        text-align: center;
+        position: relative;
+        animation: slideIn 0.3s;
+    }
+
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes slideIn { from {transform: translateY(-50px);} to {transform: translateY(0);} }
+
+    .close-button {
+        color: #aaa;
+        float: left;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-content h4 {
+        margin-top: 0;
+        font-size: 1.4em;
+        color: var(--dark-gray);
+    }
+    
+    .modal-content p {
+        font-size: 1.1em;
+        margin-bottom: 25px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .modal-buttons button {
+        padding: 10px 20px;
+        border: none;
+        font-size: 16px;
+    }
+
+    .modal-buttons .btn-danger { background-color: var(--danger-color); color: white; }
+    .modal-buttons .btn-secondary { background-color: #6c757d; color: white; }
+
   </style>
 </head>
 <body>
-  <h2>📋 لوحة التحكم - إشعارات الأكاديمية</h2>
-  <input id="notifInput" placeholder="✍️ أدخل الإشعار الجديد...">
-  <button onclick="addNotification()">➕ إضافة</button>
-  <ul id="notifList"></ul>
+
+  <div class="container">
+    <h2>📋 لوحة تحكم الإشعارات</h2>
+    
+    <div class="input-group">
+      <input id="notifInput" type="text" placeholder="✍️ أدخل الإشعار الجديد هنا...">
+      
+      <select id="notifColor" title="اختر لون الإشعار">
+        <option value="black">أسود (افتراضي)</option>
+        <option value="red" style="color:red; font-weight:bold;">أحمر</option>
+        <option value="green" style="color:green; font-weight:bold;">أخضر</option>
+        <option value="blue" style="color:blue; font-weight:bold;">أزرق</option>
+      </select>
+      
+      <button id="addButton" class="add-btn">➕ إضافة</button>
+    </div>
+    
+    <ul id="notifList">
+      </ul>
+  </div>
+
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h4>تأكيد الحذف</h4>
+      <p id="deleteModalText">هل أنت متأكد من حذف هذا الإشعار؟</p>
+      <div class="modal-buttons">
+        <button id="cancelDeleteBtn" class="btn-secondary">إلغاء</button>
+        <button id="confirmDeleteBtn" class="btn-danger">نعم، احذف</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
