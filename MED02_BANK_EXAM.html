@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>لوحة التحكم - قسم الطب</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+   <style>
+      /* --- :root | المتغيرات العامة --- */
+      :root {
+         --primary-color: #00897b; /* أخضر مزرق أفتح */
+         --primary-dark: #00695c;
+         --bg-body: #f1f5f9; /* رمادي فاتح جداً للخلفية */
+         --bg-card: #ffffff;
+         --text-primary: #1e293b;
+         --text-secondary: #64748b;
+         --border-color: #e2e8f0;
+         --white: #ffffff;
+         --red: #ef4444;
+         --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+         --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+         --radius: 0.8rem;
+      }
+      
+      /* --- :root | الوضع الليلي --- */
+      body.dark-mode {
+         --bg-body: #0f172a;
+         --bg-card: #1e293b;
+         --text-primary: #f1f5f9;
+         --text-secondary: #94a3b8;
+         --border-color: #334155;
+      }
+
+      /* --- التنسيقات الأساسية --- */
+      * {
+         font-family: 'Cairo', sans-serif;
+         margin: 0; padding: 0;
+         box-sizing: border-box;
+         outline: none; border: none;
+         text-decoration: none;
+      }
+      
+      html {
+         font-size: 62.5%;
+         overflow-x: hidden;
+      }
+
+      body {
+         background-color: var(--bg-body);
+         color: var(--text-primary);
+         transition: background-color .3s, color .3s;
+         padding-top: 8rem; /* مساحة للشريط العلوي الثابت */
+      }
+
+      /* --- الشريط العلوي (Header) --- */
+      .header {
+         background-color: var(--bg-card);
+         padding: 1.5rem 3%;
+         position: fixed;
+         top: 0; right: 0; left: 0;
+         z-index: 1000;
+         box-shadow: var(--shadow-md);
+         border-bottom: 1px solid var(--border-color);
+      }
+      
+      .header .flex {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         gap: 2rem;
+      }
+      
+      .logo {
+         font-size: 2.2rem;
+         font-weight: 700;
+         color: var(--primary-color);
+      }
+      
+      .header .icons {
+         display: flex;
+         align-items: center;
+         gap: .5rem;
+         position: relative; /* مهم لوضع قائمة البروفايل */
+      }
+      
+      .icon-btn {
+         font-size: 2rem;
+         color: var(--text-secondary);
+         cursor: pointer;
+         height: 4.5rem;
+         width: 4.5rem;
+         line-height: 4.5rem;
+         text-align: center;
+         border-radius: 50%;
+         transition: all .2s ease-in-out;
+      }
+      
+      .icon-btn:hover {
+         background-color: var(--bg-body);
+         color: var(--primary-color);
+      }
+      
+      /* --- قائمة البروفايل المنسدلة --- */
+      .profile-dropdown {
+         position: absolute;
+         top: calc(100% + 1rem);
+         left: 0; /* تم التعديل إلى اليسار لأن التصميم RTL */
+         background-color: var(--bg-card);
+         border-radius: var(--radius);
+         box-shadow: var(--shadow-md);
+         border: 1px solid var(--border-color);
+         width: 30rem;
+         padding: 2rem;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: 1.5rem;
+         opacity: 0;
+         transform: translateY(-10px);
+         visibility: hidden;
+         transition: all .2s ease-in-out;
+         z-index: 1100;
+      }
+
+      .profile-dropdown.active {
+         opacity: 1;
+         transform: translateY(0);
+         visibility: visible;
+      }
+      
+      .profile-dropdown .image {
+         width: 8rem;
+         height: 8rem;
+         border-radius: 50%;
+         object-fit: cover;
+      }
+
+      .profile-dropdown .name {
+         font-size: 1.8rem;
+         color: var(--text-primary);
+         font-weight: 600;
+      }
+      
+      .profile-dropdown .role {
+         font-size: 1.4rem;
+         color: var(--text-secondary);
+      }
+      
+      .btn {
+         width: 100%;
+         padding: 1.2rem;
+         background-color: var(--primary-color);
+         color: var(--white);
+         border-radius: var(--radius);
+         cursor: pointer;
+         font-size: 1.6rem;
+         text-align: center;
+         transition: background-color .2s;
+      }
+
+      .btn:hover { background-color: var(--primary-dark); }
+      
+      .btn.logout { background-color: var(--red); }
+
+
+      /* --- القائمة الجانبية --- */
+      .side-bar {
+         position: fixed;
+         top: 0;
+         right: -100%;
+         width: 32rem;
+         max-width: 90%;
+         height: 100vh;
+         background-color: var(--bg-card);
+         border-left: 1px solid var(--border-color);
+         z-index: 1200;
+         transition: right 0.3s ease-in-out;
+      }
+      
+      .side-bar.active { right: 0; }
+      
+      .side-bar .close-btn-container {
+         padding: 1.5rem; text-align: left;
+      }
+      #close-btn { font-size: 2.5rem; } /* Reuse icon-btn style */
+
+      .side-bar .navbar { padding-top: 1rem; }
+      
+      .side-bar .navbar a {
+         display: flex;
+         align-items: center;
+         gap: 2rem;
+         padding: 1.5rem 2rem;
+         font-size: 1.7rem;
+         color: var(--text-secondary);
+         transition: all .2s;
+      }
+      
+      .side-bar .navbar a:hover {
+         background-color: var(--bg-body);
+         color: var(--primary-color);
+         padding-right: 2.5rem;
+      }
+      
+      .side-bar .navbar a i { font-size: 2rem; width: 2.5rem; text-align: center;}
+      
+      /* --- المحتوى الرئيسي --- */
+      main {
+         padding: 2rem 3%;
+      }
+      .dashboard-title {
+         font-size: 2.8rem;
+         font-weight: 700;
+         margin-bottom: 2rem;
+         color: var(--text-primary);
+      }
+      .card-container {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+         gap: 2rem;
+      }
+      .card {
+         background-color: var(--bg-card);
+         padding: 2.5rem;
+         border-radius: var(--radius);
+         border: 1px solid var(--border-color);
+         box-shadow: var(--shadow-sm);
+         color: var(--text-secondary);
+      }
+      .card h3 {
+         font-size: 2rem;
+         color: var(--text-primary);
+         margin-bottom: 1rem;
+      }
+
+      /* --- شاشة التعتيم --- */
+      .overlay {
+         position: fixed;
+         top: 0; left: 0;
+         width: 100%; height: 100%;
+         background-color: rgba(0,0,0,0.5);
+         z-index: 999; /* أقل من القوائم */
+         opacity: 0; visibility: hidden;
+         transition: opacity 0.3s ease;
+      }
+      .overlay.active { opacity: 1; visibility: visible; }
+      
+      /* --- Media Queries --- */
+      @media (max-width: 450px) {
+         html { font-size: 55%; }
+         .logo { font-size: 2rem; }
+         .header { padding: 1.5rem 2%; }
+         main { padding: 1.5rem 2%; }
+      }
+   </style>
+</head>
+<body class="">
+
+<div class="overlay"></div>
+
+<header class="header">
+   <section class="flex">
+      <a href="home.html" class="logo">أداة علم</a>
+      
+      <div class="icons">
+         <div id="toggle-btn" class="fas fa-sun icon-btn" title="الوضع"></div>
+           <div id="danger-btn" class="icon-btn danger fas fa-exclamation-triangle" title="تحذير"></div>
+
+         <div id="notification-btn" class="fas fa-bell icon-btn" title="الإشعارات"></div>
+         <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
+         <div id="menu-btn" class="fas fa-bars icon-btn" title="القائمة"></div>
+
+         <div class="profile-dropdown">
+            <img src="S22MCS PARTS/قسم الطب.jpg" class="image" alt="صورة القسم">
+            <h3 class="name">قسم الطب</h3>
+            <p class="role">التابعة لأداة علم</p>
+            <a href="MED02_profile.html" class="btn">عرض الملف الشخصي</a>
+            <a href="#" id="logout-btn" class="btn logout">تسجيل الخروج</a>
+         </div>
+      </div>
+   </section>
+</header>
+
+<aside class="side-bar">
+   <div class="close-btn-container">
+      <div id="close-btn" class="fas fa-times icon-btn"></div>
+   </div>
+
+   <nav class="navbar">
+      <a href="home_MED02.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+      <a href="courses.html"><i class="fas fa-chalkboard-user"></i><span>بنك الدروس</span></a>
+      <a href="courses.html"><i class="fas fa-file-alt"></i><span>بنك الاختبارات</span></a>
+      <a href="courses.html"><i class="fas fa-chart-line"></i><span>تحليل الأسئلة</span></a>
+      <a href="courses.html"><i class="fas fa-folder"></i><span>الدرايفات</span></a>
+      <a href="courses.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك</span></a>
+            <a href="courses.html"><i class="fas fa-stopwatch"></i><span>زر الخطر  </span></a>
+
+            <a href="courses.html"><i class="fas fa-stopwatch"></i><span>اخر التحديثات   </span></a>
+
+      <a href="contact.html"><i class="fas fa-headset"></i><span>تواصل معنا</span></a>
+   </nav>
+</aside>
+
+
+<main>
+   <h1 class="dashboard-title">لوحة التحكم الرئيسية</h1>
+   <div class="card-container">
+      <div class="card">
+         <h3>آخر الدروس</h3>
+         <p>سيتم عرض آخر الدروس المضافة هنا.</p>
+      </div>
+      <div class="card">
+         <h3>الإحصائيات</h3>
+         <p>سيتم عرض إحصائياتك هنا.</p>
+      </div>
+      <div class="card">
+         <h3>الاختبارات القادمة</h3>
+         <p>سيتم عرض الاختبارات القادمة هنا.</p>
+      </div>
+   </div>
+</main>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+    const overlay = document.querySelector('.overlay');
+
+    // --- القائمة الجانبية (SideBar) ---
+    const sideBar = document.querySelector('.side-bar');
+    const menuBtn = document.querySelector('#menu-btn');
+    const closeBtn = document.querySelector('#close-btn');
+    
+    // --- قائمة البروفايل (Profile Dropdown) ---
+    const profileBtn = document.querySelector('#user-btn');
+    const profileDropdown = document.querySelector('.profile-dropdown');
+
+    const closeAllPopups = () => {
+        sideBar.classList.remove('active');
+        profileDropdown.classList.remove('active');
+        overlay.classList.remove('active');
+        body.style.overflow = 'auto';
+    };
+
+    menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeAllPopups(); // إغلاق أي شيء آخر مفتوح أولاً
+        sideBar.classList.add('active');
+        overlay.classList.add('active');
+        body.style.overflow = 'hidden';
+    });
+
+    profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isAlreadyActive = profileDropdown.classList.contains('active');
+        closeAllPopups(); // إغلاق أي شيء آخر مفتوح أولاً
+        if (!isAlreadyActive) {
+            profileDropdown.classList.add('active');
+        }
+    });
+
+    closeBtn.addEventListener('click', closeAllPopups);
+    overlay.addEventListener('click', closeAllPopups);
+
+    // إغلاق القوائم عند الضغط على مفتاح الهروب (Escape)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeAllPopups();
+        }
+    });
+    
+    // إغلاق القائمة عند النقر على رابط بداخلها
+    document.querySelectorAll('.side-bar .navbar a').forEach(link => {
+        link.addEventListener('click', closeAllPopups);
+    });
+
+    // --- تسجيل الخروج ---
+    document.querySelector('#logout-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('تم تسجيل الخروج بنجاح!'); // يمكنك استبدالها بالمنطق الفعلي
+        window.location.href = 'INDEX.html';
+    });
+
+    // --- الوضع الليلي ---
+    const toggleBtn = document.querySelector('#toggle-btn');
+    const themeIcon = toggleBtn.classList.contains('fa-sun') ? 'fa-sun' : 'fa-moon';
+    
+    const applyTheme = (theme) => {
+        if (theme === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.classList.replace('fa-sun', 'fa-moon');
+        } else {
+            body.classList.remove('dark-mode');
+            toggleBtn.classList.replace('fa-moon', 'fa-sun');
+        }
+    };
+
+    const currentTheme = localStorage.getItem('theme');
+    applyTheme(currentTheme);
+
+    toggleBtn.addEventListener('click', () => {
+        let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+});
+</script>
+
+</body>
+</html>
