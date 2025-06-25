@@ -33,7 +33,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 10px; /* تقليل بسيط للحاشية الخارجية */
+            padding: 10px;
             box-sizing: border-box;
         }
 
@@ -48,18 +48,16 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 10px; /* تقليل بسيط للحاشية الخارجية */
+            padding: 10px;
             box-sizing: border-box;
         }
 
         .modal {
             background-color: white;
-            /* --- التحسين 2: تقليل الـ padding ليكون بين 15 و 20 بكسل --- */
             padding: clamp(0.9375rem, 4vw, 1.25rem); /* 15px to 20px */
             border-radius: var(--border-radius);
             text-align: center;
             width: 100%;
-            /* --- التحسين 2: تصغير العرض الأقصى للنافذة --- */
             max-width: 460px;
             box-shadow: var(--shadow);
             animation: fadeIn 0.5s ease-out;
@@ -85,49 +83,43 @@
         .modal h2 {
             color: var(--dark-text);
             margin-top: 0;
-            margin-bottom: 15px; /* تقليل الهامش السفلي */
+            margin-bottom: 15px;
             font-weight: 700;
-            /* --- التحسين 2: تقليل حجم خط العنوان ليكون بين 18 و 22 بكسل --- */
             font-size: clamp(1.125rem, 5vw, 1.375rem); /* 18px to 22px */
         }
         
         .info-section {
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
-            /* --- التحسين 2: تقليل الـ padding ليكون بين 12 و 15 بكسل --- */
             padding: clamp(0.75rem, 3vw, 0.9375rem); /* 12px to 15px */
             border-radius: 8px;
-            margin-bottom: 20px; /* تقليل الهامش السفلي */
+            margin-bottom: 20px;
             text-align: justify;
         }
 
         .info-section p {
             color: #555;
             margin-bottom: 10px;
-            line-height: 1.6; /* تعديل طفيف لارتفاع السطر */
-            /* --- التحسين 2: تقليل حجم خط النصوص ليكون بين 12 و 14 بكسل --- */
+            line-height: 1.6;
             font-size: clamp(0.75rem, 2.5vw, 0.875rem); /* 12px to 14px */
         }
         .info-section p:last-child { margin-bottom: 0; }
         
         .tasks-header {
             color: #666;
-            margin-bottom: 20px; /* تقليل الهامش السفلي */
+            margin-bottom: 20px;
             line-height: 1.5;
             font-weight: 600;
-            /* --- التحسين 2: تقليل حجم الخط --- */
             font-size: clamp(0.85rem, 3.5vw, 0.95rem);
         }
 
         .task {
-            margin-bottom: 15px; /* تقليل المسافة بين المهام */
+            margin-bottom: 15px;
         }
 
         .task button {
             width: 100%;
-            /* --- التحسين 2: تقليل الـ padding ليكون بين 10 و 12 بكسل --- */
             padding: clamp(0.625rem, 3vw, 0.75rem); /* 10px to 12px */
-            /* --- التحسين 2: تقليل حجم الخط ليكون بين 15 و 17 بكسل --- */
             font-size: clamp(0.9375rem, 4vw, 1.0625rem); /* 15px to 17px */
             font-family: 'Cairo', sans-serif;
             border: none;
@@ -168,10 +160,9 @@
         #task3Btn:hover:not(:disabled) { background-color: var(--tertiary-hover); }
 
         .task p {
-            margin-top: 10px; /* تقليل الهامش العلوي */
+            margin-top: 10px;
             color: #555;
             font-weight: 600;
-            /* --- التحسين 2: تقليل حجم الخط ليكون بين 13 و 14 بكسل --- */
             font-size: clamp(0.8125rem, 3vw, 0.875rem); /* 13px to 14px */
         }
         
@@ -179,7 +170,7 @@
             font-weight: 700;
             background-color: #e9ecef;
             color: var(--dark-text);
-            padding: 4px 10px; /* تقليل الحاشية الداخلية */
+            padding: 4px 10px;
             border-radius: 20px;
             min-width: 28px;
             display: inline-block;
@@ -196,7 +187,7 @@
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                gap: 15px; /* تقليل الفجوة بين الزر والنص */
+                gap: 15px;
             }
             .task button {
                 width: 65%;
@@ -213,33 +204,35 @@
 
     <div id="overlay" class="overlay">
         <div class="modal">
-            <h2>السلام عليكم ومرحباً بك في بوابتنا</h2>
-            
-            <div class="info-section">
-                <p>
-                    عليكم إنجاز ما يلي: خدماتنا لا تتطلب دفعًا ماليًا إجباريًا، ولكنها تتطلب أشياء أخرى تقديرًا لتفهمكم.
-                    كما تتوفر إمكانية الدعم لمن يرغب، وهذا خيار غير إجباري. يمكنك المساهمة فقط إذا أعجبتك خدماتنا وأردت دعم المشرفين على المشروع.
-                    يتم تحديد هذا الدعم بمبلغ رمزي لا يقل عن 300 دج سنويًا. أيها المسلم، لست مجبرًا على ذلك، بل هو خيار مفتوح لك.
-                    بإمكانك اختيار كلا الخيارين للولوج إلى المنصة التالية الموجهة لطلبة السنة الثانية طب.
-                </p>
-            </div>
-
-            <p class="tasks-header">للمتابعة، نرجو منك إنجاز هذه المهام البسيطة.</p>
-            
-            <div id="tasks-container">
-                <div class="task">
-                    <button id="task1Btn">الصلاة على النبي محمد ﷺ</button>
-                    <p>العدد المتبقي: <span id="task1Counter">20</span></p>
+            <div id="modal-content">
+                <h2>السلام عليكم ومرحباً بك في بوابتنا</h2>
+                
+                <div class="info-section">
+                    <p>
+                        عليكم إنجاز ما يلي: خدماتنا لا تتطلب دفعًا ماليًا إجباريًا، ولكنها تتطلب أشياء أخرى تقديرًا لتفهمكم.
+                        كما تتوفر إمكانية الدعم لمن يرغب، وهذا خيار غير إجباري. يمكنك المساهمة فقط إذا أعجبتك خدماتنا وأردت دعم المشرفين على المشروع.
+                        يتم تحديد هذا الدعم بمبلغ رمزي لا يقل عن 300 دج سنويًا. أيها المسلم، لست مجبرًا على ذلك، بل هو خيار مفتوح لك.
+                        بإمكانك اختيار كلا الخيارين للولوج إلى المنصة التالية الموجهة لطلبة السنة الثانية طب.
+                    </p>
                 </div>
 
-                <div class="task">
-                    <button id="task2Btn">سبحان الله وبحمده</button>
-                    <p>العدد المتبقي: <span id="task2Counter">20</span></p>
-                </div>
+                <p class="tasks-header">للمتابعة، نرجو منك إنجاز هذه المهام البسيطة.</p>
+                
+                <div id="tasks-container">
+                    <div class="task">
+                        <button id="task1Btn">الصلاة على النبي محمد ﷺ</button>
+                        <p>العدد المتبقي: <span id="task1Counter"></span></p>
+                    </div>
 
-                <div class="task">
-                    <button id="task3Btn">استغفر الله</button>
-                    <p>العدد المتبقي: <span id="task3Counter">10</span></p>
+                    <div class="task">
+                        <button id="task2Btn">سبحان الله وبحمده</button>
+                        <p>العدد المتبقي: <span id="task2Counter"></span></p>
+                    </div>
+
+                    <div class="task">
+                        <button id="task3Btn">استغفر الله</button>
+                        <p>العدد المتبقي: <span id="task3Counter"></span></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -247,10 +240,53 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const modalContent = document.getElementById('modal-content');
+            
+            // --- TIME LOGIC START ---
+            const lastVisitTime = localStorage.getItem('lastVisitTime');
+            const currentTime = new Date().getTime();
+            const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
+            const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
+            
+            let requiredCount;
+            let timeDiff = Infinity;
+
+            if (lastVisitTime) {
+                timeDiff = currentTime - parseInt(lastVisitTime);
+            }
+
+            // Case 1: Less than 3 hours have passed -> Redirect immediately
+            if (timeDiff < THREE_HOURS_MS) {
+                modalContent.innerHTML = `
+                    <h2 style="color: var(--primary-color);">مرحباً بعودتك!</h2>
+                    <p>أقل من 3 ساعات قد مرت. جاري توجيهك مباشرة...</p>`;
+                setTimeout(() => {
+                    window.location.href = 'home_MED02.html';
+                }, 2500);
+                return; // Stop script execution
+            } 
+            // Case 2: Between 3 and 6 hours have passed -> Set count to 7
+            else if (timeDiff < SIX_HOURS_MS) {
+                requiredCount = 7;
+            } 
+            // Case 3: More than 6 hours or first visit -> Set count to 33 and reset progress
+            else {
+                requiredCount = 33;
+                // Reset progress for the new cycle
+                localStorage.removeItem('task1Count');
+                localStorage.removeItem('task2Count');
+                localStorage.removeItem('task3Count');
+            }
+            
+            // Update the last visit time for the next session, but only after tasks are shown
+            localStorage.setItem('lastVisitTime', currentTime.toString());
+            // --- TIME LOGIC END ---
+
+
             const taskButtons = [
-                { btn: document.getElementById('task1Btn'), span: document.getElementById('task1Counter'), req: 20, key: 'task1Count' },
-                { btn: document.getElementById('task2Btn'), span: document.getElementById('task2Counter'), req: 20, key: 'task2Count' },
-                { btn: document.getElementById('task3Btn'), span: document.getElementById('task3Counter'), req: 10, key: 'task3Count' }
+                { btn: document.getElementById('task1Btn'), span: document.getElementById('task1Counter'), req: requiredCount, key: 'task1Count', defaultText: 'الصلاة على النبي محمد ﷺ' },
+                { btn: document.getElementById('task2Btn'), span: document.getElementById('task2Counter'), req: requiredCount, key: 'task2Count', defaultText: 'سبحان الله وبحمده' },
+                { btn: document.getElementById('task3Btn'), span: document.getElementById('task3Counter'), req: requiredCount, key: 'task3Count', defaultText: 'استغفر الله' }
             ];
 
             let counts = {
@@ -274,6 +310,8 @@
                         task.btn.disabled = true;
                         task.btn.innerHTML = '&#10003; تم إنجاز المهمة';
                     } else {
+                        task.btn.disabled = false;
+                        task.btn.innerHTML = task.defaultText;
                         allComplete = false;
                     }
                 });
@@ -282,10 +320,11 @@
 
             function checkCompletion() {
                 if (updateUI()) {
+                    // Clear all related storage items upon completion
                     taskButtons.forEach(task => localStorage.removeItem(task.key));
+                    // Keep lastVisitTime to track the next entry
                     
-                    const modal = document.querySelector('.modal');
-                    modal.innerHTML = `
+                    modalContent.innerHTML = `
                         <h2 style="color: var(--success-color);">جزاك الله خيراً</h2>
                         <p>تم إنجاز جميع المهام. جاري تحويلك الآن...</p>`;
                     
@@ -308,6 +347,7 @@
                 });
             });
 
+            // Initial check when the page loads
             checkCompletion();
         });
     </script>
