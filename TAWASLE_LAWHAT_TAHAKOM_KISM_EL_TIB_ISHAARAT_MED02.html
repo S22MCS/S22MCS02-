@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>لوحة تحكم الإشعارات</title>
+  <script type="module">
+    // استيراد Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJK6IUSw2YbwNVfB_hRNsOFeO08LEp4c8",
+      authDomain: "adatealm-nofication.firebaseapp.com",
+      projectId: "adatealm-nofication",
+      storageBucket: "adatealm-nofication.firebasestorage.app",
+      messagingSenderId: "216068965336",
+      appId: "1:216068965336:web:310c95e8e9fc4561cbe8ad",
+      measurementId: "G-PDWFZKRMJP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadNotifications() {
+      const notifList = document.getElementById("notifList");
+      notifList.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, "notifications"));
+      querySnapshot.forEach((docSnap) => {
+        const li = document.createElement("li");
+        li.textContent = docSnap.data().text;
+        li.onclick = () => {
+          if (confirm("حذف هذا الإشعار؟")) {
+            deleteDoc(doc(db, "notifications", docSnap.id)).then(loadNotifications);
+          }
+        };
+        notifList.appendChild(li);
+      });
+    }
+
+    async function addNotification() {
+      const input = document.getElementById("notifInput");
+      if (input.value.trim()) {
+        await addDoc(collection(db, "notifications"), { text: input.value });
+        input.value = "";
+        loadNotifications();
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", loadNotifications);
+    window.addNotification = addNotification;
+  </script>
+
+  <style>
+    body { font-family: Arial; background: #f2f2f2; padding: 20px; text-align: right; }
+    input { width: 80%; padding: 10px; font-size: 16px; }
+    button { padding: 10px 20px; font-size: 16px; margin-right: 10px; }
+    ul { list-style: none; padding: 0; margin-top: 20px; }
+    li {
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>📋 لوحة التحكم - إشعارات الأكاديمية</h2>
+  <input id="notifInput" placeholder="✍️ أدخل الإشعار الجديد...">
+  <button onclick="addNotification()">➕ إضافة</button>
+  <ul id="notifList"></ul>
+</body>
+</html>

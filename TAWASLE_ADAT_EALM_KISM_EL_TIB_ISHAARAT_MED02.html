@@ -2,45 +2,53 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>التحديثات والإشعارات</title>
+  <title>الإشعارات</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJK6IUSw2YbwNVfB_hRNsOFeO08LEp4c8",
+      authDomain: "adatealm-nofication.firebaseapp.com",
+      projectId: "adatealm-nofication",
+      storageBucket: "adatealm-nofication.firebasestorage.app",
+      messagingSenderId: "216068965336",
+      appId: "1:216068965336:web:310c95e8e9fc4561cbe8ad",
+      measurementId: "G-PDWFZKRMJP"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadNotifications() {
+      const container = document.getElementById("notif-container");
+      const querySnapshot = await getDocs(collection(db, "notifications"));
+      querySnapshot.forEach(docSnap => {
+        const div = document.createElement("div");
+        div.className = "notif";
+        div.textContent = docSnap.data().text;
+        container.appendChild(div);
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", loadNotifications);
+  </script>
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f8f8f8;
-      padding: 20px;
-      direction: rtl;
-    }
-
-    h2 {
-      color: #333;
-      margin-bottom: 15px;
-    }
-
-    ul.notifications {
-      list-style: none;
-      padding: 0;
-    }
-
-    ul.notifications li {
-      background: #fff;
-      border: 1px solid #ddd;
+    body { font-family: 'Arial'; background: #fff; padding: 20px; }
+    h2 { color: #333; }
+    .notif {
+      background: #e8f0fe;
       margin-bottom: 10px;
       padding: 12px;
-      border-radius: 8px;
-      font-size: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border-radius: 6px;
+      font-size: 16px;
+      color: #333;
     }
   </style>
 </head>
 <body>
-  <h2>آخر التحديثات:</h2>
-
-  <ul class="notifications">
-    <li>📢 تم تحديث المنصة بتاريخ 25 يونيو بإضافة قسم إشراف جديد.</li>
-    <li>📧 تم إرسال تنبيه بواجبات الأسبوع.</li>
-    <li>🗓️ تمت جدولة اختبار يوم الأحد القادم.</li>
-    <li>🩺 تمت إضافة وحدة "التشريح المرضي" في قسم الطب.</li>
-    <li>🔄 تمت صيانة قاعدة البيانات وتحسين الأداء.</li>
-  </ul>
+  <h2>📢 التحديثات والإشعارات:</h2>
+  <div id="notif-container"></div>
 </body>
 </html>
