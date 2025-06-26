@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ختمة القرآن</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0d6e62;
+            --secondary-color: #d4af37; /* Gold */
+            --accent-color: #28a79c;
+            --text-color: #2d3436;
+            --bg-color: #f0f4f8; /* Lighter, cleaner background */
+            --card-bg: #ffffff;
+            --button-gradient-start: #0d6e62;
+            --button-gradient-end: #28a79c;
+            --hover-gradient-start: #28a79c;
+            --hover-gradient-end: #0d6e62;
+            --box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            --border-radius: 10px; /* Slightly softer radius */
+            --font-main: 'Tajawal', 'Amiri', serif; /* Modern font first, fallback to Amiri */
+            --font-quranic: 'Amiri', serif; /* For specific quranic text if needed */
+        }
+
+        .dark-mode {
+            --primary-color: #1a535c; /* Darker teal */
+            --secondary-color: #e6c35c; /* Slightly brighter gold for dark mode */
+            --accent-color: #2a9d8f;
+            --text-color: #e0e0e0; /* Light gray for text */
+            --bg-color: #181a1b; /* Very dark gray/black */
+            --card-bg: #232526; /* Darker card background */
+            --button-gradient-start: #1a535c;
+            --button-gradient-end: #2a9d8f;
+            --hover-gradient-start: #2a9d8f;
+            --hover-gradient-end: #1a535c;
+            --box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+        }
+
+        body {
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            text-align: center;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            line-height: 1.7; /* Improved readability */
+            -webkit-text-size-adjust: 100%;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 25px 15px; /* Adjusted padding */
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Refined shadow */
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+        }
+
+        h1, h2 {
+            font-family: var(--font-main); /* Ensure titles also use the main font */
+            font-weight: 700; /* Bolder titles */
+        }
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 2.4rem); /* Responsive font size */
+            margin: 0 0 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem); /* Responsive font size */
+            margin-bottom: 15px;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            left: 15px; 
+            top: 15px; 
+            transform: none;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10; 
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px; 
+            padding: 15px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .custom-button {
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white;
+            padding: 12px 22px; 
+            font-size: clamp(0.9rem, 2.8vw, 1.05rem); 
+            font-weight: 500;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            flex: 1 1 200px; 
+            max-width: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-height: 50px; 
+            text-decoration: none; 
+        }
+
+        .custom-button:hover {
+            background: linear-gradient(135deg, var(--hover-gradient-start), var(--hover-gradient-end));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .custom-button:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .custom-button i {
+            font-size: 1.1em; 
+        }
+
+        .secondary-header {
+            padding: 15px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-bottom: 1px solid var(--primary-color);
+            margin-bottom: 20px;
+            box-shadow: var(--box-shadow);
+        }
+        .app-title h1 {
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between; /* Changed from space-around */
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px; 
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px; 
+            padding: 8px 10px;
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            font-size: clamp(0.85rem, 2.2vw, 0.95rem); 
+        }
+        .countdown-clock, .date-display, .digital-clock {
+            font-size: inherit; 
+            font-weight: 500;
+            color: var(--text-color);
+            background-color: transparent; 
+            border: none;
+            border-radius: 6px; 
+            padding: 5px 10px;
+            text-align: center;
+            min-width: 100px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        .date-display { /* Applied to both Hijri and Gregorian date text */
+            background-color: var(--accent-color); color: white;
+            padding: 6px 12px;
+        }
+        /* Style for Hijri specific date-display if needed, but generic is fine */
+        #hijri-date { 
+             /* background-color: var(--primary-color); /* Example: different color for Hijri if desired */
+        }
+        .digital-clock {
+            background-color: var(--primary-color); color: white;
+            font-size: clamp(0.9rem, 2.5vw, 1rem); 
+            padding: 6px 12px;
+        }
+        #userCountdownClock { 
+            background-color: var(--secondary-color);
+            color: var(--primary-color); 
+            font-weight: bold;
+        }
+
+
+        .days-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+            gap: 10px; 
+            padding: 20px 10px;
+            max-width: 960px; 
+            margin: 0 auto;
+        }
+
+        .day-card {
+            background: linear-gradient(145deg, var(--accent-color), var(--primary-color));
+            color: white;
+            text-decoration: none;
+            padding: 15px 10px; 
+            border-radius: var(--border-radius);
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            transition: all 0.25s ease;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 75px; 
+            aspect-ratio: 1 / 0.8; 
+        }
+
+        .day-card.current-day {
+            background: linear-gradient(135deg, var(--secondary-color), #f1c40f); 
+            transform: scale(1.08); 
+            border: 2px solid white;
+            z-index: 5; 
+        }
+        .day-card.completed-day {
+            opacity: 0.65; 
+            background: linear-gradient(135deg, #5a8f8a, #3c6662);
+        }
+        .day-card.completed-day:hover {
+            opacity: 0.8;
+        }
+
+
+        .day-card::before { 
+            content: "";
+            position: absolute;
+            top: -75%;
+            left: -75%;
+            width: 250%;
+            height: 250%;
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            transform: rotate(30deg);
+            transition: all 0.6s ease;
+            pointer-events: none; 
+        }
+
+        .day-card:hover {
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+        }
+        .day-card:hover::before {
+            left: 50%; 
+            top: -50%;
+        }
+        .day-card:active {
+            transform: translateY(1px) scale(1.02);
+        }
+
+
+        .day-number {
+            font-size: clamp(1.5rem, 4vw, 1.8rem); 
+            font-weight: bold;
+            margin-bottom: 3px; 
+        }
+        .day-card span:not(.day-number) {
+            font-size: clamp(0.75rem, 2vw, 0.85rem); 
+        }
+
+
+        .progress-container {
+            width: 85%; 
+            max-width: 600px; 
+            margin: 20px auto; 
+            background-color: rgba(255, 255, 255, 0.2); 
+            border-radius: 8px;
+            height: 12px; 
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-color), #f1c40f); 
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.25, 0.1, 0.25, 1); 
+            border-radius: 8px;
+        }
+        
+        .countdown-container { 
+            background: rgba(0,0,0,0.1); 
+            padding: 12px;
+            border-radius: var(--border-radius);
+            margin: 15px auto 0; 
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            color: white; 
+        }
+        
+        .countdown-title {
+            font-size: clamp(1rem, 3vw, 1.15rem);
+            font-weight: bold;
+            margin-bottom: 3px;
+            opacity: 0.9;
+        }
+        
+        .countdown-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .countdown-item {
+            background: rgba(255,255,255,0.15);
+            padding: 8px 12px;
+            border-radius: 8px;
+            min-width: 100px;
+            flex: 1; 
+            text-align: center;
+        }
+        
+        .countdown-value {
+            font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+            font-weight: bold;
+            color: var(--secondary-color); 
+            display: block; 
+        }
+        
+        .countdown-label {
+            font-size: clamp(0.75rem, 2vw, 0.85rem);
+            opacity: 0.85;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.65); 
+            -webkit-backdrop-filter: blur(5px); 
+            backdrop-filter: blur(5px); 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            margin: auto; 
+            padding: 20px; 
+            border: 1px solid var(--primary-color);
+            width: 90%; 
+            max-width: 450px; 
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            animation: fadeInModal 0.3s ease-out;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 18px; 
+            font-size: clamp(1.3rem, 4vw, 1.6rem);
+        }
+        .modal-content .buttons-container { 
+             padding: 0; 
+        }
+        .modal-content .custom-button {
+            margin: 6px; 
+            flex-basis: calc(50% - 12px); 
+        }
+        .close-button {
+            color: var(--text-color);
+            float: left; 
+            font-size: 26px;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .khatma-management {
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 900px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        .khatma-management h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: clamp(1.4rem, 4vw, 1.7rem);
+        }
+        .khatma-management .buttons-container .custom-button {
+             max-width: 260px; 
+        }
+        #resetKhatmaBtn { 
+            background: linear-gradient(135deg, #e74c3c, #c0392b) !important; 
+        }
+        #resetKhatmaBtn:hover {
+            background: linear-gradient(135deg, #c0392b, #e74c3c) !important;
+        }
+
+        .hadith-section { 
+            padding: 20px 15px;
+            max-width: 800px;
+            margin: 10px auto 20px auto; 
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        .hadith-section p {
+            font-size: clamp(1rem, 2.8vw, 1.15rem); 
+            color: var(--accent-color);
+            font-family: var(--font-quranic); 
+            line-height: 1.9;
+        }
+        .hadith-source a {
+            color: var(--secondary-color) !important; 
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .hadith-source a:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* General Section Styling */
+        section {
+            padding: 10px 15px; 
+        }
+        section > h2 { 
+            color: var(--primary-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: clamp(1.5rem, 4.5vw, 1.9rem);
+        }
+
+        /* Adjustments for very small screens */
+        @media (max-width: 360px) {
+            .day-card {
+                min-height: 70px;
+            }
+            .day-number {
+                font-size: 1.3rem;
+            }
+            .day-card span:not(.day-number) {
+                font-size: 0.7rem;
+            }
+             .custom-button {
+                padding: 10px 18px;
+            }
+            .status-item i { 
+                font-size: 1.1rem;
+            }
+             .modal-content .custom-button {
+                flex-basis: 100%; 
+                margin: 8px 0;
+            }
+        }
+
+        @media (max-width: 768px) { /* This will affect the new date layout too */
+            header { padding: 20px 15px; } 
+            .theme-toggle { top: 10px; left: 10px; }
+
+            .days-container { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px;}
+            .day-card { padding: 12px 8px; min-height: 70px; }
+
+            .countdown-item { min-width: 90px; padding: 6px 8px; }
+
+            .status-bar { 
+                flex-direction: column; /* Dates will stack vertically */
+                gap: 8px; 
+            }
+            .status-item { 
+                width: 90%; 
+                justify-content: center; 
+                max-width: 300px; 
+            }
+
+            .modal-content .custom-button {
+                flex-basis: calc(50% - 12px); 
+            }
+            .modal-content { width: 85%; }
+        }
+
+        @media (max-width: 480px) {
+            header { padding: 15px 10px; }
+            .theme-toggle { top: 12px; left: 12px; width: 35px; height: 35px; font-size: 16px; }
+
+
+            .days-container { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; padding: 15px 8px;}
+            .custom-button { width: 100%; max-width: none; flex: 1 1 100%;} 
+            .buttons-container .custom-button { 
+                flex-basis: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+
+            .progress-container { height: 10px; }
+            .countdown-info { flex-direction: column; align-items: stretch; } 
+            .countdown-item { width: auto; text-align: center; } 
+
+            .countdown-clock, .date-display, .digital-clock { font-size: 0.85rem; padding: 5px 8px; min-width: 90px;}
+            .status-item i { font-size: 1.2rem; } 
+            .modal-content .custom-button {
+                flex-basis: 100%; 
+                margin: 8px 0;
+            }
+             .modal-content { width: 90%; padding: 15px;}
+        }
+    </style>
+</head>
+<body>
+    <header>
+ 
+
+
+    <button id="themeToggle" class="theme-toggle" aria-label="تبديل السمة">
+    <i class="fas fa-moon"></i></button>
+<button id="refreshPage" class="refresh-button" aria-label="تحديث الصفحة">
+    <i class="fas fa-sync-alt"></i>
+    <span>تحديث الصفحة</span>
+</button>
+
+
+<style>
+:root {
+    --primary-gray: #6c757d;
+    --hover-gray: #5a6268;
+    --active-gray: #495057;
+    --shadow-light: rgba(0, 0, 0, 0.15);
+    --shadow-medium: rgba(0, 0, 0, 0.2);
+    --shadow-dark: rgba(0, 0, 0, 0.1);
+}
+
+.refresh-button {
+    background-color: var(--primary-gray);
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 50px; /* شكل بيضاوي أكثر */
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 6px var(--shadow-light);
+    transition: all 0.3s ease;
+    gap: 5px;
+    min-width: 120px;
+}
+
+.refresh-button i {
+    font-size: 20px;
+}
+
+.refresh-button span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.refresh-button:hover {
+    background-color: var(--hover-gray);
+    box-shadow: 0 4px 8px var(--shadow-medium);
+    transform: rotate(15deg);
+}
+
+.refresh-button:active {
+    background-color: var(--active-gray);
+    box-shadow: 0 2px 4px var(--shadow-dark);
+    transform: scale(0.95) rotate(0deg);
+}
+</style>
+
+<script>
+    document.getElementById('refreshPage').addEventListener('click', function() {
+        location.reload();
+    });
+</script>
+
+
+        <h1 id="mainTitle">ختمة القرآن الكريم</h1>
+        <p id="mainSubtitle">برنامج ختم القرآن - يشفع لك يوم القيامة</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="countdown-container">
+            <div class="countdown-title" id="currentDayTitle">اليوم</div>
+            <div class="countdown-info">
+                <div class="countdown-item">
+                    <span class="countdown-value" id="daysLeft">0</span>
+                    <span class="countdown-label">أيام متبقية</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="timeLeftToday">00:00:00</span>
+                    <span class="countdown-label">متبقي لانتهاء اليوم</span>
+                </div>
+            </div>
+        </div>
+
+
+
+
+         <section id="khatmaManagementSection" class="khatma-management" style="display: none;">
+            <h2>إدارة الختمة الحالية</h2>
+            <div class="buttons-container">
+                <button class="custom-button" id="changeKhatmaBtn">
+                    <i class="fas fa-calendar-alt"></i> تغيير مدة الختمة
+                </button>
+                <button class="custom-button" id="resetKhatmaBtn"> 
+                    <i class="fas fa-trash"></i> إعادة تعيين الختمة
+                </button>
+            </div>
+        </section>
+        
+    </header>
+
+
+
+    <div class="secondary-header">
+        <div class="app-title">
+            <h1>واجباتي اليومية</h1>
+        </div>
+        <div class="status-bar">
+            <div class="status-item">
+                <i class="fas fa-star-and-crescent" style="color: var(--accent-color); font-size: 1.3em;"></i>
+                <div class="date-display" id="hijri-date">جاري تحميل التاريخ الهجري...</div>
+            </div>
+            
+            <div class="status-item">
+                <i class="fas fa-clock" style="color: var(--accent-color); font-size: 1.3em;"></i>
+                <div class="digital-clock" id="digital-clock">الوقت</div>
+            </div>
+
+            <div class="status-item" id="userTimerStatusItem" style="display:none;">
+                <i class="fas fa-stopwatch" style="color: var(--secondary-color); font-size: 1.3em;"></i>
+                <div class="countdown-clock" id="userCountdownClock">--:--</div>
+            </div>
+            
+            <div class="status-item">
+                <i class="fas fa-calendar-alt" style="color: var(--accent-color); font-size: 1.3em;"></i>
+                <div class="date-display" id="current-date">التاريخ</div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+        
+        <section style="padding: 30px 20px; max-width: 800px; margin: 0 auto;">
+            <h2 style="color: var(--primary-color);">فضل قراءة القرآن</h2>
+            
+            <blockquote>
+
+
+
+
+
+
+
+
+
+                - اقْرَأِ القُرْآنَ في كُلِّ شَهْرٍ قالَ قُلتُ: إنِّي أَجِدُ قُوَّةً، قالَ: فَاقْرَأْهُ في عِشْرِينَ لَيْلَةً قالَ قُلتُ: إنِّي أَجِدُ قُوَّةً، قالَ: فَاقْرَأْهُ في سَبْعٍ وَلَا تَزِدْ علَى ذلكَ.
+                الراوي : عبدالله بن عمرو | المحدث : مسلم | المصدر : صحيح مسلم | الصفحة أو الرقم : 1159 | خلاصة حكم المحدث : [صحيح] | التخريج : أخرجه البخاري (1978)، ومسلم (1159).
+
+
+
+
+              
+                <small class="hadith-source"> <a href="https://dorar.net/hadith/sharh/8095" target="_blank" style="color: var(--secondary-color);">المصدر : الدرر السنية </a></small>
+            </blockquote>
+            
+            <blockquote>
+
+
+                عن عبدِ اللَّهِ بنِ عمرٍو أنَّهُ سألَ النَّبيَّ صلى الله عليه وسلم في كم يقرأُ القرآنَ قالَ: في أربعينَ يومًا. ثمَّ قالَ: في شَهرٍ. ثمَّ قالَ: في عشرينَ. ثمَّ قالَ: في خمسَ عشرةَ. ثمَّ قالَ: في عشرٍ. ثمَّ قالَ: في سبعٍ. لم ينزل من سبعٍ.
+الراوي : عبدالله بن عمرو | المحدث : الألباني | المصدر : صحيح أبي داود
+الصفحة أو الرقم: 1395 | خلاصة حكم المحدث : صحيح إلا قوله: "لم ينزل من سبع" شاذ
+التخريج : أخرجه أبو داود (1395) واللفظ له، والترمذي (2947) مختصراً
+
+
+
+                <small class="hadith-source">   <a href="https://dorar.net/hadith/sharh/30395" target="_blank" style="color: var(--secondary-color);">المصدر : الدرر السنية </a></small>
+            </blockquote>
+        </section>
+
+
+
+
+
+    <main>
+        <section id="khatmaManagementSection" class="khatma-management" style="display: none;">
+            <h2>إدارة الختمة الحالية</h2>
+            <div class="buttons-container">
+                <button class="custom-button" id="changeKhatmaBtn">
+                    <i class="fas fa-calendar-alt"></i> تغيير مدة الختمة
+                </button>
+                <button class="custom-button" id="resetKhatmaBtn"> 
+                    <i class="fas fa-trash"></i> إعادة تعيين الختمة
+                </button>
+            </div>
+        </section>
+        
+        <section>
+            <h2 id="khatmaPlanTitle">خطة الختمة</h2>
+            <div class="days-container" id="daysContainer">
+                </div>
+        </section>
+
+
+
+        
+        <section style="padding: 20px; max-width: 900px; margin: 0 auto;">
+            <p style="font-size: 1.2rem; color: var(--accent-color);">
+
+
+
+
+
+
+
+                مَن نَفَّسَ عن مُؤْمِنٍ كُرْبَةً مِن كُرَبِ الدُّنْيَا، نَفَّسَ اللَّهُ عنْه كُرْبَةً مِن كُرَبِ يَومِ القِيَامَةِ، وَمَن يَسَّرَ علَى مُعْسِرٍ، يَسَّرَ اللَّهُ عليه في الدُّنْيَا وَالآخِرَةِ، وَمَن سَتَرَ مُسْلِمًا، سَتَرَهُ اللَّهُ في الدُّنْيَا وَالآخِرَةِ، وَاللَّهُ في عَوْنِ العَبْدِ ما كانَ العَبْدُ في عَوْنِ أَخِيهِ، وَمَن سَلَكَ طَرِيقًا يَلْتَمِسُ فيه عِلْمًا، سَهَّلَ اللَّهُ له به طَرِيقًا إلى الجَنَّةِ، وَما اجْتَمع قَوْمٌ في بَيْتٍ مِن بُيُوتِ اللهِ، يَتْلُونَ كِتَابَ اللهِ، وَيَتَدَارَسُونَهُ بيْنَهُمْ؛ إِلَّا نَزَلَتْ عليهمِ السَّكِينَةُ، وَغَشِيَتْهُمُ الرَّحْمَةُ، وَحَفَّتْهُمُ المَلَائِكَةُ، وَذَكَرَهُمُ اللَّهُ فِيمَن عِنْدَهُ، وَمَن بَطَّأَ به عَمَلُهُ، لَمْ يُسْرِعْ به نَسَبُهُ.
+                الراوي : أبو هريرة | المحدث : مسلم | المصدر : صحيح مسلم
+                الصفحة أو الرقم: 2699 | خلاصة حكم المحدث : [صحيح]
+                التخريج : من أفراد مسلم على البخاري
+                
+                
+        
+                <br>
+                <small class="hadith-source"> <a href="https://dorar.net/hadith/sharh/70716" target="_blank" style="color: var(--secondary-color);">المصدر : الدرر السنية </a></small>
+
+            </p>
+            
+
+        </section>
+
+    </main>
+
+    <div id="khatmaSelectionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModalBtn" aria-label="إغلاق">&times;</span>
+            <h2>اختر مدة الختمة</h2>
+            <div class="buttons-container">
+                <button class="custom-button khatma-duration-btn" data-duration="7">7 أيام</button>
+                <button class="custom-button khatma-duration-btn" data-duration="10">10 أيام</button>
+                <button class="custom-button khatma-duration-btn" data-duration="15">15 يومًا</button>
+                <button class="custom-button khatma-duration-btn" data-duration="20">20 يومًا</button>
+                <button class="custom-button khatma-duration-btn" data-duration="30">30 يومًا</button>
+                <button class="custom-button khatma-duration-btn" data-duration="40">40 يومًا</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DOM Elements ---
+        const themeToggle = document.getElementById('themeToggle');
+        const progressBar = document.getElementById('progressBar');
+        const currentDayTitleEl = document.getElementById('currentDayTitle');
+        const daysLeftEl = document.getElementById('daysLeft');
+        const timeLeftTodayEl = document.getElementById('timeLeftToday');
+        const daysContainer = document.getElementById('daysContainer');
+        const mainTitleEl = document.getElementById('mainTitle');
+        const mainSubtitleEl = document.getElementById('mainSubtitle');
+        const khatmaPlanTitleEl = document.getElementById('khatmaPlanTitle');
+        
+        const khatmaSelectionModal = document.getElementById('khatmaSelectionModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const khatmaDurationBtns = document.querySelectorAll('.khatma-duration-btn');
+
+        const changeKhatmaBtn = document.getElementById('changeKhatmaBtn');
+        const resetKhatmaBtn = document.getElementById('resetKhatmaBtn');
+        const khatmaManagementSection = document.getElementById('khatmaManagementSection');
+
+        const currentDateEl = document.getElementById('current-date');
+        const digitalClockEl = document.getElementById('digital-clock');
+        const userCountdownClockEl = document.getElementById('userCountdownClock');
+        const userTimerStatusItem = document.getElementById('userTimerStatusItem');
+        const hijriDateEl = document.getElementById('hijri-date'); // New element for Hijri date
+
+
+        // --- State ---
+        let khatmaSettings = {
+            duration: null, 
+            startDate: null,
+            completedDays: {} 
+        };
+
+        // --- Arabic Number Words (Ordinal) ---
+        function numberToArabicOrdinal(number) {
+            const units = ['', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 
+                           'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر'];
+            const teens = ['العاشر', 'الحادي عشر', 'الثاني عشر', 'الثالث عشر', 'الرابع عشر', 'الخامس عشر',
+                           'السادس عشر', 'السابع عشر', 'الثامن عشر', 'التاسع عشر'];
+            const tensMap = { 20: "العشرين", 30: "الثلاثين", 40: "الأربعين"};
+
+            if (number <= 10) return units[number];
+            if (number < 20) return teens[number - 10]; 
+            
+            if (number % 10 === 0 && tensMap[number]) {
+                return tensMap[number];
+            }
+            
+            let unitWord = units[number % 10];
+            let tenBase = Math.floor(number / 10) * 10;
+            let tenWord = tensMap[tenBase]; 
+
+            if (unitWord && tenWord) {
+                return `${unitWord} و${tenWord.replace(/^ال/, '')}`; 
+            }
+            return String(number); 
+        }
+        
+        // --- Hijri Date Update ---
+        function updateHijriDate() {
+            if (!hijriDateEl) return;
+            const now = new Date();
+            const optionsHijri = {
+                calendar: 'islamic-umalqura', 
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                era: 'long' 
+            };
+            try {
+                let hijriString = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-arab', optionsHijri).format(now);
+                
+                // Basic check if the formatted string looks like a Hijri date (includes "هـ" or "بعد الهجرة")
+                // This is a simple check and might need refinement based on actual output variations.
+                const isLikelyHijri = hijriString.includes("هـ") || hijriString.includes("بعد الهجرة") || /\d{4}/.test(hijriString);
+
+                if (!hijriString || hijriString.includes("NaN") || !isLikelyHijri) {
+                     // Fallback 1: General Arabic, umalqura, arabic numerals
+                     hijriString = new Intl.DateTimeFormat('ar-u-ca-islamic-umalqura-nu-arab', optionsHijri).format(now);
+                }
+                if (!hijriString || hijriString.includes("NaN") || !(hijriString.includes("هـ") || hijriString.includes("بعد الهجرة"))) {
+                     // Fallback 2: General Arabic, umalqura, default numerals for 'ar'
+                     hijriString = new Intl.DateTimeFormat('ar', { ...optionsHijri, calendar: 'islamic-umalqura' }).format(now);
+                }
+                 if (!hijriString || hijriString.includes("NaN") || !(hijriString.includes("هـ") || hijriString.includes("بعد الهجرة"))) {
+                    // Fallback 3: General Arabic, basic islamic calendar, default numerals
+                    hijriString = new Intl.DateTimeFormat('ar', { ...optionsHijri, calendar: 'islamic' }).format(now);
+                }
+                if (!hijriString || hijriString.includes("NaN") || !(hijriString.includes("هـ") || hijriString.includes("بعد الهجرة"))) {
+                    // Fallback 4: Very basic Hijri date if others fail, manually append era
+                    const basicOptions = { calendar: 'islamic', year: 'numeric', month: 'long', day: 'numeric'};
+                    hijriString = new Intl.DateTimeFormat('ar', basicOptions).format(now) + " هـ";
+               }
+
+                hijriDateEl.textContent = hijriString;
+            } catch (e) {
+                console.error("Error formatting Hijri date:", e);
+                hijriDateEl.textContent = "التاريخ الهجري غير متاح حاليًا";
+                try { // Simplest possible fallback on error
+                    const basicHijri = new Intl.DateTimeFormat('ar-SA', { calendar: 'islamic', day: 'numeric', month: 'short', year: 'numeric' }).format(now);
+                    hijriDateEl.textContent = basicHijri + " هـ";
+                } catch (e2) {
+                    // If even this fails, the message above remains.
+                }
+            }
+        }
+
+
+        // --- Date & Time Update for Secondary Header ---
+        function updateSecondaryHeaderClocks() {
+            const now = new Date();
+            
+            // Gregorian Date
+            if (currentDateEl) {
+                const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                currentDateEl.textContent = now.toLocaleDateString('ar-EG-u-nu-latn', optionsDate); 
+            }
+            
+            // Digital Clock
+            if (digitalClockEl) {
+                const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, hourCycle: 'h12' };
+                digitalClockEl.textContent = now.toLocaleTimeString('ar-EG-u-nu-latn', optionsTime);
+            }
+
+            // Hijri Date
+            updateHijriDate();
+        }
+
+        // --- Khatma Logic ---
+        function saveKhatmaSettings() {
+            localStorage.setItem('khatmaSettings', JSON.stringify(khatmaSettings));
+        }
+
+        function loadKhatmaSettings() {
+            const storedSettings = localStorage.getItem('khatmaSettings');
+            if (storedSettings) {
+                khatmaSettings = JSON.parse(storedSettings);
+                if (!khatmaSettings.completedDays) {
+                    khatmaSettings.completedDays = {};
+                }
+                return true;
+            }
+            return false;
+        }
+
+        function startNewKhatma(duration) {
+            khatmaSettings.duration = parseInt(duration);
+            khatmaSettings.startDate = new Date().toISOString();
+            khatmaSettings.completedDays = {}; 
+            for (let i = 1; i <= khatmaSettings.duration; i++) {
+                khatmaSettings.completedDays[i] = false; 
+            }
+            saveKhatmaSettings();
+            khatmaSelectionModal.style.display = 'none';
+            document.body.classList.remove('modal-open'); 
+            initializeKhatmaDisplay();
+            khatmaManagementSection.style.display = 'block';
+        }
+        
+        function resetKhatma() {
+            if (confirm("هل أنت متأكد أنك تريد إعادة تعيين الختمة الحالية؟ سيتم فقدان كل التقدم.")) {
+                khatmaSettings = { duration: null, startDate: null, completedDays: {} };
+                localStorage.removeItem('khatmaSettings');
+daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">لم يتم تحديد ختمة بعد. الرجاء اختيار مدة الختمة. ';           
+             
+                progressBar.style.width = '0%';
+                currentDayTitleEl.textContent = 'اليوم';
+                daysLeftEl.textContent = '0';
+                timeLeftTodayEl.textContent = '00:00:00';
+                mainTitleEl.textContent = "ختمة القرآن الكريم";
+                mainSubtitleEl.textContent = "برنامج ختم القرآن - يشفع لك يوم القيامة";
+                khatmaPlanTitleEl.textContent = "خطة الختمة";
+                khatmaManagementSection.style.display = 'none';
+                showKhatmaSelectionModal();
+            }
+        }
+
+        function showKhatmaSelectionModal() {
+            khatmaSelectionModal.style.display = 'flex'; 
+            document.body.classList.add('modal-open'); 
+        }
+        
+        function initializeKhatmaDisplay() {
+            if (!khatmaSettings.duration || !khatmaSettings.startDate) {
+                showKhatmaSelectionModal();
+                khatmaManagementSection.style.display = 'none';
+                daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">الرجاء اختيار مدة الختمة لبدء خطتك.</p>';
+                return;
+            }
+            khatmaManagementSection.style.display = 'block';
+
+            mainTitleEl.textContent = `ختمة القرآن في ${khatmaSettings.duration} يومًا`;
+            try {
+                 mainSubtitleEl.textContent = `بدأت بتاريخ: ${new Date(khatmaSettings.startDate).toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+            } catch (e) {
+                 mainSubtitleEl.textContent = `بدأت بتاريخ: غير محدد`; 
+            }
+            khatmaPlanTitleEl.textContent = `خطة الختمة في ${khatmaSettings.duration} يومًا`;
+
+            daysContainer.innerHTML = ''; 
+            const { dayInCycle: actualCurrentDay } = calculateCurrentDayInCycle(khatmaSettings.startDate, khatmaSettings.duration);
+
+            for (let i = 1; i <= khatmaSettings.duration; i++) {
+                const dayCard = document.createElement('a');
+                const dayNumberFormatted = String(i).padStart(2, '0');
+                dayCard.href = `YAWM_${dayNumberFormatted}-${String(khatmaSettings.duration).padStart(2,'0')}_WARCH.html`; 
+                dayCard.className = 'day-card';
+                dayCard.dataset.day = i; 
+
+                dayCard.innerHTML = `
+                    <span class="day-number">${i}</span>
+                    <span>اليوم ${numberToArabicOrdinal(i)}</span>
+                `;
+                
+                if (i === actualCurrentDay) {
+                    dayCard.classList.add('current-day');
+                } else if (i < actualCurrentDay) {
+                    dayCard.classList.add('completed-day'); 
+                }
+                daysContainer.appendChild(dayCard);
+            }
+            updateProgressAndCountdown(); // This function needs to be defined or was part of the omitted code
+        }
+
+        function calculateCurrentDayInCycle(startDateISO, totalDaysInKhatma) {
+            if (!startDateISO) return { dayInCycle: 1, daysPassed: 0};
+
+            const startDate = new Date(startDateISO);
+            startDate.setHours(0, 0, 0, 0); // Normalize start date to beginning of the day
+            const now = new Date();
+            now.setHours(0,0,0,0); // Normalize current date
+
+            const diffTime = Math.abs(now - startDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
+            
+            let dayInCycle = (diffDays % totalDaysInKhatma) + 1;
+            // If the khatma has "ended" and we are past the duration,
+            // we might want to show it as completed or day 1 of a new cycle.
+            // For now, this will loop. If diffDays >= totalDaysInKhatma, it means it's a new cycle.
+            // Or, if current day has passed totalDaysInKhatma, it's completed.
+            // This simple cycle calculation assumes continuous khatmas or you reset.
+
+            return { dayInCycle: dayInCycle, daysPassed: diffDays };
+        }
+
+        // --- Placeholder for functions that might be in the full script ---
+        let countdownInterval;
+        function updateProgressAndCountdown() {
+            if (!khatmaSettings.duration || !khatmaSettings.startDate) {
+                progressBar.style.width = '0%';
+                currentDayTitleEl.textContent = 'اليوم';
+                daysLeftEl.textContent = '0';
+                timeLeftTodayEl.textContent = '00:00:00';
+                return;
+            }
+
+            const { dayInCycle: currentDayNumber, daysPassed } = calculateCurrentDayInCycle(khatmaSettings.startDate, khatmaSettings.duration);
+            
+            // Update progress bar: percentage of days passed out of total duration
+            // This needs to consider "completed" days logic if that's what progress means
+            // For now, based on days passed.
+            let completedCount = daysPassed; // Or count actual completed days from khatmaSettings.completedDays
+            if (khatmaSettings.duration > 0) {
+                 const progress = Math.min((completedCount / khatmaSettings.duration) * 100, 100);
+                 progressBar.style.width = `${progress}%`;
+            } else {
+                 progressBar.style.width = '0%';
+            }
+
+
+            currentDayTitleEl.textContent = `اليوم ${numberToArabicOrdinal(currentDayNumber)}`;
+            
+            const daysRemainingInCycle = khatmaSettings.duration - currentDayNumber;
+            daysLeftEl.textContent = Math.max(0, daysRemainingInCycle);
+
+
+            // Countdown to the end of the current day
+            if (countdownInterval) clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                const now = new Date();
+                const endOfDay = new Date(now);
+                endOfDay.setHours(23, 59, 59, 999);
+                
+                const diff = endOfDay - now;
+                if (diff < 0) {
+                    timeLeftTodayEl.textContent = "00:00:00";
+                    // Potentially trigger a refresh or day change logic here
+                    // For now, it will just reset on next full updateProgressAndCountdown call
+                    return;
+                }
+                
+                let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                timeLeftTodayEl.textContent = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+
+        // --- Theme Toggle ---
+        function setInitialTheme() {
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+        
+        // --- Modal Logic ---
+        closeModalBtn.addEventListener('click', () => {
+            khatmaSelectionModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            // If no khatma is set after closing, user might be stuck.
+            // Ensure initializeKhatmaDisplay is called or has alternative content.
+            if (!khatmaSettings.duration) {
+                 daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">الرجاء اختيار مدة الختمة لبدء خطتك من قائمة إدارة الختمة إذا أغلقت هذه النافذة.</p>';
+            }
+        });
+        window.addEventListener('click', (event) => {
+            if (event.target === khatmaSelectionModal) {
+                khatmaSelectionModal.style.display = 'none';
+                document.body.classList.remove('modal-open');
+                 if (!khatmaSettings.duration) {
+                     daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">الرجاء اختيار مدة الختمة لبدء خطتك.</p>';
+                }
+            }
+        });
+        khatmaDurationBtns.forEach(button => {
+            button.addEventListener('click', () => {
+                startNewKhatma(button.dataset.duration);
+            });
+        });
+
+        // --- Khatma Management Buttons ---
+        changeKhatmaBtn.addEventListener('click', showKhatmaSelectionModal);
+        resetKhatmaBtn.addEventListener('click', resetKhatma);
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            setInitialTheme();
+            updateSecondaryHeaderClocks(); // Initial call for all clocks including Hijri
+            setInterval(updateSecondaryHeaderClocks, 1000); // Update clocks every second
+
+            if (loadKhatmaSettings() && khatmaSettings.duration && khatmaSettings.startDate) {
+                initializeKhatmaDisplay();
+                khatmaManagementSection.style.display = 'block';
+            } else {
+                showKhatmaSelectionModal();
+                khatmaManagementSection.style.display = 'none';
+            }
+             // Initial call and interval for main countdowns if not already handled
+            updateProgressAndCountdown(); // Initial call
+            // The interval for timeLeftTodayEl is inside updateProgressAndCountdown
+            // We might need a separate interval if updateProgressAndCountdown is not called frequently enough
+            // For day changes, this should be fine.
+        });
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إشعارات هامة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0d6e62;
+            --secondary-color: #d4af37; /* Gold */
+            --accent-color: #28a79c;
+            --text-color: #2d3436;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --button-gradient-start: #0d6e62;
+            --button-gradient-end: #28a79c;
+            --hover-gradient-start: #28a79c;
+            --hover-gradient-end: #0d6e62;
+            --box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            --border-radius: 10px;
+            --font-main: 'Tajawal', 'Amiri', serif;
+            --font-quranic: 'Amiri', serif;
+        }
+
+        .dark-mode {
+            --primary-color: #1a535c;
+            --secondary-color: #e6c35c;
+            --accent-color: #2a9d8f;
+            --text-color: #e0e0e0;
+            --bg-color: #181a1b;
+            --card-bg: #232526;
+            --button-gradient-start: #1a535c;
+            --button-gradient-end: #2a9d8f;
+            --hover-gradient-start: #2a9d8f;
+            --hover-gradient-end: #1a535c;
+            --box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            line-height: 1.7;
+        }
+        
+        /* زر تبديل الوضع الليلي - مثال فقط، يمكنك وضعه في رأس الصفحة لاحقًا */
+        .theme-toggle-container {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 2000;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--box-shadow);
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* تصميم النافذة المنبثقة (Modal) */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.65);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            display: none; /* يتم التحكم به عبر JS */
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            margin: auto;
+            padding: 25px;
+            border: 1px solid var(--primary-color);
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            animation: fadeInModal 0.4s ease-out;
+            position: relative;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content h1 {
+            font-family: var(--font-main);
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+            font-weight: 700;
+        }
+
+        .modal-content p {
+            font-family: var(--font-quranic);
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
+            line-height: 1.9;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        
+        .modal-content p.hadith-text {
+             font-weight: bold;
+             color: var(--accent-color);
+        }
+        
+        .modal-content p.hadith-source {
+            font-family: var(--font-main);
+            font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+            color: var(--text-color);
+            opacity: 0.8;
+            border-top: 1px dashed var(--accent-color);
+            padding-top: 10px;
+            margin-top: 15px;
+        }
+
+        .modal-content .buttons-modal-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+            align-items: center;
+        }
+
+        .modal-button {
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white !important;
+            padding: 12px 25px;
+            font-size: clamp(0.9rem, 2.8vw, 1.05rem);
+            font-weight: 500;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 180px;
+            width: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .modal-button:hover {
+            background: linear-gradient(135deg, var(--hover-gradient-start), var(--hover-gradient-end));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .modal-button.btn-close-modal {
+            background: linear-gradient(135deg, #a94442, #d9534f);
+        }
+
+        .modal-button.btn-close-modal:hover {
+            background: linear-gradient(135deg, #d9534f, #c9302c);
+        }
+
+        .modal-content audio {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+        }
+        
+        @media (min-width: 481px) {
+            .modal-content .buttons-modal-container {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="theme-toggle-container">
+        <button id="themeToggleBtn" class="theme-toggle" title="تبديل المظهر">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div id="kahfModal" class="modal">
+        <div class="modal-content">
+            <h1>فضل سورة الكهف</h1>
+            <p class="hadith-text">"من قرأ سورةَ الكهفِ في يومِ الجمعةِ أضاء له من النورِ ما بين الجمُعَتَين."</p>
+            <p class="hadith-source">الراوي: أبو سعيد الخدري | المحدث: الألباني | المصدر: صحيح الترغيب | الرقم: 736 | صحيح</p>
+            <div class="buttons-modal-container">
+                <button onclick="window.location.href='سورة الكهف مكتوبة.html'" class="modal-button">قراءة السورة الآن</button>
+                <button class="modal-button btn-close-modal" onclick="closeModal('kahfModal')">إغلاق</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="jumaaModal" class="modal">
+        <div class="modal-content">
+            <h1>فضل صلاة الجمعة</h1>
+            <audio id="jumaaAudio" controls preload="metadata">
+                <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل الصوت.
+            </audio>
+            <p class="hadith-text">"من غسَّلَ يومَ الجمعةِ واغتسلَ ثمَّ بَكَّرَ وابتَكرَ ومشى ولم يرْكب ودنا منَ الإمامِ فاستمعَ ولم يلغُ كانَ لَهُ بِكلِّ خطوةٍ عملُ سنةٍ أجرُ صيامِها وقيامِها."</p>
+            <p class="hadith-source">الراوي: أوس بن أبي أوس | المحدث: الألباني | المصدر: صحيح أبي داود | الرقم: 345 | صحيح</p>
+            <p class="hadith-text">"الصَّلَوَاتُ الخَمْسُ، وَالْجُمْعَةُ إلى الجُمْعَةِ، وَرَمَضَانُ إلى رَمَضَانَ، مُكَفِّرَاتٌ ما بيْنَهُنَّ إِذَا اجْتَنَبَ الكَبَائِرَ."</p>
+            <p class="hadith-source">الراوي: أبو هريرة | المحدث: مسلم | المصدر: صحيح مسلم | الرقم: 233 | صحيح</p>
+            <div class="buttons-modal-container">
+                <button class="modal-button btn-close-modal" onclick="closeModal('jumaaModal')">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="generalModal" class="modal">
+        <div class="modal-content">
+            <h1>⚡ أَدَاة عِلْم ⚡</h1>
+            <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
+            <p>نذكركم أن التجربة على أجهزة الكمبيوتر أفضل، ونسعى لتحسينها على الهواتف قريبًا بإذن الله.</p>
+            <div class="buttons-modal-container">
+                <button class="modal-button btn-close-modal" onclick="closeModal('generalModal')">حسنًا، فهمت</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // --- Dark Mode Toggle ---
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            let theme = 'light';
+            if (document.body.classList.contains('dark-mode')) {
+                theme = 'dark';
+                themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+            localStorage.setItem('theme', theme);
+        });
+
+
+        // --- Modal Logic ---
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = "none";
+                // عند إغلاق نافذة الجمعة، أوقف الصوت
+                if (modalId === 'jumaaModal') {
+                    const audio = document.getElementById("jumaaAudio");
+                    if (audio && !audio.paused) {
+                        audio.pause();
+                    }
+                }
+            }
+        }
+  
+        function showModals() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0=الأحد, 5=الجمعة
+            const hours = today.getHours();
+  
+            // عرض الإشعار العام دائمًا عند التحميل
+            const generalModal = document.getElementById("generalModal");
+            if(generalModal) generalModal.style.display = "flex";
+  
+            // التحقق إذا كان اليوم هو الجمعة
+            if (dayOfWeek === 5) {
+                const kahfModal = document.getElementById("kahfModal");
+                if (kahfModal) kahfModal.style.display = "flex";
+  
+                // قبل الساعة 2 ظهرًا (14:00) يوم الجمعة
+                if (hours < 14) {
+                    const jumaaModal = document.getElementById("jumaaModal");
+                    if (jumaaModal) jumaaModal.style.display = "flex";
+                    
+                    const audio = document.getElementById("jumaaAudio");
+                    // محاولة تشغيل الصوت (قد تمنعه بعض المتصفحات)
+                    if (audio && audio.paused) { 
+                        const playPromise = audio.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(error => {
+                                console.log("تشغيل الصوت التلقائي ممنوع. يتطلب تفاعل المستخدم.");
+                                // يمكن إضافة زر "تشغيل الصوت" كحل بديل
+                            });
+                        }
+                    }
+                }
+            }
+        }
+  
+        // تشغيل الدالة عند تحميل الصفحة بالكامل
+        window.onload = showModals;
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق ختم القرآن الكريم</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #2c786c;
+            --secondary-color: #004445;
+            --accent-color: #f8b400;
+            --dark-color: #000000; /* تم تغيير اللون إلى أسود تمامًا */
+            --light-color: #faf5e4;
+            --error-color: #e74c3c;
+            --overlay-color: rgba(0, 0, 0, 0.85); /* طبقة داكنة جدًا */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            line-height: 1.6;
+        }
+
+        /* طبقة التعتيم الكاملة */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+    background-color: #000000; /* أسود صلب */
+            z-index: 9999998; /* أقل بقليل من المحتوى الرئيسي */
+        }
+
+        #quran-app-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 9999999; /* أعلى قيمة ممكنة */
+            overflow-y: auto;
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 600px;
+            position: relative; /* للتأكد من ظهوره فوق الطبقات */
+        }
+
+        .app-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            line-height: 1.3;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .app-subtitle {
+            font-size: 1.3rem;
+            color: var(--light-color);
+            margin-bottom: 20px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .app-message {
+            background-color: rgba(231, 76, 60, 0.3);
+            border: 1px solid var(--error-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+            position: relative; /* للتأكد من ظهوره فوق الطبقات */
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative; /* للتأكد من ظهوره فوق الطبقات */
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-icon {
+            font-size: 1.3rem;
+        }
+
+        .app-footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            position: relative; /* للتأكد من ظهوره فوق الطبقات */
+        }
+
+        /* منع أي تفاعل مع العناصر تحتها */
+        body.stop-scrolling {
+            overflow: hidden;
+            touch-action: none;
+            -webkit-overflow-scrolling: none;
+            overscroll-behavior: none;
+        }
+
+        @media (max-width: 768px) {
+            .app-title {
+                font-size: 1.8rem;
+            }
+            
+            .app-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 14px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-title {
+                font-size: 1.5rem;
+            }
+            
+            #quran-app-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- طبقة التعتيم -->
+<div id="overlay"></div>
+
+<!-- المحتوى الرئيسي -->
+<div id="quran-app-container">
+    <div class="app-header">
+        <h1 class="app-title">مَرْحَبًا بِكُمْ فِي تطبيق ختم القرآن</h1>
+        <h2 class="app-subtitle">ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ</h2>
+        
+        <div class="app-message">
+            نعتذر هناك عدة إصلاحات تجري حالياً، يرجى العودة لاحقاً
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="https://t.me/adatealm" target="_blank" class="btn btn-primary">
+            <i class="fab fa-telegram btn-icon"></i>
+            <span>انضم لقناتنا على التلغرام لأي جديد </span>
+        </a>
+    </div>
+
+    <div class="app-footer">
+        <p>جميع الحقوق محفوظة © 2025 تطبيق ختم القرآن</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // منع التمرير في الصفحة الرئيسية
+        document.body.classList.add('stop-scrolling');
+        
+        // منع أي تفاعل مع العناصر الموجودة تحته
+        document.addEventListener('click', function(e) {
+            e.stopPropagation();
+        }, true);
+        
+        console.log('تطبيق ختم القرآن - الواجهة ظاهرة فوق كل المحتوى');
+    });
+</script>
+
+</body>
+</html>

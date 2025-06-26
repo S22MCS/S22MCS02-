@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title> واجباتي </title>
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+
+    <style>
+        /* أنماط الهيدر الجديدة */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .date-clock-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background-color: var(--primary-color);
+            padding: 10px;
+            border-radius: 8px;
+            min-width: 200px;
+           
+        }
+        
+        .date-display {
+        
+            font-size: 0.9rem;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        
+        .countdown-clock {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            direction: ltr;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .app-title {
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .app-header {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 6px 8px;
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid var(--accent-color);
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin-bottom: 0;
+            border-radius: 8px;
+        }
+        .app-header strong {
+            color: var(--accent-color);
+        }
+        .header-buttons {
+            margin-top: 4px;
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .header-buttons a {
+            background-color: var(--accent-color);
+            color: var(--background);
+            padding: 5px 12px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.75rem;
+            transition: background-color 0.3s;
+        }
+        .header-buttons a:hover {
+            background-color: #00cfa1;
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .date-clock-container {
+                width: 100%;
+                margin-bottom: 10px;
+                align-items: center;
+            }
+            
+            .app-title {
+                order: -1;
+                margin-bottom: 10px;
+            }
+            
+            .app-header {
+                font-size: 0.75rem;
+                padding: 5px 6px;
+            }
+            .header-buttons a {
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+        }
+
+        :root {
+            --background: #101114;
+            --primary-color: #1C1D20;
+            --secondary-color: #4A4D57;
+            --accent-color: #00FFC4;
+            --text-color: #F9F9F9;
+    --category-1: #FF6B6B;
+    --category-2: #4ECDC4;
+    --category-3: #45B7D1;
+    --category-4: #FFA07A;
+    --category-5: #98D8C8;
+    /* ألوان جديدة */
+    --category-6: #FFD166; /* أصفر */
+    --category-7: #A05195; /* بنفسجي */
+    --category-8: #FF7C43; /* برتقالي */
+}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            touch-action: manipulation;
+        }
+        html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16pt;
+            color: var(--text-color);
+        }
+        body {
+            min-height: 100vh;
+            padding: 10px;
+            background-color: var(--background);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-align: center;
+            color: var(--accent-color);
+        }
+        .wrapper {
+            width: 700px;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #todo-input {
+            box-sizing: border-box;
+            padding: 12px 20px;
+            width: 100%;
+            background: none;
+            border: 2px solid var(--secondary-color);
+            border-radius: 1000px;
+            font: inherit;
+            color: var(--text-color);
+            caret-color: var(--accent-color);
+        }
+        #todo-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+        form {
+            position: relative;
+        }
+        #add-button {
+            position: absolute;
+            top: -0px;
+            right: -170px;
+            background-color: var(--accent-color);
+            height: 60%;
+            padding: 0 30px;
+            border: none;
+            border-radius: 1000px;
+            font: inherit;
+            font-weight: 600;
+            color: var(--background);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #add-button:hover {
+            background-color: #00cfa1;
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .drag-mode-btn, .color-picker-btn {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            flex-grow: 1;
+        }
+        
+        .drag-mode-btn:hover, .drag-mode-btn.active,
+        .color-picker-btn:hover, .color-picker-btn.active {
+            background-color: var(--accent-color);
+            color: var(--background);
+        }
+
+        .todo {
+            margin-bottom: 10px;
+            padding: 0 16px;
+            background-color: var(--primary-color);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+            position: relative;
+            touch-action: pan-y;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .todo.dragging {
+            opacity: 0.5;
+            background-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(0, 255, 196, 0.5);
+        }
+        .todo .todo-text {
+            padding: 15px;
+            padding-right: 0;
+            flex-grow: 1;
+            transition: 200ms ease;
+        }
+        .todo .todo-time {
+            font-size: 0.7rem;
+            color: var(--secondary-color);
+            margin-right: 10px;
+            min-width: 80px;
+            text-align: left;
+        }
+        .todo-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .delete-button, .edit-button, .drag-handle, .copy-button, .color-button {
+            padding: 3px;
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .delete-button svg, .edit-button svg, 
+        .drag-handle svg, .copy-button svg,
+        .color-button svg {
+            transition: 200ms ease;
+        }
+        .delete-button:hover svg {
+            fill: #ff0033;
+        }
+        .edit-button:hover svg {
+            fill: var(--accent-color);
+        }
+        .drag-handle svg, .copy-button svg,
+        .color-button svg {
+            fill: var(--secondary-color);
+        }
+        .drag-handle:hover svg, .copy-button:hover svg,
+        .color-button:hover svg {
+            fill: var(--accent-color);
+        }
+        .custom-checkbox {
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            min-height: 20px;
+            min-width: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            transition: 200ms ease;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked ~ .custom-checkbox {
+            background-color: var(--accent-color);
+        }
+        input[type="checkbox"]:checked ~ .custom-checkbox svg {
+            fill: var(--primary-color);
+        }
+        input[type="checkbox"]:checked ~ .todo-text {
+            text-decoration: line-through;
+            color: var(--secondary-color);
+        }
+        input[type="checkbox"] {
+            display: none;
+        }
+        .confirm-dialog {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .confirm-content {
+            background-color: var(--primary-color);
+            padding: 20px;
+           
+            border-radius: 10px;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            border: 1px solid var(--accent-color);
+        }
+        .confirm-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .confirm-buttons button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .confirm-yes {
+            background-color: #ff0033;
+            color: white;
+        }
+        .confirm-no {
+            background-color: var(--accent-color);
+            color: var(--background);
+        }
+        
+        /* أنماط التلوين */
+        .category-1 {
+            border-right: 4px solid var(--category-1);
+        }
+        .category-2 {
+            border-right: 4px solid var(--category-2);
+        }
+        .category-3 {
+            border-right: 4px solid var(--category-3);
+        }
+        .category-4 {
+            border-right: 4px solid var(--category-4);
+        }
+        .category-5 {
+            border-right: 4px solid var(--category-5);
+        }
+        
+        .color-picker {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background-color: var(--primary-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 5px;
+            z-index: 100;
+            flex-wrap: wrap;
+            width: 150px;
+            gap: 5px;
+        }
+        .color-picker.show {
+            display: flex;
+        }
+        .color-option {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        .color-option.selected {
+            border-color: white;
+        }
+        .color-1 { background-color: var(--category-1); }
+        .color-2 { background-color: var(--category-2); }
+        .color-3 { background-color: var(--category-3); }
+        .color-4 { background-color: var(--category-4); }
+        .color-5 { background-color: var(--category-5); }
+        .color-6 { background-color: var(--category-6); }
+.color-7 { background-color: var(--category-7); }
+.color-8 { background-color: var(--category-8); }
+
+.category-6 { border-right: 4px solid var(--category-6); }
+.category-7 { border-right: 4px solid var(--category-7); }
+.category-8 { border-right: 4px solid var(--category-8); }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-top: 20px;
+            }
+            
+            #add-button {
+                position: static;
+                transform: none;
+                width: 100%;
+                height: auto;
+                padding: 12px;
+                margin-top: 10px;
+            }
+            
+            .todo {
+                padding: 12px;
+            }
+            
+            .todo-time {
+                font-size: 0.65rem;
+                min-width: 70px;
+            }
+            
+            .drag-handle, .copy-button, .color-button {
+                padding: 2px;
+            }
+            
+            .drag-handle svg, .copy-button svg, .color-button svg {
+                width: 18px;
+                height: 18px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .color-picker {
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            html {
+                font-size: 12px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .todo {
+                flex-wrap: wrap;
+            }
+            
+            .todo-time {
+                order: 1;
+                width: 100%;
+                margin-top: 5px;
+                margin-left: 40px;
+            }
+            
+            .todo-actions {
+                margin-top: 8px;
+                gap: 5px;
+            }
+            
+            .color-picker {
+                width: 100px;
+            }
+        }
+
+        /* تأثيرات النسخ */
+        @keyframes highlight {
+            0% { background-color: rgba(0, 255, 196, 0.2); }
+            100% { background-color: var(--primary-color); }
+        }
+        .copied-item {
+            animation: highlight 0.5s;
+        }
+    </style>
+</head>
+
+
+<header class="app-header">
+    <p>
+        مرحباً بك في تطبيق <strong>واجباتي</strong> تم بواسطة <strong>أداة علم</strong> – 
+        يمكنك الوصول إلى <strong>موقعنا</strong> و <strong>صفحاتنا</strong> أو على تطبيق <strong>تيليجرام</strong> من الروابط التالية:
+    </p>
+    <div class="header-buttons">
+
+<a href="https://adatealm.github.io/TO_DO_APP/WAJIBATI" target="_blank" rel="noopener noreferrer external"> تحميل تطبيق واجباتي</a>
+
+        <a href="https://adatealm.github.io/ADATEALM/?fbclid=IwY2xjawKC4FxleHRuA2FlbQIxMABicmlkETFhVDVUTmNWRTNJTExUb1E1AR6IoqOP7mGxEVYPq9jI-fXzmU73BTMA3eAdoaA_eXXnsZURbTu2Dlk14rsirQ_aem_bgqzUZJ81cBfmw-eEb9fPA#Download" target="_blank" rel="noopener noreferrer">زيارة موقع أداة علم </a>
+        <a href="https://t.me/adatealm/238" target="_blank" rel="noopener noreferrer">قناتنا على تطبيق التيليجرام</a>
+    </div>
+</header>
+
+
+
+
+<body>
+
+
+
+
+    <div class="app-title">
+        <h1>واجباتي</h1>
+    </div>
+
+    <div style="display: flex; align-items: center;">
+        <div style=" padding: 5px;">
+          <img src="chronometer.gif" style="width: 50px; height: auto;">
+        </div>
+
+     
+        <div class="countdown-clock" id="countdown-clock" style="margin-left: 0px;">
+          <!-- هنا مؤقت العد التنازلي -->
+        </div>
+
+          &nbsp;  
+          
+        <div style=" padding: 5px;">
+            <img src="chronometer.gif" style="width: 50px; height: auto;">
+          </div>
+
+      </div>
+      
+      
+      
+   
+      
+
+    <div class="header-container">
+       
+
+
+
+        <div class="date-clock-container">
+            <div class="date-display" id="current-date"></div>     
+        </div>   
+          
+          <style>
+        
+          
+            .date-display {
+              font-size: 0.9rem;
+              font-weight: 600;              /* خط متوسط السماكة */
+              color: white;                  /* لون النص */
+              background-color: #444;        /* خلفية داكنة */
+              border: 2px solid #ccc;        /* إطار رقيق */
+              border-radius: 10px;           /* حواف مستديرة */
+              padding: 10px 20px;            /* مسافة داخلية */
+              text-align: center;
+              min-width: 150px;
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* ظل خفيف */
+            }
+          </style>
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="digital-clock" id="digital-clock"></div>
+        
+          
+          <style>
+    
+          
+            .digital-clock {
+              font-size: 1.2rem;
+              font-weight: bold;
+              color: white;                     /* لون أبيض للساعة */
+              background-color: #333;           /* خلفية داكنة لتمييز الإطار */
+              border: 2px solid #ccc;           /* إطار خارجي */
+              border-radius: 10px;              /* حواف مستديرة */
+              padding: 15px 25px;               /* مسافة داخلية */
+              text-align: center;
+              min-width: 120px;
+            }
+          </style>
+      
+        
+          
+        
+      
+    </div> 
+ 
+
+ 
+
+    <div class="wrapper">
+        <form>
+            <input id="todo-input" type="text" 
+            placeholder="⚡ اكتب أي شيء واضغط Enter لإضافة ⚡ " autocomplete="off">
+            <button id="add-button">اضافة </button>
+            <div class="form-actions">
+                <button type="button" class="drag-mode-btn" id="dragModeBtn">وضع الترتيب</button>
+                <button type="button" class="color-picker-btn" id="colorPickerBtn">اختيار اللون</button>
+            </div>
+            <div class="color-picker" id="colorPicker">
+                <div class="color-option color-1 selected" data-color="1"></div>
+                <div class="color-option color-2" data-color="2"></div>
+                <div class="color-option color-3" data-color="3"></div>
+                <div class="color-option color-4" data-color="4"></div>
+                <div class="color-option color-5" data-color="5"></div>
+                <!-- ألوان جديدة -->
+                <div class="color-option color-6" data-color="6"></div>
+                <div class="color-option color-7" data-color="7"></div>
+                <div class="color-option color-8" data-color="8"></div>
+            </div>
+        </form>
+
+        <ul id="todo-list">
+            <!-- المهام ستضاف هنا ديناميكيا -->
+        </ul>
+    </div>
+
+    <div class="confirm-dialog" id="confirmDialog">
+        <div class="confirm-content">
+            <h3>تأكيد الحذف</h3>
+            <p>هل أنت متأكد من أنك تريد حذف هذه المهمة؟</p>
+            <div class="confirm-buttons">
+                <button class="confirm-yes" id="confirmYes">نعم</button>
+                <button class="confirm-no" id="confirmNo">لا</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="app-header" dir="rtl" style="font-size: 0.85em; padding: 1em;">
+        <p style="margin-top: 1em;">
+            تم بواسطة <strong>أداة علم</strong>، الجناح الدراسي لـ 
+            <strong>
+                
+
+           طلبة الحل الطبي العلاجي      
+
+                (ط.ح.ط.ع)
+            </strong>.
+
+         
+        </p>
+        <div class="header-buttons" style="display: flex; gap: 1em; flex-wrap: wrap;">
+            <a href="https://t.me/S22MCS" target="_blank" rel="noopener noreferrer">
+                قناة 
+                 طلبة الحل الطبي العلاجي    
+                على التيليجرام
+            </a>
+            <a href="https://t.me/S22MCS/720" target="_blank" rel="noopener noreferrer">
+                ما هي 
+                
+                طلبة الحل الطبي العلاجي      
+
+                ؟
+            </a>
+            <a href="https://s22mcs.github.io/S22MCS-/" target="_blank" rel="noopener noreferrer">
+                زيارة موقع 
+                
+                 طلبة الحل الطبي العلاجي    
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // دالة لتحويل التاريخ الميلادي إلى هجري
+        function gregorianToHijri(date) {
+            const gregDate = new Date(date);
+            const gregYear = gregDate.getFullYear();
+            const gregMonth = gregDate.getMonth() + 1;
+            const gregDay = gregDate.getDate();
+            
+            // معادلة تقريبية للتحويل (ليست دقيقة تماماً)
+            const hijriYear = Math.floor((gregYear - 622) * (33 / 32));
+            const hijriDate = new Intl.DateTimeFormat('ar-u-ca-islamic', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }).format(gregDate);
+            
+            return hijriDate;
+        }
+
+        // دالة لعرض التاريخ الحالي
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const gregorianDate = now.toLocaleDateString('ar-EG', options);
+            const hijriDate = gregorianToHijri(now);
+            
+            document.getElementById('current-date').innerHTML = `
+                <div>${gregorianDate}</div>
+                <div>${hijriDate}</div>
+            `;
+        }
+
+        // دالة لعرض الساعة الرقمية
+        function updateDigitalClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            document.getElementById('digital-clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // دالة لحساب الوقت المتبقي حتى منتصف الليل
+        function updateCountdownClock() {
+            const now = new Date();
+            const midnight = new Date();
+            midnight.setHours(24, 0, 0, 0);
+            
+            const diff = midnight - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60)).toString().padStart(2, '0');
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            
+            document.getElementById('countdown-clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // تحديث التاريخ والساعة كل ثانية
+        updateCurrentDate();
+        updateDigitalClock();
+        updateCountdownClock();
+        setInterval(updateCurrentDate, 1000 * 60 * 60); // تحديث التاريخ كل ساعة
+        setInterval(updateDigitalClock, 1000);
+        setInterval(updateCountdownClock, 1000);
+
+        // بقية الكود الخاص بقائمة المهام
+        const todoForm = document.querySelector('form');
+        const todoInput = document.getElementById('todo-input');
+        const todoListUL = document.getElementById('todo-list');
+        const addButton = document.getElementById('add-button');
+        const confirmDialog = document.getElementById('confirmDialog');
+        const confirmYes = document.getElementById('confirmYes');
+        const confirmNo = document.getElementById('confirmNo');
+        const dragModeBtn = document.getElementById('dragModeBtn');
+        const colorPickerBtn = document.getElementById('colorPickerBtn');
+        const colorPicker = document.getElementById('colorPicker');
+        const colorOptions = document.querySelectorAll('.color-option');
+
+        let allTodos = getTodos();
+        let currentlyEditingIndex = null;
+        let todoToDeleteIndex = null;
+        let isDragMode = false;
+        let sortable;
+        let selectedColor = '1'; // اللون الافتراضي
+        
+        // تهيئة السحب والإفلات مع دعم اللمس
+        function initSortable() {
+            sortable = new Sortable(todoListUL, {
+                animation: 150,
+                ghostClass: 'dragging',
+                handle: '.drag-handle',
+                onStart: function() {
+                    document.body.style.overflow = 'hidden';
+                },
+                onEnd: function() {
+                    document.body.style.overflow = '';
+                    const newOrder = [];
+                    const items = todoListUL.querySelectorAll('li');
+                    items.forEach(item => {
+                        const index = parseInt(item.getAttribute('data-index'));
+                        newOrder.push(allTodos[index]);
+                    });
+                    allTodos = newOrder;
+                    saveTodos();
+                },
+                // إعدادات خاصة باللمس
+                touchStartThreshold: 3,
+                delay: 150,
+                delayOnTouchOnly: true,
+                forceFallback: true, // لتحسين الأداء على الهواتف
+                fallbackTolerance: 3 // حساسية السحب على الهواتف
+            });
+        }
+
+        // تبديل وضع الترتيب
+        function toggleDragMode() {
+            isDragMode = !isDragMode;
+            dragModeBtn.classList.toggle('active', isDragMode);
+            
+            const dragHandles = document.querySelectorAll('.drag-handle');
+            dragHandles.forEach(handle => {
+                handle.style.display = isDragMode ? 'flex' : 'none';
+            });
+            
+            if (isDragMode) {
+                initSortable();
+            } else if (sortable) {
+                sortable.destroy();
+            }
+        }
+
+        // تبديل عرض منتقي الألوان
+        function toggleColorPicker() {
+            colorPicker.classList.toggle('show');
+        }
+
+        // اختيار لون جديد
+        function selectColor(color) {
+            selectedColor = color;
+            colorOptions.forEach(option => {
+                option.classList.toggle('selected', option.dataset.color === color);
+            });
+            colorPicker.classList.remove('show');
+        }
+
+        updateTodoList();
+
+        // بدء التحديث التلقائي للوقت
+        setInterval(updateTodoListTimes, 60000);
+
+        dragModeBtn.addEventListener('click', toggleDragMode);
+        colorPickerBtn.addEventListener('click', toggleColorPicker);
+        
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                selectColor(option.dataset.color);
+            });
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!colorPicker.contains(e.target) && e.target !== colorPickerBtn) {
+                colorPicker.classList.remove('show');
+            }
+        });
+
+        confirmYes.addEventListener('click', () => {
+            if (todoToDeleteIndex !== null) {
+                deleteTodoItem(todoToDeleteIndex);
+                todoToDeleteIndex = null;
+            }
+            confirmDialog.style.display = 'none';
+        });
+
+        confirmNo.addEventListener('click', () => {
+            todoToDeleteIndex = null;
+            confirmDialog.style.display = 'none';
+        });
+
+        todoForm.addEventListener('submit', function(e){
+            e.preventDefault();
+            if(currentlyEditingIndex !== null) {
+                updateTodo();
+            } else {
+                addTodo();
+            }
+        });
+
+        function addTodo(){
+            const todoText = todoInput.value.trim();
+            if(todoText.length > 0){
+                const now = new Date();
+                
+                const todoObject = {
+                    text: todoText,
+                    completed: false,
+                    addedAt: now.getTime(),
+                    color: selectedColor,
+                    copiedFrom: null
+                }
+                allTodos.push(todoObject);
+                updateTodoList();
+                saveTodos();
+                todoInput.value = "";
+            }  
+        }
+
+        function updateTodo() {
+            const todoText = todoInput.value.trim();
+            if(todoText.length > 0) {
+                allTodos[currentlyEditingIndex].text = todoText;
+                allTodos[currentlyEditingIndex].color = selectedColor;
+                updateTodoList();
+                saveTodos();
+                todoInput.value = "";
+                currentlyEditingIndex = null;
+                addButton.textContent = 'اضافة';
+            }
+        }
+
+        function updateTodoList(){
+            todoListUL.innerHTML = "";
+            allTodos.forEach((todo, todoIndex)=>{
+                todoItem = createTodoItem(todo, todoIndex);
+                todoListUL.append(todoItem);
+            });
+            
+            if (isDragMode) {
+                initSortable();
+            }
+        }
+
+        function updateTodoListTimes() {
+            const timeElements = document.querySelectorAll('.todo-time');
+            timeElements.forEach((el, index) => {
+                const todoIndex = parseInt(el.closest('li').getAttribute('data-index'));
+                if (allTodos[todoIndex]) {
+                    el.textContent = calculateTimePassed(allTodos[todoIndex].addedAt);
+                }
+            });
+        }
+
+        function calculateTimePassed(timestamp) {
+            const now = new Date().getTime();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / (1000 * 60));
+            
+            if (minutes < 1) return "الآن";
+            if (minutes < 60) return `منذ ${minutes} دقيقة`;
+            
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `منذ ${hours} ساعة`;
+            
+            const days = Math.floor(hours / 24);
+            return `منذ ${days} يوم`;
+        }
+
+        function createTodoItem(todo, todoIndex){
+            const todoId = "todo-"+todoIndex;
+            const todoLI = document.createElement("li");
+            todoLI.setAttribute('data-index', todoIndex);
+            
+            let displayText = todo.text;
+            if (todo.copiedFrom !== null) {
+                displayText = `${todo.text} <span style="color: var(--secondary-color); font-size: 0.8em;">←</span>`;
+            }
+            
+            const timePassed = calculateTimePassed(todo.addedAt);
+            
+            // إضافة فئة اللون إذا كان موجوداً
+            if (todo.color) {
+                todoLI.classList.add(`category-${todo.color}`);
+            }
+            
+            todoLI.className = `todo ${todo.color ? 'category-' + todo.color : ''}`;
+            todoLI.innerHTML = `
+                <input type="checkbox" id="${todoId}">
+                <label class="custom-checkbox" for="${todoId}">
+                    <svg fill="transparent" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
+                </label>
+                <label for="${todoId}" class="todo-text">
+                    ${displayText}
+                </label>
+                <span class="todo-time">${timePassed}</span>
+                <div class="todo-actions">
+                    <button class="drag-handle" title="سحب لإعادة الترتيب" style="display: ${isDragMode ? 'flex' : 'none'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                            <path d="M360-160q-33 0-56.5-23.5T280-240q0-33 23.5-56.5T360-320q33 0 56.5 23.5T440-240q0 33-23.5 56.5T360-160Zm0-240q-33 0-56.5-23.5T280-480q0-33 23.5-56.5T360-560q33 0 56.5 23.5T440-480q0 33-23.5 56.5T360-400Zm0-240q-33 0-56.5-23.5T280-720q0-33 23.5-56.5T360-800q33 0 56.5 23.5T440-720q0 33-23.5 56.5T360-640Zm240 0q-33 0-56.5-23.5T520-720q0-33 23.5-56.5T600-800q33 0 56.5 23.5T680-720q0 33-23.5 56.5T600-640Zm0 240q-33 0-56.5-23.5T520-480q0-33 23.5-56.5T600-560q33 0 56.5 23.5T680-480q0 33-23.5 56.5T600-400Zm0 240q-33 0-56.5-23.5T520-240q0-33 23.5-56.5T600-320q33 0 56.5 23.5T680-240q0 33-23.5 56.5T600-160Z"/>
+                        </svg>
+                    </button>
+                    <button class="color-button" title="تغيير لون المهمة">
+                        <svg fill="var(--secondary-color)" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M440-120v-80h80v80h-80Zm0-640v-80h80v80h-80Zm320 320v-80h80v80h-80ZM200-440v-80h80v80h-80Zm34 196-56-56 56-56 56 56-56 56Zm0-400-56-56 56-56 56 56-56 56Zm400 400-56-56 56-56 56 56-56 56Zm0-400-56-56 56-56 56 56-56 56ZM440-360q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T480-480q0-17-11.5-28.5T440-520q-17 0-28.5 11.5T400-480q0 17 11.5 28.5T440-440Zm40 40Zm0-80Z"/></svg>
+                    </button>
+                    <button class="copy-button" title="نسخ المهمة">
+                        <svg fill="var(--secondary-color)" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/></svg>
+                    </button>
+                    <button class="edit-button" title="تعديل المهمة">
+                        <svg fill="var(--secondary-color)" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                    </button>
+                    <button class="delete-button" title="حذف المهمة">
+                        <svg fill="var(--secondary-color)" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                    </button>
+                </div>
+            `;
+            
+            const deleteButton = todoLI.querySelector(".delete-button");
+            deleteButton.addEventListener("click", (e)=>{
+                e.stopPropagation();
+                showDeleteConfirmation(todoIndex);
+            });
+            
+            const editButton = todoLI.querySelector(".edit-button");
+            editButton.addEventListener("click", (e)=>{
+                e.stopPropagation();
+                startEditingTodo(todoIndex);
+            });
+            
+            const copyButton = todoLI.querySelector(".copy-button");
+            copyButton.addEventListener("click", (e)=>{
+                e.stopPropagation();
+                copyTodoItem(todoIndex);
+            });
+            
+            const colorButton = todoLI.querySelector(".color-button");
+            colorButton.addEventListener("click", (e)=>{
+                e.stopPropagation();
+                changeTodoColor(todoIndex);
+            });
+            
+            const dragHandle = todoLI.querySelector(".drag-handle");
+            dragHandle.addEventListener("mousedown", (e)=>{
+                e.stopPropagation();
+            });
+            
+            // تحسينات لدعم اللمس
+            dragHandle.addEventListener("touchstart", (e) => {
+                e.stopPropagation();
+            }, { passive: true });
+            
+            const checkbox = todoLI.querySelector("input");
+            checkbox.addEventListener("change", ()=>{
+                allTodos[todoIndex].completed = checkbox.checked;
+                saveTodos();
+            });
+            
+            checkbox.checked = todo.completed;
+            return todoLI;
+        }
+
+        function showDeleteConfirmation(index) {
+            todoToDeleteIndex = index;
+            confirmDialog.style.display = 'flex';
+        }
+
+        function startEditingTodo(todoIndex) {
+            currentlyEditingIndex = todoIndex;
+            todoInput.value = allTodos[todoIndex].text;
+            selectedColor = allTodos[todoIndex].color || '1';
+            updateColorPickerSelection();
+            todoInput.focus();
+            addButton.textContent = 'حفظ التعديل';
+        }
+
+        function changeTodoColor(todoIndex) {
+            const currentColor = allTodos[todoIndex].color || '1';
+            const newColor = currentColor === '5' ? '1' : (parseInt(currentColor) + 1).toString();
+            allTodos[todoIndex].color = newColor;
+            saveTodos();
+            updateTodoList();
+        }
+
+        function updateColorPickerSelection() {
+            colorOptions.forEach(option => {
+                option.classList.toggle('selected', option.dataset.color === selectedColor);
+            });
+        }
+
+        function copyTodoItem(todoIndex) {
+            const now = new Date();
+            const originalTodo = allTodos[todoIndex];
+            
+            const copiedTodo = {
+                text: originalTodo.text,
+                completed: false,
+                addedAt: now.getTime(),
+                color: originalTodo.color || '1',
+                copiedFrom: todoIndex
+            };
+            
+            // إدراج المهمة المنسوخة بعد المهمة الأصلية مباشرة
+            allTodos.splice(todoIndex + 1, 0, copiedTodo);
+            saveTodos();
+            
+            // تطبيق تأثير التمييز على العنصر المنسوخ
+            updateTodoList();
+            const newTodoIndex = todoIndex + 1;
+            const newTodoItem = document.querySelector(`li[data-index="${newTodoIndex}"]`);
+            if (newTodoItem) {
+                newTodoItem.classList.add('copied-item');
+                setTimeout(() => {
+                    newTodoItem.classList.remove('copied-item');
+                }, 500);
+            }
+        }
+
+        function deleteTodoItem(todoIndex){
+            allTodos = allTodos.filter((_, i) => i !== todoIndex);
+            saveTodos();
+            updateTodoList();
+        }
+
+        function saveTodos(){
+            const todosJson = JSON.stringify(allTodos);
+            localStorage.setItem("todos", todosJson);
+        }
+
+        function getTodos(){
+            const todos = localStorage.getItem("todos") || "[]";
+            return JSON.parse(todos);
+        }
+
+        // تحسينات للهواتف: إعادة تهيئة السحب عند تغيير حجم الشاشة
+        window.addEventListener('resize', function() {
+            if (isDragMode && sortable) {
+                sortable.destroy();
+                initSortable();
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إشعارات هامة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .custom-modal {
+            display: flex;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .custom-modal-content {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 350px;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.3s ease-in-out;
+            box-sizing: border-box;
+            margin: 10px;
+        }
+        .custom-button {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s, transform 0.2s;
+            width: 100%;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        .btn-close {
+            background-color: #d9534f;
+            color: white;
+        }
+        .btn-close:hover {
+            background-color: #c9302c;
+            transform: scale(1.05);
+        }
+        h1 {
+            font-size: 1.3rem;
+            margin-top: 0;
+        }
+        p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 480px) {
+            .custom-modal-content {
+                padding: 12px;
+                width: 98%;
+            }
+            h1 {
+                font-size: 1.2rem;
+            }
+            p {
+                font-size: 0.85rem;
+            }
+            .custom-button {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- إشعار سورة الكهف -->
+    <div id="kahfModal" class="custom-modal" style="display: none;">
+        <div class="custom-modal-content">
+            <h1>فضل سورة الكهف</h1>
+            <p>من قرأ سورةَ ( الكهفِ ) في يومِ الجمعةِ أضاء له من النورِ ما بين الجمُعَتَين
+              الراوي : أبو سعيد الخدري | المحدث : الألباني | المصدر : صحيح الترغيب | الصفحة أو الرقم : 736 | خلاصة حكم المحدث : صحيح | التخريج : أخرجه البيهقي (6209) واللفظ له، وأخرجه الحاكم (3392) باختلاف يسير</p>
+           
+            <button onclick="window.location.href='سورة الكهف مكتوبة.html'" class="custom-button">انتقل إليها الآن</button>
+            <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
+        </div>
+    </div>
+    
+    <!-- إشعار صلاة الجمعة -->
+    <div id="jumaaModal" class="custom-modal" style="display: none;">
+        <div class="custom-modal-content">
+            <h1>فضل صلاة الجمعة</h1>
+            <audio id="jumaaAudio">
+                <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل الصوت.
+            </audio>
+
+            <p>من غسَّلَ يومَ الجمعةِ واغتسلَ ثمَّ بَكَّرَ وابتَكرَ ومشى ولم يرْكب ودنا منَ الإمامِ فاستمعَ ولم يلغُ كانَ لَهُ بِكلِّ خطوةٍ عملُ سنةٍ أجرُ صيامِها وقيامِها
+            الراوي : أوس بن أبي أوس وقيل أوس بن أوس والد عمرو | المحدث : الألباني | المصدر : صحيح أبي داود
+            الصفحة أو الرقم: 345 | خلاصة حكم المحدث : صحيح</p>
+           
+            <p>الصَّلَوَاتُ الخَمْسُ، وَالْجُمْعَةُ إلى الجُمْعَةِ، وَرَمَضَانُ إلى رَمَضَانَ، مُكَفِّرَاتٌ ما بيْنَهُنَّ إِذَا اجْتَنَبَ الكَبَائِرَ.
+            الراوي : أبو هريرة | المحدث : مسلم | المصدر : صحيح مسلم
+            الصفحة أو الرقم: 233 | خلاصة حكم المحدث : [صحيح]</p>
+
+            <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها"
+            . [صحيح] - [رواه مسلم] - [صحيح مسلم - 854]</p>
+
+            <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- الإشعار العام -->
+    <div id="generalModal" class="custom-modal" style="display: none;">
+        <div class="custom-modal-content">
+            <h1>⚡ أَدَاة عِلْم ⚡</h1>
+            <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
+            <p>المزيد قادم والتحديثات يومية ان شاء الله</p>
+            <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <script>
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+    
+        function showModals() {
+            let today = new Date();
+            let dayOfWeek = today.getDay();
+            let hours = today.getHours();
+    
+            // ✅ عرض الإشعار العام فورًا
+            document.getElementById("generalModal").style.display = "flex";
+    
+
+                
+            // ✅ عرض الإشعار العام فورًا
+            document.getElementById("eidAdhaModal").style.display = "flex";
+    
+            if (dayOfWeek === 5) { // الجمعة فقط
+                document.getElementById("kahfModal").style.display = "flex"; // إشعار سورة الكهف
+    
+                if (hours < 14) { // قبل 14:00 فقط
+                    document.getElementById("jumaaModal").style.display = "flex"; // إشعار صلاة الجمعة
+                    
+                    let audio = document.getElementById("jumaaAudio");
+                    if (audio && !audio.dataset.played) { // تشغيل الصوت عند ظهور الإشعار
+                        let playAudio = () => {
+                            audio.play().then(() => {
+                                audio.dataset.played = "true"; // منع التكرار
+                                console.log("تم تشغيل صوت صلاة الجمعة.");
+                            }).catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+                        };
+    
+                        if (document.hasFocus()) {
+                            playAudio();
+                        } else {
+                            document.addEventListener("click", playAudio, { once: true });
+                            document.addEventListener("touchstart", playAudio, { once: true });
+                        }
+    
+                        audio.onended = function () {
+                            console.log("انتهى تشغيل ملف الصوت.");
+                        };
+                    }
+                }
+            }
+        }
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            let today = new Date();
+            let dayOfWeek = today.getDay();
+            let hours = today.getHours();
+    
+            if (dayOfWeek === 5 && hours < 14) { // تشغيل الصوت فقط يوم الجمعة قبل 14:00
+                let audio = document.getElementById("jumaaAudio");
+                if (audio) {
+                    document.body.addEventListener("click", function() {
+                        if (audio.paused) {
+                            audio.play().catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
+                        }
+                    }, { once: true });
+                }
+            }
+        });
+    
+        // ✅ تشغيل `showModals` دائمًا لإظهار الإشعار العام مباشرةً
+        window.onload = showModals;
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تنبيه طبي - INFATM</title>
+    <style>
+        /* تهيئة عامة */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+        }
+
+        /* زر الخطر الثابت - تصميم جديد */
+        .danger-btn {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #ff0000, #c00000);
+            color: white;
+            font-size: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
+                        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+            z-index: 100;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            animation: pulse 2s infinite;
+            margin: 10px; /* يمكن تعديلها حسب الحاجة */
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        .danger-btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff3333, #d10000);
+        }
+
+        .danger-btn:active {
+            transform: scale(0.95);
+            animation: none;
+        }
+
+        /* طبقة التعتيم */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            display: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* نافذة المحتوى */
+        .popup-container {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1002;
+            display: none;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+
+        .popup-header {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            padding: 18px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: #f5f5f5;
+        }
+
+        /* زر الإغلاق الجديد */
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: white;
+            color: #e74c3c;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+            background: #ffebee;
+        }
+
+        /* مؤشر التحميل */
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 5px solid rgba(231, 76, 60, 0.2);
+            border-top: 5px solid #e74c3c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* المحتوى المعروض */
+        .content-wrapper {
+            padding: 18px;
+            line-height: 1.7;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .danger-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
+            }
+            
+            .popup-header {
+                padding: 15px;
+            }
+            
+            .popup-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .close-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 1rem;
+            }
+        }
+
+        /* تحسينات لللمس على الهواتف */
+        @media (hover: none) {
+            .danger-btn:hover {
+                transform: scale(1);
+                background: linear-gradient(135deg, #ff0000, #c00000);
+            }
+            
+            .close-btn:hover {
+                transform: rotate(0deg);
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- يمكن وضع الزر في أي مكان في الصفحة -->
+<div style="text-align: center; padding: 20px;">
+    <button class="danger-btn" onclick="togglePopup()">⚠️</button>
+</div>
+
+<!-- طبقة التعتيم -->
+<div class="overlay" id="overlay"></div>
+
+<!-- نافذة المحتوى -->
+<div class="popup-container" id="popupContainer">
+    <div class="popup-header">
+        <button class="close-btn" onclick="togglePopup()">×</button>
+        <h2>تنبيه  - محتوى </h2>
+    </div>
+    <div class="popup-content" id="contentContainer">
+        <div class="loader">
+            <div class="spinner"></div>
+            <p>جاري تحميل المحتوى ...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // متغيرات التطبيق
+    let contentLoaded = false;
+    const TARGET_URL = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    
+    // عناصر DOM
+    const popupContainer = document.getElementById('popupContainer');
+    const overlay = document.getElementById('overlay');
+    const contentContainer = document.getElementById('contentContainer');
+    const dangerBtn = document.querySelector('.danger-btn');
+    
+    // تبديل عرض/إخفاء النافذة
+    function togglePopup() {
+        if (popupContainer.style.display === 'flex') {
+            closePopup();
+        } else {
+            openPopup();
+        }
+    }
+    
+    function openPopup() {
+        // إيقاف تأثير النبض عند الفتح
+        dangerBtn.style.animation = 'none';
+        
+        overlay.style.display = 'block';
+        popupContainer.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        if (!contentLoaded) {
+            loadContent();
+        }
+    }
+    
+    function closePopup() {
+        // إعادة تشغيل تأثير النبض عند الإغلاق
+        dangerBtn.style.animation = 'pulse 2s infinite';
+        
+        overlay.style.display = 'none';
+        popupContainer.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // تحميل المحتوى
+    async function loadContent() {
+        try {
+            // استخدام iframe كحل أساسي
+            showIframeContent();
+            contentLoaded = true;
+        } catch (error) {
+            showError(error);
+        }
+    }
+    
+    // عرض المحتوى باستخدام iframe
+    function showIframeContent() {
+        contentContainer.innerHTML = `
+            <iframe src="${TARGET_URL}" 
+                    style="width:100%; height:100%; border:none;"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    loading="lazy">
+            </iframe>
+        `;
+    }
+    
+    // عرض رسالة الخطأ
+    function showError(error) {
+        contentContainer.innerHTML = `
+            <div class="loader">
+                <div style="color: #e74c3c; margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 20px; color: #555;">${error.message}</p>
+                <button onclick="retryLoading()" 
+                        style="padding: 10px 20px; 
+                               background: linear-gradient(to right, #e74c3c, #c0392b); 
+                               color: white; 
+                               border: none; 
+                               border-radius: 30px;
+                               font-size: 1rem;
+                               box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+                               transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // إعادة تحميل المحتوى
+    function retryLoading() {
+        contentContainer.innerHTML = `
+            <div class="loader">
+                <div class="spinner"></div>
+                <p>جاري تحميل المحتوى الطبي...</p>
+            </div>
+        `;
+        loadContent();
+    }
+    
+    // إغلاق النافذة عند النقر خارجها
+    overlay.addEventListener('click', closePopup);
+    
+    // منع إغلاق النافذة عند النقر داخلها
+    popupContainer.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
+    // تحسين الأداء للهواتف
+    if ('connection' in navigator) {
+        if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
+            // تحسينات لشبكات الجيل الثاني
+            dangerBtn.style.animation = 'none';
+        }
+    }
+    
+    // إضافة اهتزاز عند النقر (للهواتف)
+    function vibrate() {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(10);
+        }
+    }
+    
+    // إضافة الاهتزاز للأزرار
+    document.querySelector('.danger-btn').addEventListener('click', vibrate);
+    document.querySelector('.close-btn')?.addEventListener('click', vibrate);
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
