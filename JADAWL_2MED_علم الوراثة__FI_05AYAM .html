@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطة مراجعة الوراثة - 5 أيام</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;      /* أزرق سماوي مشرق */
+            --secondary-color: #004085;   /* أزرق داكن */
+            --accent-color: #F5A623;       /* برتقالي دافئ */
+            --success-color: #28a745;     /* أخضر للنجاح */
+            --light-color: #f7f9fc;       /* خلفية فاتحة جداً */
+            --white: #ffffff;
+            --border-color: #e1e8ed;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Tajawal', 'Arial', sans-serif;
+            background-color: var(--light-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 25px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 60px rgba(74, 144, 226, 0.15);
+        }
+        .title-wrapper {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            position: relative;
+        }
+        .title-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+        h1.main-title {
+            font-size: 2.2em;
+            font-weight: 800;
+            margin: 0;
+            color: var(--secondary-color);
+        }
+        .stats-and-info {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+            align-items: center;
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #edf4fb;
+            border-radius: 15px;
+        }
+        .page-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 1.05em;
+            font-weight: 500;
+        }
+        .page-info div { display: flex; align-items: center; gap: 12px; }
+        .page-info i { color: var(--primary-color); font-size: 1.4em; width: 25px; text-align: center;}
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .stat-card h3 {
+            margin: 0 0 8px 0;
+            color: var(--primary-color);
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--secondary-color);
+        }
+        .progress-container { background-color: #e9ecef; border-radius: 50px; margin: 25px 0; height: 22px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.08); }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent-color), var(--primary-color)); width: 0; transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1); border-radius: 50px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9em; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 15px; margin-top: 20px; }
+        th { padding: 18px 22px; text-align: center; font-weight: 700; color: var(--secondary-color); font-size: 1.2em; }
+        td { padding: 25px; text-align: right; vertical-align: top; background-color: var(--white); border-radius: 15px; border: 1px solid var(--border-color); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        tr td:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(74, 144, 226, 0.1); }
+        .task-title { font-weight: 700; color: var(--primary-color); display: block; margin-bottom: 15px; font-size: 1.2em; }
+        .task-title i { margin-left: 12px; }
+        .lesson-details ul { padding-right: 20px; margin: 0; }
+        .lesson-details li { margin-bottom: 12px; list-style-type: '🧬 '; color: var(--text-color); }
+        .lang-fr { display: block; font-size: 0.9em; color: #777; font-style: italic; }
+        .task-actions { display: flex; justify-content: flex-start; align-items: center; margin-top: 25px; gap: 10px; flex-wrap: wrap;}
+        .timer { color: var(--secondary-color); font-weight: bold; margin-top: 15px; display: block; font-size: 1.2em; text-align: center; letter-spacing: 2px; background-color: #edf4fb; padding: 8px; border-radius: 8px;}
+        .btn { color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 8px; font-size: 0.95em; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .day-header { font-weight: 800; color: var(--white); font-size: 1.5em; background: linear-gradient(120deg, var(--secondary-color), var(--primary-color)) !important; text-align: center; border-radius: 15px; border: none; }
+        .completed { position: relative; background-color: #f0fff4 !important; border-color: var(--success-color); }
+        .completed .task-title, .completed .lesson-details li { text-decoration: line-through; text-decoration-color: var(--success-color); color: #999; }
+        .completed::after { content: "✓"; color: var(--white); background-color: var(--success-color); font-weight: bold; font-size: 1.2em; position: absolute; top: 20px; left: 20px; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px var(--success-color); }
+
+        @media (max-width: 992px) {
+            .stats-and-info { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="title-wrapper">
+        <h1 class="main-title"><i class="fa-solid fa-dna"></i> خطة مراجعة الوراثة الشاملة - 5 أيام</h1>
+    </div>
+
+    <div class="stats-and-info">
+        <div class="page-info">
+            <div id="gregorianDateDisplay"><i class="fas fa-calendar-alt"></i> ...</div>
+            <div id="hijriDateDisplay"><i class="fas fa-moon"></i> ...</div>
+            <div id="countdownToEndOfDay"><i class="fas fa-hourglass-end"></i> ...</div>
+        </div>
+        <div class="stats">
+            <div class="stat-card">
+                <h3><i class="fas fa-bullseye"></i> الجلسات</h3>
+                <div class="stat-value" id="totalTasks">10</div>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fas fa-check-double"></i> المكتملة</h3>
+                <div class="stat-value" id="completedTasks">0</div>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fas fa-stopwatch"></i> الوقت (ساعة)</h3>
+                <div class="stat-value" id="totalStudyTimeDisplay">30</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+            <th colspan="2" class="day-header">اليوم الأول: أسس البيولوجيا الجزيئية</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td id="task1">
+                <span class="task-title"><i class="fas fa-atom"></i> مقدمات وبنية المادة الوراثية</span>
+                <div class="lesson-details">
+                    <ul>
+                        <li>مقدمة في علم الوراثة </li>
+                        <li>بنية الأحماض النووية </li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions1"></div><span class="timer" id="t1"></span>
+            </td>
+            <td id="task2">
+                <span class="task-title"><i class="fas fa-sitemap"></i> تنظيم المادة الوراثية</span>
+                <div class="lesson-details">
+                    <ul>
+                        <li>تنظيم الجينوم </li>
+                        <li>بنية وتنظيم الكروماتين </li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions2"></div><span class="timer" id="t2"></span>
+            </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+            <th colspan="2" class="day-header">اليوم الثاني: التعبير الجيني وتضاعف الـ ADN</th>
+        </tr>
+      </thead>
+       <tbody>
+        <tr>
+            <td id="task3">
+                <span class="task-title"><i class="fas fa-cogs"></i> التعبير عن المعلومة الوراثية</span>
+                <div class="lesson-details">
+                    <ul>
+                        <li>النسخ، الترجمة والشفرة الوراثية </li>
+                        <li>تنظيم التعبير الجيني </li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions3"></div><span class="timer" id="t3"></span>
+            </td>
+            <td id="task4">
+                <span class="task-title"><i class="fas fa-copy"></i> تضاعف وإصلاح الـ ADN</span>
+                <div class="lesson-details">
+                    <ul>
+                        <li>تضاعف الـ ADN (بدائي وحقيقي النواة) </li>
+                        <li>أنظمة إصلاح الـ ADN </li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions4"></div><span class="timer" id="t4"></span>
+            </td>
+        </tr>
+      </tbody>
+       <thead>
+        <tr>
+            <th colspan="2" class="day-header">اليوم الثالث: التنوع الجيني وأدوات دراسته</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td id="task5">
+                <span class="task-title"><i class="fas fa-exchange-alt"></i> التغيرات الجينية وتطبيقاتها</span>
+                <div class="lesson-details">
+                    <ul>
+                         <li>التغيرات الجينية: تعدد الأشكال والطفرات </li>
+                         <li>العلاج الجيني والصيدلة الجينية </li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions5"></div><span class="timer" id="t5"></span>
+            </td>
+            <td id="task6">
+                <span class="task-title"><i class="fas fa-tools"></i> أدوات البيولوجيا الجزيئية</span>
+                <div class="lesson-details">
+                    <ul>
+                        <li>التهجين الجزيئي، المسابر، الإنزيمات والنواقل </li>
+                        <li>استخلاص ADN، تفاعل PCR وتسلسل الـ ADN </li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions6"></div><span class="timer" id="t6"></span>
+            </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+            <th colspan="2" class="day-header">اليوم الرابع: الوراثة الكلاسيكية والكروموسومية</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td id="task7">
+                 <span class="task-title"><i class="fas fa-project-diagram"></i> قوانين الوراثة المندلية</span>
+                <div class="lesson-details">
+                    <ul>
+                        <li>قوانين مندل والوراثة الشكلية </li>
+                        <li>أنماط انتقال الأمراض أحادية الجين </li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions7"></div><span class="timer" id="t7"></span>
+            </td>
+            <td id="task8">
+                <span class="task-title"><i class="fas fa-th-large"></i> دراسة الكروموسومات وأمراضها</span>
+                <div class="lesson-details">
+                    <ul>
+                        <li>النمط النووي الطبيعي وشذوذه </li>
+                        <li>الأمراض الكروموسومية </li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions8"></div><span class="timer" id="t8"></span>
+            </td>
+        </tr>
+      </tbody>
+       <thead>
+        <tr>
+            <th colspan="2" class="day-header">اليوم الخامس: مواضيع متقدمة ومراجعة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td id="task9">
+                 <span class="task-title"><i class="fas fa-lightbulb"></i> أنماط وراثية متقدمة</span>
+                <div class="lesson-details">
+                    <ul>
+                        <li>الوراثة غير التقليدية </li>
+                        <li>وراثة السرطان </li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions9"></div><span class="timer" id="t9"></span>
+            </td>
+            <td id="task10">
+                <span class="task-title"><i class="fas fa-users"></i> وراثة المجتمعات ومراجعة نهائية</span>
+                <div class="lesson-details">
+                    <ul>
+                        <li>وراثة المجتمعات </li>
+                        <li>مراجعة شاملة وحل تمارين</li>
+                    </ul>
+                </div>
+                <div class="task-actions" id="actions10"></div><span class="timer" id="t10"></span>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const totalTasks = 10;
+    let completedTasks = 0;
+    let activeTimers = {};
+    const LS_KEY = 'genetics_schedule_v5_interactive';
+
+    function updatePageInfo() {
+        const now = new Date();
+        const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('gregorianDateDisplay').innerHTML = `<i class="fas fa-calendar-alt"></i> ${now.toLocaleDateString('ar-EG', gregorianOptions)}`;
+
+        try {
+            const hijriOptions = { calendar: 'islamic-umalqura', year: 'numeric', month: 'long', day: 'numeric' };
+            const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', hijriOptions).format(now);
+            document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> ${hijriDate}`;
+        } catch (e) {
+            document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> التقويم الهجري غير مدعوم`;
+        }
+        
+        function updateCountdown() {
+            const now = new Date();
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+            const totalSecondsLeft = Math.floor((endOfDay - now) / 1000);
+            const hours = Math.floor(totalSecondsLeft / 3600);
+            const minutes = Math.floor((totalSecondsLeft % 3600) / 60);
+            const seconds = totalSecondsLeft % 60;
+            document.getElementById('countdownToEndOfDay').innerHTML = `<i class="fas fa-hourglass-end"></i> باقي على انتهاء اليوم: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    // ... (The rest of the JavaScript functions: saveState, loadState, updateProgress, formatTime, startTimer, pauseTimer, completeTask, resetTask, renderButtons, initialize) ...
+    // Note: The full JS is identical to the previous advanced version, just with totalTasks = 10 and a new LS_KEY.
+    // For brevity, only the changed parts are shown here. The full functionality is included in the final code block.
+
+    function saveState() {
+        const state = {
+            completedTasks: Array.from({ length: totalTasks }, (_, i) => document.getElementById(`task${i + 1}`).classList.contains('completed')),
+            timers: {}
+        };
+        for (const timerId in activeTimers) {
+            if (activeTimers[timerId]) {
+                state.timers[timerId] = {
+                    remaining: activeTimers[timerId].remaining,
+                    isPaused: activeTimers[timerId].isPaused
+                };
+            }
+        }
+        localStorage.setItem(LS_KEY, JSON.stringify(state));
+    }
+
+    function loadState() {
+        const state = JSON.parse(localStorage.getItem(LS_KEY));
+        if (!state) return;
+        completedTasks = 0;
+        state.completedTasks.forEach((isCompleted, i) => {
+            const taskEl = document.getElementById(`task${i + 1}`);
+            if (taskEl && isCompleted) {
+                taskEl.classList.add('completed');
+                completedTasks++;
+            }
+        });
+        activeTimers = {};
+        if (state.timers) {
+            for (const timerId in state.timers) {
+                activeTimers[timerId] = {
+                    ...state.timers[timerId],
+                    interval: null,
+                    taskId: `task${timerId.substring(1)}`
+                };
+            }
+        }
+    }
+
+    function updateProgress() {
+        const completedCount = document.querySelectorAll('.completed').length;
+        document.getElementById('completedTasks').textContent = completedCount;
+        const progress = totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0;
+        const progressBar = document.getElementById('progressBar');
+        progressBar.style.width = progress + '%';
+        progressBar.textContent = progress + '%';
+    }
+
+    function formatTime(seconds) {
+        if (isNaN(seconds) || seconds < 0) return "00:00:00";
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function startTimer(timerId, duration, taskId) {
+        if (activeTimers[timerId] && activeTimers[timerId].interval) return;
+        let timer = activeTimers[timerId];
+        if (!timer || !timer.isPaused) {
+            timer = { remaining: duration, isPaused: false, taskId: taskId };
+        }
+        timer.isPaused = false;
+        const tick = () => {
+            timer.remaining--;
+            document.getElementById(timerId).textContent = formatTime(timer.remaining);
+            if (timer.remaining <= 0) {
+                clearInterval(timer.interval);
+                document.getElementById(timerId).innerHTML = '<i class="fas fa-bell"></i> انتهى الوقت!';
+                delete activeTimers[timerId];
+                renderButtons(timerId, taskId, duration);
+                saveState();
+            }
+        };
+        timer.interval = setInterval(tick, 1000);
+        activeTimers[timerId] = timer;
+        renderButtons(timerId, taskId, duration);
+        saveState();
+    }
+
+    function pauseTimer(timerId) {
+        const timer = activeTimers[timerId];
+        if (timer && timer.interval) {
+            clearInterval(timer.interval);
+            timer.interval = null;
+            timer.isPaused = true;
+            renderButtons(timerId, timer.taskId, 0);
+            saveState();
+        }
+    }
+
+    function completeTask(taskId, timerId, duration) {
+        const taskElement = document.getElementById(taskId);
+        if (taskElement.classList.contains('completed')) return;
+        taskElement.classList.add('completed');
+        if (activeTimers[timerId]) {
+            clearInterval(activeTimers[timerId].interval);
+            delete activeTimers[timerId];
+        }
+        document.getElementById(timerId).textContent = '';
+        updateProgress();
+        renderButtons(timerId, taskId, duration);
+        saveState();
+    }
+
+    function resetTask(taskId, timerId, duration) {
+        const taskElement = document.getElementById(taskId);
+        if (taskElement.classList.contains('completed')) {
+            taskElement.classList.remove('completed');
+        }
+        if (activeTimers[timerId]) {
+            clearInterval(activeTimers[timerId].interval);
+            delete activeTimers[timerId];
+        }
+        document.getElementById(timerId).textContent = formatTime(duration);
+        updateProgress();
+        renderButtons(timerId, taskId, duration);
+        saveState();
+    }
+    
+    function renderButtons(timerId, taskId, duration) {
+        const actionsContainer = document.getElementById(`actions${taskId.substring(4)}`);
+        const timer = activeTimers[timerId];
+        actionsContainer.innerHTML = '';
+        const isCompleted = document.getElementById(taskId).classList.contains('completed');
+
+        if (isCompleted) {
+             actionsContainer.innerHTML = `<button class="btn btn-reset" style="background-color: #6c757d;" onclick="resetTask('${taskId}', '${timerId}', ${duration})"><i class="fas fa-redo"></i> إعادة ضبط</button>`;
+             return;
+        }
+        if (timer && !timer.isPaused) {
+            actionsContainer.innerHTML = `<button class="btn" style="background-color: var(--accent-color);" onclick="pauseTimer('${timerId}')"><i class="fas fa-pause"></i> إيقاف مؤقت</button>`;
+        } else {
+            const remaining = timer ? timer.remaining : duration;
+            const buttonText = timer && timer.isPaused ? 'استئناف' : 'ابدأ الجلسة';
+            actionsContainer.innerHTML = `<button class="btn" style="background-color: var(--success-color);" onclick="startTimer('${timerId}', ${remaining}, '${taskId}')"><i class="fas fa-play"></i> ${buttonText}</button>`;
+        }
+        actionsContainer.innerHTML += ` <button class="btn" style="background-color: var(--primary-color);" onclick="completeTask('${taskId}', '${timerId}', ${duration})"><i class="fas fa-check"></i> إكمال المهمة</button>`;
+    }
+
+    function initialize() {
+        updatePageInfo();
+        loadState();
+        const sessionDuration = 3 * 3600; // 3 hours in seconds
+        const durations = {};
+        for(let i = 1; i <= totalTasks; i++) {
+            durations[`t${i}`] = sessionDuration;
+        }
+
+        for (let i = 1; i <= totalTasks; i++) {
+            const taskId = `task${i}`;
+            const timerId = `t${i}`;
+            const duration = durations[timerId];
+            const timer = activeTimers[timerId];
+            const isCompleted = document.getElementById(taskId).classList.contains('completed');
+            
+            if (isCompleted) {
+                 document.getElementById(timerId).textContent = '';
+            } else if (timer) {
+                document.getElementById(timerId).textContent = formatTime(timer.remaining);
+                if (!timer.isPaused) {
+                    startTimer(timerId, timer.remaining, taskId);
+                }
+            } else {
+                 document.getElementById(timerId).textContent = formatTime(duration);
+            }
+            renderButtons(timerId, taskId, duration);
+        }
+        updateProgress();
+    }
+    
+    initialize();
+});
+</script>
+
+</body>
+</html>
