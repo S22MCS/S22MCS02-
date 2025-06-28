@@ -789,14 +789,78 @@
         <div class="modal-content">
             <span class="close-button" id="closeModalBtn" aria-label="إغلاق">&times;</span>
             <h2>اختر مدة الختمة</h2>
-            <div class="buttons-container">
-                <button class="custom-button khatma-duration-btn" data-duration="7">7 أيام</button>
-                <button class="custom-button khatma-duration-btn" data-duration="10">10 أيام</button>
-                <button class="custom-button khatma-duration-btn" data-duration="15">15 يومًا</button>
-                <button class="custom-button khatma-duration-btn" data-duration="20">20 يومًا</button>
-                <button class="custom-button khatma-duration-btn" data-duration="30">30 يومًا</button>
-                <button class="custom-button khatma-duration-btn" data-duration="40">40 يومًا</button>
-            </div>
+ 
+            
+
+<div class="buttons-container">
+    <button class="custom-button khatma-duration-btn" data-duration="7" disabled>7 أيام</button>
+    <button class="custom-button khatma-duration-btn" data-duration="10" disabled>10 أيام</button>
+    <button class="custom-button khatma-duration-btn" data-duration="15" disabled>15 يومًا</button>
+    <button class="custom-button khatma-duration-btn" data-duration="20" disabled>20 يومًا</button>
+    <button class="custom-button khatma-duration-btn active" data-duration="30">30 يومًا</button>
+    <button class="custom-button khatma-duration-btn" data-duration="40" disabled>40 يومًا</button>
+</div>
+
+<audio id="hoverSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+<audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" preload="auto"></audio>
+
+<style>
+.buttons-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.custom-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.custom-button:hover {
+    background-color: #ddd;
+    transform: scale(1.05);
+}
+
+.custom-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.custom-button.active {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+</style>
+
+<script>
+const buttons = document.querySelectorAll('.custom-button');
+const hoverSound = document.getElementById('hoverSound');
+const clickSound = document.getElementById('clickSound');
+
+// تأثير صوتي عند المرور على أي زر (حتى المعطل)
+buttons.forEach(button => {
+    button.addEventListener('mouseenter', () => {
+        hoverSound.currentTime = 0;
+        hoverSound.play();
+    });
+});
+
+// تأثير النقر يعمل فقط على زر 30 يومًا (الزر النشط)
+document.querySelector('.custom-button[data-duration="30"]').addEventListener('click', function() {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    alert('تم اختيار ختمة 30 يومًا'); // يمكنك استبدال هذا بالإجراء الذي تريده
+});
+</script>
+
+
+
+
         </div>
     </div>
 
@@ -1526,29 +1590,42 @@ daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">لم يت
                 }
             }
         }
-  
+
         function showModals() {
             const today = new Date();
             const dayOfWeek = today.getDay(); // 0=الأحد, 5=الجمعة
             const hours = today.getHours();
-  
-            // عرض الإشعار العام دائمًا عند التحميل
+
+            // --- منطق الإشعار العام (يظهر كل 12 ساعة) ---
             const generalModal = document.getElementById("generalModal");
-            if(generalModal) generalModal.style.display = "flex";
-  
+            if (generalModal) {
+                // جلب وقت آخر ظهور من التخزين المحلي
+                const lastShown = localStorage.getItem('generalModalLastShown');
+                const currentTime = new Date().getTime();
+                // 12 ساعة بالمللي ثانية
+                const twelveHoursInMillis = 12 * 60 * 60 * 1000; 
+
+                // التحقق إذا لم يتم عرضه من قبل، أو مر على آخر عرض أكثر من 12 ساعة
+                if (!lastShown || (currentTime - lastShown > twelveHoursInMillis)) {
+                    generalModal.style.display = "flex";
+                    // تحديث وقت آخر ظهور في التخزين المحلي
+                    localStorage.setItem('generalModalLastShown', currentTime);
+                }
+            }
+
             // التحقق إذا كان اليوم هو الجمعة
             if (dayOfWeek === 5) {
                 const kahfModal = document.getElementById("kahfModal");
                 if (kahfModal) kahfModal.style.display = "flex";
-  
+
                 // قبل الساعة 2 ظهرًا (14:00) يوم الجمعة
                 if (hours < 14) {
                     const jumaaModal = document.getElementById("jumaaModal");
                     if (jumaaModal) jumaaModal.style.display = "flex";
-                    
+
                     const audio = document.getElementById("jumaaAudio");
                     // محاولة تشغيل الصوت (قد تمنعه بعض المتصفحات)
-                    if (audio && audio.paused) { 
+                    if (audio && audio.paused) {
                         const playPromise = audio.play();
                         if (playPromise !== undefined) {
                             playPromise.catch(error => {
@@ -1560,7 +1637,7 @@ daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">لم يت
                 }
             }
         }
-  
+
         // تشغيل الدالة عند تحميل الصفحة بالكامل
         window.onload = showModals;
     </script>
@@ -1589,240 +1666,3 @@ daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">لم يت
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق ختم القرآن الكريم</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <style>
-        :root {
-            --primary-color: #2c786c;
-            --secondary-color: #004445;
-            --accent-color: #f8b400;
-            --dark-color: #000000; /* تم تغيير اللون إلى أسود تمامًا */
-            --light-color: #faf5e4;
-            --error-color: #e74c3c;
-            --overlay-color: rgba(0, 0, 0, 0.85); /* طبقة داكنة جدًا */
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--dark-color);
-            color: var(--light-color);
-            line-height: 1.6;
-        }
-
-        /* طبقة التعتيم الكاملة */
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-    background-color: #000000; /* أسود صلب */
-            z-index: 9999998; /* أقل بقليل من المحتوى الرئيسي */
-        }
-
-        #quran-app-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            z-index: 9999999; /* أعلى قيمة ممكنة */
-            overflow-y: auto;
-        }
-
-        .app-header {
-            text-align: center;
-            margin-bottom: 30px;
-            max-width: 600px;
-            position: relative; /* للتأكد من ظهوره فوق الطبقات */
-        }
-
-        .app-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            margin-bottom: 15px;
-            line-height: 1.3;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .app-subtitle {
-            font-size: 1.3rem;
-            color: var(--light-color);
-            margin-bottom: 20px;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        .app-message {
-            background-color: rgba(231, 76, 60, 0.3);
-            border: 1px solid var(--error-color);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            font-weight: 600;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-            max-width: 400px;
-            position: relative; /* للتأكد من ظهوره فوق الطبقات */
-        }
-
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            position: relative; /* للتأكد من ظهوره فوق الطبقات */
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn-icon {
-            font-size: 1.3rem;
-        }
-
-        .app-footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            position: relative; /* للتأكد من ظهوره فوق الطبقات */
-        }
-
-        /* منع أي تفاعل مع العناصر تحتها */
-        body.stop-scrolling {
-            overflow: hidden;
-            touch-action: none;
-            -webkit-overflow-scrolling: none;
-            overscroll-behavior: none;
-        }
-
-        @media (max-width: 768px) {
-            .app-title {
-                font-size: 1.8rem;
-            }
-            
-            .app-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .btn {
-                padding: 14px;
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .app-title {
-                font-size: 1.5rem;
-            }
-            
-            #quran-app-container {
-                padding: 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<!-- طبقة التعتيم -->
-<div id="overlay"></div>
-
-<!-- المحتوى الرئيسي -->
-<div id="quran-app-container">
-    <div class="app-header">
-        <h1 class="app-title">مَرْحَبًا بِكُمْ فِي تطبيق ختم القرآن</h1>
-        <h2 class="app-subtitle">ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ</h2>
-        
-        <div class="app-message">
-            نعتذر هناك عدة إصلاحات تجري حالياً، يرجى العودة لاحقاً
-        </div>
-    </div>
-
-    <div class="action-buttons">
-        <a href="https://t.me/adatealm" target="_blank" class="btn btn-primary">
-            <i class="fab fa-telegram btn-icon"></i>
-            <span>انضم لقناتنا على التلغرام لأي جديد </span>
-        </a>
-    </div>
-
-    <div class="app-footer">
-        <p>جميع الحقوق محفوظة © 2025 تطبيق ختم القرآن</p>
-    </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // منع التمرير في الصفحة الرئيسية
-        document.body.classList.add('stop-scrolling');
-        
-        // منع أي تفاعل مع العناصر الموجودة تحته
-        document.addEventListener('click', function(e) {
-            e.stopPropagation();
-        }, true);
-        
-        console.log('تطبيق ختم القرآن - الواجهة ظاهرة فوق كل المحتوى');
-    });
-</script>
-
-</body>
-</html>
