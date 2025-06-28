@@ -864,400 +864,399 @@ document.querySelector('.custom-button[data-duration="30"]').addEventListener('c
         </div>
     </div>
 
-    <script>
-        // --- DOM Elements ---
-        const themeToggle = document.getElementById('themeToggle');
-        const progressBar = document.getElementById('progressBar');
-        const currentDayTitleEl = document.getElementById('currentDayTitle');
-        const daysLeftEl = document.getElementById('daysLeft');
-        const timeLeftTodayEl = document.getElementById('timeLeftToday');
-        const daysContainer = document.getElementById('daysContainer');
-        const mainTitleEl = document.getElementById('mainTitle');
-        const mainSubtitleEl = document.getElementById('mainSubtitle');
-        const khatmaPlanTitleEl = document.getElementById('khatmaPlanTitle');
-        
-        const khatmaSelectionModal = document.getElementById('khatmaSelectionModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const khatmaDurationBtns = document.querySelectorAll('.khatma-duration-btn');
-
-        const changeKhatmaBtn = document.getElementById('changeKhatmaBtn');
-        const resetKhatmaBtn = document.getElementById('resetKhatmaBtn');
-        const khatmaManagementSection = document.getElementById('khatmaManagementSection');
-
-        const currentDateEl = document.getElementById('current-date');
-        const digitalClockEl = document.getElementById('digital-clock');
-        const userCountdownClockEl = document.getElementById('userCountdownClock');
-        const userTimerStatusItem = document.getElementById('userTimerStatusItem');
-        const hijriDateEl = document.getElementById('hijri-date'); // New element for Hijri date
 
 
-        // --- State ---
-        let khatmaSettings = {
-            duration: null, 
-            startDate: null,
-            completedDays: {} 
-        };
 
-        // --- Arabic Number Words (Ordinal) ---
-        function numberToArabicOrdinal(number) {
-            const units = ['', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 
-                           'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر'];
-            const teens = ['العاشر', 'الحادي عشر', 'الثاني عشر', 'الثالث عشر', 'الرابع عشر', 'الخامس عشر',
-                           'السادس عشر', 'السابع عشر', 'الثامن عشر', 'التاسع عشر'];
-            const tensMap = { 20: "العشرين", 30: "الثلاثين", 40: "الأربعين"};
 
-            if (number <= 10) return units[number];
-            if (number < 20) return teens[number - 10]; 
-            
-            if (number % 10 === 0 && tensMap[number]) {
-                return tensMap[number];
+
+<style>
+    /* --- Styles for Modal Buttons --- */
+
+/* This is the container for the buttons inside the modal */
+.khatma-options {
+    display: flex;
+    flex-direction: column; /* Arrange buttons vertically */
+    width: 100%;           /* Take the full width of the modal content area */
+    gap: 10px;             /* Add a 10px space between buttons (more modern than margin) */
+}
+
+/* This styles both sets of buttons (duration and riwaya) */
+.khatma-duration-btn,
+.riwaya-btn {
+    background-color: #4CAF50; /* Your original green color */
+    color: white;
+    padding: 15px 20px;       /* Generous padding for easy tapping */
+    margin: 0;                /* We use 'gap' in the container now, so margin is not needed */
+    border: none;
+    border-radius: 8px;       /* Rounded corners for a modern look */
+    cursor: pointer;
+    width: 100%;              /* Make the button fill the container width */
+    box-sizing: border-box;   /* CRITICAL: Ensures padding is inside the width, not added to it */
+    text-align: center;
+    font-size: 1rem;          /* 1rem is usually 16px, a good readable size */
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+/* Add a visual effect when the user hovers or taps the button */
+.khatma-duration-btn:hover,
+.riwaya-btn:hover {
+    background-color: #45a049; /* A slightly darker green */
+}
+
+.khatma-duration-btn:active,
+.riwaya-btn:active {
+    transform: scale(0.98); /* Button gets slightly smaller on click */
+}
+
+
+/* --- Media Query for Mobile Phones --- */
+/* These styles will ONLY apply on screens 600px wide or smaller */
+@media (max-width: 600px) {
+    .khatma-duration-btn,
+    .riwaya-btn {
+        padding: 14px 10px; /* Slightly less padding on very small screens */
+        font-size: 0.95rem; /* Slightly smaller font size */
+    }
+
+    /* You can also adjust modal padding on small screens if needed */
+    .modal-content {
+        padding: 20px 15px;
+    }
+}
+</style>
+
+
+<div id="riwayaSelectionModal" class="modal">
+    <div class="modal-content">
+        <span id="closeRiwayaModalBtn" class="close-btn">&times;</span>
+        <h2>اختر الرواية</h2>
+        <p>الرجاء اختيار الرواية التي تفضل قراءتها لهذا اليوم.</p>
+        <div class="khatma-options">
+            <button class="riwaya-btn" data-riwaya="HAFS">رواية حفص عن عاصم</button>
+            <button class="riwaya-btn" data-riwaya="WARCH">رواية ورش عن نافع</button>
+            <button class="riwaya-btn" data-riwaya="QALUN">رواية قالون عن نافع</button>
+        </div>
+    </div>
+</div>
+<script>
+    // --- DOM Elements ---
+    const themeToggle = document.getElementById('themeToggle');
+    const progressBar = document.getElementById('progressBar');
+    const currentDayTitleEl = document.getElementById('currentDayTitle');
+    const daysLeftEl = document.getElementById('daysLeft');
+    const timeLeftTodayEl = document.getElementById('timeLeftToday');
+    const daysContainer = document.getElementById('daysContainer');
+    const mainTitleEl = document.getElementById('mainTitle');
+    const mainSubtitleEl = document.getElementById('mainSubtitle');
+    const khatmaPlanTitleEl = document.getElementById('khatmaPlanTitle');
+    
+    const khatmaSelectionModal = document.getElementById('khatmaSelectionModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    
+    // --- CORRECTED SELECTOR ---
+    // Search for buttons ONLY inside the khatma selection modal
+    const khatmaDurationBtns = khatmaSelectionModal.querySelectorAll('.khatma-duration-btn');
+
+    const changeKhatmaBtn = document.getElementById('changeKhatmaBtn');
+    const resetKhatmaBtn = document.getElementById('resetKhatmaBtn');
+    const khatmaManagementSection = document.getElementById('khatmaManagementSection');
+
+    const currentDateEl = document.getElementById('current-date');
+    const digitalClockEl = document.getElementById('digital-clock');
+    const hijriDateEl = document.getElementById('hijri-date');
+
+    // --- Riwaya Modal Elements ---
+    const riwayaSelectionModal = document.getElementById('riwayaSelectionModal');
+    const closeRiwayaModalBtn = document.getElementById('closeRiwayaModalBtn');
+
+    // --- CORRECTED SELECTOR ---
+    // Search for buttons ONLY inside the riwaya selection modal
+    const riwayaBtns = riwayaSelectionModal.querySelectorAll('.riwaya-btn');
+
+    // --- State ---
+    let khatmaSettings = {
+        duration: null, 
+        startDate: null,
+        completedDays: {} 
+    };
+    let selectedDayForRiwaya = null;
+
+    // --- Your existing functions below (no changes needed in them) ---
+    
+    function numberToArabicOrdinal(number) {
+        const units = ['', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن', 'التاسع', 'العاشر'];
+        const teens = ['العاشر', 'الحادي عشر', 'الثاني عشر', 'الثالث عشر', 'الرابع عشر', 'الخامس عشر', 'السادس عشر', 'السابع عشر', 'الثامن عشر', 'التاسع عشر'];
+        const tensMap = { 20: "العشرين", 30: "الثلاثين", 40: "الأربعين"};
+        if (number <= 10) return units[number];
+        if (number < 20) return teens[number - 10];
+        if (number % 10 === 0 && tensMap[number]) { return tensMap[number]; }
+        let unitWord = units[number % 10];
+        let tenBase = Math.floor(number / 10) * 10;
+        let tenWord = tensMap[tenBase];
+        if (unitWord && tenWord) { return `${unitWord} و${tenWord.replace(/^ال/, '')}`; }
+        return String(number);
+    }
+    
+    function updateHijriDate() {
+        if (!hijriDateEl) return;
+        const now = new Date();
+        const optionsHijri = { calendar: 'islamic-umalqura', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', era: 'long' };
+        try {
+            let hijriString = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-arab', optionsHijri).format(now);
+            if (!hijriString || hijriString.includes("NaN")) {
+               hijriString = new Intl.DateTimeFormat('ar', { ...optionsHijri, calendar: 'islamic' }).format(now) + " هـ";
             }
-            
-            let unitWord = units[number % 10];
-            let tenBase = Math.floor(number / 10) * 10;
-            let tenWord = tensMap[tenBase]; 
-
-            if (unitWord && tenWord) {
-                return `${unitWord} و${tenWord.replace(/^ال/, '')}`; 
-            }
-            return String(number); 
+            hijriDateEl.textContent = hijriString;
+        } catch (e) {
+            console.error("Error formatting Hijri date:", e);
+            hijriDateEl.textContent = "التاريخ الهجري غير متاح حاليًا";
         }
-        
-        // --- Hijri Date Update ---
-        function updateHijriDate() {
-            if (!hijriDateEl) return;
+    }
+
+    function updateSecondaryHeaderClocks() {
+        const now = new Date();
+        if (currentDateEl) {
+            const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            currentDateEl.textContent = now.toLocaleDateString('ar-EG-u-nu-latn', optionsDate); 
+        }
+        if (digitalClockEl) {
+            const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, hourCycle: 'h12' };
+            digitalClockEl.textContent = now.toLocaleTimeString('ar-EG-u-nu-latn', optionsTime);
+        }
+        updateHijriDate();
+    }
+
+    function saveKhatmaSettings() {
+        localStorage.setItem('khatmaSettings', JSON.stringify(khatmaSettings));
+    }
+
+    function loadKhatmaSettings() {
+        const storedSettings = localStorage.getItem('khatmaSettings');
+        if (storedSettings) {
+            khatmaSettings = JSON.parse(storedSettings);
+            if (!khatmaSettings.completedDays) {
+                khatmaSettings.completedDays = {};
+            }
+            return true;
+        }
+        return false;
+    }
+
+    function startNewKhatma(duration) {
+        khatmaSettings.duration = parseInt(duration);
+        khatmaSettings.startDate = new Date().toISOString();
+        khatmaSettings.completedDays = {}; 
+        for (let i = 1; i <= khatmaSettings.duration; i++) {
+            khatmaSettings.completedDays[i] = false; 
+        }
+        saveKhatmaSettings();
+        khatmaSelectionModal.style.display = 'none';
+        document.body.classList.remove('modal-open'); 
+        initializeKhatmaDisplay();
+        khatmaManagementSection.style.display = 'block';
+    }
+    
+    function resetKhatma() {
+        if (confirm("هل أنت متأكد أنك تريد إعادة تعيين الختمة الحالية؟ سيتم فقدان كل التقدم.")) {
+            khatmaSettings = { duration: null, startDate: null, completedDays: {} };
+            localStorage.removeItem('khatmaSettings');
+            daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">لم يتم تحديد ختمة بعد. الرجاء اختيار مدة الختمة. ';
+            progressBar.style.width = '0%';
+            currentDayTitleEl.textContent = 'اليوم';
+            daysLeftEl.textContent = '0';
+            timeLeftTodayEl.textContent = '00:00:00';
+            mainTitleEl.textContent = "ختمة القرآن الكريم";
+            mainSubtitleEl.textContent = "برنامج ختم القرآن - يشفع لك يوم القيامة";
+            khatmaPlanTitleEl.textContent = "خطة الختمة";
+            khatmaManagementSection.style.display = 'none';
+            showKhatmaSelectionModal();
+        }
+    }
+
+    function showKhatmaSelectionModal() {
+        khatmaSelectionModal.style.display = 'flex'; 
+        document.body.classList.add('modal-open'); 
+    }
+    
+    function initializeKhatmaDisplay() {
+        if (!khatmaSettings.duration || !khatmaSettings.startDate) {
+            showKhatmaSelectionModal();
+            khatmaManagementSection.style.display = 'none';
+            daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">الرجاء اختيار مدة الختمة لبدء خطتك.</p>';
+            return;
+        }
+        khatmaManagementSection.style.display = 'block';
+        mainTitleEl.textContent = `ختمة القرآن في ${khatmaSettings.duration} يومًا`;
+        try {
+            mainSubtitleEl.textContent = `بدأت بتاريخ: ${new Date(khatmaSettings.startDate).toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+        } catch (e) {
+            mainSubtitleEl.textContent = `بدأت بتاريخ: غير محدد`; 
+        }
+        khatmaPlanTitleEl.textContent = `خطة الختمة في ${khatmaSettings.duration} يومًا`;
+        daysContainer.innerHTML = ''; 
+        const { dayInCycle: actualCurrentDay } = calculateCurrentDayInCycle(khatmaSettings.startDate, khatmaSettings.duration);
+
+        for (let i = 1; i <= khatmaSettings.duration; i++) {
+            const dayCard = document.createElement('a');
+            dayCard.href = "#";
+            dayCard.className = 'day-card';
+            dayCard.dataset.day = i; 
+            
+            dayCard.innerHTML = `
+                <span class="day-number">${i}</span>
+                <span>اليوم ${numberToArabicOrdinal(i)}</span>
+            `;
+
+            dayCard.addEventListener('click', (event) => {
+                event.preventDefault();
+                selectedDayForRiwaya = i;
+                riwayaSelectionModal.style.display = 'flex';
+                document.body.classList.add('modal-open');
+            });
+            
+            if (i === actualCurrentDay) {
+                dayCard.classList.add('current-day');
+            } else if (i < actualCurrentDay) {
+                dayCard.classList.add('completed-day'); 
+            }
+            daysContainer.appendChild(dayCard);
+        }
+        updateProgressAndCountdown();
+    }
+
+    function calculateCurrentDayInCycle(startDateISO, totalDaysInKhatma) {
+        if (!startDateISO) return { dayInCycle: 1, daysPassed: 0};
+        const startDate = new Date(startDateISO);
+        startDate.setHours(0, 0, 0, 0);
+        const now = new Date();
+        now.setHours(0,0,0,0);
+        const diffTime = Math.abs(now - startDate);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
+        let dayInCycle = (diffDays % totalDaysInKhatma) + 1;
+        return { dayInCycle: dayInCycle, daysPassed: diffDays };
+    }
+
+    let countdownInterval;
+    function updateProgressAndCountdown() {
+        if (!khatmaSettings.duration || !khatmaSettings.startDate) {
+            progressBar.style.width = '0%';
+            currentDayTitleEl.textContent = 'اليوم';
+            daysLeftEl.textContent = '0';
+            timeLeftTodayEl.textContent = '00:00:00';
+            return;
+        }
+        const { dayInCycle: currentDayNumber, daysPassed } = calculateCurrentDayInCycle(khatmaSettings.startDate, khatmaSettings.duration);
+        let completedCount = daysPassed;
+        if (khatmaSettings.duration > 0) {
+            const progress = Math.min((completedCount / khatmaSettings.duration) * 100, 100);
+            progressBar.style.width = `${progress}%`;
+        } else {
+            progressBar.style.width = '0%';
+        }
+        currentDayTitleEl.textContent = `اليوم ${numberToArabicOrdinal(currentDayNumber)}`;
+        const daysRemainingInCycle = khatmaSettings.duration - currentDayNumber;
+        daysLeftEl.textContent = Math.max(0, daysRemainingInCycle);
+        if (countdownInterval) clearInterval(countdownInterval);
+        countdownInterval = setInterval(() => {
             const now = new Date();
-            const optionsHijri = {
-                calendar: 'islamic-umalqura', 
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                era: 'long' 
-            };
-            try {
-                let hijriString = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-arab', optionsHijri).format(now);
-                
-                // Basic check if the formatted string looks like a Hijri date (includes "هـ" or "بعد الهجرة")
-                // This is a simple check and might need refinement based on actual output variations.
-                const isLikelyHijri = hijriString.includes("هـ") || hijriString.includes("بعد الهجرة") || /\d{4}/.test(hijriString);
-
-                if (!hijriString || hijriString.includes("NaN") || !isLikelyHijri) {
-                     // Fallback 1: General Arabic, umalqura, arabic numerals
-                     hijriString = new Intl.DateTimeFormat('ar-u-ca-islamic-umalqura-nu-arab', optionsHijri).format(now);
-                }
-                if (!hijriString || hijriString.includes("NaN") || !(hijriString.includes("هـ") || hijriString.includes("بعد الهجرة"))) {
-                     // Fallback 2: General Arabic, umalqura, default numerals for 'ar'
-                     hijriString = new Intl.DateTimeFormat('ar', { ...optionsHijri, calendar: 'islamic-umalqura' }).format(now);
-                }
-                 if (!hijriString || hijriString.includes("NaN") || !(hijriString.includes("هـ") || hijriString.includes("بعد الهجرة"))) {
-                    // Fallback 3: General Arabic, basic islamic calendar, default numerals
-                    hijriString = new Intl.DateTimeFormat('ar', { ...optionsHijri, calendar: 'islamic' }).format(now);
-                }
-                if (!hijriString || hijriString.includes("NaN") || !(hijriString.includes("هـ") || hijriString.includes("بعد الهجرة"))) {
-                    // Fallback 4: Very basic Hijri date if others fail, manually append era
-                    const basicOptions = { calendar: 'islamic', year: 'numeric', month: 'long', day: 'numeric'};
-                    hijriString = new Intl.DateTimeFormat('ar', basicOptions).format(now) + " هـ";
-               }
-
-                hijriDateEl.textContent = hijriString;
-            } catch (e) {
-                console.error("Error formatting Hijri date:", e);
-                hijriDateEl.textContent = "التاريخ الهجري غير متاح حاليًا";
-                try { // Simplest possible fallback on error
-                    const basicHijri = new Intl.DateTimeFormat('ar-SA', { calendar: 'islamic', day: 'numeric', month: 'short', year: 'numeric' }).format(now);
-                    hijriDateEl.textContent = basicHijri + " هـ";
-                } catch (e2) {
-                    // If even this fails, the message above remains.
-                }
+            const endOfDay = new Date(now);
+            endOfDay.setHours(23, 59, 59, 999);
+            const diff = endOfDay - now;
+            if (diff < 0) {
+                timeLeftTodayEl.textContent = "00:00:00";
+                return;
             }
+            let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            timeLeftTodayEl.textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }, 1000);
+    }
+
+    function setInitialTheme() {
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            document.body.classList.remove('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
         }
-
-
-        // --- Date & Time Update for Secondary Header ---
-        function updateSecondaryHeaderClocks() {
-            const now = new Date();
-            
-            // Gregorian Date
-            if (currentDateEl) {
-                const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                currentDateEl.textContent = now.toLocaleDateString('ar-EG-u-nu-latn', optionsDate); 
-            }
-            
-            // Digital Clock
-            if (digitalClockEl) {
-                const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, hourCycle: 'h12' };
-                digitalClockEl.textContent = now.toLocaleTimeString('ar-EG-u-nu-latn', optionsTime);
-            }
-
-            // Hijri Date
-            updateHijriDate();
+    }
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
         }
-
-        // --- Khatma Logic ---
-        function saveKhatmaSettings() {
-            localStorage.setItem('khatmaSettings', JSON.stringify(khatmaSettings));
+    });
+    
+    closeModalBtn.addEventListener('click', () => {
+        khatmaSelectionModal.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        if (!khatmaSettings.duration) {
+             daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">الرجاء اختيار مدة الختمة لبدء خطتك.</p>';
         }
-
-        function loadKhatmaSettings() {
-            const storedSettings = localStorage.getItem('khatmaSettings');
-            if (storedSettings) {
-                khatmaSettings = JSON.parse(storedSettings);
-                if (!khatmaSettings.completedDays) {
-                    khatmaSettings.completedDays = {};
-                }
-                return true;
-            }
-            return false;
-        }
-
-        function startNewKhatma(duration) {
-            khatmaSettings.duration = parseInt(duration);
-            khatmaSettings.startDate = new Date().toISOString();
-            khatmaSettings.completedDays = {}; 
-            for (let i = 1; i <= khatmaSettings.duration; i++) {
-                khatmaSettings.completedDays[i] = false; 
-            }
-            saveKhatmaSettings();
+    });
+    window.addEventListener('click', (event) => {
+        if (event.target === khatmaSelectionModal || event.target === riwayaSelectionModal) {
             khatmaSelectionModal.style.display = 'none';
-            document.body.classList.remove('modal-open'); 
+            riwayaSelectionModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            if (!khatmaSettings.duration) {
+                daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">الرجاء اختيار مدة الختمة لبدء خطتك.</p>';
+            }
+        }
+    });
+
+    khatmaDurationBtns.forEach(button => {
+        button.addEventListener('click', () => {
+            startNewKhatma(button.dataset.duration);
+        });
+    });
+
+    closeRiwayaModalBtn.addEventListener('click', () => {
+        riwayaSelectionModal.style.display = 'none';
+        document.body.classList.remove('modal-open');
+    });
+
+    riwayaBtns.forEach(button => {
+        button.addEventListener('click', () => {
+            const riwaya = button.dataset.riwaya;
+            if (selectedDayForRiwaya && khatmaSettings.duration) {
+                const dayNumberFormatted = String(selectedDayForRiwaya).padStart(2, '0');
+                const durationFormatted = String(khatmaSettings.duration).padStart(2, '0');
+                const fileName = `YAWM_${dayNumberFormatted}-${durationFormatted}_${riwaya}.html`;
+                window.location.href = fileName;
+            }
+            riwayaSelectionModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        });
+    });
+
+    changeKhatmaBtn.addEventListener('click', showKhatmaSelectionModal);
+    resetKhatmaBtn.addEventListener('click', resetKhatma);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setInitialTheme();
+        updateSecondaryHeaderClocks();
+        setInterval(updateSecondaryHeaderClocks, 1000);
+
+        if (loadKhatmaSettings() && khatmaSettings.duration && khatmaSettings.startDate) {
             initializeKhatmaDisplay();
             khatmaManagementSection.style.display = 'block';
+        } else {
+            showKhatmaSelectionModal();
+            khatmaManagementSection.style.display = 'none';
         }
-        
-        function resetKhatma() {
-            if (confirm("هل أنت متأكد أنك تريد إعادة تعيين الختمة الحالية؟ سيتم فقدان كل التقدم.")) {
-                khatmaSettings = { duration: null, startDate: null, completedDays: {} };
-                localStorage.removeItem('khatmaSettings');
-daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">لم يتم تحديد ختمة بعد. الرجاء اختيار مدة الختمة. ';           
-             
-                progressBar.style.width = '0%';
-                currentDayTitleEl.textContent = 'اليوم';
-                daysLeftEl.textContent = '0';
-                timeLeftTodayEl.textContent = '00:00:00';
-                mainTitleEl.textContent = "ختمة القرآن الكريم";
-                mainSubtitleEl.textContent = "برنامج ختم القرآن - يشفع لك يوم القيامة";
-                khatmaPlanTitleEl.textContent = "خطة الختمة";
-                khatmaManagementSection.style.display = 'none';
-                showKhatmaSelectionModal();
-            }
-        }
-
-        function showKhatmaSelectionModal() {
-            khatmaSelectionModal.style.display = 'flex'; 
-            document.body.classList.add('modal-open'); 
-        }
-        
-        function initializeKhatmaDisplay() {
-            if (!khatmaSettings.duration || !khatmaSettings.startDate) {
-                showKhatmaSelectionModal();
-                khatmaManagementSection.style.display = 'none';
-                daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">الرجاء اختيار مدة الختمة لبدء خطتك.</p>';
-                return;
-            }
-            khatmaManagementSection.style.display = 'block';
-
-            mainTitleEl.textContent = `ختمة القرآن في ${khatmaSettings.duration} يومًا`;
-            try {
-                 mainSubtitleEl.textContent = `بدأت بتاريخ: ${new Date(khatmaSettings.startDate).toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: 'long', day: 'numeric' })}`;
-            } catch (e) {
-                 mainSubtitleEl.textContent = `بدأت بتاريخ: غير محدد`; 
-            }
-            khatmaPlanTitleEl.textContent = `خطة الختمة في ${khatmaSettings.duration} يومًا`;
-
-            daysContainer.innerHTML = ''; 
-            const { dayInCycle: actualCurrentDay } = calculateCurrentDayInCycle(khatmaSettings.startDate, khatmaSettings.duration);
-
-            for (let i = 1; i <= khatmaSettings.duration; i++) {
-                const dayCard = document.createElement('a');
-                const dayNumberFormatted = String(i).padStart(2, '0');
-                dayCard.href = `YAWM_${dayNumberFormatted}-${String(khatmaSettings.duration).padStart(2,'0')}_WARCH.html`; 
-                dayCard.className = 'day-card';
-                dayCard.dataset.day = i; 
-
-                dayCard.innerHTML = `
-                    <span class="day-number">${i}</span>
-                    <span>اليوم ${numberToArabicOrdinal(i)}</span>
-                `;
-                
-                if (i === actualCurrentDay) {
-                    dayCard.classList.add('current-day');
-                } else if (i < actualCurrentDay) {
-                    dayCard.classList.add('completed-day'); 
-                }
-                daysContainer.appendChild(dayCard);
-            }
-            updateProgressAndCountdown(); // This function needs to be defined or was part of the omitted code
-        }
-
-        function calculateCurrentDayInCycle(startDateISO, totalDaysInKhatma) {
-            if (!startDateISO) return { dayInCycle: 1, daysPassed: 0};
-
-            const startDate = new Date(startDateISO);
-            startDate.setHours(0, 0, 0, 0); // Normalize start date to beginning of the day
-            const now = new Date();
-            now.setHours(0,0,0,0); // Normalize current date
-
-            const diffTime = Math.abs(now - startDate);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
-            
-            let dayInCycle = (diffDays % totalDaysInKhatma) + 1;
-            // If the khatma has "ended" and we are past the duration,
-            // we might want to show it as completed or day 1 of a new cycle.
-            // For now, this will loop. If diffDays >= totalDaysInKhatma, it means it's a new cycle.
-            // Or, if current day has passed totalDaysInKhatma, it's completed.
-            // This simple cycle calculation assumes continuous khatmas or you reset.
-
-            return { dayInCycle: dayInCycle, daysPassed: diffDays };
-        }
-
-        // --- Placeholder for functions that might be in the full script ---
-        let countdownInterval;
-        function updateProgressAndCountdown() {
-            if (!khatmaSettings.duration || !khatmaSettings.startDate) {
-                progressBar.style.width = '0%';
-                currentDayTitleEl.textContent = 'اليوم';
-                daysLeftEl.textContent = '0';
-                timeLeftTodayEl.textContent = '00:00:00';
-                return;
-            }
-
-            const { dayInCycle: currentDayNumber, daysPassed } = calculateCurrentDayInCycle(khatmaSettings.startDate, khatmaSettings.duration);
-            
-            // Update progress bar: percentage of days passed out of total duration
-            // This needs to consider "completed" days logic if that's what progress means
-            // For now, based on days passed.
-            let completedCount = daysPassed; // Or count actual completed days from khatmaSettings.completedDays
-            if (khatmaSettings.duration > 0) {
-                 const progress = Math.min((completedCount / khatmaSettings.duration) * 100, 100);
-                 progressBar.style.width = `${progress}%`;
-            } else {
-                 progressBar.style.width = '0%';
-            }
-
-
-            currentDayTitleEl.textContent = `اليوم ${numberToArabicOrdinal(currentDayNumber)}`;
-            
-            const daysRemainingInCycle = khatmaSettings.duration - currentDayNumber;
-            daysLeftEl.textContent = Math.max(0, daysRemainingInCycle);
-
-
-            // Countdown to the end of the current day
-            if (countdownInterval) clearInterval(countdownInterval);
-            countdownInterval = setInterval(() => {
-                const now = new Date();
-                const endOfDay = new Date(now);
-                endOfDay.setHours(23, 59, 59, 999);
-                
-                const diff = endOfDay - now;
-                if (diff < 0) {
-                    timeLeftTodayEl.textContent = "00:00:00";
-                    // Potentially trigger a refresh or day change logic here
-                    // For now, it will just reset on next full updateProgressAndCountdown call
-                    return;
-                }
-                
-                let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                
-                timeLeftTodayEl.textContent = 
-                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            }, 1000);
-        }
-
-
-        // --- Theme Toggle ---
-        function setInitialTheme() {
-            const storedTheme = localStorage.getItem('theme');
-            if (storedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            } else {
-                document.body.classList.remove('dark-mode');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            }
-        }
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            }
-        });
-        
-        // --- Modal Logic ---
-        closeModalBtn.addEventListener('click', () => {
-            khatmaSelectionModal.style.display = 'none';
-            document.body.classList.remove('modal-open');
-            // If no khatma is set after closing, user might be stuck.
-            // Ensure initializeKhatmaDisplay is called or has alternative content.
-            if (!khatmaSettings.duration) {
-                 daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">الرجاء اختيار مدة الختمة لبدء خطتك من قائمة إدارة الختمة إذا أغلقت هذه النافذة.</p>';
-            }
-        });
-        window.addEventListener('click', (event) => {
-            if (event.target === khatmaSelectionModal) {
-                khatmaSelectionModal.style.display = 'none';
-                document.body.classList.remove('modal-open');
-                 if (!khatmaSettings.duration) {
-                     daysContainer.innerHTML = '<p style="padding:20px; text-align:center;">الرجاء اختيار مدة الختمة لبدء خطتك.</p>';
-                }
-            }
-        });
-        khatmaDurationBtns.forEach(button => {
-            button.addEventListener('click', () => {
-                startNewKhatma(button.dataset.duration);
-            });
-        });
-
-        // --- Khatma Management Buttons ---
-        changeKhatmaBtn.addEventListener('click', showKhatmaSelectionModal);
-        resetKhatmaBtn.addEventListener('click', resetKhatma);
-
-        // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
-            setInitialTheme();
-            updateSecondaryHeaderClocks(); // Initial call for all clocks including Hijri
-            setInterval(updateSecondaryHeaderClocks, 1000); // Update clocks every second
-
-            if (loadKhatmaSettings() && khatmaSettings.duration && khatmaSettings.startDate) {
-                initializeKhatmaDisplay();
-                khatmaManagementSection.style.display = 'block';
-            } else {
-                showKhatmaSelectionModal();
-                khatmaManagementSection.style.display = 'none';
-            }
-             // Initial call and interval for main countdowns if not already handled
-            updateProgressAndCountdown(); // Initial call
-            // The interval for timeLeftTodayEl is inside updateProgressAndCountdown
-            // We might need a separate interval if updateProgressAndCountdown is not called frequently enough
-            // For day changes, this should be fine.
-        });
-
-    </script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        updateProgressAndCountdown();
+    });
+</script>
 
 
 
