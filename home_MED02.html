@@ -575,40 +575,41 @@ document.addEventListener('DOMContentLoaded', loadUpdatesForPanel);
     border: 1px solid var(--notif-bg-color);
   }
 
-/* القائمة المنسدلة للإشعارات - نسخة محسّنة */
-.Tawasle-Notif-Dropdown {
-  display: none; /* مخفية بشكل افتراضي */
-  position: absolute;
-  top: calc(100% + 10px); /* أسفل الزر مباشرة مع مسافة 10px */
-
-  /* --- التحسين الأول: استخدام المحاذاة المتجاوبة --- */
-  /* تم استبدال 'left: -130px' التي تسبب المشاكل على الشاشات الصغيرة */
-  right: 0; /* محاذاة الحافة اليمنى للقائمة مع يمين العنصر الأب */
-
-  background-color: var(--notif-bg-color);
-  border-radius: 8px;
-  width: 320px;
-  max-width: 90vw; /* ممتاز: لا يتجاوز 90% من عرض الشاشة */
-  max-height: 450px;
-  overflow-y: auto;
-  box-shadow: 0 5px 15px var(--notif-shadow-color);
-  z-index: 1001;
-  border: 1px solid var(--notif-border-color);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-/* --- التحسين الثاني: قواعد خاصة للشاشات الصغيرة جداً (مثل بعض أجهزة هواوي القديمة) --- */
-@media (max-width: 360px) {
+/* =================================================================== */
+  /* القائمة المنسدلة للإشعارات */
   .Tawasle-Notif-Dropdown {
-    /* على الشاشات الضيقة جداً، من الأفضل توسيط القائمة بدلاً من محاذاتها للحافة */
-    right: auto; /* نلغي المحاذاة لليمين */
-    left: 50%; /* نضعها في منتصف الشاشة */
-    transform: translateX(-50%); /* نصحح المحاذاة الأفقية لتكون في المركز تماماً */
-    width: 95vw; /* نجعلها تأخذ عرض الشاشة بالكامل تقريباً لتحسين الرؤية */
+    display: none; /* مخفية بشكل افتراضي */
+    position: absolute;
+    top: calc(100% + 10px); /* أسفل الزر مباشرة مع مسافة 10px */
+    left: 0px; /* محاذاة لليمين */
+    background-color: var(--notif-bg-color);
+    border-radius: 8px;
+    width: 320px;
+    max-width: 90vw; /* لا يتجاوز 90% من عرض الشاشة على الهواتف */
+    max-height: 450px;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px var(--notif-shadow-color);
+    z-index: 1001;
+    border: 1px solid var(--notif-border-color);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /* إظهار القائمة مع تأثير حركة بسيط */
   .Tawasle-Notif-Dropdown.Tawasle-Notif-Dropdown-Show {
       display: block;
