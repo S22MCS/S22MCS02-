@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الأَعْضَاءُ اللِّمْفَاوِيَّة</title>
+    <title>     </title>
+
     
     <!-- إضافة الفافيكون بصيغة JPG -->
     <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
@@ -1334,514 +1335,343 @@ document.getElementById('nationMessage').textContent = nationNeedsYou;
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>  </title>
-            <style>
-                body {
-                    font-family: 'Poppins', 'Amiri', serif;
-                    background-color: #121212;
-                    color: white;
-                    margin: 0;
-                    padding: 20px;
-                    text-align: center;
-                    padding-top: 120px;
-                }
-            
+       <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الدرس</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* === إعدادات عامة === */
+        :root {
+            --primary-color: #00aaff;
+            --primary-dark-color: #007bff;
+            --primary-darker-color: #0056b3;
+            --dark-bg: #121212;
+            --light-dark-bg: #1a1a1a;
+            --medium-dark-bg: #222;
+            --dark-gray-bg: #333;
+            --light-gray-bg: #444;
+        }
 
-/* الشريط العلوي */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    background-color: #333;
-    color: white;
-    padding: 0 16px;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    box-sizing: border-box;
-}
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: var(--dark-bg);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            padding-top: 100px; /* مساحة للشريط العلوي الثابت */
+        }
 
-/* شريط التقدم */
-.progress-bar-container {
-    width: 90%;
-    top: -30px;
-    max-width: 600px;
-    height: 25px; /* تقليل الارتفاع للأجهزة المحمولة */
-    background-color: #444;
-    border-radius: 15px;
-    position: relative;
-    margin: 70px auto 10px auto;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
+        /* === الشريط العلوي === */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            background-color: var(--dark-gray-bg);
+            color: white;
+            padding: 0 16px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+            gap: 15px; /* مسافة بين العناصر */
+        }
+
+        .sidebar h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0; /* يمنع التقلص */
+        }
+        
+        /* حاوية شريط التقدم */
+        .progress-bar-container {
+            width: 100%; /* اجعله يأخذ المساحة المتاحة */
+            max-width: 600px;
+            height: 25px;
+            background-color: var(--light-gray-bg);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            flex-grow: 1; /* يسمح له بالتمدد */
+        }
 
 .progress-bar {
     height: 100%;
-    width: 50%; /* مثال */
-    background-color: #00aaff;
+    width: 50%;
+
+  background-color: #0066ff; /* <-- هذا السطر يجعل الشريط أزرق */
+
     border-radius: 15px;
     transition: width 0.3s ease-in-out;
 }
 
-.progress-percentage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 14px; /* تصغير حجم الخط للأجهزة المحمولة */
-    font-weight: bold;
-}
 
-#proo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            font-size: 1.2rem;
-            margin: 10px auto;
+
+        .progress-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
         }
 
-.finish-button {
+        /* أزرار الشريط العلوي */
+        .sidebar-button {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            background-color: var(--primary-dark-color);
+            color: white;
+            white-space: nowrap; /* يمنع التفاف النص */
+        }
+        .sidebar-button:hover {
+            background-color: var(--primary-darker-color);
+        }
+        .finish-button {
+             background-color: var(--primary-color);
+        }
 
-    background-color: #00aaff;
-    font-size: 0.8rem;
-              padding: 0.4rem  0.3rem;
-              width: 80%;
-              max-width: 100px;
-              box-sizing: border-box;
-              border: none;
-              border-radius: 8px;
-              cursor: pointer;
-              transition: background-color 0.3s;
-}
+        /* === محتوى الدرس (الفقاعات) === */
+        .lesson-container {
+            margin-top: 20px;
+        }
+        .bubble {
+            background: rgba(30, 30, 30, 0.95);
+            box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+            border-left: 6px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px auto 70px auto;
+            max-width: 60rem;
+            transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+            text-align: right;
+            position: relative;
+            cursor: pointer;
+        }
+        .bubble:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
+        }
 
-/* تحسينات للأجهزة صغيرة جدًا */
-@media (max-width: 480px) {
-    .sidebar {
-        padding: 0 10px;
-        height: 70px; /* تقليل الارتفاع قليلاً */
-    }
-    
-    .sidebar * {
-        font-size: 14px;
-    }
-    
-    .progress-bar-container {
-        height: 20px;
-        margin: 60px auto 8px auto;
-    }
-    
-    .progress-percentage {
-        font-size: 12px;
-    }
-    
-    #proo {
-        font-size: 0.6rem;
-    }
-    
-    .finish-button {
+        .interact-button {
+            position: absolute;
+            top: 5px;
+            left: 6px;
+            background-color: var(--primary-dark-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .interact-button:hover {
+            background-color: var(--primary-darker-color);
+        }
+        
+        /* صورة خارجية */
+        .outside-image {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* زر إعادة التحميل */
+        .refresh-button {
+            background: linear-gradient(135deg, var(--light-dark-bg), var(--dark-gray-bg));
+            color: #ffffff;
+            border: 1px solid var(--light-gray-bg);
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 25px;
+            font-family: 'Poppins', Arial, sans-serif;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 160px;
+            justify-content: center;
+        }
+        .refresh-button:hover {
+            background: linear-gradient(135deg, #292929, var(--light-gray-bg));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
+        }
+        .refresh-button::before {
+            content: "🔄";
+            font-size: 18px;
+        }
 
+        /* === النوافذ المنبثقة (Modals) === */
+        .modal, #end-lesson-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background: var(--medium-dark-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 150, 255, 0.5);
+            text-align: center;
+        }
+        .modal h3, #end-lesson-modal h3 {
+            color: var(--primary-color);
+        }
+        .modal button, #end-lesson-modal button {
+            background-color: var(--primary-dark-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .modal button:hover, #end-lesson-modal button:hover {
+             background-color: var(--primary-darker-color);
+        }
+        
+        /* نافذة نهاية الدرس */
+        #end-lesson-modal {
+            max-width: 600px;
+            background-color: var(--dark-gray-bg);
+            padding: 30px;
+        }
+         #end-lesson-modal h3 {
+            font-size: 24px;
+         }
+         #end-lesson-modal p {
+            font-size: 18px;
+         }
+        
+        /* === استجابة التصميم للشاشات المختلفة (Media Queries) === */
+        
+        /* شاشات متوسطة (Tablets) */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 80px;
+            }
+            .sidebar {
+                height: 70px;
+                gap: 10px;
+            }
+            .sidebar h3 {
+                font-size: 0.9rem;
+            }
+             .sidebar-button {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            .bubble {
+                max-width: 90%;
+                padding: 15px;
+            }
+            .refresh-button {
+                padding: 8px 18px;
+                font-size: 14px;
+                min-width: 140px;
+            }
+        }
 
-                font-size: 0.75rem;
-                padding: 0.3rem 0.4rem;
-                max-width: 120px;
-              
-
-    }
-}
-
-/* تحسينات للأجهزة الأفقية (landscape) */
-@media (max-height: 480px) {
-    .progress-bar-container {
-        margin: 50px auto 5px auto;
-    }
-} 
-
-
-
-
-
-              
-                /* Lesson Container */
-                .lesson-container {
-                    margin-top: 20px;
-                }
-            
-                /* Bubble Styles */
-                .bubble {
-                    background: rgba(30, 30, 30, 0.95);
-                    box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
-                    border-left: 6px solid #00aaff;
-                    padding: 20px;
-                    border-radius: 20px;
-                    margin: 20px auto;
-                    max-width: 60rem;
-                    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
-                    text-align: right;
-                    direction: rtl;
-                    position: relative;
-                    cursor: pointer;
-
-
-
-                    margin-bottom: 70px; /* إضافة مسافة فارغة أسفل كل فقاعة */
-
-                }
-            
-                .bubble:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
-                }
-            
-                .interact-button {
-                    position: absolute;
-                    top: 5px;
-                    left: 6px;
-                    background-color: #007bff;
-                    color: white;
-                    border: none;
-                    padding: 8px 12px;
-                    font-size: 15px;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                }
-            
-                .interact-button:hover {
-                    background-color: #0056b3;
-                }
-            
-                /* Modal Styles */
-                .modal {
-                    display: none;
-                    position: fixed;
-                    z-index: 2000;
-                    left: 50%;
-                    top: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 90%;
-                    max-width: 400px;
-                    background: #222;
-                    padding: 20px;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 10px rgba(0, 150, 255, 0.5);
-                    text-align: center;
-                }
-            
-                .modal h3 {
-                    margin-bottom: 15px;
-                    color: #00aaff;
-                }
-            
-                .modal button {
-                    background-color: #007bff;
-                    color: white;
-                    border: none;
-                    padding: 10px 15px;
-                    cursor: pointer;
-                    border-radius: 5px;
-                    margin: 10px;
-                    font-size: 16px;
-                }
-            
-                .modal button:hover {
-                    background-color: #0056b3;
-                }
-            
-                /* End Lesson Modal */
-                #end-lesson-modal {
-                    display: none;
-                    position: fixed;
-                    z-index: 2000;
-                    left: 50%;
-                    top: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 80%;
-                    max-width: 600px;
-                    background-color: #333;
-                    padding: 30px;
-                    border-radius: 10px;
-                    color: white;
-                    text-align: center;
-                    box-shadow: 0 6px 30px rgba(0, 150, 255, 0.5);
-                }
-            
-                #end-lesson-modal h3 {
-                    color: #00aaff;
-                    font-size: 24px;
-                    margin-bottom: 20px;
-                }
-            
-                #end-lesson-modal p {
-                    font-size: 18px;
-                    margin-bottom: 20px;
-                }
-            
-                #end-lesson-modal button {
-                    background-color: #007bff;
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    cursor: pointer;
-                    border-radius: 5px;
-                    margin: 10px;
-                    font-size: 16px;
-                }
-            
-                #end-lesson-modal button:hover {
-                    background-color: #0056b3;
-                }
-            
-                .reload-button {
-                    background-color: #28a745;
-                }
-            
-                .reload-button:hover {
-                    background-color: #218838;
-                }
-            
-                /* Vibration Animation */
-                @keyframes vibrate {
-                    0% { transform: translateX(0); }
-                    20% { transform: translateX(-5px); }
-                    40% { transform: translateX(5px); }
-                    60% { transform: translateX(-5px); }
-                    80% { transform: translateX(5px); }
-                    100% { transform: translateX(0); }
-                }
-            
-                .vibrate {
-                    animation: vibrate 0.5s ease-in-out;
-                }
-            
-                /* Media Queries for Small Screens */
-                @media (max-width: 768px) {
-                    body {
-                        padding-top: 80px; /* Reduce top padding */
-                    }
-            
-                    .bubble {
-                        max-width: 90%; /* Make the bubble width responsive */
-                        padding: 15px; /* Reduce padding */
-                    }
-            
-                    .interact-button {
-                        font-size: 15px; /* Reduce button font size */
-                        padding: 6px 10px; /* Adjust padding */
-                    }
-            
-                    .finish-button {
-                        font-size: 12px; /* Adjust font size */
-                        padding: 8px 13px; /* Adjust padding */
-                    }
-            
-                    .lesson-container {
-                        margin-top: 10px; /* Adjust for smaller screens */
-                    }
-                }
-            
-                @media (max-width: 480px) {
-                    body {
-                        font-size: 15px; /* Adjust font size for very small screens */
-                        padding: 10px; /* Reduce padding */
-                    }
-            
-                    .bubble {
-                        padding: 10px; /* Reduce padding */
-                        max-width: 100%; /* Full width on very small screens */
-                    }
-            
-                    .interact-button {
-                        font-size: 8px; /* Reduce button font size */
-                        padding: 4px 7px; /* Adjust padding */
-                    }
-            
-                    .finish-button {
-                        font-size: 10px; /* Reduce font size */
-                        padding: 5px 10px; /* Adjust padding */
-                    }
-                }
-     
-            
-@media (max-width: 768px) {
-    .progress-bar-container {
-        width: 85%; /* عرض الشريط أكبر قليلاً على الشاشات الصغيرة */
-    }
-}
-
-/* استعلام ميديا للأجهزة التي يزيد عرض شاشتها عن 480 بكسل */
-@media (max-width: 480px) {
-    .progress-bar-container {
-        width: 90%; /* شريط التقدم يشغل مساحة أكبر على الشاشات الصغيرة جدًا */
-        height: 20px; /* تقليص الارتفاع قليلاً */
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-.outside-image {
-    display: block; /* يجعل الصورة عنصرًا منفصلًا */
-    margin: 20px auto; /* يضع الصورة في المنتصف */
-    max-width: 100%; /* يضمن أن الصورة لا تتجاوز حجم الشاشة */
-    height: auto; /* يحافظ على الأبعاد الأصلية للصورة */
-}
-
-
-
-
-
-
-
-
-
-
-/* Refresh Container */
-.refresh-container {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.refresh-button {
-    background: linear-gradient(135deg, #1a1a1a, #333); /* ألوان داكنة مريحة */
-    color: #ffffff;
-    border: 1px solid #444;
-    padding: 10px 22px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 25px;
-    font-family: 'Poppins', Arial, sans-serif;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
-    outline: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    min-width: 160px;
-    justify-content: center;
-}
-
-.refresh-button:hover {
-    background: linear-gradient(135deg, #292929, #444);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
-}
-
-.refresh-button:active {
-    transform: scale(0.96);
-}
-
-.refresh-button::before {
-    content: "🔄"; /* أيقونة التحديث */
-    font-size: 18px;
-}
-
-/* تحسين للهواتف */
-@media (max-width: 768px) {
-    .refresh-button {
-        padding: 8px 18px;
-        font-size: 14px;
-        min-width: 140px;
-    }
-}
-
-@media (max-width: 480px) {
-    .refresh-button {
-        padding: 7px 16px;
-        font-size: 13px;
-        min-width: 120px;
-        border-radius: 20px;
-    }
-}
-
-
-
-
-</style>
-
-
-
-
-
+        /* شاشات صغيرة (الهواتف) */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+                padding-top: 130px; /* مساحة إضافية بسبب التفاف الشريط */
+                font-size: 15px;
+            }
+            .sidebar {
+                flex-wrap: wrap; /* السماح للعناصر بالالتفاف */
+                height: auto; /* ارتفاع تلقائي */
+                padding: 10px;
+                justify-content: center;
+            }
+            .sidebar h3 {
+                display: none; /* إخفاء النص لتوفير مساحة */
+            }
+            .progress-bar-container {
+                order: -1; /* وضع شريط التقدم في الأعلى */
+                width: 100%;
+                height: 20px;
+                margin-bottom: 10px;
+            }
+            .progress-percentage {
+                font-size: 12px;
+            }
+            .bubble {
+                padding: 10px;
+            }
+            .interact-button {
+                font-size: 12px;
+                padding: 5px 8px;
+            }
+             .refresh-button {
+                padding: 7px 16px;
+                font-size: 13px;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
 <body>
- 
 
     <div class="sidebar">
-   
-        <button class="finish-button" onclick="finishLesson()" 
-        style="font-size: 15px; padding: 6px 10px; position: relative; right: -20px;">
-        ✅ انتهيت من الدرس
-    </button>
-     
-    
+        <button class="sidebar-button finish-button" onclick="finishLesson()">
+            ✅ انتهيت
+        </button>
+        
+        <h3 id="proo">📊 <span>التقدم</span></h3>
+
         <div class="progress-bar-container">
             <div class="progress-bar" id="progress-bar"></div>
             <div class="progress-percentage" id="progress-percentage">0%</div>
         </div>
 
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-
-        <h3 id="proo" style="margin-right: 20px;">📊 <span>التقدم</span></h3>
-
-      
-
-
-        
-
-
-        <style>
-            .uncompleted-button {
-              font-size: 0.8rem;
-              padding: 0.4rem  0.3rem;
-              width: 80%;
-              max-width: 100px;
-              box-sizing: border-box;
-              border: none;
-              border-radius: 8px;
-              background-color: #007bff; /* أزرق فاتح */
-              cursor: pointer;
-              transition: background-color 0.3s;
-            }
-          
-            .uncompleted-button:hover {
-              background-color:  #0056b3; /* أزرق أغمق قليلاً عند التحويم */
-            }
-          
-            /* تصغير الزر أكثر على الشاشات الصغيرة */
-            @media (max-width: 600px) {
-              .uncompleted-button {
-                font-size: 0.75rem;
-                padding: 0.3rem 0.4rem;
-                max-width: 120px;
-              }
-            }
-          </style>
-          
-          <button onclick="goToUncompletedBubble()" class="uncompleted-button">
+        <button onclick="goToUncompletedBubble()" class="sidebar-button">
             🔍 الفقاعات غير المكتملة
-          </button>
-          
+        </button>
+    </div>
 
-</div>
+
+   
+ 
+
+
+
+
+</body>
+</html>
     
 
 
-    
-
-
-    <br>
+    <br>       <br>    <br>
     <div class="refresh-container"  id="ref">
         <button class="refresh-button" onclick="location.reload();">تحديث الصفحة</button>
     </div>

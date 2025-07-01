@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطة مراجعة الوراثة - 10 أيام</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;      /* أزرق سماوي مشرق */
+            --secondary-color: #004085;    /* أزرق داكن */
+            --accent-color: #F5A623;       /* برتقالي دافئ */
+            --success-color: #28a745;      /* أخضر للنجاح */
+            --light-color: #f7f9fc;        /* خلفية فاتحة جداً */
+            --white: #ffffff;
+            --border-color: #e1e8ed;
+            --text-color: #333;
+            --danger-color: #dc3545;       /* أحمر للخطر */
+        }
+        body {
+            font-family: 'Tajawal', 'Arial', sans-serif;
+            background-color: var(--light-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 25px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 60px rgba(74, 144, 226, 0.15);
+            transition: filter 0.3s;
+        }
+        .container.blurry {
+            filter: blur(5px);
+        }
+        .title-wrapper {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            position: relative;
+        }
+        .title-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+        h1.main-title {
+            font-size: 2.2em;
+            font-weight: 800;
+            margin: 0;
+            color: var(--secondary-color);
+        }
+        .lang-fr-title {
+            display: block;
+            font-size: 0.7em;
+            color: #777;
+            font-style: italic;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        .stats-and-info {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+            align-items: center;
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #edf4fb;
+            border-radius: 15px;
+        }
+        .page-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 1.05em;
+            font-weight: 500;
+        }
+        .page-info div { display: flex; align-items: center; gap: 12px; }
+        .page-info i { color: var(--primary-color); font-size: 1.4em; width: 25px; text-align: center;}
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .stat-card h3 {
+            margin: 0 0 8px 0;
+            color: var(--primary-color);
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--secondary-color);
+        }
+        .progress-container { background-color: #e9ecef; border-radius: 50px; margin: 25px 0; height: 22px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.08); }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent-color), var(--primary-color)); width: 0; transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1); border-radius: 50px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9em; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 15px; margin-top: 20px; }
+        th { padding: 18px 22px; text-align: center; font-weight: 700; color: var(--secondary-color); font-size: 1.2em; }
+        td { padding: 25px; text-align: right; vertical-align: top; background-color: var(--white); border-radius: 15px; border: 1px solid var(--border-color); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        tr td:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(74, 144, 226, 0.1); }
+        .task-title { font-weight: 700; color: var(--primary-color); display: block; margin-bottom: 15px; font-size: 1.2em; }
+        .task-title i { margin-left: 12px; }
+        .lesson-details ul { padding-right: 20px; margin: 0; }
+        .lesson-details li { margin-bottom: 12px; list-style-type: '🧬 '; color: var(--text-color); }
+        .lang-fr { display: block; font-size: 0.9em; color: #777; font-style: italic; }
+        .task-actions { display: flex; justify-content: flex-start; align-items: center; margin-top: 25px; gap: 10px; flex-wrap: wrap;}
+        .timer { color: var(--secondary-color); font-weight: bold; margin-top: 15px; display: block; font-size: 1.2em; text-align: center; letter-spacing: 2px; background-color: #edf4fb; padding: 8px; border-radius: 8px;}
+        .btn { color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 8px; font-size: 0.95em; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .day-header { font-weight: 800; color: var(--white); font-size: 1.5em; background: linear-gradient(120deg, var(--secondary-color), var(--primary-color)) !important; text-align: center; border-radius: 15px; border: none; }
+        .completed { position: relative; background-color: #f0fff4 !important; border-color: var(--success-color); }
+        .completed .task-title, .completed .lesson-details li, .completed .lang-fr { text-decoration: line-through; text-decoration-color: var(--success-color); color: #999; }
+        .completed::after { content: "✓"; color: var(--white); background-color: var(--success-color); font-weight: bold; font-size: 1.2em; position: absolute; top: 20px; left: 20px; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px var(--success-color); }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: var(--white);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        .modal-icon {
+            font-size: 4em;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        .modal-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin: 0 0 15px 0;
+        }
+        .modal-body {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 992px) {
+            .stats-and-info { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            td { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="mainContainer">
+    <div class="title-wrapper">
+        <h1 class="main-title">
+            <i class="fa-solid fa-dna"></i> خطة مراجعة الوراثة الشاملة - 10 أيام
+            <span class="lang-fr-title">Plan Complet de Révision de la Génétique - 10 Jours</span>
+        </h1>
+    </div>
+
+    <div class="stats-and-info">
+        <div class="page-info">
+            <div id="gregorianDateDisplay"><i class="fas fa-calendar-alt"></i> ...</div>
+            <div id="hijriDateDisplay"><i class="fas fa-moon"></i> ...</div>
+            <div id="countdownToEndOfDay"><i class="fas fa-hourglass-end"></i> ...</div>
+        </div>
+        <div class="stats">
+            <div class="stat-card">
+                <h3><i class="fas fa-bullseye"></i> الجلسات <span class="lang-fr">Sessions</span></h3>
+                <div class="stat-value" id="totalTasks">10</div>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fas fa-check-double"></i> المكتملة <span class="lang-fr">Complétées</span></h3>
+                <div class="stat-value" id="completedTasks">0</div>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fas fa-stopwatch"></i> الوقت (ساعة) <span class="lang-fr">Temps (h)</span></h3>
+                <div class="stat-value" id="totalStudyTimeDisplay">30</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th colspan="2" class="day-header">اليوم الأول: أسس البيولوجيا الجزيئية <span class="lang-fr-title">Jour 1 : Bases de la Biologie Moléculaire</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task1">
+            <span class="task-title"><i class="fas fa-atom"></i> مقدمات وبنية المادة الوراثية <span class="lang-fr">Introduction et Structure du Matériel Génétique</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>مقدمة في علم الوراثة<span class="lang-fr">Introduction à l'étude de la génétique</span></li>
+                <li>بنية الأحماض النووية<span class="lang-fr">Structure des acides nucléiques</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions1"></div><span class="timer" id="t1"></span>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr><th colspan="2" class="day-header">اليوم الثاني: تنظيم المادة الوراثية <span class="lang-fr-title">Jour 2 : Organisation du Matériel Génétique</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task2">
+            <span class="task-title"><i class="fas fa-sitemap"></i> تنظيم المادة الوراثية <span class="lang-fr">Organisation du Matériel Génétique</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>تنظيم الجينوم<span class="lang-fr">Organisation des génomes</span></li>
+                <li>بنية وتنظيم الكروماتين<span class="lang-fr">Structure et organisation de la chromatine</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions2"></div><span class="timer" id="t2"></span>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr><th colspan="2" class="day-header">اليوم الثالث: التعبير الجيني <span class="lang-fr-title">Jour 3 : Expression des Gènes</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task3">
+            <span class="task-title"><i class="fas fa-cogs"></i> التعبير عن المعلومة الوراثية <span class="lang-fr">Expression de l'Information Génétique</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>النسخ، الترجمة والشفرة الوراثية<span class="lang-fr">Transcription, traduction et code génétique</span></li>
+                <li>تنظيم التعبير الجيني<span class="lang-fr">Régulation de l'expression des gènes</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions3"></div><span class="timer" id="t3"></span>
+          </td>
+        </tr>
+      </tbody>
+        <thead>
+        <tr><th colspan="2" class="day-header">اليوم الرابع: تضاعف وإصلاح الـ ADN <span class="lang-fr-title">Jour 4 : Réplication et Réparation de l'ADN</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task4">
+            <span class="task-title"><i class="fas fa-copy"></i> تضاعف وإصلاح الـ ADN <span class="lang-fr">Réplication et Réparation de l'ADN</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>تضاعف الـ ADN (بدائي وحقيقي النواة)<span class="lang-fr">Réplication de l'ADN procaryote et eucaryote</span></li>
+                <li>أنظمة إصلاح الـ ADN<span class="lang-fr">Systèmes de réparation de l'ADN</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions4"></div><span class="timer" id="t4"></span>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr><th colspan="2" class="day-header">اليوم الخامس: التنوع الجيني <span class="lang-fr-title">Jour 5 : Variation Génétique</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task5">
+            <span class="task-title"><i class="fas fa-exchange-alt"></i> التغيرات الجينية وتطبيقاتها <span class="lang-fr">Variations Génétiques et leurs Applications</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>التغيرات الجينية: تعدد الأشكال والطفرات<span class="lang-fr">Variations génétiques: polymorphisme et mutations</span></li>
+                <li>العلاج الجيني والصيدلة الجينية<span class="lang-fr">Thérapie génique et pharmacogénétique</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions5"></div><span class="timer" id="t5"></span>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr><th colspan="2" class="day-header">اليوم السادس: أدوات دراسة الجينات <span class="lang-fr-title">Jour 6 : Outils pour l'Étude des Gènes</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task6">
+            <span class="task-title"><i class="fas fa-tools"></i> أدوات البيولوجيا الجزيئية <span class="lang-fr">Outils de la Biologie Moléculaire</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>التهجين الجزيئي، المسابر، الإنزيمات والنواقل<span class="lang-fr">Hybridation moléculaire, sondes, enzymes et vecteurs</span></li>
+                <li>استخلاص ADN، تفاعل PCR وتسلسل الـ ADN<span class="lang-fr">Extraction d'ADN, PCR, séquençage de l'ADN</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions6"></div><span class="timer" id="t6"></span>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr><th colspan="2" class="day-header">اليوم السابع: الوراثة المندلية <span class="lang-fr-title">Jour 7 : Hérédité Mendélienne</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task7">
+            <span class="task-title"><i class="fas fa-project-diagram"></i> قوانين الوراثة المندلية <span class="lang-fr">Lois de l'Hérédité Mendélienne</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>قوانين مندل والوراثة الشكلية<span class="lang-fr">Lois de Mendel et génétique formelle</span></li>
+                <li>أنماط انتقال الأمراض أحادية الجين<span class="lang-fr">Modes de transmission des maladies monogéniques</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions7"></div><span class="timer" id="t7"></span>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr><th colspan="2" class="day-header">اليوم الثامن: الوراثة الكروموسومية <span class="lang-fr-title">Jour 8 : Génétique Chromosomique</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task8">
+            <span class="task-title"><i class="fas fa-th-large"></i> دراسة الكروموسومات وأمراضها <span class="lang-fr">Étude des Chromosomes et de leurs Pathologies</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>النمط النووي الطبيعي وشذوذه<span class="lang-fr">Caryotype normal et anomalies du caryotype</span></li>
+                <li>الأمراض الكروموسومية<span class="lang-fr">Maladies chromosomiques</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions8"></div><span class="timer" id="t8"></span>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr><th colspan="2" class="day-header">اليوم التاسع: مواضيع متقدمة <span class="lang-fr-title">Jour 9 : Sujets Avancés</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task9">
+            <span class="task-title"><i class="fas fa-lightbulb"></i> أنماط وراثية متقدمة <span class="lang-fr">Modes de Transmission Génétique Avancés</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>الوراثة غير التقليدية<span class="lang-fr">Hérédité non conventionnelle</span></li>
+                <li>وراثة السرطان<span class="lang-fr">Génétique du cancer</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions9"></div><span class="timer" id="t9"></span>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr><th colspan="2" class="day-header">اليوم العاشر: وراثة المجتمعات والمراجعة النهائية <span class="lang-fr-title">Jour 10 : Génétique des Populations et Révision Finale</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2" id="task10">
+            <span class="task-title"><i class="fas fa-users"></i> وراثة المجتمعات ومراجعة نهائية <span class="lang-fr">Génétique des Populations et Révision Finale</span></span>
+            <div class="lesson-details">
+              <ul>
+                <li>وراثة المجتمعات (قانون هاردي-واينبرغ)<span class="lang-fr">Génétique des populations (Loi de Hardy-Weinberg)</span></li>
+                <li>مراجعة شاملة وحل تمارين وامتحانات سابقة<span class="lang-fr">Révision complète et résolution d'exercices et d'anciens examens</span></li>
+              </ul>
+            </div>
+            <div class="task-actions" id="actions10"></div><span class="timer" id="t10"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+<div class="modal-overlay" id="timerModal">
+    <div class="modal-content">
+        <div class="modal-icon">⏰</div>
+        <h2 class="modal-title" id="modalTitle">انتهى الوقت!</h2>
+        <p class="modal-body" id="modalBody">انتهت جلسة المراجعة. خذ قسطاً من الراحة!</p>
+        <button class="btn" style="background-color: var(--primary-color);" onclick="closeModal()">حسناً</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- CONFIGURATION ---
+    const TOTAL_TASKS = 10;
+    const SESSION_DURATION = 3 * 3600; // 3 hours in seconds
+    const LS_KEY = 'genetics_schedule_v12_persistent'; // مفتاح جديد لتمييز الحالة المحسنة
+
+    // --- STATE ---
+    let activeTimers = {};
+    let notificationPermission = Notification.permission;
+
+    // --- DOM ELEMENTS ---
+    const elements = {
+        totalTasks: document.getElementById('totalTasks'),
+        completedTasks: document.getElementById('completedTasks'),
+        progressBar: document.getElementById('progressBar'),
+        modal: document.getElementById('timerModal'),
+        modalTitle: document.getElementById('modalTitle'),
+        modalBody: document.getElementById('modalBody'),
+        mainContainer: document.getElementById('mainContainer'),
+    };
+    
+    // --- FUNCTIONS ---
+
+    function requestNotificationPermission() {
+        if (notificationPermission === 'default') {
+            Notification.requestPermission().then(permission => {
+                notificationPermission = permission;
+            });
+        }
+    }
+
+    function showNotification(title, body) {
+        if (notificationPermission === 'granted') {
+            new Notification(title, {
+                body: body,
+                icon: 'https://img.icons8.com/color/48/000000/dna-helix.png' 
+            });
+        }
+    }
+
+    function showModal(title, body) {
+        elements.modalTitle.textContent = title;
+        elements.modalBody.textContent = body;
+        elements.modal.classList.add('visible');
+        elements.mainContainer.classList.add('blurry');
+    }
+
+    window.closeModal = function() {
+        elements.modal.classList.remove('visible');
+        elements.mainContainer.classList.remove('blurry');
+    }
+
+    function updatePageInfo() {
+        // ... (نفس دالة تحديث التاريخ والوقت المتبقي في اليوم)
+        const now = new Date();
+        const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('gregorianDateDisplay').innerHTML = `<i class="fas fa-calendar-alt"></i> ${now.toLocaleDateString('ar-EG', gregorianOptions)}`;
+        try {
+            const hijriOptions = { calendar: 'islamic-umalqura', year: 'numeric', month: 'long', day: 'numeric' };
+            const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', hijriOptions).format(now);
+            document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> ${hijriDate}`;
+        } catch (e) {
+            document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> التقويم الهجري غير مدعوم`;
+        }
+        function updateCountdown() {
+            const now = new Date();
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+            const totalSecondsLeft = Math.floor((endOfDay - now) / 1000);
+            const hours = Math.floor(totalSecondsLeft / 3600);
+            const minutes = Math.floor((totalSecondsLeft % 3600) / 60);
+            const seconds = totalSecondsLeft % 60;
+            document.getElementById('countdownToEndOfDay').innerHTML = `<i class="fas fa-hourglass-end"></i> باقي على انتهاء اليوم: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    function saveState() {
+        const stateToSave = {
+            completedTasks: [],
+            timers: {}
+        };
+        for (let i = 1; i <= TOTAL_TASKS; i++) {
+            stateToSave.completedTasks.push(document.getElementById(`task${i}`).classList.contains('completed'));
+        }
+        for (const timerId in activeTimers) {
+             // نحفظ فقط البيانات الأساسية وليس الـ interval
+            stateToSave.timers[timerId] = {
+                endTime: activeTimers[timerId].endTime,
+                remaining: activeTimers[timerId].remaining,
+                isPaused: activeTimers[timerId].isPaused,
+                duration: activeTimers[timerId].duration
+            };
+        }
+        localStorage.setItem(LS_KEY, JSON.stringify(stateToSave));
+    }
+
+    function loadState() {
+        const state = JSON.parse(localStorage.getItem(LS_KEY));
+        if (!state) return;
+
+        state.completedTasks.forEach((isCompleted, i) => {
+            if (isCompleted) document.getElementById(`task${i + 1}`).classList.add('completed');
+        });
+
+        if (state.timers) {
+            for (const timerId in state.timers) {
+                const savedTimer = state.timers[timerId];
+                const taskId = `task${timerId.substring(1)}`;
+                activeTimers[timerId] = {
+                    ...savedTimer,
+                    interval: null,
+                    taskId: taskId
+                };
+
+                // إذا كان المؤقت يعمل عند إغلاق الصفحة
+                if (savedTimer.endTime && !savedTimer.isPaused) {
+                    const remainingOnLoad = Math.round((savedTimer.endTime - Date.now()) / 1000);
+                    if (remainingOnLoad <= 0) {
+                        // انتهى الوقت أثناء غيابك
+                        handleTimerEnd(timerId, taskId, savedTimer.duration, true);
+                    } else {
+                        // استئناف المؤقت
+                        activeTimers[timerId].remaining = remainingOnLoad;
+                        startTimer(timerId, remainingOnLoad, taskId, true);
+                    }
+                }
+            }
+        }
+    }
+
+    function updateProgress() {
+        const completedCount = document.querySelectorAll('.completed').length;
+        elements.completedTasks.textContent = completedCount;
+        const progress = TOTAL_TASKS > 0 ? Math.round((completedCount / TOTAL_TASKS) * 100) : 0;
+        elements.progressBar.style.width = progress + '%';
+        elements.progressBar.textContent = progress + '%';
+    }
+
+    function formatTime(seconds) {
+        if (isNaN(seconds) || seconds < 0) return "00:00:00";
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function handleTimerEnd(timerId, taskId, duration, fromLoad = false) {
+        const timerDisplay = document.getElementById(timerId);
+        timerDisplay.innerHTML = `<i class="fas fa-bell"></i> انتهى الوقت! <span class="lang-fr">Temps écoulé !</span>`;
+        if(activeTimers[timerId]) {
+             clearInterval(activeTimers[timerId].interval);
+             delete activeTimers[timerId];
+        }
+        const taskTitle = document.querySelector(`#${taskId} .task-title`).innerText.split('\n')[0];
+        showModal('⏰ انتهى الوقت!', `انتهت جلسة المراجعة لـ "${taskTitle}". أحسنت صنعًا!`);
+        if(!fromLoad) showNotification('انتهى الوقت!', `جلسة "${taskTitle}" قد انتهت.`);
+        renderButtons(timerId, taskId, duration);
+        saveState();
+    }
+    
+    window.startTimer = function(timerId, duration, taskId, isResuming = false) {
+        requestNotificationPermission(); // اطلب الإذن عند أول تفاعل
+        
+        let timer = activeTimers[timerId];
+        
+        if (!timer) { // بدء جديد
+            timer = { remaining: duration, duration: duration, taskId: taskId };
+        }
+        
+        timer.isPaused = false;
+        timer.endTime = Date.now() + (timer.remaining * 1000);
+        activeTimers[timerId] = timer;
+
+        if (timer.interval) clearInterval(timer.interval);
+        
+        const tick = () => {
+            const remainingSeconds = Math.round((timer.endTime - Date.now()) / 1000);
+            timer.remaining = remainingSeconds;
+            
+            if (remainingSeconds <= 0) {
+                clearInterval(timer.interval);
+                handleTimerEnd(timerId, taskId, timer.duration);
+            } else {
+                document.getElementById(timerId).textContent = formatTime(remainingSeconds);
+            }
+        };
+
+        timer.interval = setInterval(tick, 1000);
+        tick(); // تحديث فوري
+        renderButtons(timerId, taskId, duration);
+        saveState();
+    }
+
+    window.pauseTimer = function(timerId) {
+        const timer = activeTimers[timerId];
+        if (timer && !timer.isPaused) {
+            clearInterval(timer.interval);
+            timer.isPaused = true;
+            // يتم الحفاظ على `remaining` و `endTime` حتى الاستئناف
+            renderButtons(timerId, timer.taskId, timer.duration);
+            saveState();
+        }
+    }
+
+    window.completeTask = function(taskId, timerId, duration) {
+        const taskElement = document.getElementById(taskId);
+        if (taskElement.classList.contains('completed')) return;
+        
+        taskElement.classList.add('completed');
+        
+        if (activeTimers[timerId]) {
+            clearInterval(activeTimers[timerId].interval);
+            delete activeTimers[timerId];
+        }
+        document.getElementById(timerId).textContent = '';
+        updateProgress();
+        renderButtons(timerId, taskId, duration);
+        saveState();
+    }
+
+    window.resetTask = function(taskId, timerId, duration) {
+        document.getElementById(taskId).classList.remove('completed');
+        
+        if (activeTimers[timerId]) {
+            clearInterval(activeTimers[timerId].interval);
+            delete activeTimers[timerId];
+        }
+        document.getElementById(timerId).textContent = formatTime(duration);
+        updateProgress();
+        renderButtons(timerId, taskId, duration);
+        saveState();
+    }
+    
+    function renderButtons(timerId, taskId, duration) {
+        const actionsContainer = document.getElementById(`actions${taskId.substring(4)}`);
+        const timer = activeTimers[timerId];
+        const isCompleted = document.getElementById(taskId).classList.contains('completed');
+
+        actionsContainer.innerHTML = '';
+
+        if (isCompleted) {
+            actionsContainer.innerHTML = `<button class="btn" style="background-color: #6c757d;" onclick="resetTask('${taskId}', '${timerId}', ${duration})"><i class="fas fa-redo"></i> إعادة ضبط <span class="lang-fr">Réinitialiser</span></button>`;
+            return;
+        }
+
+        if (timer && !timer.isPaused) {
+            actionsContainer.innerHTML = `<button class="btn" style="background-color: var(--accent-color);" onclick="pauseTimer('${timerId}')"><i class="fas fa-pause"></i> إيقاف مؤقت <span class="lang-fr">Pause</span></button>`;
+        } else {
+            const remaining = timer ? timer.remaining : duration;
+            const buttonTextAr = timer && timer.isPaused ? 'استئناف' : 'ابدأ الجلسة';
+            const buttonTextFr = timer && timer.isPaused ? 'Reprendre' : 'Démarrer';
+            actionsContainer.innerHTML = `<button class="btn" style="background-color: var(--success-color);" onclick="startTimer('${timerId}', ${remaining}, '${taskId}')"><i class="fas fa-play"></i> ${buttonTextAr} <span class="lang-fr">${buttonTextFr}</span></button>`;
+        }
+        actionsContainer.innerHTML += ` <button class="btn" style="background-color: var(--primary-color);" onclick="completeTask('${taskId}', '${timerId}', ${duration})"><i class="fas fa-check"></i> إكمال المهمة <span class="lang-fr">Terminer</span></button>`;
+    }
+
+    function initialize() {
+        updatePageInfo();
+        loadState();
+
+        for (let i = 1; i <= TOTAL_TASKS; i++) {
+            const taskId = `task${i}`;
+            const timerId = `t${i}`;
+            const timer = activeTimers[timerId];
+            const isCompleted = document.getElementById(taskId).classList.contains('completed');
+            const timerDisplay = document.getElementById(timerId);
+
+            if (isCompleted) {
+                 timerDisplay.textContent = '';
+            } else if (timer) {
+                // `loadState` قد يكون قد قام بتشغيل المؤقت بالفعل
+                if (!timer.interval) { // إذا كان متوقفًا مؤقتًا
+                   timerDisplay.textContent = formatTime(timer.remaining);
+                }
+            } else if (timerDisplay.innerHTML.includes('انتهى الوقت')) {
+                // لا تفعل شيئًا، تم التعامل معه
+            } else {
+                 timerDisplay.textContent = formatTime(SESSION_DURATION);
+            }
+            renderButtons(timerId, taskId, SESSION_DURATION);
+        }
+        updateProgress();
+    }
+
+    initialize();
+});
+</script>
+
+</body>
+</html>
