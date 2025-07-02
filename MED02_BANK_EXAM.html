@@ -4,7 +4,7 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>لوحة التحكم - قسم الطب</title>
+   <title>  قسم الطب</title>
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
@@ -167,48 +167,63 @@
       
       .btn.logout { background-color: var(--red); }
 
+/* --- القائمة الجانبية (النسخة المحسّنة) --- */
+.side-bar {
+   position: fixed;
+   top: 0;
+   right: -100%;
+   width: 32rem;
+   max-width: 90%;
+   height: 100vh;
+   background-color: var(--bg-card);
+   border-left: 1px solid var(--border-color);
+   z-index: 1200;
+   transition: right 0.3s ease-in-out;
+   display: flex; /* <-- 1. تفعيل Flexbox */
+   flex-direction: column; /* <-- 2. جعله عمودياً */
+}
 
-      /* --- القائمة الجانبية --- */
-      .side-bar {
-         position: fixed;
-         top: 0;
-         right: -100%;
-         width: 32rem;
-         max-width: 90%;
-         height: 100vh;
-         background-color: var(--bg-card);
-         border-left: 1px solid var(--border-color);
-         z-index: 1200;
-         transition: right 0.3s ease-in-out;
-      }
-      
-      .side-bar.active { right: 0; }
-      
-      .side-bar .close-btn-container {
-         padding: 1.5rem; text-align: left;
-      }
-      #close-btn { font-size: 2.5rem; } /* Reuse icon-btn style */
+.side-bar.active {
+   right: 0;
+}
 
-      .side-bar .navbar { padding-top: 1rem; }
-      
-      .side-bar .navbar a {
-         display: flex;
-         align-items: center;
-         gap: 2rem;
-         padding: 1.5rem 2rem;
-         font-size: 1.7rem;
-         color: var(--text-secondary);
-         transition: all .2s;
-      }
-      
-      .side-bar .navbar a:hover {
-         background-color: var(--bg-body);
-         color: var(--primary-color);
-         padding-right: 2.5rem;
-      }
-      
-      .side-bar .navbar a i { font-size: 2rem; width: 2.5rem; text-align: center;}
-      
+.side-bar .close-btn-container {
+   padding: 1.5rem;
+   text-align: left;
+   flex-shrink: 0; /* منع هذا العنصر من الانكماش */
+}
+
+#close-btn {
+   font-size: 2.5rem;
+}
+
+.side-bar .navbar {
+   padding-top: 1rem;
+   flex-grow: 1; /* <-- 3. جعل هذا القسم ينمو ليملأ المساحة */
+   overflow-y: auto; /* <-- 4. إضافة التمرير هنا فقط */
+}
+
+.side-bar .navbar a {
+   display: flex;
+   align-items: center;
+   gap: 2rem;
+   padding: 1.5rem 2rem;
+   font-size: 1.7rem;
+   color: var(--text-secondary);
+   transition: all .2s;
+}
+
+.side-bar .navbar a:hover {
+   background-color: var(--bg-body);
+   color: var(--primary-color);
+   padding-right: 2.5rem;
+}
+
+.side-bar .navbar a i {
+   font-size: 2rem;
+   width: 2.5rem;
+   text-align: center;
+}
       /* --- المحتوى الرئيسي --- */
       main {
          padding: 2rem 3%;
@@ -265,13 +280,365 @@
 
 <header class="header">
    <section class="flex">
-      <a href="home.html" class="logo">أداة علم</a>
-      
-      <div class="icons">
-         <div id="toggle-btn" class="fas fa-sun icon-btn" title="الوضع"></div>
-           <div id="danger-btn" class="icon-btn danger fas fa-exclamation-triangle" title="تحذير"></div>
+     
 
-         <div id="notification-btn" class="fas fa-bell icon-btn" title="الإشعارات"></div>
+<a href="home.html" class="logo">
+  <span class="main-title">أداة علم</span>
+  <span class="subtitle">
+    للثانية<br>
+    طب
+  </span>
+</a>
+
+<style>
+.logo {
+  display: flex;
+  align-items: center;
+  direction: rtl; /* لضبط الاتجاه من اليمين لليسار */
+  gap: 8px; /* مسافة بين العنوان والساب تايتل */
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.logo .subtitle {
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: right;
+}
+
+.main-title {
+  font-weight: bold;
+}
+</style>      
+      <div class="icons">
+       <!-- زر تغيير الوضع (وضع ليلي / نهاري) -->
+<div id="toggle-btn" class="icon-btn fas fa-sun" title="الوضع"></div>
+
+<!-- زر التحذير الطبي -->
+<div id="danger-btn" class="icon-btn fas fa-exclamation-triangle" title="تحذير" onclick="toggleModal()" aria-label="فتح نافذة التنبيه الطبي"></div>
+
+
+
+<div id="Tawasle-Notif-Widget-Container" style="position: relative; display: inline-block;">
+
+  <div id="Tawasle-Notif-Btn" class="Tawasle-Notif-Icon-Btn fas fa-bell" title="الإشعارات">
+    <span id="Tawasle-Notif-Count" class="Tawasle-Notif-Count"></span>
+  </div>
+
+  <div id="Tawasle-Notif-Menu" class="Tawasle-Notif-Dropdown">
+    </div>
+
+</div>
+
+<script type="module">
+  // استيراد وظائف Firebase اللازمة
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // إعدادات Firebase الخاصة بك (لا تقم بمشاركتها علنًا إذا كانت لديك قواعد أمان ضعيفة)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAJK6IUSw2YbwNVfB_hRNsOFeO08LEp4c8",
+    authDomain: "adatealm-nofication.firebaseapp.com",
+    projectId: "adatealm-nofication",
+    storageBucket: "adatealm-nofication.firebasestorage.app",
+    messagingSenderId: "216068965336",
+    appId: "1:216068965336:web:310c95e8e9fc4561cbe8ad",
+    measurementId: "G-PDWFZKRMJP"
+  };
+
+  // تهيئة Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // متغيرات لتتبع حالة الإشعارات
+  let notificationsLoaded = false;
+  let unreadCount = 0;
+
+  // الحصول على عناصر DOM الرئيسية
+  const notifBtn = document.getElementById('Tawasle-Notif-Btn');
+  const notifMenu = document.getElementById('Tawasle-Notif-Menu');
+  const notifCountSpan = document.getElementById('Tawasle-Notif-Count');
+
+  // وظيفة لفتح وإغلاق قائمة الإشعارات
+  const toggleNotificationMenu = () => {
+    const isMenuOpen = notifMenu.classList.toggle('Tawasle-Notif-Dropdown-Show');
+    // تحميل الإشعارات فقط عند الفتح لأول مرة لتحسين الأداء
+    if (isMenuOpen && !notificationsLoaded) {
+      loadNotifications();
+    }
+  };
+
+  // وظيفة تحميل الإشعارات من Firestore
+  async function loadNotifications() {
+    notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">جارٍ تحميل الإشعارات...</div>';
+    try {
+      // جلب آخر 20 إشعارًا مرتبة حسب حقل timestamp (إذا وجد)
+      const querySnapshot = await getDocs(collection(db, "notifications")/*, orderBy("timestamp", "desc"), limit(20)*/);
+      
+      notificationsLoaded = true;
+      notifMenu.innerHTML = ''; // مسح رسالة التحميل
+
+      if (querySnapshot.empty) {
+        notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">لا توجد إشعارات جديدة</div>';
+        return;
+      }
+      
+      // إعادة تعيين العداد قبل تحديثه
+      unreadCount = 0;
+
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        const item = document.createElement('div');
+        item.className = 'Tawasle-Notif-Item';
+        
+        // استخدام أيقونة ورابط (إذا كانا موجودين في البيانات)
+        const iconClass = data.icon || 'fas fa-bell';
+        const text = data.text || 'لا يوجد نص.';
+        
+        let content = `<i class="${iconClass}"></i><p>${text.substring(0, 100)}</p>`;
+
+        // إذا كان هناك رابط في بيانات الإشعار
+        if (data.link) {
+          item.innerHTML = `<a href="${data.link}" target="_blank">${content}</a>`;
+        } else {
+          item.innerHTML = content;
+        }
+
+        notifMenu.appendChild(item);
+        unreadCount++; // قم بزيادة العداد لكل إشعار جديد
+      });
+
+      updateNotifCount();
+
+    } catch (e) {
+      console.error("Error loading notifications: ", e);
+      notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">خطأ في تحميل الإشعارات</div>';
+    }
+  }
+
+  // وظيفة تحديث عداد الإشعارات
+  function updateNotifCount() {
+    if (unreadCount > 0) {
+      notifCountSpan.textContent = unreadCount;
+      notifCountSpan.style.display = 'flex';
+      notifBtn.classList.add('Tawasle-Notif-New-Notification');
+    } else {
+      notifCountSpan.style.display = 'none';
+      notifBtn.classList.remove('Tawasle-Notif-New-Notification');
+    }
+  }
+
+  // ربط حدث النقر بالزر
+  notifBtn.addEventListener('click', toggleNotificationMenu);
+
+  // إغلاق القائمة عند النقر خارجها
+  document.addEventListener('click', function (event) {
+    if (!notifMenu.contains(event.target) && !notifBtn.contains(event.target)) {
+      notifMenu.classList.remove('Tawasle-Notif-Dropdown-Show');
+    }
+  });
+  
+  // قم بتحديث العداد عند تحميل الصفحة (يمكنك استدعاء loadNotifications هنا إذا أردت التحميل فورًا)
+  updateNotifCount(); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// استهداف قائمة التحديثات الجديدة في لوحة العرض
+const updatesList = document.getElementById('updates-list');
+
+// دالة جديدة مخصصة لتحميل الإشعارات وعرضها كقائمة
+async function loadUpdatesForPanel() {
+  // التأكد من وجود عنصر القائمة في الصفحة قبل تنفيذ أي شيء
+  if (!updatesList) {
+    return;
+  }
+
+  try {
+    // جلب نفس البيانات من Firestore (يمكنك تعديل الاستعلام هنا إذا أردت)
+    const querySnapshot = await getDocs(collection(db, "notifications"));
+
+    // مسح رسالة "جارٍ التحميل"
+    updatesList.innerHTML = '';
+
+    if (querySnapshot.empty) {
+      updatesList.innerHTML = '<li>لا توجد تحديثات لعرضها حاليًا.</li>';
+      return;
+    }
+
+    // المرور على كل إشعار وإنشاء عنصر قائمة له
+    querySnapshot.forEach(doc => {
+      const data = doc.data();
+      const listItem = document.createElement('li');
+
+      const iconClass = data.icon || 'fas fa-bell'; // أيقونة افتراضية
+      const text = data.text || 'لا يوجد نص.';
+
+      // بناء محتوى عنصر القائمة
+      let content = `<i class="${iconClass}"></i> <p>${text}</p>`;
+
+      // إذا كان هناك رابط، نجعل العنصر بأكمله قابلاً للنقر
+      if (data.link) {
+        listItem.innerHTML = `<a href="${data.link}" target="_blank">${content}</a>`;
+      } else {
+        listItem.innerHTML = content;
+      }
+      
+      updatesList.appendChild(listItem);
+    });
+
+  } catch (error) {
+    console.error("Error loading updates for panel:", error);
+    updatesList.innerHTML = '<li>حدث خطأ أثناء تحميل التحديثات.</li>';
+  }
+}
+
+// استدعاء الدالة الجديدة تلقائيًا بعد تحميل محتوى الصفحة
+document.addEventListener('DOMContentLoaded', loadUpdatesForPanel);
+
+// --- نهاية الكود الخاص بلوحة التحديثات ---
+</script>
+
+<style>
+  /* تعريف متغيرات الألوان لتسهيل التعديل ودعم الوضع الليلي */
+  :root {
+    --notif-bg-color: #ffffff;
+    --notif-text-color: #333333;
+    --notif-border-color: #eeeeee;
+    --notif-shadow-color: rgba(0, 0, 0, 0.15);
+    --notif-icon-color: #555555;
+    --notif-accent-color: red;
+    --notif-item-hover-bg: #f5f5f5;
+  }
+
+  /* الوضع الليلي: يتم تفعيله تلقائيًا حسب إعدادات النظام/المتصفح */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --notif-bg-color: #2c2c2c;
+      --notif-text-color: #f1f1f1;
+      --notif-border-color: #444444;
+      --notif-shadow-color: rgba(0, 0, 0, 0.5);
+      --notif-icon-color: #bbbbbb;
+      --notif-accent-color: #ff4d4d;
+      --notif-item-hover-bg: #3a3a3a;
+    }
+  }
+
+  /* تنسيق زر الأيقونة */
+  .Tawasle-Notif-Icon-Btn {
+    font-size: 24px;
+    color: var(--notif-icon-color);
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+  }
+  
+  /* تنسيق عداد الإشعارات */
+  .Tawasle-Notif-Count {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    background-color: var(--notif-accent-color);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    font-weight: bold;
+    display: none; /* يظهر عند وجود إشعارات فقط */
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--notif-bg-color);
+  }
+
+  /* القائمة المنسدلة للإشعارات */
+  .Tawasle-Notif-Dropdown {
+    display: none; /* مخفية بشكل افتراضي */
+    position: absolute;
+    top: calc(100% + 10px); /* أسفل الزر مباشرة مع مسافة 10px */
+    left: 0px; /* محاذاة لليمين */
+    background-color: var(--notif-bg-color);
+    border-radius: 8px;
+    width: 320px;
+    max-width: 90vw; /* لا يتجاوز 90% من عرض الشاشة على الهواتف */
+    max-height: 450px;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px var(--notif-shadow-color);
+    z-index: 1001;
+    border: 1px solid var(--notif-border-color);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  /* إظهار القائمة مع تأثير حركة بسيط */
+  .Tawasle-Notif-Dropdown.Tawasle-Notif-Dropdown-Show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+  }
+
+  /* تنسيق كل عنصر إشعار */
+  .Tawasle-Notif-Item {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--notif-border-color);
+    font-size: 14px;
+    color: var(--notif-text-color);
+    display: flex;
+    align-items: center;
+    gap: 12px; /* مسافة بين الأيقونة والنص */
+    transition: background-color 0.2s ease;
+  }
+  .Tawasle-Notif-Item:hover {
+    background-color: var(--notif-item-hover-bg);
+  }
+  .Tawasle-Notif-Item:last-child {
+    border-bottom: none; /* إزالة الحد السفلي لآخر عنصر */
+  }
+  .Tawasle-Notif-Item i {
+    color: var(--notif-icon-color);
+  }
+  .Tawasle-Notif-Item p {
+      margin: 0;
+      line-height: 1.4;
+  }
+  .Tawasle-Notif-Item a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+  }
+
+</style>
+
+
+
          <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
          <div id="menu-btn" class="fas fa-bars icon-btn" title="القائمة"></div>
 
@@ -290,40 +657,869 @@
    <div class="close-btn-container">
       <div id="close-btn" class="fas fa-times icon-btn"></div>
    </div>
+<nav class="navbar">
+  <a href="home_MED02.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+  <a href="MED02_BANK_دروس.html"><i class="fas fa-chalkboard-user"></i><span>بنك الدروس</span></a>
+  <a href="MED02_BANK_EXAM.html"><i class="fas fa-file-alt"></i><span>بنك الاختبارات</span></a>
+  <a href="#"><i class="fas fa-project-diagram"></i><span>بنك الخرائط الذهنية   </span></a>
+<a href="#"><i class="fas fa-clone"></i><span>بنك بطاقات الذاكرة</span></a>
 
-   <nav class="navbar">
-      <a href="home_MED02.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-      <a href="courses.html"><i class="fas fa-chalkboard-user"></i><span>بنك الدروس</span></a>
-      <a href="courses.html"><i class="fas fa-file-alt"></i><span>بنك الاختبارات</span></a>
-      <a href="courses.html"><i class="fas fa-chart-line"></i><span>تحليل الأسئلة</span></a>
-      <a href="courses.html"><i class="fas fa-folder"></i><span>الدرايفات</span></a>
-      <a href="courses.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك</span></a>
-            <a href="courses.html"><i class="fas fa-stopwatch"></i><span>زر الخطر  </span></a>
+  <a href="JADAWL_2MED.html"><i class="fas fa-clipboard-list"></i><span>جداول المراجعة</span></a>
+  <a href="TAHLIL_EXAMA_MED02.html"><i class="fas fa-chart-line"></i><span>تحليل الأسئلة</span></a>
+  <a href="DRIVER_MED02.html"><i class="fas fa-folder"></i><span>الدرايفات</span></a>
+  <a href="KAM_BAKIYA_LI.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك (كم بقي لك)</span></a>
 
-            <a href="courses.html"><i class="fas fa-stopwatch"></i><span>اخر التحديثات   </span></a>
 
-      <a href="contact.html"><i class="fas fa-headset"></i><span>تواصل معنا</span></a>
-   </nav>
+
+<a href="#" class="alert-btn" onclick="toggleModal()" aria-label="فتح نافذة التنبيه الطبي">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span>   زر الخطر مهم لكل مسلم ومسلمة
+      </span>
+</a>
+
+
+<a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"> <i class="fas fa-quran"></i>  <span>     وردك اليومي من القران الكريم 
+    (ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ) 
+ </span> </a>
+
+    <a href="اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ.html"><i class="fas fa-praying-hands"></i><span> 
+          زر الاتستغفار  والتسبيح
+        (اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ )
+        
+      </span></a>
+
+
+
+  
+<a href="#"class="TAWASLE_ADAT_TAHDITAT_MED02-btn" id="TAWASLE_ADAT_TAHDITAT_MED02Btn" data-count="3" onclick="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup()">
+    <i class="fas fa-sync-alt"></i>
+    <span >التحديثات والإشعارات</span></a>
+
+
+
+    <a href="WAJIBATI_ADAT_EALM.html">  <i class="fas fa-clipboard-check"></i> <span>واجباتي    (دون مهامك اليومية كي لا تنساها )  </span> </a>
+
+  <a href="#"><i class="fas fa-user-tie"></i><span>مشرفونا</span></a>
+
+
+<a href="DA3MONA_ADATEALM.html"><i class="fas fa-hands-helping"></i><span>دعمنا</span></a>
+
+
+
+<a href="#" class="medical-alert-btn" onclick="medicalTogglePopup()" aria-label="فتح نافذة التنبيه الطبي">
+  <i class="fas fa-headset"></i>
+    <span> تواصل معنا </span>
+</a>
+
+
+
+</nav>
+
 </aside>
 
 
+
 <main>
-   <h1 class="dashboard-title">لوحة التحكم الرئيسية</h1>
-   <div class="card-container">
-      <div class="card">
-         <h3>آخر الدروس</h3>
-         <p>سيتم عرض آخر الدروس المضافة هنا.</p>
-      </div>
-      <div class="card">
-         <h3>الإحصائيات</h3>
-         <p>سيتم عرض إحصائياتك هنا.</p>
-      </div>
-      <div class="card">
-         <h3>الاختبارات القادمة</h3>
-         <p>سيتم عرض الاختبارات القادمة هنا.</p>
-      </div>
-   </div>
+    <style>
+        /*
+         * ملاحظة: هذه الأنماط مُحسّنة وتكمل الأنماط العامة للوحة التحكم.
+         */
+
+        .summaries-title {
+            font-size: clamp(2.2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        /* حاوية أزرار التنقل */
+        .summaries-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .nav-button {
+            padding: 12px 18px;
+            font-size: clamp(1.5rem, 3vw, 1.6rem);
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            flex-grow: 1;
+            flex-basis: 150px;
+            box-shadow: var(--shadow-sm);
+            touch-action: manipulation;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .nav-button .english-nav {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            transition: color 0.25s ease;
+        }
+
+        .nav-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 137, 123, 0.25);
+        }
+
+        .nav-button.active .english-nav {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subject-block {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .subject-block.is-open {
+             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: clamp(1.5rem, 4vw, 2rem);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .subject-title {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            color: var(--primary-dark);
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .toggle-icon {
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--primary-color);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-left: 15px;
+        }
+
+        .subject-block.is-open .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .subject-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 clamp(1.5rem, 4vw, 2rem);
+        }
+
+        .lesson-button {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-size: clamp(1.6rem, 4vw, 1.7rem);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: right;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .lesson-button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .lesson-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .lesson-button.active .lesson-lang { color: rgba(255, 255, 255, 0.85); }
+        .lesson-button .lesson-lang {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 5px;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+
+        .lesson-materials {
+            list-style: none; padding: 0;
+            background-color: var(--bg-body);
+            border-radius: 8px;
+            margin-top: -5px; margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+        }
+        .lesson-materials.open { padding: 1.5rem; }
+        
+        .summary-item a {
+            display: block; text-decoration: none;
+            color: var(--white); font-weight: 600;
+            font-size: 1.8rem; padding: 1.2rem;
+            background-color: var(--primary-color);
+            border-radius: 6px; text-align: center;
+            transition: background-color 0.2s;
+        }
+        .summary-item a:hover { background-color: var(--primary-dark); }
+        .summary-item p {
+            font-size: 1.3rem; color: var(--text-secondary);
+            margin: 8px 0 0 0; text-align: center;
+        }
+        
+        .empty-section-message {
+            background-color: var(--bg-card);
+            padding: 3rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
+            color: var(--text-secondary); text-align: center;
+            font-size: 1.7rem;
+        }
+
+        @media (max-width: 400px) {
+            .summaries-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-button { width: 100%; }
+        }
+    </style>
+
+    <h1 class="summaries-title">اختبارات  الوحدات الدراسية  (  تتوفر حسب الدروس   )
+</h1>
+    <nav class="summaries-navigation" aria-label="التنقل بين الوحدات الدراسية">
+        <button class="nav-button active" onclick="showSection('cardio', this)">
+            <div>القلبي والتنفسي</div>
+            <div class="english-nav">Cardio-Respiratory</div>
+        </button>
+        <button class="nav-button" onclick="showSection('digestive', this)">
+            <div>الهضمي</div>
+            <div class="english-nav">Digestive</div>
+        </button>
+         <button class="nav-button" onclick="showSection('urinary', this)">
+             <div>البولي</div>
+             <div class="english-nav">Urinary</div>
+         </button>
+         <button class="nav-button" onclick="showSection('endocrine', this)">
+             <div>الصماوي والتناسلي</div>
+             <div class="english-nav">Endocrine & Repro.</div>
+         </button>
+         <button class="nav-button" onclick="showSection('nervous', this)">
+             <div>العصبي</div>
+             <div class="english-nav">Nervous</div>
+         </button>
+         <button class="nav-button" onclick="showSection('immunology', this)">
+             <div>المناعة</div>
+             <div class="english-nav">Immunology</div>
+         </button>
+         <button class="nav-button" onclick="showSection('genetics', this)">
+             <div>الوراثة</div>
+             <div class="english-nav">Genetics</div>
+         </button>
+    </nav>
+
+    <div class="content-container">
+        <div id="cardio-section" class="content-section active">
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                    <h2 class="subject-title">🦴 مقياس التشريح (Anatomy) 🦴</h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+
+                <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-1"><span>جدران الصدر</span><span class="lesson-lang">THORACIC WALLS</span><span class="lesson-lang">PAROIS DU THORAX</span></button>
+<ul id="lesson-gen-1" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-2"><span>الحجاب الحاجز</span><span class="lesson-lang">DIAPHRAGM</span><span class="lesson-lang">DIAPHRAGME</span></button>
+<ul id="lesson-gen-2" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-3"><span>المنصف</span><span class="lesson-lang">MEDIASTINUM</span><span class="lesson-lang">MEDIASTIN</span></button>
+<ul id="lesson-gen-3" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-4"><span>الحنجرة</span><span class="lesson-lang">LARYNX</span><span class="lesson-lang">LARYNX</span></button>
+<ul id="lesson-gen-4" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-5"><span>القصبة الهوائية والشعب الهوائية</span><span class="lesson-lang">TRACHEA AND BRONCHI</span><span class="lesson-lang">TRACHEE ET BRONCHES</span></button>
+<ul id="lesson-gen-5" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-6"><span>الرئتين والغشاء الجنبي</span><span class="lesson-lang">LUNGS AND PLEURA</span><span class="lesson-lang">POUMONS ET PLEVRES</span></button>
+<ul id="lesson-gen-6" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-7"><span>التكوين الخارجي للقلب والتامور</span><span class="lesson-lang">EXTERNAL CONFIGURATION OF THE HEART AND PERICARDIUM</span><span class="lesson-lang">CONFIGURATION EXTÉRIEURE DU CŒUR ET PERICARDE</span></button>
+<ul id="lesson-gen-7" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-8"><span>التكوين الداخلي للقلب</span><span class="lesson-lang">INTERNAL CONFIGURATION OF THE HEART</span><span class="lesson-lang">CONFIGURATION INTÉRIEURE DU CŒUR</span></button>
+<ul id="lesson-gen-8" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-9"><span>التروية الدموية للقلب</span><span class="lesson-lang">VASCULARIZATION OF THE HEART</span><span class="lesson-lang">VASCULARISATION DU CŒUR</span></button>
+<ul id="lesson-gen-9" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-10"><span>هيكلية وتغذية القلب العصبية</span><span class="lesson-lang">STRUCTURE AND INNERVATION OF THE HEART</span><span class="lesson-lang">STRUCTURE ET INNERVATION DU CŒUR</span></button>
+<ul id="lesson-gen-10" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-11"><span>النظام الأبهر والرئوي</span><span class="lesson-lang">AORTIC AND PULMONARY SYSTEM</span><span class="lesson-lang">SYSTÈME AORTIQUE ET PULMONAIRE</span></button>
+<ul id="lesson-gen-11" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span>النظام الوريدي والأزجوس</span><span class="lesson-lang">CAVAL AND AZYGOS SYSTEM</span><span class="lesson-lang">SYSTÈME CAVE ET AZYGOS</span></button>
+<ul id="lesson-gen-12" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+                </div>
+            </div>
+
+
+
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                    <h2 class="subject-title">🌬️ مقياس علم وظائف الأعضاء (Physiology) 🌬️</h2>
+                     <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+                    <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-physio-1">
+                        <span>النتاج القلبي</span>
+                        <span class="lesson-lang">CARDIAC OUTPUT / DEBIT CARDIAQUE</span>
+                    </button>
+                    <ul id="lesson-physio-1" class="lesson-materials">
+                        <li class="summary-item">
+                            <a href="#" class="summary-link">⬇️ تحميل الملخص ⬇️</a>
+                            <p>إصدار 12 رمضان 1446</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        </div>
+
+        <div id="digestive-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="urinary-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="endocrine-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="nervous-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="immunology-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        
+        <div id="genetics-section" class="content-section">
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                    <h2 class="subject-title">🧬 مقياس الوراثة (Genetics) 🧬</h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+                    <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-1"><span>مُقَدِّمَةٌ فِي دِرَاسَةِ الْوِرَاثَةِ</span><span class="lesson-lang">INTRODUCTION TO THE STUDY OF GENETICS</span><span>INTRODUCTION À L'ÉTUDE DE LA GÉNÉTIQUE</span></button>
+<ul id="lesson-gen-1" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-2"><span>بِنْيَةُ الْأَحْمَاضِ النَّوَوِيَّةِ</span><span class="lesson-lang">STRUCTURE OF NUCLEIC ACIDS</span><span>STRUCTURE DES ACIDES NUCLÉIQUES</span></button>
+<ul id="lesson-gen-2" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-3"><span>تَنْظِيمُ الْجِينَومَاتِ</span><span class="lesson-lang">ORGANIZATION OF GENOMES</span><span>ORGANISATION DES GÉNOMES</span></button>
+<ul id="lesson-gen-3" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-4"><span>بِنْيَةُ وَتَنْظِيمُ الْكُرُومَاتِينِ</span><span class="lesson-lang">STRUCTURE AND ORGANIZATION OF CHROMATIN</span><span>STRUCTURE ET ORGANISATION DE LA CHROMATINE</span></button>
+<ul id="lesson-gen-4" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-5"><span>التَّعْبِيرُ عَنِ الْمَعْلُومَاتِ الْوِرَاثِيَّةِ</span><span class="lesson-lang">EXPRESSION OF GENETIC INFORMATION</span><span>EXPRESSION DE L'INFORMATION GÉNÉTIQUE</span></button>
+<ul id="lesson-gen-5" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-6"><span>النَّسْخُ وَالتَّرْجَمَةُ وَالشَّفْرَةُ الْوِرَاثِيَّةُ</span><span class="lesson-lang">TRANSCRIPTION, TRANSLATION AND GENETIC CODE</span><span>TRANSCRIPTION, TRADUCTION ET CODE GÉNÉTIQUE</span></button>
+<ul id="lesson-gen-6" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-7"><span>تَضَاعُفُ الْحِمْضِ النَّوَوِيِّ لَدَى بِدَائِيَّاتِ وَحَقِيقِيَّاتِ النَّوَى</span><span class="lesson-lang">PROKARYOTIC AND EUKARYOTIC DNA REPLICATION</span><span>RÉPLICATION DE L'ADN PROCARYOTE ET EUCARYOTE</span></button>
+<ul id="lesson-gen-7" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-8"><span>تَنْظِيمُ التَّعْبِيرِ الْجِينِيِّ</span><span class="lesson-lang">REGULATION OF GENE EXPRESSION</span><span>RÉGULATION DE L'EXPRESSION DES GÈNES</span></button>
+<ul id="lesson-gen-8" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-9"><span>التَّغَيُّرَاتُ الْوِرَاثِيَّةُ: تَعَدُّدُ الْأَشْكَالِ وَالطَّفَرَاتُ</span><span class="lesson-lang">GENETIC VARIATIONS: POLYMORPHISM AND MUTATIONS</span><span>VARIATIONS GÉNÉTIQUES: POLYMORPHISME ET MUTATIONS</span></button>
+<ul id="lesson-gen-9" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-10"><span>أَدَوَاتُ الْبَيُولُوجْيَا الْجُزَيْئِيَّةِ: التَّهْجِينُ، الْمَسَابِرُ، الْإِنْزِيمَاتُ وَالنَّوَاقِلُ</span><span class="lesson-lang">MOLECULAR BIOLOGY TOOLS: HYBRIDIZATION, PROBES, ENZYMES AND VECTORS</span><span>LES OUTILS DE LA BIOLOGIE MOLÉCULAIRE: HYBRIDATION, SONDES, ENZYMES ET VECTEURS</span></button>
+<ul id="lesson-gen-10" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-11"><span>أَنْظِمَةُ إِصْلَاحِ الْحِمْضِ النَّوَوِيِّ</span><span class="lesson-lang">DNA REPAIR SYSTEMS</span><span>SYSTÈMES DE RÉPARATION DE L'ADN</span></button>
+<ul id="lesson-gen-11" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span>الْعِلَاجُ الْجِينِيُّ وَعِلْمُ الصَّيْدَلَةِ الْجِينِيِّ</span><span class="lesson-lang">GENE THERAPY AND PHARMACOGENETICS</span><span>THÉRAPIE GÉNIQUE ET PHARMACOGÉNÉTIQUE</span></button>
+<ul id="lesson-gen-12" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-13"><span>أَدَوَاتُ الْبَيُولُوجْيَا الْجُزَيْئِيَّةِ: اسْتِخْلَاصُ الْحِمْضِ النَّوَوِيِّ، PCR، وَالسَّلْسَلَةُ</span><span class="lesson-lang">MOLECULAR BIOLOGY TOOLS: DNA EXTRACTION, PCR, SEQUENCING</span><span>LES OUTILS DE LA BIOLOGIE MOLÉCULAIRE: EXTRACTION D'ADN, PCR, SÉQUENÇAGE</span></button>
+<ul id="lesson-gen-13" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-14"><span>الْوِرَاثَةُ غَيْرُ التَّقْلِيدِيَّةِ</span><span class="lesson-lang">UNCONVENTIONAL INHERITANCE</span><span>HÉRÉDITÉ NON CONVENTIONNELLE</span></button>
+<ul id="lesson-gen-14" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-15"><span>النَّمَطُ النَّوَوِيُّ الطَّبِيعِيُّ وَالشُّذُوذَاتُ</span><span class="lesson-lang">NORMAL KARYOTYPE AND ABNORMALITIES</span><span>CARYOTYPE NORMAL ET ANOMALIES</span></button>
+<ul id="lesson-gen-15" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-16"><span>وِرَاثَةُ السَّرَطَانِ</span><span class="lesson-lang">GENETICS OF CANCER</span><span>GÉNÉTIQUE DU CANCER</span></button>
+<ul id="lesson-gen-16" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-17"><span>عِلْمُ الْوِرَاثَةِ السُّكَّانِيِّ</span><span class="lesson-lang">POPULATION GENETICS</span><span>GÉNÉTIQUE DES POPULATIONS</span></button>
+<ul id="lesson-gen-17" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-18"><span>قَوَانِينُ مَنْدَل وَالْوِرَاثَةُ الشَّكْلِيَّةُ</span><span class="lesson-lang">MENDEL'S LAWS AND FORMAL GENETICS</span><span>LOIS DE MENDEL ET GÉNÉTIQUE FORMELLE</span></button>
+<ul id="lesson-gen-18" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-19"><span>أَنْمَاطُ انْتِقَالِ الْأَمْرَاضِ أُحَادِيَّةِ الْجِينِ</span><span class="lesson-lang">MODES OF TRANSMISSION OF MONOGENIC DISEASES</span><span>MODES DE TRANSMISSION DES MALADIES MONOGÉNIQUES</span></button>
+<ul id="lesson-gen-19" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-20"><span>الْأَمْرَاضُ الصِّبْغِيَّةُ</span><span class="lesson-lang">CHROMOSOMAL DISEASES</span><span>MALADIES CHROMOSOMIQUES</span></button>
+<ul id="lesson-gen-20" class="lesson-materials">
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية عنابة</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+    <li class="summary-item">
+        <a href="#" class="summary-link">امتحانات كلية سيدي بلعباس</a>
+        <p>أسئلة امتحانات السنوات السابقة للمدة 2014–2023، قيد التجهيز.</p>
+    </li>
+</ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    
+    function showSection(sectionId, clickedButton) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
+        const targetSection = document.getElementById(sectionId + '-section');
+        if (targetSection) targetSection.classList.add('active');
+        if (clickedButton) clickedButton.classList.add('active');
+    }
+
+    function smartScroll(element) {
+        const header = document.querySelector('.header');
+        const headerHeight = header ? header.offsetHeight : 0;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 15;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+    
+    function toggleSubject(headerButton) {
+        const subjectBlock = headerButton.parentElement;
+        const content = headerButton.nextElementSibling;
+        const isOpening = !subjectBlock.classList.contains('is-open');
+
+        const parentContainer = subjectBlock.closest('.content-section');
+        if (!parentContainer) return;
+
+        parentContainer.querySelectorAll('.subject-block').forEach(block => {
+            block.classList.remove('is-open');
+            block.querySelector('.subject-header').setAttribute('aria-expanded', 'false');
+            const blockContent = block.querySelector('.subject-content');
+            if (blockContent) {
+                blockContent.style.maxHeight = '0px';
+                blockContent.style.paddingTop = '0';
+                blockContent.style.paddingBottom = '0';
+            }
+        });
+
+        if (isOpening) {
+            subjectBlock.classList.add('is-open');
+            headerButton.setAttribute('aria-expanded', 'true');
+            content.style.paddingTop = 'clamp(1.5rem, 4vw, 2rem)';
+            content.style.paddingBottom = 'clamp(1.5rem, 4vw, 2rem)';
+            content.style.maxHeight = content.scrollHeight + 'px';
+        }
+    }
+
+    function toggleLesson(clickedButton) {
+        const materialsList = clickedButton.nextElementSibling;
+        if (!materialsList) return;
+
+        const parentBlock = clickedButton.closest('.subject-content');
+        const isCurrentlyOpen = clickedButton.getAttribute('aria-expanded') === 'true';
+
+        parentBlock.querySelectorAll('.lesson-button').forEach(button => {
+            button.classList.remove('active');
+            button.setAttribute('aria-expanded', 'false');
+            const list = button.nextElementSibling;
+            if (list && list.classList.contains('lesson-materials')) {
+                list.classList.remove('open');
+                list.style.maxHeight = '0px';
+                list.style.padding = '0 1.5rem';
+            }
+        });
+
+        if (!isCurrentlyOpen) {
+            clickedButton.classList.add('active');
+            clickedButton.setAttribute('aria-expanded', 'true');
+            materialsList.classList.add('open');
+            materialsList.style.maxHeight = materialsList.scrollHeight + 'px';
+
+            const mainContent = clickedButton.closest('.subject-content');
+            if(mainContent && mainContent.style.maxHeight !== '0px') {
+                setTimeout(() => {
+                    mainContent.style.maxHeight = mainContent.scrollHeight + 'px';
+                }, 400);
+            }
+            
+            setTimeout(() => {
+                smartScroll(clickedButton);
+            }, 300);
+        } else {
+             const mainContent = clickedButton.closest('.subject-content');
+             if(mainContent && mainContent.style.maxHeight !== '0px') {
+                 setTimeout(() => {
+                     mainContent.style.maxHeight = mainContent.scrollHeight + 'px';
+                 }, 400);
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const firstNavButton = document.querySelector('.summaries-navigation .nav-button');
+        if (firstNavButton) {
+            showSection('cardio', firstNavButton);
+        }
+    });
+
+    </script>
 </main>
+
 
 
 <script>
@@ -413,3 +1609,1102 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنبيه طبي - TAWASLE_ADAT</title>
+    <style>
+        /* CSS Variables for easier theme management */
+        :root {
+            --medical-primary-color: #3498db;
+            --medical-primary-dark-color: #2980b9;
+            --medical-secondary-color: #ffffff;
+            --medical-text-color: #333;
+            --medical-light-bg-color: #f5f5f5;
+            --medical-overlay-bg-color: rgba(0, 0, 0, 0.8);
+            --medical-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+   
+
+        /* Overlay */
+        .medical-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--medical-overlay-bg-color);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .medical-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Popup Container - Fullscreen */
+        .medical-popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 8002;
+            background: var(--medical-secondary-color);
+            transform: scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        .medical-popup-container.active {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .medical-popup-header {
+            background: linear-gradient(to left, var(--medical-primary-color), var(--medical-primary-dark-color));
+            color: var(--medical-secondary-color);
+            padding: 1rem 1.25rem;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .medical-popup-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .medical-popup-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: var(--medical-light-bg-color);
+        }
+
+        /* Close Button */
+        .medical-close-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--medical-secondary-color);
+            border: none;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .medical-close-btn:active {
+            transform: translateY(-50%) scale(0.9);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Loader */
+        .medical-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 1.25rem;
+        }
+
+        .medical-spinner {
+            width: 3.125rem;
+            height: 3.125rem;
+            border: 5px solid rgba(52, 152, 219, 0.2);
+            border-top: 5px solid var(--medical-primary-color);
+            border-radius: 50%;
+            animation: medicalSpin 1s linear infinite;
+        }
+
+        @keyframes medicalSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .medical-loader p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        
+        /* Disable hover effects on touch devices for a better UX */
+        @media (hover: hover) {
+            .medical-alert-btn:hover {
+                transform: scale(1.1);
+
+               }
+            .medical-close-btn:hover {
+                transform: translateY(-50%) rotate(90deg);
+                background: rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="medical-overlay" id="medicalOverlay"></div>
+
+<div class="medical-popup-container" id="medicalPopupContainer" role="dialog" aria-modal="true" aria-labelledby="medicalPopupTitle">
+    <div class="medical-popup-header">
+        <button class="medical-close-btn" onclick="medicalTogglePopup()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="medicalPopupTitle">تنبيه - محتوى TAWASLE_ADAT</h2>
+    </div>
+    <div class="medical-popup-content" id="medicalContentContainer">
+        <!-- Content will be loaded here -->
+        <div class="medical-loader">
+            <div class="medical-spinner"></div>
+            <p>جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Medical Alert variables
+    let isMedicalContentLoaded = false;
+    const MEDICAL_TARGET_URL = "https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB.html";
+    
+    // DOM Elements
+    const medicalPopupContainer = document.getElementById('medicalPopupContainer');
+    const medicalOverlay = document.getElementById('medicalOverlay');
+    const medicalContentContainer = document.getElementById('medicalContentContainer');
+    const medicalAlertBtn = document.querySelector('.medical-alert-btn');
+    
+    // Toggle popup visibility
+    function medicalTogglePopup() {
+        const isActive = medicalPopupContainer.classList.contains('active');
+        isActive ? medicalClosePopup() : medicalOpenPopup();
+    }
+    
+    function medicalOpenPopup() {
+        medicalAlertBtn.style.animation = 'none';
+        medicalOverlay.classList.add('active');
+        medicalPopupContainer.classList.add('active');
+        document.body.classList.add('medical-popup-open');
+        medicalVibrate(10);
+
+        if (!isMedicalContentLoaded) {
+            medicalLoadContent();
+        }
+    }
+    
+    function medicalClosePopup() {
+        medicalAlertBtn.style.animation = 'medicalPulse 2s infinite';
+        medicalOverlay.classList.remove('active');
+        medicalPopupContainer.classList.remove('active');
+        document.body.classList.remove('medical-popup-open');
+        medicalVibrate(10);
+    }
+    
+    // Load content via iframe
+    function medicalLoadContent() {
+        medicalShowIframeContent();
+        isMedicalContentLoaded = true;
+    }
+    
+    // Display content using an iframe
+    function medicalShowIframeContent() {
+        // Clear loader before inserting iframe
+        medicalContentContainer.innerHTML = ''; 
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = MEDICAL_TARGET_URL;
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.sandbox = "allow-same-origin allow-scripts allow-popups allow-forms";
+        iframe.loading = "lazy";
+        iframe.title = "محتوى طبي خارجي";
+        
+        // Handle loading errors
+        iframe.onerror = () => {
+             medicalShowError({ message: 'فشل تحميل المحتوى. يرجى التحقق من اتصالك بالإنترنت.' });
+        };
+
+        medicalContentContainer.appendChild(iframe);
+    }
+    
+    // Display an error message
+    function medicalShowError(error) {
+        medicalContentContainer.innerHTML = `
+            <div class="medical-loader">
+                <div style="color: var(--medical-primary-color); margin-bottom: 1rem; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 1.25rem; color: #555;">${error.message}</p>
+                <button onclick="medicalRetryLoading()" 
+                        style="padding: 10px 25px; background: var(--medical-primary-color); color: white; border: none; border-radius: 30px; font-size: 1rem; box-shadow: 0 3px 10px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // Retry loading content
+    function medicalRetryLoading() {
+        medicalVibrate(20);
+        medicalContentContainer.innerHTML = `
+            <div class="medical-loader">
+                <div class="medical-spinner"></div>
+                <p>جاري إعادة تحميل المحتوى...</p>
+            </div>
+        `;
+        // Reset state and try again
+        isMedicalContentLoaded = false;
+        setTimeout(medicalLoadContent, 500);
+    }
+    
+    // Event listeners
+    medicalOverlay.addEventListener('click', medicalClosePopup);
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && medicalPopupContainer.classList.contains('active')) {
+            medicalClosePopup();
+        }
+    });
+    
+    // Haptic feedback function
+    function medicalVibrate(duration_ms) {
+        if ('vibrate' in navigator && !('connection' in navigator && navigator.connection.saveData)) {
+            navigator.vibrate(duration_ms);
+        }
+    }
+    
+    medicalAlertBtn.addEventListener('click', () => medicalVibrate(10));
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنبيه طبي - INFATM</title>
+    <style>
+        /* CSS Variables for easier theme management */
+        :root {
+            --main-color: #e74c3c;
+            --main-dark: #c0392b;
+            --white-color: #ffffff;
+            --dark-text: #333;
+            --bg-light: #f5f5f5;
+            --dark-overlay: rgba(0, 0, 0, 0.8);
+            --main-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* General Reset & Overflow Prevention */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* The most important fix: prevent horizontal scrolling */
+        html, body {
+            font-family: var(--main-font);
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+            overflow-x: hidden;
+        }
+
+        /* Lock body scroll when popup is open */
+        body.popup-active {
+            overflow-y: hidden;
+        }
+
+     
+
+        /* Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-overlay);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Popup Container - Fullscreen */
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 8002;
+            background: var(--white-color);
+            transform: scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        .modal-container.show {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-header {
+            background: linear-gradient(to left, var(--main-color), var(--main-dark));
+            color: var(--white-color);
+            padding: 1rem 1.25rem;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: var(--bg-light);
+        }
+
+        /* Close Button */
+        .modal-close {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white-color);
+            border: none;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .modal-close:active {
+            transform: translateY(-50%) scale(0.9);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Loader */
+        .loading-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 1.25rem;
+        }
+
+        .loading-spinner {
+            width: 3.125rem;
+            height: 3.125rem;
+            border: 5px solid rgba(231, 76, 60, 0.2);
+            border-top: 5px solid var(--main-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        
+        /* Disable hover effects on touch devices for a better UX */
+        @media (hover: hover) {
+            .alert-btn:hover {
+                transform: scale(1.1);
+
+               }
+            .modal-close:hover {
+                transform: translateY(-50%) rotate(90deg);
+                background: rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="modal-overlay" id="modalOverlay"></div>
+
+<div class="modal-container" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+        <button class="modal-close" onclick="toggleModal()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="modalTitle">تنبيه - محتوى INFATM</h2>
+    </div>
+    <div class="modal-body" id="contentBox">
+        <!-- Content will be loaded here -->
+        <div class="loading-box">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // App variables
+    let contentLoaded = false;
+    const CONTENT_URL = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    
+    // DOM Elements
+    const modalBox = document.getElementById('modalBox');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const contentBox = document.getElementById('contentBox');
+    const alertButton = document.querySelector('.alert-btn');
+    
+    // Toggle modal visibility
+    function toggleModal() {
+        const isActive = modalBox.classList.contains('show');
+        isActive ? closeModal() : openModal();
+    }
+    
+    function openModal() {
+        alertButton.style.animation = 'none';
+        modalOverlay.classList.add('show');
+        modalBox.classList.add('show');
+        document.body.classList.add('popup-active');
+        hapticFeedback(10);
+
+        if (!contentLoaded) {
+            loadContent();
+        }
+    }
+    
+    function closeModal() {
+        alertButton.style.animation = 'alert-pulse 2s infinite';
+        modalOverlay.classList.remove('show');
+        modalBox.classList.remove('show');
+        document.body.classList.remove('popup-active');
+        hapticFeedback(10);
+    }
+    
+    // Load content via iframe
+    function loadContent() {
+        showIframeContent();
+        contentLoaded = true;
+    }
+    
+    // Display content using an iframe
+    function showIframeContent() {
+        contentBox.innerHTML = ''; 
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = CONTENT_URL;
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.sandbox = "allow-same-origin allow-scripts allow-popups allow-forms";
+        iframe.loading = "lazy";
+        iframe.title = "محتوى طبي خارجي";
+        
+        iframe.onerror = () => {
+             showErrorMessage({ message: 'فشل تحميل المحتوى. يرجى التحقق من اتصالك بالإنترنت.' });
+        };
+
+        contentBox.appendChild(iframe);
+    }
+    
+    // Display an error message
+    function showErrorMessage(error) {
+        contentBox.innerHTML = `
+            <div class="loading-box">
+                <div style="color: var(--main-color); margin-bottom: 1rem; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 1.25rem; color: #555;">${error.message}</p>
+                <button onclick="retryContentLoad()" 
+                        style="padding: 10px 25px; background: var(--main-color); color: white; border: none; border-radius: 30px; font-size: 1rem; box-shadow: 0 3px 10px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // Retry loading content
+    function retryContentLoad() {
+        hapticFeedback(20);
+        contentBox.innerHTML = `
+            <div class="loading-box">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">جاري إعادة تحميل المحتوى...</p>
+            </div>
+        `;
+        contentLoaded = false;
+        setTimeout(loadContent, 500);
+    }
+    
+    // Event listeners
+    modalOverlay.addEventListener('click', closeModal);
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalBox.classList.contains('show')) {
+            closeModal();
+        }
+    });
+    
+    // Haptic feedback function
+    function hapticFeedback(duration) {
+        if ('vibrate' in navigator && !('connection' in navigator && navigator.connection.saveData)) {
+            navigator.vibrate(duration);
+        }
+    }
+    
+    alertButton.addEventListener('click', () => hapticFeedback(10));
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAWASLE_ADAT_TAHDITAT_MED02</title>
+    <style>
+        /* CSS Variables for TAWASLE_ADAT_TAHDITAT_MED02 */
+        :root {
+            --TAWASLE_ADAT_TAHDITAT_MED02-primary-color: #3498db;
+            --TAWASLE_ADAT_TAHDITAT_MED02-primary-dark-color: #2980b9;
+            --TAWASLE_ADAT_TAHDITAT_MED02-secondary-color: #ffffff;
+            --TAWASLE_ADAT_TAHDITAT_MED02-text-color: #333;
+            --TAWASLE_ADAT_TAHDITAT_MED02-light-bg-color: #f5f5f5;
+            --TAWASLE_ADAT_TAHDITAT_MED02-overlay-bg-color: rgba(0, 0, 0, 0.8);
+            --TAWASLE_ADAT_TAHDITAT_MED02-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+      
+
+        /* Overlay */
+        .TAWASLE_ADAT_TAHDITAT_MED02-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--TAWASLE_ADAT_TAHDITAT_MED02-overlay-bg-color);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Popup Container - Fullscreen */
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 8002;
+            background: var(--TAWASLE_ADAT_TAHDITAT_MED02-secondary-color);
+            transform: scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-container.active {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-header {
+            background: linear-gradient(to left, var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color), var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-dark-color));
+            color: var(--TAWASLE_ADAT_TAHDITAT_MED02-secondary-color);
+            padding: 1rem 1.25rem;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: var(--TAWASLE_ADAT_TAHDITAT_MED02-light-bg-color);
+        }
+
+        /* Close Button */
+        .TAWASLE_ADAT_TAHDITAT_MED02-close-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--TAWASLE_ADAT_TAHDITAT_MED02-secondary-color);
+            border: none;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-close-btn:active {
+            transform: translateY(-50%) scale(0.9);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Loader */
+        .TAWASLE_ADAT_TAHDITAT_MED02-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 1.25rem;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-spinner {
+            width: 3.125rem;
+            height: 3.125rem;
+            border: 5px solid rgba(52, 152, 219, 0.2);
+            border-top: 5px solid var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color);
+            border-radius: 50%;
+            animation: TAWASLE_ADAT_TAHDITAT_MED02-spin 1s linear infinite;
+        }
+
+        @keyframes TAWASLE_ADAT_TAHDITAT_MED02-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-loader p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        
+        /* Disable hover effects on touch devices for a better UX */
+        @media (hover: hover) {
+            .TAWASLE_ADAT_TAHDITAT_MED02-btn:hover {
+                transform: scale(1.1);
+
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+               }
+            .TAWASLE_ADAT_TAHDITAT_MED02-close-btn:hover {
+                transform: translateY(-50%) rotate(90deg);
+                background: rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Notification Button -->
+
+
+<div class="TAWASLE_ADAT_TAHDITAT_MED02-overlay" id="TAWASLE_ADAT_TAHDITAT_MED02Overlay"></div>
+
+<div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-container" id="TAWASLE_ADAT_TAHDITAT_MED02PopupContainer" role="dialog" aria-modal="true" aria-labelledby="TAWASLE_ADAT_TAHDITAT_MED02PopupTitle">
+    <div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-header">
+        <button class="TAWASLE_ADAT_TAHDITAT_MED02-close-btn" onclick="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="TAWASLE_ADAT_TAHDITAT_MED02PopupTitle">التحديثات والإشعارات</h2>
+    </div>
+    <div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-content" id="TAWASLE_ADAT_TAHDITAT_MED02ContentContainer">
+        <!-- Content will be loaded here -->
+        <div class="TAWASLE_ADAT_TAHDITAT_MED02-loader">
+            <div class="TAWASLE_ADAT_TAHDITAT_MED02-spinner"></div>
+            <p>جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// TAWASLE_ADAT_TAHDITAT_MED02 variables
+    let TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = false;
+    const TAWASLE_ADAT_TAHDITAT_MED02_TARGET_URL = "https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB_ISHAARAT_MED02.html";
+    
+    // DOM Elements
+    const TAWASLE_ADAT_TAHDITAT_MED02_popupContainer = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02PopupContainer');
+    const TAWASLE_ADAT_TAHDITAT_MED02_overlay = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02Overlay');
+    const TAWASLE_ADAT_TAHDITAT_MED02_contentContainer = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02ContentContainer');
+    const TAWASLE_ADAT_TAHDITAT_MED02_btn = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02Btn');
+    
+    // Toggle popup visibility
+    function TAWASLE_ADAT_TAHDITAT_MED02_togglePopup() {
+        const isActive = TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.contains('active');
+        isActive ? TAWASLE_ADAT_TAHDITAT_MED02_closePopup() : TAWASLE_ADAT_TAHDITAT_MED02_openPopup();
+    }
+    
+    function TAWASLE_ADAT_TAHDITAT_MED02_openPopup() {
+        TAWASLE_ADAT_TAHDITAT_MED02_overlay.classList.add('active');
+        TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.add('active');
+        document.body.classList.add('TAWASLE_ADAT_TAHDITAT_MED02-popup-open');
+        TAWASLE_ADAT_TAHDITAT_MED02_vibrate(10);
+
+        if (!TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded) {
+            TAWASLE_ADAT_TAHDITAT_MED02_loadContent();
+        }
+    }
+    
+    function TAWASLE_ADAT_TAHDITAT_MED02_closePopup() {
+        TAWASLE_ADAT_TAHDITAT_MED02_overlay.classList.remove('active');
+        TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.remove('active');
+        document.body.classList.remove('TAWASLE_ADAT_TAHDITAT_MED02-popup-open');
+        TAWASLE_ADAT_TAHDITAT_MED02_vibrate(10);
+    }
+    
+    // Load content via iframe
+    function TAWASLE_ADAT_TAHDITAT_MED02_loadContent() {
+        TAWASLE_ADAT_TAHDITAT_MED02_showIframeContent();
+        TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = true;
+    }
+    
+    // Display content using an iframe
+    function TAWASLE_ADAT_TAHDITAT_MED02_showIframeContent() {
+        // Clear loader before inserting iframe
+        TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.innerHTML = ''; 
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = TAWASLE_ADAT_TAHDITAT_MED02_TARGET_URL;
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.sandbox = "allow-same-origin allow-scripts allow-popups allow-forms";
+        iframe.loading = "lazy";
+        iframe.title = "محتوى التحديثات والإشعارات";
+        
+        // Handle loading errors
+        iframe.onerror = () => {
+             TAWASLE_ADAT_TAHDITAT_MED02_showError({ message: 'فشل تحميل المحتوى. يرجى التحقق من اتصالك بالإنترنت.' });
+        };
+
+        TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.appendChild(iframe);
+    }
+    
+    // Display an error message
+    function TAWASLE_ADAT_TAHDITAT_MED02_showError(error) {
+        TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.innerHTML = `
+            <div class="TAWASLE_ADAT_TAHDITAT_MED02-loader">
+                <div style="color: var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color); margin-bottom: 1rem; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 1.25rem; color: #555;">${error.message}</p>
+                <button onclick="TAWASLE_ADAT_TAHDITAT_MED02_retryLoading()" 
+                        style="padding: 10px 25px; background: var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color); color: white; border: none; border-radius: 30px; font-size: 1rem; box-shadow: 0 3px 10px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // Retry loading content
+    function TAWASLE_ADAT_TAHDITAT_MED02_retryLoading() {
+        TAWASLE_ADAT_TAHDITAT_MED02_vibrate(20);
+        TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.innerHTML = `
+            <div class="TAWASLE_ADAT_TAHDITAT_MED02-loader">
+                <div class="TAWASLE_ADAT_TAHDITAT_MED02-spinner"></div>
+                <p>جاري إعادة تحميل المحتوى...</p>
+            </div>
+        `;
+        // Reset state and try again
+        TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = false;
+        setTimeout(TAWASLE_ADAT_TAHDITAT_MED02_loadContent, 500);
+    }
+    
+    // Event listeners
+    TAWASLE_ADAT_TAHDITAT_MED02_overlay.addEventListener('click', TAWASLE_ADAT_TAHDITAT_MED02_closePopup);
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.contains('active')) {
+            TAWASLE_ADAT_TAHDITAT_MED02_closePopup();
+        }
+    });
+    
+    // Haptic feedback function
+    function TAWASLE_ADAT_TAHDITAT_MED02_vibrate(duration_ms) {
+        if ('vibrate' in navigator && !('connection' in navigator && navigator.connection.saveData)) {
+            navigator.vibrate(duration_ms);
+        }
+    }
+    
+    // Update notification count (example)
+    function TAWASLE_ADAT_TAHDITAT_MED02_updateNotificationCount(count) {
+        TAWASLE_ADAT_TAHDITAT_MED02_btn.setAttribute('data-count', count);
+        if (count > 0) {
+            TAWASLE_ADAT_TAHDITAT_MED02_btn.style.animation = 'pulse 1.5s infinite';
+        } else {
+            TAWASLE_ADAT_TAHDITAT_MED02_btn.style.animation = 'none';
+        }
+    }
+    
+    // Initial setup
+    document.addEventListener('DOMContentLoaded', function() {
+        // Example: update notification count
+        TAWASLE_ADAT_TAHDITAT_MED02_updateNotificationCount(3);
+    });
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
