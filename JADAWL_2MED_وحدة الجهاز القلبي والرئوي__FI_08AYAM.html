@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جدول مراجعة وحدة القلب والجهاز التنفسي - 8 أيام</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2c3e50; /* Deep Slate Blue */
+      --secondary-color: #3498db; /* Bright Blue */
+      --accent-color: #e67e22; /* Carrot Orange */
+      --danger-color: #c0392b; /* Pomegranate Red */
+      --light-color: #f4f6f7;
+      --dark-color: #333;
+      --white: #ffffff;
+      --success-color: #27ae60;
+      --border-color: #dde1e2;
+      --font-arabic: 'Tajawal', 'Arial', sans-serif;
+      --font-latin: 'Roboto', 'Helvetica', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-arabic);
+      background-color: var(--light-color);
+      margin: 0;
+      padding: 15px;
+      color: var(--dark-color);
+      line-height: 1.8;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 30px;
+      font-size: 2em;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      border-radius: 3px;
+    }
+
+    .page-info {
+      background-color: var(--white);
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+      text-align: center;
+      border-left: 5px solid var(--secondary-color);
+    }
+    .page-info div { margin-bottom: 8px; font-size: 1em; }
+    .page-info div:last-child { margin-bottom: 0; }
+
+    .progress-container {
+      background-color: #e0e0e0;
+      border-radius: 50px;
+      margin: 25px 0;
+      height: 24px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+      width: 0;
+      transition: width 0.5s ease-in-out;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 0.8em;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+      margin-bottom: 30px;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 15px;
+      text-align: right;
+      vertical-align: top;
+      transition: background-color 0.3s ease;
+    }
+
+    th {
+      background-color: var(--primary-color);
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) td { background-color: #fdfdfd; }
+    tr:hover td { background-color: #eaf2f8; }
+
+    .task-content { margin-bottom: 15px; }
+    .lang-ar { font-family: var(--font-arabic); font-weight: 700; color: var(--primary-color); font-size: 1.15em; margin-bottom: 8px; }
+    .lang-ar i { margin-left: 10px; color: var(--secondary-color); width: 20px; text-align: center; }
+    .lang-en, .lang-fr { font-family: var(--font-latin); font-size: 0.9em; color: #555; margin-bottom: 4px; padding-right: 30px; }
+    .lang-fr { color: #777; }
+    .lang-en::before { content: '🇬🇧'; margin-left: 8px; }
+    .lang-fr::before { content: '🇫🇷'; margin-left: 8px; }
+
+    .task-actions { display: flex; align-items: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+    .timer { color: var(--danger-color); font-weight: bold; font-family: var(--font-latin); font-size: 1.1em; background: #f9ebea; padding: 5px 10px; border-radius: 5px; min-width: 100px; text-align: center; }
+    .btn { color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 5px; font-size: 0.9em; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .btn-start { background-color: var(--secondary-color); }
+    .btn-complete { background-color: var(--accent-color); }
+    .btn-reset { background-color: var(--primary-color); }
+    
+    .completed { background-color: #e8f5e9 !important; position: relative; }
+    .completed .lang-ar, .completed .lang-en, .completed .lang-fr { text-decoration: line-through; color: #777; }
+    .completed::after { content: "✓ مكتمل"; font-family: var(--font-arabic); color: var(--success-color); font-weight: bold; font-size: 0.9em; position: absolute; top: 10px; left: 10px; background: var(--white); padding: 3px 8px; border-radius: 5px; border: 1px solid var(--success-color); }
+    
+    .day-header { font-weight: bold; color: var(--white); font-size: 1.3em; background-color: var(--accent-color) !important; text-align: center; }
+    
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 25px 0; }
+    .stat-card { background-color: var(--white); border-radius: 10px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; border-top: 4px solid var(--secondary-color); }
+    .stat-card h3 { margin: 0 0 10px 0; color: var(--primary-color); font-size: 1.1em; }
+    .stat-value { font-size: 2em; font-weight: 700; color: var(--dark-color); }
+    
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      h1 { font-size: 1.6em; }
+      h1::after { width: 100px; }
+      table, thead, tbody, th, td, tr { display: block; }
+      thead tr { position: absolute; top: -9999px; left: -9999px; }
+      tr { border: none; margin-bottom: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background-color: var(--white); }
+      td { border: none; border-bottom: 1px solid #eee; position: relative; padding: 15px; text-align: right; }
+      td:last-child { border-bottom: 0; }
+      td[data-label]::before { content: attr(data-label); display: block; font-weight: bold; color: var(--accent-color); font-size: 1em; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid var(--light-color); }
+      .day-header { padding: 12px !important; font-size: 1.4em !important; border-radius: 12px 12px 0 0; }
+      td:not(.day-header)::before { display: block; }
+      .task-actions { flex-direction: column; align-items: stretch; }
+      .task-actions > div { display: flex; gap: 8px; width: 100%; }
+      .btn { flex: 1; padding: 12px; }
+      .timer { width: 100%; box-sizing: border-box; margin-bottom: 10px; font-size: 1.2em; }
+      .completed::after { top: 12px; left: 12px; font-size: 0.8em; }
+    }
+    @media (max-width: 480px) {
+      body { padding: 5px; }
+      .container { padding: 0 5px; }
+      .task-actions > div { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1><i class="fa-solid fa-heart-pulse"></i> جدول مراجعة وحدة القلب والجهاز التنفسي - 8 أيام</h1>
+
+  <div class="page-info">
+    <div id="gregorianDateDisplay"><i class="fas fa-calendar-alt"></i> ...</div>
+    <div id="hijriDateDisplay"><i class="fas fa-moon"></i> ...</div>
+  </div>
+  
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar">0%</div>
+  </div>
+  
+  <div class="stats">
+    <div class="stat-card">
+      <h3><i class="fas fa-tasks"></i> المهام الكلية</h3>
+      <div class="stat-value" id="totalTasks">24</div>
+    </div>
+    <div class="stat-card">
+      <h3><i class="fas fa-check-circle"></i> المهام المكتملة</h3>
+      <div class="stat-value" id="completedTasks">0</div>
+    </div>
+    <div class="stat-card">
+      <h3><i class="fas fa-hourglass-half"></i> الوقت الإجمالي</h3>
+      <div class="stat-value" id="totalStudyTimeDisplay">64 ساعة</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>اليوم</th>
+        <th>08:00 – 11:00 (3 ساعات)</th>
+        <th>13:00 – 16:00 (3 ساعات)</th>
+        <th>18:00 – 20:00 (ساعتان)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="day-header" colspan="4">اليوم الأول: تشريح القفص الصدري</td></tr>
+      <tr>
+        <td data-label="اليوم الأول"></td>
+        <td id="task1" data-label="08:00 – 11:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-compress"></i>جُدْرَانُ الصَّدْرِ</div>
+            <div class="lang-en">Thoracic Walls</div>
+            <div class="lang-fr">Parois du Thorax</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t1">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task1', 't1', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task1')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task1', 't1', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task2" data-label="13:00 – 16:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-ruler-combined"></i>الحِجَابُ الحَاجِزُ والمُنَصِّفُ</div>
+            <div class="lang-en">Diaphragm and Mediastinum</div>
+            <div class="lang-fr">Diaphragme et Médiastin</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t2">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task2', 't2', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task2')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task2', 't2', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task3" data-label="18:00 – 20:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-wind"></i>الحَنْجَرَةُ</div>
+            <div class="lang-en">Larynx</div>
+            <div class="lang-fr">Larynx</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t3">02:00:00</span><div><button class="btn btn-start" onclick="startTimer('task3', 't3', 7200)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task3')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task3', 't3', 7200)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+      </tr>
+      
+      <tr><td class="day-header" colspan="4">اليوم الثاني: تشريح المسالك الهوائية والرئتين</td></tr>
+      <tr>
+        <td data-label="اليوم الثاني"></td>
+        <td id="task4" data-label="08:00 – 11:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-road"></i>القَصَبَةُ الهَوَائِيَّةُ والشُّعَبُ الهَوَائِيَّةُ</div>
+            <div class="lang-en">Trachea and Bronchi</div>
+            <div class="lang-fr">Trachée et Bronches</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t4">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task4', 't4', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task4')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task4', 't4', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task5" data-label="13:00 – 16:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-lungs"></i>الرِّئَتَانِ والغِشَاءُ الجَنْبِيُّ</div>
+            <div class="lang-en">Lungs and Pleura</div>
+            <div class="lang-fr">Poumons et Plèvres</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t5">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task5', 't5', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task5')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task5', 't5', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task6" data-label="18:00 – 20:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="far fa-heart"></i>التَّكْوِينُ الخَارِجِيُّ لِلْقَلْبِ والتَّامُورِ</div>
+            <div class="lang-en">External Configuration of the Heart and Pericardium</div>
+            <div class="lang-fr">Configuration extérieure du cœur et Péricarde</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t6">02:00:00</span><div><button class="btn btn-start" onclick="startTimer('task6', 't6', 7200)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task6', 't6', 7200)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+      </tr>
+
+      <tr><td class="day-header" colspan="4">اليوم الثالث: تشريح القلب والأوعية</td></tr>
+      <tr>
+        <td data-label="اليوم الثالث"></td>
+        <td id="task7" data-label="08:00 – 11:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-heart"></i>التَّكْوِينُ الدَّاخِلِيُّ وَهَيْكَلِيَّةُ القَلْبِ</div>
+            <div class="lang-en">Internal Configuration and Structure of the Heart</div>
+            <div class="lang-fr">Configuration intérieure et Structure du Cœur</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t7">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task7', 't7', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task7')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task7', 't7', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task8" data-label="13:00 – 16:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-tint"></i>التَّرْوِيَةُ الدَّمَوِيَّةُ والتَّغْذِيَةُ العَصَبِيَّةُ لِلْقَلْبِ</div>
+            <div class="lang-en">Vascularization and Innervation of the Heart</div>
+            <div class="lang-fr">Vascularisation et Innervation du Cœur</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t8">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task8', 't8', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task8')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task8', 't8', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task9" data-label="18:00 – 20:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-project-diagram"></i>النِّظَامُ الأَبْهَرُ والرِّئَوِيُّ والوَرِيدِيُّ</div>
+            <div class="lang-en">Aortic, Pulmonary, and Caval System</div>
+            <div class="lang-fr">Système Aortique, Pulmonaire et Cave</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t9">02:00:00</span><div><button class="btn btn-start" onclick="startTimer('task9', 't9', 7200)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task9')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task9', 't9', 7200)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+      </tr>
+
+      <tr><td class="day-header" colspan="4">اليوم الرابع: علم الأنسجة (الجهاز الدوري)</td></tr>
+      <tr>
+        <td data-label="اليوم الرابع"></td>
+        <td id="task10" data-label="08:00 – 11:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-microscope"></i>الْجِهَازُ الْقَلْبِيُّ الْوِعَائِيُّ والشَّرَايِينُ</div>
+            <div class="lang-en">Cardiovascular System and The Arteries</div>
+            <div class="lang-fr">Appareil Cardio-Vasculaire et Les Artères</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t10">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task10', 't10', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task10')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task10', 't10', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task11" data-label="13:00 – 16:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-microscope"></i>الْأَوْرِدَةُ والشُّعَيْرَاتُ الدَّمَوِيَّةُ</div>
+            <div class="lang-en">The Veins and The Capillaries</div>
+            <div class="lang-fr">Les Veines et Les Capillaires</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t11">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task11', 't11', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task11')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task11', 't11', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task12" data-label="18:00 – 20:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-microscope"></i>الْأَوْعِيَةُ اللِّمْفَاوِيَّةُ والْمَسَالِكُ الْهَوَائِيَّةُ الْعُلْيَا</div>
+            <div class="lang-en">Lymphatic Vessels and Upper Airways</div>
+            <div class="lang-fr">Vaisseaux Lymphatiques et Voies Aériennes Supérieures</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t12">02:00:00</span><div><button class="btn btn-start" onclick="startTimer('task12', 't12', 7200)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task12')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task12', 't12', 7200)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+      </tr>
+
+      <tr><td class="day-header" colspan="4">اليوم الخامس: علم الأنسجة (الجهاز التنفسي والدم)</td></tr>
+      <tr>
+        <td data-label="اليوم الخامس"></td>
+        <td id="task13" data-label="08:00 – 11:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-microscope"></i>الْقَصَبَةُ الْهَوَائِيَّةُ والْمَسَالِكُ الْهَوَائِيَّةُ الْعَمِيقَةُ</div>
+            <div class="lang-en">The Trachea and The Deep Airways</div>
+            <div class="lang-fr">La Trachée et Les Voies Aériennes Profondes</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t13">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task13', 't13', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task13')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task13', 't13', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task14" data-label="13:00 – 16:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-layer-group"></i>أَغْشِيَةُ الْجَنْبِ وَنُخَاعُ الْعَظْمِ</div>
+            <div class="lang-en">The Pleura and The Bone Marrow</div>
+            <div class="lang-fr">Plèvres et La Moelle Osseuse</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t14">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task14', 't14', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task14')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task14', 't14', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task15" data-label="18:00 – 20:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-shield-alt"></i>الأعضاء اللمفاوية (الغدة الزعترية، الطحال، العقد)</div>
+            <div class="lang-en">Lymphoid Organs (Thymus, Spleen, Nodes)</div>
+            <div class="lang-fr">Organes Lymphoïdes (Thymus, Rate, Ganglions)</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t15">02:00:00</span><div><button class="btn btn-start" onclick="startTimer('task15', 't15', 7200)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task15')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task15', 't15', 7200)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+      </tr>
+
+      <tr><td class="day-header" colspan="4">اليوم السادس: فيزيولوجيا القلب</td></tr>
+      <tr>
+        <td data-label="اليوم السادس"></td>
+        <td id="task16" data-label="08:00 – 11:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-cogs"></i>التَّشْرِيحُ الْوَظِيفِيُّ وفِيزْيُولُوجْيَا الْكَهْرَبِيَّةُ لِلْقَلْبِ</div>
+            <div class="lang-en">Functional Anatomy and Cardiac Electrophysiology</div>
+            <div class="lang-fr">Anatomie Fonctionnelle et Électrophysiologie Cardiaque</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t16">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task16', 't16', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task16')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task16', 't16', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task17" data-label="13:00 – 16:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-sync-alt"></i>الدَّوْرَةُ الْقَلْبِيَّةُ والنِّتَاجُ الْقَلْبِيُّ</div>
+            <div class="lang-en">Cardiac Cycle and Cardiac Output</div>
+            <div class="lang-fr">Cycle Cardiaque et Débit Cardiaque</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t17">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task17', 't17', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task17')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task17', 't17', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task18" data-label="18:00 – 20:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-tachometer-alt"></i>الضَّغْطُ الشِّرْيَانِيُّ وتنظيمه</div>
+            <div class="lang-en">Arterial Pressure and Regulation</div>
+            <div class="lang-fr">Pression Artérielle et Régulation</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t18">02:00:00</span><div><button class="btn btn-start" onclick="startTimer('task18', 't18', 7200)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task18')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task18', 't18', 7200)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+      </tr>
+      
+      <tr><td class="day-header" colspan="4">اليوم السابع: فيزيولوجيا التنفس والدوران</td></tr>
+      <tr>
+        <td data-label="اليوم السابع"></td>
+        <td id="task19" data-label="08:00 – 11:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-people-arrows"></i>الدورات (الوريدية، الشعيرية، الإكليلية)</div>
+            <div class="lang-en">Circulations (Venous, Capillary, Coronary)</div>
+            <div class="lang-fr">Circulations (Veineuse, Capillaire, Coronaire)</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t19">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task19', 't19', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task19')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task19', 't19', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task20" data-label="13:00 – 16:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-cogs"></i>مِيكَانِيكَا وتَهْوِيَةُ الجهاز التنفسي</div>
+            <div class="lang-en">Respiratory Mechanics and Alveolar Ventilation</div>
+            <div class="lang-fr">Mécanique Ventilatoire et Ventilation Alvéolaire</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t20">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task20', 't20', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task20')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task20', 't20', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task21" data-label="18:00 – 20:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-exchange-alt"></i>التبادل الغازي ونقل الغازات</div>
+            <div class="lang-en">Gas Exchange and Transport</div>
+            <div class="lang-fr">Échange et Transport des Gaz</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t21">02:00:00</span><div><button class="btn btn-start" onclick="startTimer('task21', 't21', 7200)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task21')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task21', 't21', 7200)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+      </tr>
+
+      <tr><td class="day-header" colspan="4">اليوم الثامن: فيزياء حيوية ومراجعة شاملة</td></tr>
+      <tr>
+        <td data-label="اليوم الثامن"></td>
+        <td id="task22" data-label="08:00 – 11:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-atom"></i>فيزياء السوائل (استاتيكا وديناميكا)</div>
+            <div class="lang-en">Fluid Physics (Statics and Dynamics)</div>
+            <div class="lang-fr">Physique des Fluides (Statique et Dynamique)</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t22">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task22', 't22', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task22')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task22', 't22', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task23" data-label="13:00 – 16:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-atom"></i>فيزياء حيوية (عمل القلب، التوتر السطحي، الديناميكا الدموية)</div>
+            <div class="lang-en">Biophysics (Heart Work, Surface Tension, Hemodynamics)</div>
+            <div class="lang-fr">Biophysique (Travail Cardiaque, Tension Superficielle, Hémodynamique)</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t23">03:00:00</span><div><button class="btn btn-start" onclick="startTimer('task23', 't23', 10800)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task23')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task23', 't23', 10800)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+        <td id="task24" data-label="18:00 – 20:00">
+          <div class="task-content">
+            <div class="lang-ar"><i class="fas fa-award"></i>الدم والإرقاء والمراجعة النهائية</div>
+            <div class="lang-en">Blood, Hemostasis, and Final Review</div>
+            <div class="lang-fr">Sang, Hémostase et Révision Finale</div>
+          </div>
+          <div class="task-actions"><span class="timer" id="t24">02:00:00</span><div><button class="btn btn-start" onclick="startTimer('task24', 't24', 7200)"><i class="fas fa-play"></i> ابدأ</button><button class="btn btn-complete" onclick="completeTask('task24')"><i class="fas fa-check"></i> إكمال</button><button class="btn btn-reset" onclick="resetTask('task24', 't24', 7200)"><i class="fas fa-redo"></i> إعادة</button></div></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+</div>
+
+<script>
+const TOTAL_TASKS = 24;
+const LS_KEYS = {
+    STATUS: 'tasksStatus_8day_schedule_v2',
+    TIMERS: 'activeTimers_8day_schedule_v2'
+};
+
+let activeTimers = {};
+
+function formatTime(seconds) {
+    if (isNaN(seconds) || seconds < 0) return "00:00:00";
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
+}
+
+function updateProgress() {
+    const completedCount = document.querySelectorAll('.completed').length;
+    document.getElementById('completedTasks').innerText = completedCount;
+    
+    const progress = (completedCount / TOTAL_TASKS) * 100;
+    const progressBar = document.getElementById('progressBar');
+    progressBar.style.width = progress + '%';
+    progressBar.innerText = Math.round(progress) + '%';
+}
+
+function startTimer(taskId, timerId, initialSeconds) {
+    if (activeTimers[timerId]) return;
+
+    const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    
+    let remainingSeconds;
+    if (timersState[timerId] && timersState[timerId].endTime) {
+        remainingSeconds = Math.max(0, Math.floor((timersState[timerId].endTime - Date.now()) / 1000));
+    } else {
+        remainingSeconds = initialSeconds;
+        const endTime = Date.now() + initialSeconds * 1000;
+        timersState[timerId] = { endTime, taskId, initialSeconds };
+        localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    }
+    
+    if (remainingSeconds > 0) {
+      runTimer(taskId, timerId, remainingSeconds);
+    }
+}
+
+function runTimer(taskId, timerId, remainingSeconds) {
+    const timerElement = document.getElementById(timerId);
+    const taskElement = document.getElementById(taskId);
+    const startBtn = taskElement.querySelector('.btn-start');
+    
+    if (startBtn) startBtn.disabled = true;
+
+    activeTimers[timerId] = setInterval(() => {
+        remainingSeconds--;
+        timerElement.textContent = formatTime(remainingSeconds);
+
+        if (remainingSeconds <= 0) {
+            clearInterval(activeTimers[timerId]);
+            delete activeTimers[timerId];
+            
+            const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+            delete timersState[timerId];
+            localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+            
+            timerElement.textContent = "انتهى!";
+            if (startBtn) startBtn.disabled = false;
+        }
+    }, 1000);
+}
+
+function completeTask(taskId) {
+    const task = document.getElementById(taskId);
+    if (!task) return;
+    
+    task.classList.add('completed');
+    const timerId = task.querySelector('.timer')?.id;
+
+    if (timerId && activeTimers[timerId]) {
+        clearInterval(activeTimers[timerId]);
+        delete activeTimers[timerId];
+        
+        const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+        delete timersState[timerId];
+        localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    }
+    
+    saveState();
+    updateProgress();
+}
+
+function resetTask(taskId, timerId, initialSeconds) {
+    const task = document.getElementById(taskId);
+    if (!task) return;
+
+    task.classList.remove('completed');
+    
+    if (timerId && activeTimers[timerId]) {
+        clearInterval(activeTimers[timerId]);
+        delete activeTimers[timerId];
+    }
+    
+    document.getElementById(timerId).textContent = formatTime(initialSeconds);
+    const startBtn = task.querySelector('.btn-start');
+    if(startBtn) startBtn.disabled = false;
+
+    const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    delete timersState[timerId];
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+
+    saveState();
+    updateProgress();
+}
+
+function saveState() {
+    const tasksStatus = {};
+    document.querySelectorAll('td[id^="task"]').forEach(task => {
+        tasksStatus[task.id] = task.classList.contains('completed');
+    });
+    localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(tasksStatus));
+}
+
+function loadState() {
+    const tasksStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS)) || {};
+    for (const taskId in tasksStatus) {
+        if (tasksStatus[taskId]) {
+            completeTask(taskId);
+        }
+    }
+
+    const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    const now = Date.now();
+    for (const timerId in timersState) {
+        const { endTime, taskId } = timersState[timerId];
+        const remainingSeconds = Math.floor((endTime - now) / 1000);
+
+        if (remainingSeconds > 0) {
+            document.getElementById(timerId).textContent = formatTime(remainingSeconds);
+            runTimer(taskId, timerId, remainingSeconds);
+        } else {
+             document.getElementById(timerId).textContent = "انتهى!";
+             delete timersState[timerId];
+        }
+    }
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+}
+
+function displayDates() {
+    const today = new Date();
+    const gregOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('gregorianDateDisplay').innerHTML = `<i class="fas fa-calendar-alt"></i> ${today.toLocaleDateString('ar-DZ', gregOpt)}`;
+    
+    try {
+        const hijriOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', calendar: 'islamic-umalqura' };
+        const hijriDate = new Intl.DateTimeFormat('ar-SA', hijriOpt).format(today);
+        document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> ${hijriDate}`;
+    } catch (e) {
+        document.getElementById('hijriDateDisplay').style.display = 'none';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    updateProgress();
+    displayDates();
+});
+</script>
+
+</body>
+</html>
