@@ -740,14 +740,752 @@ document.addEventListener('DOMContentLoaded', loadUpdatesForPanel);
 <main>
 
 
-  
-الأساتذة على مواقع التواصل الاجتماعي
---- */
-   
+<div id="professors-list-container">
+    <style>
+    /* --- خطوط وإعدادات أساسية داخل الحاوية --- */
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
-  <div class="st-header">
-   
+    #professors-list-container {
+        --primary-bg: #f4f7f6;
+        --card-bg: #ffffff;
+        --primary-text: #333;
+        --accent-color: #0066cc;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+        --icon-color: #555;
+        
+        background-color: var(--primary-bg);
+        font-family: 'Cairo', sans-serif;
+        padding: 25px;
+        direction: rtl; /* لضمان الاتجاه الصحيح داخل الحاوية */
+    }
+
+    /* --- الحاوية الشبكية للبطاقات --- */
+    #professors-list-container .professors-grid {
+        display: grid;
+        /* تعديل: تم تقليل الحد الأدنى للعرض ليناسب شاشات أكثر قبل الانتقال لعمود واحد */
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    /* --- تصميم بطاقة الأستاذ --- */
+    #professors-list-container .professor-card {
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        box-shadow: 0 4px 12px var(--shadow-color);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #professors-list-container .professor-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 20px rgba(0, 102, 204, 0.15);
+    }
+
+    #professors-list-container .professor-info h3 {
+        margin: 0 0 5px 0;
+        font-size: 1.45em;
+        color: var(--accent-color);
+        font-weight: 700;
+    }
+
+    #professors-list-container .professor-info p {
+        margin: 0;
+        color: #444;
+        font-size: 1.1em;
+        font-weight: 400;
+        min-height: 30px;
+    }
+
+    /* --- روابط التواصل الاجتماعي --- */
+    #professors-list-container .social-links {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    #professors-list-container .social-links a {
+        color: var(--icon-color);
+        font-size: 1.9em;
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    #professors-list-container .social-links a:hover {
+        transform: scale(1.15);
+    }
+
+    /* ألوان أيقونات التواصل الاجتماعي عند المرور عليها */
+    #professors-list-container .social-links a.youtube:hover { color: #FF0000; }
+    #professors-list-container .social-links a.facebook:hover { color: #1877F2; }
+    #professors-list-container .social-links a.instagram:hover { color: #E4405F; }
+    #professors-list-container .social-links a.telegram:hover { color: #26A5E4; }
     
+    /* حالة عدم توفر رابط */
+    #professors-list-container .social-links a.disabled {
+        color: #ccc;
+        pointer-events: none; /* لمنع الضغط */
+    }
+
+    /* --- تجاوب مع الشاشات الصغيرة (التحسينات هنا) --- */
+    @media (max-width: 600px) {
+        #professors-list-container {
+            padding: 15px;
+        }
+        #professors-list-container .professors-grid {
+            grid-template-columns: 1fr; /* عمود واحد فقط في الشاشات الصغيرة */
+            gap: 15px;
+        }
+
+        /* تحسين: تصغير حجم الخط ليتناسب مع الشاشة الصغيرة */
+        #professors-list-container .professor-info h3 {
+            font-size: 1.3em;
+        }
+        #professors-list-container .professor-info p {
+            font-size: 1em;
+        }
+
+        /* تحسين: تصغير حجم الأيقونات والمسافة بينها */
+        #professors-list-container .social-links {
+            gap: 15px;
+        }
+        #professors-list-container .social-links a {
+            font-size: 1.7em;
+        }
+    }
+</style>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Prof Yacine Sciences</h3>
+        <p>علوم طبيعية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@profyassinesciences" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    
+    
+    <a href="https://t.me/s/yassinesciences" target="_blank" rel="noopener noreferrer" class="telegram" aria-label="تيليغرام"><i class="fab fa-telegram-plane"></i></a>
+
+      </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ بورنان</h3>
+        <p>تاريخ وجغرافيا</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/channel/UCeyN7ipOQs6Ld4jEIMFAaKw" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>  
+      <a href="https://www.facebook.com/bourenane.edu/?locale=ar_AR" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+    
+   <a href="https://www.instagram.com/ammar_bourenane/?hl=ar" target="_blank" rel="noopener noreferrer" class="instagram" aria-label="إنستغرام"><i class="fab fa-instagram"></i></a>
+<a href="https://t.me/s/ammarbourenane?before=912" target="_blank" rel="noopener noreferrer" class="telegram" aria-label="تيليغرام"><i class="fab fa-telegram-plane"></i></a>
+
+    
+      </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ نور الدين</h3>
+        <p>رياضيات</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@noureddine2013" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذة بوسعادي</h3>
+        <p>علوم إسلامية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/channel/UC1aEULeoYOKR4r3_4yangQw" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>PRINCE Math's</h3>
+        <p>رياضيات</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@Prince_Maths" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>أيوب للعلوم</h3>
+        <p>علوم طبيعية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/channel/UCSvlOpnBLysOZngdzu8lz_Q/videos" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+           <a href="https://www.facebook.com/ayoub.science.dz/" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+
+      </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Mr. Mansouri</h3>
+        <p>إنجليزية وفرنسية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@NACERDOCTOR" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Dr-chms (شقراني شمس الدين)</h3>
+        <p>علوم إسلامية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@dr_chms2540" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Amine English</h3>
+        <p>إنجليزية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@aminenglish" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com/profamine.oran" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ عبد الله</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@prof_Abdellah" class="youtube disabled" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>ZERROKI SCHOOL</h3>
+        <p>رياضيات</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@zerroukischool375" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ شاوش</h3>
+        <p>علوم طبيعية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/channel/UC0BE1aNXDWxcJqIVCBqN3rg" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com/professeur.chaouch/?locale=ar_AR" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ خليل سعيداني</h3>
+        <p>فلسفة</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@Saidani-Philo" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com/khalil.saidani.philo/" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ العدوي مسعود</h3>
+        <p>فلسفة</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/channel/UCCJdyYM1smHsfs0KnMoLcWQ" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com/p/%D8%A3%D8%B3%D8%AA%D8%A7%D8%B0-%D8%A7%D9%84%D9%81%D9%84%D8%B3%D9%81%D8%A9-%D8%A7%D9%84%D8%B9%D8%AF%D9%88%D9%8A-%D9%85%D8%B3%D8%B9%D9%88%D8%AF-100070993124127/" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>PROF-Ahmed TRIR</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@profahmedtrir" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com/TrirAhmed/?locale=ar_AR" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Nasri.English</h3>
+        <p>إنجليزية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@Nasri.English" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ عمران ياسين</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@prof-yacine" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>مدرسة ضياء للرياضيات</h3>
+        <p>رياضيات</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/channel/UCN0KUspfGAdgdQ7QVA3KqCw" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Zakaria Bourouissa</h3>
+        <p>رياضيات</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@Prof_bourouissa" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+<a href="https://t.me/s/bourouissa" target="_blank" rel="noopener noreferrer" class="telegram" aria-label="تيليغرام"><i class="fab fa-telegram-plane"></i></a>
+
+      </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ عبد الباسط</h3>
+        <p>رياضيات</p>
+    </div>
+    <div class="social-links">
+      
+      <a href="https://www.youtube.com/channel/UCnMzRcYSang1SXOZLH77ljw" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+<a href="https://t.me/s/bassetprof" target="_blank" rel="noopener noreferrer" class="telegram" aria-label="تيليغرام"><i class="fab fa-telegram-plane"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Cour DZ</h3>
+        <p>لغة عربية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@coursdz19" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>التحضير للبكالوريا AL BAC DZ</h3>
+        <p>متنوع</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@albacdz" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Infinity MATH</h3>
+        <p>رياضيات</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@InfinityMATH" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Rahmen Talhi</h3>
+        <p>علوم</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@rahmentalhi" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الانجليزية BAC مع عبد المؤمن</h3>
+        <p>إنجليزية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-br2nv7zy5v" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>عبد الحق حمداش</h3>
+        <p>فلسفة</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-iy1np9jb3j" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=100063625736141" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>كتفي شريف زينة</h3>
+        <p>علوم الطبيعة والحياة</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-gh8sn4vz6f" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com/ketfi.cherif.zina/" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>أستاذ طيوش لطفي</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-dj3mk7ps3u" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Abdennour Khalif</h3>
+        <p>تطوير ذاتي</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@AbdennourKhalif" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ حيقون أسامة</h3>
+        <p>لغة عربية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@haikoune" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com/haikoune" target="_blank" rel="noopener noreferrer" class="facebook" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>حلفاوي فارس</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@faresfergani" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Prof Ait Boumedine</h3>
+        <p>علوم</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@profaitboumedine" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>ابن فوغالة للفلسفة</h3>
+        <p>فلسفة</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-bx3zb4sf3v" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Rofida Nef</h3>
+        <p>تحفيز</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@RofidaNef" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Prof Boucyf - أنباء بوسيف</h3>
+        <p>رياضيات</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@profboucyf" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>OLIVIN DZ (الأستاذ خيار)</h3>
+        <p>إنجليزية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@OLIVINDZ" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الفيزياء مع الأستاذ كريم</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-yc3ot5lf7i" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ بوبكر مبروك</h3>
+        <p>لغة عربية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-ow4xl6wc8d" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>قناة التجديد (سعدون شعيب)</h3>
+        <p>علوم إسلامية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-uc9si5nv7y" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>خديجة العلي</h3>
+        <p>تحفيز</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@khadija-alali" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ جوفر (Gueffour)</h3>
+        <p>رياضيات</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@Gueffour" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>EL AMIN SCHOOL</h3>
+        <p>تاريخ وجغرافيا</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@ELAMINSCHOOL" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>ADEL MABKHOUT</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@ADELMABKHOUT" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>منير شبوة</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@mounircheboua" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ ولد قدور</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-gi3ym7pv7d" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ شعلال</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@chalaal" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأدب العربي مع خديجة</h3>
+        <p>لغة عربية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-jq7wk9qw6j" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>AL WONJAH - الونجاح</h3>
+        <p>علوم</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@ALWONJAH" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>EASY LEARNING DZ</h3>
+        <p>متنوع</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@EASYLEARNINGDZ" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>INSIGHTS ENGLISH</h3>
+        <p>إنجليزية</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@INSIGHTSENGLISH" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ بن سلامة بدرالدين</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-bc2ut3nc8x" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>طبابة عبد الرزاق</h3>
+        <p>علوم</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-jt8ck5ns7m" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>مولاي عمار</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@moulaiammar" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>محمد الأمين زيدون</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-dj3mk7ps3u" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>وليد فايد</h3>
+        <p>فيزياء</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@walidfayed" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>الأستاذ عفيف محمد</h3>
+        <p>فلسفة</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@user-em3fn9jp3v" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Motivation AR</h3>
+        <p>تحفيز</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@MotivationAR" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>Esraa Med</h3>
+        <p>تحفيز</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@Esraamed" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+
+<div class="professor-card">
+    <div class="professor-info">
+        <h3>ملهم - Molhim</h3>
+        <p>تحفيز</p>
+    </div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/@molhim" target="_blank" rel="noopener noreferrer" class="youtube" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+    </div>
+</div>
+     
 </div>
 
 
