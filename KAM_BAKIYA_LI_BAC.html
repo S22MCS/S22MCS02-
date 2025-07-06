@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العد التنازلي لبكالوريا 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --background-color: #1a233c;
+            --text-color: #ffffff;
+            --circle-bg-color: rgba(255, 255, 255, 0.1);
+            --gradient-start: #6a11cb;
+            --gradient-end: #2575fc;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --footer-bg-color: #11182b;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column; /* لتنظيم المحتوى عموديا */
+            justify-content: space-between; /* لتوزيع المساحة بين المحتوى والفوتر */
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        main {
+            flex-grow: 1; /* لجعل المحتوى الرئيسي يأخذ المساحة المتاحة */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .countdown-container {
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: 900;
+            font-size: 2.8rem;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px var(--shadow-color);
+        }
+
+        .timers-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .timer-circle {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+
+        .timer-circle svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg); /* Start from the top */
+        }
+
+        .timer-circle circle {
+            fill: none;
+            stroke-width: 10px;
+        }
+        
+        /* Background track for the circle */
+        .circle-bg {
+            stroke: var(--circle-bg-color);
+        }
+
+        /* Animated progress circle */
+        .circle-progress {
+            stroke: url(#progress-gradient);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.2s linear;
+        }
+
+        .time-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .time-display .number {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .time-display .label {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+        
+        #final-message {
+            display: none; /* Hidden by default */
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+        }
+        
+        .reminder {
+            margin-top: 50px;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .reminder ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        /* --- Footer Styles --- */
+        footer {
+            width: 100%;
+            background-color: var(--footer-bg-color);
+            padding: 30px 20px;
+            margin-top: 40px;
+            border-radius: 15px;
+            box-sizing: border-box;
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            text-align: center;
+        }
+
+        .social-group h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--gradient-end);
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .social-links svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 40px;
+            }
+            .timers-wrapper {
+                gap: 30px;
+            }
+            .timer-circle {
+                width: 130px;
+                height: 130px;
+            }
+            .time-display .number {
+                font-size: 2.2rem;
+            }
+             .time-display .label {
+                font-size: 0.8rem;
+            }
+            .footer-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 30px;
+            }
+            .timers-wrapper {
+                flex-direction: column;
+                align-items: center;
+                gap: 25px;
+            }
+            .timer-circle {
+                width: 150px;
+                height: 150px;
+            }
+            #final-message {
+                font-size: 1.8rem;
+            }
+            footer {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <div class="countdown-container" id="countdown-container">
+            <h1>العداد التنازلي لشهادة البكالوريا 2026</h1>
+            
+            <div class="timers-wrapper">
+                <div class="timer-circle">
+                    <svg>
+                        <defs>
+                            <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#2575fc" />
+                                <stop offset="100%" stop-color="#6a11cb" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="circle-bg" cx="50%" cy="50%" r="75"></circle>
+                        <circle class="circle-progress" id="days-progress" cx="50%" cy="50%" r="75"></circle>
+                    </svg>
+                    <div class="time-display">
+                        <span class="number" id="days">0</span>
+                        <span class="label">أيام</span>
+                    </div>
+                </div>
+                <div class="timer-circle">
+                    <svg>
+                        <circle class="circle-bg" cx="50%" cy="50%" r="75"></circle>
+                        <circle class="circle-progress" id="hours-progress" cx="50%" cy="50%" r="75"></circle>
+                    </svg>
+                    <div class="time-display">
+                        <span class="number" id="hours">0</span>
+                        <span class="label">ساعات</span>
+                    </div>
+                </div>
+                <div class="timer-circle">
+                    <svg>
+                        <circle class="circle-bg" cx="50%" cy="50%" r="75"></circle>
+                        <circle class="circle-progress" id="minutes-progress" cx="50%" cy="50%" r="75"></circle>
+                    </svg>
+                    <div class="time-display">
+                        <span class="number" id="minutes">0</span>
+                        <span class="label">دقائق</span>
+                    </div>
+                </div>
+                <div class="timer-circle">
+                    <svg>
+                        <circle class="circle-bg" cx="50%" cy="50%" r="75"></circle>
+                        <circle class="circle-progress" id="seconds-progress" cx="50%" cy="50%" r="75"></circle>
+                    </svg>
+                    <div class="time-display">
+                        <span class="number" id="seconds">0</span>
+                        <span class="label">ثواني</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="final-message">
+            <h2>حان وقت البكالوريا، بالتوفيق!</h2>
+        </div>
+
+       
+        
+
+
+
+
+
+
+
+
+
+        <style>
+    .reminder {
+        background-color: #fdf6e3;
+        border: 2px solid #f7d488;
+        border-radius: 16px;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 800px;
+        font-family: 'Tajawal', sans-serif;
+        color: #333;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .reminder p:first-of-type {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #d28c00;
+        margin-bottom: 15px;
+        text-align: right;
+    }
+
+    .reminder ul {
+        list-style: none;
+        padding-right: 0;
+        line-height: 1.9;
+    }
+
+    .reminder ul li {
+        background: url('https://cdn-icons-png.flaticon.com/512/2714/2714984.png') no-repeat right center;
+        background-size: 20px;
+        padding-right: 30px;
+        margin-bottom: 12px;
+        text-align: right;
+    }
+
+    .reminder ul li strong {
+        color: #b46b00;
+    }
+
+    .reminder p:last-of-type {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-top: 25px;
+        text-align: center;
+        color: #2d8a45;
+    }
+
+    @media (max-width: 600px) {
+        .reminder {
+            padding: 15px;
+        }
+
+        .reminder p:first-of-type {
+            font-size: 1.3rem;
+        }
+
+        .reminder p:last-of-type {
+            font-size: 1.1rem;
+        }
+    }
+</style>
+
+<div class="reminder">
+    <p>💡 نصائح ذهبية لتحقيق حلمك</p>
+    <ul>
+        <li>
+            <strong>تذكّر هدفك دائمًا:</strong> كلما شعرت بالتعب، تخيّل نفسك في التخصص الذي تحلم به. هذا الحلم هو وقودك، فاجعله يشتعل بداخلك!
+        </li>
+        <li>
+            <strong>المعدل العالي هو مفتاحك:</strong> القبول في التخصصات المرموقة يتطلب جهدًا استثنائيًا. كل نقطة إضافية تقربك من طموحك. لا ترضَ بالقليل!
+        </li>
+        <li>
+            <strong>نظّم وقتك بذكاء:</strong> ضع جدول مراجعة واقعي، وخصص وقتًا للمواد الأساسية والثانوية. التوازن سر النجاح.
+        </li>
+        <li>
+            <strong>افهم لا تحفظ فقط:</strong> الفهم العميق يسهل التذكر. استخدم الخرائط الذهنية والملخصات لترسيخ المعرفة.
+        </li>
+        <li>
+            <strong>لا تتردد في طلب المساعدة:</strong> استفد من زملائك المتفوقين وأسئلتك للأساتذة، فالفهم الجماعي يفتح آفاقًا جديدة.
+        </li>
+        <li>
+            <strong>اعتنِ بصحتك:</strong> النوم الجيد، الأكل الصحي، وفترات الراحة ليست كمالية، بل ضرورة للعقل والذاكرة.
+        </li>
+    </ul>
+    <p>مستقبلك يبدأ الآن... بالتوفيق يا بطل!</p>
+</div>
+
+    </main>
+    
+    <footer>
+        <div class="footer-grid">
+            <div class="social-group s22mcs-group">
+                <h4>طلبة الحل الطبي العلاجي (ط.ح.ط.ع)</h4>
+                <div class="social-links">
+                    <a href="https://instagram.com/s22mcs?igshid=NzZlODBkYWE4Ng" target="_blank" title="Instagram">
+                         <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        <span>انستقرام</span>
+                    </a>
+                    <a href="https://t.me/S22MCS" target="_blank" title="Telegram">
+                        <svg viewBox="0 0 24 24"><path d="M22 2L11 13L2 9L22 2ZM22 2L18 22L11 13L22 2Z"/></svg>
+                        <span>تيليغرام</span>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61552919247921&mibextid=ZbWKwL" target="_blank" title="Facebook">
+                        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        <span>فيسبوك</span>
+                    </a>
+                    <a href="https://www.tiktok.com/@s22mcs?_t=8kfut6Df4lC&_r=1" target="_blank" title="TikTok">
+                        <svg viewBox="0 0 24 24"><path d="M16 4h-2a4 4 0 0 0-4 4v10a4 4 0 1 0 4-4V8a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7h-2 M12 18a2 2 0 1 1 2-2 2 2 0 0 1-2 2"/></svg>
+                        <span>تيك توك</span>
+                    </a>
+                    <a href="https://x.com/S22MCS?t=a7d9JIT0p_r-26CRAkYo0A&s=09" target="_blank" title="X (Twitter)">
+                         <svg viewBox="0 0 24 24"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        <span>اكس (تويتر)</span>
+                    </a>
+                    <a href="https://www.youtube.com/@S22MCS" target="_blank" title="YouTube">
+                        <svg viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.9-1.52-1.76-1.75C18.26 5 12 5 12 5s-6.26 0-7.82.44c-.86.23-1.52.89-1.75 1.75C2 8.74 2 12 2 12s0 3.26.43 4.81c.23.86.89 1.52 1.75 1.75C5.74 19 12 19 12 19s6.26 0 7.82-.44c.86-.23 1.52-.89 1.75-1.75C22 15.26 22 12 22 12s0-3.26-.42-4.81zM9.75 15V9l5.25 3-5.25 3z"/></svg>
+                        <span>يوتيوب</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="social-group alat-alm-group">
+                <h4>أداة علم</h4>
+                <div class="social-links">
+                   <a href="https://www.instagram.com/adat_ealm/profilecard/?igsh=bGNlZHBxenEzM2Uw" target="_blank" title="Instagram">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        <span>انستقرام</span>
+                    </a>
+                    <a href="https://t.me/adatealm" target="_blank" title="Telegram">
+                        <svg viewBox="0 0 24 24"><path d="M22 2L11 13L2 9L22 2ZM22 2L18 22L11 13L22 2Z"/></svg>
+                        <span>تيليغرام</span>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61560859966476" target="_blank" title="Facebook">
+                        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        <span>فيسبوك</span>
+                    </a>
+                    <a href="https://www.tiktok.com/@adat_ealm" target="_blank" title="TikTok">
+                         <svg viewBox="0 0 24 24"><path d="M16 4h-2a4 4 0 0 0-4 4v10a4 4 0 1 0 4-4V8a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7h-2 M12 18a2 2 0 1 1 2-2 2 2 0 0 1-2 2"/></svg>
+                        <span>تيك توك</span>
+                    </a>
+                    <a href="https://www.youtube.com/@ADATEALM" target="_blank" title="YouTube">
+                       <svg viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.9-1.52-1.76-1.75C18.26 5 12 5 12 5s-6.26 0-7.82.44c-.86.23-1.52.89-1.75 1.75C2 8.74 2 12 2 12s0 3.26.43 4.81c.23.86.89 1.52 1.75 1.75C5.74 19 12 19 12 19s6.26 0 7.82-.44c.86-.23 1.52-.89 1.75-1.75C22 15.26 22 12 22 12s0-3.26-.42-4.81zM9.75 15V9l5.25 3-5.25 3z"/></svg>
+                        <span>يوتيوب</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+
+    
+    <footer>
+  <div class="footer-grid">
+
+                                <div class="social-group alat-alm-group">
+
+
+
+<!-- زر مركزي تمامًا على جميع الشاشات -->
+<div style="display: flex; justify-content: center; align-items: center; height: 4vh; padding: 20px;">
+  <button class="danger-btn" onclick="togglePopup()" 
+          style="font-size: 1.5rem; padding: 10px 20px; border: none; border-radius: 8px; background-color: #f44336; color: white; cursor: pointer;">
+    ⚠️
+  </button>
+</div>
+</div>
+
+</div>
+
+</footer>
+
+
+    <script>
+        // --- الإعدادات الرئيسية ---
+        const targetDate = new Date("2026-06-15T08:00:00").getTime();
+        
+        // --- الوصول لعناصر العرض ---
+        const elements = {
+            days: document.getElementById('days'),
+            hours: document.getElementById('hours'),
+            minutes: document.getElementById('minutes'),
+            seconds: document.getElementById('seconds'),
+            progress: {
+                days: document.getElementById('days-progress'),
+                hours: document.getElementById('hours-progress'),
+                minutes: document.getElementById('minutes-progress'),
+                seconds: document.getElementById('seconds-progress'),
+            },
+            countdownContainer: document.getElementById('countdown-container'),
+            finalMessage: document.getElementById('final-message')
+        };
+
+        // --- حسابات الدائرة ---
+        const radius = elements.progress.days.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+
+        // تطبيق محيط الدائرة على كل دوائر التقدم
+        Object.values(elements.progress).forEach(circle => {
+            if(circle) {
+                circle.style.strokeDasharray = circumference;
+                circle.style.strokeDashoffset = circumference;
+            }
+        });
+        
+        // حساب إجمالي الأيام في البداية لتكون دائرة الأيام أكثر دقة
+        const totalInitialDays = Math.floor((targetDate - new Date().getTime()) / (1000 * 60 * 60 * 24));
+
+        // --- دالة التحديث الرئيسية ---
+        const updateCountdown = () => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                if(elements.countdownContainer) elements.countdownContainer.style.display = 'none';
+                if(elements.finalMessage) elements.finalMessage.style.display = 'block';
+                // إخفاء قسم النصائح أيضًا عند انتهاء الوقت
+                const reminder = document.querySelector('.reminder');
+                if (reminder) reminder.style.display = 'none';
+                return;
+            }
+
+            // حسابات الوقت
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // تحديث الأرقام
+            if(elements.days) elements.days.innerText = days;
+            if(elements.hours) elements.hours.innerText = String(hours).padStart(2, '0');
+            if(elements.minutes) elements.minutes.innerText = String(minutes).padStart(2, '0');
+            if(elements.seconds) elements.seconds.innerText = String(seconds).padStart(2, '0');
+
+            // تحديث دوائر التقدم
+            const updateProgress = (element, value, total) => {
+                if(element) {
+                    const percent = value / total;
+                    element.style.strokeDashoffset = circumference * (1 - percent);
+                }
+            };
+            
+            updateProgress(elements.progress.days, days, totalInitialDays > 0 ? totalInitialDays : 1);
+            updateProgress(elements.progress.hours, hours, 24);
+            updateProgress(elements.progress.minutes, minutes, 60);
+            updateProgress(elements.progress.seconds, seconds, 60);
+        };
+
+        // التشغيل الأولي ثم التحديث كل ثانية
+        updateCountdown();
+        const interval = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تنبيه طبي - INFATM</title>
+    <style>
+        /* تهيئة عامة */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+        }
+
+        /* زر الخطر الثابت - تصميم جديد */
+        .danger-btn {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #ff0000, #c00000);
+            color: white;
+            font-size: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
+                        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+            z-index: 100;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            animation: pulse 2s infinite;
+            margin: 10px; /* يمكن تعديلها حسب الحاجة */
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        .danger-btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff3333, #d10000);
+        }
+
+        .danger-btn:active {
+            transform: scale(0.95);
+            animation: none;
+        }
+
+        /* طبقة التعتيم */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            display: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* نافذة المحتوى */
+        .popup-container {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1002;
+            display: none;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+
+        .popup-header {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            padding: 18px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .popup-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: #f5f5f5;
+        }
+
+        /* زر الإغلاق الجديد */
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: white;
+            color: #e74c3c;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+            background: #ffebee;
+        }
+
+        /* مؤشر التحميل */
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 5px solid rgba(231, 76, 60, 0.2);
+            border-top: 5px solid #e74c3c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* المحتوى المعروض */
+        .content-wrapper {
+            padding: 18px;
+            line-height: 1.7;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .danger-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
+            }
+            
+            .popup-header {
+                padding: 15px;
+            }
+            
+            .popup-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .close-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 1rem;
+            }
+        }
+
+        /* تحسينات لللمس على الهواتف */
+        @media (hover: none) {
+            .danger-btn:hover {
+                transform: scale(1);
+                background: linear-gradient(135deg, #ff0000, #c00000);
+            }
+            
+            .close-btn:hover {
+                transform: rotate(0deg);
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- طبقة التعتيم -->
+<div class="overlay" id="overlay"></div>
+
+<!-- نافذة المحتوى -->
+<div class="popup-container" id="popupContainer">
+    <div class="popup-header">
+        <button class="close-btn" onclick="togglePopup()">×</button>
+        <h2>تنبيه  - محتوى </h2>
+    </div>
+    <div class="popup-content" id="contentContainer">
+        <div class="loader">
+            <div class="spinner"></div>
+            <p>جاري تحميل المحتوى ...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // متغيرات التطبيق
+    let contentLoaded = false;
+    const TARGET_URL = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    
+    // عناصر DOM
+    const popupContainer = document.getElementById('popupContainer');
+    const overlay = document.getElementById('overlay');
+    const contentContainer = document.getElementById('contentContainer');
+    const dangerBtn = document.querySelector('.danger-btn');
+    
+    // تبديل عرض/إخفاء النافذة
+    function togglePopup() {
+        if (popupContainer.style.display === 'flex') {
+            closePopup();
+        } else {
+            openPopup();
+        }
+    }
+    
+    function openPopup() {
+        // إيقاف تأثير النبض عند الفتح
+        dangerBtn.style.animation = 'none';
+        
+        overlay.style.display = 'block';
+        popupContainer.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        if (!contentLoaded) {
+            loadContent();
+        }
+    }
+    
+    function closePopup() {
+        // إعادة تشغيل تأثير النبض عند الإغلاق
+        dangerBtn.style.animation = 'pulse 2s infinite';
+        
+        overlay.style.display = 'none';
+        popupContainer.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // تحميل المحتوى
+    async function loadContent() {
+        try {
+            // استخدام iframe كحل أساسي
+            showIframeContent();
+            contentLoaded = true;
+        } catch (error) {
+            showError(error);
+        }
+    }
+    
+    // عرض المحتوى باستخدام iframe
+    function showIframeContent() {
+        contentContainer.innerHTML = `
+            <iframe src="${TARGET_URL}" 
+                    style="width:100%; height:100%; border:none;"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    loading="lazy">
+            </iframe>
+        `;
+    }
+    
+    // عرض رسالة الخطأ
+    function showError(error) {
+        contentContainer.innerHTML = `
+            <div class="loader">
+                <div style="color: #e74c3c; margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 20px; color: #555;">${error.message}</p>
+                <button onclick="retryLoading()" 
+                        style="padding: 10px 20px; 
+                               background: linear-gradient(to right, #e74c3c, #c0392b); 
+                               color: white; 
+                               border: none; 
+                               border-radius: 30px;
+                               font-size: 1rem;
+                               box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+                               transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // إعادة تحميل المحتوى
+    function retryLoading() {
+        contentContainer.innerHTML = `
+            <div class="loader">
+                <div class="spinner"></div>
+                <p>جاري تحميل المحتوى الطبي...</p>
+            </div>
+        `;
+        loadContent();
+    }
+    
+    // إغلاق النافذة عند النقر خارجها
+    overlay.addEventListener('click', closePopup);
+    
+    // منع إغلاق النافذة عند النقر داخلها
+    popupContainer.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
+    // تحسين الأداء للهواتف
+    if ('connection' in navigator) {
+        if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
+            // تحسينات لشبكات الجيل الثاني
+            dangerBtn.style.animation = 'none';
+        }
+    }
+    
+    // إضافة اهتزاز عند النقر (للهواتف)
+    function vibrate() {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(10);
+        }
+    }
+    
+    // إضافة الاهتزاز للأزرار
+    document.querySelector('.danger-btn').addEventListener('click', vibrate);
+    document.querySelector('.close-btn')?.addEventListener('click', vibrate);
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
