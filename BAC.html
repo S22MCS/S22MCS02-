@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الدخول</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2a7a53;
+            --primary-hover: #216042;
+            --secondary-color: #007bff;
+            --secondary-hover: #0056b3;
+            --tertiary-color: #5a6268;
+            --tertiary-hover: #484e53;
+            --success-color: #28a745;
+            --dark-text: #333;
+            --light-text: #fff;
+            --border-radius: 8px; /* تقليل نصف قطر الحواف قليلاً */
+            --shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            background-color: #eef2f3;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0.5rem; /* حشوة صغيرة حول النافذة على الشاشات الصغيرة جداً */
+            box-sizing: border-box;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 0.5rem; /* تقليل الحشوة هنا أيضاً */
+            box-sizing: border-box;
+        }
+
+        .modal {
+            background-color: white;
+            padding: clamp(0.8rem, 4vw, 1.2rem); /* تعديل الحشوة لتكون أكثر استجابة */
+            border-radius: var(--border-radius);
+            text-align: center;
+            width: 100%;
+            max-width: 380px; /* **تصغير العرض الأقصى بشكل ملحوظ** */
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.4s ease-out;
+            border-top: 4px solid var(--primary-color);
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes buttonClick {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.96); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes counterUpdate {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.3) rotate(-5deg); color: var(--primary-color); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .modal h2 {
+            color: var(--dark-text);
+            margin-top: 0;
+            margin-bottom: 0.7rem; /* تقليل الهامش */
+            font-weight: 700;
+            font-size: clamp(1.1rem, 4vw, 1.25rem); /* تصغير حجم الخط */
+        }
+
+        .info-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: clamp(0.6rem, 2.5vw, 0.8rem); /* تقليل الحشوة */
+            border-radius: 6px; /* تقليل الحواف */
+            margin-bottom: 0.8rem; /* تقليل الهامش */
+            text-align: justify;
+        }
+
+        .info-section p {
+            color: #555;
+            margin: 0;
+            line-height: 1.6;
+            font-size: clamp(0.7rem, 2.5vw, 0.8rem); /* تصغير حجم الخط */
+        }
+
+        .dhikr-reminder {
+            background: linear-gradient(to right, #f2f5f8, #e1e8ee);
+            padding: clamp(0.6rem, 2.5vw, 0.8rem); /* تقليل الحشوة */
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            margin: 0.8rem 0; /* تقليل الهامش */
+            box-sizing: border-box;
+        }
+
+        .dhikr-reminder p {
+            color: #2c3e50;
+            font-size: clamp(0.75rem, 3vw, 0.85rem); /* تصغير حجم الخط */
+            font-weight: bold;
+            text-align: center;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .tasks-header {
+            color: #666;
+            margin-bottom: 0.8rem; /* تقليل الهامش */
+            line-height: 1.4;
+            font-weight: 600;
+            font-size: clamp(0.8rem, 3.5vw, 0.95rem); /* تصغير حجم الخط */
+        }
+
+        .task {
+            margin-bottom: 0.7rem; /* تقليل الهامش */
+        }
+
+        .task button {
+            width: 100%;
+            padding: clamp(0.6rem, 3.5vw, 0.75rem); /* تقليل الحشوة */
+            font-size: clamp(0.85rem, 4vw, 0.95rem); /* تصغير حجم الخط */
+            font-family: 'Cairo', sans-serif;
+            border: none;
+            border-radius: var(--border-radius);
+            color: var(--light-text);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-weight: 700;
+            box-shadow: 0 3px 9px rgba(0,0,0,0.1);
+        }
+
+        .task button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(0,0,0,0.12);
+        }
+
+        .task button:disabled {
+            cursor: not-allowed;
+            color: white;
+            background-color: var(--success-color) !important;
+            opacity: 0.9;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .task button.clicked { animation: buttonClick 0.25s ease-in-out; }
+
+        #task1Btn { background-color: var(--primary-color); }
+        #task1Btn:hover:not(:disabled) { background-color: var(--primary-hover); }
+
+        #task2Btn { background-color: var(--secondary-color); }
+        #task2Btn:hover:not(:disabled) { background-color: var(--secondary-hover); }
+
+        #task3Btn { background-color: var(--tertiary-color); }
+        #task3Btn:hover:not(:disabled) { background-color: var(--tertiary-hover); }
+
+        .task p {
+            margin-top: 0.5rem; /* تقليل الهامش */
+            color: #555;
+            font-weight: 600;
+            font-size: clamp(0.75rem, 3vw, 0.8rem); /* تصغير حجم الخط */
+        }
+
+        .task p span {
+            font-weight: 700;
+            background-color: #e9ecef;
+            color: var(--dark-text);
+            padding: 3px 9px; /* تقليل الحشوة */
+            border-radius: 20px;
+            min-width: 26px; /* تصغير العرض الأدنى */
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .counter-update {
+            animation: counterUpdate 0.35s cubic-bezier(0.25, 0.1, 0.25, 1.5);
+        }
+
+        /* تعديل نقطة التغيير لتناسب الأجهزة الأصغر */
+        @media (min-width: 400px) {
+            .task {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0.8rem; /* تقليل الفجوة */
+            }
+            .task button {
+                width: 65%; /* زيادة طفيفة لعرض الزر */
+            }
+            .task p {
+                margin-top: 0;
+                width: 35%; /* إنقاص عرض النص */
+                text-align: right;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="overlay" class="overlay">
+        <div class="modal">
+            <div id="modal-content">
+                <h2>السلام عليكم ومرحباً بك في بوابتنا</h2>
+
+                <div class="info-section">
+                    <p>
+                        خدماتنا لا تتطلب دفعًا ماليًا إجباريًا، ولكنها تتطلب أشياء أخرى تقديرًا لتفهمكم. كما تتوفر إمكانية الدعم لمن يرغب، وهذا خيار غير إجباري. يمكنك المساهمة فقط إذا أعجبتك خدماتنا وأردت دعم المشرفين على المشروع. يتم تحديد هذا الدعم بمبلغ رمزي مقدر بـ 300 دج سنويًا ومن أراد أن يدعمنا أكثر فله ما أراد. أيها المسلم، لست مجبرًا على ذلك، بل هو خيار مفتوح لك. بإمكانك اختيار كلا الخيارين للولوج إلى المنصة التالية الموجهة لطلبة السنة الثانية طب.
+                    </p>
+                </div>
+
+                <div class="dhikr-reminder">
+                    <p>
+                        يمكنك الذكر ولو كنت على جنب ورجاء لا تتهرب وتجتزه بسرعة فقط اذكر بنية تقرب لله.<br>
+                        وفتوى إمكانية الذكر ولو على جنب ستجدها على مستوى الصفحة الرئيسية فيما بعد.
+                    </p>
+                </div>
+
+                <p class="tasks-header">للمتابعة، نرجو منك إنجاز هذه المهام البسيطة.</p>
+
+                <div id="tasks-container">
+                    <div class="task">
+                        <button id="task1Btn">الصلاة على النبي محمد ﷺ</button>
+                        <p>العدد المتبقي: <span id="task1Counter"></span></p>
+                    </div>
+
+                    <div class="task">
+                        <button id="task2Btn">سبحان الله وبحمده</button>
+                        <p>العدد المتبقي: <span id="task2Counter"></span></p>
+                    </div>
+
+                    <div class="task">
+                        <button id="task3Btn">استغفر الله</button>
+                        <p>العدد المتبقي: <span id="task3Counter"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalContent = document.getElementById('modal-content');
+
+            const lastVisitTime = localStorage.getItem('lastVisitTime');
+            const currentTime = new Date().getTime();
+            const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
+            const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
+
+            let requiredCount;
+            let timeDiff = Infinity;
+
+            if (lastVisitTime) {
+                timeDiff = currentTime - parseInt(lastVisitTime);
+            }
+
+            if (timeDiff < THREE_HOURS_MS) {
+                modalContent.innerHTML = `
+                    <h2 style="color: var(--primary-color);">مرحباً بعودتك!</h2>
+                    <p style="font-size: 0.9rem; line-height: 1.5;">أقل من 3 ساعات قد مرت. جاري توجيهك مباشرة...</p>`;
+                setTimeout(() => {
+                    window.location.href = 'home_BAC.html';
+                }, 2500);
+                return;
+            } 
+            else if (timeDiff < SIX_HOURS_MS) {
+                requiredCount = 7;
+            } 
+            else {
+                requiredCount = 33;
+                localStorage.removeItem('task1Count');
+                localStorage.removeItem('task2Count');
+                localStorage.removeItem('task3Count');
+            }
+            
+            localStorage.setItem('lastVisitTime', currentTime.toString());
+
+            const taskButtons = [
+                { btn: document.getElementById('task1Btn'), span: document.getElementById('task1Counter'), req: requiredCount, key: 'task1Count', defaultText: 'الصلاة على النبي محمد ﷺ' },
+                { btn: document.getElementById('task2Btn'), span: document.getElementById('task2Counter'), req: requiredCount, key: 'task2Count', defaultText: 'سبحان الله وبحمده' },
+                { btn: document.getElementById('task3Btn'), span: document.getElementById('task3Counter'), req: requiredCount, key: 'task3Count', defaultText: 'استغفر الله' }
+            ];
+
+            let counts = {
+                task1Count: parseInt(localStorage.getItem('task1Count')) || 0,
+                task2Count: parseInt(localStorage.getItem('task2Count')) || 0,
+                task3Count: parseInt(localStorage.getItem('task3Count')) || 0
+            };
+
+            function updateUI() {
+                let allComplete = true;
+                taskButtons.forEach(task => {
+                    const remaining = Math.max(0, task.req - counts[task.key]);
+
+                    if (task.span.textContent !== remaining.toString()) {
+                        task.span.classList.add('counter-update');
+                        setTimeout(() => task.span.classList.remove('counter-update'), 350);
+                    }
+                    task.span.textContent = remaining;
+
+                    if (counts[task.key] >= task.req) {
+                        task.btn.disabled = true;
+                        task.btn.innerHTML = '&#10003; تم إنجاز المهمة';
+                    } else {
+                        task.btn.disabled = false;
+                        task.btn.innerHTML = task.defaultText;
+                        allComplete = false;
+                    }
+                });
+                return allComplete;
+            }
+
+            function checkCompletion() {
+                if (updateUI()) {
+                    taskButtons.forEach(task => localStorage.removeItem(task.key));
+                    
+                    modalContent.innerHTML = `
+                        <h2 style="color: var(--success-color);">جزاك الله خيراً</h2>
+                        <p style="font-size: 0.9rem; line-height: 1.5;">تم إنجاز جميع المهام. جاري تحويلك الآن...</p>`;
+                    
+                    setTimeout(() => {
+                        window.location.href = 'home_BAC.html';
+                    }, 2500);
+                }
+            }
+            
+            taskButtons.forEach(task => {
+                if(task.btn) { // التأكد من أن الزر موجود قبل إضافة المستمع
+                    task.btn.addEventListener('click', () => {
+                        if (counts[task.key] < task.req) {
+                            task.btn.classList.add('clicked');
+                            setTimeout(() => task.btn.classList.remove('clicked'), 250);
+
+                            counts[task.key]++;
+                            localStorage.setItem(task.key, counts[task.key]);
+                            checkCompletion();
+                        }
+                    });
+                }
+            });
+
+            checkCompletion();
+        });
+    </script>
+
+</body>
+</html>
