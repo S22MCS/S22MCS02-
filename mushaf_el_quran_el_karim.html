@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> مُصْحَف القُرْآنِ الكَرِيمِ  </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ======== متغيرات الألوان المحسّنة ======== */
+        :root {
+            --bg-color: #f8fafc;
+            --text-color: #1f2937;
+            --primary-color: #14b8a6; /* A vibrant teal */
+            --primary-color-dark: #0d9488;
+            --card-bg-color: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.07);
+            --border-color: #e5e7eb;
+            --modal-bg: rgba(0, 0, 0, 0.4);
+            --quick-access-bg: #eef2ff;
+            --badge-bg: #e0f2f1;
+            --badge-text: #00796b;
+        }
+
+        body.dark-mode {
+            --bg-color: #111827;
+            --text-color: #d1d5db;
+            --primary-color: #5eead4; /* A lighter teal for dark mode */
+            --primary-color-dark: #2dd4bf;
+            --card-bg-color: #1f2937;
+            --shadow-color: rgba(0, 0, 0, 0.25);
+            --border-color: #374151;
+            --modal-bg: rgba(0, 0, 0, 0.6);
+            --quick-access-bg: #1e293b;
+            --badge-bg: #263238;
+            --badge-text: #80cbc4;
+        }
+
+        /* ======== التنسيقات العامة ======== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.7;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* ======== الهيدر العلوي ======== */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: var(--card-bg-color);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .top-header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            transition: color 0.3s;
+        }
+
+        .header-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.2s, color 0.3s;
+        }
+
+        .header-btn:hover {
+            background-color: var(--border-color);
+        }
+
+        .header-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-color);
+            transition: fill 0.3s;
+        }
+        
+        /* ======== قسم الوصول السريع (مُحسّن) ======== */
+        .quick-access-section {
+            padding: 1.5rem;
+            background-color: var(--quick-access-bg);
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .quick-access-section > h2 { /* العنوان الرئيسي للقسم */
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            text-align: center;
+        }
+        .quick-access-grid {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+             gap: 2rem;
+             align-items: start;
+        }
+        .quick-access-group h3 {
+             font-size: 1.1rem;
+             margin-bottom: 1rem;
+             color: var(--primary-color);
+             border-bottom: 2px solid var(--border-color);
+             padding-bottom: 0.5rem;
+        }
+        .quick-access-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            min-height: 50px; /* لضمان وجود مساحة حتى لو كان فارغًا */
+        }
+        .quick-access-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg-color);
+            color: var(--text-color);
+            border-radius: 8px; /* شكل أحدث */
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .quick-access-item:hover {
+             background-color: var(--primary-color);
+             color: #ffffff;
+             border-color: var(--primary-color);
+             transform: translateY(-2px);
+             box-shadow: 0 4px 10px rgba(20, 184, 166, 0.2);
+        }
+        body.dark-mode .quick-access-item:hover {
+            color: #111827;
+        }
+        .count-badge {
+            background-color: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .quick-access-item:hover .count-badge {
+            background-color: var(--card-bg-color);
+            color: var(--primary-color-dark);
+        }
+
+        .placeholder-text {
+             color: var(--text-color);
+             opacity: 0.6;
+             font-size: 0.9rem;
+             padding: 0.5rem;
+             text-align: center;
+        }
+
+
+        /* ======== أزرار التنقل الرئيسية ======== */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; 
+            padding: 1rem;
+            gap: 0.75rem;
+        }
+
+        .nav-button {
+            padding: 0.6rem 1.25rem;
+            font-size: 1rem;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg-color);
+            color: var(--text-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover, .nav-button.active {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(20, 184, 166, 0.2);
+        }
+        
+        body.dark-mode .nav-button.active, body.dark-mode .nav-button:hover {
+             color: #111827;
+        }
+
+        /* ======== حاوية السور والبحث ======== */
+        .surah-grid-container {
+             max-width: 1200px;
+             margin: 0 auto;
+             padding: 1.5rem;
+        }
+
+        /* ======== 🔎 شريط البحث - جديد ======== */
+        .search-bar-container {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1.25rem;
+            font-size: 1.1rem;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text-color);
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 30px; /* شكل دائري جميل */
+            box-shadow: 0 2px 4px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-color);
+            opacity: 0.5;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25);
+        }
+        
+        /* ======== شبكة عرض السور ======== */
+        .surah-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .surah-button {
+            background-color: var(--card-bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            display: flex; /* مهم للبحث */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .surah-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .surah-button:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .surah-number {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.8;
+            margin-bottom: 0.35rem;
+        }
+
+        /* ======== نافذة اختيار الرواية ونافذة التذكير (Modal) ======== */
+        .modal {
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: var(--modal-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: fadeIn 0.3s;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.3s, opacity 0.3s;
+        }
+
+        .modal.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg-color);
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 25px var(--shadow-color);
+            animation: slideIn 0.4s ease-out;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-out;
+        }
+        
+        .modal.visible .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .modal-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+
+        .modal-content p {
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .riwaya-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .riwaya-btn {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 0.9rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-family: 'Tajawal', sans-serif;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        
+        body.dark-mode .riwaya-btn {
+             color: #111827;
+        }
+
+        .riwaya-btn:hover {
+            background-color: var(--primary-color-dark);
+            transform: scale(1.02);
+        }
+
+        /* ======== حركات CSS ======== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* ======== تصميم متجاوب لشاشات أصغر ======== */
+        @media (max-width: 768px) {
+            .top-header {
+                padding: 0.75rem 1rem;
+            }
+            .top-header h1 {
+                font-size: 1.15rem;
+            }
+            .header-btn span {
+                display: none; 
+            }
+            .quick-access-section {
+                padding: 1rem;
+            }
+            .quick-access-section h2 {
+                font-size: 1.2rem;
+            }
+             .quick-access-grid {
+                 grid-template-columns: 1fr;
+                 gap: 1.5rem;
+            }
+            .surah-grid-container {
+                 padding: 1rem;
+            }
+            
+            .surah-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .surah-button {
+                font-size: 1rem;
+                padding: 1rem 0.5rem;
+            }
+
+            .main-nav {
+                padding: 0.75rem;
+                gap: 0.5rem;
+            }
+            .nav-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+            .modal-content h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <button id="backButton" class="header-btn" title="العودة للصفحة الرئيسية">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.83,2A10,10,0,0,0,1.83,12,10,10,0,0,0,11.83,22,10,10,0,0,0,21.83,12,10,10,0,0,0,11.83,2Zm0,18A8,8,0,0,1,3.83,12,8,8,0,0,1,11.83,4,8,8,0,0,1,19.83,12,8,8,0,0,1,11.83,20Zm-1-9H14.83v2H10.83v3l-4-4,4-4Z" fill="currentColor"/></svg>
+            <span>رجوع</span>
+        </button>
+        <h1>ختماتي للقرآن</h1>
+        <button id="themeToggle" class="header-btn" title="تغيير المظهر">
+            <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,7a5,5,0,1,0,5,5A5,5,0,0,0,12,7Zm0,8a3,3,0,1,1,3-3A3,3,0,0,1,12,15ZM12,2a1,1,0,0,0-1,1V5a1,1,0,0,0,2,0V3A1,1,0,0,0,12,2Zm0,18a1,1,0,0,0-1,1v2a1,1,0,0,0,2,0V21A1,1,0,0,0,12,20ZM4.22,4.22a1,1,0,0,0-1.41,0L1.4,5.63a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0L4.22,5.63a1,1,0,0,0,0-1.41ZM18.37,18.37a1,1,0,0,0-1.41,0l-1.41,1.41a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l1.41-1.41a1,1,0,0,0,0-1.41ZM22,12a1,1,0,0,0-1-1H19a1,1,0,0,0,0,2h2A1,1,0,0,0,22,12ZM5,12a1,1,0,0,0-1-1H2a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12ZM18.37,5.63a1,1,0,0,0,0-1.41L16.96,2.81a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.41l1.41,1.41A1,1,0,0,0,18.37,5.63ZM5.63,18.37a1,1,0,0,0,0-1.41L4.22,15.55a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.41l1.41,1.41A1,1,0,0,0,5.63,18.37Z" fill="currentColor"/></svg>
+            <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;"><path d="M12,2A10,10,0,0,0,3.5,18.34,10,10,0,0,1,12,4a8,8,0,0,1,8,8,8,8,0,0,1-.5,3.1A10,10,0,0,0,12,2Z" fill="currentColor"/></svg>
+        </button>
+    </header>
+
+    <section class="quick-access-section">
+        <h2>الوصول السريع</h2>
+        <div class="quick-access-grid">
+            <div class="quick-access-group">
+                <h3>آخر سورة قرأتها</h3>
+                <div id="last-read-container" class="quick-access-container">
+                    </div>
+            </div>
+            <div class="quick-access-group">
+                <h3>السور الأكثر قراءة</h3>
+                <div id="most-frequent-container" class="quick-access-container">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <nav class="main-nav">
+        <button class="nav-button">أجزاء القرآن</button>
+        <button class="nav-button active">سور القرآن</button>
+        <button class="nav-button">صفحات القرآن</button>
+    </nav>
+    
+    <main class="surah-grid-container">
+        <div class="search-bar-container">
+            <input type="text" id="searchSurahInput" class="search-input" placeholder="🔎 ابحث عن سورة...">
+        </div>
+        <div id="surah-list-container" class="surah-grid">
+            </div>
+    </main>
+
+    <div id="riwayaSelectionModal" class="modal">
+        <div class="modal-content">
+            <span id="closeRiwayaModalBtn" class="close-btn">&times;</span>
+            <h2>اختر الرواية</h2>
+            <p>الرجاء اختيار الرواية التي تفضل قراءتها لهذه السورة.</p>
+            <div class="riwaya-options">
+                <button class="riwaya-btn" data-riwaya="HAFS">رواية حفص عن عاصم</button>
+                <button class="riwaya-btn" data-riwaya="WARCH">رواية ورش عن نافع</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="reminderModal" class="modal">
+        <div class="modal-content">
+            <span id="closeReminderModalBtn" class="close-btn">&times;</span>
+            <h2>تذكير 📖</h2>
+            <p style="font-size: 1.25rem; line-height: 1.8; color: var(--text-color);">"لَا تَهْجُرُوا القُرآنَ فَإِنَّهُ أُنِيسُكُمْ فِي ظُلُمَاتِ القُبُورِ"</p>
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const surahNames = [
+            "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
+        ];
+
+        // --- عناصر DOM ---
+        const surahListContainer = document.getElementById('surah-list-container');
+        const riwayaModal = document.getElementById('riwayaSelectionModal');
+        const closeRiwayaModalBtn = document.getElementById('closeRiwayaModalBtn');
+        const reminderModal = document.getElementById('reminderModal');
+        const closeReminderModalBtn = document.getElementById('closeReminderModalBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const backButton = document.getElementById('backButton');
+        const lastReadContainer = document.getElementById('last-read-container');
+        const mostFrequentContainer = document.getElementById('most-frequent-container');
+        const searchInput = document.getElementById('searchSurahInput'); // 🔎 جديد: عنصر البحث
+        let activeSurahButton = null;
+
+        // ================== قسم الوصول السريع ==================
+
+        const createSurahButtonElement = (surahIndex, content, type) => {
+             const button = document.createElement('button');
+             button.setAttribute('data-surah-index', surahIndex);
+             
+             if (type === 'main-grid') {
+                 button.className = 'surah-button';
+                 button.innerHTML = `<span class="surah-number">سورة ${surahIndex}</span> ${content}`;
+             } else { // quick-access
+                 button.className = 'quick-access-item';
+                 button.innerHTML = content;
+             }
+             
+             button.addEventListener('click', () => {
+                 const mainGridButton = document.querySelector(`.surah-button[data-surah-index='${surahIndex}']`);
+                 showRiwayaModal(mainGridButton);
+             });
+             return button;
+        }
+
+        const loadDashboard = () => {
+            const lastReadSurah = localStorage.getItem('lastReadSurah');
+            lastReadContainer.innerHTML = '';
+            if (lastReadSurah) {
+                const surahName = surahNames[lastReadSurah - 1];
+                const btn = createSurahButtonElement(lastReadSurah, `<span>${surahName}</span>`, 'quick-access');
+                lastReadContainer.appendChild(btn);
+            } else {
+                const placeholder = document.createElement('span');
+                placeholder.className = 'placeholder-text';
+                placeholder.textContent = 'لم تحدد سورة بعد.';
+                lastReadContainer.appendChild(placeholder);
+            }
+            
+            const counts = JSON.parse(localStorage.getItem('surahReadCounts') || '{}');
+            mostFrequentContainer.innerHTML = '';
+            
+            const sortedSurahs = Object.entries(counts).sort(([,a],[,b]) => b - a);
+            
+            if (sortedSurahs.length > 0) {
+                 sortedSurahs.slice(0, 5).forEach(([surahIndex, count]) => {
+                     const surahName = surahNames[surahIndex - 1];
+                     if(surahName){
+                         const btnContent = `<span>${surahName}</span> <span class="count-badge">${count} مرات</span>`;
+                         const btn = createSurahButtonElement(surahIndex, btnContent, 'quick-access');
+                         mostFrequentContainer.appendChild(btn);
+                     }
+                 });
+            } else {
+                const placeholder = document.createElement('span');
+                placeholder.className = 'placeholder-text';
+                placeholder.textContent = 'ستظهر هنا السور التي تقرأها بكثرة.';
+                mostFrequentContainer.appendChild(placeholder);
+            }
+        };
+
+        const handleSurahSelection = (surahIndex) => {
+            localStorage.setItem('lastReadSurah', surahIndex);
+            let counts = JSON.parse(localStorage.getItem('surahReadCounts') || '{}');
+            counts[surahIndex] = (counts[surahIndex] || 0) + 1;
+            localStorage.setItem('surahReadCounts', JSON.stringify(counts));
+            loadDashboard();
+        };
+
+        // ================== توليد القائمة الرئيسية للسور ==================
+        surahNames.forEach((name, index) => {
+            const surahIndex = index + 1;
+            const button = createSurahButtonElement(surahIndex, name, 'main-grid');
+            surahListContainer.appendChild(button);
+        });
+
+        // ================== 🔎 وظيفة البحث الفوري - جديد ==================
+        const allSurahButtons = document.querySelectorAll('.surah-button');
+
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.trim();
+
+            allSurahButtons.forEach(button => {
+                const surahName = button.textContent.trim();
+                // البحث في النص الكامل للزر (الذي يتضمن اسم السورة ورقمها)
+                if (surahName.includes(searchTerm)) {
+                    button.style.display = 'flex'; // أزرار السور تستخدم flex
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+        });
+
+
+        // ================== التعامل مع النوافذ المنبثقة (Modals) ==================
+        const showRiwayaModal = (button) => {
+            activeSurahButton = button;
+            riwayaModal.classList.add('visible');
+        };
+        
+        const hideRiwayaModal = () => riwayaModal.classList.remove('visible');
+        const hideReminderModal = () => reminderModal.classList.remove('visible');
+
+        surahListContainer.addEventListener('click', (e) => {
+            const button = e.target.closest('.surah-button');
+            if (button) showRiwayaModal(button);
+        });
+        
+        closeRiwayaModalBtn.addEventListener('click', hideRiwayaModal);
+        closeReminderModalBtn.addEventListener('click', hideReminderModal);
+
+        window.addEventListener('click', (e) => {
+            if (e.target === riwayaModal) hideRiwayaModal();
+            if (e.target === reminderModal) hideReminderModal();
+        });
+        
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (riwayaModal.classList.contains('visible')) hideRiwayaModal();
+                if (reminderModal.classList.contains('visible')) hideReminderModal();
+            }
+        });
+
+        const riwayaButtons = document.querySelectorAll('.riwaya-btn');
+        riwayaButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const riwaya = button.getAttribute('data-riwaya').toLowerCase();
+                const surahIndex = activeSurahButton.getAttribute('data-surah-index');
+                
+                handleSurahSelection(surahIndex);
+
+                const surahFileName = String(surahIndex).padStart(3, '0');
+                
+                console.log(`الانتقال إلى: surahs/${riwaya}/${surahFileName}.html`);
+                window.location.href = `surahs/${riwaya}/${surahFileName}.html`;
+            });
+        });
+
+        // ================== نافذة التذكير الدورية ==================
+        const showReminderModalIfNeeded = () => {
+            const lastShown = localStorage.getItem('reminderLastShown');
+            const twelveHours = 12 * 60 * 60 * 1000;
+            const now = new Date().getTime();
+
+            if (!lastShown || (now - lastShown > twelveHours)) {
+                reminderModal.classList.add('visible');
+                localStorage.setItem('reminderLastShown', now);
+            }
+        };
+
+        // ================== التعامل مع تغيير المظهر (نهاري/ليلي) ==================
+        const sunIcon = document.getElementById('theme-icon-sun');
+        const moonIcon = document.getElementById('theme-icon-moon');
+        
+        const applyTheme = (theme) => {
+             if (theme === 'dark') {
+                 document.body.classList.add('dark-mode');
+                 sunIcon.style.display = 'none';
+                 moonIcon.style.display = 'block';
+             } else {
+                 document.body.classList.remove('dark-mode');
+                 sunIcon.style.display = 'block';
+                 moonIcon.style.display = 'none';
+             }
+        };
+
+        themeToggle.addEventListener('click', () => {
+            const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
+
+        // ================== وظيفة زر الرجوع ==================
+        backButton.addEventListener('click', () => {
+            history.back();
+        });
+
+        // ================== تحميل البيانات الأولية عند فتح الصفحة ==================
+        loadDashboard();
+        showReminderModalIfNeeded();
+    });
+    </script>
+</body>
+</html>
