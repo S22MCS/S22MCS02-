@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ختماتي للقرآن الكريم</title>
+    <title> مُصْحَف القُرْآنِ الكَرِيمِ  </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
@@ -217,13 +217,43 @@
              color: #111827;
         }
 
-        /* ======== شبكة عرض السور ======== */
+        /* ======== حاوية السور والبحث ======== */
         .surah-grid-container {
              max-width: 1200px;
              margin: 0 auto;
              padding: 1.5rem;
         }
 
+        /* ======== 🔎 شريط البحث - جديد ======== */
+        .search-bar-container {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1.25rem;
+            font-size: 1.1rem;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text-color);
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 30px; /* شكل دائري جميل */
+            box-shadow: 0 2px 4px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-color);
+            opacity: 0.5;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25);
+        }
+        
+        /* ======== شبكة عرض السور ======== */
         .surah-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -243,7 +273,7 @@
             text-align: center;
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
             box-shadow: 0 2px 4px var(--shadow-color);
-            display: flex;
+            display: flex; /* مهم للبحث */
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -439,7 +469,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.83,2A10,10,0,0,0,1.83,12,10,10,0,0,0,11.83,22,10,10,0,0,0,21.83,12,10,10,0,0,0,11.83,2Zm0,18A8,8,0,0,1,3.83,12,8,8,0,0,1,11.83,4,8,8,0,0,1,19.83,12,8,8,0,0,1,11.83,20Zm-1-9H14.83v2H10.83v3l-4-4,4-4Z" fill="currentColor"/></svg>
             <span>رجوع</span>
         </button>
-        <h1>سور القرآن الكريم</h1>
+        <h1>ختماتي للقرآن</h1>
         <button id="themeToggle" class="header-btn" title="تغيير المظهر">
             <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,7a5,5,0,1,0,5,5A5,5,0,0,0,12,7Zm0,8a3,3,0,1,1,3-3A3,3,0,0,1,12,15ZM12,2a1,1,0,0,0-1,1V5a1,1,0,0,0,2,0V3A1,1,0,0,0,12,2Zm0,18a1,1,0,0,0-1,1v2a1,1,0,0,0,2,0V21A1,1,0,0,0,12,20ZM4.22,4.22a1,1,0,0,0-1.41,0L1.4,5.63a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0L4.22,5.63a1,1,0,0,0,0-1.41ZM18.37,18.37a1,1,0,0,0-1.41,0l-1.41,1.41a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l1.41-1.41a1,1,0,0,0,0-1.41ZM22,12a1,1,0,0,0-1-1H19a1,1,0,0,0,0,2h2A1,1,0,0,0,22,12ZM5,12a1,1,0,0,0-1-1H2a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12ZM18.37,5.63a1,1,0,0,0,0-1.41L16.96,2.81a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.41l1.41,1.41A1,1,0,0,0,18.37,5.63ZM5.63,18.37a1,1,0,0,0,0-1.41L4.22,15.55a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.41l1.41,1.41A1,1,0,0,0,5.63,18.37Z" fill="currentColor"/></svg>
             <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;"><path d="M12,2A10,10,0,0,0,3.5,18.34,10,10,0,0,1,12,4a8,8,0,0,1,8,8,8,8,0,0,1-.5,3.1A10,10,0,0,0,12,2Z" fill="currentColor"/></svg>
@@ -469,6 +499,9 @@
     </nav>
     
     <main class="surah-grid-container">
+        <div class="search-bar-container">
+            <input type="text" id="searchSurahInput" class="search-input" placeholder="🔎 ابحث عن سورة...">
+        </div>
         <div id="surah-list-container" class="surah-grid">
             </div>
     </main>
@@ -489,7 +522,7 @@
         <div class="modal-content">
             <span id="closeReminderModalBtn" class="close-btn">&times;</span>
             <h2>تذكير 📖</h2>
-            <p style="font-size: 1.25rem; line-height: 1.8; color: var(--text-color);">"لَا تَهْجُرُوا القُرآنَ فَإِنَّهُ أُنِيسُكُمْ فِي ظُلُمَاتِ القُبُورِ"</p>
+            <p style="font-size: 1.25rem; line-height: 1.8; color: var(--text-color);">"لَا تَهْجُرُوا القُرآنَ فَإِنَّهُ أُنِيسُكُمْ فِي ظُلُمَاتِ القُبُورِ"</p>
         </div>
     </div>
 
@@ -511,11 +544,11 @@
         const backButton = document.getElementById('backButton');
         const lastReadContainer = document.getElementById('last-read-container');
         const mostFrequentContainer = document.getElementById('most-frequent-container');
+        const searchInput = document.getElementById('searchSurahInput'); // 🔎 جديد: عنصر البحث
         let activeSurahButton = null;
 
         // ================== قسم الوصول السريع ==================
 
-        // دالة لإنشاء زر سورة (للاستخدام في الوصول السريع وقائمة السور)
         const createSurahButtonElement = (surahIndex, content, type) => {
              const button = document.createElement('button');
              button.setAttribute('data-surah-index', surahIndex);
@@ -528,7 +561,6 @@
                  button.innerHTML = content;
              }
              
-             // إضافة مستمع حدث مشترك لفتح نافذة اختيار الرواية
              button.addEventListener('click', () => {
                  const mainGridButton = document.querySelector(`.surah-button[data-surah-index='${surahIndex}']`);
                  showRiwayaModal(mainGridButton);
@@ -536,11 +568,9 @@
              return button;
         }
 
-        // تحميل وعرض بيانات الوصول السريع عند بدء التشغيل
         const loadDashboard = () => {
-            // 1. عرض آخر سورة تمت قراءتها
             const lastReadSurah = localStorage.getItem('lastReadSurah');
-            lastReadContainer.innerHTML = ''; // مسح المحتوى القديم
+            lastReadContainer.innerHTML = '';
             if (lastReadSurah) {
                 const surahName = surahNames[lastReadSurah - 1];
                 const btn = createSurahButtonElement(lastReadSurah, `<span>${surahName}</span>`, 'quick-access');
@@ -552,21 +582,18 @@
                 lastReadContainer.appendChild(placeholder);
             }
             
-            // 2. عرض السور الأكثر قراءة
             const counts = JSON.parse(localStorage.getItem('surahReadCounts') || '{}');
-            mostFrequentContainer.innerHTML = ''; // مسح المحتوى القديم
+            mostFrequentContainer.innerHTML = '';
             
-            // تحويل الكائن إلى مصفوفة وفرزها
             const sortedSurahs = Object.entries(counts).sort(([,a],[,b]) => b - a);
             
             if (sortedSurahs.length > 0) {
-                 // عرض أفضل 5 سور فقط
                  sortedSurahs.slice(0, 5).forEach(([surahIndex, count]) => {
                      const surahName = surahNames[surahIndex - 1];
                      if(surahName){
-                        const btnContent = `<span>${surahName}</span> <span class="count-badge">${count} مرات</span>`;
-                        const btn = createSurahButtonElement(surahIndex, btnContent, 'quick-access');
-                        mostFrequentContainer.appendChild(btn);
+                         const btnContent = `<span>${surahName}</span> <span class="count-badge">${count} مرات</span>`;
+                         const btn = createSurahButtonElement(surahIndex, btnContent, 'quick-access');
+                         mostFrequentContainer.appendChild(btn);
                      }
                  });
             } else {
@@ -577,20 +604,13 @@
             }
         };
 
-        // تحديث بيانات الوصول السريع بعد اختيار سورة
         const handleSurahSelection = (surahIndex) => {
-            // 1. حفظ السورة الحالية كـ "آخر ما قرأت"
             localStorage.setItem('lastReadSurah', surahIndex);
-
-            // 2. تحديث عداد مرات القراءة
             let counts = JSON.parse(localStorage.getItem('surahReadCounts') || '{}');
-            counts[surahIndex] = (counts[surahIndex] || 0) + 1; // زيادة العداد
+            counts[surahIndex] = (counts[surahIndex] || 0) + 1;
             localStorage.setItem('surahReadCounts', JSON.stringify(counts));
-            
-            // إعادة تحميل البيانات لعرضها فوراً
             loadDashboard();
         };
-
 
         // ================== توليد القائمة الرئيسية للسور ==================
         surahNames.forEach((name, index) => {
@@ -598,6 +618,24 @@
             const button = createSurahButtonElement(surahIndex, name, 'main-grid');
             surahListContainer.appendChild(button);
         });
+
+        // ================== 🔎 وظيفة البحث الفوري - جديد ==================
+        const allSurahButtons = document.querySelectorAll('.surah-button');
+
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.trim();
+
+            allSurahButtons.forEach(button => {
+                const surahName = button.textContent.trim();
+                // البحث في النص الكامل للزر (الذي يتضمن اسم السورة ورقمها)
+                if (surahName.includes(searchTerm)) {
+                    button.style.display = 'flex'; // أزرار السور تستخدم flex
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+        });
+
 
         // ================== التعامل مع النوافذ المنبثقة (Modals) ==================
         const showRiwayaModal = (button) => {
@@ -608,13 +646,11 @@
         const hideRiwayaModal = () => riwayaModal.classList.remove('visible');
         const hideReminderModal = () => reminderModal.classList.remove('visible');
 
-        // فتح نافذة الرواية عند الضغط على زر سورة من القائمة الرئيسية
         surahListContainer.addEventListener('click', (e) => {
             const button = e.target.closest('.surah-button');
             if (button) showRiwayaModal(button);
         });
         
-        // إغلاق النوافذ
         closeRiwayaModalBtn.addEventListener('click', hideRiwayaModal);
         closeReminderModalBtn.addEventListener('click', hideReminderModal);
 
@@ -630,19 +666,16 @@
             }
         });
 
-        // التعامل مع اختيار الرواية والتوجه للصفحة
         const riwayaButtons = document.querySelectorAll('.riwaya-btn');
         riwayaButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const riwaya = button.getAttribute('data-riwaya').toLowerCase(); // "hafs" or "warch"
+                const riwaya = button.getAttribute('data-riwaya').toLowerCase();
                 const surahIndex = activeSurahButton.getAttribute('data-surah-index');
                 
-                // تحديث بيانات لوحة التحكم (آخر قراءة وعداد القراءة)
                 handleSurahSelection(surahIndex);
 
-                const surahFileName = String(surahIndex).padStart(3, '0'); // e.g., '001', '067', '114'
+                const surahFileName = String(surahIndex).padStart(3, '0');
                 
-                // الانتقال إلى ملف السورة الصحيح
                 console.log(`الانتقال إلى: surahs/${riwaya}/${surahFileName}.html`);
                 window.location.href = `surahs/${riwaya}/${surahFileName}.html`;
             });
@@ -682,10 +715,8 @@
             applyTheme(newTheme);
         });
 
-        // التحقق من المظهر المحفوظ عند تحميل الصفحة
         const savedTheme = localStorage.getItem('theme') || 'light';
         applyTheme(savedTheme);
-
 
         // ================== وظيفة زر الرجوع ==================
         backButton.addEventListener('click', () => {
@@ -695,7 +726,6 @@
         // ================== تحميل البيانات الأولية عند فتح الصفحة ==================
         loadDashboard();
         showReminderModalIfNeeded();
-
     });
     </script>
 </body>
