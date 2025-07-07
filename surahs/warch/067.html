@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سورة الكهف</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            /* المتغيرات الأساسية */
+            --font-size-quran: 1.6em; /* حجم الخط الافتراضي للقرآن */
+
+            /* الوضع النهاري (Light Mode) */
+            --bg-color-light: #f4f7f9;
+            --container-bg-light: #ffffff;
+            --text-color-light: #333;
+            --title-color-light: #053B50;
+            --primary-color-light: #0a4d68;
+            --progress-bar-light: #176B87;
+            --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+            /* الوضع المظلم (Dark Mode) */
+            --bg-color-dark: #121212;
+            --container-bg-dark: #1e1e1e;
+            --text-color-dark: #e0e0e0;
+            --title-color-dark: #64CCC5;
+            --primary-color-dark: #64CCC5;
+            --progress-bar-dark: #64CCC5;
+
+            /* وضع حماية العين (Eye Care) */
+            --bg-color-eye: #fdf6e3;
+            --container-bg-eye: #f6efe0;
+            --text-color-eye: #654f3a;
+            --title-color-eye: #8d6e63;
+            --primary-color-eye: #a1887f;
+            --progress-bar-eye: #bcaaa4;
+            
+            /* وضع حماية العين + المظلم (Combined) */
+            --bg-color-dark-eye: #211d1b;
+            --container-bg-dark-eye: #2f2824;
+            --text-color-dark-eye: #d1c7c0;
+            --title-color-dark-eye: #bcaaa4;
+            --primary-color-dark-eye: #bcaaa4;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Naskh Arabic', serif;
+            margin: 0;
+            padding: 80px 0 90px 0;
+            transition: background-color 0.4s, color 0.4s;
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+        }
+
+        /* --- تطبيق الثيمات الديناميكي --- */
+        body.dark-mode { background-color: var(--bg-color-dark); color: var(--text-color-dark); }
+        body.eye-care-mode { background-color: var(--bg-color-eye); color: var(--text-color-eye); }
+        body.dark-mode.eye-care-mode { background-color: var(--bg-color-dark-eye); color: var(--text-color-dark-eye); }
+
+        /* --- شريط التقدم --- */
+        .progress-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 10px 5%;
+            z-index: 1001;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background-color 0.4s, border-bottom 0.4s;
+            border-bottom: 1px solid transparent;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        body.dark-mode .progress-header { background-color: rgba(30, 30, 30, 0.7); border-bottom-color: #333; }
+        body.eye-care-mode .progress-header { background-color: rgba(246, 239, 224, 0.7); border-bottom-color: #e0d9cb; }
+        body.dark-mode.eye-care-mode .progress-header { background-color: rgba(47, 40, 36, 0.7); border-bottom-color: #4a413b; }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .progress-title { color: var(--title-color-light); }
+        body.dark-mode .progress-title { color: var(--title-color-dark); }
+        body.eye-care-mode .progress-title { color: var(--title-color-eye); }
+        body.dark-mode.eye-care-mode .progress-title { color: var(--title-color-dark-eye); }
+
+        .progress-percent { font-weight: bold; }
+
+        .progress-container {
+            width: 100%; height: 8px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 4px; overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%; width: 0%; border-radius: 4px;
+            transition: width 0.2s linear;
+            background-color: var(--progress-bar-light);
+        }
+        body.dark-mode .progress-bar { background-color: var(--progress-bar-dark); }
+        body.eye-care-mode .progress-bar { background-color: var(--progress-bar-eye); }
+        body.dark-mode.eye-care-mode .progress-bar { background-color: var(--primary-color-dark-eye); }
+
+        /* --- الحاوية الرئيسية والمحتوى --- */
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 15px;
+            transition: background-color 0.4s, box-shadow 0.4s;
+            background-color: var(--container-bg-light);
+            box-shadow: var(--shadow-light);
+        }
+        body.dark-mode .container { background-color: var(--container-bg-dark); box-shadow: none; }
+        body.eye-care-mode .container { background-color: var(--container-bg-eye); box-shadow: none; }
+        body.dark-mode.eye-care-mode .container { background-color: var(--container-bg-dark-eye); box-shadow: none; }
+
+        h1, h2 { text-align: center; margin-bottom: 15px; }
+        h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--title-color-light); }
+        h2 { font-size: clamp(1.2rem, 4vw, 1.5rem); color: var(--primary-color-light); }
+        h3 { text-align: center; font-size: clamp(1.1rem, 3vw, 1.3rem); }
+
+        body.dark-mode h1 { color: var(--title-color-dark); }
+        body.dark-mode h2 { color: var(--primary-color-dark); }
+        body.eye-care-mode h1, body.eye-care-mode h2 { color: var(--title-color-eye); }
+        body.dark-mode.eye-care-mode h1, body.dark-mode.eye-care-mode h2 { color: var(--title-color-dark-eye); }
+
+        .surah-text { margin-top: 30px; }
+        .basmala-container { margin-bottom: 25px; }
+        
+        .quran-content {
+            font-size: var(--font-size-quran);
+            line-height: 2.2; 
+            text-align: right;
+            transition: font-size 0.3s;
+        }
+
+        /* --- أزرار التحكم --- */
+        .controls {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            padding: 8px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background-color 0.4s;
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: calc(100% - 30px);
+            box-sizing: border-box;
+        }
+        body.dark-mode .controls { background-color: rgba(30, 30, 30, 0.7); }
+        body.eye-care-mode .controls { background-color: rgba(246, 239, 224, 0.7); }
+        body.dark-mode.eye-care-mode .controls { background-color: rgba(47, 40, 36, 0.7); }
+
+        .control-btn {
+            background: none; border: none;
+            width: 44px; height: 44px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: color 0.3s, background-color 0.3s, transform 0.2s, opacity 0.3s;
+            color: #555;
+        }
+        .control-btn:hover { transform: scale(1.1); background-color: rgba(0,0,0,0.05); }
+        .control-btn.active { color: var(--primary-color-light); }
+        
+        .control-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+            background-color: transparent !important;
+        }
+
+        body.dark-mode .control-btn { color: #aaa; }
+        body.dark-mode .control-btn:hover:not(:disabled) { background-color: rgba(255,255,255,0.1); }
+        body.dark-mode .control-btn.active { color: var(--primary-color-dark); }
+        
+        .font-controls { display: flex; align-items: center; }
+        .font-controls .control-btn { width: 38px; height: 38px; font-size: 1em; }
+
+        #scrollTopBtn {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        #scrollTopBtn.visible { opacity: 1; visibility: visible; }
+        
+        /* --- التذييل --- */
+        .footer {
+            font-size: 0.9em; text-align: center;
+            margin-top: 30px; padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .footer { border-top-color: rgba(255, 255, 255, 0.1); }
+        .footer a { text-decoration: none; font-weight: bold; color: var(--primary-color-light); }
+        body.dark-mode .footer a { color: var(--primary-color-dark); }
+        body.eye-care-mode .footer a { color: var(--primary-color-eye); }
+        
+        /* --- للشاشات الأكبر --- */
+        @media (min-width: 768px) {
+            .container { padding: 40px; }
+            .controls {
+                left: 25px; bottom: 25px;
+                transform: none;
+                flex-direction: column;
+                background: none;
+                backdrop-filter: none;
+                box-shadow: none;
+                padding: 0;
+                gap: 15px;
+                max-width: none;
+            }
+            .control-btn {
+                background-color: var(--container-bg-light);
+                box-shadow: var(--shadow-light);
+            }
+            body.dark-mode .control-btn { background-color: var(--container-bg-dark); }
+            body.eye-care-mode .control-btn { background-color: var(--container-bg-eye); }
+            body.dark-mode.eye-care-mode .control-btn { background-color: var(--container-bg-dark-eye); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="progress-header">
+        <div class="progress-info">
+       <h1>سورة الكهف</h1>
+		<h1>سورة الملك للقراءة برواية ورش عن نافع مكتوبة كاملة بالتشكيل</h1>          
+          <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </header>
+
+    <div class="controls">
+        <button class="control-btn" id="scrollTopBtn" aria-label="الصعود للأعلى">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        <div class="font-controls">
+            <button class="control-btn" id="fontDecrease" aria-label="تصغير الخط">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button class="control-btn" id="fontIncrease" aria-label="تكبير الخط">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <button class="control-btn" id="eyeProtectionToggle" aria-label="تبديل وضع حماية العين">
+            <i class="fas fa-eye"></i>
+        </button>
+        <button class="control-btn" id="themeToggle" aria-label="تبديل الوضع المظلم">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+
+
+
+
+
+
+
+            <main class="container">
+ 
+                  <h1>سورة الملك</h1>
+		<h1>سورة الملك للقراءة برواية ورش عن نافع مكتوبة كاملة بالتشكيل</h1>
+
+
+
+        <div class="surah-text">
+            <div class="basmala-container">
+		<h1>سورة الملك للقراءة برواية ورش عن نافع مكتوبة كاملة بالتشكيل</h1>
+                         <h3>أَعُوذُ بِاللَّهِ مِنَ الشَّيطَانِ الرَّجِيمِ</h3> 
+                           <h3>بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ</h3>
+            </div>
+            <div class="quran-content" id="quranContent">
+                <p>       
+
+تَبَٰرَكَ اَ۬لذِے بِيَدِهِ اِ۬لْمُلْكُ وَهُوَ عَلَيٰ كُلِّ شَےْءٖ قَدِيرٌۖ (1) اِ۬لذِے خَلَقَ اَ۬لْمَوْتَ وَالْحَيَوٰةَ لِيَبْلُوَكُمُۥٓ أَيُّكُمُۥٓ أَحْسَنُ عَمَلاٗۖ وَهُوَ اَ۬لْعَزِيزُ اُ۬لْغَفُورُۖ (2) اُ۬لذِے خَلَقَ سَبْعَ سَمَٰوَٰتٖ طِبَاقاٗۖ مَّا تَر۪يٰ فِے خَلْقِ اِ۬لرَّحْمَٰنِ مِن تَفَٰوُتٖۖ فَارْجِعِ اِ۬لْبَصَرَ هَلْ تَر۪يٰ مِن فُطُورٖۖ (3) ثُمَّ اَ۪رْجِعِ اِ۬لْبَصَرَ كَرَّتَيْنِ يَنقَلِبِ اِلَيْكَ اَ۬لْبَصَرُ خَاسِئاٗ وَهُوَ حَسِيرٞۖ (4) وَلَقَدْ زَيَّنَّا اَ۬لسَّمَآءَ اَ۬لدُّنْي۪ا بِمَصَٰبِيحَ وَجَعَلْنَٰهَا رُجُوماٗ لِّلشَّيَٰطِينِ وَأَعْتَدْنَا لَهُمْ عَذَابَ اَ۬لسَّعِيرِۖ (5) وَلِلذِينَ كَفَرُواْ بِرَبِّهِمْ عَذَابُ جَهَنَّمَۖ وَبِيسَ اَ۬لْمَصِيرُۖ (6) إِذَآ أُلْقُواْ فِيهَا سَمِعُواْ لَهَا شَهِيقاٗ وَهِيَ تَفُورُ (7) تَكَادُ تَمَيَّزُ مِنَ اَ۬لْغَيْظِۖ كُلَّمَآ أُلْقِيَ فِيهَا فَوْجٞ سَأَلَهُمْ خَزَنَتُهَآ أَلَمْ يَاتِكُمْ نَذِيرٞۖ (8) قَالُواْ بَل۪يٰ قَدْ جَآءَنَا نَذِيرٞ (9) فَكَذَّبْنَا وَقُلْنَا مَا نَزَّلَ اَ۬للَّهُ مِن شَےْءٍ اِنَ اَنتُمُۥٓ إِلَّا فِے ضَلَٰلٖ كَبِيرٖۖ (10) وَقَالُواْ لَوْ كُنَّا نَسْمَعُ أَوْ نَعْقِلُ مَا كُنَّا فِےٓ أَصْحَٰبِ اِ۬لسَّعِيرِۖ (11) فَاعْتَرَفُواْ بِذَنۢبِهِمْ فَسُحْقاٗ لِّأَصْحَٰبِ اِ۬لسَّعِيرِۖ (12) إِنَّ اَ۬لذِينَ يَخْشَوْنَ رَبَّهُم بِالْغَيْبِ لَهُم مَّغْفِرَةٞ وَأَجْرٞ كَبِيرٞۖ (13) وَأَسِرُّواْ قَوْلَكُمُۥٓ أَوِ اِ۪جْهَرُواْ بِهِۦٓۖ إِنَّهُۥ عَلِيمُۢ بِذَاتِ اِ۬لصُّدُورِۖ (14) أَلَا يَعْلَمُ مَنْ خَلَقَ وَهُوَ اَ۬للَّطِيفُ اُ۬لْخَبِيرُۖ (15) هُوَ اَ۬لذِے جَعَلَ لَكُمُ اُ۬لَارْضَ ذَلُولاٗ فَامْشُواْ فِے مَنَاكِبِهَا وَكُلُواْ مِن رِّزْقِهِۦۖ وَإِلَيْهِ اِ۬لنُّشُورُۖ (16) ءَامِنتُم مَّن فِے اِ۬لسَّمَآءِ اَ۬نْ يَّخْسِفَ بِكُمُ اُ۬لَارْضَ فَإِذَا هِيَ تَمُورُۖ (17) أَمَ اَمِنتُم مَّن فِے اِ۬لسَّمَآءِ اَ۬نْ يُّرْسِلَ عَلَيْكُمْ حَاصِباٗۖ فَسَتَعْلَمُونَ كَيْفَ نَذِيرِۦۖ (18) وَلَقَدْ كَذَّبَ اَ۬لذِينَ مِن قَبْلِهِمْ فَكَيْفَ كَانَ نَكِيرِۦٓۖ (19) ۞أَوَلَمْ يَرَوِاْ اِلَي اَ۬لطَّيْرِ فَوْقَهُمْ صَٰٓفَّٰتٖ وَيَقْبِضْنَۖ مَا يُمْسِكُهُنَّ إِلَّا اَ۬لرَّحْمَٰنُۖ إِنَّهُۥ بِكُلِّ شَےْءِۢ بَصِيرٌۖ (20) اَمَّنْ هَٰذَا اَ۬لذِے هُوَ جُندٞ لَّكُمْ يَنصُرُكُم مِّن دُونِ اِ۬لرَّحْمَٰنِۖ إِنِ اِ۬لْكَٰفِرُونَ إِلَّا فِے غُرُورٍۖ (21) اَمَّنْ هَٰذَا اَ۬لذِے يَرْزُقُكُمُۥٓ إِنَ اَمْسَكَ رِزْقَهُۥۖ بَل لَّجُّواْ فِے عُتُوّٖ وَنُفُورٍۖ (22) اَفَمَنْ يَّمْشِے مُكِبّاً عَلَيٰ وَجْهِهِۦٓ أَهْد۪يٰٓ أَمَّنْ يَّمْشِے سَوِيّاً عَلَيٰ صِرَٰطٖ مُّسْتَقِيمٖۖ (23) قُلْ هُوَ اَ۬لذِےٓ أَنشَأَكُمْ وَجَعَلَ لَكُمُ اُ۬لسَّمْعَ وَالَابْصَٰرَ وَالَافْـِٕدَةَۖ قَلِيلاٗ مَّا تَشْكُرُونَۖ (24) قُلْ هُوَ اَ۬لذِے ذَرَأَكُمْ فِے اِ۬لَارْضِ وَإِلَيْهِ تُحْشَرُونَۖ (25) وَيَقُولُونَ مَت۪يٰ هَٰذَا اَ۬لْوَعْدُ إِن كُنتُمْ صَٰدِقِينَۖ (26) قُلِ اِنَّمَا اَ۬لْعِلْمُ عِندَ اَ۬للَّهِ وَإِنَّمَآ أَنَا نَذِيرٞ مُّبِينٞۖ (27) فَلَمَّا رَأَوْهُ زُلْفَةٗ س۬يَٓٔتْ وُجُوهُ اُ۬لذِينَ كَفَرُواْ وَقِيلَ هَٰذَا اَ۬لذِے كُنتُم بِهِۦ تَدَّعُونَۖ (28) قُلَ اَرَٰٓيْتُمُۥٓ إِنَ اَهْلَكَنِيَ اَ۬للَّهُ وَمَن مَّعِيَ أَوْ رَحِمَنَا فَمَنْ يُّجِيرُ اُ۬لْكٰ۪فِرِينَ مِنْ عَذَابٍ اَلِيمٖۖ (29) قُلْ هُوَ اَ۬لرَّحْمَٰنُ ءَامَنَّا بِهِۦ وَعَلَيْهِ تَوَكَّلْنَاۖ فَسَتَعْلَمُونَ مَنْ هُوَ فِے ضَلَٰلٖ مُّبِينٖۖ (30) قُلَ اَرَٰٓيْتُمُۥٓ إِنَ اَصْبَحَ مَآؤُكُمْ غَوْراٗ فَمَنْ يَّاتِيكُم بِمَآءٖ مَّعِينٖۖ (31)
+
+
+	<br>
+
+            </p>  </div>    </div>
+
+
+        <footer class="footer">
+            <p>لا تنسونا من دعوة صالحة بظهر الغيب</p>
+            <p>المصدر: موقع <a href="https://surahquran.com/" target="_blank" rel="noopener">القرآن الكريم</a></p>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // العناصر
+            const body = document.body;
+            const root = document.documentElement;
+            const elements = {
+                themeToggle: document.getElementById('themeToggle'),
+                eyeToggle: document.getElementById('eyeProtectionToggle'),
+                fontIncrease: document.getElementById('fontIncrease'),
+                fontDecrease: document.getElementById('fontDecrease'),
+                scrollTopBtn: document.getElementById('scrollTopBtn'),
+                progressBar: document.getElementById('progressBar'),
+                progressPercent: document.getElementById('progressPercent')
+            };
+            const icons = {
+                theme: elements.themeToggle.querySelector('i'),
+                eye: elements.eyeToggle.querySelector('i')
+            };
+
+            const FONT_STEP = 0.1;
+            const MIN_FONT_SIZE = 1.2;
+            const MAX_FONT_SIZE = 2.5;
+            
+            // الحالة
+            let state = {
+                darkMode: localStorage.getItem('darkMode') === 'true',
+                eyeCareMode: localStorage.getItem('eyeCareMode') === 'true',
+                fontSize: parseFloat(localStorage.getItem('fontSize')) || 1.6
+            };
+
+            // ---- الوظائف ----
+            
+            const updateFontButtonsState = () => {
+                elements.fontIncrease.disabled = state.fontSize >= MAX_FONT_SIZE;
+                elements.fontDecrease.disabled = state.fontSize <= MIN_FONT_SIZE;
+            };
+
+            const applyState = () => {
+                // تطبيق الثيمات
+                body.classList.toggle('dark-mode', state.darkMode);
+                body.classList.toggle('eye-care-mode', state.eyeCareMode);
+                
+                // تحديث الأيقونات
+                icons.theme.classList.toggle('fa-sun', state.darkMode);
+                icons.theme.classList.toggle('fa-moon', !state.darkMode);
+                elements.themeToggle.classList.toggle('active', state.darkMode);
+
+                icons.eye.classList.toggle('fa-eye-slash', state.eyeCareMode);
+                icons.eye.classList.toggle('fa-eye', !state.eyeCareMode);
+                elements.eyeToggle.classList.toggle('active', state.eyeCareMode);
+                
+                // تطبيق حجم الخط
+                root.style.setProperty('--font-size-quran', `${state.fontSize}em`);
+
+                // تحديث حالة أزرار الخط
+                updateFontButtonsState();
+
+                // حفظ في localStorage
+                localStorage.setItem('darkMode', state.darkMode);
+                localStorage.setItem('eyeCareMode', state.eyeCareMode);
+                localStorage.setItem('fontSize', state.fontSize);
+            };
+
+            const updateProgress = () => {
+                const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (scrollableHeight <= 0) {
+                    elements.progressBar.style.width = '100%';
+                    elements.progressPercent.textContent = '100%';
+                    return;
+                }
+                const progress = (window.scrollY / scrollableHeight) * 100;
+                elements.progressBar.style.width = `${progress}%`;
+                elements.progressPercent.textContent = `${Math.round(progress)}%`;
+
+                // إظهار/إخفاء زر الصعود للأعلى
+                elements.scrollTopBtn.classList.toggle('visible', window.scrollY > 300);
+            };
+            
+            // ---- معالجات الأحداث ----
+
+            elements.themeToggle.addEventListener('click', () => {
+                state.darkMode = !state.darkMode;
+                applyState();
+            });
+
+            elements.eyeToggle.addEventListener('click', () => {
+                state.eyeCareMode = !state.eyeCareMode;
+                applyState();
+            });
+
+            elements.fontIncrease.addEventListener('click', () => {
+                if (state.fontSize < MAX_FONT_SIZE) {
+                    state.fontSize = Math.min(MAX_FONT_SIZE, state.fontSize + FONT_STEP);
+                    applyState();
+                }
+            });
+
+            elements.fontDecrease.addEventListener('click', () => {
+                if (state.fontSize > MIN_FONT_SIZE) {
+                    state.fontSize = Math.max(MIN_FONT_SIZE, state.fontSize - FONT_STEP);
+                    applyState();
+                }
+            });
+            
+            elements.scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            
+            // ---- التشغيل الأولي ----
+            applyState();
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
