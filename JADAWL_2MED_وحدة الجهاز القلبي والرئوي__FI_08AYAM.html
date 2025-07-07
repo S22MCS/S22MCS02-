@@ -8,10 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #f0f2f5;
+      --bg-color: #f4f7f9;
       --card-bg-color: #ffffff;
       --primary-text-color: #1d2d3d;
-      --secondary-text-color: #5a6a7b;
+      --secondary-text-color: #6c757d;
       --accent-color-1: #007bff; /* Blue */
       --accent-color-2: #28a745; /* Green */
       --accent-color-3: #fd7e14; /* Orange */
@@ -34,8 +34,9 @@
     }
 
     .container {
-      max-width: 1300px;
+      max-width: 1400px;
       margin: 0 auto;
+      padding: 0 10px;
     }
 
     h1 {
@@ -43,6 +44,7 @@
       color: var(--primary-text-color);
       margin-bottom: 40px;
       font-weight: 700;
+      font-size: 2em;
     }
 
     .stats-grid {
@@ -54,9 +56,9 @@
     
     .stat-card {
       background-color: var(--card-bg-color);
-      border-radius: 12px;
+      border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
       text-align: center;
       border-bottom: 4px solid var(--accent-color-1);
     }
@@ -69,6 +71,7 @@
       margin-bottom: 30px;
       height: 24px;
       overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .progress-bar {
@@ -87,15 +90,11 @@
 
     .schedule-grid {
       display: grid;
-      gap: 25px;
-    }
-
-    .day-section {
-      background-color: transparent;
+      gap: 30px;
     }
 
     .day-header {
-      font-size: 1.5em;
+      font-size: 1.6em;
       font-weight: 700;
       color: var(--primary-text-color);
       margin-bottom: 20px;
@@ -111,19 +110,20 @@
 
     .task-card {
       background-color: var(--card-bg-color);
-      border-radius: 12px;
+      border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      border-left: 4px solid transparent;
     }
-    .task-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); }
+    .task-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); }
 
     .task-subject {
       display: inline-block;
-      padding: 3px 12px;
+      padding: 4px 14px;
       border-radius: 20px;
       font-size: 0.8em;
       font-weight: 700;
@@ -137,12 +137,22 @@
     .subject-review { background-color: var(--accent-color-5); }
     
     .task-content { margin-bottom: 20px; }
-    .lang-ar { font-weight: 700; font-size: 1.2em; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; }
+    .lang-ar { 
+        font-weight: 700; 
+        font-size: 1.2em; 
+        margin-bottom: 8px; 
+        display: flex; 
+        gap: 10px; 
+        align-items: center; 
+    }
     .lang-ar i { color: var(--secondary-text-color); }
-    .lang-en, .lang-fr { font-family: var(--font-latin); font-size: 0.95em; color: var(--secondary-text-color); padding-right: 25px; position: relative; }
-    .lang-en::before, .lang-fr::before { position: absolute; right: 0; }
-    .lang-en::before { content: '🇬🇧'; }
-    .lang-fr::before { content: '🇫🇷'; }
+
+    .lang-en, .lang-fr {
+        font-family: var(--font-latin);
+        font-size: 0.9em;
+        color: var(--secondary-text-color);
+        padding-right: 10px; /* Small padding for alignment */
+    }
     
     .task-footer {
       display: flex;
@@ -150,18 +160,20 @@
       gap: 12px;
       border-top: 1px solid var(--border-color);
       padding-top: 15px;
+      margin-top: auto;
     }
 
     .timer-controls {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
     }
     .timer { font-family: var(--font-latin); font-size: 1.3em; font-weight: 700; color: var(--danger-color); }
     
     .button-group { display: flex; gap: 8px; }
-    .btn { color: white; background-color: var(--secondary-text-color); border: none; padding: 8px 12px; cursor: pointer; border-radius: 8px; font-size: 0.85em; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; }
-    .btn:hover { opacity: 0.85; }
+    .btn { color: white; background-color: var(--secondary-text-color); border: none; padding: 8px 12px; cursor: pointer; border-radius: 8px; font-size: 0.85em; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn:hover { opacity: 0.85; transform: scale(1.05); }
     .btn-start { background-color: var(--accent-color-1); }
     .btn-complete { background-color: var(--accent-color-2); }
     .btn-reset { background-color: var(--danger-color); }
@@ -169,14 +181,23 @@
     .completed {
       background-color: #f8f9fa;
       box-shadow: none;
-      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--success-color);
     }
-    .completed .task-content { text-decoration: line-through; color: #aaa; }
+    .completed .task-content { text-decoration: line-through; color: #b0b0b0; }
     .completed .lang-ar, .completed .lang-en, .completed .lang-fr, .completed .task-subject, .completed .timer { opacity: 0.6; }
 
     @media (max-width: 768px) {
-      .tasks-container { grid-template-columns: 1fr; }
+      body { padding: 10px; }
       h1 { font-size: 1.6em; }
+      h2.day-header { font-size: 1.4em; }
+    }
+    @media (max-width: 480px) {
+        .stat-card { padding: 15px; }
+        .stat-value { font-size: 1.8em; }
+        .timer-controls { flex-direction: column; align-items: stretch; text-align: center; }
+        .timer { margin-bottom: 10px; }
+        .button-group { justify-content: center; }
+        .btn { padding: 10px 14px; }
     }
   </style>
 </head>
@@ -203,6 +224,12 @@
   <div class="progress-container">
     <div class="progress-bar" id="progressBar">0%</div>
   </div>
+
+
+
+
+
+
 
 
 
@@ -457,6 +484,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   <div class="schedule-grid">
     <div class="day-section">
       <h2 class="day-header">اليوم الأول: تشريح القفص الصدري</h2>
@@ -474,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="task-card" id="task6"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="far fa-heart"></i>التَّكْوِينُ الخَارِجِيُّ لِلْقَلْبِ والتَّامُورِ</div><div class="lang-en">External Configuration of the Heart and Pericardium</div><div class="lang-fr">Configuration extérieure du cœur et Péricarde</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t6">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task6', 't6', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task6', 't6', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
       </div>
     </div>
-    <div class="day-section">
+     <div class="day-section">
       <h2 class="day-header">اليوم الثالث: تشريح القلب والأوعية</h2>
       <div class="tasks-container">
         <div class="task-card" id="task7"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-heart-crack"></i>التَّكْوِينُ الدَّاخِلِيُّ وَهَيْكَلِيَّةُ القَلْبِ</div><div class="lang-en">Internal Configuration and Structure of the Heart</div><div class="lang-fr">Configuration intérieure et Structure du Cœur</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t7">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task7', 't7', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task7')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task7', 't7', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
@@ -530,8 +570,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // All functionality for timers, progress, and state saving is preserved.
 const TOTAL_TASKS = 24;
 const LS_KEYS = {
-    STATUS: 'tasksStatus_8day_advanced_v3',
-    TIMERS: 'activeTimers_8day_advanced_v3'
+    STATUS: 'tasksStatus_8day_advanced_v4', // Changed key to avoid conflicts
+    TIMERS: 'activeTimers_8day_advanced_v4'  // Changed key to avoid conflicts
 };
 
 let activeTimers = {};
@@ -602,19 +642,23 @@ function runTimer(taskId, timerId, remainingSeconds) {
 
 function completeTask(taskId) {
     const task = document.getElementById(taskId);
-    if (!task || task.classList.contains('completed')) return;
-    
-    task.classList.add('completed');
-    const timerId = task.querySelector('.timer')?.id;
+    if (!task) return;
 
-    if (timerId && activeTimers[timerId]) {
-        clearInterval(activeTimers[timerId]);
-        delete activeTimers[timerId];
-        
-        const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
-        delete timersState[timerId];
-        localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    const isCompleted = task.classList.toggle('completed');
+    const timerId = task.querySelector('.timer')?.id;
+    
+    if (isCompleted) {
+        if (timerId && activeTimers[timerId]) {
+            clearInterval(activeTimers[timerId]);
+            delete activeTimers[timerId];
+            
+            const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+            delete timersState[timerId];
+            localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+        }
     }
+    const startBtn = task.querySelector('.btn-start');
+    if (startBtn) startBtn.disabled = isCompleted;
     
     saveState();
     updateProgress();
@@ -622,66 +666,59 @@ function completeTask(taskId) {
 
 function resetTask(taskId, timerId, initialSeconds) {
     const task = document.getElementById(taskId);
-    if (!task) return;
-
     task.classList.remove('completed');
-    
-    if (timerId && activeTimers[timerId]) {
+
+    if (activeTimers[timerId]) {
         clearInterval(activeTimers[timerId]);
         delete activeTimers[timerId];
     }
-    
-    document.getElementById(timerId).textContent = formatTime(initialSeconds);
-    const startBtn = task.querySelector('.btn-start');
-    if(startBtn) startBtn.disabled = false;
 
     const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
     delete timersState[timerId];
     localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+
+    document.getElementById(timerId).textContent = formatTime(initialSeconds);
+    const startBtn = task.querySelector('.btn-start');
+    if (startBtn) startBtn.disabled = false;
 
     saveState();
     updateProgress();
 }
 
 function saveState() {
-    const tasksStatus = {};
+    const status = {};
     document.querySelectorAll('.task-card').forEach(task => {
-        tasksStatus[task.id] = task.classList.contains('completed');
+        status[task.id] = task.classList.contains('completed');
     });
-    localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(tasksStatus));
+    localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(status));
 }
 
 function loadState() {
-    const tasksStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS)) || {};
-    for (const taskId in tasksStatus) {
-        if (tasksStatus[taskId]) {
-            const task = document.getElementById(taskId);
-            if(task) task.classList.add('completed');
+    const savedStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS)) || {};
+    Object.keys(savedStatus).forEach(taskId => {
+        const task = document.getElementById(taskId);
+        if (task && savedStatus[taskId]) {
+            task.classList.add('completed');
+            const startBtn = task.querySelector('.btn-start');
+            if (startBtn) startBtn.disabled = true;
         }
-    }
+    });
 
     const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
-    const now = Date.now();
-    for (const timerId in timersState) {
-        const { endTime, taskId } = timersState[timerId];
-        const remainingSeconds = Math.floor((endTime - now) / 1000);
-
+    Object.keys(timersState).forEach(timerId => {
+        const { taskId, endTime } = timersState[timerId];
+        const remainingSeconds = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
         if (remainingSeconds > 0) {
-            document.getElementById(timerId).textContent = formatTime(remainingSeconds);
             runTimer(taskId, timerId, remainingSeconds);
-        } else {
-             document.getElementById(timerId).textContent = "انتهى!";
-             delete timersState[timerId];
         }
-    }
-    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    });
+
+    updateProgress();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadState();
-    updateProgress();
-});
-</script>
+// Load state when the page loads
+document.addEventListener('DOMContentLoaded', loadState);
 
+</script>
 </body>
 </html>

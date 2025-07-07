@@ -3,824 +3,723 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>جدول مراجعة مكثف - 4 أيام لوحدة الجهاز القلبي التنفسي</title>
+  <title>جدول المراجعة المكثّف - 4 أيام</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-color: #c0392b; /* A deep red for cardiovascular theme */
-      --secondary-color: #34495e;
-      --accent-color: #2980b9; /* A calming blue for respiratory theme */
-      --danger-color: #e74c3c;
-      --light-color: #ecf0f1;
-      --dark-color: #333;
-      --white: #ffffff;
-      --success-color: #27ae60;
-      --border-color: #bdc3c7;
+      --bg-color: #f4f7f9;
+      --card-bg-color: #ffffff;
+      --primary-text-color: #1d2d3d;
+      --secondary-text-color: #6c757d;
+      --accent-color-1: #007bff; /* Blue */
+      --accent-color-2: #28a745; /* Green */
+      --accent-color-3: #fd7e14; /* Orange */
+      --accent-color-4: #6f42c1; /* Purple */
+      --accent-color-5: #17a2b8; /* Teal */
+      --danger-color: #dc3545;
+      --warning-color: #ffc107;
+      --success-color: #28a745;
+      --border-color: #e9ecef;
+      --font-arabic: 'Tajawal', 'Arial', sans-serif;
+      --font-latin: 'Roboto', 'Helvetica', sans-serif;
     }
-    
+
     body {
-      font-family: 'Tajawal', 'Arial', sans-serif;
-      background-color: var(--light-color);
+      font-family: var(--font-arabic);
+      background-color: var(--bg-color);
       margin: 0;
-      padding: 20px;
-      color: var(--dark-color);
+      padding: 15px;
+      color: var(--primary-text-color);
       line-height: 1.7;
     }
-    
+
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
+      padding: 0 10px;
     }
-    
+
     h1 {
       text-align: center;
-      color: var(--primary-color);
-      margin-bottom: 30px;
-      font-size: 2.2em;
+      color: var(--primary-text-color);
+      margin-bottom: 20px;
       font-weight: 700;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-      position: relative;
-      padding-bottom: 15px;
+      font-size: 2em;
     }
     
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 180px;
-      height: 4px;
-      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-      border-radius: 3px;
+    .warning-box {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 0 auto 30px auto;
+        text-align: center;
+        max-width: 800px;
+        font-size: 1.1em;
+    }
+    .warning-box .fa-exclamation-triangle {
+        margin-left: 10px;
     }
 
-    .page-info {
-      background-color: var(--white);
-      padding: 15px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
-      text-align: center;
-      border-left: 5px solid var(--primary-color);
-    }
-
-    .page-info div {
-      margin-bottom: 10px;
-      font-size: 1em;
-      color: var(--secondary-color);
-    }
-    .page-info div:last-child { margin-bottom: 0; }
-    .page-info .countdown, .page-info .date-display {
-      font-weight: bold;
-      color: var(--primary-color);
-    }
-    
-    .progress-container {
-      background-color: #e0e0e0;
-      border-radius: 10px;
-      margin: 25px 0;
-      height: 22px;
-      overflow: hidden;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-      width: 0;
-      transition: width 0.5s ease-in-out;
-      border-radius: 10px;
-    }
-    
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background-color: var(--white);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
       margin-bottom: 30px;
-    }
-    
-    th, td {
-      border: 1px solid var(--border-color);
-      padding: 12px 15px;
-      text-align: right;
-      vertical-align: top;
-      transition: background-color 0.3s ease;
-    }
-    
-    th {
-      background-color: var(--primary-color);
-      color: var(--white);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    
-    tr:nth-child(even) td { background-color: #f8f9fa; }
-    tr:hover td { background-color: #fbe9e7; } /* Light red hover */
-    td { background-color: var(--white); }
-    
-    td.timer {
-      color: var(--danger-color);
-      font-weight: bold;
-      margin-top: 10px;
-      display: block;
-      font-size: 0.9em;
-    }
-    
-    .task-title {
-      font-weight: 700;
-      color: var(--secondary-color);
-      display: block;
-      margin-bottom: 10px;
-      font-size: 1.1em;
-    }
-    .task-title i { margin-left: 8px; color: var(--accent-color); }
-    
-    ul {
-      padding-right: 20px;
-      margin-top: 5px;
-      list-style: none;
-    }
-    
-    ul li {
-      margin-bottom: 8px;
-      position: relative;
-      padding-right: 20px;
-      font-size: 0.95em;
-    }
-    
-    ul li::before {
-      content: "🩺";
-      position: absolute;
-      right: 0;
-      top: 0;
-      color: var(--primary-color);
-    }
-    
-    .task-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 15px;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    
-    .btn {
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-      border-radius: 5px;
-      font-size: 0.85em;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      min-width: 80px;
-      font-weight: 500;
-    }
-    
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-    .btn-start { background-color: var(--accent-color); }
-    .btn-start:hover { background-color: #2471a3; }
-    .btn-complete { background-color: var(--primary-color); }
-    .btn-complete:hover { background-color: #a93226; }
-    .btn-reset { background-color: var(--secondary-color); }
-    .btn-reset:hover { background-color: #1a252f; }
-    
-    .completed {
-      position: relative;
-      background-color: #e8f5e9 !important;
-      text-decoration: line-through;
-      color: #777;
-    }
-    .completed .task-title, .completed ul li { color: #555; }
-    
-    .completed::after {
-      content: "✓ مكتمل";
-      color: var(--success-color);
-      font-weight: bold;
-      font-size: 0.8em;
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      background: white;
-      padding: 3px 6px;
-      border-radius: 4px;
-      border: 1px solid var(--success-color);
-    }
-    
-    .day-header {
-      font-weight: bold;
-      color: var(--primary-color);
-      font-size: 1.2em;
-      background-color: #fbe9e7 !important;
-    }
-    
-    .stats {
-      display: flex;
-      justify-content: space-around;
-      margin: 25px 0;
-      flex-wrap: wrap;
-      gap: 15px;
     }
     
     .stat-card {
-      background-color: var(--white);
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      flex: 1;
-      min-width: 180px;
+      background-color: var(--card-bg-color);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
       text-align: center;
-      border-top: 4px solid var(--accent-color);
+      border-bottom: 4px solid var(--accent-color-1);
     }
-    .stat-card h3 {
-      margin: 0 0 10px 0;
-      color: var(--primary-color);
-      font-size: 1em;
+    .stat-card h3 { margin: 0 0 10px 0; color: var(--secondary-text-color); font-size: 1em; display: flex; align-items: center; justify-content: center; gap: 8px;}
+    .stat-value { font-size: 2.2em; font-weight: 700; color: var(--primary-text-color); }
+
+    .progress-container {
+      background-color: var(--border-color);
+      border-radius: 50px;
+      margin-bottom: 30px;
+      height: 24px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
     }
-    .stat-value {
-      font-size: 1.8em;
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-5));
+      width: 0;
+      transition: width 0.5s ease-in-out;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--card-bg-color);
+      font-size: 0.8em;
+      font-weight: bold;
+    }
+
+    .schedule-grid {
+      display: grid;
+      gap: 30px;
+    }
+
+    .day-header {
+      font-size: 1.6em;
       font-weight: 700;
-      color: var(--secondary-color);
+      color: var(--primary-text-color);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--border-color);
+    }
+
+    .tasks-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .task-card {
+      background-color: var(--card-bg-color);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 4px solid transparent;
+    }
+    .task-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); }
+
+    .task-subject {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: 700;
+      color: var(--card-bg-color);
+      margin-bottom: 15px;
+    }
+    .subject-anatomy { background-color: var(--accent-color-1); }
+    .subject-histology { background-color: var(--accent-color-4); }
+    .subject-physiology { background-color: var(--accent-color-2); }
+    .subject-biophysics { background-color: var(--accent-color-3); }
+    .subject-review { background-color: var(--accent-color-5); }
+    
+    .task-content { margin-bottom: 20px; }
+    .lang-ar { 
+        font-weight: 700; 
+        font-size: 1.2em; 
+        margin-bottom: 8px; 
+        display: flex; 
+        gap: 10px; 
+        align-items: center; 
+    }
+    .lang-ar i { color: var(--secondary-text-color); }
+
+    .lang-en, .lang-fr {
+        font-family: var(--font-latin);
+        font-size: 0.9em;
+        color: var(--secondary-text-color);
+        padding-right: 10px;
     }
     
-    /* === RESPONSIVE DESIGN FOR MOBILE === */
-    @media (max-width: 768px) {
-      body { padding: 10px; }
-      h1 { font-size: 1.8em; }
-      h1::after { width: 120px; }
-
-      table, thead, tbody, th, td, tr { 
-        display: block; 
-      }
-      thead tr { 
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-      }
-      tr { 
-        border: none;
-        margin-bottom: 20px;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        background-color: var(--white);
-      }
-      td { 
-        border: none;
-        border-bottom: 1px solid #eee; 
-        position: relative;
-        padding: 15px;
-        text-align: right;
-      }
-      td:last-child { border-bottom: 0; }
-      
-      /* Add labels to table cells using data-label attribute */
-      td[data-label]::before { 
-        content: attr(data-label);
-        display: block;
-        font-weight: bold;
-        color: var(--primary-color);
-        font-size: 0.9em;
-        margin-bottom: 10px;
-      }
-      
-      td.day-header {
-        padding: 15px !important;
-        text-align: center !important;
-        font-size: 1.3em !important;
-        background-color: var(--primary-color) !important;
-        color: var(--white);
-        border-radius: 12px 12px 0 0;
-      }
-      td.day-header::before { content: "" !important; }
-
-      .task-actions { 
-        flex-direction: column; 
-        align-items: stretch;
-      }
-      .task-actions > div {
-          display: flex;
-          gap: 8px;
-          width: 100%;
-      }
-      .btn { flex: 1; padding: 10px; }
-      td.timer { text-align: center; margin-bottom: 10px; }
-
-      .completed::after { top: 10px; left: 10px; }
-      .stats { flex-direction: column; gap: 10px; }
+    .task-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+      margin-top: auto;
     }
 
+    .timer-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .timer { font-family: var(--font-latin); font-size: 1.3em; font-weight: 700; color: var(--danger-color); }
+    
+    .button-group { display: flex; gap: 8px; }
+    .btn { color: white; background-color: var(--secondary-text-color); border: none; padding: 8px 12px; cursor: pointer; border-radius: 8px; font-size: 0.85em; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn:hover { opacity: 0.85; transform: scale(1.05); }
+    .btn-start { background-color: var(--accent-color-1); }
+    .btn-complete { background-color: var(--accent-color-2); }
+    .btn-reset { background-color: var(--danger-color); }
+
+    .completed {
+      background-color: #f8f9fa;
+      box-shadow: none;
+      border-left: 4px solid var(--success-color);
+    }
+    .completed .task-content { text-decoration: line-through; color: #b0b0b0; }
+    .completed .lang-ar, .completed .lang-en, .completed .lang-fr, .completed .task-subject, .completed .timer { opacity: 0.6; }
+
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      h1 { font-size: 1.6em; }
+      h2.day-header { font-size: 1.4em; }
+    }
     @media (max-width: 480px) {
-      h1 { font-size: 1.5em; }
-      h1::after { width: 100px; }
-      body { padding: 5px; }
-      .container { padding: 0 5px; }
-      .task-actions > div { flex-direction: column; }
+        .stat-card { padding: 15px; }
+        .stat-value { font-size: 1.8em; }
+        .timer-controls { flex-direction: column; align-items: stretch; text-align: center; }
+        .timer { margin-bottom: 10px; }
+        .button-group { justify-content: center; }
+        .btn { padding: 10px 14px; }
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1><i class="fa-solid fa-heart-pulse"></i> جدول مراجعة مكثف - 4 أيام لوحدة الجهاز القلبي التنفسي</h1>
+  <h1><i class="fa-solid fa-bolt"></i> جدول المراجعة المكثّف - 4 أيام</h1>
+  
+  <div class="warning-box">
+     <i class="fas fa-exclamation-triangle"></i>
+     <strong>تنبيه:</strong> هذا الجدول يتطلب جهداً عالياً جداً (حوالي 16 ساعة يومياً).
+  </div>
 
-  <div class="page-info">
-    <div id="gregorianDateDisplay"><i class="fas fa-calendar-alt"></i> ...</div>
-    <div id="hijriDateDisplay"><i class="fas fa-moon"></i> ...</div>
-    <div id="countdownToEndOfDay"><i class="fas fa-hourglass-end"></i> ...</div>
-  </div>
-  
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-  
-  <div class="stats">
+  <div class="stats-grid">
     <div class="stat-card">
       <h3><i class="fas fa-tasks"></i> المهام الكلية</h3>
-      <div class="stat-value" id="totalTasks">12</div>
+      <div class="stat-value" id="totalTasks">24</div>
     </div>
     <div class="stat-card">
-      <h3><i class="fas fa-check-circle"></i> المكتملة</h3>
+      <h3><i class="fas fa-check-circle"></i> المهام المكتملة</h3>
       <div class="stat-value" id="completedTasks">0</div>
     </div>
     <div class="stat-card">
       <h3><i class="fas fa-hourglass-half"></i> الوقت الإجمالي</h3>
-      <div class="stat-value" id="totalStudyTimeDisplay">32 ساعة</div>
+      <div class="stat-value" id="totalStudyTimeDisplay">64 ساعة</div>
     </div>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>اليوم</th>
-        <th>08:00 – 11:00 (3 ساعات)</th>
-        <th>13:00 – 16:00 (3 ساعات)</th>
-        <th>18:00 – 20:00 (ساعتان)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="day-header" colspan="4">اليوم الأول: التشريح الصدري والجهاز التنفسي</td>
-      </tr>
-      <tr>
-        <td class="day-header-mobile">اليوم الأول</td>
-        <td id="task1" data-label="08:00 – 11:00 | التشريح الصدري">
-          <span class="task-title"><i class="fas fa-compress"></i> جدران الصدر والمسالك الهوائية العليا</span>
-          <ul>
-            <li>Anatomie: Parois du thorax (جدران الصدر)</li>
-            <li>Anatomie: Diaphragme (الحجاب الحاجز)</li>
-            <li>Anatomie: Médiastin (المَنْصِف)</li>
-            <li>Anatomie: Larynx (الحنجرة)</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t1"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t1', 10800, 'task1')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task1')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task1', 't1', 10800)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-        <td id="task2" data-label="13:00 – 16:00 | تشريح الرئة والأنسجة">
-          <span class="task-title"><i class="fas fa-lungs"></i> الرئتان، القصبات، والأنسجة التنفسية</span>
-          <ul>
-            <li>Anatomie: Trachée et Bronches (الرغامى والقصبات)</li>
-            <li>Anatomie: Poumons et Plèvres (الرئتان وغشاء الجنب)</li>
-            <li>Histologie: Appareil Respiratoire (أنسجة الجهاز التنفسي)</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t2"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t2', 10800, 'task2')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task2')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task2', 't2', 10800)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-        <td id="task3" data-label="18:00 – 20:00 | فيزيولوجيا التنفس (1)">
-          <span class="task-title"><i class="fas fa-wind"></i> أساسيات فيزيولوجيا التنفس</span>
-          <ul>
-            <li>Physiologie: Anatomie Fonctionnelle de l'Appareil Respiratoire</li>
-            <li>Physiologie: Mécanique ventilatoire (ميكانيكا التهوية)</li>
-            <li>Physiologie: Ventilation Alvéolaire (التهوية السنخية)</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t3"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t3', 7200, 'task3')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task3')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task3', 't3', 7200)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-      </tr>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar">0%</div>
+  </div>
 
-      <tr>
-        <td class="day-header" colspan="4">اليوم الثاني: تشريح القلب وأساسياته الوظيفية</td>
-      </tr>
-      <tr>
-        <td class="day-header-mobile">اليوم الثاني</td>
-        <td id="task4" data-label="08:00 – 11:00 | تشريح القلب (1)">
-          <span class="task-title"><i class="fas fa-heart"></i> الشكل الخارجي والداخلي للقلب</span>
-          <ul>
-            <li>Anatomie: Configuration extérieure du cœur et péricarde</li>
-            <li>Anatomie: Configuration intérieure du cœur</li>
-            <li>Histologie: Appareil Cardio Vasculaire (مقدمة)</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t4"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t4', 10800, 'task4')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task4')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task4', 't4', 10800)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-        <td id="task5" data-label="13:00 – 16:00 | تشريح القلب (2)">
-          <span class="task-title"><i class="fas fa-tint"></i> تروية القلب، بنيته وتعصيبه</span>
-          <ul>
-            <li>Anatomie: Vascularisation du cœur (تروية القلب)</li>
-            <li>Anatomie: Structure et innervation du cœur (بنية وتعصيب القلب)</li>
-            <li>Physiologie: Anatomie Fonctionnelle du Système Cardio-Vasculaire</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t5"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t5', 10800, 'task5')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task5')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task5', 't5', 10800)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-        <td id="task6" data-label="18:00 – 20:00 | فيزيولوجيا القلب (1)">
-          <span class="task-title"><i class="fas fa-bolt"></i> كهرباء ودورة القلب</span>
-          <ul>
-            <li>Physiologie: Electrophysiologie cardiaque (فيزيولوجيا كهرباء القلب)</li>
-            <li>Physiologie: Cycle cardiaque (الدورة القلبية)</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t6"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t6', 7200, 'task6')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task6', 't6', 7200)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-      </tr>
 
-      <tr>
-        <td class="day-header" colspan="4">اليوم الثالث: فيزيولوجيا الدورة الدموية والتنفس</td>
-      </tr>
-      <tr>
-        <td class="day-header-mobile">اليوم الثالث</td>
-        <td id="task7" data-label="08:00 – 11:00 | فيزيولوجيا القلب (2)">
-          <span class="task-title"><i class="fas fa-chart-line"></i> ديناميكيات الدورة الدموية</span>
-          <ul>
-            <li>Physiologie: Débit cardiaque (النتاج القلبي)</li>
-            <li>Physiologie: Pression artérielle et Régulation (الضغط الشرياني وتنظيمه)</li>
-            <li>Biophysique: Biophysique de la circulation</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t7"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t7', 10800, 'task7')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task7')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task7', 't7', 10800)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-        <td id="task8" data-label="13:00 – 16:00 | الدوران الطرفي">
-          <span class="task-title"><i class="fas fa-network-wired"></i> الدوران الوريدي والشعيري</span>
-          <ul>
-            <li>Physiologie: Circulation veineuse (الدوران الوريدي)</li>
-            <li>Physiologie: Circulations Capillaire et Coronaire (الدوران الشعيري والإكليلي)</li>
-            <li>Anatomie: Système cave et azygos (الجهاز الأجوف والفرد)</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t8"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t8', 10800, 'task8')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task8')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task8', 't8', 10800)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-        <td id="task9" data-label="18:00 – 20:00 | فيزيولوجيا التنفس (2)">
-          <span class="task-title"><i class="fas fa-exchange-alt"></i> التبادل الغازي</span>
-          <ul>
-            <li>Physiologie: Rapport Ventilation - Perfusion</li>
-            <li>Physiologie: Circulation Pulmonaire (الدورة الرئوية)</li>
-            <li>Physiologie: Echanges Alvéolo-Capillaires</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t9"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t9', 7200, 'task9')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task9')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task9', 't9', 7200)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-      </tr>
 
-      <tr>
-        <td class="day-header" colspan="4">اليوم الرابع: الأنسجة، الدم، والمراجعة الشاملة</td>
-      </tr>
-      <tr>
-        <td class="day-header-mobile">اليوم الرابع</td>
-        <td id="task10" data-label="08:00 – 11:00 | أنسجة الأوعية والأنظمة الكبرى">
-          <span class="task-title"><i class="fas fa-microscope"></i> نسيج الأوعية والجهاز الأبهري</span>
-          <ul>
-            <li>Histologie: Les Artères, Veines, Capillaires, Vaisseaux Lymphatiques</li>
-            <li>Anatomie: Système Aortique et Pulmonaire (الجهاز الأبهري والرئوي)</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t10"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t10', 10800, 'task10')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task10')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task10', 't10', 10800)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-        <td id="task11" data-label="13:00 – 16:00 | الدم وتكونه">
-          <span class="task-title"><i class="fas fa-vial"></i> الدم، الإرقاء، والأعضاء المكونة للدم</span>
-          <ul>
-            <li>Physiologie: Sang et Hémostase (الدم والإرقاء)</li>
-            <li>Physiologie: Transport des gaz par le sang (نقل الغازات)</li>
-            <li>Histologie: Organes Hématopoïétiques (الأعضاء المكونة للدم)</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t11"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t11', 10800, 'task11')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task11')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task11', 't11', 10800)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-        <td id="task12" data-label="18:00 – 20:00 | المراجعة النهائية">
-          <span class="task-title"><i class="fas fa-award"></i> التنظيم، المراجعة، والتطبيق</span>
-          <ul>
-            <li>Physiologie: Régulation de la Ventilation (تنظيم التهوية)</li>
-            <li>مراجعة شاملة للربط بين التشريح، الفيزيولوجيا، والأنسجة</li>
-            <li>حل أكبر قدر ممكن من أسئلة الخيارات المتعددة (QCMs)</li>
-          </ul>
-          <div class="task-actions">
-            <span class="timer" id="t12"></span>
-            <div>
-              <button class="btn btn-start" onclick="startCountdown('t12', 7200, 'task12')"><i class="fas fa-play"></i> ابدأ</button>
-              <button class="btn btn-complete" onclick="completeTask('task12')"><i class="fas fa-check"></i> إكمال</button>
-              <button class="btn btn-reset" onclick="resetTask('task12', 't12', 7200)"><i class="fas fa-redo"></i> إعادة</button>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+  /* =================================== */
+/* تنسيق كود التقويم والوقت       */
+/* =================================== */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.info-card {
+  background-color: var(--card-bg-color);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border-bottom: 4px solid var(--accent-color-5); /* Teal accent */
+}
+
+.info-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-card-header i {
+  color: var(--accent-color-5);
+}
+
+.info-card-body {
+  font-size: 1.1em;
+  color: var(--secondary-text-color);
+  text-align: center;
+  font-weight: 500;
+}
+
+.info-card-body.timer-display {
+  font-family: var(--font-latin);
+  font-size: 2em;
+  font-weight: 700;
+  color: var(--accent-color-5);
+}
+</style>
+<div class="info-grid">
+  <div class="info-card">
+    <div class="info-card-header">
+      <i class="fas fa-calendar-alt"></i>
+      <span>التقويم الميلادي</span>
+    </div>
+    <div class="info-card-body" id="gregorianDateDisplay">
+      ...
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-card-header">
+      <i class="fas fa-moon"></i>
+      <span>التقويم الهجري</span>
+    </div>
+    <div class="info-card-body" id="hijriDateDisplay">
+      ...
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-card-header">
+      <i class="fas fa-hourglass-end"></i>
+      <span>الوقت المتبقي لانتهاء اليوم</span>
+    </div>
+    <div class="info-card-body timer-display" id="countdownToEndOfDay">
+      00:00:00
+    </div>
+  </div>
+</div>
+<style>
+/* =================================== */
+/* تنسيق كود التقويم والوقت       */
+/* =================================== */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.info-card {
+  background-color: var(--card-bg-color);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border-bottom: 4px solid var(--accent-color-5); /* Teal accent */
+}
+
+.info-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info-card-header i {
+  color: var(--accent-color-5);
+}
+
+.info-card-body {
+  font-size: 1.1em;
+  color: var(--secondary-text-color);
+  text-align: center;
+  font-weight: 500;
+}
+
+.info-card-body.timer-display {
+  font-family: var(--font-latin);
+  font-size: 2em;
+  font-weight: 700;
+  color: var(--accent-color-5);
+}
+</style>
+
+<script>
+
+  /* =================================== */
+/* وظائف تشغيل التقويم والوقت       */
+/* =================================== */
+
+/**
+ * دالة لعرض التاريخ الميلادي والهجري
+ */
+function displayDates() {
+    const today = new Date();
+    
+    // عرض التاريخ الميلادي
+    const gregOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('gregorianDateDisplay').textContent = today.toLocaleDateString('ar-DZ', gregOpt);
+    
+    // عرض التاريخ الهجري مع معالجة الأخطاء
+    try {
+        const hijriOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', calendar: 'islamic-umalqura' };
+        const hijriDate = new Intl.DateTimeFormat('ar-SA', hijriOpt).format(today);
+        document.getElementById('hijriDateDisplay').textContent = hijriDate;
+    } catch (e) {
+        console.warn("Hijri calendar not supported in this browser.");
+        // إخفاء بطاقة التاريخ الهجري إذا لم يكن المتصفح يدعمه
+        const hijriCard = document.getElementById('hijriDateDisplay').closest('.info-card');
+        if (hijriCard) hijriCard.style.display = 'none';
+    }
+}
+
+/**
+ * دالة لتشغيل عداد الوقت المتبقي لنهاية اليوم
+ */
+function startEndOfDayCountdown() {
+    const countdownElement = document.getElementById('countdownToEndOfDay');
+
+    function updateCountdown() {
+        const now = new Date();
+        
+        // حساب وقت منتصف الليل القادم
+        const endOfDay = new Date(now);
+        endOfDay.setHours(24, 0, 0, 0);
+        
+        // حساب الفرق بالثواني
+        const totalSeconds = Math.floor((endOfDay - now) / 1000);
+        
+        if (totalSeconds < 0) {
+            countdownElement.textContent = "00:00:00";
+            return;
+        }
+
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = Math.floor(totalSeconds % 60);
+
+        countdownElement.textContent = 
+            `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+
+    updateCountdown(); // التحديث الفوري عند التحميل
+    setInterval(updateCountdown, 1000); // التحديث كل ثانية
+}
+
+
+// قم باستدعاء الدوال الجديدة داخل حدث تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+    // الدوال الموجودة مسبقًا
+    loadState();
+    updateProgress();
+
+    // الدوال الجديدة للتقويم والوقت
+    displayDates();
+    startEndOfDayCountdown();
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="schedule-grid">
+    <div class="day-section">
+      <h2 class="day-header">اليوم الأول: تشريح مكثف (الصدر والقلب)</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task1"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-compress"></i>جُدْرَانُ الصَّدْرِ</div><div class="lang-en">Thoracic Walls</div><div class="lang-fr">Parois du Thorax</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t1">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task1', 't1', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task1')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task1', 't1', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task2"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-ruler-combined"></i>الحِجَابُ الحَاجِزُ والمُنَصِّفُ</div><div class="lang-en">Diaphragm and Mediastinum</div><div class="lang-fr">Diaphragme et Médiastin</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t2">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task2', 't2', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task2')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task2', 't2', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task3"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-wind"></i>الحَنْجَرَةُ</div><div class="lang-en">Larynx</div><div class="lang-fr">Larynx</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t3">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task3', 't3', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task3')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task3', 't3', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task4"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-road"></i>القَصَبَةُ الهَوَائِيَّةُ والشُّعَبُ الهَوَائِيَّةُ</div><div class="lang-en">Trachea and Bronchi</div><div class="lang-fr">Trachée et Bronches</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t4">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task4', 't4', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task4')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task4', 't4', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task5"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-lungs"></i>الرِّئَتَانِ والغِشَاءُ الجَنْبِيُّ</div><div class="lang-en">Lungs and Pleura</div><div class="lang-fr">Poumons et Plèvres</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t5">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task5', 't5', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task5')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task5', 't5', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task6"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="far fa-heart"></i>التَّكْوِينُ الخَارِجِيُّ لِلْقَلْبِ والتَّامُورِ</div><div class="lang-en">External Configuration of the Heart and Pericardium</div><div class="lang-fr">Configuration extérieure du cœur et Péricarde</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t6">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task6', 't6', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task6', 't6', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم الثاني: تشريح متقدم وعلم الأنسجة</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task7"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-heart-crack"></i>التَّكْوِينُ الدَّاخِلِيُّ وَهَيْكَلِيَّةُ القَلْبِ</div><div class="lang-en">Internal Configuration and Structure of the Heart</div><div class="lang-fr">Configuration intérieure et Structure du Cœur</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t7">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task7', 't7', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task7')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task7', 't7', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task8"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-medkit"></i>التَّرْوِيَةُ الدَّمَوِيَّةُ والتَّغْذِيَةُ العَصَبِيَّةُ لِلْقَلْبِ</div><div class="lang-en">Vascularization and Innervation of the Heart</div><div class="lang-fr">Vascularisation et Innervation du Cœur</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t8">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task8', 't8', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task8')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task8', 't8', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task9"><div class="task-header"><span class="task-subject subject-anatomy">التشريح</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-project-diagram"></i>النِّظَامُ الأَبْهَرُ والرِّئَوِيُّ والوَرِيدِيُّ</div><div class="lang-en">Aortic, Pulmonary, and Caval System</div><div class="lang-fr">Système Aortique, Pulmonaire et Cave</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t9">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task9', 't9', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task9')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task9', 't9', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task10"><div class="task-header"><span class="task-subject subject-histology">علم الأنسجة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-microscope"></i>الْجِهَازُ الْقَلْبِيُّ الْوِعَائِيُّ والشَّرَايِينُ</div><div class="lang-en">Cardiovascular System and The Arteries</div><div class="lang-fr">Appareil Cardio-Vasculaire et Les Artères</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t10">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task10', 't10', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task10')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task10', 't10', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task11"><div class="task-header"><span class="task-subject subject-histology">علم الأنسجة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-microscope"></i>الْأَوْرِدَةُ والشُّعَيْرَاتُ الدَّمَوِيَّةُ</div><div class="lang-en">The Veins and The Capillaries</div><div class="lang-fr">Les Veines et Les Capillaires</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t11">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task11', 't11', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task11')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task11', 't11', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task12"><div class="task-header"><span class="task-subject subject-histology">علم الأنسجة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-microscope"></i>الْأَوْعِيَةُ اللِّمْفَاوِيَّةُ والْمَسَالِكُ الْهَوَائِيَّةُ الْعُلْيَا</div><div class="lang-en">Lymphatic Vessels and Upper Airways</div><div class="lang-fr">Vaisseaux Lymphatiques et Voies Aériennes Supérieures</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t12">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task12', 't12', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task12')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task12', 't12', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+     <div class="day-section">
+      <h2 class="day-header">اليوم الثالث: علم الأنسجة وفيزيولوجيا القلب</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task13"><div class="task-header"><span class="task-subject subject-histology">علم الأنسجة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-microscope"></i>الْقَصَبَةُ الْهَوَائِيَّةُ والْمَسَالِكُ الْهَوَائِيَّةُ الْعَمِيقَةُ</div><div class="lang-en">The Trachea and The Deep Airways</div><div class="lang-fr">La Trachée et Les Voies Aériennes Profondes</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t13">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task13', 't13', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task13')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task13', 't13', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task14"><div class="task-header"><span class="task-subject subject-histology">علم الأنسجة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-layer-group"></i>أَغْشِيَةُ الْجَنْبِ وَنُخَاعُ الْعَظْمِ</div><div class="lang-en">The Pleura and The Bone Marrow</div><div class="lang-fr">Plèvres et La Moelle Osseuse</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t14">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task14', 't14', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task14')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task14', 't14', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task15"><div class="task-header"><span class="task-subject subject-histology">علم الأنسجة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-shield-alt"></i>الأعضاء اللمفاوية (الغدة الزعترية، الطحال، العقد)</div><div class="lang-en">Lymphoid Organs (Thymus, Spleen, Nodes)</div><div class="lang-fr">Organes Lymphoïdes (Thymus, Rate, Ganglions)</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t15">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task15', 't15', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task15')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task15', 't15', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task16"><div class="task-header"><span class="task-subject subject-physiology">علم وظائف الأعضاء</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-bolt"></i>التَّشْرِيحُ الْوَظِيفِيُّ وفِيزْيُولُوجْيَا الْكَهْرَبِيَّةُ لِلْقَلْبِ</div><div class="lang-en">Functional Anatomy and Cardiac Electrophysiology</div><div class="lang-fr">Anatomie Fonctionnelle et Électrophysiologie Cardiaque</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t16">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task16', 't16', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task16')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task16', 't16', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task17"><div class="task-header"><span class="task-subject subject-physiology">علم وظائف الأعضاء</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-sync-alt"></i>الدَّوْرَةُ الْقَلْبِيَّةُ والنِّتَاجُ الْقَلْبِيُّ</div><div class="lang-en">Cardiac Cycle and Cardiac Output</div><div class="lang-fr">Cycle Cardiaque et Débit Cardiaque</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t17">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task17', 't17', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task17')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task17', 't17', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task18"><div class="task-header"><span class="task-subject subject-physiology">علم وظائف الأعضاء</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-tachometer-alt"></i>الضَّغْطُ الشِّرْيَانِيُّ وتنظيمه</div><div class="lang-en">Arterial Pressure and Regulation</div><div class="lang-fr">Pression Artérielle et Régulation</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t18">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task18', 't18', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task18')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task18', 't18', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم الرابع: فيزيولوجيا التنفس، فيزياء حيوية ومراجعة</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task19"><div class="task-header"><span class="task-subject subject-physiology">علم وظائف الأعضاء</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-people-arrows"></i>الدورات (الوريدية، الشعيرية، الإكليلية)</div><div class="lang-en">Circulations (Venous, Capillary, Coronary)</div><div class="lang-fr">Circulations (Veineuse, Capillaire, Coronaire)</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t19">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task19', 't19', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task19')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task19', 't19', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task20"><div class="task-header"><span class="task-subject subject-physiology">علم وظائف الأعضاء</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-cogs"></i>مِيكَانِيكَا وتَهْوِيَةُ الجهاز التنفسي</div><div class="lang-en">Respiratory Mechanics and Alveolar Ventilation</div><div class="lang-fr">Mécanique Ventilatoire et Ventilation Alvéolaire</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t20">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task20', 't20', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task20')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task20', 't20', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task21"><div class="task-header"><span class="task-subject subject-physiology">علم وظائف الأعضاء</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-exchange-alt"></i>التبادل الغازي ونقل الغازات</div><div class="lang-en">Gas Exchange and Transport</div><div class="lang-fr">Échange et Transport des Gaz</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t21">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task21', 't21', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task21')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task21', 't21', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task22"><div class="task-header"><span class="task-subject subject-biophysics">فيزياء حيوية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-atom"></i>فيزياء السوائل (استاتيكا وديناميكا)</div><div class="lang-en">Fluid Physics (Statics and Dynamics)</div><div class="lang-fr">Physique des Fluides (Statique et Dynamique)</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t22">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task22', 't22', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task22')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task22', 't22', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task23"><div class="task-header"><span class="task-subject subject-biophysics">فيزياء حيوية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-atom"></i>تطبيقات (عمل القلب، التوتر السطحي، الديناميكا الدموية)</div><div class="lang-en">Applications (Heart Work, Surface Tension, Hemodynamics)</div><div class="lang-fr">Applications (Travail Cardiaque, Tension, Hémodynamique)</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t23">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task23', 't23', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task23')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task23', 't23', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task24"><div class="task-header"><span class="task-subject subject-review">مراجعة نهائية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-award"></i>الدم والإرقاء والمراجعة النهائية</div><div class="lang-en">Blood, Hemostasis, and Final Review</div><div class="lang-fr">Sang, Hémostase et Révision Finale</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t24">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task24', 't24', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task24')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task24', 't24', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-// Global variables
-const totalTasks = 12;
-let completedTasks = 0;
-let activeTimers = {};
-let endOfDayTimerInterval;
-
-// Define unique keys for this specific schedule
+const TOTAL_TASKS = 24;
 const LS_KEYS = {
-  COMPLETED: 'completedTasks_cardioResp_4days',
-  STATUS: 'tasksStatus_cardioResp_4days',
-  TIMERS: 'activeTimers_cardioResp_4days'
+    STATUS: 'tasksStatus_4day_intensive_v1',
+    TIMERS: 'activeTimers_4day_intensive_v1'
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-  loadState();
-  updateProgress();
-  updateTotalStudyTimeDisplay();
-  displayDates();
-  startEndOfDayCountdown();
-  
-  // Restore timers if they were running
-  for (const timerId in activeTimers) {
-    if (activeTimers[timerId] && activeTimers[timerId].endTime) {
-      const remainingSeconds = Math.max(0, Math.floor((activeTimers[timerId].endTime - Date.now()) / 1000));
-      const taskElement = document.getElementById(activeTimers[timerId].taskId);
-      if (taskElement && !taskElement.classList.contains('completed')) {
-          if (remainingSeconds > 0) {
-            startCountdown(timerId, remainingSeconds, activeTimers[timerId].taskId, true);
-          } else {
-            document.getElementById(timerId).innerHTML = '<i class="fas fa-bell"></i> انتهى الوقت!';
-          }
-      } else if (taskElement && taskElement.classList.contains('completed')) {
-         document.getElementById(timerId).textContent = 'مكتمل';
-      }
-    }
-  }
-});
+let activeTimers = {};
 
-function displayDates() {
-  const now = new Date();
-  const gregorianFormatter = new Intl.DateTimeFormat('ar-EG', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-  });
-  document.getElementById('gregorianDateDisplay').innerHTML = `<i class="fas fa-calendar-alt"></i> الميلادي: ${gregorianFormatter.format(now)}`;
-
-  try {
-    const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
-      year: 'numeric', month: 'long', day: 'numeric'
-    });
-    document.getElementById('hijriDateDisplay').innerHTML = `<i class="fas fa-moon"></i> الهجري: ${hijriFormatter.format(now)}`;
-  } catch (e) {
-    console.error("Hijri date formatting not supported or error:", e);
-    document.getElementById('hijriDateDisplay').style.display = 'none';
-  }
-}
-
-function startEndOfDayCountdown() {
-  if (endOfDayTimerInterval) clearInterval(endOfDayTimerInterval);
-  
-  const countdownElement = document.getElementById('countdownToEndOfDay');
-  function updateCountdown() {
-    const now = new Date();
-    const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
-    const totalSecondsRemaining = Math.floor((endOfDay - now) / 1000);
-
-    if (totalSecondsRemaining < 0) {
-      countdownElement.innerHTML = `<i class="fas fa-hourglass-end"></i> انتهى اليوم!`;
-      clearInterval(endOfDayTimerInterval);
-      return;
-    }
-    let hours = Math.floor(totalSecondsRemaining / 3600);
-    let minutes = Math.floor((totalSecondsRemaining % 3600) / 60);
-    let seconds = totalSecondsRemaining % 60;
-    countdownElement.innerHTML = `<i class="fas fa-hourglass-end"></i> نهاية اليوم بعد: ${hours}س ${minutes}د ${seconds}ث`;
-  }
-  updateCountdown();
-  endOfDayTimerInterval = setInterval(updateCountdown, 1000);
-}
-
-function startCountdown(timerElementId, seconds, taskId, isRestart = false) {
-  if (activeTimers[timerElementId] && activeTimers[timerElementId].interval) {
-    clearInterval(activeTimers[timerElementId].interval);
-  }
-
-  const taskElement = document.getElementById(taskId);
-  if (taskElement && taskElement.classList.contains('completed')) {
-    document.getElementById(timerElementId).textContent = 'مكتمل';
-    return;
-  }
-
-  let endTime;
-  if (isRestart && activeTimers[timerElementId] && activeTimers[timerElementId].endTime) {
-    endTime = activeTimers[timerElementId].endTime;
-  } else {
-    endTime = Date.now() + seconds * 1000;
-  }
-  
-  let timerDisplayElement = document.getElementById(timerElementId);
-  
-  function updateTimerDisplay() {
-    let remaining = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
-    let h = Math.floor(remaining / 3600);
-    let m = Math.floor((remaining % 3600) / 60);
-    let s = remaining % 60;
-    timerDisplayElement.innerHTML = `<i class="fas fa-clock"></i> ${h}س ${m}د ${s}ث`;
-    if (remaining <= 0) {
-      timerDisplayElement.innerHTML = '<i class="fas fa-bell"></i> انتهى الوقت!';
-      clearInterval(activeTimers[timerElementId].interval);
-    }
-  }
-
-  activeTimers[timerElementId] = {
-    interval: setInterval(updateTimerDisplay, 1000),
-    taskId: taskId,
-    initialSeconds: seconds,
-    endTime: endTime
-  };
-  
-  updateTimerDisplay();
-  saveState();
-}
-
-function completeTask(taskId) {
-  const taskElement = document.getElementById(taskId);
-  if (!taskElement || taskElement.classList.contains('completed')) return;
-  
-  taskElement.classList.add('completed');
-  completedTasks++;
-  updateProgress();
-  
-  for (const timerId in activeTimers) {
-    if (activeTimers[timerId] && activeTimers[timerId].taskId === taskId) {
-      if (activeTimers[timerId].interval) {
-        clearInterval(activeTimers[timerId].interval);
-      }
-      document.getElementById(timerId).textContent = 'مكتمل';
-      break;
-    }
-  }
-  saveState();
-}
-
-function resetTask(taskId, timerId) {
-  const taskElement = document.getElementById(taskId);
-  if (!taskElement) return;
-  
-  if (taskElement.classList.contains('completed')) {
-    taskElement.classList.remove('completed');
-    completedTasks--;
-    updateProgress();
-  }
-  
-  if (activeTimers[timerId] && activeTimers[timerId].interval) {
-    clearInterval(activeTimers[timerId].interval);
-  }
-  delete activeTimers[timerId];
-  
-  document.getElementById(timerId).textContent = '';
-  saveState();
+function formatTime(seconds) {
+    if (isNaN(seconds) || seconds < 0) return "00:00:00";
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
 }
 
 function updateProgress() {
-  const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
-  document.getElementById('progressBar').style.width = `${progress}%`;
-  document.getElementById('completedTasks').textContent = completedTasks;
-  document.getElementById('totalTasks').textContent = totalTasks;
+    const completedCount = document.querySelectorAll('.task-card.completed').length;
+    document.getElementById('completedTasks').innerText = completedCount;
+    
+    const progress = TOTAL_TASKS > 0 ? (completedCount / TOTAL_TASKS) * 100 : 0;
+    const progressBar = document.getElementById('progressBar');
+    progressBar.style.width = progress + '%';
+    progressBar.innerText = Math.round(progress) + '%';
 }
 
-function updateTotalStudyTimeDisplay() {
-  document.getElementById('totalStudyTimeDisplay').textContent = '32 ساعة';
+function startTimer(taskId, timerId, initialSeconds) {
+    if (activeTimers[timerId]) return;
+
+    const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    
+    let remainingSeconds;
+    if (timersState[timerId] && timersState[timerId].endTime) {
+        remainingSeconds = Math.max(0, Math.floor((timersState[timerId].endTime - Date.now()) / 1000));
+    } else {
+        remainingSeconds = initialSeconds;
+        const endTime = Date.now() + initialSeconds * 1000;
+        timersState[timerId] = { endTime, taskId, initialSeconds };
+        localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    }
+    
+    if (remainingSeconds > 0) {
+      runTimer(taskId, timerId, remainingSeconds);
+    }
+}
+
+function runTimer(taskId, timerId, remainingSeconds) {
+    const taskElement = document.getElementById(taskId);
+    if (!taskElement) return;
+    const timerElement = document.getElementById(timerId);
+    const startBtn = taskElement.querySelector('.btn-start');
+    
+    if (startBtn) startBtn.disabled = true;
+
+    activeTimers[timerId] = setInterval(() => {
+        remainingSeconds--;
+        timerElement.textContent = formatTime(remainingSeconds);
+
+        if (remainingSeconds <= 0) {
+            clearInterval(activeTimers[timerId]);
+            delete activeTimers[timerId];
+            
+            const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+            delete timersState[timerId];
+            localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+            
+            timerElement.textContent = "انتهى!";
+            if (startBtn) startBtn.disabled = false;
+        }
+    }, 1000);
+}
+
+function completeTask(taskId) {
+    const task = document.getElementById(taskId);
+    if (!task) return;
+
+    const isCompleted = task.classList.toggle('completed');
+    const timerId = task.querySelector('.timer')?.id;
+    
+    if (isCompleted) {
+        if (timerId && activeTimers[timerId]) {
+            clearInterval(activeTimers[timerId]);
+            delete activeTimers[timerId];
+            
+            const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+            delete timersState[timerId];
+            localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+        }
+    }
+    const startBtn = task.querySelector('.btn-start');
+    if (startBtn) startBtn.disabled = isCompleted;
+    
+    saveState();
+    updateProgress();
+}
+
+function resetTask(taskId, timerId, initialSeconds) {
+    const task = document.getElementById(taskId);
+    task.classList.remove('completed');
+
+    if (activeTimers[timerId]) {
+        clearInterval(activeTimers[timerId]);
+        delete activeTimers[timerId];
+    }
+
+    const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    delete timersState[timerId];
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+
+    document.getElementById(timerId).textContent = formatTime(initialSeconds);
+    const startBtn = task.querySelector('.btn-start');
+    if (startBtn) startBtn.disabled = false;
+
+    saveState();
+    updateProgress();
 }
 
 function saveState() {
-  localStorage.setItem(LS_KEYS.COMPLETED, completedTasks.toString());
-  
-  let tasksStatus = {};
-  for (let i = 1; i <= totalTasks; i++) {
-    const taskId = 'task' + i;
-    const taskElement = document.getElementById(taskId);
-    if(taskElement) {
-       tasksStatus[taskId] = taskElement.classList.contains('completed');
-    }
-  }
-  localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(tasksStatus));
-  
-  const timersToSave = {};
-  for (const timerId in activeTimers) {
-    if (activeTimers[timerId] && activeTimers[timerId].endTime) {
-      timersToSave[timerId] = {
-        taskId: activeTimers[timerId].taskId,
-        endTime: activeTimers[timerId].endTime
-      };
-    }
-  }
-  localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersToSave));
+    const status = {};
+    document.querySelectorAll('.task-card').forEach(task => {
+        status[task.id] = task.classList.contains('completed');
+    });
+    localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(status));
 }
 
 function loadState() {
-  const savedCompletedTasks = localStorage.getItem(LS_KEYS.COMPLETED);
-  if (savedCompletedTasks !== null) {
-    completedTasks = parseInt(savedCompletedTasks, 10);
-  }
+    const savedStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS)) || {};
+    Object.keys(savedStatus).forEach(taskId => {
+        const task = document.getElementById(taskId);
+        if (task && savedStatus[taskId]) {
+            task.classList.add('completed');
+            const startBtn = task.querySelector('.btn-start');
+            if (startBtn) startBtn.disabled = true;
+        }
+    });
 
-  const savedTasksStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS));
-  if (savedTasksStatus) {
-    for (let i = 1; i <= totalTasks; i++) {
-      const taskId = 'task' + i;
-      if (savedTasksStatus[taskId]) {
-        const taskElement = document.getElementById(taskId);
-        if(taskElement) taskElement.classList.add('completed');
-        
-        const timerSpanId = 't' + i;
-        const timerElement = document.getElementById(timerSpanId);
-        if (timerElement) timerElement.textContent = 'مكتمل';
-      }
-    }
-  }
-  
-  const savedTimers = localStorage.getItem(LS_KEYS.TIMERS);
-  if (savedTimers) {
-    activeTimers = JSON.parse(savedTimers); 
-  }
+    const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    Object.keys(timersState).forEach(timerId => {
+        const { taskId, endTime } = timersState[timerId];
+        const remainingSeconds = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
+        if (remainingSeconds > 0) {
+            runTimer(taskId, timerId, remainingSeconds);
+        }
+    });
+
+    updateProgress();
 }
-</script>
 
+document.addEventListener('DOMContentLoaded', loadState);
+</script>
 </body>
 </html>
