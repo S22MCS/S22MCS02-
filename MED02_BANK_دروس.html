@@ -958,6 +958,7 @@ document.addEventListener('DOMContentLoaded', loadUpdatesForPanel);
          </button>
     </nav>
 
+
     <div class="content-container">
         <div id="cardio-section" class="content-section active">
 
@@ -1605,49 +1606,50 @@ document.addEventListener('DOMContentLoaded', loadUpdatesForPanel);
         }
     }
 
-    function toggleLesson(clickedButton) {
-        const materialsList = clickedButton.nextElementSibling;
-        if (!materialsList) return;
+function toggleLesson(clickedButton) {
+    const materialsList = clickedButton.nextElementSibling;
+    if (!materialsList || !materialsList.classList.contains('lesson-materials')) {
+        console.error('Associated materials list not found for button.');
+        return;
+    }
 
-        const parentBlock = clickedButton.closest('.subject-content');
-        const isCurrentlyOpen = clickedButton.getAttribute('aria-expanded') === 'true';
+    const parentContent = clickedButton.closest('.subject-content');
+    if (!parentContent) {
+        console.error('Parent subject content not found.');
+        return;
+    }
 
-        parentBlock.querySelectorAll('.lesson-button').forEach(button => {
-            button.classList.remove('active');
-            button.setAttribute('aria-expanded', 'false');
-            const list = button.nextElementSibling;
-            if (list && list.classList.contains('lesson-materials')) {
-                list.classList.remove('open');
-                list.style.maxHeight = '0px';
-                list.style.padding = '0 1.5rem';
-            }
-        });
+    const isCurrentlyOpen = clickedButton.getAttribute('aria-expanded') === 'true';
 
-        if (!isCurrentlyOpen) {
-            clickedButton.classList.add('active');
-            clickedButton.setAttribute('aria-expanded', 'true');
-            materialsList.classList.add('open');
-            materialsList.style.maxHeight = materialsList.scrollHeight + 'px';
-
-            const mainContent = clickedButton.closest('.subject-content');
-            if(mainContent && mainContent.style.maxHeight !== '0px') {
-                setTimeout(() => {
-                    mainContent.style.maxHeight = mainContent.scrollHeight + 'px';
-                }, 400);
-            }
-            
-            setTimeout(() => {
-                smartScroll(clickedButton);
-            }, 300);
-        } else {
-             const mainContent = clickedButton.closest('.subject-content');
-             if(mainContent && mainContent.style.maxHeight !== '0px') {
-                 setTimeout(() => {
-                     mainContent.style.maxHeight = mainContent.scrollHeight + 'px';
-                 }, 400);
-            }
+    // --- الخطوة 1: ابحث عن أي درس آخر مفتوح في نفس المستوى وأغلقه ---
+    const parentList = clickedButton.parentElement.parentElement;
+    const currentlyOpenButton = parentList.querySelector('.lesson-button[aria-expanded="true"]');
+    if (currentlyOpenButton && currentlyOpenButton !== clickedButton) {
+        currentlyOpenButton.setAttribute('aria-expanded', 'false');
+        const listToClose = currentlyOpenButton.nextElementSibling;
+        if (listToClose) {
+            listToClose.style.maxHeight = '0px';
         }
     }
+    
+    // --- الخطوة 2: افتح أو أغلق الدرس الذي تم النقر عليه ---
+    if (isCurrentlyOpen) {
+        clickedButton.setAttribute('aria-expanded', 'false');
+        materialsList.style.maxHeight = '0px';
+    } else {
+        clickedButton.setAttribute('aria-expanded', 'true');
+        materialsList.style.maxHeight = materialsList.scrollHeight + 'px';
+        setTimeout(() => smartScroll(clickedButton), 300);
+    }
+    
+    // --- الخطوة 3: تحديث ارتفاع حاوية الوحدة الرئيسية (الأب) ---
+    // هذا هو الجزء الأهم الذي تم إصلاحه
+    setTimeout(() => {
+        if (parentContent.style.maxHeight !== '0px') {
+            parentContent.style.maxHeight = parentContent.scrollHeight + 'px';
+        }
+    }, 400); // يجب أن يكون هذا الرقم أكبر من مدة الانتقال (transition) في CSS
+}
 
     document.addEventListener('DOMContentLoaded', () => {
         const firstNavButton = document.querySelector('.summaries-navigation .nav-button');
@@ -1658,7 +1660,6 @@ document.addEventListener('DOMContentLoaded', loadUpdatesForPanel);
 
     </script>
 </main>
-
 
 
 <script>
