@@ -1,0 +1,5185 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>     </title>
+
+    
+    <!-- إضافة الفافيكون بصيغة JPG -->
+    <link rel="icon" href="S22MCS PARTS/doctor.png" type="image/jpeg">
+
+
+<style>
+.LIKEWIKIIDAFA-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.LIKEWIKIIDAFA-content {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 650px;
+    max-height: 85vh;
+    background-color: #fff;
+    padding: 20px;
+    z-index: 999999;
+    overflow-y: auto;
+    direction: rtl;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    border: 1px solid #e0e0e0;
+    font-size: 1rem;
+}
+
+.LIKEWIKIIDAFA-content-inner {
+    position: relative;
+    height: auto;
+    padding: 10px;
+}
+
+.LIKEWIKIIDAFA-content::-webkit-scrollbar {
+    width: 8px;
+}
+.LIKEWIKIIDAFA-content::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+.LIKEWIKIIDAFA-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.LIKEWIKIIDAFA-tooltip.active .LIKEWIKIIDAFA-content {
+    display: block;
+    animation: fadeInScale 0.3s ease;
+}
+
+.LIKEWIKIIDAFA-tooltip.active::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999998;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.LIKEWIKIIDAFA-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 15px auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: block;
+}
+
+.LIKEWIKIIDAFA-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #f44336;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    z-index: 1000000;
+    padding: 0;
+    line-height: 1;
+}
+
+.LIKEWIKIIDAFA-close-btn:hover {
+    background: #d32f2f;
+    transform: scale(1.1);
+}
+
+.LIKEWIKIIDAFA-close-btn:active {
+    transform: scale(0.95);
+}
+
+.language-section {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.language-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    text-align: center;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.arabic-text {
+    direction: rtl;
+    text-align: right;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.english-text, .french-text {
+    direction: ltr;
+    text-align: left;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.language-flag {
+    width: 22px;
+    height: 16px;
+    margin: 0 6px;
+    vertical-align: middle;
+    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+    padding-right: 20px;
+    margin: 10px 0;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+@media (max-width: 1024px) {
+    .LIKEWIKIIDAFA-content {
+        width: 92vw;
+        padding: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .LIKEWIKIIDAFA-content {
+        width: 94vw;
+        max-height: 90vh;
+        padding: 16px;
+        font-size: 0.95rem;
+    }
+    
+    .language-title {
+        font-size: 1rem;
+        padding: 6px 10px;
+    }
+    
+    .LIKEWIKIIDAFA-close-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+    
+    .language-flag {
+        width: 20px;
+        height: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .LIKEWIKIIDAFA-content {
+        width: 96vw;
+        padding: 14px;
+        max-height: 95vh;
+        font-size: 0.9rem;
+    }
+    
+    .language-title {
+        font-size: 0.95rem;
+        padding: 5px 8px;
+    }
+    
+    .LIKEWIKIIDAFA-close-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 15px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .language-flag {
+        width: 18px;
+        height: 12px;
+    }
+    
+    ul {
+        padding-right: 15px;
+    }
+    
+    li {
+        margin-bottom: 6px;
+    }
+}
+
+@media (max-height: 600px) {
+    .LIKEWIKIIDAFA-content {
+        top: 20px;
+        transform: translateX(-50%);
+        max-height: calc(100vh - 40px);
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const LIKEWIKIIDAFA_tooltip = document.getElementById('LIKEWIKIIDAFA-tooltip');
+    const LIKEWIKIIDAFA_closeBtn = document.querySelector('.LIKEWIKIIDAFA-close-btn');
+    
+    // فتح عند الضغط على النص
+    LIKEWIKIIDAFA_tooltip.addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        LIKEWIKIIDAFA_tooltip.classList.add('active');
+    });
+    
+    // إغلاق بالضغط على الزر X فقط
+    LIKEWIKIIDAFA_closeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeTooltip();
+    });
+    
+    // إغلاق عند الضغط خارج النافذة
+    document.addEventListener('click', function(e) {
+        if (LIKEWIKIIDAFA_tooltip.classList.contains('active') && 
+            !e.target.closest('.LIKEWIKIIDAFA-content') && 
+            !e.target.closest('.LIKEWIKIIDAFA-tooltip')) {
+            closeTooltip();
+        }
+    });
+    
+    // إغلاق بالضغط على زر ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && LIKEWIKIIDAFA_tooltip.classList.contains('active')) {
+            closeTooltip();
+        }
+    });
+    
+    function closeTooltip() {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        LIKEWIKIIDAFA_tooltip.classList.remove('active');
+    }
+    
+    // منع التمرير عند فتح النافذة على الأجهزة المحمولة
+    document.querySelector('.LIKEWIKIIDAFA-content').addEventListener('touchmove', function(e) {
+        if (LIKEWIKIIDAFA_tooltip.classList.contains('active')) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+});
+</script>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة حماية العين</title>
+    <style>
+        /* تحسينات عامة */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* إعدادات الصفحة الأساسية */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #edf2f7;
+            color: #333;
+            transition: all 0.5s ease;
+        }
+    
+        header, main {
+            padding: 20px;
+            text-align: center;
+        }
+    
+        header h1 {
+            font-size: 2rem;
+            color: #444;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.2s ease-in-out;
+        }
+    
+        main h2 {
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+    
+        main p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+        }
+    
+        /* الحاوية */
+        #controlPanel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, #e0e5ec, #ffffff);
+            border-radius: 50px;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 60px;
+            height: 60px;
+            overflow: hidden;
+            transition: all 0.4s ease, box-shadow 0.3s ease-in-out;
+        }
+    
+        #controlPanel.expanded {
+            width: auto; /* ستتحدد بناءً على المحتوى والاستعلامات أدناه */
+            min-width: 280px; /* حد أدنى لعرض اللوحة الموسعة */
+            height: auto;
+            max-height: 75vh; /* حد أقصى لارتفاع اللوحة على شاشات الهاتف */
+            overflow-y: auto; /* إضافة تمرير إذا تجاوز المحتوى الارتفاع الأقصى */
+            border-radius: 20px;
+            padding-bottom: 10px; /* إضافة حشو سفلي للوحة الموسعة */
+            box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.9);
+        }
+    
+        /* الزر */
+        #toggleButton {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #4caf50, #388e3c);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            flex-shrink: 0; /* منع الزر من الانكماش */
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 
+                        5px 5px 10px rgba(0,0,0,0.2), 
+                        -5px -5px 10px rgba(255,255,255,0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        #toggleButton:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 
+                        8px 8px 20px rgba(0,0,0,0.2), 
+                        -8px -8px 20px rgba(255,255,255,0.5);
+            background: radial-gradient(circle at 30% 30%, #43a047, #2e7d32);
+        }
+    
+        #emoji {
+            font-size: 32px;
+            line-height: 1;
+            animation: bounce 2s infinite ease-in-out;
+        }
+    
+        #toggleText {
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            bottom: -20px;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+    
+        #toggleButton:hover #toggleText {
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+    
+        /* شريط التمرير */
+        .slider-container {
+            width: 90%;
+            max-width: 280px; /* حد أقصى لعرض حاوية الشريط */
+            margin: 10px auto; /* توسيط وتعديل الهامش */
+            position: relative;
+        }
+        
+        .color-spectrum {
+            width: 100%;
+            height: 20px;
+            border-radius: 10px;
+            background: linear-gradient(to right, 
+                #ff9a3c, /* 1700K */
+                #ffb347, /* 2000K */
+                #ffcc6a, /* 2300K */
+                #ffe08c, /* 2700K */
+                #f5f5f5  /* أبيض محايد (للتوضيح، القيمة الفعلية للفلتر قد تختلف) */
+            );
+            margin-bottom: 5px;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        #colorTempSlider {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none; /* لمتصفحات WebKit */
+            height: 12px;
+            background: transparent; /* جعل مسار الشريط شفافًا */
+            border-radius: 6px;
+            outline: none;
+            cursor: pointer;
+            position: absolute;
+            top: 4px; /* تعديل ليتمركز فوق color-spectrum */
+            left: 0;
+        }
+    
+        #colorTempSlider::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            background: var(--thumb-color, radial-gradient(circle, #4caf50, #388e3c)); /* استخدام متغير CSS */
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+            transition: transform 0.2s ease-in-out, background 0.3s ease;
+        }
+         #colorTempSlider::-moz-range-thumb { /* لمتصفح Firefox */
+            width: 22px;
+            height: 22px;
+            background: var(--thumb-color, radial-gradient(circle, #4caf50, #388e3c));
+            border-radius: 50%;
+            cursor: pointer;
+            border: none; /* إزالة الحدود الافتراضية في Firefox */
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.5);
+            transition: transform 0.2s ease-in-out, background 0.3s ease;
+        }
+    
+        #colorTempSlider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        #colorTempSlider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+        }
+    
+        .temp-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 11px;
+            color: #555;
+            margin-top: 25px; /* ليكون أسفل شريط التمرير والطيف */
+        }
+    
+        .small-slider {
+            width: 80px;
+            height: 8px;
+        }
+    
+        #label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            display: none;
+            text-align: center;
+            margin-top: 5px; /* هامش علوي بسيط */
+            animation: fadeIn 0.8s ease-in-out;
+        }
+    
+        .expanded #label {
+            display: block;
+        }
+    
+        /* خيارات إضافية */
+        .options {
+            display: none;
+            width: 100%;
+            padding: 0 15px 10px; /* تقليل الحشو السفلي قليلاً */
+            flex-direction: column;
+            gap: 12px; /* زيادة طفيفة في الفجوة لتحسين اللمس */
+        }
+    
+        .expanded .options {
+            display: flex;
+        }
+    
+        .option-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .option-label {
+            font-size: 13px;
+            color: #555;
+        }
+    
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            flex-shrink: 0; /* منع الانكماش */
+        }
+    
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+    
+        .slider { /* هذا اسم الكلاس لمحول التبديل، وليس شريط التمرير الرئيسي */
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+    
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; /* زيادة طفيفة لحجم المقبض */
+            width: 18px;  /* زيادة طفيفة لحجم المقبض */
+            left: 3px;    /* تعديل الموقع ليتناسب مع الحجم الجديد */
+            bottom: 3px;  /* تعديل الموقع ليتناسب مع الحجم الجديد */
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+    
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+    
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    
+        /* معلومات علمية */
+        .science-info {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 15px;
+            font-size: 12px;
+            color: #555;
+            border-right: 3px solid #4CAF50;
+        }
+    
+        .expanded .science-info {
+            display: block;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+    
+        .science-title {
+            font-weight: bold;
+            color: #388e3c;
+            margin-bottom: 5px;
+        }
+    
+        /* الإشعارات */
+        .notification {
+            position: fixed;
+            bottom: 100px; /* تعديل الموضع ليكون أعلى من اللوحة في حالة توسعها */
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: slideIn 0.5s ease-out;
+            z-index: 1001;
+        }
+    
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
+        /* فواصل للموبايل (تم نقلها من داخل body) */
+        .mobile-breaks {
+          display: none;
+        }
+    
+        /* الرسوم المتحركة */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); } /* تقليل مقدار الارتداد */
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    
+        /* تحسين التوافق مع الهواتف */
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            main h2 { font-size: 1.3rem; }
+
+            #controlPanel {
+                bottom: 10px;
+                right: 10px;
+                gap: 8px; /* تقليل الفجوة قليلاً */
+            }
+            #controlPanel.expanded {
+                width: 300px; /* عرض ثابت للتابلت والهواتف الكبيرة نسبياً */
+                padding-bottom: 15px;
+            }
+            #toggleButton {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            #emoji { font-size: 28px; }
+            .notification {
+                bottom: 80px; /* تعديل المسافة من الأسفل للوحة التحكم الأصغر */
+                right: 10px;
+                padding: 10px 15px;
+            }
+            .mobile-breaks {
+                display: block;
+                height: 1.5em; /* تقليل الارتفاع قليلاً */
+            }
+            .temp-labels span { font-size: 10px; }
+            #label { font-size: 0.875rem; } /* 14px */
+           .option-label { font-size: 0.8125rem; } /* 13px */
+        }
+    
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.6rem; }
+            main h2 { font-size: 1.2rem; }
+            main p { font-size: 0.9rem; }
+
+            #controlPanel.expanded {
+                width: 90%; /* استخدام نسبة مئوية للشاشات الصغيرة جداً */
+                right: 5%;
+                bottom: 10px;
+                gap: 5px; /* تقليل إضافي للفجوة */
+                padding-bottom: 10px;
+            }
+            .options {
+                padding: 0 10px 10px;
+                gap: 10px;
+            }
+            .slider-container {
+                margin: 5px auto;
+            }
+            .temp-labels {
+                flex-wrap: wrap; /* السماح بالالتفاف إذا ضاقت المساحة */
+                justify-content: center; /* توسيط العناصر عند الالتفاف */
+                gap: 5px; /* فجوة بين العناصر الملتفة */
+            }
+            .temp-labels span { font-size: 0.7rem; } /* تصغير إضافي */
+            #label { font-size: 0.8rem; } 
+            .option-label { font-size: 0.75rem; } /* 12px */
+            .science-info {
+                font-size: 11px;
+                margin: 5px 10px;
+                padding: 8px;
+            }
+        }
+        @media (max-width: 360px) {
+             header h1 { font-size: 1.5rem; }
+            .option-row {
+                flex-direction: column; /* جعل الخيارات تحت بعضها */
+                align-items: flex-start;
+                gap: 5px; /* فجوة بين الملصق والمفتاح */
+            }
+            .option-row .switch {
+                margin-top: 3px; /* هامش بسيط للمفتاح */
+            }
+            #controlPanel.expanded {
+                gap: 3px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    
+
+
+    <div id="controlPanel">
+        <button id="toggleButton">
+            <span id="emoji">🌙</span>
+            <span id="toggleText">تشغيل</span>
+        </button>
+        <label id="label" for="colorTempSlider">درجة حرارة اللون (1700K-2700K):</label>
+        
+        <div class="slider-container">
+            <div class="color-spectrum"></div>
+            <input type="range" id="colorTempSlider" min="1700" max="2700" step="100" value="2700">
+            <div class="temp-labels">
+                <span>1700K</span>
+                <span>2000K</span>
+                <span>2300K</span>
+                <span>2700K</span>
+            </div>
+        </div>
+        
+        <div class="science-info">
+            <div class="science-title">معلومات علمية:</div>
+            <p>• درجات الحرارة المرتفعة (&gt;5000K) تسبب انتباه الأشخاص وزيادة التركيز.</p>
+            <p>• درجات الحرارة المنخفضة (2700K-3000K) تشعر الأشخاص بالاسترخاء والنعاس.</p>
+            <p>• الضوء الأزرق (380-550 نانومتر) يؤثر على الساعة البيولوجية.</p>
+        </div>
+        
+        <div class="options">
+            <div class="option-row">
+                <span class="option-label">الوضع الليلي التلقائي</span>
+                <label class="switch">
+                    <input type="checkbox" id="autoNightMode">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="option-row">
+                <span class="option-label">تقليل الوهج</span>
+                <label class="switch">
+                    <input type="checkbox" id="reduceGlare" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="option-row">
+                <span class="option-label">تعتيم النص</span>
+                <label class="switch">
+                    <input type="checkbox" id="darkenText">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="option-row">
+                <span class="option-label">ضبط السطوع</span>
+                <input type="range" id="brightnessSlider" min="50" max="100" value="100" class="small-slider">
+            </div>
+            <div class="mobile-breaks"></div>
+        </div>
+    </div>
+
+    <script>
+        const controlPanel = document.getElementById('controlPanel');
+        const toggleButton = document.getElementById('toggleButton');
+        const emoji = document.getElementById('emoji');
+        const toggleText = document.getElementById('toggleText');
+        const colorTempSliderElement = document.getElementById('colorTempSlider'); // تم تغيير الاسم لتمييزه
+        const autoNightMode = document.getElementById('autoNightMode');
+        const reduceGlare = document.getElementById('reduceGlare');
+        const darkenText = document.getElementById('darkenText');
+        const brightnessSlider = document.getElementById('brightnessSlider');
+    
+        let isEyeProtectionEnabled = false;
+        let autoNightModeInterval;
+    
+        // تحميل التفضيلات المحفوظة
+        window.addEventListener('DOMContentLoaded', () => {
+            const preferences = JSON.parse(localStorage.getItem('eyeProtectionPrefs')) || {};
+            if (preferences.autoNightMode) autoNightMode.checked = true;
+            if (preferences.reduceGlare === false) reduceGlare.checked = false; // معالجة القيمة false صراحة
+            else reduceGlare.checked = true; // القيمة الافتراضية أو true
+            if (preferences.darkenText) darkenText.checked = true;
+            
+            if (preferences.brightness) {
+                brightnessSlider.value = preferences.brightness;
+                document.body.style.opacity = preferences.brightness / 100;
+            }
+            if (preferences.colorTemp) colorTempSliderElement.value = preferences.colorTemp;
+
+            // يجب تفعيل الحماية بعد تحميل الإعدادات المتعلقة بها
+            if (preferences.enabled) {
+                enableEyeProtection(); // يستدعي updateFilter و updateSliderColor
+            } else {
+                // إذا لم تكن مفعلة، لا يزال يجب تحديث لون المقبض بناءً على القيمة المحملة
+                updateSliderColor(colorTempSliderElement.value);
+            }
+    
+            // تحقق من وقت اليوم عند التحميل
+            if (autoNightMode.checked) { // فقط إذا كان الوضع التلقائي محدداً
+                checkTimeOfDay(); // هذا قد يفعل الحماية إذا كان الوقت ليلاً
+                startAutoNightMode();
+            }
+        });
+    
+        toggleButton.addEventListener('click', () => {
+            controlPanel.classList.toggle('expanded');
+    
+            if (isEyeProtectionEnabled) {
+                disableEyeProtection();
+            } else {
+                enableEyeProtection();
+                // لا تغلق اللوحة تلقائيًا إذا فتحها المستخدم يدويًا للتو
+                // يمكن إبقاء هذا السلوك أو إزالته حسب الرغبة
+                // setTimeout(() => {
+                //     if (isEyeProtectionEnabled) { // فقط أغلق إذا كانت الحماية لا تزال مفعلة
+                //        controlPanel.classList.remove('expanded');
+                //     }
+                // }, 7000); // زيادة الوقت قليلاً
+            }
+            savePreferences();
+        });
+    
+        colorTempSliderElement.addEventListener('input', function() {
+            updateFilter();
+            updateSliderColor(this.value);
+            savePreferences(); // حفظ عند تغيير شريط التمرير أيضًا
+        });
+        
+        // تحديث لون مقبض شريط التمرير بناء على القيمة باستخدام متغير CSS
+        function updateSliderColor(value) {
+            const percent = (value - 1700) / (2700 - 1700); // النسبة من 0 إلى 1
+            let newThumbColor = 'radial-gradient(circle, #4caf50, #388e3c)'; // لون افتراضي
+
+            // الألوان تتدرج من البرتقالي (دافئ جداً) إلى الأصفر (دافئ)
+            // 1700K هو الأكثر دفئًا (برتقالي), 2700K هو الأقل دفئًا في هذا النطاق (أصفر فاتح)
+            if (percent < 0.33) { // الثلث الأول (الأكثر دفئًا)
+                newThumbColor = 'radial-gradient(circle, #ff9a3c, #e07c2e)'; 
+            } else if (percent < 0.66) { // الثلث الأوسط
+                newThumbColor = 'radial-gradient(circle, #ffb347, #e0953a)'; 
+            } else { // الثلث الأخير (الأقل دفئًا)
+                newThumbColor = 'radial-gradient(circle, #ffe08c, #e0c87a)'; 
+            }
+            // تطبيق اللون على متغير CSS الذي يستخدمه مقبض شريط التمرير
+            colorTempSliderElement.style.setProperty('--thumb-color', newThumbColor);
+        }
+        
+        autoNightMode.addEventListener('change', function() {
+            if (this.checked) {
+                startAutoNightMode();
+                 // لا حاجة لاستدعاء updateFilter هنا مباشرة، سيتم استدعاؤه من checkTimeOfDay إذا لزم الأمر
+            } else {
+                stopAutoNightMode();
+                // إذا تم إلغاء الوضع التلقائي وكان ليلاً، قد نرغب في إبقاء الفلتر أو إزالته بناءً على حالة isEyeProtectionEnabled
+            }
+            savePreferences();
+        });
+    
+        reduceGlare.addEventListener('change', function() {
+            if (isEyeProtectionEnabled) {
+                updateFilter();
+            }
+            savePreferences();
+        });
+    
+        darkenText.addEventListener('change', function() {
+            if (isEyeProtectionEnabled) {
+                updateFilter();
+            }
+            savePreferences();
+        });
+    
+        brightnessSlider.addEventListener('input', function() {
+            document.body.style.opacity = this.value / 100;
+            savePreferences();
+        });
+    
+        function enableEyeProtection() {
+            isEyeProtectionEnabled = true;
+            emoji.textContent = '🛡️';
+            toggleText.textContent = 'إيقاف';
+            updateFilter();
+            updateSliderColor(colorTempSliderElement.value); // تحديث لون المقبض عند التفعيل
+            showNotification('تم تفعيل حماية العين');
+            savePreferences(); // حفظ الحالة الجديدة
+        }
+    
+        function disableEyeProtection() {
+            isEyeProtectionEnabled = false;
+            emoji.textContent = '🌙';
+            toggleText.textContent = 'تشغيل';
+            document.documentElement.style.filter = 'none';
+            document.body.style.color = ''; // استعادة اللون الأصلي للنص
+            // استعادة السطوع الافتراضي إذا لم يكن المستخدم قد ضبطه يدوياً
+            // brightnessSlider.value = 100; // أو قيمة محفوظة مسبقًا
+            // document.body.style.opacity = 1; 
+            showNotification('تم إيقاف حماية العين');
+            savePreferences(); // حفظ الحالة الجديدة
+        }
+    
+        function updateFilter() {
+            if (!isEyeProtectionEnabled) return;
+    
+            const temp = colorTempSliderElement.value;
+            const warmth = (temp - 1700) / (2700 - 1700); // 0 (أكثر دفئًا) إلى 1 (أقل دفئًا)
+            
+            const sepiaValue = Math.min(1, 0.3 + 0.7 * (1 - warmth)); // زيادة تأثير السيبيا للألوان الدافئة
+            const brightnessValue = 1 - 0.15 * (1 - warmth); // تقليل السطوع قليلاً مع الألوان الدافئة
+            const contrastValue = reduceGlare.checked ? 1.05 : 1; // زيادة طفيفة للتباين عند تقليل الوهج
+            const grayscaleValue = reduceGlare.checked ? 0.05 : 0; // مسحة رمادية خفيفة عند تقليل الوهج
+            
+            let filterString = `sepia(${sepiaValue}) brightness(${brightnessValue}) contrast(${contrastValue}) grayscale(${grayscaleValue})`;
+            
+            document.documentElement.style.filter = filterString;
+            
+            if (darkenText.checked) {
+                // تعتيم النص بناءً على الدفء، النص يصبح أغمق مع الألوان الأكثر دفئًا
+                document.body.style.color = `hsl(0, 0%, ${60 - ( (1-warmth) * 25)}%)`; 
+            } else {
+                document.body.style.color = ''; // استعادة اللون الافتراضي المحدد في CSS
+            }
+        }
+    
+        function checkTimeOfDay() {
+            const hour = new Date().getHours();
+            const isNightTime = hour >= 18 || hour <= 6; // من 6 مساءً حتى 6 صباحًا
+            
+            if (autoNightMode.checked) { // تحقق فقط إذا كان الوضع التلقائي نشطًا
+                if (isNightTime) {
+                    colorTempSliderElement.value = Math.max(1700, Math.min(colorTempSliderElement.value, 2000)); // ضبط لدرجة أكثر دفئًا ليلاً، لا تتجاوز 2000K
+                    if (!isEyeProtectionEnabled) {
+                        enableEyeProtection();
+                        showNotification('تم تفعيل الوضع الليلي تلقائياً');
+                    } else {
+                        updateFilter(); // تحديث الفلتر إذا كان مفعلاً بالفعل
+                    }
+                } else { // وقت النهار
+                    colorTempSliderElement.value = Math.min(2700, Math.max(colorTempSliderElement.value, 2400)); // درجة أقل دفئًا نهارًا، لا تقل عن 2400K
+                    // يمكنك اختيارياً إيقاف الحماية تلقائيًا في النهار إذا كانت مفعلة بواسطة الوضع الليلي
+                    // if (isEyeProtectionEnabled) {
+                    //    disableEyeProtection();
+                    //    showNotification('تم إيقاف الوضع الليلي تلقائياً (النهار)');
+                    // }
+                    if (isEyeProtectionEnabled) updateFilter();
+                }
+                updateSliderColor(colorTempSliderElement.value);
+            }
+        }
+    
+        function startAutoNightMode() {
+            checkTimeOfDay(); // تحقق فورًا
+            if (autoNightModeInterval) clearInterval(autoNightModeInterval); // مسح المؤقت القديم إذا وجد
+            autoNightModeInterval = setInterval(checkTimeOfDay, 30 * 60 * 1000); // كل 30 دقيقة
+        }
+    
+        function stopAutoNightMode() {
+            clearInterval(autoNightModeInterval);
+            autoNightModeInterval = null;
+        }
+    
+        function showNotification(message) {
+            // إزالة أي إشعار موجود أولاً
+            const existingNotif = document.querySelector('.notification');
+            if (existingNotif) existingNotif.remove();
+
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.classList.add('fade-out');
+                setTimeout(() => notif.remove(), 500);
+            }, 3000);
+        }
+    
+        function savePreferences() {
+            localStorage.setItem('eyeProtectionPrefs', JSON.stringify({
+                autoNightMode: autoNightMode.checked,
+                reduceGlare: reduceGlare.checked,
+                darkenText: darkenText.checked,
+                enabled: isEyeProtectionEnabled,
+                brightness: brightnessSlider.value,
+                colorTemp: colorTempSliderElement.value
+            }));
+        }
+        
+        // إغلاق اللوحة عند الضغط خارجها (باستثناء زر التبديل نفسه)
+        document.addEventListener('click', function(event) {
+            const isClickInsidePanel = controlPanel.contains(event.target);
+            const isClickOnToggleButton = toggleButton.contains(event.target) || toggleButton === event.target;
+
+            if (controlPanel.classList.contains('expanded') && !isClickInsidePanel && !isClickOnToggleButton) {
+                controlPanel.classList.remove('expanded');
+            }
+        });
+
+    </script>
+</body>
+</html>
+  <style>
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+
+
+
+            text-align: center;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 150, 255, 0.6);
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, top 0.3s ease-in-out;
+        }
+
+        .popup h3 {
+            color: #00aaff;
+            font-size: 22px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .input-group input {
+            width: 85%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #00aaff;
+            text-align: center;
+            font-size: 16px;
+            background-color: #222;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+        }
+
+        .gender-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .gender-buttons button {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .gender-buttons button:hover {
+            background: linear-gradient(90deg, #0056b3, #003c80);
+            transform: scale(1.05);
+        }
+
+        .gender-buttons button.selected {
+            background: #FFD700;
+            color: black;
+            font-weight: bold;
+        }
+
+        .submit-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .submit-button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            top: 50% !important;
+        }
+
+        #greeting {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 50px;
+            text-shadow: 2px 2px 10px rgba(0, 150, 255, 0.5);
+        }
+#studyMessage {
+    display: none;
+    font-size: 18px;
+    margin-top: 15px;
+    color: #FFD700;
+    font-weight: bold; /* ← تمت إضافتها */
+    text-align: center;
+}
+
+
+
+    </style>
+</head>
+<body>
+
+    <br>  <br>  
+    <div id="welcomePopup" class="popup">
+        <h3>  ! السلام عليكم و أهلاً يا طبيب/طبيبة مستقبلنا ان شاء الله  </h3>
+
+        <p>من فضلك أدخل/ادخلي اسمك واختر/اختاري جنسك:</p>
+
+    
+        <div class="input-group">
+            <input type="text" id="username" placeholder="أدخل اسمك">
+        </div>
+    
+        <div class="gender-buttons">
+            <button id="femaleButton" onclick="selectGender('female')"> امرأة</button>
+            <button id="maleButton" onclick="selectGender('male')">  رجل</button>
+           
+        </div>
+    
+        <button class="submit-button" onclick="submitInfo()">متابعة</button>
+    </div>
+    
+    <!-- يجب أن يكون خارج نافذة الإدخال حتى يظهر عند الضغط على متابعة -->
+    <div id="greetingContainer" style="display: none; flex-direction: column; align-items: center; gap: 10px; margin-top: 70px;">
+        <h2 id="welcomeMessage" style="color: #00aaff; text-align: center;"></h2>
+        <img id="doctorImage" src="" alt="صورة الطبيب" style="width: 60px; height: 60px; border-radius: 50%;">
+        <h1 id="greeting" style="margin: 0; font-size: 22px;"></h1>
+    </div>
+    <p id="studyMessage" style= " text-align: center; background-color: black;"></p>
+    <BR>
+<p id="nationMessage" style="color: #FFD700; font-weight: bold; font-size: 18px; text-align: center; background-color: black;"></p>
+    
+    <script>
+        let selectedGender = "";
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            let storedName = localStorage.getItem("username");
+            let storedGender = localStorage.getItem("gender");
+            let visitCount = parseInt(localStorage.getItem("visitCount") || "0");
+    
+            visitCount += 1;
+            localStorage.setItem("visitCount", visitCount);
+    
+            if (visitCount >= 3) {
+                localStorage.removeItem("username");
+                localStorage.removeItem("gender");
+                localStorage.setItem("visitCount", "0");
+                storedName = null;
+            }
+    
+            if (storedName && storedGender) {
+                displayGreeting(storedName, storedGender);
+            } else {
+                let popup = document.getElementById('welcomePopup');
+                popup.style.display = 'block';
+                setTimeout(() => popup.classList.add('fade-in'), 50);
+            }
+        });
+    
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.getElementById("maleButton").classList.remove("selected");
+            document.getElementById("femaleButton").classList.remove("selected");
+    
+            if (gender === "male") {
+                document.getElementById("maleButton").classList.add("selected");
+            } else {
+                document.getElementById("femaleButton").classList.add("selected");
+            }
+        }
+    
+
+
+        function submitInfo() {
+    let name = document.getElementById('username').value.trim();
+    if (name === "") {
+        alert("❌ يرجى إدخال اسمك");
+        return;
+    }
+    if (!selectedGender) {
+        alert("❌ يرجى اختيار الجنس");
+        return;
+    }
+
+    console.log("🚀 إرسال الاسم:", name);
+    console.log("🚀 إرسال الجنس:", selectedGender);
+
+    localStorage.setItem("username", name);
+    localStorage.setItem("gender", selectedGender);
+    localStorage.setItem("visitCount", "0");
+
+    displayGreeting(name, selectedGender);
+
+    let popup = document.getElementById('welcomePopup');
+    popup.classList.remove('fade-in');
+    setTimeout(() => popup.style.display = 'none', 500);
+}
+
+
+
+
+
+
+function displayGreeting(name, gender) {
+    console.log("✅ تم استلام الاسم:", name);
+    console.log("✅ تم استلام الجنس:", gender);
+
+    let welcomeMessage = `السلام عليكم ومرحبًا بك يا ${name}`;  
+    
+    
+    let greetingMessage = gender === "male" 
+        ? `مرحبًا دكتور ${name}!` 
+        : `مرحبًا دكتورة ${name}!`;
+
+    let studyMessage = gender === "male" 
+        ? "ادرس جيدًا يا طبيب المسلمين إن شاء الله 📚" 
+        : "ادرسِ جيدًا يا طبيبة المسلمات إن شاء الله 📚";
+
+  
+       
+        
+
+        let nationNeedsYou = 
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "  ﴿الَّذِينَ يَتَّخِذُونَ الْكَافِرِينَ أَوْلِيَاءَ مِن دُونِ الْمُؤْمِنِينَ ۚ أَيَبْتَغُونَ عِندَهُمُ الْعِزَّةَ فَإِنَّ الْعِزَّةَ لِلَّهِ جَمِيعًا ﴾\n" +
+    "[النساء: 139]\n\n" +
+    
+    " يقول الله تعالى وبعد بسم الله الرحمان الرحيم :\n" +
+    "﴿ لَهُ مُعَقِّبَاتٌ مِّن بَيْنِ يَدَيْهِ وَمِنْ خَلْفِهِ يَحْفَظُونَهُ مِنْ أَمْرِ اللَّهِ ۗ إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ ۗ وَإِذَا أَرَادَ اللَّهُ بِقَوْمٍ سُوءًا فَلَا مَرَدَّ لَهُ ۚ وَمَا لَهُم مِّن دُونِهِ مِن وَالٍ ﴾\n" +
+    "[الرعد: 11]\n\n" +
+
+    "أمتكم بحاجة إليكم.. كونوا عونًا لها في سبيل الله، اجعلوا علمكم طريقًا لنهضة أمتكم.. أمتكم بحاجة إليكم.\n\n" +
+    
+    "فعن السلف الصالح عمر بن الخطاب رضي الله عنه قال:\n" +
+    "\"إنَّا كنَّا أذَلَّ قومٍ، فأعزَّنا اللَّهُ بالإسلامِ، فمهما نطلُبِ العِزَّةَ بغيرِ ما أعزَّنا اللَّهُ به أذلَّنا اللَّهُ.\"";
+
+// وضع النص داخل العنصر بدون أكواد HTML ظاهرة
+document.getElementById('nationMessage').textContent = nationNeedsYou;
+
+
+
+
+
+
+    let imageSrc = gender === "male" 
+        ? "S22MCS PARTS/doctor.png" 
+        : "S22MCS PARTS/doctormuslim.png";
+
+    // تحديث العناصر في الصفحة
+    document.getElementById('welcomeMessage').innerText = welcomeMessage;
+    document.getElementById('greeting').innerText = greetingMessage;
+    document.getElementById('studyMessage').innerText = studyMessage;
+    document.getElementById('nationMessage').innerText = nationNeedsYou;
+    document.getElementById('doctorImage').src = imageSrc;
+
+    // عرض القسم بالكامل
+    document.getElementById('greetingContainer').style.display = 'flex';
+    document.getElementById('studyMessage').style.display = 'block';
+    document.getElementById('nationMessage').style.display = 'block';
+}
+
+        
+    </script>
+    
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+        <html lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>  </title>
+       <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الدرس</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* === إعدادات عامة === */
+        :root {
+            --primary-color: #00aaff;
+            --primary-dark-color: #007bff;
+            --primary-darker-color: #0056b3;
+            --dark-bg: #121212;
+            --light-dark-bg: #1a1a1a;
+            --medium-dark-bg: #222;
+            --dark-gray-bg: #333;
+            --light-gray-bg: #444;
+        }
+
+        body {
+            font-family: 'Poppins', 'Amiri', serif;
+            background-color: var(--dark-bg);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            padding-top: 100px; /* مساحة للشريط العلوي الثابت */
+        }
+
+        /* === الشريط العلوي === */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            background-color: var(--dark-gray-bg);
+            color: white;
+            padding: 0 16px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+            gap: 15px; /* مسافة بين العناصر */
+        }
+
+        .sidebar h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0; /* يمنع التقلص */
+        }
+        
+        /* حاوية شريط التقدم */
+        .progress-bar-container {
+            width: 100%; /* اجعله يأخذ المساحة المتاحة */
+            max-width: 600px;
+            height: 25px;
+            background-color: var(--light-gray-bg);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            flex-grow: 1; /* يسمح له بالتمدد */
+        }
+
+.progress-bar {
+    height: 100%;
+    width: 50%;
+
+  background-color: #0066ff; /* <-- هذا السطر يجعل الشريط أزرق */
+
+    border-radius: 15px;
+    transition: width 0.3s ease-in-out;
+}
+
+
+
+        .progress-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* أزرار الشريط العلوي */
+        .sidebar-button {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            background-color: var(--primary-dark-color);
+            color: white;
+            white-space: nowrap; /* يمنع التفاف النص */
+        }
+        .sidebar-button:hover {
+            background-color: var(--primary-darker-color);
+        }
+        .finish-button {
+             background-color: var(--primary-color);
+        }
+
+        /* === محتوى الدرس (الفقاعات) === */
+        .lesson-container {
+            margin-top: 20px;
+        }
+        .bubble {
+            background: rgba(30, 30, 30, 0.95);
+            box-shadow: 0 6px 20px rgba(0, 150, 255, 0.4);
+            border-left: 6px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px auto 70px auto;
+            max-width: 60rem;
+            transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+            text-align: right;
+            position: relative;
+            cursor: pointer;
+        }
+        .bubble:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 150, 255, 0.5);
+        }
+
+        .interact-button {
+            position: absolute;
+            top: 5px;
+            left: 6px;
+            background-color: var(--primary-dark-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .interact-button:hover {
+            background-color: var(--primary-darker-color);
+        }
+        
+        /* صورة خارجية */
+        .outside-image {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* زر إعادة التحميل */
+        .refresh-button {
+            background: linear-gradient(135deg, var(--light-dark-bg), var(--dark-gray-bg));
+            color: #ffffff;
+            border: 1px solid var(--light-gray-bg);
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 25px;
+            font-family: 'Poppins', Arial, sans-serif;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 160px;
+            justify-content: center;
+        }
+        .refresh-button:hover {
+            background: linear-gradient(135deg, #292929, var(--light-gray-bg));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15);
+        }
+        .refresh-button::before {
+            content: "🔄";
+            font-size: 18px;
+        }
+
+        /* === النوافذ المنبثقة (Modals) === */
+        .modal, #end-lesson-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background: var(--medium-dark-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 150, 255, 0.5);
+            text-align: center;
+        }
+        .modal h3, #end-lesson-modal h3 {
+            color: var(--primary-color);
+        }
+        .modal button, #end-lesson-modal button {
+            background-color: var(--primary-dark-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .modal button:hover, #end-lesson-modal button:hover {
+             background-color: var(--primary-darker-color);
+        }
+        
+        /* نافذة نهاية الدرس */
+        #end-lesson-modal {
+            max-width: 600px;
+            background-color: var(--dark-gray-bg);
+            padding: 30px;
+        }
+         #end-lesson-modal h3 {
+            font-size: 24px;
+         }
+         #end-lesson-modal p {
+            font-size: 18px;
+         }
+        
+        /* === استجابة التصميم للشاشات المختلفة (Media Queries) === */
+        
+        /* شاشات متوسطة (Tablets) */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 80px;
+            }
+            .sidebar {
+                height: 70px;
+                gap: 10px;
+            }
+            .sidebar h3 {
+                font-size: 0.9rem;
+            }
+             .sidebar-button {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            .bubble {
+                max-width: 90%;
+                padding: 15px;
+            }
+            .refresh-button {
+                padding: 8px 18px;
+                font-size: 14px;
+                min-width: 140px;
+            }
+        }
+
+        /* شاشات صغيرة (الهواتف) */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+                padding-top: 130px; /* مساحة إضافية بسبب التفاف الشريط */
+                font-size: 15px;
+            }
+            .sidebar {
+                flex-wrap: wrap; /* السماح للعناصر بالالتفاف */
+                height: auto; /* ارتفاع تلقائي */
+                padding: 10px;
+                justify-content: center;
+            }
+            .sidebar h3 {
+                display: none; /* إخفاء النص لتوفير مساحة */
+            }
+            .progress-bar-container {
+                order: -1; /* وضع شريط التقدم في الأعلى */
+                width: 100%;
+                height: 20px;
+                margin-bottom: 10px;
+            }
+            .progress-percentage {
+                font-size: 12px;
+            }
+            .bubble {
+                padding: 10px;
+            }
+            .interact-button {
+                font-size: 12px;
+                padding: 5px 8px;
+            }
+             .refresh-button {
+                padding: 7px 16px;
+                font-size: 13px;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <button class="sidebar-button finish-button" onclick="finishLesson()">
+            ✅ انتهيت
+        </button>
+        
+        <h3 id="proo">📊 <span>التقدم</span></h3>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-percentage" id="progress-percentage">0%</div>
+        </div>
+
+        <button onclick="goToUncompletedBubble()" class="sidebar-button">
+            🔍 الفقاعات غير المكتملة
+        </button>
+    </div>
+
+
+   
+ 
+
+
+
+
+</body>
+</html>
+    
+
+
+    <br>       <br>    <br>
+    <div class="refresh-container"  id="ref">
+        <button class="refresh-button" onclick="location.reload();">تحديث الصفحة</button>
+    </div>
+    <br>
+    <div class="lesson-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 70vh; text-align: center;">
+      
+
+ 
+     
+
+    
+
+
+
+
+
+
+
+        <h1 class="lesson-title">النَّسِيجُ الرِّئَوِيُّ </h1>
+        <h2 class="lesson-subtitle">🔻THE PULMONARY PARENCHYMA🔻</h2>
+        <h2 class="lesson-subtitle">🔻LE PARENCHYME PULMONAIRE🔻</h2>
+    
+    </div>
+          
+    </div>
+    
+
+     
+
+
+     <!DOCTYPE html>
+     <html lang="ar">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>تم عبر برنامج 2019 الطب الجزائري</title>
+     
+         <style>
+         body {
+             font-family: 'Poppins', 'Amiri', serif;
+             direction: rtl;
+             text-align: right;
+             background-color: #121212;
+             color: white;
+             margin: 0;
+             padding: 20px;
+         }
+         
+         .container {
+             max-width: 600px;
+             margin: auto;
+             background: #1e1e1e;
+             padding: 20px;
+             border-radius: 10px;
+             box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+         }
+         
+         h2 {
+             text-align: center;
+             color: #00aaff;
+         }
+         
+         .lesson {
+             display: flex;
+             align-items: center;
+             justify-content: space-between;
+             padding: 15px;
+             border-bottom: 1px solid #444;
+             flex-direction: column;
+             background: rgba(30, 30, 30, 0.9);
+             border-radius: 10px;
+             margin-bottom: 10px;
+             transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+         }
+         
+         .lesson:hover {
+             transform: translateY(-3px);
+             box-shadow: 0 6px 15px rgba(0, 150, 255, 0.4);
+         }
+         
+         .lesson input {
+             transform: scale(1.3);
+             accent-color: #00aaff;
+         }
+         
+         .lesson span {
+             flex-grow: 1;
+             margin-right: 10px;
+         }
+         
+         .translation {
+             font-size: 12px;
+             color: #bbb;
+             margin-top: 5px;
+         }
+         
+         .progress-bar {
+             width: 100%;
+             background: #444;
+             height: 12px;
+             border-radius: 6px;
+             margin: 10px 0;
+             overflow: hidden;
+         }
+         
+         .progress {
+             height: 100%;
+             background: #00aaff;
+             width: 0%;
+             transition: width 0.3s;
+         }
+         
+         .btn {
+             display: block;
+             width: 100%;
+             padding: 12px;
+             background: #00aaff;
+             color: white;
+             text-align: center;
+             border: none;
+             border-radius: 6px;
+             cursor: pointer;
+             font-size: 16px;
+             margin-top: 10px;
+             transition: background 0.3s ease-in-out;
+         }
+         
+         .btn:hover {
+             background: #0077cc;
+         }
+         
+         .lang {
+             text-align: center;
+             color: #bbb;
+             font-size: 14px;
+             margin-top: 20px;
+         }
+     </style>    
+     </head>
+     <body>
+         <div class="container">
+
+             <div class="lesson-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                <h2>الأهداف العامة والخاصة في الدرس</h2>
+            </div>
+            
+             <div class="progress-bar"><div class="progress"></div></div>
+             <div id="lessonList"></div>
+             <button class="btn" onclick="completeAll()">إكمال الكل</button>
+             <div class="lang">
+                
+                العربية
+
+                <br>
+            English | Français 
+            </div>
+         </div>
+     
+         <script>
+             const lessons = [
+        
+
+
+             { ar: "  الاهداف العامة   " },
+
+
+
+
+        { ar: "  الاهداف الخاصة بالدرس   " },
+
+
+
+
+
+
+
+    ];
+
+     
+             const lessonList = document.getElementById("lessonList");
+             lessons.forEach((lesson, index) => {
+                 const div = document.createElement("div");
+                 div.className = "lesson";
+                 div.innerHTML = `
+                     <input type="checkbox" onchange="updateProgress()" id="lesson${index}">
+                     <span>${lesson.ar}</span>
+                     <div class="translation">${lesson.en}</div>
+                     <div class="translation">${lesson.fr}</div>
+                 `;
+                 lessonList.appendChild(div);
+             });
+     
+             function updateProgress() {
+                 const checkboxes = document.querySelectorAll("input[type=checkbox]");
+                 let completed = 0;
+                 checkboxes.forEach(cb => { if (cb.checked) completed++; });
+                 document.querySelector(".progress").style.width = (completed / lessons.length * 100) + "%";
+             }
+     
+             function completeAll() {
+                 document.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
+                 updateProgress();
+             }
+         </script>
+     </body>
+     </html>
+     
+<div class="bubble">
+    <button class="interact-button" id="bronchial-intro" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>المقدمة / المعلومات العامة:</strong></li>
+        <ul>
+            <li>الشعب الهوائية والشعيبات الهوائية هي مسالك توصيل الهواء وتشكل جزءًا من المجاري الهوائية العميقة.</li>
+            <li>يتم تقسيمها كما يلي:</li>
+            <li>1. المسالك الهوائية داخل الرئة وخارج الفصوص: القطر من 10 مم إلى 1 مم
+                <ul>
+                    <li>الشعب الهوائية الكبيرة.</li>
+                    <li>الشعب الهوائية المتوسطة.</li>
+                    <li>الشعب الهوائية بين الفصوص.</li>
+                    <li>الشعب الهوائية فوق الفصوص.</li>
+                </ul>
+            </li>
+            <li>2. المسالك داخل الفصوص: الشعيبات الهوائية (القطر 1 مم)
+                <ul>
+                    <li>الشعيبات بالمعنى الدقيق.</li>
+                    <li>الشعيبات النهائية.</li>
+                    <li>الشعيبات التنفسية.</li>
+                </ul>
+            </li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>I. Introduction / Generalities:</strong></li>
+            <ul>
+                <li>The bronchi and bronchioles are air conduction pathways that are part of the deep airways.</li>
+                <li>They are subdivided as follows:</li>
+                <li>1. Intra-pulmonary extra-lobular pathways: diameter 10mm–1mm
+                    <ul>
+                        <li>Large bronchi.</li>
+                        <li>Medium bronchi.</li>
+                        <li>Inter-lobular bronchi.</li>
+                        <li>Supra-lobular bronchi.</li>
+                    </ul>
+                </li>
+                <li>2. Intra-lobular pathways: Bronchioles (diameter 1mm)
+                    <ul>
+                        <li>Proper bronchioles.</li>
+                        <li>Terminal bronchioles.</li>
+                        <li>Respiratory bronchioles.</li>
+                    </ul>
+                </li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>I. Introduction /Généralités :</strong></li>
+            <ul>
+                <li>Les bronches et les bronchioles sont des voies de conduction de l’air faisant partie des voies aériennes profondes.</li>
+                <li>On les subdivise comme suit :</li>
+                <li>1. Voies intra-pulmonaires extra-lobulaires : diamètre 10mm-1mm
+                    <ul>
+                        <li>Grosses bronches.</li>
+                        <li>Bronches moyennes.</li>
+                        <li>Bronches inter-lobulaires.</li>
+                        <li>Bronches sus lobulaires.</li>
+                    </ul>
+                </li>
+                <li>2. Voies intra-lobulaires : Bronchioles (diamètre 1mm)
+                    <ul>
+                        <li>Bronchioles proprement dites.</li>
+                        <li>Bronchioles terminales.</li>
+                        <li>Bronchioles respiratoires.</li>
+                    </ul>
+                </li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="bronchial-histology" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>II. البنية النسيجية:</strong></li>
+        <ul>
+            <li><strong>A. الشعب الهوائية داخل الرئة وخارج الفصوص:</strong></li>
+            <li>تتكون جدرانها من:</li>
+            <li>1. المخاطية: متعرجة وتتكون من:
+                <ul>
+                    <li>الظهارة من النوع التنفسي (مهدبة كاذبة التطبّق بخلايا كأسية) في التقسيمات الأولية، وتصبح أسطوانية أحادية الطبقة ثم مكعبة بسيطة في التقسيمات النهائية.</li>
+                    <li>الخُصيبة (كوريو):
+                        <ul>
+                            <li>غنية بالأوعية الدموية واللمفاوية.</li>
+                            <li>غنية بالحزم المطاطية الطولانية.</li>
+                            <li>تترقق تدريجيًا حتى تصبح في الشعب الهوائية الصغيرة مجرد صفيحة مطاطية بسيطة.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>2. العضلية: عضلة ريسيسن
+                <ul>
+                    <li>تتكون من طبقتين متراكبتين من الخلايا العضلية الملساء، موجهتين في مستويين مائلين، مفصولتين بألياف مرنة، وتتخللهما شبكة من الأوعية الدموية والألياف العصبية.</li>
+                </ul>
+            </li>
+            <li>3. تحت المخاطية: مقسمة إلى منطقتين:
+                <ul>
+                    <li><strong>المنطقة الداخلية:</strong> نسيج ضام غدي. الغدد أنبوبية متفرعة أو أنبوبية-عنقودية؛ تحتوي على خلايا مصلية ومخاطية.</li>
+                    <li><strong>المنطقة الخارجية:</strong> نسيج ضام غضروفي، مكوّن من قطع من الغضروف الزجاجي غير المنتظم، موصولة ومحاطة بغشاء غضروفي كولاجيني. يقل حجمها مع تضاؤل قطر الشعب الهوائية.</li>
+                </ul>
+            </li>
+            <li>4. حول الشعب الهوائية أو المغلف الخارجي (الأدفنتيس):
+                <ul>
+                    <li>بشكل غلاف ضام رخو.</li>
+                    <li>يحتوي على أوعية دموية ولمفاوية، وبؤر لمفاوية.</li>
+                </ul>
+            </li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>II. Histological Structure:</strong></li>
+            <ul>
+                <li><strong>A. Intra-pulmonary extra-lobular bronchi:</strong></li>
+                <li>Their wall consists of:</li>
+                <li>1. Mucosa: festooned, composed of:
+                    <ul>
+                        <li>Respiratory-type epithelium (pseudostratified ciliated with goblet cells) in the initial divisions, becomes simple columnar then simple cuboidal in the last divisions.</li>
+                        <li>Chorion:
+                            <ul>
+                                <li>Rich in blood and lymphatic vessels.</li>
+                                <li>Rich in longitudinal elastic bundles.</li>
+                                <li>Gradually thins out until reduced in small bronchi to a single elastic lamina.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>2. Muscular layer: Muscle of Reissessen
+                    <ul>
+                        <li>Made of 2 superimposed layers of smooth muscle cells, oriented in two oblique planes, separated by elastic fibers, and penetrated by a vascular and nerve network.</li>
+                    </ul>
+                </li>
+                <li>3. Submucosa: divided into two zones:
+                    <ul>
+                        <li><strong>Internal zone:</strong> Conjunctivo-glandular. The glands are branched tubular or tubulo-acinar; contain serous and mucous cells.</li>
+                        <li><strong>External zone:</strong> Conjunctivo-cartilaginous, made of irregular pieces of hyaline cartilage joined and surrounded by a collagenous perichondrium. Their size decreases as the bronchial diameter decreases.</li>
+                    </ul>
+                </li>
+                <li>4. Peribronchial or adventitia:
+                    <ul>
+                        <li>In the form of a loose connective sheath.</li>
+                        <li>Contains blood and lymphatic vessels, and lymphoid aggregates.</li>
+                    </ul>
+                </li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>II. Structure histologique :</strong></li>
+            <ul>
+                <li><strong>A. Bronches intra-pulmonaires extra-lobulaires :</strong></li>
+                <li>Leur paroi comporte :</li>
+                <li>1. Muqueuse : festonnée faite de :
+                    <ul>
+                        <li>Epithélium de type respiratoire (pseudo stratifié cilié à cellules caliciformes) dans les divisions initiales, devient cylindrique uni stratifié puis cubique simple dans les dernières divisions.</li>
+                        <li>Chorion :
+                            <ul>
+                                <li>Riche en vaisseaux sanguins et lymphatiques.</li>
+                                <li>Riches en faisceaux élastiques longitudinaux.</li>
+                                <li>S’amincit graduellement jusqu’à être réduit dans les petites bronches à une simple lame élastique.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>2. Une musculeuse : Muscle de Reissessen
+                    <ul>
+                        <li>Faite de 02 couches supeposées de cellules musculaires lisses, orientées dans deux plans obliques, séparées par des fibres élastiques et accompagnées et pénétrées par un réseau vasculaire et des fibres nerveuses.</li>
+                    </ul>
+                </li>
+                <li>3. Une sous muqueuse : subdivisée en deux zones :
+                    <ul>
+                        <li><strong>Zone interne :</strong> Conjonctivo-glandulaire. Les glandes sont tubuleuses ramifiées ou tubuloacineuses ; comportent des cellules séreuses et muqueuses.</li>
+                        <li><strong>Zone externe :</strong> Conjonctivo-cartilagineuse, faite de pièces de cartilage hyalin, de forme irrégulière réunies et entourées par un périchondre collagène. Leur taille diminue avec la réduction du calibre de la bronche.</li>
+                    </ul>
+                </li>
+                <li>4. Pér-bronche ou adventice :
+                    <ul>
+                        <li>Sous forme d’une gaine conjonctive lâche.</li>
+                        <li>Renferme des vaisseaux sanguins et lymphatiques, des foyers lymphoïdes.</li>
+                    </ul>
+                </li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="bronchioles-section" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>الشعيبات الهوائية:</strong></li>
+        <ul>
+            <li>القطر: 1 ملم.</li>
+            <li>تتميز بـ:
+                <ul>
+                    <li>اختفاء الغدد والغضروف.</li>
+                    <li>تعزيز الطبقة العضلية.</li>
+                </ul>
+            </li>
+            <li>تنقسم إلى:</li>
+            <li>1. الشعيبات الهوائية بالمعنى الدقيق: القطر 1.5–1 ملم
+                <ul>
+                    <li>ظهارة أحادية الطبقة من النوع التنفسي تحتوي على خلايا مهدبة، خلايا كأسية وخلايا عمودية مفرزة (خلايا كلارا).</li>
+                    <li>نسيج ضام-مرن خالٍ من الغدد، يحده من الخارج طبقة عضلية مستمرة: عضلة ريسيسن.</li>
+                    <li>طبقة أدفنتيس ليفية-مرنة (جزء من نظام توتر الرئة).</li>
+                    <li>بعد حوالي 12 انقسامًا ثنائيًا، يُسمى آخر أنبوب بالشعيبة النهائية، ويكون تابعًا للعنبة الرئوية.</li>
+                </ul>
+            </li>
+            <li>2. الشعيبات النهائية: القطر أقل من 0.5 ملم
+                <ul>
+                    <li>ظهارة مكعبة بسيطة مهدبة، مع خلايا مخاطية نادرة.</li>
+                    <li>نسيج ضام-مرن رقيق محاط بغلاف عضلي متطور، تؤدي تقلصاته إلى انسداد القنوات السنخية.</li>
+                </ul>
+            </li>
+            <li><strong>المجاري الهوائية السفلية</strong></li>
+            <li><strong>مناطق تبادل الغازات:</strong></li>
+            <li>تتكون الرئتان من كتلة إسفنجية سنخية يتم فيها تبادل الغازات بين الدم والهواء.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>Bronchioles:</strong></li>
+            <ul>
+                <li>Diameter: 1 mm.</li>
+                <li>Characterized by:
+                    <ul>
+                        <li>Disappearance of glands and cartilage.</li>
+                        <li>Reinforcement of the muscular layer.</li>
+                    </ul>
+                </li>
+                <li>They are subdivided into:</li>
+                <li>1. Proper bronchioles: diameter 1.5–1 mm
+                    <ul>
+                        <li>Simple respiratory-type epithelium with ciliated cells, goblet cells, and secretory columnar cells (‘Clara cells’).</li>
+                        <li>Conjunctivo-elastic chorion without glands, externally bordered by a continuous muscular layer: Muscle of Reissessen.</li>
+                        <li>Fibro-elastic adventitia (lung tension system).</li>
+                        <li>After about twelve dichotomous divisions, the last duct is called the terminal bronchiole, which supplies the pulmonary acinus.</li>
+                    </ul>
+                </li>
+                <li>2. Terminal bronchioles: diameter &lt;0.5 mm
+                    <ul>
+                        <li>Their epithelium is simple cuboidal ciliated with rare mucous cells.</li>
+                        <li>A thin conjunctivo-elastic chorion surrounded by a well-developed muscular sheath (whose contraction causes closure of alveolar ducts).</li>
+                    </ul>
+                </li>
+                <li><strong>Lower airways</strong></li>
+                <li><strong>Gas exchange zones:</strong></li>
+                <li>The lungs consist of a spongy alveolar mass where gas exchanges between blood and air take place.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>Bronchioles :</strong></li>
+            <ul>
+                <li>Diamètre : 1 mm.</li>
+                <li>Caractérisées par :
+                    <ul>
+                        <li>Disparition des glandes et du cartilage.</li>
+                        <li>Renforcement de la musculeuse.</li>
+                    </ul>
+                </li>
+                <li>Elles sont subdivisées en :</li>
+                <li>1. Bronchioles proprement dites : diamètre 1.5–1 mm
+                    <ul>
+                        <li>Un épithélium unistratifié de type respiratoire avec des cellules ciliées, cellules caliciformes et des cellules prismatiques sécrétrices ‘cellules de Clara’.</li>
+                        <li>Un chorion conjonctivo-élastique dépourvu de glandes, limité à l’extérieur par une couche musculaire continue : Muscle de Reissessen.</li>
+                        <li>Une adventice fibro-élastique (système de tension du poumon).</li>
+                        <li>Après une douzaine de divisions dichotomiques, le dernier conduit est appelé bronchiole terminale dont le territoire tributaire est l’acinus pulmonaire.</li>
+                    </ul>
+                </li>
+                <li>2. Bronchioles terminales : diamètre &lt;0.5 mm
+                    <ul>
+                        <li>Leur épithélium est cubique simple cilié avec de rares cellules mucipares.</li>
+                        <li>Un chorion de faible épaisseur, conjonctivo-élastique entouré par un manchon musculaire bien développé (dont la contraction entraîne l’obturation des canaux alvéolaires).</li>
+                    </ul>
+                </li>
+                <li><strong>Les voies aériennes inférieures</strong></li>
+                <li><strong>Les zones d’échanges gazeux :</strong></li>
+                <li>Les poumons sont constitués d’une masse spongieuse alvéolaire dans laquelle s’effectuent les échanges gazeux entre le sang et l’air.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="bubble">
+    <button class="interact-button" id="pulmonary-organization" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>I. التنظيم العام:</strong></li>
+        <ul>
+            <li>ينقسم كل رئة إلى فصوص بواسطة شقوق بين الفصوص:
+                <ul>
+                    <li>الرئة اليمنى إلى 3 فصوص (علوي، أوسط، سفلي).</li>
+                    <li>الرئة اليسرى إلى فصين (علوي، سفلي).</li>
+                </ul>
+            </li>
+            <li>كل فص يحتوي على:
+                <ul>
+                    <li><strong>جزء داخلي:</strong> النواة أو النقير (الهيل)، ويتكوّن من تشكيلات ليفية تحتوي على تفرعات الشعب الهوائية، الشرايين والأوردة الرئوية، بالإضافة إلى عناصر عصبية.</li>
+                    <li><strong>جزء خارجي:</strong> الغلاف.</li>
+                </ul>
+            </li>
+            <li>يتكوّن الجزء الخارجي للفص من صفين أو ثلاثة صفوف من الفصيصات مفصولة بحواجز ضامة-مرنة غير مكتملة تتصل بالغشاء البلوري الحشوي.</li>
+            <li>عند دخولها الفصيصات، تفقد القصبة تشكيلاتها الغضروفية وتتحول إلى شعيبة هوائية.</li>
+            <li>تنقسم هذه الأخيرة عدة مرات لتُعطي الشعيبات التنفسية.</li>
+            <li>تصب الشعيبات التنفسية في القنوات السنخية التي تفتح فيها الأسناخ. هذا النظام يُعرف بـ: العنبة الرئوية.</li>
+        </ul>
+    </ul>
+
+    <br>
+
+    <!-- بالإنجليزية -->
+    <div class="bubble" dir="ltr">
+        <ul>
+            <li><strong>I. General organization:</strong></li>
+            <ul>
+                <li>Each lung is divided into lobes by interlobar fissures:
+                    <ul>
+                        <li>The right lung has 3 lobes (superior, middle, and inferior).</li>
+                        <li>The left lung has 2 lobes (superior and inferior).</li>
+                    </ul>
+                </li>
+                <li>Each lobe includes:
+                    <ul>
+                        <li><strong>Internal part:</strong> nucleus or hilum; made of fibrous structures containing branches of bronchi, pulmonary arteries and veins, as well as nerve elements.</li>
+                        <li><strong>External part:</strong> the mantle.</li>
+                    </ul>
+                </li>
+                <li>This external part of the lobe consists of 2 or 3 rows of lobules separated by incomplete conjunctivo-elastic septa connected to the visceral pleura.</li>
+                <li>As it enters the lobules, the bronchus loses its cartilaginous structures and becomes a bronchiole.</li>
+                <li>The latter subdivides numerous times into respiratory bronchioles.</li>
+                <li>Respiratory bronchioles open into alveolar ducts, which in turn open into alveoli. This structure is called the pulmonary acinus.</li>
+            </ul>
+        </ul>
+    </div>
+
+    <br>
+
+    <!-- بالفرنسية -->
+    <div class="bubble">
+        <ul>
+            <li><strong>I. Organisation générale :</strong></li>
+            <ul>
+                <li>Chaque poumon est divisé en lobes par des scissures interlobaires :
+                    <ul>
+                        <li>Le poumon droit en 03 lobes (supérieur, moyen et inférieur)</li>
+                        <li>Le poumon gauche en 02 lobes (supérieur, inférieur)</li>
+                    </ul>
+                </li>
+                <li>Chaque lobe présente à décrire :
+                    <ul>
+                        <li><strong>Une partie interne :</strong> noyau ou hile ; elle est faite de formations fibreuses qui renferment les ramifications des bronches, artères et veines pulmonaires ainsi que des éléments nerveux.</li>
+                        <li><strong>Une partie externe :</strong> le manteau.</li>
+                    </ul>
+                </li>
+                <li>Cette partie externe du lobe est constituée de 02 ou 03 rangées de lobules séparés par des cloisons conjonctivo-élastiques incomplètes qui se raccordent à la plèvre viscérale.</li>
+                <li>En pénétrant dans les lobules, la bronche perd ses formations cartilagineuses et devient bronchiole.</li>
+                <li>Cette dernière se subdivise un grand nombre de fois pour aboutir aux bronchioles respiratoires.</li>
+                <li>Les bronchioles respiratoires débouchent au niveau des canaux alvéolaires dans lesquels s’ouvrent les alvéoles. L’ensemble est appelé : Acinus pulmonaire.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+<div class="bubble">
+    <button class="interact-button" id="acinus-histology" onclick="markBubbleAsCompleted(this)">تفاعل</button>
+
+    <!-- بالعربية -->
+    <ul>
+        <li><strong>II. البنية النسيجية للحويصلة الهوائية الرئوية:</strong></li>
+        <ul>
+            <li><strong>A. القصيبات التنفسية:</strong>
+                <ul>
+                    <li>تتميز عن القصيبات النهائية بوجود فتحات تحدها جدران سنخية نموذجية تقطع الظهارة القصيبية.</li>
+                    <li>الظهارة البسيطة تظهر غير متواصلة مكوّنة من خلايا مكعبة نادراً ما تكون مهدبة، وتستند على نسيج ضام وعائي يحتوي على طبقة أو طبقتين من الخلايا العضلية الملساء.</li>
+                </ul>
+            </li>
+            <li><strong>B. القنوات السنخية:</strong>
+                <ul>
+                    <li>تتميز بتحول شبه كامل للقناة القصيبية إلى سلسلة من الأسناخ.</li>
+                    <li>يُحدد مسار الطريق الهوائي فقط بمحاذاة تشكيلات صغيرة تُسمى: الحواف السنخية أو أقدام ارتكاز الأسناخ.</li>
+                    <li>كل حافة مبطنة بظهارة مكعبة بسيطة مستمرة مع ظهارة بطانة الأسناخ.</li>
+                    <li>تحتوي ضمن مادة أساسية على 3 عناصر متجاورة:
+                        <ul>
+                            <li>حلقة من الألياف المرنة تحت الظهارة.</li>
+                            <li>حلقة من الألياف العضلية الملساء: مصرة القناة.</li>
+                            <li>ألياف كولاجينية.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>C. الأسناخ:</strong>
+                <ul>
+                    <li>عند مستوى الأكياس السنخية المكونة من الأسناخ الفعلية، لا توجد إلا الجدران السنخية.</li>
+                    <li>الجدار السنخي بنية رقيقة وغير محددة، يفصل بين الأسناخ المتجاورة.</li>
+                    <li><strong>الجدار السنخي يتضمن:</strong></li>
+                    <ul>
+                        <li><strong>1. بطانة ظهارية:</strong>
+                            <ul>
+                                <li>نسيج متصل يستند إلى غشاء قاعدي، ويتألف من نوعين خلويين:</li>
+                                <li><strong>a) الخلايا الرئوية من النوع 1:</strong> غشائية أو خلايا سنخية صغيرة
+                                    <ul>
+                                        <li>تتميز بامتداد الستارة السيتوبلازمية، وجسم خلوي سميك يحتوي على نواة كروية بارزة في التجويف السنخي.</li>
+                                        <li>السيتوبلازم يحتوي على عدد قليل من العضيات وكثير من الحويصلات الامتصاصية (pinocytosis) لنقل الجزيئات الكبيرة.</li>
+                                        <li>الخلايا من النوع 1 ترتبط ببعضها بواسطة وصلات محكمة وتبطن التجويف السنخي وتغطي الشعيرات الدموية بالكامل، وتشارك في تكوين الغشاء السنخي-الشعيري أو حاجز الهواء-الدم، وتؤدي دورًا في تبادل الغازات.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>b) الخلايا الرئوية من النوع 2:</strong> حبيبية أو خلايا سنخية كبيرة
+                                    <ul>
+                                        <li>خلايا ضخمة ذات شكل متغير تستند مباشرة إلى الغشاء القاعدي من الجانب العميق.</li>
+                                        <li>محاطة بستائر سيتوبلازمية لخلايا النوع 1، وتنعكس هذه الستائر على جوانبها، مما يترك جزءًا من القطب القِمي حراً وذو زغابات دقيقة.</li>
+                                        <li>هي خلايا مفرزة تُنتج الفوسفوليبيدات الضرورية لتكوين الطبقة السنخية أو المادة الخافضة للتوتر السطحي (surfactant)، التي تغطي الجدار السنخي.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>2. الفضاء الحاجزي:</strong>
+                            <ul>
+                                <li>مساحة متصلة مشتركة بين جميع البنيات الرئوية وتتيح تواصلها.</li>
+                                <li>يتكوّن من مادة أساسية غنية بالمُخاطيدات المتعددة السكريات (mucopolysaccharides)، تحتوي على:</li>
+                                <ul>
+                                    <li>ألياف مرنة وألياف شبكية.</li>
+                                    <li>3 أنواع من الخلايا الحاجزية:
+                                        <ul>
+                                            <li>الخلايا البلعمية (histiocytes).</li>
+                                            <li>خلايا تحتوي على فجوات دهنية.</li>
+                                            <li>خلايا الغبار: بلعميات ذات خصائص أميبية وبلعَمية.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </ul>
+                        </li>
+                        <li><strong>3. الشعيرات الدموية:</strong>
+                            <ul>
+                                <li>تشكل شبكة هامة.</li>
+                                <li>تقع ضمن الشبكة البينية بين الأسناخ وتبرز من وجهي الحاجز.</li>
+                                <li>تبطَّن بظهارة مستمرة ترتكز على غشاء قاعدي.</li>
+                                <li>جدرانها محاطة بألياف شبكية.</li>
+                                <li><strong>التركيبات المتداخلة بين الهواء والدم والتي تشكل الغشاء السنخي-الشعيري المخصص بتبادل الغازات هي:</strong></li>
+                                <ul>
+                                    <li>الظهارة الشعرية.</li>
+                                    <li>غشاء قاعدي مشترك أو مزدوج.</li>
+                                    <li>السيتوبلازم الخاص بالخلايا من النوع 1.</li>
+                                </ul>
+                            </ul>
+                        </li>
+                    </ul>
+                </ul>
+            </li>
+        </ul>
+    </ul>
+
+    <br>
+    <div class="bubble">
+
+<!-- In English -->
+<ul>
+    <li><strong>II. Histological structure of the pulmonary alveolus:</strong></li>
+    <ul>
+        <li><strong>A. Respiratory bronchioles:</strong>
+            <ul>
+                <li>They are distinguished from terminal bronchioles by the presence of openings bordered by typical alveolar walls interrupting the bronchiolar epithelium.</li>
+                <li>The simple epithelium appears discontinuous, consisting of cuboidal cells that are rarely ciliated, resting on a vascular connective tissue that contains one or two layers of smooth muscle cells.</li>
+            </ul>
+        </li>
+        <li><strong>B. Alveolar ducts:</strong>
+            <ul>
+                <li>Characterized by the near-complete transformation of the bronchiolar duct into a series of alveoli.</li>
+                <li>The airway path is defined only by small structures called: alveolar ridges or alveolar pedicles.</li>
+                <li>Each ridge is lined with simple cuboidal epithelium continuous with the epithelium of the alveolar lining.</li>
+                <li>Contained within a ground substance that includes three adjacent elements:
+                    <ul>
+                        <li>A ring of subepithelial elastic fibers.</li>
+                        <li>A ring of smooth muscle fibers: the ductal sphincter.</li>
+                        <li>Collagen fibers.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><strong>C. Alveoli:</strong>
+            <ul>
+                <li>At the level of the alveolar sacs composed of true alveoli, only the alveolar walls remain.</li>
+                <li>The alveolar wall is a thin, indistinct structure separating adjacent alveoli.</li>
+                <li><strong>The alveolar wall includes:</strong></li>
+                <ul>
+                    <li><strong>1. Epithelial lining:</strong>
+                        <ul>
+                            <li>A continuous tissue resting on a basement membrane, composed of two cell types:</li>
+                            <li><strong>a) Type I pneumocytes:</strong> membranous or small alveolar cells
+                                <ul>
+                                    <li>Characterized by an extended cytoplasmic sheet and a thick cell body containing a spherical nucleus protruding into the alveolar lumen.</li>
+                                    <li>The cytoplasm contains few organelles and many pinocytotic vesicles for the transport of large molecules.</li>
+                                    <li>Type I cells are joined by tight junctions, line the alveolar lumen, fully cover the capillaries, contribute to the formation of the alveolar-capillary membrane (air-blood barrier), and play a role in gas exchange.</li>
+                                </ul>
+                            </li>
+                            <li><strong>b) Type II pneumocytes:</strong> granular or large alveolar cells
+                                <ul>
+                                    <li>Large, variably shaped cells resting directly on the basement membrane from the basal side.</li>
+                                    <li>Surrounded by cytoplasmic extensions of type I cells, these extensions reflect onto their sides, leaving a portion of the apical pole free and covered with microvilli.</li>
+                                    <li>They are secretory cells that produce the phospholipids required for forming the surfactant layer that coats the alveolar wall.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>2. Septal space:</strong>
+                        <ul>
+                            <li>A continuous space shared among all pulmonary structures allowing interconnection.</li>
+                            <li>Composed of ground substance rich in mucopolysaccharides, containing:</li>
+                            <ul>
+                                <li>Elastic and reticular fibers.</li>
+                                <li>Three types of interstitial cells:
+                                    <ul>
+                                        <li>Histiocytes (macrophages).</li>
+                                        <li>Cells with lipid vacuoles.</li>
+                                        <li>Dust cells: macrophages with amoeboid and phagocytic properties.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </ul>
+                    </li>
+                    <li><strong>3. Capillaries:</strong>
+                        <ul>
+                            <li>Form an important network.</li>
+                            <li>Located within the interalveolar network and protruding on both sides of the septum.</li>
+                            <li>Lined by continuous endothelium resting on a basement membrane.</li>
+                            <li>Their walls are surrounded by reticular fibers.</li>
+                            <li><strong>The structures intervening between air and blood, forming the alveolar-capillary membrane for gas exchange, are:</strong></li>
+                            <ul>
+                                <li>Capillary endothelium.</li>
+                                <li>A shared or double basement membrane.</li>
+                                <li>The cytoplasm of type I pneumocytes.</li>
+                            </ul>
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
+        </li>
+    </ul>
+</ul>
+
+
+    </div>
+
+    <div class="bubble">
+<!-- En français -->
+<ul>
+    <li><strong>II. Structure histologique de l’alvéole pulmonaire :</strong></li>
+    <ul>
+        <li><strong>A. Les bronchioles respiratoires :</strong>
+            <ul>
+                <li>Se distinguent des bronchioles terminales par la présence d'ouvertures bordées de parois alvéolaires typiques interrompant l'épithélium bronchiolaire.</li>
+                <li>L'épithélium simple apparaît discontinu, composé de cellules cubiques rarement ciliées, reposant sur un tissu conjonctif vascularisé contenant une ou deux couches de cellules musculaires lisses.</li>
+            </ul>
+        </li>
+        <li><strong>B. Les conduits alvéolaires :</strong>
+            <ul>
+                <li>Se caractérisent par une transformation presque complète du conduit bronchiolaire en une série d’alvéoles.</li>
+                <li>Le trajet de la voie aérienne n’est défini que par de petites structures appelées : crêtes alvéolaires ou pédicules alvéolaires.</li>
+                <li>Chaque crête est tapissée d’un épithélium cubique simple, continu avec l’épithélium des alvéoles.</li>
+                <li>Elle contient dans une substance fondamentale trois éléments juxtaposés :
+                    <ul>
+                        <li>Un anneau de fibres élastiques sous-épithéliales.</li>
+                        <li>Un anneau de fibres musculaires lisses : sphincter du conduit.</li>
+                        <li>Des fibres collagéniques.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><strong>C. Les alvéoles :</strong>
+            <ul>
+                <li>Au niveau des sacs alvéolaires formés par les véritables alvéoles, seules les parois alvéolaires subsistent.</li>
+                <li>La paroi alvéolaire est une structure fine et indistincte, séparant les alvéoles adjacentes.</li>
+                <li><strong>La paroi alvéolaire comprend :</strong></li>
+                <ul>
+                    <li><strong>1. Revêtement épithélial :</strong>
+                        <ul>
+                            <li>Tissu continu reposant sur une membrane basale, composé de deux types cellulaires :</li>
+                            <li><strong>a) Pneumocytes de type I :</strong> cellules membraneuses ou alvéolaires petites
+                                <ul>
+                                    <li>Se caractérisent par un amincissement du cytoplasme, un corps cellulaire épais avec noyau sphérique proéminent vers la lumière alvéolaire.</li>
+                                    <li>Le cytoplasme contient peu d’organites et de nombreuses vésicules de pinocytose pour le transport des macromolécules.</li>
+                                    <li>Ces cellules sont liées par des jonctions serrées, tapissent la lumière alvéolaire et recouvrent entièrement les capillaires ; elles forment la barrière air-sang et participent aux échanges gazeux.</li>
+                                </ul>
+                            </li>
+                            <li><strong>b) Pneumocytes de type II :</strong> cellules granuleuses ou alvéolaires grandes
+                                <ul>
+                                    <li>Cellules volumineuses de forme variable, reposant directement sur la membrane basale par leur face profonde.</li>
+                                    <li>Entourées de prolongements cytoplasmiques des cellules de type I, laissant libre une partie apicale garnie de microvillosités.</li>
+                                    <li>Ce sont des cellules sécrétoires produisant les phospholipides nécessaires à la formation du surfactant, qui tapisse la surface alvéolaire.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>2. L’espace septal :</strong>
+                        <ul>
+                            <li>Espace commun reliant toutes les structures pulmonaires entre elles.</li>
+                            <li>Constitué d’une substance fondamentale riche en mucopolysaccharides, contenant :</li>
+                            <ul>
+                                <li>Des fibres élastiques et réticuliniques.</li>
+                                <li>Trois types de cellules interstitielles :
+                                    <ul>
+                                        <li>Les histiocytes (macrophages tissulaires).</li>
+                                        <li>Des cellules à vacuoles lipidiques.</li>
+                                        <li>Les cellules à poussière : macrophages aux propriétés amiboïdes et phagocytaires.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </ul>
+                    </li>
+                    <li><strong>3. Les capillaires :</strong>
+                        <ul>
+                            <li>Forment un réseau important.</li>
+                            <li>Situés dans l’espace interalvéolaire, ils font saillie sur les deux faces de la cloison.</li>
+                            <li>Tapissés par un endothélium continu reposant sur une membrane basale.</li>
+                            <li>Leurs parois sont entourées de fibres réticuliniques.</li>
+                            <li><strong>Les structures intervenant dans la barrière air-sang, assurant les échanges gazeux, sont :</strong></li>
+                            <ul>
+                                <li>L’endothélium capillaire.</li>
+                                <li>La membrane basale (commune ou double).</li>
+                                <li>Le cytoplasme des cellules de type I.</li>
+                            </ul>
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
+        </li>
+    </ul>
+</ul>
+
+
+    </div>
+</div>
+
+
+
+
+<div style="display: flex; gap: 10px;"><figure class="bubble">
+                    <img src="2MED U1 HISTOLOGY/A20.png" alt="NNN" class="outside-image"></figure></div>
+<div style="display: flex; gap: 10px;"><figure class="bubble">
+                    <img src="2MED U1 HISTOLOGY/A21.png" alt="NNN" class="outside-image"></figure></div>
+<div style="display: flex; gap: 10px;"><figure class="bubble">
+                    <img src="2MED U1 HISTOLOGY/A22.png" alt="NNN" class="outside-image"></figure></div>
+
+           <div class="bubble">
+                        <!-- زر إضافات باللون الأحمر ومتمركز -->
+                        <div style="text-align: center; margin-bottom: 20px;">
+                          <button style="background-color: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-size: 16px; cursor: pointer;">
+                            إضافات
+                          </button>
+                        </div>
+                    </div>
+
+
+
+
+    <div id="end-lesson-modal">
+        <h3>أحسنت يا طبيبنا إن شاء الله!</h3>
+        <p id="lesson-summary">الوقت المستغرق: 00 دقيقة و 00 ثانية. عدد الفقاعات التي تم التفاعل معها: 0 من أصل 0.</p>
+        <button class="reload-button" onclick="reloadPage()">إعادة الحفظ</button>
+        <button onclick="goToTestsPage()">الانتقال إلى صفحة الاختبارات</button>
+    </div>
+
+    <div class="modal" id="question-modal">
+        <h3 id="modal-question">هل حفظت هذه الفقاعة؟</h3>
+        <button onclick="closeModal(true)">نعم</button>
+        <button onclick="closeModal(false)">لا</button>
+    </div>
+
+    <script>
+    let totalBubbles = 5; 
+    let completedBubbles = 0; 
+    let startTime = Date.now();
+    let bubbleButton = null;
+    
+    function showQuestion() {
+        document.getElementById('question-modal').style.display = 'block';
+    }
+    
+    function closeModal(answer) {
+        document.getElementById('question-modal').style.display = 'none';
+    
+        if (answer) {
+            completedBubbles++;
+            updateProgress();
+            bubbleButton.style.backgroundColor = '#4CAF50'; 
+            bubbleButton.innerText = 'تم التفاعل'; 
+            bubbleButton.disabled = true; 
+    
+            if (completedBubbles === totalBubbles) {
+                enableFinishButton();
+            }
+        }
+    }
+    
+    function updateProgress() {
+        let progress = (completedBubbles / totalBubbles) * 100; 
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+        document.getElementById('progress-percentage').innerText = `${Math.round(progress)}%`;
+    
+        const finishButton = document.querySelector('.finish-button');
+        if (progress === 100) {
+            finishButton.disabled = false; 
+            finishButton.style.backgroundColor = '#00aaff'; 
+            finishButton.style.cursor = 'pointer'; 
+        } else {
+            finishButton.disabled = true;
+            finishButton.style.backgroundColor = '#ccc'; 
+            finishButton.style.cursor = 'not-allowed'; 
+        }
+    }
+    
+    function markBubbleAsCompleted(button) {
+        bubbleButton = button; 
+        showQuestion(); 
+    }
+    
+    function finishLesson() {
+        let elapsedTime = Date.now() - startTime;
+        let minutes = Math.floor(elapsedTime / 60000);
+        let seconds = Math.floor((elapsedTime % 60000) / 1000);
+        let summary = `الوقت المستغرق: ${minutes} دقيقة و ${seconds} ثانية. عدد الفقاعات التي تم التفاعل معها: ${completedBubbles} من أصل ${totalBubbles}.`;
+        document.getElementById('lesson-summary').innerText = summary;
+        document.getElementById('end-lesson-modal').style.display = 'block';
+    }
+    
+    function reloadPage() {
+        location.reload();
+    }
+    
+    function goToTestsPage() {
+        window.location.href = 'MED02.html';
+    }
+    
+    function initializeFinishButton() {
+        const finishButton = document.querySelector('.finish-button');
+        finishButton.disabled = true; 
+        finishButton.style.backgroundColor = '#ccc'; 
+        finishButton.style.cursor = 'not-allowed'; 
+    }
+    
+    window.onload = initializeFinishButton;
+    
+    // وظيفة للانتقال إلى أول فقاعة غير مكتملة
+    function goToUncompletedBubble() {
+        let bubbles = document.querySelectorAll('.interact-button');
+        for (let bubble of bubbles) {
+            if (!bubble.disabled) { // تعني أن الفقاعة لم يتم التفاعل معها
+                bubble.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                bubble.style.border = "3px solid red"; // تمييزها باللون الأحمر
+                break;
+            }
+        }
+    }
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br><br><br><br>
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 بطاقات فلاش تفاعلية</title>
+    <style>
+        body {
+            font-family: 'Amiri', serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            direction: rtl;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .front {
+            background-color: #1e1e1e;
+        }
+
+        .back {
+            background-color: #2c2c2c;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-image {
+            width: 40%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcard-image img {
+            max-width: 100%;
+            max-height: 100%;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .flashcard-image img.expanded {
+            transform: scale(1.5);
+        }
+
+        .flashcard-content {
+            width: 65%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: right;
+            direction: rtl;
+            overflow-y: auto;
+            max-height: 150px;
+            white-space: normal;
+            word-wrap: break-word;
+            position: relative;
+        }
+        .hint-container {
+    position: fixed; /* استخدم fixed لجعل التلميح ثابتًا في المكان */
+    top: -190px; /* 20px من أعلى الصفحة */
+    left: 50%;
+    transform: translateX(-50%); /* لتوسيط التلميح بشكل أفقي */
+    width: 80%; /* عرض التلميح */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #f1c40f;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+}
+
+        /* عند إظهار التلميح */
+        .hint-container.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .arrow {
+            font-size: 30px;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .arrow:hover {
+            color: #00aaff;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 480px) {
+            .flashcard {
+                height: 230px;
+            }
+
+            .flashcard-image {
+                width: 40%;
+                max-height: 150px;
+            }
+
+            .flashcard-content {
+                font-size: 14px;
+                padding: 10px;
+                max-height: 120px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+       
+
+            <div class="lesson-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 30vh; text-align: center;">
+      
+                <h2  id="flashcard-section">📚 بطاقات فلاش تفاعلية</h2>
+         
+            </div>
+            
+
+   
+    <div class="flashcard-container" onclick="flipCard(event)">
+        <div class="flashcard" id="flashcard">
+            <div class="flashcard-side front">
+                <div class="flashcard-image">
+                    <img id="cardImageFront" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3 id="question"></h3>
+                    <!-- حاوية التلميح -->
+                    <div id="hintContainer" class="hint-container">
+                        <p id="hint" class="hint"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flashcard-side back">
+                <div class="flashcard-image">
+                    <img id="cardImageBack" src="" alt="صورة البطاقة" onclick="toggleImageSize(this)">
+                </div>
+                <div class="flashcard-content">
+                    <h3>الإجابة:</h3>
+                    <p id="answer"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="buttons">
+        <button onclick="showHint()">🔍 تلميح</button>
+        <button onclick="shuffleCards()">🔀 خلط البطاقات</button>
+    </div>
+
+    <br>
+    <div class="navigation">
+        <span class="arrow" onclick="nextCard()">➡️</span>
+        <span id="cardNumber">1 / 3</span>
+        <span class="arrow" onclick="prevCard()">⬅️</span>
+    </div>
+
+    <script>
+        const flashcards = [
+            {
+                question : "خمن البيانات والعنوان:<br>🔹 باللغة العربية (AR): خمن البيانات والعنوان<br>🔹 باللغة الإنجليزية (EN): Guess the data and the title<br>🔹 باللغة الفرنسية (FR): Devinez les données et le titre",
+                hint : "🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5 (AR)<br>🔍 In English (EN): Axial slice from a CT scan / TDM of the chest at the Th5 level<br>🔍 En français (FR): Coupe axiale d'un scanner TDM du thorax au niveau Th5",
+                answer: `
+                    <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                        <li><b>  العنوان:</b><br>
+                            🔹 <b>شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5.  (AR):</b><br>
+                            🔹 <b>Axial slice of a CT scan / TDM of the thorax at the Th5 level.  (EN):</b><br>
+                            🔹 <b> Coupe axiale d'un scanner / TDM thoracique au niveau Th5 (FR):</b>
+               
+                        </li><br>
+                        <span style="font-size: 20px; font-weight: bold;">🔍 شريحة محورية من تصوير مقطعي محوسب / TDM للصدر عند مستوى Th5:</span><br>
+                        <ol style="padding-right: 20px; text-align: right;">
+                            <li>1️⃣ : الرئة اليمنى (Right Lung) - <i>Poumon droit</i></li><br>
+                            <li>2️⃣ : الرئة اليسرى (Left Lung) - <i>Poumon gauche</i></li><br>
+                            <li>3️⃣ : الجذع الرئوي (Pulmonary Trunk) - <i>Tronc pulmonaire</i></li><br>
+                            <li>4️⃣ : الشريان الرئوي الأيمن (Right Pulmonary Artery) - <i>Artère pulmonaire droite</i></li><br>
+                            <li>5️⃣ : الشريان الرئوي الأيسر (Left Pulmonary Artery) - <i>Artère pulmonaire gauche</i></li><br>
+                            <li>6️⃣ : الوريد الأجوف العلوي (Superior Vena Cava) - <i>Veine cave supérieure</i></li><br>
+                            <li>7️⃣ : الأبهر الصدري الصاعد (Ascending Thoracic Aorta) - <i>Aorte thoracique ascendante</i></li><br>
+                            <li>8️⃣ : الأبهر الصدري النازل (Descending Thoracic Aorta) - <i>Aorte thoracique descendante</i></li><br>
+                            <li>9️⃣ : الوريد الرئوي الأيسر (Left Pulmonary Vein) - <i>Veine pulmonaire gauche</i></li><br>
+                            <li>🔟 : الكتف الأيسر (Left Scapula) - <i>Scapula gauche</i></li><br>
+                        </ol>
+                    </ul>
+                `,
+                imageFront: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MEDU1ANATOMIE/A101.png", // صورة الجهة الخلفية
+                isHtml: true
+            },
+    {
+        question: `🔹 <b>  خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.   </b> 🔹<br>
+        🔹 <b>باللغة العربية (AR):</b> خمن الشرايين الوربية( intercostal) التي تغذي الغدة الثديية.  br>
+        🔹 <b>In English (EN):</b> Guess the intercostal arteries that supply the mammary gland<br>
+        🔹 <b>En français (FR):</b> Devinez les artères intercostales qui irriguent la glande mammaire`,
+        
+        hint: `🔍 <b>تلميح / Hint / Indice</b><br>
+        🔴 <b>باللغة العربية (AR):</b> عددها ثلاثة بالترتيب.<br>
+        🔵 <b>In English (EN):</b> They are three in order.<br>
+        ⚪ <b>En français (FR):</b> Ils sont au nombre de trois dans l'ordre.`,
+        
+        answer: `
+            <div style="text-align: center;">
+                <ul style="padding-right: 20px; text-align: right; direction: rtl; list-style: none; line-height: 1.8; font-size: 18px;">
+                    <li>2️⃣ <b>الشريان الوربي الثاني</b> (Intercostal Artery 2) - <i>Deuxième artère intercostale</i></li><br>
+                    <li>3️⃣ <b>الشريان الوربي الثالث</b> (Intercostal Artery 3) - <i>Troisième artère intercostale</i></li><br>
+                    <li>4️⃣ <b>الشريان الوربي الرابع</b> (Intercostal Artery 4) - <i>Quatrième artère intercostale</i></li><br>
+                </ul>
+            </div>
+        `,
+        imageFront: "/A101.png", // صورة الجهة الأمامية
+                imageBack: "2MED U4 ANATOMIE/A47.jpg", // صورة الجهة الخلفية
+                isHtml: true
+    }
+
+
+
+    ];
+
+let currentIndex = 0;
+let flipped = false;
+
+function updateCard() {
+    const card = flashcards[currentIndex];
+    document.getElementById("question").innerHTML = card.question;
+    document.getElementById("answer").innerHTML = card.answer;
+    document.getElementById("cardImageFront").src = card.imageFront;
+    document.getElementById("cardImageBack").src = card.imageBack;
+    document.getElementById("cardNumber").textContent = `${currentIndex + 1} / ${flashcards.length}`;
+}
+
+function flipCard(event) {
+    event.stopPropagation();
+    flipped = !flipped;
+    document.getElementById("flashcard").classList.toggle("flipped", flipped);
+}
+
+function nextCard() {
+    currentIndex = (currentIndex + 1) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+function prevCard() {
+    currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+    flipped = false;
+    document.getElementById("flashcard").classList.remove("flipped");
+    updateCard();
+}
+
+updateCard();
+</script>
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>نظام الأزرار العائمة الذكي - نسخة الهاتف</title>
+
+    <style>
+        .floating-system {
+            position: fixed;
+            z-index: 9999;
+            bottom: 25px;
+            left: 25px; /* تغيير من right إلى left */
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+            touch-action: none;
+        }
+        
+        /* الزر الرئيسي */
+        .main-floating-btn {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            order: 1;
+        }
+    
+        /* الأزرار الثانوية */
+        .secondary-btn {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #00b894, #55efc4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(30px);
+            visibility: hidden;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+        }
+        
+        .secondary-btn.search-btn {
+            background: linear-gradient(135deg, #0984e3, #74b9ff);
+        }
+        
+        .secondary-btn.speech-btn {
+            background: linear-gradient(135deg, #e17055, #fab1a0);
+        }
+        
+        .secondary-btn.contact-btn {
+            background: linear-gradient(135deg, #fd79a8, #ff9ff3);
+        }
+        
+        .secondary-btn.flashcard-btn {
+            background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+            color: #333;
+        }
+    
+      .secondary-btn.eldars-btn {
+          background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      }
+  
+        /* حالة الأزرار عند الفتح */
+        .floating-system.expanded {
+            flex-direction: row-reverse;
+        }
+        
+        .floating-system.expanded .secondary-btn {
+            opacity: 1;
+            transform: translateX(0);
+            visibility: visible;
+        }
+        
+        .floating-system.expanded .search-btn {
+            transition-delay: 0.1s;
+        }
+        
+        .floating-system.expanded .speech-btn {
+            transition-delay: 0.2s;
+        }
+        
+        .floating-system.expanded .contact-btn {
+            transition-delay: 0.3s;
+        }
+        
+        .floating-system.expanded .flashcard-btn {
+            transition-delay: 0.4s;
+        }
+            
+      .floating-system.expanded .eldars-btn {
+          transition-delay: 0.5s;
+      }
+    
+        /* تأثير النبض */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(108, 92, 231, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
+        }
+    
+        .pulse-effect {
+            animation: pulse 1.5s infinite;
+        }
+    
+        /* تحسينات للهواتف الصغيرة */
+        @media (max-width: 480px) {
+            .floating-system {
+                bottom: 20px;
+                left: 20px; /* تغيير من right إلى left */
+                gap: 12px;
+            }
+            
+            .main-floating-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .secondary-btn {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+            }
+            
+            /* زيادة مساحة الضغط */
+            .main-floating-btn::after,
+            .secondary-btn::after {
+                content: '';
+                position: absolute;
+                top: -15px;
+                left: -15px;
+                right: -15px;
+                bottom: -15px;
+            }
+        }
+    
+        /* أنماط القلم الناطق */
+        .notification {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #008cff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
+            display: none;
+            z-index: 9998;
+            max-width: 80%;
+        }
+    
+        .show-notification {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+        
+        /* أنماط البحث */
+        .search-bubble {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 350px;
+            max-height: 60vh;
+            background-color: rgb(82, 82, 82);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            z-index: 10000;
+            overflow: hidden;
+            animation: bubbleAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    
+        .search-bubble.show {
+            display: flex;
+        }
+    
+        @keyframes bubbleAppear {
+            from {
+                transform: translateY(20px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+    
+        .bubble-header {
+            padding: 15px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #424242;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .bubble-title {
+            font-weight: bold;
+            color: #333;
+        }
+    
+        .close-bubble {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+            padding: 0;
+            margin: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .bubble-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+    
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-bottom: 2px solid #989898;
+            outline: none;
+        }
+    
+        .search-input:focus {
+            border-bottom-color: #2185d0;
+        }
+    
+        .search-results {
+            max-height: calc(60vh - 120px);
+            overflow-y: auto;
+        }
+    
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #747272;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+    
+        .result-item:hover {
+            background-color: #393737;
+        }
+    
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2185d0;
+        }
+    
+        .highlight {
+            background-color: #009c05;
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+        }
+    
+        @media (max-width: 768px) {
+            .search-bubble {
+                right: 15px;
+                width: calc(100% - 30px);
+                max-height: 50vh;
+                bottom: 100px;
+            }
+            
+            .search-results {
+                max-height: calc(50vh - 120px);
+            }
+        }
+        
+        /* أنماط نافذة التواصل */
+        .popupCONTACT {
+            position: fixed;
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
+            width: 90%;
+            max-width: 300px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1001;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+    
+        .close-btnCONTACT {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .contact-containerCONTACT {
+            text-align: center;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin: auto;
+        }
+    
+        .contact-titleCONTACT {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+    
+        .contact-textCONTACT {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+    
+        .social-linksCONTACT {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    
+        .btnCONTACT {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            transition: 0.3s;
+        }
+    
+        .telegram-btnCONTACT { background: #0088cc; }
+        .facebook-btnCONTACT { background: #1877f2; }
+        .instagram-btnCONTACT { background: #e1306c; }
+    
+  
+  
+  
+  
+   /* أنماط نافذة Eldars */
+   .eldars-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 600px;
+  height: 80vh;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 10010;
+  display: none;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .eldars-popup.show {
+  display: block;
+  }
+  
+  .eldars-header {
+  padding: 15px;
+  background: #9b59b6;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+  
+  .eldars-title {
+  font-weight: bold;
+  font-size: 18px;
+  }
+  
+  .close-eldars {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  }
+  
+  .eldars-content {
+  width: 100%;
+  height: calc(100% - 50px);
+  overflow: hidden;
+  position: relative;
+  }
+  
+  .eldars-iframe {
+  width: 100%; /* عرض العنصر 100% ليشغل المساحة المتاحة */
+  height: 100%; /* ارتفاع العنصر 100% ليشغل المساحة المتاحة */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: none; /* إزالة التكبير الزائد */
+  border: none;
+  overflow: auto; /* تمكين التمرير داخل الـiframe إذا لزم الأمر */
+  }
+  
+  /* تحسين العرض على الشاشات الصغيرة (الهواتف) */
+  @media (max-width: 768px) {
+  .eldars-popup {
+      max-width: 90%;
+      height: 85vh; /* تقليل ارتفاع النافذة لتكون أكثر مرونة */
+  }
+  .eldars-iframe {
+      width: 100%;
+      height: 100%;
+  }
+  }
+  
+  /* تحسين العرض على الشاشات الصغيرة جدًا (الهاتف المحمول) */
+  @media (max-width: 480px) {
+  .eldars-popup {
+      max-width: 95%;
+      height: 90vh;
+  }
+  .eldars-iframe {
+      width: 100%;
+      height: 100%;
+  }
+  }
+  
+  /* تحسين العرض على الشاشات الكبيرة */
+  @media (min-width: 1024px) {
+  .eldars-popup {
+      max-width: 800px;
+      height: 80vh;
+  }
+  .eldars-iframe {
+      width: 100%;
+      height: 100%;
+  }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(50%, -45%); }
+            to { opacity: 1; transform: translate(50%, -50%); }
+        }
+    
+        /* تحسينات للهواتف الصغيرة */
+        @media (max-width: 480px) {
+            .floating-system {
+                bottom: 15px;
+                left: 15px; /* تغيير من right إلى left */
+                gap: 8px;
+            }
+            
+            .main-floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .secondary-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+            
+            /* تحسينات للبحث على الشاشات الصغيرة */
+            .search-bubble {
+                bottom: 90px;
+                max-height: 60vh;
+            }
+            
+            /* تحسينات لنافذة التواصل */
+            .popupCONTACT {
+                max-width: 90%;
+                padding: 15px;
+            }
+            
+            .contact-titleCONTACT {
+                font-size: 18px;
+            }
+            
+            .contact-textCONTACT {
+                font-size: 14px;
+            }
+            
+            .btnCONTACT {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            /* زيادة مساحة الضغط للأزرار */
+            .main-floating-btn::after,
+            .secondary-btn::after {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+            }
+            
+            /* تحسينات للإشعارات */
+            .notification {
+                bottom: 80px;
+                right: 10px;
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+        }
+    
+        /* تحسينات إضافية للشاشات الصغيرة جدًا */
+        @media (max-width: 360px) {
+            .floating-system {
+                bottom: 10px;
+                left: 10px; /* تغيير من right إلى left */
+                gap: 6px;
+            }
+            
+            .main-floating-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+            
+            .secondary-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+        }
+        </style>
+    </style>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- نظام الأزرار العائمة -->
+    <div class="floating-system" id="floatingSystem">
+        <!-- الأزرار الثانوية -->
+        <button class="secondary-btn flashcard-btn" id="flashcardBtn" title="البطاقات التعليمية">
+            <i class="far fa-copy"></i>
+        </button>
+        
+        <button class="secondary-btn contact-btn" id="contactBtn" title="الدعم الفني">
+            <i class="fas fa-headset"></i>
+        </button>
+
+
+    
+
+
+
+        <button class="secondary-btn speech-btn" id="speechBtn" title="القلم الناطق">
+            <i class="fas fa-microphone-alt"></i>
+        </button>
+        
+        <button class="secondary-btn search-btn" id="searchBtn" title="البحث الذكي">
+            <i class="fas fa-search"></i>
+        </button>
+        
+        <!-- الزر الرئيسي -->
+        <button class="main-floating-btn" id="mainFloatingBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+
+    <!-- إشعارات القلم الناطق -->
+    <div id="notification" class="notification"></div>
+
+
+    <div>
+        <label>🔹 اختر جنس الصوت:</label>
+        <select id="voiceGender">
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+        </select>
+    </div>
+
+    <div class="speed-control">
+        <label for="speedRange">🔊 سرعة الصوت:</label>
+        <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1">
+    </div>
+    <!-- فقاعة البحث -->
+    <div class="search-bubble" id="searchBubble">
+        <div class="bubble-header">
+            <div class="bubble-title">البحث في الموقع</div>
+            <button class="close-bubble" id="closeBubble" aria-label="إغلاق البحث">×</button>
+        </div>
+        <div class="bubble-content">
+            <input type="text" class="search-input" id="searchInput" 
+                   placeholder="اكتب كلمة البحث..." autocomplete="off"
+                   aria-label="مربع البحث">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- نافذة التواصل -->
+    <div class="popupCONTACT" id="popupCONTACT">
+        <button class="close-btnCONTACT" id="closeContactBtn">✖</button>
+        <div class="contact-containerCONTACT">
+            <h3 class="contact-titleCONTACT" style="text-align: center; color: black; font-size: 24px; font-weight: bold;">📩 تواصل معنا</h3>
+
+            <p class="contact-textCONTACT">في حالة توفر مشكلة أو لديك اقتراح سواء حول اختبار أو غيره تواصل معنا</p>
+            
+            <div class="social-linksCONTACT">
+                <a href="http://t.me/ADATEALM_bot" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                    <i class="fab fa-telegram"></i> بوت تيليغرام
+                </a>
+                
+                <a href="https://t.me/adatealm" target="_blank" class="btnCONTACT telegram-btnCONTACT">
+                    <i class="fab fa-telegram"></i> تيليغرام
+                </a>
+                
+                <a href="https://www.facebook.com/share/1BFTe2mWNL/" target="_blank" class="btnCONTACT facebook-btnCONTACT">
+                    <i class="fab fa-facebook"></i> فيسبوك
+                </a>
+                
+                <a href="https://www.instagram.com/adat_ealm?igsh=djg1eXlwMTJvM2xw" target="_blank" class="btnCONTACT instagram-btnCONTACT">
+                    <i class="fab fa-instagram"></i> إنستغرام
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // عناصر الواجهة
+        const floatingSystem = document.getElementById('floatingSystem');
+        const mainBtn = document.getElementById('mainFloatingBtn');
+        const searchBtn = document.getElementById('searchBtn');
+        const speechBtn = document.getElementById('speechBtn');
+        const contactBtn = document.getElementById('contactBtn');
+        const flashcardBtn = document.getElementById('flashcardBtn');
+        const searchBubble = document.getElementById('searchBubble');
+        const closeBubble = document.getElementById('closeBubble');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const popupCONTACT = document.getElementById('popupCONTACT');
+        const closeContactBtn = document.getElementById('closeContactBtn');
+        const notification = document.getElementById('notification');
+        
+        // حالات النظام
+        let isExpanded = false;
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+        let isSpeechEnabled = false;
+        let speechSynthesisInstance = window.speechSynthesis || null;
+        let currentUtterance = null;
+        let voices = [];
+        let currentResults = [];
+        let selectedIndex = -1;
+        let searchTimeout;
+        
+        // تهيئة النظام
+        function initSystem() {
+            // إضافة تأثير النبض بعد 3 ثواني
+            setTimeout(() => {
+                mainBtn.classList.add('pulse-effect');
+                setTimeout(() => {
+                    mainBtn.classList.remove('pulse-effect');
+                }, 3000);
+            }, 3000);
+            
+            // تهيئة Web Speech API
+            if (speechSynthesisInstance) {
+                speechSynthesisInstance.onvoiceschanged = function() {
+                    voices = speechSynthesisInstance.getVoices();
+                };
+                
+                // تحميل الأصوات مباشرة إذا كانت متاحة
+                voices = speechSynthesisInstance.getVoices();
+            } else {
+                speechBtn.style.display = 'none';
+            }
+            
+            // جعل النظام قابلاً للسحب
+            setupDragAndDrop();
+            
+            // إضافة أحداث اللمس
+            setupTouchEvents();
+        }
+        
+        // إعداد أحداث اللمس
+        function setupTouchEvents() {
+            // منع السلوك الافتراضي لللمس
+            const buttons = [mainBtn, searchBtn, speechBtn, contactBtn, flashcardBtn];
+            
+            buttons.forEach(btn => {
+                btn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // محاكاة تأثير الضغط
+                    this.style.transform = 'scale(0.95)';
+                    
+                    // تحديد الزر الذي تم الضغط عليه
+                    if (btn === mainBtn) {
+                        toggleSystem();
+                    } else if (btn === searchBtn) {
+                        toggleSearch();
+                    } else if (btn === speechBtn) {
+                        toggleSpeech();
+                    } else if (btn === contactBtn) {
+                        togglePopupCONTACT();
+                    } else if (btn === flashcardBtn) {
+                        goToFlashCard();
+                    }
+                }, { passive: false });
+                
+                btn.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        }
+        
+        // تبديل حالة النظام (مفتوح/مغلق)
+        function toggleSystem() {
+            isExpanded = !isExpanded;
+            floatingSystem.classList.toggle('expanded', isExpanded);
+            
+            if (isExpanded) {
+                mainBtn.innerHTML = '<i class="fas fa-times"></i>';
+                mainBtn.style.transform = 'rotate(135deg)';
+                isDragging = false;
+            } else {
+                mainBtn.innerHTML = '<i class="fas fa-plus"></i>';
+                mainBtn.style.transform = 'rotate(0)';
+                closeAllPopups();
+            }
+        }
+        
+        // إغلاق جميع النوافذ المنبثقة
+        function closeAllPopups() {
+            searchBubble.classList.remove('show');
+            popupCONTACT.style.display = 'none';
+        }
+        
+        // تهيئة السحب والإفلات
+        function setupDragAndDrop() {
+            // للأجهزة التي تعمل باللمس
+            mainBtn.addEventListener('touchstart', handleDragStart, { passive: false });
+            document.addEventListener('touchmove', handleDragMove, { passive: false });
+            document.addEventListener('touchend', endDrag);
+            
+            // للأجهزة التي تعمل بالماوس
+            mainBtn.addEventListener('mousedown', handleDragStart);
+            document.addEventListener('mousemove', handleDragMove);
+            document.addEventListener('mouseup', endDrag);
+        }
+        
+        function handleDragStart(e) {
+            if (isExpanded) return;
+            
+            isDragging = true;
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            
+            startX = clientX;
+            startY = clientY;
+            initialX = floatingSystem.offsetLeft;
+            initialY = floatingSystem.offsetTop;
+            
+            if (e.cancelable) e.preventDefault();
+        }
+        
+        function handleDragMove(e) {
+            if (!isDragging || isExpanded) return;
+            
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            const deltaX = clientX - startX;
+            const deltaY = clientY - startY;
+            
+            let newX = initialX + deltaX;
+            let newY = initialY + deltaY;
+            
+            // تحديد الحدود لمنع الخروج من الشاشة
+            newX = Math.max(0, Math.min(newX, window.innerWidth - floatingSystem.offsetWidth));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - floatingSystem.offsetHeight));
+            
+            floatingSystem.style.left = newX + 'px';
+            floatingSystem.style.top = newY + 'px';
+            floatingSystem.style.right = 'auto';
+            floatingSystem.style.bottom = 'auto';
+            
+            if (e.cancelable) e.preventDefault();
+        }
+        
+
+
+
+
+        function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    
+    // جعل النظام يلتصق بالجانب الأيسر دائماً
+    floatingSystem.style.left = '20px';
+    floatingSystem.style.right = 'auto';
+    floatingSystem.style.bottom = '20px';
+    floatingSystem.style.top = 'auto';
+}
+       
+        // وظائف الأزرار
+        function toggleSearch() {
+            if (isExpanded) toggleSystem();
+            searchBubble.classList.toggle('show');
+            if (searchBubble.classList.contains('show')) {
+                searchInput.focus();
+            }
+        }
+        
+        function toggleSpeech() {
+            if (!speechSynthesisInstance) {
+                showNotification("⚠️ هذه الميزة غير مدعومة في متصفحك");
+                return;
+            }
+            
+            if (isExpanded) toggleSystem();
+            isSpeechEnabled = !isSpeechEnabled;
+            showNotification(isSpeechEnabled ? "✅ تم تفعيل القلم الناطق!" : "⛔ تم إيقاف القلم الناطق!");
+            
+            if (isSpeechEnabled) {
+                document.addEventListener('mouseup', handleTextSelection);
+                document.addEventListener('touchend', handleTextSelection);
+            } else {
+                document.removeEventListener('mouseup', handleTextSelection);
+                document.removeEventListener('touchend', handleTextSelection);
+                stopSpeech();
+            }
+        }
+        
+        function handleTextSelection(e) {
+            if (!isSpeechEnabled) return;
+            
+            // منع النقر العادي إذا كان القلم الناطق مفعلاً
+            if (e.target.closest('.floating-system, .search-bubble, .popupCONTACT')) {
+                return;
+            }
+            
+            let selectedText = window.getSelection().toString().trim();
+            if (selectedText.length > 0) {
+                speakText(selectedText);
+            }
+        }
+        
+        function speakText(text) {
+            stopSpeech();
+            
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = /[\u0600-\u06FF]/.test(text) ? "ar-SA" : "en-US";
+            
+            // اختيار الصوت المناسب
+            if (voices.length > 0) {
+                const arabicVoices = voices.filter(v => v.lang.includes('ar'));
+                if (arabicVoices.length > 0) {
+                    utterance.voice = arabicVoices[0];
+                }
+            }
+            
+            utterance.rate = 1;
+            utterance.volume = 1.0;
+            
+            currentUtterance = utterance;
+            speechSynthesisInstance.speak(utterance);
+        }
+        
+        function stopSpeech() {
+            if (speechSynthesisInstance && speechSynthesisInstance.speaking) {
+                speechSynthesisInstance.cancel();
+            }
+            currentUtterance = null;
+        }
+        
+        function togglePopupCONTACT() {
+            if (isExpanded) toggleSystem();
+            popupCONTACT.style.display = popupCONTACT.style.display === "block" ? "none" : "block";
+        }
+        
+        function goToFlashCard() {
+            if (isExpanded) toggleSystem();
+            document.getElementById('flashcard-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+        
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add("show-notification");
+            
+            setTimeout(() => {
+                notification.classList.remove("show-notification");
+            }, 2000);
+        }
+        
+        // أحداث البحث
+        function handleSearchInput(e) {
+            const query = e.target.value.trim();
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                clearResults();
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        }
+        
+        function performSearch(query) {
+            clearResults();
+            currentResults = [];
+            selectedIndex = -1;
+            
+            const searchableElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, [id]');
+            
+            searchableElements.forEach(element => {
+                const text = element.textContent || element.innerText;
+                const elementId = element.id || (element.parentNode.id || '');
+                
+                if (text.toLowerCase().includes(query.toLowerCase())) {
+                    const previewText = text.length > 100 ? text.substring(0, 100) + '...' : text;
+                    
+                    currentResults.push({
+                        element: element,
+                        id: elementId,
+                        title: element.tagName.startsWith('H') ? text : (elementId || 'قسم في الصفحة'),
+                        preview: previewText,
+                        fullText: text
+                    });
+                }
+            });
+            
+            if (currentResults.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            displayResults(currentResults, query);
+        }
+        
+        function displayResults(results, query) {
+            results.forEach((result, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div class="result-title">${highlightText(result.title, query)}</div>
+                    <div class="result-preview">${highlightText(result.preview, query)}</div>
+                `;
+                resultItem.addEventListener('click', () => navigateToResult(result));
+                searchResults.appendChild(resultItem);
+            });
+        }
+        
+        function highlightText(text, query) {
+            if (!query) return text;
+            return text.replace(
+                new RegExp(query, 'gi'), 
+                match => `<span class="highlight">${match}</span>`
+            );
+        }
+        
+        function navigateToResult(result) {
+            if (result.element) {
+                result.element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                const originalBg = result.element.style.backgroundColor;
+                result.element.style.backgroundColor = '#fff9c4';
+                setTimeout(() => {
+                    result.element.style.backgroundColor = originalBg;
+                }, 2000);
+            }
+            
+            searchBubble.classList.remove('show');
+        }
+        
+        function showNoResults() {
+            searchResults.innerHTML = '<div class="no-results">لا توجد نتائج مطابقة</div>';
+        }
+        
+        function clearResults() {
+            searchResults.innerHTML = '';
+            currentResults = [];
+            selectedIndex = -1;
+        }
+        
+        // إضافة الأحداث
+        mainBtn.addEventListener('click', toggleSystem);
+        searchBtn.addEventListener('click', toggleSearch);
+        speechBtn.addEventListener('click', toggleSpeech);
+        contactBtn.addEventListener('click', togglePopupCONTACT);
+        flashcardBtn.addEventListener('click', goToFlashCard);
+        closeBubble.addEventListener('click', () => searchBubble.classList.remove('show'));
+        closeContactBtn.addEventListener('click', togglePopupCONTACT);
+        searchInput.addEventListener('input', handleSearchInput);
+        
+        // تهيئة النظام عند التحميل
+        window.addEventListener('load', initSystem);
+        
+        // إعادة حساب المواقع عند تغيير حجم النافذة
+        window.addEventListener('resize', endDrag);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحويل اتجاه النص تلقائيًا مع الحفاظ على التنسيق</title>
+    <style>
+        body {
+    
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        /* تنسيقات إضافية للحفاظ على المظهر */
+        .mixed-content {
+            unicode-bidi: embed;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // عناصر أكثر تحديداً مع استثناء العناصر التي قد تحتوي على أطفال معقدة
+            const elements = document.querySelectorAll('p, div:not(div div), span, li, h1, h2, h3, h4, h5, h6');
+            
+            elements.forEach(element => {
+                // تجاهل العناصر التي تحتوي على أطفال معقدة
+                if (element.children.length > 0 && !(element.children.length === 1 && element.children[0].tagName === 'SPAN')) {
+                    return;
+                }
+                
+                const text = element.textContent.trim();
+                
+                if (!text) return;
+                
+                // تحليل النص لتحديد إذا كان إنجليزي/عربي
+                const hasArabic = /[\u0600-\u06FF]/.test(text);
+                const hasEnglish = /[a-zA-Z]/.test(text);
+                
+                // إذا كان النص يحتوي على الإنجليزية فقط
+                if (hasEnglish && !hasArabic) {
+                    element.classList.add('ltr');
+                    element.classList.remove('rtl');
+                } 
+                // إذا كان النص يحتوي على العربية فقط
+                else if (hasArabic && !hasEnglish) {
+                    element.classList.add('rtl');
+                    element.classList.remove('ltr');
+                }
+                // إذا كان نصاً مختلطاً
+                else if (hasArabic && hasEnglish) {
+                    element.classList.add('mixed-content');
+                    
+                    // تحديد الاتجاه الأساسي بناءً على الحرف الأول
+                    const firstChar = text.charAt(0);
+                    if (/[a-zA-Z]/.test(firstChar)) {
+                        element.style.direction = 'ltr';
+                        element.style.textAlign = 'left';
+                    } else {
+                        element.style.direction = 'rtl';
+                        element.style.textAlign = 'right';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تنبيه طبي - INFATM</title>
+    <style>
+        /* تهيئة عامة */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+        }
+
+        /* زر الخطر العائم - تصميم جديد */
+        ._x1 {
+            position: fixed;
+            top: 120px; /* تغيير من bottom إلى top */
+            right: 10px;  /* تعديل القيمة */
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff0000, #c00000);
+            color: white;
+            font-size: 21px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
+                        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1000;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            animation: _a1 2s infinite;
+        }
+
+        @keyframes _a1 {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        ._x1:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff3333, #d10000);
+        }
+
+        ._x1:active {
+            transform: scale(0.95);
+            animation: none;
+        }
+
+        /* طبقة التعتيم */
+        ._x2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            display: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* نافذة المحتوى */
+        ._x3 {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10012;
+            display: none;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+
+        ._x4 {
+          background: linear-gradient(to right, #e74c3c, #c0392b);
+          color: white;
+          padding: 18px;
+          text-align: center;
+          position: relative;
+          flex-shrink: 0;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      ._x4 h2 {
+          font-size: 1.3rem;
+          font-weight: 600;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+        ._x5 {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: #f5f5f5;
+        }
+
+        /* زر الإغلاق الجديد */
+        ._x6 {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: white;
+            color: #e74c3c;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        ._x6:hover {
+            transform: rotate(90deg);
+            background: #ffebee;
+        }
+
+        /* مؤشر التحميل */
+        ._x7 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        ._x8 {
+            width: 45px;
+            height: 45px;
+            border: 5px solid rgba(231, 76, 60, 0.2);
+            border-top: 5px solid #e74c3c;
+            border-radius: 50%;
+            animation: _a2 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes _a2 {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        ._x7 p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* المحتوى المعروض */
+        ._x9 {
+            padding: 18px;
+            line-height: 1.7;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 480px) {
+            ._x1 {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+                bottom: 20px;
+            }
+            
+            ._x4 {
+                padding: 15px;
+            }
+            
+            ._x4 h2 {
+                font-size: 1.1rem;
+            }
+            
+            ._x6 {
+                width: 28px;
+                height: 28px;
+                font-size: 1rem;
+            }
+        }
+
+        /* تحسينات لللمس على الهواتف */
+        @media (hover: none) {
+            ._x1:hover {
+                transform: scale(1);
+                background: linear-gradient(135deg, #ff0000, #c00000);
+            }
+            
+            ._x6:hover {
+                transform: rotate(0deg);
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- زر الخطر العائم الجديد -->
+<button class="_x1" onclick="_f1()">⚠️</button>
+
+<!-- طبقة التعتيم -->
+<div class="_x2" id="_d1"></div>
+
+<!-- نافذة المحتوى -->
+<div class="_x3" id="_d2">
+    <div class="_x4">
+        <button class="_x6" onclick="_f1()">×</button>
+        <h2 >⚠️  محتوى زر التنبيه  الخطر   ⚠️   </h2>
+    </div>
+    <div class="_x5" id="_d3">
+        <div class="_x7">
+            <div class="_x8"></div>
+            <p>جاري تحميل المحتوى ...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // متغيرات التطبيق
+    let _v1 = false;
+    const _u1 = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    
+    // عناصر DOM
+    const _d2 = document.getElementById('_d2');
+    const _d1 = document.getElementById('_d1');
+    const _d3 = document.getElementById('_d3');
+    const _b1 = document.querySelector('._x1');
+    
+    // تبديل عرض/إخفاء النافذة
+    function _f1() {
+        if (_d2.style.display === 'flex') {
+            _f2();
+        } else {
+            _f3();
+        }
+    }
+    
+    function _f3() {
+        // إيقاف تأثير النبض عند الفتح
+        _b1.style.animation = 'none';
+        
+        _d1.style.display = 'block';
+        _d2.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        if (!_v1) {
+            _f4();
+        }
+    }
+    
+    function _f2() {
+        // إعادة تشغيل تأثير النبض عند الإغلاق
+        _b1.style.animation = '_a1 2s infinite';
+        
+        _d1.style.display = 'none';
+        _d2.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // تحميل المحتوى
+    async function _f4() {
+        try {
+            // استخدام iframe كحل أساسي
+            _f5();
+            _v1 = true;
+        } catch (error) {
+            _f6(error);
+        }
+    }
+    
+    // عرض المحتوى باستخدام iframe
+    function _f5() {
+        _d3.innerHTML = `
+            <iframe src="${_u1}" 
+                    style="width:100%; height:100%; border:none;"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    loading="lazy">
+            </iframe>
+        `;
+    }
+    
+    // عرض رسالة الخطأ
+    function _f6(_e1) {
+        _d3.innerHTML = `
+            <div class="_x7">
+                <div style="color: #e74c3c; margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 20px; color: #555;">${_e1.message}</p>
+                <button onclick="_f7()" 
+                        style="padding: 10px 20px; 
+                               background: linear-gradient(to right, #e74c3c, #c0392b); 
+                               color: white; 
+                               border: none; 
+                               border-radius: 30px;
+                               font-size: 1rem;
+                               box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+                               transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // إعادة تحميل المحتوى
+    function _f7() {
+        _d3.innerHTML = `
+            <div class="_x7">
+                <div class="_x8"></div>
+                <p>جاري تحميل المحتوى الطبي...</p>
+            </div>
+        `;
+        _f4();
+    }
+    
+    // إغلاق النافذة عند النقر خارجها
+    _d1.addEventListener('click', _f2);
+    
+    // منع إغلاق النافذة عند النقر داخلها
+    _d2.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
+    // تحسين الأداء للهواتف
+    if ('connection' in navigator) {
+        if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
+            // تحسينات لشبكات الجيل الثاني
+            _b1.style.animation = 'none';
+        }
+    }
+    
+    // إضافة اهتزاز عند النقر (للهواتف)
+    function _f8() {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(10);
+        }
+    }
+    
+    // إضافة الاهتزاز للأزرار
+    document.querySelector('._x1').addEventListener('click', _f8);
+    document.querySelector('._x6')?.addEventListener('click', _f8);
+</script>
+
+</body>
+</html>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* أنماط الزر الطافي */
+    .theme-toggle {
+        position: fixed;
+        top:100px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        z-index: 9999;
+        transition: all 0.3s ease;
+    }
+    
+    .theme-toggle:hover {
+        transform: scale(1.1);
+    }
+    
+    /* أنماط الوضع النهاري */
+    body.light-mode {
+        background-color: #f5f5f5;
+        color: #333;
+    }
+    
+
+    
+
+body.dark-mode .hover-image-container {
+    color: #ffffff;
+}
+
+body.dark-mode .image-tooltip {
+    color: #66bfff;
+}
+
+body.dark-mode .image-tooltip-content {
+    background-color: #222;
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .tooltip-caption {
+    color: #ccc;
+}
+    body.light-mode .sidebar {
+        background-color: #f0f0f0;
+        color: #333;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.light-mode .bubble {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border-left: 6px solid #007bff;
+        color: #333;
+    }
+    
+    body.light-mode .progress-bar-container {
+        background-color: #e0e0e0;
+    }
+    
+    body.light-mode .finish-button {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    body.light-mode .interact-button {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    body.light-mode .refresh-button {
+        background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+        color: #333;
+        border: 1px solid #ccc;
+    }
+    
+    body.light-mode #end-lesson-modal {
+        background-color: #f5f5f5;
+        color: #333;
+    }
+    
+    body.light-mode .modal {
+        background: #f5f5f5;
+        color: #333;
+    }
+</style>
+
+<button class="theme-toggle" id="themeToggle">☀️</button>
+
+<script>
+    // اختيار العناصر
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // التحقق من التفضيل المحفوظ
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'light') {
+        body.classList.add('light-mode');
+        body.classList.remove('dark-mode');
+        themeToggle.textContent = '🌙';
+    } else {
+        body.classList.add('dark-mode');
+        themeToggle.textContent = '☀️';
+    }
+    
+    // حدث النقر على الزر
+    themeToggle.addEventListener('click', () => {
+        if (body.classList.contains('dark-mode')) {
+            // التحويل إلى الوضع النهاري
+            body.classList.add('light-mode');
+            body.classList.remove('dark-mode');
+            themeToggle.textContent = '🌙';
+            localStorage.setItem('theme', 'light');
+        } else {
+            // التحويل إلى الوضع الليلي
+            body.classList.add('dark-mode');
+            body.classList.remove('light-mode');
+            themeToggle.textContent = '☀️';
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            
+            
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أداة التحكم في التكبير/التصغير</title>
+  <style>
+    /* تنسيقات أداة التكبير/التصغير */
+    .zoom-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      background: rgba(40, 40, 40, 0.9);
+      padding: 12px;
+      border-radius: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .zoom-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #007bff;
+      color: white;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    
+    .zoom-btn:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+    
+    .zoom-value {
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    /* للهواتف */
+    @media (max-width: 768px) {
+      .zoom-controls-container {
+        bottom: 15px;
+        left: 15px;
+      }
+      
+      
+    }
+  </style>
+</head>
+<body>
+
+
+
+<script>
+  // إعدادات التكبير
+  const zoomSettings = {
+    current: 1, // هذه القيمة سيتم تغييرها عند التحميل إذا لم توجد قيمة محفوظة
+    min: 0.3, // غيرت الحد الأدنى ليتناسب مع القيمة الافتراضية
+    max: 2,
+    step: 0.1
+  };
+
+  // عناصر التحكم
+  const elements = {
+    zoomIn: document.getElementById('zoom-in'),
+    zoomOut: document.getElementById('zoom-out'),
+    zoomReset: document.getElementById('zoom-reset'),
+    zoomValue: document.getElementById('zoom-value'),
+    html: document.documentElement
+  };
+
+  // تطبيق مستوى التكبير الحالي
+  function applyZoom() {
+    elements.html.style.fontSize = `${zoomSettings.current * 100}%`;
+    elements.zoomValue.textContent = `${Math.round(zoomSettings.current * 100)}%`;
+    
+    // حفظ الإعدادات
+    localStorage.setItem('pageZoomLevel', zoomSettings.current);
+  }
+
+  // تكبير النص
+  elements.zoomIn.addEventListener('click', () => {
+    if (zoomSettings.current < zoomSettings.max) {
+      zoomSettings.current += zoomSettings.step;
+      applyZoom();
+    }
+  });
+
+  // تصغير النص
+  elements.zoomOut.addEventListener('click', () => {
+    if (zoomSettings.current > zoomSettings.min) {
+      zoomSettings.current -= zoomSettings.step;
+      applyZoom();
+    }
+  });
+
+  // إعادة التعيين
+  elements.zoomReset.addEventListener('click', () => {
+    zoomSettings.current = 1;
+    applyZoom();
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedZoom = localStorage.getItem('pageZoomLevel');
+    if (savedZoom) {
+      zoomSettings.current = parseFloat(savedZoom);
+    } else {
+      // القيمة الافتراضية عند أول فتح (30%)
+      zoomSettings.current = 0.1;
+    }
+    applyZoom();
+  });
+
+  // اختصارات لوحة المفاتيح
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === '0') {
+      e.preventDefault();
+      elements.zoomReset.click();
+    }
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
