@@ -1109,27 +1109,340 @@ border-radius: 0px;
 
 
 
-      <!-- اختيار إعدادات الاختبار -->
-      <div class="quiz-settings">
-        <div class="setting-group">
-          <label for="custom-duration">اختر مدة الاختبار (بالدقائق):</label>
-          <input type="number" id="custom-duration" min="1" max="60" value="10">
-        </div>
+
+
+
+
+
+
+
+
+
+
+      <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعدادات الاختبار</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* ======== متغيرات الألوان الرئيسية ======== */
+        /* يمكنك تغيير هذه الألوان لتناسب تصميم موقعك */
+        :root {
+            --primary-color: #5A67D8; /* أزرق بنفسجي */
+            --primary-color-light: #7f89e2;
+            --success-color: #38A169; /* أخضر */
+            --background-primary: #f7fafc; /* خلفية الصفحة */
+            --background-secondary: #ffffff; /* خلفية البطاقة */
+            --text-primary: #2d3748; /* لون النص الرئيسي */
+            --text-secondary: #718096; /* لون النص الثانوي */
+            --border-color: #e2e8f0; /* لون الحدود */
+            --shadow-color: rgba(0, 0, 0, 0.07);
+        }
+
+        /* ======== تصميم أساسي للصفحة ======== */
+   
+
+        /* ======== تصميم حاوية الإعدادات الرئيسية ======== */
+        .quiz-settings-container {
+            background-color: var(--background-secondary);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            width: 100%;
+            max-width: 500px;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-settings-container h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        /* ======== تصميم كل مجموعة إعدادات ======== */
+        .setting-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-group label.group-title {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        /* ======== 1. تصميم محدد وقت الاختبار ======== */
+        .segmented-control {
+            display: flex;
+            width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .segmented-control .option-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            background-color: transparent;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .segmented-control .option-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(90, 103, 216, 0.3);
+        }
         
-        <div class="setting-group">
-          <label for="question-count">عدد الأسئلة:</label>
-          <select id="question-count">
-            <option value="5">5 أسئلة</option>
-            <option value="10">10 أسئلة</option>
-            <option value="15">15 أسئلة</option>
-            <option value="20">20 أسئلة</option>
-            <option value="all">جميع الأسئلة</option> <!-- الخيار الجديد -->
-
-          </select>
-        </div>
+        /* حاوية إدخال مدة الاختبار */
+        .duration-input-container {
+            transition: all 0.4s ease;
+            max-height: 100px;
+            overflow: hidden;
+            margin-top: 1rem;
+            opacity: 1;
+        }
         
+        .duration-input-container.hidden {
+            max-height: 0;
+            margin-top: 0;
+            opacity: 0;
+        }
+
+        #custom-duration {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        #custom-duration:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
+        }
 
 
+        /* ======== 2. تصميم قائمة عدد الأسئلة ======== */
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-wrapper::after {
+            content: '\f078'; /* أيقونة السهم لأسفل من Font Awesome */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none; /* لمنع التفاعل مع الأيقونة */
+        }
+        
+        #question-count {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background-color: var(--background-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        #question-count:focus {
+             outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
+        }
+
+        /* ======== 3. تصميم خيار خلط الأسئلة ======== */
+        .shuffle-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9fc;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .shuffle-group .label-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        .shuffle-group i {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        .shuffle-group .label-text span {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+         .shuffle-group .label-text p {
+             font-size: 0.85rem;
+             color: var(--text-secondary);
+             margin: 0;
+         }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 28px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--success-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+        
+        /* ======== تصميم الأزرار ======== */
+        .action-buttons {
+            margin-top: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-light);
+            box-shadow: 0 7px 15px rgba(90, 103, 216, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* ======== تصميم قسم النصائح ======== */
+        .tips {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .tips i {
+            color: var(--primary-color);
+        }
+
+        /* ======== التجاوب مع الشاشات المختلفة (Responsive Design) ======== */
+        @media (min-width: 576px) {
+             .quiz-settings-container {
+                padding: 2.5rem;
+             }
+             .action-buttons {
+                flex-direction: row;
+             }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="quiz-settings-container">
+        <h2><i class="fas fa-cogs"></i> إعدادات الاختبار</h2>
+
+        <div class="setting-group">
+            <label class="group-title" for="time-mode-selector">مدة الاختبار</label>
+            <div id="time-mode-selector" class="segmented-control">
+                <button class="option-btn active" data-mode="limited">
+                    <i class="fas fa-clock"></i>
+                    <span>وقت محدد</span>
+                </button>
+                <button class="option-btn" data-mode="unlimited">
+                    <i class="fas fa-infinity"></i>
+                    <span>وقت غير محدد</span>
+                </button>
+            </div>
+            <div id="duration-input-container" class="duration-input-container">
+                <input type="number" id="custom-duration" min="1" max="180" value="10" aria-label="أدخل مدة الاختبار بالدقائق">
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <label class="group-title" for="question-count">عدد الأسئلة</label>
+            <div class="select-wrapper">
+                <select id="question-count">
+                    <option value="5">5 أسئلة</option>
+                    <option value="10" selected>10 أسئلة</option>
+                    <option value="15">15 سؤال</option>
+                    <option value="20">20 سؤال</option>
+                    <option value="all">جميع الأسئلة</option>
+                </select>
+            </div>
+        </div>
+
+        
 
     <!-- زر المعلومات العائم -->
     <div class="info-btn" id="togglePanelBtn" aria-label="فتح/إغلاق لوحة المعلومات">
@@ -1137,184 +1450,47 @@ border-radius: 0px;
     </div>
     
 
-        
-      <style>
-   
-        /* تصميم خاص فقط بعنصر الإعداد */
-        .quiz-setting {
-          max-width: 280px;
-          margin: 30px auto;
-        }
-    
-        .quiz-setting .setting-group {
-          display: flex;
-          align-items: center;
-    background-color: var(--background-secondary);
-    border: 1px solid var(--border-color);
-    box-shadow: -5px 0 15pxvar(--shadow-color);
-
-
-          padding: 10px 14px;
-          border-radius: 12px;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-          transition: all 0.3s ease;
-          cursor: pointer;
-        }
-    
-        .quiz-setting .setting-group:hover {
-    background-color: var(--background-secondary);
-    border: 1px solid var(--border-color);
-    box-shadow: -5px 0 15pxvar(--shadow-color);
-
-  }
-    
-        .quiz-setting input[type="checkbox"] {
-          appearance: none;
-          width: 18px;
-          height: 18px;
-          border: 2px solid #999;
-          border-radius: 4px;
-          margin-left: 10px;
-          position: relative;
-          transition: all 0.2s ease;
-        }
-    
-        .quiz-setting input[type="checkbox"]:checked {
-          border-color: #28a745;
-          background-color: #28a745;
-        }
-    
-        .quiz-setting input[type="checkbox"]:checked::after {
-          content: "✓";
-          position: absolute;
-          top: -2px;
-          left: 3px;
-          font-size: 14px;
-          color: #fff;
-        }
-    
-        .quiz-setting label {
-          display: flex;
-          align-items: center;
-          color: #333;
-          font-size: 15px;
-        }
-    
-        .quiz-setting label i {
-          margin-left: 6px;
-          color: #007bff;
-          font-size: 16px;
-        }
-
-
-
-
-/* نافذة الشروحات الطويلة */
-.long-explanation-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-    background-color: var(--background-secondary);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 2px 5px var(--shadow-color);  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.long-explanation-modal.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.long-explanation-content {
-    background-color: var(--background-secondary);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 2px 5px var(--shadow-color);  border-radius: 12px;
-  width: 90%;
-  max-width: 800px;
-  max-height: 80vh;
-  overflow-y: auto;
-  padding: 2rem;
-  position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-.long-explanation-content h3 {
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-}
-
-.long-explanation-content p {
-  margin-bottom: 1rem;
-  line-height: 1.8;
-}
-
-.long-explanation-btn {
-  background: linear-gradient(135deg, #9b59b6, #8e44ad);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.long-explanation-btn:hover {
-  background: linear-gradient(135deg, #8e44ad, #9b59b6);
-}
-</style>
-
-
-
-
-    
-      <div class="quiz-setting">
         <div class="setting-group">
-          <input type="checkbox" id="shuffle-questions" checked>
-          <label for="shuffle-questions">
-            <i class="fas fa-random"></i>
-            
-
-            <div style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9; max-width: 300px; font-size: 0.875rem;">
-              <h4 style="color: #2c3e50; margin-bottom: 0.5rem; font-size: 1rem;">
-                <strong>🔀 خلط الأسئلة</strong>
-              </h4>
-              <p style="color: #555; line-height: 1.5; margin: 0;">
-                عند عدم  تفعيل هذه الميزة، تُعرض الأسئلة من الأحدث إلى الأقدم لضمان تنويع وتوزيع عادل بين السنوات.
-              </p>
+             <div class="shuffle-group">
+                <label for="shuffle-questions" class="label-content">
+                    <i class="fas fa-random"></i>
+                    <div class="label-text">
+                        <span>خلط الأسئلة</span>
+                        <p>لضمان التوزيع العادل للأسئلة.</p>
+                    </div>
+                </label>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="shuffle-questions" checked>
+                    <span class="slider"></span>
+                </div>
             </div>
-            
-
-
-          </label>
         </div>
-      </div>
-    
-        <div style="text-align: center;">
+
+        <div class="action-buttons">
           <button class="btn" id="start-btn">بدء الاختبار</button>
+            <button class="btn btn-secondary" id="quick-test-btn">اختبار سريع</button>
+        </div>
+   
+        <div style="text-align: center;">
           <button class="btn btn-secondary" id="quick-test-btn">اختبار سريع (5 أسئلة - 5 دقائق)</button>
         </div>
       </div>
-      
-      <div class="tips">
-        <h3>نصائح قبل البدء:</h3>
-        <ul style="text-align: right; margin-right: 1.5rem;">
-          <li>اقرأ كل سؤال بعناية قبل الإجابة</li>
-          <li>يمكنك تغيير إجابتك قبل الضغط على زر الإرسال</li>
-          <li>سيتم احتساب الوقت المستغرق لكل سؤال</li>
-          <li>اضغط على زر المعلومات (<i class="fas fa-info"></i>) للحصول على مساعدة</li>
-
-
-        </ul>
-      </div>
+        <div class="tips">
+            <p><i class="fas fa-info-circle"></i> الاختبار السريع يتكون من 5 أسئلة في 5 دقائق.</p>
+        </div>
     </div>
-    
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
     <!-- شريط التقدم -->
     <div class="progress-indicator" id="progress-indicator" style="display: none;">
       <div class="progress-bar" id="question-progress"></div>
@@ -1451,6 +1627,8 @@ border-radius: 0px;
 
 
 <script>
+
+
 
 
 
@@ -2704,8 +2882,6 @@ const allQuestions = [
     type: "multi"
   }
 
-
-
 ];
 
 // متغيرات التطبيق
@@ -3473,8 +3649,8 @@ window.addEventListener('load', function() {
 });
 </script>
 
-
-
+</body>
+</html>
 
 
 
