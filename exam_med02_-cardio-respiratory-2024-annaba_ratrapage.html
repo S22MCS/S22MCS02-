@@ -907,7 +907,7 @@ tr:hover {
 
 
     <h1>       
-اِخْتِبَارُ الدَّوْرَةِ الاِسْتِدْرَاكِيَّةُ 2023-2024 – وحْدَةُ الجِهَازِ القَلْبِيِّ وَالتَّنَفُّسِيِّ – كُلِّيَّةُ الطِّبِّ بِعَنَّابَةَ
+    اِخْتِبَارُ الدَّوْرَةِ الاِسْتِدْرَاكِيَّةُ  2023-2024 – وحْدَةُ الجِهَازِ القَلْبِيِّ وَالتَّنَفُّسِيِّ – كُلِّيَّةُ الطِّبِّ بِعَنَّابَةَ
 </h1>
   </header>
   
@@ -1477,6 +1477,11 @@ border-radius: 0px;
       </div>
         <div class="tips">
             <p><i class="fas fa-info-circle"></i> الاختبار السريع يتكون من 5 أسئلة في 5 دقائق.</p>
+                      <li>اقرأ كل سؤال بعناية قبل الإجابة</li>
+          <li>يمكنك تغيير إجابتك قبل الضغط على زر الإرسال</li>
+          <li>سيتم احتساب الوقت المستغرق لكل سؤال</li>
+          <li>اضغط على زر المعلومات (<i class="fas fa-info"></i>) للحصول على مساعدة</li>
+
         </div>
     </div>
 
@@ -2918,6 +2923,131 @@ const showLessonBtn = document.getElementById("show-lesson-btn");
 const infoBtn = document.getElementById("info-btn");
 const closePanelBtn = document.getElementById("close-panel");
 const infoPanel = document.getElementById("info-panel");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // --- أولاً: كود تفعيل أزرار اختيار الوقت ---
+    const timeModeSelector = document.getElementById('time-mode-selector');
+    const durationInputContainer = document.getElementById('duration-input-container');
+
+    // هذا الجزء يستمع للنقرات على أزرار اختيار الوقت
+    if (timeModeSelector) {
+        timeModeSelector.addEventListener('click', function(e) {
+            const clickedButton = e.target.closest('.option-btn');
+            if (!clickedButton) return;
+
+            // إزالة علامة "نشط" من كل الأزرار
+            timeModeSelector.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+
+            // إضافة علامة "نشط" للزر الذي تم النقر عليه
+            clickedButton.classList.add('active');
+
+            // إظهار أو إخفاء حقل إدخال الدقائق
+            if (clickedButton.dataset.mode === 'unlimited') {
+                durationInputContainer.classList.add('hidden');
+            } else {
+                durationInputContainer.classList.remove('hidden');
+            }
+        });
+    }
+
+    // --- ثانياً: استبدل دالة startQuiz الحالية بهذه النسخة المحدثة ---
+    // هذه النسخة تتحقق من الوضع المختار (محدد أو غير محدد)
+    function startQuiz() {
+        const activeModeButton = document.querySelector('#time-mode-selector .option-btn.active');
+        const timeMode = activeModeButton ? activeModeButton.dataset.mode : 'limited';
+
+        // تحديد مدة الاختبار بناءً على الوضع
+        if (timeMode === 'limited') {
+            const durationInput = parseInt(document.getElementById("custom-duration").value) || 10;
+            quizDuration = durationInput * 60;
+        } else {
+            quizDuration = null; // استخدام 'null' ليعني وقتاً غير محدود
+        }
+        
+        const questionCount = document.getElementById("question-count").value;
+        const shuffleQuestions = document.getElementById("shuffle-questions").checked;
+
+        selectedAnswers = [];
+        timePerQuestion = [];
+        totalTime = 0;
+        currentQuestionIndex = 0;
+        quizStarted = true;
+
+        if (questionCount === "all") {
+            questions = [...allQuestions];
+            if (shuffleQuestions) {
+                questions = shuffleArray(questions);
+            }
+        } else {
+            questions = getRandomQuestions(parseInt(questionCount), shuffleQuestions);
+        }
+        
+        startTest();
+    }
+
+    // --- ثالثاً: استبدل دالة startTimer الحالية بهذه النسخة المحدثة ---
+    // هذه النسخة تتجاهل المؤقت إذا كان الوقت غير محدود
+    function startTimer() {
+        // إذا كانت مدة الاختبار 'null'، فهذا يعني وقتاً غير محدود
+        if (quizDuration === null) {
+            timerElement.innerHTML = '<i class="fas fa-infinity"></i>'; // عرض رمز اللانهاية
+            return; // الخروج من الدالة وعدم تشغيل المؤقت
+        }
+
+        // الكود الحالي للمؤقت المحدد
+        timeLeft = quizDuration;
+        updateTimerDisplay();
+
+        timer = setInterval(function() {
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                finishQuiz();
+                Swal.fire({
+                    title: 'انتهى الوقت!',
+                    text: 'لقد انتهى الوقت المخصص للاختبار',
+                    icon: 'warning',
+                    confirmButtonText: 'حسناً'
+                });
+            } else {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft === 60) {
+                    Swal.fire({
+                        title: 'تنبيه!',
+                        text: 'تبقى دقيقة واحدة فقط لإنهاء الاختبار',
+                        icon: 'warning',
+                        confirmButtonText: 'حسناً'
+                    });
+                }
+            }
+        }, 1000);
+    }
+    
+    // اجعل الدوال الجديدة متاحة للاستخدام من HTML
+    window.startQuiz = startQuiz;
+    window.startTimer = startTimer;
+});
+
+
+
+
+
+
 
 // أحداث
 document.addEventListener('DOMContentLoaded', function() {
