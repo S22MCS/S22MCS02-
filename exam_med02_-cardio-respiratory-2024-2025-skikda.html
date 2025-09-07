@@ -3237,7 +3237,6 @@ const allQuestions = [
   }
 
 
-
 ];
 
 // متغيرات التطبيق
@@ -3274,6 +3273,131 @@ const showLessonBtn = document.getElementById("show-lesson-btn");
 const infoBtn = document.getElementById("info-btn");
 const closePanelBtn = document.getElementById("close-panel");
 const infoPanel = document.getElementById("info-panel");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // --- أولاً: كود تفعيل أزرار اختيار الوقت ---
+    const timeModeSelector = document.getElementById('time-mode-selector');
+    const durationInputContainer = document.getElementById('duration-input-container');
+
+    // هذا الجزء يستمع للنقرات على أزرار اختيار الوقت
+    if (timeModeSelector) {
+        timeModeSelector.addEventListener('click', function(e) {
+            const clickedButton = e.target.closest('.option-btn');
+            if (!clickedButton) return;
+
+            // إزالة علامة "نشط" من كل الأزرار
+            timeModeSelector.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+
+            // إضافة علامة "نشط" للزر الذي تم النقر عليه
+            clickedButton.classList.add('active');
+
+            // إظهار أو إخفاء حقل إدخال الدقائق
+            if (clickedButton.dataset.mode === 'unlimited') {
+                durationInputContainer.classList.add('hidden');
+            } else {
+                durationInputContainer.classList.remove('hidden');
+            }
+        });
+    }
+
+    // --- ثانياً: استبدل دالة startQuiz الحالية بهذه النسخة المحدثة ---
+    // هذه النسخة تتحقق من الوضع المختار (محدد أو غير محدد)
+    function startQuiz() {
+        const activeModeButton = document.querySelector('#time-mode-selector .option-btn.active');
+        const timeMode = activeModeButton ? activeModeButton.dataset.mode : 'limited';
+
+        // تحديد مدة الاختبار بناءً على الوضع
+        if (timeMode === 'limited') {
+            const durationInput = parseInt(document.getElementById("custom-duration").value) || 10;
+            quizDuration = durationInput * 60;
+        } else {
+            quizDuration = null; // استخدام 'null' ليعني وقتاً غير محدود
+        }
+        
+        const questionCount = document.getElementById("question-count").value;
+        const shuffleQuestions = document.getElementById("shuffle-questions").checked;
+
+        selectedAnswers = [];
+        timePerQuestion = [];
+        totalTime = 0;
+        currentQuestionIndex = 0;
+        quizStarted = true;
+
+        if (questionCount === "all") {
+            questions = [...allQuestions];
+            if (shuffleQuestions) {
+                questions = shuffleArray(questions);
+            }
+        } else {
+            questions = getRandomQuestions(parseInt(questionCount), shuffleQuestions);
+        }
+        
+        startTest();
+    }
+
+    // --- ثالثاً: استبدل دالة startTimer الحالية بهذه النسخة المحدثة ---
+    // هذه النسخة تتجاهل المؤقت إذا كان الوقت غير محدود
+    function startTimer() {
+        // إذا كانت مدة الاختبار 'null'، فهذا يعني وقتاً غير محدود
+        if (quizDuration === null) {
+            timerElement.innerHTML = '<i class="fas fa-infinity"></i>'; // عرض رمز اللانهاية
+            return; // الخروج من الدالة وعدم تشغيل المؤقت
+        }
+
+        // الكود الحالي للمؤقت المحدد
+        timeLeft = quizDuration;
+        updateTimerDisplay();
+
+        timer = setInterval(function() {
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                finishQuiz();
+                Swal.fire({
+                    title: 'انتهى الوقت!',
+                    text: 'لقد انتهى الوقت المخصص للاختبار',
+                    icon: 'warning',
+                    confirmButtonText: 'حسناً'
+                });
+            } else {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft === 60) {
+                    Swal.fire({
+                        title: 'تنبيه!',
+                        text: 'تبقى دقيقة واحدة فقط لإنهاء الاختبار',
+                        icon: 'warning',
+                        confirmButtonText: 'حسناً'
+                    });
+                }
+            }
+        }, 1000);
+    }
+    
+    // اجعل الدوال الجديدة متاحة للاستخدام من HTML
+    window.startQuiz = startQuiz;
+    window.startTimer = startTimer;
+});
+
+
+
+
+
+
 
 // أحداث
 document.addEventListener('DOMContentLoaded', function() {
@@ -4004,6 +4128,10 @@ window.addEventListener('load', function() {
   });
 });
 </script>
+
+</body>
+</html>
+
 
 
 
@@ -6430,6 +6558,222 @@ window.addEventListener('load', function() {
 
 
 
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تأثير الوضع الليلي/النهاري الشامل</title>
+    <style>
+        /*
+         * ===================================
+         * متغيرات CSS (CSS Custom Properties)
+         * ===================================
+         * هذه هي الألوان الأساسية لموقعك.
+         * قم بتعديلها لتناسب تصميمك الحالي.
+         */
+
+        /* الألوان الافتراضية (وضع النهار) */
+        :root {
+            --background-primary: #ffffff; /* الخلفية الرئيسية للصفحة */
+            --background-secondary: #f0f2f5; /* خلفية العناصر الثانوية مثل البطاقات، النوافذ المنبثقة */
+            --text-primary: #333333;       /* لون النص الأساسي */
+            --text-secondary: #555555;     /* لون النص الثانوي/الرمادي */
+            --accent-color: #007bff;       /* لون التمييز (للأزرار، الروابط، العناوين، الأيقونات) */
+
+
+                        --border-color: #dddddd;       /* لون الحدود والخطوط الفاصلة */
+
+
+            --shadow-color: rgba(0, 0, 0, 0.1); /* لون الظلال */
+            --button-text-color: #ffffff; /* لون نص الأزرار */
+            --input-background: #ffffff;   /* خلفية حقول الإدخال */
+            --input-text-color: #333333;   /* لون نص حقول الإدخال */
+            --placeholder-color: #999999;  /* لون النص البديل (placeholder) */
+        }
+
+        /* الألوان عند تفعيل الوضع الليلي (html.dark-mode-active) */
+        html.dark-mode-active {
+            --background-primary: #1a1a1a;
+            --background-secondary: #2c2c2c;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --accent-color: #8bb4ff;
+
+
+            --border-color: #444444;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --button-text-color: #ffffff;
+            --input-background: #3a3a3a;
+            --input-text-color: #e0e0e0;
+            --placeholder-color: #888888;
+        }
+
+        /*
+         * ===================================
+         * تطبيق المتغيرات على العناصر الأساسية والشائعة
+         * ===================================
+         * هذا الجزء يضمن أن الألوان تتغير على معظم العناصر.
+         * يجب عليك تكييف هذا ليناسب عناصر HTML و CSS الموجودة بالفعل في موقعك.
+         * الهدف هو استبدال أي ألوان ثابتة (مثل #FFF) بهذه المتغيرات.
+         */
+
+        /* تطبيق عام على الجسم والخلفيات */
+        body {
+            background-color: var(--background-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease; /* انتقال سلس */
+            min-height: 100vh; /* يضمن تغطية الخلفية لكامل ارتفاع الصفحة */
+        }
+
+        /* للعناصر التي قد تكون لها خلفيات ثانوية مثل المربعات، النوافذ المنبثقة، القوائم المنسدلة */
+        div, section, article, aside, nav, header, footer, main, ul, ol, li,
+        .card, .modal, .dropdown-menu, .popup {
+            background-color: var(--background-secondary, inherit); /* inherit كاحتياطي إذا لم يكن هناك خلفية محددة */
+            color: var(--text-primary, inherit);
+            border-color: var(--border-color, inherit);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow-color); /* الظلال تتأثر أيضًا */
+        }
+
+        /* للعناوين */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--accent-color);
+            transition: color 0.3s ease;
+        }
+
+        /* للروابط */
+        a {
+            color: var(--accent-color);
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: var(--accent-color); /* يمكن تغييرها للون أغمق/أفتح عند التحويم */
+            opacity: 0.8; /* مثال على تأثير إضافي */
+        }
+
+        /* للأزرار */
+        button, input[type="submit"], input[type="button"] {
+            background-color: var(--accent-color);
+            color: var(--button-text-color);
+            border: 1px solid var(--accent-color); /* يمكن أن يكون له حدود */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+            opacity: 0.9;
+        }
+
+        /* لحقول الإدخال والمناطق النصية */
+        input[type="text"], input[type="email"], input[type="password"],
+        input[type="number"], textarea, select {
+            background-color: var(--input-background);
+            color: var(--input-text-color);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* للنص البديل (placeholder) في حقول الإدخال */
+        input::placeholder, textarea::placeholder {
+            color: var(--placeholder-color);
+            opacity: 1; /* للتأكد من أن اللون يظهر بشكل صحيح عبر المتصفحات */
+        }
+
+        /*
+         * ===================================
+         * تصميم الزر العائم لتبديل الوضع
+         * ===================================
+         * هذا الزر يستخدم نفس المتغيرات، مما يضمن أنه يتأثر بالسمة.
+         */
+        .universal-theme-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            /* z-index عالي جدًا لضمان ظهوره فوق كل شيء */
+            z-index: 1939923992;
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-color);
+            color: var(--button-text-color);
+            border-radius: 50%;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+        }
+
+        .universal-theme-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /*
+         * ===================================
+         * التعامل مع الصور والفيديوهات والـ iframes
+         * ===================================
+         * هذه العناصر لا تتأثر بمتغيرات الألوان بشكل طبيعي.
+         * إذا كنت ترغب في تعديلها (مثلاً لتقليل سطوع الصور في الوضع الليلي)،
+         * يمكنك إضافة قواعد هنا:
+         */
+        /*
+        html.dark-mode-active img,
+        html.dark-mode-active video,
+        html.dark-mode-active iframe {
+            filter: brightness(0.8) contrast(1.1); // مثال لتقليل السطوع وزيادة التباين قليلاً
+            transition: filter 0.3s ease;
+        }
+        */
+
+    </style>
+</head>
+<body>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggleBtn = document.getElementById('universal-theme-toggle');
+            const htmlElement = document.documentElement; // للوصول إلى <html>
+
+            // التحقق من الوضع المحفوظ في المتصفح عند تحميل الصفحة
+            if (localStorage.getItem('theme') === 'dark') {
+                htmlElement.classList.add('dark-mode-active');
+                themeToggleBtn.textContent = '☀️'; // تغيير الأيقونة إلى شمس
+            }
+
+            // إضافة حدث النقر على الزر
+            themeToggleBtn.addEventListener('click', () => {
+                htmlElement.classList.toggle('dark-mode-active');
+
+                if (htmlElement.classList.contains('dark-mode-active')) {
+                    themeToggleBtn.textContent = '☀️';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeToggleBtn.textContent = '🌙';
+                    localStorage.removeItem('theme'); // أو localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6867,247 +7211,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تأثير الوضع الليلي/النهاري الشامل</title>
-    <style>
-        /*
-         * ===================================
-         * متغيرات CSS (CSS Custom Properties)
-         * ===================================
-         * هذه هي الألوان الأساسية لموقعك.
-         * قم بتعديلها لتناسب تصميمك الحالي.
-         */
-
-        /* الألوان الافتراضية (وضع النهار) */
-        :root {
-            --background-primary: #ffffff; /* الخلفية الرئيسية للصفحة */
-            --background-secondary: #f0f2f5; /* خلفية العناصر الثانوية مثل البطاقات، النوافذ المنبثقة */
-            --text-primary: #333333;       /* لون النص الأساسي */
-            --text-secondary: #555555;     /* لون النص الثانوي/الرمادي */
-            --accent-color: #007bff;       /* لون التمييز (للأزرار، الروابط، العناوين، الأيقونات) */
-
-
-                        --border-color: #dddddd;       /* لون الحدود والخطوط الفاصلة */
-
-
-            --shadow-color: rgba(0, 0, 0, 0.1); /* لون الظلال */
-            --button-text-color: #ffffff; /* لون نص الأزرار */
-            --input-background: #ffffff;   /* خلفية حقول الإدخال */
-            --input-text-color: #333333;   /* لون نص حقول الإدخال */
-            --placeholder-color: #999999;  /* لون النص البديل (placeholder) */
-        }
-
-        /* الألوان عند تفعيل الوضع الليلي (html.dark-mode-active) */
-        html.dark-mode-active {
-            --background-primary: #1a1a1a;
-            --background-secondary: #2c2c2c;
-            --text-primary: #e0e0e0;
-            --text-secondary: #b0b0b0;
-            --accent-color: #8bb4ff;
-
-
-            --border-color: #444444;
-            --shadow-color: rgba(0, 0, 0, 0.4);
-            --button-text-color: #ffffff;
-            --input-background: #3a3a3a;
-            --input-text-color: #e0e0e0;
-            --placeholder-color: #888888;
-        }
-
-        /*
-         * ===================================
-         * تطبيق المتغيرات على العناصر الأساسية والشائعة
-         * ===================================
-         * هذا الجزء يضمن أن الألوان تتغير على معظم العناصر.
-         * يجب عليك تكييف هذا ليناسب عناصر HTML و CSS الموجودة بالفعل في موقعك.
-         * الهدف هو استبدال أي ألوان ثابتة (مثل #FFF) بهذه المتغيرات.
-         */
-
-        /* تطبيق عام على الجسم والخلفيات */
-        body {
-            background-color: var(--background-primary);
-            color: var(--text-primary);
-            transition: background-color 0.3s ease, color 0.3s ease; /* انتقال سلس */
-            min-height: 100vh; /* يضمن تغطية الخلفية لكامل ارتفاع الصفحة */
-        }
-
-        /* للعناصر التي قد تكون لها خلفيات ثانوية مثل المربعات، النوافذ المنبثقة، القوائم المنسدلة */
-        div, section, article, aside, nav, header, footer, main, ul, ol, li,
-        .card, .modal, .dropdown-menu, .popup {
-            background-color: var(--background-secondary, inherit); /* inherit كاحتياطي إذا لم يكن هناك خلفية محددة */
-            color: var(--text-primary, inherit);
-            border-color: var(--border-color, inherit);
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 12px var(--shadow-color); /* الظلال تتأثر أيضًا */
-        }
-
-        /* للعناوين */
-        h1, h2, h3, h4, h5, h6 {
-            color: var(--accent-color);
-            transition: color 0.3s ease;
-        }
-
-        /* للروابط */
-        a {
-            color: var(--accent-color);
-            transition: color 0.3s ease;
-        }
-        a:hover {
-            color: var(--accent-color); /* يمكن تغييرها للون أغمق/أفتح عند التحويم */
-            opacity: 0.8; /* مثال على تأثير إضافي */
-        }
-
-        /* للأزرار */
-        button, input[type="submit"], input[type="button"] {
-            background-color: var(--accent-color);
-            color: var(--button-text-color);
-            border: 1px solid var(--accent-color); /* يمكن أن يكون له حدود */
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-        button:hover, input[type="submit"]:hover, input[type="button"]:hover {
-            opacity: 0.9;
-        }
-
-        /* لحقول الإدخال والمناطق النصية */
-        input[type="text"], input[type="email"], input[type="password"],
-        input[type="number"], textarea, select {
-            background-color: var(--input-background);
-            color: var(--input-text-color);
-            border: 1px solid var(--border-color);
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-
-        /* للنص البديل (placeholder) في حقول الإدخال */
-        input::placeholder, textarea::placeholder {
-            color: var(--placeholder-color);
-            opacity: 1; /* للتأكد من أن اللون يظهر بشكل صحيح عبر المتصفحات */
-        }
-
-        /*
-         * ===================================
-         * تصميم الزر العائم لتبديل الوضع
-         * ===================================
-         * هذا الزر يستخدم نفس المتغيرات، مما يضمن أنه يتأثر بالسمة.
-         */
-        .universal-theme-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            /* z-index عالي جدًا لضمان ظهوره فوق كل شيء */
-            z-index: 1939923992;
-            width: 50px;
-            height: 50px;
-            background-color: var(--accent-color);
-            color: var(--button-text-color);
-            border-radius: 50%;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
-        }
-
-        .universal-theme-btn:hover {
-            transform: scale(1.1);
-        }
-
-        /*
-         * ===================================
-         * التعامل مع الصور والفيديوهات والـ iframes
-         * ===================================
-         * هذه العناصر لا تتأثر بمتغيرات الألوان بشكل طبيعي.
-         * إذا كنت ترغب في تعديلها (مثلاً لتقليل سطوع الصور في الوضع الليلي)،
-         * يمكنك إضافة قواعد هنا:
-         */
-        /*
-        html.dark-mode-active img,
-        html.dark-mode-active video,
-        html.dark-mode-active iframe {
-            filter: brightness(0.8) contrast(1.1); // مثال لتقليل السطوع وزيادة التباين قليلاً
-            transition: filter 0.3s ease;
-        }
-        */
-
-    </style>
-</head>
-<body>
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeToggleBtn = document.getElementById('universal-theme-toggle');
-            const htmlElement = document.documentElement; // للوصول إلى <html>
-
-            // التحقق من الوضع المحفوظ في المتصفح عند تحميل الصفحة
-            if (localStorage.getItem('theme') === 'dark') {
-                htmlElement.classList.add('dark-mode-active');
-                themeToggleBtn.textContent = '☀️'; // تغيير الأيقونة إلى شمس
-            }
-
-            // إضافة حدث النقر على الزر
-            themeToggleBtn.addEventListener('click', () => {
-                htmlElement.classList.toggle('dark-mode-active');
-
-                if (htmlElement.classList.contains('dark-mode-active')) {
-                    themeToggleBtn.textContent = '☀️';
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    themeToggleBtn.textContent = '🌙';
-                    localStorage.removeItem('theme'); // أو localStorage.setItem('theme', 'light');
-                }
-            });
-        });
-    </script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
