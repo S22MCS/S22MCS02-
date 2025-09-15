@@ -1,0 +1,2530 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>  قسم الطب</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+   <style>
+      /* --- :root | المتغيرات العامة --- */
+      :root {
+         --primary-color: #00897b; /* أخضر مزرق أفتح */
+         --primary-dark: #00695c;
+         --bg-body: #f1f5f9; /* رمادي فاتح جداً للخلفية */
+         --bg-card: #ffffff;
+         --text-primary: #1e293b;
+         --text-secondary: #64748b;
+         --border-color: #e2e8f0;
+         --white: #ffffff;
+         --red: #ef4444;
+         --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+         --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+         --radius: 0.8rem;
+      }
+      
+      /* --- :root | الوضع الليلي --- */
+      body.dark-mode {
+         --bg-body: #0f172a;
+         --bg-card: #1e293b;
+         --text-primary: #f1f5f9;
+         --text-secondary: #94a3b8;
+         --border-color: #334155;
+      }
+
+      /* --- التنسيقات الأساسية --- */
+      * {
+         font-family: 'Cairo', sans-serif;
+         margin: 0; padding: 0;
+         box-sizing: border-box;
+         outline: none; border: none;
+         text-decoration: none;
+      }
+      
+      html {
+         font-size: 62.5%;
+         overflow-x: hidden;
+      }
+
+      body {
+         background-color: var(--bg-body);
+         color: var(--text-primary);
+         transition: background-color .3s, color .3s;
+         padding-top: 8rem; /* مساحة للشريط العلوي الثابت */
+      }
+
+      /* --- الشريط العلوي (Header) --- */
+      .header {
+         background-color: var(--bg-card);
+         padding: 1.5rem 3%;
+         position: fixed;
+         top: 0; right: 0; left: 0;
+         z-index: 1000;
+         box-shadow: var(--shadow-md);
+         border-bottom: 1px solid var(--border-color);
+      }
+      
+      .header .flex {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         gap: 2rem;
+      }
+      
+      .logo {
+         font-size: 2.2rem;
+         font-weight: 700;
+         color: var(--primary-color);
+      }
+      
+      .header .icons {
+         display: flex;
+         align-items: center;
+         gap: .5rem;
+         position: relative; /* مهم لوضع قائمة البروفايل */
+      }
+      
+      .icon-btn {
+         font-size: 2rem;
+         color: var(--text-secondary);
+         cursor: pointer;
+         height: 4.5rem;
+         width: 4.5rem;
+         line-height: 4.5rem;
+         text-align: center;
+         border-radius: 50%;
+         transition: all .2s ease-in-out;
+      }
+      
+      .icon-btn:hover {
+         background-color: var(--bg-body);
+         color: var(--primary-color);
+      }
+      
+      /* --- قائمة البروفايل المنسدلة --- */
+      .profile-dropdown {
+         position: absolute;
+         top: calc(100% + 1rem);
+         left: 0; /* تم التعديل إلى اليسار لأن التصميم RTL */
+         background-color: var(--bg-card);
+         border-radius: var(--radius);
+         box-shadow: var(--shadow-md);
+         border: 1px solid var(--border-color);
+         width: 30rem;
+         padding: 2rem;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: 1.5rem;
+         opacity: 0;
+         transform: translateY(-10px);
+         visibility: hidden;
+         transition: all .2s ease-in-out;
+         z-index: 1100;
+      }
+
+      .profile-dropdown.active {
+         opacity: 1;
+         transform: translateY(0);
+         visibility: visible;
+      }
+      
+      .profile-dropdown .image {
+         width: 8rem;
+         height: 8rem;
+         border-radius: 50%;
+         object-fit: cover;
+      }
+
+      .profile-dropdown .name {
+         font-size: 1.8rem;
+         color: var(--text-primary);
+         font-weight: 600;
+      }
+      
+      .profile-dropdown .role {
+         font-size: 1.4rem;
+         color: var(--text-secondary);
+      }
+      
+      .btn {
+         width: 100%;
+         padding: 1.2rem;
+         background-color: var(--primary-color);
+         color: var(--white);
+         border-radius: var(--radius);
+         cursor: pointer;
+         font-size: 1.6rem;
+         text-align: center;
+         transition: background-color .2s;
+      }
+
+      .btn:hover { background-color: var(--primary-dark); }
+      
+      .btn.logout { background-color: var(--red); }
+
+/* --- القائمة الجانبية (النسخة المحسّنة) --- */
+.side-bar {
+   position: fixed;
+   top: 0;
+   right: -100%;
+   width: 32rem;
+   max-width: 90%;
+   height: 100vh;
+   background-color: var(--bg-card);
+   border-left: 1px solid var(--border-color);
+   z-index: 1200;
+   transition: right 0.3s ease-in-out;
+   display: flex; /* <-- 1. تفعيل Flexbox */
+   flex-direction: column; /* <-- 2. جعله عمودياً */
+}
+
+.side-bar.active {
+   right: 0;
+}
+
+.side-bar .close-btn-container {
+   padding: 1.5rem;
+   text-align: left;
+   flex-shrink: 0; /* منع هذا العنصر من الانكماش */
+}
+
+#close-btn {
+   font-size: 2.5rem;
+}
+
+.side-bar .navbar {
+   padding-top: 1rem;
+   flex-grow: 1; /* <-- 3. جعل هذا القسم ينمو ليملأ المساحة */
+   overflow-y: auto; /* <-- 4. إضافة التمرير هنا فقط */
+}
+
+.side-bar .navbar a {
+   display: flex;
+   align-items: center;
+   gap: 2rem;
+   padding: 1.5rem 2rem;
+   font-size: 1.7rem;
+   color: var(--text-secondary);
+   transition: all .2s;
+}
+
+.side-bar .navbar a:hover {
+   background-color: var(--bg-body);
+   color: var(--primary-color);
+   padding-right: 2.5rem;
+}
+
+.side-bar .navbar a i {
+   font-size: 2rem;
+   width: 2.5rem;
+   text-align: center;
+}
+      /* --- المحتوى الرئيسي --- */
+      main {
+         padding: 2rem 3%;
+      }
+      .dashboard-title {
+         font-size: 2.8rem;
+         font-weight: 700;
+         margin-bottom: 2rem;
+         color: var(--text-primary);
+      }
+      .card-container {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+         gap: 2rem;
+      }
+      .card {
+         background-color: var(--bg-card);
+         padding: 2.5rem;
+         border-radius: var(--radius);
+         border: 1px solid var(--border-color);
+         box-shadow: var(--shadow-sm);
+         color: var(--text-secondary);
+      }
+      .card h3 {
+         font-size: 2rem;
+         color: var(--text-primary);
+         margin-bottom: 1rem;
+      }
+
+      /* --- شاشة التعتيم --- */
+      .overlay {
+         position: fixed;
+         top: 0; left: 0;
+         width: 100%; height: 100%;
+         background-color: rgba(0,0,0,0.5);
+         z-index: 999; /* أقل من القوائم */
+         opacity: 0; visibility: hidden;
+         transition: opacity 0.3s ease;
+      }
+      .overlay.active { opacity: 1; visibility: visible; }
+      
+      /* --- Media Queries --- */
+      @media (max-width: 450px) {
+         html { font-size: 55%; }
+         .logo { font-size: 2rem; }
+         .header { padding: 1.5rem 2%; }
+         main { padding: 1.5rem 2%; }
+      }
+   </style>
+</head>
+<body class="">
+
+<div class="overlay"></div>
+
+<header class="header">
+   <section class="flex">
+     
+<a href="#" class="logo" onclick="location.reload(); return false;">
+  <span class="main-title">أداة علم</span>
+  <span class="subtitle">
+    الأولى <br>
+   شبه طب
+  </span>
+</a>
+
+
+<style>
+.logo {
+  display: flex;
+  align-items: center;
+  direction: rtl; /* لضبط الاتجاه من اليمين لليسار */
+  gap: 8px; /* مسافة بين العنوان والساب تايتل */
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.logo .subtitle {
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: right;
+}
+
+.main-title {
+  font-weight: bold;
+}
+</style>      
+      <div class="icons">
+       <!-- زر تغيير الوضع (وضع ليلي / نهاري) -->
+<div id="toggle-btn" class="icon-btn fas fa-sun" title="الوضع"></div>
+
+<!-- زر التحذير الطبي -->
+<div id="danger-btn" class="icon-btn fas fa-exclamation-triangle" title="تحذير" onclick="toggleModal()" aria-label="فتح نافذة التنبيه الطبي"></div>
+
+
+
+<div id="Tawasle-Notif-Widget-Container" style="position: relative; display: inline-block;">
+
+  <div id="Tawasle-Notif-Btn" class="Tawasle-Notif-Icon-Btn fas fa-bell" title="الإشعارات">
+    <span id="Tawasle-Notif-Count" class="Tawasle-Notif-Count"></span>
+  </div>
+
+  <div id="Tawasle-Notif-Menu" class="Tawasle-Notif-Dropdown">
+    </div>
+
+</div>
+
+<script type="module">
+  // استيراد وظائف Firebase اللازمة
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // إعدادات Firebase الخاصة بك (لا تقم بمشاركتها علنًا إذا كانت لديك قواعد أمان ضعيفة)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAJK6IUSw2YbwNVfB_hRNsOFeO08LEp4c8",
+    authDomain: "adatealm-nofication.firebaseapp.com",
+    projectId: "adatealm-nofication",
+    storageBucket: "adatealm-nofication.firebasestorage.app",
+    messagingSenderId: "216068965336",
+    appId: "1:216068965336:web:310c95e8e9fc4561cbe8ad",
+    measurementId: "G-PDWFZKRMJP"
+  };
+
+  // تهيئة Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // متغيرات لتتبع حالة الإشعارات
+  let notificationsLoaded = false;
+  let unreadCount = 0;
+
+  // الحصول على عناصر DOM الرئيسية
+  const notifBtn = document.getElementById('Tawasle-Notif-Btn');
+  const notifMenu = document.getElementById('Tawasle-Notif-Menu');
+  const notifCountSpan = document.getElementById('Tawasle-Notif-Count');
+
+  // وظيفة لفتح وإغلاق قائمة الإشعارات
+  const toggleNotificationMenu = () => {
+    const isMenuOpen = notifMenu.classList.toggle('Tawasle-Notif-Dropdown-Show');
+    // تحميل الإشعارات فقط عند الفتح لأول مرة لتحسين الأداء
+    if (isMenuOpen && !notificationsLoaded) {
+      loadNotifications();
+    }
+  };
+
+  // وظيفة تحميل الإشعارات من Firestore
+  async function loadNotifications() {
+    notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">جارٍ تحميل الإشعارات...</div>';
+    try {
+      // جلب آخر 20 إشعارًا مرتبة حسب حقل timestamp (إذا وجد)
+      const querySnapshot = await getDocs(collection(db, "notifications")/*, orderBy("timestamp", "desc"), limit(20)*/);
+      
+      notificationsLoaded = true;
+      notifMenu.innerHTML = ''; // مسح رسالة التحميل
+
+      if (querySnapshot.empty) {
+        notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">لا توجد إشعارات جديدة</div>';
+        return;
+      }
+      
+      // إعادة تعيين العداد قبل تحديثه
+      unreadCount = 0;
+
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        const item = document.createElement('div');
+        item.className = 'Tawasle-Notif-Item';
+        
+        // استخدام أيقونة ورابط (إذا كانا موجودين في البيانات)
+        const iconClass = data.icon || 'fas fa-bell';
+        const text = data.text || 'لا يوجد نص.';
+        
+        let content = `<i class="${iconClass}"></i><p>${text.substring(0, 100)}</p>`;
+
+        // إذا كان هناك رابط في بيانات الإشعار
+        if (data.link) {
+          item.innerHTML = `<a href="${data.link}" target="_blank">${content}</a>`;
+        } else {
+          item.innerHTML = content;
+        }
+
+        notifMenu.appendChild(item);
+        unreadCount++; // قم بزيادة العداد لكل إشعار جديد
+      });
+
+      updateNotifCount();
+
+    } catch (e) {
+      console.error("Error loading notifications: ", e);
+      notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">خطأ في تحميل الإشعارات</div>';
+    }
+  }
+
+  // وظيفة تحديث عداد الإشعارات
+  function updateNotifCount() {
+    if (unreadCount > 0) {
+      notifCountSpan.textContent = unreadCount;
+      notifCountSpan.style.display = 'flex';
+      notifBtn.classList.add('Tawasle-Notif-New-Notification');
+    } else {
+      notifCountSpan.style.display = 'none';
+      notifBtn.classList.remove('Tawasle-Notif-New-Notification');
+    }
+  }
+
+  // ربط حدث النقر بالزر
+  notifBtn.addEventListener('click', toggleNotificationMenu);
+
+  // إغلاق القائمة عند النقر خارجها
+  document.addEventListener('click', function (event) {
+    if (!notifMenu.contains(event.target) && !notifBtn.contains(event.target)) {
+      notifMenu.classList.remove('Tawasle-Notif-Dropdown-Show');
+    }
+  });
+  
+  // قم بتحديث العداد عند تحميل الصفحة (يمكنك استدعاء loadNotifications هنا إذا أردت التحميل فورًا)
+  updateNotifCount(); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// استهداف قائمة التحديثات الجديدة في لوحة العرض
+const updatesList = document.getElementById('updates-list');
+
+// دالة جديدة مخصصة لتحميل الإشعارات وعرضها كقائمة
+async function loadUpdatesForPanel() {
+  // التأكد من وجود عنصر القائمة في الصفحة قبل تنفيذ أي شيء
+  if (!updatesList) {
+    return;
+  }
+
+  try {
+    // جلب نفس البيانات من Firestore (يمكنك تعديل الاستعلام هنا إذا أردت)
+    const querySnapshot = await getDocs(collection(db, "notifications"));
+
+    // مسح رسالة "جارٍ التحميل"
+    updatesList.innerHTML = '';
+
+    if (querySnapshot.empty) {
+      updatesList.innerHTML = '<li>لا توجد تحديثات لعرضها حاليًا.</li>';
+      return;
+    }
+
+    // المرور على كل إشعار وإنشاء عنصر قائمة له
+    querySnapshot.forEach(doc => {
+      const data = doc.data();
+      const listItem = document.createElement('li');
+
+      const iconClass = data.icon || 'fas fa-bell'; // أيقونة افتراضية
+      const text = data.text || 'لا يوجد نص.';
+
+      // بناء محتوى عنصر القائمة
+      let content = `<i class="${iconClass}"></i> <p>${text}</p>`;
+
+      // إذا كان هناك رابط، نجعل العنصر بأكمله قابلاً للنقر
+      if (data.link) {
+        listItem.innerHTML = `<a href="${data.link}" target="_blank">${content}</a>`;
+      } else {
+        listItem.innerHTML = content;
+      }
+      
+      updatesList.appendChild(listItem);
+    });
+
+  } catch (error) {
+    console.error("Error loading updates for panel:", error);
+    updatesList.innerHTML = '<li>حدث خطأ أثناء تحميل التحديثات.</li>';
+  }
+}
+
+// استدعاء الدالة الجديدة تلقائيًا بعد تحميل محتوى الصفحة
+document.addEventListener('DOMContentLoaded', loadUpdatesForPanel);
+
+// --- نهاية الكود الخاص بلوحة التحديثات ---
+</script>
+
+<style>
+  /* تعريف متغيرات الألوان لتسهيل التعديل ودعم الوضع الليلي */
+  :root {
+    --notif-bg-color: #ffffff;
+    --notif-text-color: #333333;
+    --notif-border-color: #eeeeee;
+    --notif-shadow-color: rgba(0, 0, 0, 0.15);
+    --notif-icon-color: #555555;
+    --notif-accent-color: red;
+    --notif-item-hover-bg: #f5f5f5;
+  }
+
+  /* الوضع الليلي: يتم تفعيله تلقائيًا حسب إعدادات النظام/المتصفح */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --notif-bg-color: #2c2c2c;
+      --notif-text-color: #f1f1f1;
+      --notif-border-color: #444444;
+      --notif-shadow-color: rgba(0, 0, 0, 0.5);
+      --notif-icon-color: #bbbbbb;
+      --notif-accent-color: #ff4d4d;
+      --notif-item-hover-bg: #3a3a3a;
+    }
+  }
+
+  /* تنسيق زر الأيقونة */
+  .Tawasle-Notif-Icon-Btn {
+    font-size: 24px;
+    color: var(--notif-icon-color);
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+  }
+  
+  /* تنسيق عداد الإشعارات */
+  .Tawasle-Notif-Count {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    background-color: var(--notif-accent-color);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    font-weight: bold;
+    display: none; /* يظهر عند وجود إشعارات فقط */
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--notif-bg-color);
+  }
+
+/* =================================================================== */
+  /* القائمة المنسدلة للإشعارات */
+  .Tawasle-Notif-Dropdown {
+    display: none; /* مخفية بشكل افتراضي */
+    position: absolute;
+    top: calc(100% + 10px); /* أسفل الزر مباشرة مع مسافة 10px */
+    left: -70px; /* محاذاة لليمين */
+    background-color: var(--notif-bg-color);
+    border-radius: 8px;
+    width: 320px;
+    max-width: 90vw; /* لا يتجاوز 90% من عرض الشاشة على الهواتف */
+    max-height: 450px;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px var(--notif-shadow-color);
+    z-index: 1001;
+    border: 1px solid var(--notif-border-color);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* إظهار القائمة مع تأثير حركة بسيط */
+  .Tawasle-Notif-Dropdown.Tawasle-Notif-Dropdown-Show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+  }
+
+  /* تنسيق كل عنصر إشعار */
+  .Tawasle-Notif-Item {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--notif-border-color);
+    font-size: 14px;
+    color: var(--notif-text-color);
+    display: flex;
+    align-items: center;
+    gap: 12px; /* مسافة بين الأيقونة والنص */
+    transition: background-color 0.2s ease;
+  }
+  .Tawasle-Notif-Item:hover {
+    background-color: var(--notif-item-hover-bg);
+  }
+  .Tawasle-Notif-Item:last-child {
+    border-bottom: none; /* إزالة الحد السفلي لآخر عنصر */
+  }
+  .Tawasle-Notif-Item i {
+    color: var(--notif-icon-color);
+  }
+  .Tawasle-Notif-Item p {
+      margin: 0;
+      line-height: 1.4;
+  }
+  .Tawasle-Notif-Item a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+  }
+
+</style>
+
+
+
+         <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
+         <div id="menu-btn" class="fas fa-bars icon-btn" title="القائمة"></div>
+
+         <div class="profile-dropdown">
+            <img src="S22MCS PARTS/قسم الطب.jpg" class="image" alt="صورة القسم">
+            <h3 class="name">قسم  الشبه طب</h3>
+            <p class="role">التابعة لأداة علم</p>
+            <a href="MED02_profile.html" class="btn">عرض الملف الشخصي</a>
+            <a href="#" id="logout-btn" class="btn logout">تسجيل الخروج</a>
+         </div>
+      </div>
+   </section>
+</header>
+
+<aside class="side-bar">
+   <div class="close-btn-container">
+      <div id="close-btn" class="fas fa-times icon-btn"></div>
+   </div>
+<nav class="navbar">
+  <a href="home_MED02.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+  <a href="MED02_BANK_دروس.html"><i class="fas fa-chalkboard-user"></i><span>بنك الدروس</span></a>
+  <a href="MED02_BANK_EXAM.html"><i class="fas fa-file-alt"></i><span>بنك الاختبارات</span></a>
+  <a href="#"><i class="fas fa-project-diagram"></i><span>بنك الخرائط الذهنية   </span></a>
+<a href="#"><i class="fas fa-clone"></i><span>بنك بطاقات الذاكرة</span></a>
+
+  <a href="JADAWL_2MED.html"><i class="fas fa-clipboard-list"></i><span>جداول المراجعة</span></a>
+  <a href="#"><i class="fas fa-chart-line"></i><span>تحليل الأسئلة</span></a>
+  <a href="DRIVER_MED02.html"><i class="fas fa-folder"></i><span>الدرايفات</span></a>
+  <a href="KAM_BAKIYA_LI.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك (كم بقي لك)</span></a>
+
+<a href="moyen_MED02_.html" class="calculate-average-button"><i class="fas fa-calculator"></i><span>حِسَابُ ٱلْمُعَدَّلِ</span></a>
+
+
+<a href="#" class="alert-btn" onclick="toggleModal()" aria-label="فتح نافذة التنبيه الطبي">
+    <i class="fas fa-exclamation-triangle"></i>
+    <span>   زر الخطر مهم لكل مسلم ومسلمة
+      </span>
+</a>
+
+
+<a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"> <i class="fas fa-quran"></i>  <span>     وردك اليومي من القران الكريم 
+    (ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ) 
+ </span> </a>
+
+    <a href="اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ.html"><i class="fas fa-praying-hands"></i><span> 
+          زر الاتستغفار  والتسبيح
+        (اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ )
+        
+      </span></a>
+
+
+<a href="mushaf_el_quran_el_karim.html"><i class="fas fa-quran"></i> <span>مُصْحَفُ ٱلْقُرْآنِ ٱلْكَرِيمِ</span></a>
+
+
+  
+<a href="#"class="TAWASLE_ADAT_TAHDITAT_MED02-btn" id="TAWASLE_ADAT_TAHDITAT_MED02Btn" data-count="3" onclick="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup()">
+    <i class="fas fa-sync-alt"></i>
+    <span >التحديثات والإشعارات</span></a>
+
+
+
+    <a href="WAJIBATI_ADAT_EALM.html">  <i class="fas fa-clipboard-check"></i> <span>واجباتي    (دون مهامك اليومية كي لا تنساها )  </span> </a>
+
+
+
+
+
+
+<a href="s22market.html">
+    <i class="fas fa-store"  style="color: rgb(251, 200, 34);"></i>
+    <span>متجر طلبة الـ 22
+
+        (S22MARKET)
+    </span>
+</a>
+
+  <a href="#"><i class="fas fa-user-tie"></i><span>مشرفونا</span></a>
+
+
+<a href="DA3MONA_ADATEALM.html"><i class="fas fa-hands-helping"></i><span>دعمنا</span></a>
+
+
+
+<a href="#" class="medical-alert-btn" onclick="medicalTogglePopup()" aria-label="فتح نافذة التنبيه الطبي">
+  <i class="fas fa-headset"></i>
+    <span> تواصل معنا </span>
+</a>
+
+
+
+</nav>
+
+</aside>
+
+
+<main>
+
+
+   <h1 class="dashboard-title">لوحة التحكم الرئيسية</h1>
+   
+
+
+
+
+
+
+
+
+<!-- بطاقة دعوية - متجاوبة مع جميع الشاشات -->
+<div style="box-sizing: border-box; max-width: 95%; margin: 20px auto; background-color: #1a1a1a; color: #ffffff; padding: 24px; border-radius: 18px; box-shadow: 0 8px 18px rgba(0,0,0,0.5); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; border: 1px solid #333;">
+  <h2 style="color: #00e676; font-size: 1.5rem; text-align: center; margin-bottom: 20px;">
+    🌟 تذكير مهم لكل طالب وطالبة 🌟
+  </h2>
+
+  <p style="font-size: 1.15rem; text-align: center; margin-bottom: 18px;">
+    إلى جانب دراستك لا تنسَ <strong style="color: #81d4fa;">وردك القرآني اليومي</strong> ما لم تكن على جنابة.
+  </p>
+
+  <p style="font-size: 1.15rem; text-align: center; margin-bottom: 18px;">
+    ولا تنسَ <strong style="color: #ffd54f;">أذكارك اليومية</strong>، فإنك ولو كنت جنبًا تستطيع الذكر.
+  </p>
+
+  <!-- فتوى ابن باز -->
+  <div style="background-color: #263238; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+    <p style="font-size: 1rem; text-align: center; color: #cfd8dc; margin-bottom: 10px;">
+      📌 <strong>من فتاوى ابن باز رحمه الله:</strong><br>
+      هل يجوز الذكر عند طبخ الطعام، وعند الأكل وهو جنب؟
+    </p>
+    <blockquote style="font-size: 0.95rem; color: #e0f7fa; font-style: italic; text-align: center;">
+      "يسمّي الله، ولو كان جنبًا، بس لا يقرأ القرآن حتى يغتسل، أما أن يقول: بسم الله، أو يقول: لا إله إلا الله، وسبحان الله، هذا طيب، ولو جنبًا. النبي ﷺ كان يذكر الله على كل أحيانه."
+    </blockquote>
+
+
+
+    
+  <p style="font-size: 0.9rem; text-align: center; margin-top: 15px;">
+    🔗 <a href="https://binbaz.org.sa/fatwas/2891/%D8%AD%D9%83%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%B1-%D9%88%D9%82%D8%B1%D8%A7%D8%A9-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D9%86-%D9%84%D9%84%D8%AC%D9%86%D8%A8" target="_blank" style="color: #4dd0e1; text-decoration: none; font-weight: bold;">
+      مصدر الفتوى: موقع ابن باز الرسمي
+    </a>
+  </p>
+  </div>
+
+  <!-- فتوى اسلام ويب -->
+  <div style="background-color: #212121; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+    <p style="font-size: 1rem; color: #cfd8dc; text-align: center; margin-bottom: 10px;">
+      📚 <strong>من إسلام ويب:</strong><br>
+      <em>السؤال:</em> هل يجوز الصلاة على النبي صلى الله عليه وسلم أو القيام ببعض الأذكار والإنسان على جنابة أم هو محرم؟
+    </p>
+    <blockquote style="font-size: 0.95rem; color: #ffecb3; font-style: italic; text-align: justify;">
+      الحمد لله، والصلاة والسلام على رسول الله، وعلى آله وصحبه، أما بعد:<br><br>
+
+      فإن الأفضل والأكمل للمسلم إذا أراد الصلاة على النبي صلى الله عليه وسلم أو قراءة الأذكار والأدعية .. أن يكون على طهارة كاملة وهيئة حسنة، لكن لا مانع من أن يصلي على النبي صلى الله عليه وسلم، ويذكر الله تعالى ويدعوه وهو جنب أو حائض أو محدث حدثاً أصغر أو على أي هيئة كان.
+      <br><br>
+      لقوله تعالى في وصف عباده أولي الألباب: <strong style="color:#81d4fa;">(الَّذِينَ يَذْكُرُونَ اللَّهَ قِيَاماً وَقُعُوداً وَعَلَى جُنُوبِهِم)</strong> [آل عمران: 191].
+      <br><br>
+      ولما في الصحيحين عن عائشة رضي الله عنها قالت: <em>كان النبي صلى الله عليه وسلم يذكر الله على كل أحيانه.</em>
+      <br><br>
+      إلا إذا كان هذا الذكر قرآناً فإنه لا يجوز ذلك في حالة الجنابة على الصحيح، لما رواه أحمد وأصحاب السنن عن علي رضي الله عنه قال: <em>كان رسول الله صلى الله عليه وسلم يقرئنا القرآن ما لم يكن جنباً.</em>
+      <br><br>
+      <strong>والله أعلم.</strong>
+    </blockquote>
+
+    
+  <p style="font-size: 0.9rem; text-align: center; margin-top: 15px;">
+    🔗 <a href="https://www.islamweb.net/ar/fatwa/21745/%D9%84%D8%A7-%D8%A8%D8%A3%D8%B3-%D8%A8%D8%A7%D9%84%D8%B0%D9%83%D8%B1-%D8%B9%D9%84%D9%89-%D9%83%D9%84-%D8%AD%D9%8A%D9%86" target="_blank" style="color: #4dd0e1; text-decoration: none; font-weight: bold;">
+      مصدر الفتوى: إسلام ويب
+    </a>
+  </div>
+
+  <p style="font-size: 1rem; text-align: center; color: #9e9e9e;">
+    اجعل لسانك رطبًا بذكر الله، فهو نورٌ لك في الدنيا والآخرة 🌿
+  </p>
+</div>
+
+
+
+
+<!-- بطاقة القناة الرسمية - متجاوبة لكل الشاشات -->
+<div style="box-sizing: border-box; max-width: 95%; margin: 20px auto; background-color: #121212; color: #ffffff; padding: 20px; border-radius: 16px; box-shadow: 0 6px 16px rgba(0,0,0,0.4); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; border: 1px solid #2a2a2a;">
+  <h3 style="margin-bottom: 15px; color: #00e5ff; font-size: 1.3rem; text-align: center;">
+    📢 القناة الرسمية لـ <span style="color: #80deea;">طلبة الحل الطبي العلاجي
+(ط.ح.ط.ع)  </span>
+  </h3>
+  <p style="margin-bottom: 12px; font-size: 1rem; text-align: center;">
+    ندعوك للانضمام إلى القناة الرسمية على تيليجرام من خلال الرابط التالي:
+  </p>
+  <p style="margin-bottom: 15px; text-align: center;">
+    <a href="https://t.me/S22MCS" target="_blank" style="display: inline-block; padding: 10px 15px; background-color: #00bcd4; color: #fff; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.95rem; transition: background-color 0.3s;">
+      🔗 انضم الآن إلى القناة
+    </a>
+  </p>
+  <p style="font-size: 0.9rem; color: #cfd8dc; text-align: center;">
+    ✅ لا تفوّت أي منشور، فالقناة تنشر محتوى توعوي هام ومفيد باستمرار.
+  </p>
+</div>
+
+<!-- بطاقة آخر التحديثات -->
+
+
+      <div class="update-card">
+  <h3>📢 آخر التحديثات</h3>
+  <ul id="updates-list">
+    <li class="loading-item">جارٍ التحميل...</li>
+  </ul>
+</div>
+
+
+<style>
+
+/* --- بداية تنسيقات لوحة التحديثات --- */
+
+.update-card {
+  background-color: var(--notif-bg-color);
+  color: var(--notif-text-color);
+  border: 1px solid var(--notif-border-color);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0; /* يمكنك تعديل الهامش حسب تصميمك */
+  box-shadow: 0 4px 10px var(--notif-shadow-color);
+}
+
+.update-card h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+  border-bottom: 1px solid var(--notif-border-color);
+  padding-bottom: 10px;
+}
+
+.update-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.update-card li {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* مسافة بين الأيقونة والنص */
+  padding: 12px 5px;
+  border-bottom: 1px solid var(--notif-border-color);
+  font-size: 15px;
+  transition: background-color 0.2s ease;
+}
+
+.update-card li:last-child {
+  border-bottom: none; /* إزالة الحد من آخر عنصر */
+}
+
+/* لجعل العنصر القابل للنقر يملأ المساحة */
+.update-card li a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+  color: inherit; /* يرث لون النص الأب */
+  width: 100%;
+}
+
+.update-card li:hover {
+    background-color: var(--notif-item-hover-bg);
+    border-radius: 6px;
+}
+
+.update-card li i {
+  color: var(--notif-icon-color);
+  font-size: 16px;
+}
+
+.update-card li p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* --- نهاية تنسيقات لوحة التحديثات --- */
+</style>
+
+</div>
+
+
+
+   </div>
+</main>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+    const overlay = document.querySelector('.overlay');
+
+    // --- القائمة الجانبية (SideBar) ---
+    const sideBar = document.querySelector('.side-bar');
+    const menuBtn = document.querySelector('#menu-btn');
+    const closeBtn = document.querySelector('#close-btn');
+    
+    // --- قائمة البروفايل (Profile Dropdown) ---
+    const profileBtn = document.querySelector('#user-btn');
+    const profileDropdown = document.querySelector('.profile-dropdown');
+
+    const closeAllPopups = () => {
+        sideBar.classList.remove('active');
+        profileDropdown.classList.remove('active');
+        overlay.classList.remove('active');
+        body.style.overflow = 'auto';
+    };
+
+    menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeAllPopups(); // إغلاق أي شيء آخر مفتوح أولاً
+        sideBar.classList.add('active');
+        overlay.classList.add('active');
+        body.style.overflow = 'hidden';
+    });
+
+    profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isAlreadyActive = profileDropdown.classList.contains('active');
+        closeAllPopups(); // إغلاق أي شيء آخر مفتوح أولاً
+        if (!isAlreadyActive) {
+            profileDropdown.classList.add('active');
+        }
+    });
+
+    closeBtn.addEventListener('click', closeAllPopups);
+    overlay.addEventListener('click', closeAllPopups);
+
+    // إغلاق القوائم عند الضغط على مفتاح الهروب (Escape)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeAllPopups();
+        }
+    });
+    
+    // إغلاق القائمة عند النقر على رابط بداخلها
+    document.querySelectorAll('.side-bar .navbar a').forEach(link => {
+        link.addEventListener('click', closeAllPopups);
+    });
+
+    // --- تسجيل الخروج ---
+    document.querySelector('#logout-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('تم تسجيل الخروج بنجاح!'); // يمكنك استبدالها بالمنطق الفعلي
+        window.location.href = 'INDEX.html';
+    });
+
+    // --- الوضع الليلي ---
+    const toggleBtn = document.querySelector('#toggle-btn');
+    const themeIcon = toggleBtn.classList.contains('fa-sun') ? 'fa-sun' : 'fa-moon';
+    
+    const applyTheme = (theme) => {
+        if (theme === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.classList.replace('fa-sun', 'fa-moon');
+        } else {
+            body.classList.remove('dark-mode');
+            toggleBtn.classList.replace('fa-moon', 'fa-sun');
+        }
+    };
+
+    const currentTheme = localStorage.getItem('theme');
+    applyTheme(currentTheme);
+
+    toggleBtn.addEventListener('click', () => {
+        let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+});
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنبيه طبي - TAWASLE_ADAT</title>
+    <style>
+        /* CSS Variables for easier theme management */
+        :root {
+            --medical-primary-color: #3498db;
+            --medical-primary-dark-color: #2980b9;
+            --medical-secondary-color: #ffffff;
+            --medical-text-color: #333;
+            --medical-light-bg-color: #f5f5f5;
+            --medical-overlay-bg-color: rgba(0, 0, 0, 0.8);
+            --medical-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+   
+
+        /* Overlay */
+        .medical-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--medical-overlay-bg-color);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .medical-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Popup Container - Fullscreen */
+        .medical-popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 8002;
+            background: var(--medical-secondary-color);
+            transform: scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        .medical-popup-container.active {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .medical-popup-header {
+            background: linear-gradient(to left, var(--medical-primary-color), var(--medical-primary-dark-color));
+            color: var(--medical-secondary-color);
+            padding: 1rem 1.25rem;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .medical-popup-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .medical-popup-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: var(--medical-light-bg-color);
+        }
+
+        /* Close Button */
+        .medical-close-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--medical-secondary-color);
+            border: none;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .medical-close-btn:active {
+            transform: translateY(-50%) scale(0.9);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Loader */
+        .medical-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 1.25rem;
+        }
+
+        .medical-spinner {
+            width: 3.125rem;
+            height: 3.125rem;
+            border: 5px solid rgba(52, 152, 219, 0.2);
+            border-top: 5px solid var(--medical-primary-color);
+            border-radius: 50%;
+            animation: medicalSpin 1s linear infinite;
+        }
+
+        @keyframes medicalSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .medical-loader p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        
+        /* Disable hover effects on touch devices for a better UX */
+        @media (hover: hover) {
+            .medical-alert-btn:hover {
+                transform: scale(1.1);
+
+               }
+            .medical-close-btn:hover {
+                transform: translateY(-50%) rotate(90deg);
+                background: rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="medical-overlay" id="medicalOverlay"></div>
+
+<div class="medical-popup-container" id="medicalPopupContainer" role="dialog" aria-modal="true" aria-labelledby="medicalPopupTitle">
+    <div class="medical-popup-header">
+        <button class="medical-close-btn" onclick="medicalTogglePopup()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="medicalPopupTitle">تنبيه - محتوى TAWASLE_ADAT</h2>
+    </div>
+    <div class="medical-popup-content" id="medicalContentContainer">
+        <!-- Content will be loaded here -->
+        <div class="medical-loader">
+            <div class="medical-spinner"></div>
+            <p>جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Medical Alert variables
+    let isMedicalContentLoaded = false;
+    const MEDICAL_TARGET_URL = "https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB.html";
+    
+    // DOM Elements
+    const medicalPopupContainer = document.getElementById('medicalPopupContainer');
+    const medicalOverlay = document.getElementById('medicalOverlay');
+    const medicalContentContainer = document.getElementById('medicalContentContainer');
+    const medicalAlertBtn = document.querySelector('.medical-alert-btn');
+    
+    // Toggle popup visibility
+    function medicalTogglePopup() {
+        const isActive = medicalPopupContainer.classList.contains('active');
+        isActive ? medicalClosePopup() : medicalOpenPopup();
+    }
+    
+    function medicalOpenPopup() {
+        medicalAlertBtn.style.animation = 'none';
+        medicalOverlay.classList.add('active');
+        medicalPopupContainer.classList.add('active');
+        document.body.classList.add('medical-popup-open');
+        medicalVibrate(10);
+
+        if (!isMedicalContentLoaded) {
+            medicalLoadContent();
+        }
+    }
+    
+    function medicalClosePopup() {
+        medicalAlertBtn.style.animation = 'medicalPulse 2s infinite';
+        medicalOverlay.classList.remove('active');
+        medicalPopupContainer.classList.remove('active');
+        document.body.classList.remove('medical-popup-open');
+        medicalVibrate(10);
+    }
+    
+    // Load content via iframe
+    function medicalLoadContent() {
+        medicalShowIframeContent();
+        isMedicalContentLoaded = true;
+    }
+    
+    // Display content using an iframe
+    function medicalShowIframeContent() {
+        // Clear loader before inserting iframe
+        medicalContentContainer.innerHTML = ''; 
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = MEDICAL_TARGET_URL;
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.sandbox = "allow-same-origin allow-scripts allow-popups allow-forms";
+        iframe.loading = "lazy";
+        iframe.title = "محتوى طبي خارجي";
+        
+        // Handle loading errors
+        iframe.onerror = () => {
+             medicalShowError({ message: 'فشل تحميل المحتوى. يرجى التحقق من اتصالك بالإنترنت.' });
+        };
+
+        medicalContentContainer.appendChild(iframe);
+    }
+    
+    // Display an error message
+    function medicalShowError(error) {
+        medicalContentContainer.innerHTML = `
+            <div class="medical-loader">
+                <div style="color: var(--medical-primary-color); margin-bottom: 1rem; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 1.25rem; color: #555;">${error.message}</p>
+                <button onclick="medicalRetryLoading()" 
+                        style="padding: 10px 25px; background: var(--medical-primary-color); color: white; border: none; border-radius: 30px; font-size: 1rem; box-shadow: 0 3px 10px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // Retry loading content
+    function medicalRetryLoading() {
+        medicalVibrate(20);
+        medicalContentContainer.innerHTML = `
+            <div class="medical-loader">
+                <div class="medical-spinner"></div>
+                <p>جاري إعادة تحميل المحتوى...</p>
+            </div>
+        `;
+        // Reset state and try again
+        isMedicalContentLoaded = false;
+        setTimeout(medicalLoadContent, 500);
+    }
+    
+    // Event listeners
+    medicalOverlay.addEventListener('click', medicalClosePopup);
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && medicalPopupContainer.classList.contains('active')) {
+            medicalClosePopup();
+        }
+    });
+    
+    // Haptic feedback function
+    function medicalVibrate(duration_ms) {
+        if ('vibrate' in navigator && !('connection' in navigator && navigator.connection.saveData)) {
+            navigator.vibrate(duration_ms);
+        }
+    }
+    
+    medicalAlertBtn.addEventListener('click', () => medicalVibrate(10));
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنبيه طبي - INFATM</title>
+    <style>
+        /* CSS Variables for easier theme management */
+        :root {
+            --main-color: #e74c3c;
+            --main-dark: #c0392b;
+            --white-color: #ffffff;
+            --dark-text: #333;
+            --bg-light: #f5f5f5;
+            --dark-overlay: rgba(0, 0, 0, 0.8);
+            --main-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* General Reset & Overflow Prevention */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* The most important fix: prevent horizontal scrolling */
+        html, body {
+            font-family: var(--main-font);
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+            overflow-x: hidden;
+        }
+
+        /* Lock body scroll when popup is open */
+        body.popup-active {
+            overflow-y: hidden;
+        }
+
+     
+
+        /* Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-overlay);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Popup Container - Fullscreen */
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 8002;
+            background: var(--white-color);
+            transform: scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        .modal-container.show {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-header {
+            background: linear-gradient(to left, var(--main-color), var(--main-dark));
+            color: var(--white-color);
+            padding: 1rem 1.25rem;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: var(--bg-light);
+        }
+
+        /* Close Button */
+        .modal-close {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white-color);
+            border: none;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .modal-close:active {
+            transform: translateY(-50%) scale(0.9);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Loader */
+        .loading-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 1.25rem;
+        }
+
+        .loading-spinner {
+            width: 3.125rem;
+            height: 3.125rem;
+            border: 5px solid rgba(231, 76, 60, 0.2);
+            border-top: 5px solid var(--main-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        
+        /* Disable hover effects on touch devices for a better UX */
+        @media (hover: hover) {
+            .alert-btn:hover {
+                transform: scale(1.1);
+
+               }
+            .modal-close:hover {
+                transform: translateY(-50%) rotate(90deg);
+                background: rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="modal-overlay" id="modalOverlay"></div>
+
+<div class="modal-container" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+        <button class="modal-close" onclick="toggleModal()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="modalTitle">تنبيه - محتوى INFATM</h2>
+    </div>
+    <div class="modal-body" id="contentBox">
+        <!-- Content will be loaded here -->
+        <div class="loading-box">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // App variables
+    let contentLoaded = false;
+    const CONTENT_URL = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    
+    // DOM Elements
+    const modalBox = document.getElementById('modalBox');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const contentBox = document.getElementById('contentBox');
+    const alertButton = document.querySelector('.alert-btn');
+    
+    // Toggle modal visibility
+    function toggleModal() {
+        const isActive = modalBox.classList.contains('show');
+        isActive ? closeModal() : openModal();
+    }
+    
+    function openModal() {
+        alertButton.style.animation = 'none';
+        modalOverlay.classList.add('show');
+        modalBox.classList.add('show');
+        document.body.classList.add('popup-active');
+        hapticFeedback(10);
+
+        if (!contentLoaded) {
+            loadContent();
+        }
+    }
+    
+    function closeModal() {
+        alertButton.style.animation = 'alert-pulse 2s infinite';
+        modalOverlay.classList.remove('show');
+        modalBox.classList.remove('show');
+        document.body.classList.remove('popup-active');
+        hapticFeedback(10);
+    }
+    
+    // Load content via iframe
+    function loadContent() {
+        showIframeContent();
+        contentLoaded = true;
+    }
+    
+    // Display content using an iframe
+    function showIframeContent() {
+        contentBox.innerHTML = ''; 
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = CONTENT_URL;
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.sandbox = "allow-same-origin allow-scripts allow-popups allow-forms";
+        iframe.loading = "lazy";
+        iframe.title = "محتوى طبي خارجي";
+        
+        iframe.onerror = () => {
+             showErrorMessage({ message: 'فشل تحميل المحتوى. يرجى التحقق من اتصالك بالإنترنت.' });
+        };
+
+        contentBox.appendChild(iframe);
+    }
+    
+    // Display an error message
+    function showErrorMessage(error) {
+        contentBox.innerHTML = `
+            <div class="loading-box">
+                <div style="color: var(--main-color); margin-bottom: 1rem; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 1.25rem; color: #555;">${error.message}</p>
+                <button onclick="retryContentLoad()" 
+                        style="padding: 10px 25px; background: var(--main-color); color: white; border: none; border-radius: 30px; font-size: 1rem; box-shadow: 0 3px 10px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // Retry loading content
+    function retryContentLoad() {
+        hapticFeedback(20);
+        contentBox.innerHTML = `
+            <div class="loading-box">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">جاري إعادة تحميل المحتوى...</p>
+            </div>
+        `;
+        contentLoaded = false;
+        setTimeout(loadContent, 500);
+    }
+    
+    // Event listeners
+    modalOverlay.addEventListener('click', closeModal);
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalBox.classList.contains('show')) {
+            closeModal();
+        }
+    });
+    
+    // Haptic feedback function
+    function hapticFeedback(duration) {
+        if ('vibrate' in navigator && !('connection' in navigator && navigator.connection.saveData)) {
+            navigator.vibrate(duration);
+        }
+    }
+    
+    alertButton.addEventListener('click', () => hapticFeedback(10));
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAWASLE_ADAT_TAHDITAT_MED02</title>
+    <style>
+        /* CSS Variables for TAWASLE_ADAT_TAHDITAT_MED02 */
+        :root {
+            --TAWASLE_ADAT_TAHDITAT_MED02-primary-color: #3498db;
+            --TAWASLE_ADAT_TAHDITAT_MED02-primary-dark-color: #2980b9;
+            --TAWASLE_ADAT_TAHDITAT_MED02-secondary-color: #ffffff;
+            --TAWASLE_ADAT_TAHDITAT_MED02-text-color: #333;
+            --TAWASLE_ADAT_TAHDITAT_MED02-light-bg-color: #f5f5f5;
+            --TAWASLE_ADAT_TAHDITAT_MED02-overlay-bg-color: rgba(0, 0, 0, 0.8);
+            --TAWASLE_ADAT_TAHDITAT_MED02-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+      
+
+        /* Overlay */
+        .TAWASLE_ADAT_TAHDITAT_MED02-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--TAWASLE_ADAT_TAHDITAT_MED02-overlay-bg-color);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Popup Container - Fullscreen */
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 8002;
+            background: var(--TAWASLE_ADAT_TAHDITAT_MED02-secondary-color);
+            transform: scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-container.active {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-header {
+            background: linear-gradient(to left, var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color), var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-dark-color));
+            color: var(--TAWASLE_ADAT_TAHDITAT_MED02-secondary-color);
+            padding: 1rem 1.25rem;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-popup-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: var(--TAWASLE_ADAT_TAHDITAT_MED02-light-bg-color);
+        }
+
+        /* Close Button */
+        .TAWASLE_ADAT_TAHDITAT_MED02-close-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--TAWASLE_ADAT_TAHDITAT_MED02-secondary-color);
+            border: none;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-close-btn:active {
+            transform: translateY(-50%) scale(0.9);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Loader */
+        .TAWASLE_ADAT_TAHDITAT_MED02-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 1.25rem;
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-spinner {
+            width: 3.125rem;
+            height: 3.125rem;
+            border: 5px solid rgba(52, 152, 219, 0.2);
+            border-top: 5px solid var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color);
+            border-radius: 50%;
+            animation: TAWASLE_ADAT_TAHDITAT_MED02-spin 1s linear infinite;
+        }
+
+        @keyframes TAWASLE_ADAT_TAHDITAT_MED02-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .TAWASLE_ADAT_TAHDITAT_MED02-loader p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        
+        /* Disable hover effects on touch devices for a better UX */
+        @media (hover: hover) {
+            .TAWASLE_ADAT_TAHDITAT_MED02-btn:hover {
+                transform: scale(1.1);
+
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+               }
+            .TAWASLE_ADAT_TAHDITAT_MED02-close-btn:hover {
+                transform: translateY(-50%) rotate(90deg);
+                background: rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Notification Button -->
+
+
+<div class="TAWASLE_ADAT_TAHDITAT_MED02-overlay" id="TAWASLE_ADAT_TAHDITAT_MED02Overlay"></div>
+
+<div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-container" id="TAWASLE_ADAT_TAHDITAT_MED02PopupContainer" role="dialog" aria-modal="true" aria-labelledby="TAWASLE_ADAT_TAHDITAT_MED02PopupTitle">
+    <div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-header">
+        <button class="TAWASLE_ADAT_TAHDITAT_MED02-close-btn" onclick="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="TAWASLE_ADAT_TAHDITAT_MED02PopupTitle">التحديثات والإشعارات</h2>
+    </div>
+    <div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-content" id="TAWASLE_ADAT_TAHDITAT_MED02ContentContainer">
+        <!-- Content will be loaded here -->
+        <div class="TAWASLE_ADAT_TAHDITAT_MED02-loader">
+            <div class="TAWASLE_ADAT_TAHDITAT_MED02-spinner"></div>
+            <p>جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// TAWASLE_ADAT_TAHDITAT_MED02 variables
+    let TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = false;
+    const TAWASLE_ADAT_TAHDITAT_MED02_TARGET_URL = "https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB_ISHAARAT_MED02.html";
+    
+    // DOM Elements
+    const TAWASLE_ADAT_TAHDITAT_MED02_popupContainer = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02PopupContainer');
+    const TAWASLE_ADAT_TAHDITAT_MED02_overlay = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02Overlay');
+    const TAWASLE_ADAT_TAHDITAT_MED02_contentContainer = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02ContentContainer');
+    const TAWASLE_ADAT_TAHDITAT_MED02_btn = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02Btn');
+    
+    // Toggle popup visibility
+    function TAWASLE_ADAT_TAHDITAT_MED02_togglePopup() {
+        const isActive = TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.contains('active');
+        isActive ? TAWASLE_ADAT_TAHDITAT_MED02_closePopup() : TAWASLE_ADAT_TAHDITAT_MED02_openPopup();
+    }
+    
+    function TAWASLE_ADAT_TAHDITAT_MED02_openPopup() {
+        TAWASLE_ADAT_TAHDITAT_MED02_overlay.classList.add('active');
+        TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.add('active');
+        document.body.classList.add('TAWASLE_ADAT_TAHDITAT_MED02-popup-open');
+        TAWASLE_ADAT_TAHDITAT_MED02_vibrate(10);
+
+        if (!TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded) {
+            TAWASLE_ADAT_TAHDITAT_MED02_loadContent();
+        }
+    }
+    
+    function TAWASLE_ADAT_TAHDITAT_MED02_closePopup() {
+        TAWASLE_ADAT_TAHDITAT_MED02_overlay.classList.remove('active');
+        TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.remove('active');
+        document.body.classList.remove('TAWASLE_ADAT_TAHDITAT_MED02-popup-open');
+        TAWASLE_ADAT_TAHDITAT_MED02_vibrate(10);
+    }
+    
+    // Load content via iframe
+    function TAWASLE_ADAT_TAHDITAT_MED02_loadContent() {
+        TAWASLE_ADAT_TAHDITAT_MED02_showIframeContent();
+        TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = true;
+    }
+    
+    // Display content using an iframe
+    function TAWASLE_ADAT_TAHDITAT_MED02_showIframeContent() {
+        // Clear loader before inserting iframe
+        TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.innerHTML = ''; 
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = TAWASLE_ADAT_TAHDITAT_MED02_TARGET_URL;
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.border = "none";
+        iframe.sandbox = "allow-same-origin allow-scripts allow-popups allow-forms";
+        iframe.loading = "lazy";
+        iframe.title = "محتوى التحديثات والإشعارات";
+        
+        // Handle loading errors
+        iframe.onerror = () => {
+             TAWASLE_ADAT_TAHDITAT_MED02_showError({ message: 'فشل تحميل المحتوى. يرجى التحقق من اتصالك بالإنترنت.' });
+        };
+
+        TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.appendChild(iframe);
+    }
+    
+    // Display an error message
+    function TAWASLE_ADAT_TAHDITAT_MED02_showError(error) {
+        TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.innerHTML = `
+            <div class="TAWASLE_ADAT_TAHDITAT_MED02-loader">
+                <div style="color: var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color); margin-bottom: 1rem; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
+                <p style="margin-bottom: 1.25rem; color: #555;">${error.message}</p>
+                <button onclick="TAWASLE_ADAT_TAHDITAT_MED02_retryLoading()" 
+                        style="padding: 10px 25px; background: var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color); color: white; border: none; border-radius: 30px; font-size: 1rem; box-shadow: 0 3px 10px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s;">
+                    إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+    
+    // Retry loading content
+    function TAWASLE_ADAT_TAHDITAT_MED02_retryLoading() {
+        TAWASLE_ADAT_TAHDITAT_MED02_vibrate(20);
+        TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.innerHTML = `
+            <div class="TAWASLE_ADAT_TAHDITAT_MED02-loader">
+                <div class="TAWASLE_ADAT_TAHDITAT_MED02-spinner"></div>
+                <p>جاري إعادة تحميل المحتوى...</p>
+            </div>
+        `;
+        // Reset state and try again
+        TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = false;
+        setTimeout(TAWASLE_ADAT_TAHDITAT_MED02_loadContent, 500);
+    }
+    
+    // Event listeners
+    TAWASLE_ADAT_TAHDITAT_MED02_overlay.addEventListener('click', TAWASLE_ADAT_TAHDITAT_MED02_closePopup);
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.contains('active')) {
+            TAWASLE_ADAT_TAHDITAT_MED02_closePopup();
+        }
+    });
+    
+    // Haptic feedback function
+    function TAWASLE_ADAT_TAHDITAT_MED02_vibrate(duration_ms) {
+        if ('vibrate' in navigator && !('connection' in navigator && navigator.connection.saveData)) {
+            navigator.vibrate(duration_ms);
+        }
+    }
+    
+    // Update notification count (example)
+    function TAWASLE_ADAT_TAHDITAT_MED02_updateNotificationCount(count) {
+        TAWASLE_ADAT_TAHDITAT_MED02_btn.setAttribute('data-count', count);
+        if (count > 0) {
+            TAWASLE_ADAT_TAHDITAT_MED02_btn.style.animation = 'pulse 1.5s infinite';
+        } else {
+            TAWASLE_ADAT_TAHDITAT_MED02_btn.style.animation = 'none';
+        }
+    }
+    
+    // Initial setup
+    document.addEventListener('DOMContentLoaded', function() {
+        // Example: update notification count
+        TAWASLE_ADAT_TAHDITAT_MED02_updateNotificationCount(3);
+    });
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إشعارات هامة مُحسَّنة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =================================================================
+           1. متغيرات وأنماط أساسية معزولة داخل الحاوية الرئيسية
+           ================================================================= */
+        #ishare-modals-container {
+            --primary-color: #0d6e62;
+            --secondary-color: #d4af37; /* Gold */
+            --accent-color: #28a79c;
+            --text-color: #2d3436;
+            --bg-color: #f0f4f8; /* لون الخلفية العام */
+            --card-bg: #ffffff;
+            --button-gradient-start: #0d6e62;
+            --button-gradient-end: #28a79c;
+            --hover-gradient-start: #28a79c;
+            --hover-gradient-end: #0d6e62;
+            --close-btn-start: #a94442;
+            --close-btn-end: #d9534f;
+            --close-btn-hover-start: #d9534f;
+            --close-btn-hover-end: #c9302c;
+            --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --font-main: 'Tajawal', sans-serif;
+            --font-quranic: 'Amiri', serif;
+        }
+
+        /* لضمان عدم تأثر محتوى الصفحة الأخرى إذا تم تطبيق الخط عليها */
+        #ishare-modals-container * {
+            font-family: var(--font-main);
+            box-sizing: border-box;
+        }
+
+        /* =================================================================
+           2. تصميم النافذة المنبثقة (Modal)
+           ================================================================= */
+        #ishare-modals-container .ishare-modal {
+            position: fixed;
+            z-index: 9999; /* Z-index عالي جدًا لتجنب التداخل */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: none; /* يتم التحكم به عبر JS */
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #ishare-modals-container .ishare-modal.is-visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        #ishare-modals-container .ishare-modal-content {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            padding: 30px;
+            border-top: 5px solid var(--primary-color);
+            width: 100%;
+            max-width: 520px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        
+        #ishare-modals-container .is-visible .ishare-modal-content {
+            transform: scale(1);
+        }
+        
+        /* =================================================================
+           3. تصميم محتوى النافذة المنبثقة
+           ================================================================= */
+        #ishare-modals-container .ishare-modal-content h1 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: clamp(1.5rem, 4.5vw, 1.9rem);
+            font-weight: 700;
+        }
+
+        #ishare-modals-container .ishare-modal-content p {
+            font-family: var(--font-quranic);
+            font-size: clamp(1.1rem, 3vw, 1.25rem);
+            line-height: 1.8;
+            margin-bottom: 18px;
+            color: var(--text-color);
+        }
+        
+        #ishare-modals-container .ishare-modal-content .hadith-text {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        #ishare-modals-container .ishare-modal-content .hadith-source {
+            font-family: var(--font-main);
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            color: var(--text-color);
+            opacity: 0.7;
+            border-top: 1px dashed var(--accent-color);
+            padding-top: 12px;
+            margin-top: 20px;
+        }
+        
+        #ishare-modals-container .ishare-modal-content audio {
+            width: 100%;
+            max-width: 320px;
+            margin: 15px auto 25px;
+            border-radius: var(--border-radius);
+            border: 1px solid #eee;
+        }
+
+        /* =================================================================
+           4. تصميم الأزرار وحاويتها
+           ================================================================= */
+        #ishare-modals-container .buttons-modal-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 30px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #ishare-modals-container .ishare-modal-button {
+            background: linear-gradient(135deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white !important;
+            padding: 14px 30px;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            font-weight: 700;
+            font-family: var(--font-main);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.25s ease-out;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            max-width: 250px; /* تحديد عرض أقصى للزر */
+        }
+
+        #ishare-modals-container .ishare-modal-button:hover,
+        #ishare-modals-container .ishare-modal-button:focus {
+            background: linear-gradient(135deg, var(--hover-gradient-start), var(--hover-gradient-end));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            outline: none;
+        }
+
+        #ishare-modals-container .ishare-modal-button.btn-close-modal {
+            background: linear-gradient(135deg, var(--close-btn-start), var(--close-btn-end));
+        }
+
+        #ishare-modals-container .ishare-modal-button.btn-close-modal:hover,
+        #ishare-modals-container .ishare-modal-button.btn-close-modal:focus {
+            background: linear-gradient(135deg, var(--close-btn-hover-start), var(--close-btn-hover-end));
+        }
+
+        /* =================================================================
+           5. استعلامات الوسائط (Media Queries) للشاشات الأكبر
+           ================================================================= */
+        @media (min-width: 550px) {
+            #ishare-modals-container .buttons-modal-container {
+                flex-direction: row;
+                flex-wrap: wrap; /* للسماح بالتفاف الأزرار إذا ضاقت المساحة */
+            }
+            #ishare-modals-container .ishare-modal-button {
+                width: auto; /* العرض يعتمد على المحتوى */
+                min-width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ishare-modals-container">
+
+        <div id="kahfModal" class="ishare-modal" role="dialog" aria-modal="true" aria-labelledby="kahfModalTitle">
+            <div class="ishare-modal-content">
+                <h1 id="kahfModalTitle">فضل سورة الكهف</h1>
+                <p class="hadith-text">"من قرأ سورةَ الكهفِ في يومِ الجمعةِ أضاء له من النورِ ما بين الجمُعَتَين."</p>
+                <p class="hadith-source">الراوي: أبو سعيد الخدري | المحدث: الألباني | المصدر: صحيح الترغيب | الرقم: 736 | صحيح</p>
+                <div class="buttons-modal-container">
+                    <a href="سورة الكهف مكتوبة.html" class="ishare-modal-button">قراءة السورة الآن</a>
+                    <button class="ishare-modal-button btn-close-modal" data-modal-id="kahfModal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="jumaaModal" class="ishare-modal" role="dialog" aria-modal="true" aria-labelledby="jumaaModalTitle">
+            <div class="ishare-modal-content">
+                <h1 id="jumaaModalTitle">فضل صلاة الجمعة</h1>
+                <audio id="jumaaAudio" controls preload="metadata">
+                    <source src="SALAT JOMOAA/JOMAA.mp3" type="audio/mpeg">
+                    متصفحك لا يدعم تشغيل الصوت.
+                </audio>
+                <p class="hadith-text">"من غسَّلَ يومَ الجمعةِ واغتسلَ ثمَّ بَكَّرَ وابتَكرَ ومشى ولم يرْكب ودنا منَ الإمامِ فاستمعَ ولم يلغُ كانَ لَهُ بِكلِّ خطوةٍ عملُ سنةٍ أجرُ صيامِها وقيامِها."</p>
+                <p class="hadith-source">الراوي: أوس بن أبي أوس | المحدث: الألباني | المصدر: صحيح أبي داود | الرقم: 345 | صحيح</p>
+                <p class="hadith-text">"الصَّلَوَاتُ الخَمْسُ، وَالْجُمْعَةُ إلى الجُمْعَةِ، وَرَمَضَانُ إلى رَمَضَانَ، مُكَفِّرَاتٌ ما بيْنَهُنَّ إِذَا اجْتَنَبَ الكَبَائِرَ."</p>
+                <p class="hadith-source">الراوي: أبو هريرة | المحدث: مسلم | المصدر: صحيح مسلم | الرقم: 233 | صحيح</p>
+                <div class="buttons-modal-container">
+                    <button class="ishare-modal-button btn-close-modal" data-modal-id="jumaaModal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="generalModal" class="ishare-modal" role="dialog" aria-modal="true" aria-labelledby="generalModalTitle">
+            <div class="ishare-modal-content">
+                <h1 id="generalModalTitle">⚡ أَدَاة عِلْم ⚡</h1>
+                <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
+                <p>نذكركم أن التجربة على أجهزة الكمبيوتر أفضل، ونسعى لتحسينها على الهواتف قريبًا بإذن الله.</p>
+                <div class="buttons-modal-container">
+                    <button class="ishare-modal-button btn-close-modal" data-modal-id="generalModal">حسنًا، فهمت</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="iailan01Modal" class="ishare-modal" role="dialog" aria-modal="true" aria-labelledby="iailan01ModalTitle">
+            <div class="ishare-modal-content">
+                <h1 id="iailan01ModalTitle">⚡ أَدَاة عِلْم ⚡</h1>
+                <p>سيتم التركيز بداية على اسئلة السنوات السابقة قبل التطرق الى الدروس المترجمة و المخططات الذهنية والفلاش كارد</p>
+                <div class="buttons-modal-container">
+                    <button class="ishare-modal-button btn-close-modal" data-modal-id="iailan01Modal">حسنًا، فهمت</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- مدير النوافذ المنبثقة المُحسَّن ---
+        const modalManager = {
+            queue: [],
+            currentModal: null,
+
+            // إضافة نافذة إلى طابور العرض
+            add(modalId) {
+                if (!this.queue.includes(modalId)) {
+                    this.queue.push(modalId);
+                }
+            },
+
+            // عرض النافذة التالية في الطابور
+            showNext() {
+                if (this.queue.length === 0 || this.currentModal) {
+                    return;
+                }
+                const modalId = this.queue.shift();
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    this.currentModal = modal;
+                    modal.classList.add('is-visible');
+                    
+                    // التركيز على زر الإغلاق لسهولة الوصول
+                    const closeButton = modal.querySelector('.btn-close-modal');
+                    if (closeButton) {
+                        closeButton.focus();
+                    }
+
+                    // محاولة تشغيل الصوت إذا كانت نافذة الجمعة
+                    if (modalId === 'jumaaModal') {
+                        this.playAudio('jumaaAudio');
+                    }
+                }
+            },
+
+            // إغلاق النافذة الحالية وعرض التالية
+            close(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal && modal === this.currentModal) {
+                    modal.classList.remove('is-visible');
+                    this.currentModal = null;
+
+                    // إيقاف الصوت عند إغلاق نافذة الجمعة
+                    if (modalId === 'jumaaModal') {
+                        this.pauseAudio('jumaaAudio');
+                    }
+                    
+                    // تأخير بسيط ثم عرض النافذة التالية
+                    setTimeout(() => this.showNext(), 300);
+                }
+            },
+
+            playAudio(audioId) {
+                const audio = document.getElementById(audioId);
+                if (audio && audio.paused) {
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.warn("تشغيل الصوت التلقائي ممنوع. يتطلب تفاعل المستخدم.");
+                        });
+                    }
+                }
+            },
+
+            pauseAudio(audioId) {
+                const audio = document.getElementById(audioId);
+                if (audio && !audio.paused) {
+                    audio.pause();
+                }
+            },
+
+            // تهيئة كل شيء
+            init() {
+                this.determineModalsToShow();
+                this.attachEventListeners();
+                this.showNext();
+            },
+
+     
+// تحديد النوافذ التي يجب إضافتها للطابور
+            determineModalsToShow() {
+                const now = new Date();
+                const dayOfWeek = now.getDay(); // 0=الأحد, 5=الجمعة
+                const hours = now.getHours();
+
+                // --- بداية المنطق الجديد: التحقق من آخر ظهور ---
+                const lastSeenTimestamp = localStorage.getItem('ishareModalsLastSeen');
+                const twelveHoursInMs = 12 * 60 * 60 * 1000; // 12 ساعة بالمللي ثانية
+
+                // التحقق مما إذا كان يجب عرض الإشعارات العامة
+                // الشروط: 1. لا يوجد وقت مسجل (الزيارة الأولى)
+                //         2. أو مر على آخر ظهور أكثر من 12 ساعة
+                const shouldShowGeneralModals = !lastSeenTimestamp || (now.getTime() - parseInt(lastSeenTimestamp)) > twelveHoursInMs;
+
+                if (shouldShowGeneralModals) {
+                    console.log("يتم عرض الإشعارات العامة (مر أكثر من 12 ساعة)");
+                    // أضف الإشعارات التي تريدها أن تظهر مرة كل 12 ساعة
+                    this.add('generalModal');
+                    this.add('iailan01Modal');
+                    
+                    // تحديث وقت آخر ظهور لهذه الإشعارات في ذاكرة المتصفح
+                    localStorage.setItem('ishareModalsLastSeen', now.getTime().toString());
+                }
+                // --- نهاية المنطق الجديد ---
+
+                // التحقق إذا كان اليوم هو الجمعة (هذه الإشعارات ستظهر دائمًا يوم الجمعة بغض النظر عن الشرط الزمني)
+                if (dayOfWeek === 5) {
+                    this.add('kahfModal');
+                    // قبل الساعة 2 ظهرًا (14:00) يوم الجمعة
+                    if (hours < 14) {
+                        this.add('jumaaModal');
+                    }
+                }
+            },
+
+      
+            // إضافة مستمعي الأحداث
+            attachEventListeners() {
+                const container = document.getElementById('ishare-modals-container');
+                
+                container.addEventListener('click', (e) => {
+                    // إغلاق عند الضغط على زر الإغلاق
+                    const closeButton = e.target.closest('.btn-close-modal');
+                    if (closeButton) {
+                        const modalId = closeButton.dataset.modalId;
+                        this.close(modalId);
+                        return;
+                    }
+                    
+                    // إغلاق عند الضغط على الخلفية
+                    if (e.target.classList.contains('ishare-modal') && this.currentModal) {
+                        this.close(this.currentModal.id);
+                    }
+                });
+
+                // إغلاق عند الضغط على مفتاح Escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.currentModal) {
+                        this.close(this.currentModal.id);
+                    }
+                });
+            }
+        };
+
+        // تشغيل المدير
+        modalManager.init();
+    });
+    </script>
+
+</body>
+</html>
