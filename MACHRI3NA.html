@@ -1,612 +1,442 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-    <meta charset="utf-8">
-    <title>⚡️ أداة علم ⚡️ : مشاريعنا</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="أداة علم, مشاريع, تطبيقات, واجباتي, تعليم">
-    <meta name="description" content="صفحة مشاريع أداة علم - تعرف على آخر مشاريعنا وتطبيقاتنا التعليمية">
-
-    <link href="img/S22MCS_BLUE.jpg" rel="icon">
-
+    <title>⚡️ أداة علم ⚡️ : مشاريعنا (تصميم محسن)</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* === بداية التعديلات الشاملة === */
-
+        /* --- المتغيرات الرئيسية --- */
         :root {
             --primary-color: #007bff;
-            --secondary-color: #343a40;
-            --accent-color: #28a745;
-            --light-bg: #f8f9fa;
-            --dark-text: #333;
-            --light-text: #6c757d;
-            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-            --card-border-radius: 16px;
+            --secondary-color: #0056b3;
+            --background-color: #f4f7fc;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --light-text-color: #6c757d;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --border-radius: 16px;
         }
 
-        /* تحسين تجربة التمرير مع شريط التنقل الثابت */
+        /* --- إعدادات أساسية --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 75px;
         }
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--light-bg);
-            line-height: 1.7; /* تحسين قابلية القراءة */
-            color: var(--dark-text);
-            padding-top: 70px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block; /* إزالة المساحات البيضاء السفلية */
-        }
-
-        /* تحسينات شريط التنقل */
-        .navbar {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            padding: 0.75rem 1rem;
-        }
-
-        .navbar-brand {
-            font-size: 1.25rem; /* تكبير الخط للوضوح */
-            font-weight: 700;
-        }
-
-        .navbar-brand img {
-            height: 40px; /* زيادة حجم الشعار */
-            margin-left: 10px;
-        }
-
-        .navbar-toggler {
-            padding: 0.25rem 0.5rem;
-            font-size: 1.2rem;
-            border: 1px solid #ddd;
-        }
-        
-        .navbar-toggler:focus {
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        .navbar-nav .nav-link {
-            padding: 0.6rem 1rem !important;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        /* رأس الصفحة */
-        .section-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 20px 15px;
-        }
-
-        .section-header .title {
-            font-size: clamp(1.8rem, 5vw, 2.5rem); /* حجم خط متجاوب */
-            color: var(--secondary-color);
-            margin-bottom: 15px;
-            position: relative;
-            font-weight: 700;
-        }
-
-        .section-header .title:after {
-            content: '';
-            position: absolute;
-            width: 70px;
-            height: 4px;
-            background: var(--primary-color);
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 2px;
-        }
-
-        .section-header .text {
-            color: var(--light-text);
-            max-width: 700px;
-            margin: 10px auto 0;
-            font-size: clamp(0.95rem, 2.5vw, 1.1rem); /* حجم خط متجاوب */
+            background-color: var(--background-color);
+            color: var(--text-color);
             line-height: 1.8;
         }
 
-        /* حاوية بطاقات المشاريع */
-        .blog-wrapper {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-            padding: 0 15px 40px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
 
-        /* بطاقة المشروع */
-        .blog-card {
-            background: white;
-            border-radius: var(--card-border-radius);
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            border: none;
+        /* --- قسم الرأسية والبحث --- */
+        .header {
+            padding: 40px 0;
+            text-align: center;
+            background-color: var(--card-background);
+            margin-bottom: 40px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .back-button i {
+            margin-left: 8px;
+        }
+        .back-button:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
         }
 
-        .blog-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--primary-color);
         }
 
-        .blog-image {
+        .header p {
+            font-size: 1.1rem;
+            color: var(--light-text-color);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        #searchInput {
             width: 100%;
-            aspect-ratio: 16 / 10; /* نسبة عرض إلى ارتفاع عصرية */
-            overflow: hidden;
-            background-color: #e9ecef;
+            padding: 15px 50px 15px 20px;
+            border-radius: 50px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s ease;
         }
 
-        .blog-image img {
+        #searchInput:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+        }
+
+        .search-wrapper .fa-search {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 20px;
+            color: var(--light-text-color);
+        }
+
+        /* --- شبكة عرض المشاريع --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding-bottom: 60px;
+        }
+
+        /* --- بطاقة المشروع --- */
+        .project-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            position: relative; /* مهم لإضافة التدرج */
+        }
+        
+        /* إضافة تدرج لوني ناعم على الصور */
+        .project-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.25), transparent);
+            pointer-events: none;
+        }
+
+        .project-image img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* إبقاء الصورة كاملة ومناسبة للمحتوى */
-            transition: transform 0.4s ease;
+            object-fit: cover; /* الوضع الافتراضي للصور العادية */
+            transition: transform 0.4s ease, filter 0.4s ease;
         }
-
-        .blog-card:hover .blog-image img {
+        
+        /* فئة خاصة بالصور التي يجب أن تظهر كاملة (الشعارات) */
+        .project-image img.img-contain {
+            object-fit: contain;
+            padding: 20px; /* لإعطاء مساحة حول الشعار */
+        }
+        
+        .project-card:hover .project-image img {
             transform: scale(1.05);
+            filter: brightness(1.1); /* زيادة السطوع عند التمرير */
         }
 
-        .blog-content {
-            padding: 20px 25px;
-            flex-grow: 1;
+        .project-content {
+            padding: 25px;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .project-description {
+            font-size: 1rem;
+            color: var(--light-text-color);
+        }
+
+        /* --- طبقة المعلومات الإضافية والأزرار (تظهر عند التمرير) --- */
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
             display: flex;
             flex-direction: column;
-        }
-        
-        .blog-info {
-            display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            margin-bottom: 15px;
-            color: var(--light-text);
-            font-size: 0.85rem;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .blog-info h5 {
-            font-size: 0.85rem;
-            margin: 0;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
-        .title-sm {
-            font-size: 1.4rem;
-            color: var(--secondary-color);
-            margin-bottom: 15px;
+        .project-card:hover .project-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .project-overlay-title {
+            font-size: 1.6rem;
             font-weight: 700;
-            line-height: 1.4;
+            margin-bottom: 15px;
         }
 
-        .blog-text {
-            color: var(--dark-text);
-            margin-bottom: 20px;
-            flex-grow: 1;
-            font-size: 1rem;
-            opacity: 0.95;
-        }
-
-        /* حاوية الأزرار */
-        .btn-container {
+        .project-actions {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-top: auto; /* دفع الأزرار لأسفل البطاقة */
+            width: 100%;
+            max-width: 220px;
         }
 
-        .btn {
-            display: inline-flex;
+        .action-btn {
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 20px;
-            background-color: var(--primary-color);
-            color: white;
+            gap: 10px;
+            padding: 12px;
             border-radius: 10px;
             text-decoration: none;
+            color: white;
             font-weight: 500;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+        }
+
+        .action-btn i {
+            font-size: 1.1rem;
+        }
+
+        .btn-direct-download { background-color: var(--primary-color); }
+        .btn-direct-download:hover { background-color: var(--secondary-color); }
+        .btn-telegram { background-color: #2AABEE; }
+        .btn-telegram:hover { background-color: #1792ce; }
+        .btn-share { background-color: #28a745; }
+        .btn-share:hover { background-color: #218838; }
+
+        /* رسالة عدم وجود نتائج */
+        #no-results {
             text-align: center;
-            font-size: 0.95rem;
-            width: 100%;
-        }
-
-        .btn:hover, .btn:focus {
-            background-color: var(--accent-color);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
-        }
-        
-        .btn.small { /* إعادة تسمية الفئة لتكون أوضح */
-            background-color: #6c757d; /* لون ثانوي */
-        }
-
-        .btn.small:hover, .btn.small:focus {
-            background-color: var(--secondary-color);
-            box-shadow: 0 6px 15px rgba(52, 58, 64, 0.25);
-        }
-
-        .btn i {
-            margin-right: 8px; /* تعديل الهامش ليتناسب مع اتجاه النص العربي */
-            margin-left: 0;
-            font-size: 1.1em;
-        }
-
-        /* تحسينات التذييل */
-        .footer {
-            padding: 40px 15px;
-            text-align: center; /* توسيط المحتوى على الهواتف */
-        }
-        
-        .footer h4 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .footer p, .footer a {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.8);
-        }
-        
-        .footer a:hover {
-            color: white;
-        }
-
-        .footer .d-flex {
-            justify-content: center; /* توسيط الأيقونات */
-            gap: 10px; /* مسافة بين الأيقونات */
-        }
-
-        .btn-social {
-            width: 42px;
-            height: 42px;
-            font-size: 1rem;
-        }
-        
-        /* زر العودة للأعلى */
-        .back-to-top {
-            width: 45px;
-            height: 45px;
             font-size: 1.2rem;
-            bottom: 25px;
-            right: 25px;
+            color: var(--light-text-color);
             display: none;
-            align-items: center;
-            justify-content: center;
+            padding: 40px;
         }
-
-        /* نقاط التجاوب (Media Queries) */
-        @media (min-width: 576px) {
-            .btn-container {
-                flex-direction: row;
-            }
-
-            .btn {
-                width: auto;
-                flex-grow: 1; /* جعل الأزرار تأخذ نفس العرض */
-            }
-        }
-        
-        @media (min-width: 768px) {
-            body {
-                padding-top: 80px;
-            }
-            .blog-wrapper {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 35px;
-                padding: 0 20px 50px;
-            }
-            .footer {
-                text-align: right; /* إعادة المحاذاة للشاشات الأكبر */
-            }
-            .footer .d-flex {
-                justify-content: flex-start; /* إعادة المحاذاة للشاشات الأكبر */
-            }
-        }
-        
-        @media (min-width: 992px) {
-            .blog-wrapper {
-                grid-template-columns: repeat(3, 1fr);
-                max-width: 1200px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-
-        /* === نهاية التعديلات === */
     </style>
 </head>
-
 <body>
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="visually-hidden">تحميل...</span>
-        </div>
-    </div>
-    
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow fixed-top"> <div class="container">
-            <a href="#" onclick="window.location.href=window.location.href;" class="navbar-brand d-flex align-items-center">
-                <img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" alt="شعار أداة علم">
-                <span class="m-0">أداة علم</span>
-            </a>
 
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="تبديل التنقل">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-3 py-lg-0">
-                    <a href="index.html" class="nav-item nav-link">الرئيسية</a>
-                    <a href="about.html" class="nav-item nav-link">من نحن</a>
-                    <a href="index.html" class="nav-item nav-link">أقسامنا</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">الصفحات</a>
-                        <div class="dropdown-menu fade-down m-0">
-                            <a href="team.html" class="dropdown-item">فريقنا</a>
-                            <a href="testimonial.html" class="dropdown-item">آراء أعضائنا</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link">تواصل معنا</a>
-                    <a href="https://adatealm.github.io/ADATEALM/" class="nav-item nav-link">تحميل تطبيقنا</a>
-                    <a href="MACHRI3NA.html" class="nav-item nav-link active">مشاريعنا</a>
-                    <a href="login.html" class="nav-item nav-link"><i class="fa fa-user"></i></a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <section class="blog section">
+    <header class="header">
         <div class="container">
-            <div class="section-header">
-                <h3 class="title">مشاريعنا</h3>
-                <p class="text">
-                    تعرف على أحدث مشاريعنا وتطبيقاتنا التعليمية المصممة بعناية لخدمتكم.
-                </p>
-            </div>
-
-            <div class="blog-wrapper">
-                
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <img src="2.jpg" alt="منصة أداة علم" loading="lazy">
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-info">
-                            <h5 class="blog-user"><i class="fas fa-user-shield"></i> من طرف المشرفين</h5>
-                        </div>
-                        <h3 class="title-sm">منصة أداة علم</h3>
-                        <p class="blog-text">
-                            منصة تعليمية متكاملة تهدف لتسهيل عملية التعلم بتقديم محتوى متنوع ومفيد، وتوفير طرق دراسة واختبارات على طريقة **(S22MCS)** مع دعم كامل للغة العربية.
-                        </p>
-                        <div class="btn-container">
-                            <a href="EL MOLAKHS_MED02_U5_ANATOMIE_العمود الفقري.html" class="btn">
-                                <i class="fas fa-book-open"></i> نموذج الدراسة
-                            </a>
-                            <a href="EXAM_MED02_U5_ANATOMY_العمود الفقري_ANNABA_.html" class="btn small">
-                                <i class="fas fa-clipboard-check"></i> نموذج الاختبارات
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <img src="WAJIBATI.jpg" alt="تطبيق واجباتي" loading="lazy">
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-info">
-                             <h5 class="blog-date"><i class="fas fa-calendar-alt"></i> مايو, 2025</h5>
-                            <h5 class="blog-user"><i class="fas fa-user-shield"></i> المشرفون</h5>
-                        </div>
-                        <h3 class="title-sm">تطبيق واجباتي</h3>
-                        <p class="blog-text">
-                            نظّم يومك بذكاء! سجّل مهامك اليومية، وقسّمها إلى خطوات واضحة. كلما كتبت ورتّبت ما عليك إنجازه، أصبح تنفيذه أسهل وأسرع. **سهولة | ترتيب | إنجاز**
-                        </p>
-                        <div class="btn-container">
-                            <a href="WAJIBATI.html" class="btn">
-                                <i class="fas fa-download"></i> تحميل واجباتي
-                            </a>
-                            <a href="https://adatealm.github.io/TO_DO_APP/" class="btn small">
-                                <i class="fas fa-globe"></i> موقع واجباتي
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <img src="adatealm/quran (1).png" alt="تطبيق اختم قرانك يشفع لك" loading="lazy">
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-info">
-                            <h5 class="blog-date"><i class="fas fa-calendar-alt"></i> مارس, 2025</h5>
-                           <h5 class="blog-user"><i class="fas fa-user-shield"></i> المشرفون</h5>
-                        </div>
-                        <h3 class="title-sm">تطبيق اختم قرآنك</h3>
-                        <p class="blog-text">
-                           تطبيق يساعدك على ختم القرآن الكريم بتحديد ورد يومي حسب المدة التي تختارها، مع تذكير بفضل قراءة القرآن وأهمية المداومة عليها لنيل الأجر والشفاعة.
-                        </p>
-                        <div class="btn-container">
-                             <a href="https://adatealm.github.io/khtam-alqaran/APP_SITE_KHATMA.html" class="btn">
-                                <i class="fas fa-download"></i> تحميل التطبيق
-                            </a>
-                            <a href="https://adatealm.github.io/khtam-alqaran/" class="btn small">
-                                <i class="fas fa-globe"></i> الموقع الإلكتروني
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="blog-card">
-                    <div class="blog-image">
-                         <img src="التطبيقات/اقرا  اذكارك.jpg" alt="تطبيق اقرأ أذكارك تشفع لك" loading="lazy">
-                    </div>
-                     <div class="blog-content">
-                         <div class="blog-info">
-                            <h5 class="blog-date"><i class="fas fa-calendar-alt"></i> مارس, 2025</h5>
-                             <h5 class="blog-user"><i class="fas fa-user-shield"></i> المشرفون</h5>
-                         </div>
-                        <h3 class="title-sm">تطبيق اقرأ أذكارك</h3>
-                         <p class="blog-text">
-                            تطبيق للأذكار والاستغفار والتسبيح مع عدّاد لمساعدتك على المداومة. استمر فأنت بحاجة للحسنات، ولا تدري أي حسنة ستكون سبباً في نجاتك.
-                         </p>
-                         <div class="btn-container">
-                            <a href="https://t.me/adatealm/253" class="btn">
-                                <i class="fas fa-download"></i> تحميل التطبيق
-                            </a>
-                             <a href="https://adatealm.github.io/-Istighfar/" class="btn small">
-                                 <i class="fas fa-globe"></i> الموقع الإلكتروني
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <img src="S22MCS PARTS/قسم الطب.jpg" alt="صورة توضيحية لقسم الطب" loading="lazy">
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-info">
-                            <h5 class="blog-date"><i class="fas fa-calendar-alt"></i> 09 سبتمبر 2025</h5>
-                            <h5 class="blog-user"><i class="fas fa-user-shield"></i> المشرفون</h5>
-                        </div>
-                        <h3 class="title-sm">تطبيق السنة الأولى طب</h3>
-                        <p class="blog-text">
-                             دليلك العلمي الشامل لطلاب السنة الأولى طب، يهدف لدعم مسيرتكم التعليمية وتقديم محتوى قيم يلبي احتياجاتكم الأكاديمية ويربط دراستكم بواقعكم.
-                        </p>
-                        <div class="btn-container">
-                            <a href="السنة الأولى طب أَداة علم.apk" class="btn">
-                                <i class="fas fa-download"></i> تحميل التطبيق
-                            </a>
-                            <a href="https://s22mcs.github.io/S22MCS02-/MED01.html" class="btn small">
-                                <i class="fas fa-globe"></i> زيارة الموقع
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <img src="S22MCS PARTS/قسم الطب.jpg" alt="صورة توضيحية لقسم الطب" loading="lazy">
-                    </div>
-                    <div class="blog-content">
-                        <div class="blog-info">
-                            <h5 class="blog-date"><i class="fas fa-calendar-alt"></i> 09 سبتمبر 2025</h5>
-                            <h5 class="blog-user"><i class="fas fa-user-shield"></i> المشرفون</h5>
-                        </div>
-                        <h3 class="title-sm">تطبيق السنة الثانية طب</h3>
-                        <p class="blog-text">
-                           نقدم لطلاب السنة الثانية طب هذا التطبيق الشامل لدعم مسيرتهم التعليمية وتقديم محتوى قيم يلبي احتياجاتهم الأكاديمية ويربط العلم بالإيمان.
-                        </p>
-                        <div class="btn-container">
-                            <a href="السنة الثانية طب أَداة علم.apk" class="btn">
-                                <i class="fas fa-download"></i> تحميل التطبيق
-                            </a>
-                            <a href="https://s22mcs.github.io/S22MCS02-/MED02.html" class="btn small">
-                                <i class="fas fa-globe"></i> زيارة الموقع
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
+            <a href="#" onclick="window.history.back(); return false;" class="back-button">
+                <i class="fas fa-arrow-right"></i> العودة للخلف
+            </a>
+            <h1>مشاريعنا</h1>
+            <p>تعرف على أحدث مشاريعنا وتطبيقاتنا التعليمية المصممة بعناية لخدمتكم.</p>
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="ابحث عن مشروع..." onkeyup="filterProjects()">
             </div>
         </div>
-    </section>
+    </header>
 
-    <footer class="bg-dark text-light pt-5 pb-4">
-        <div class="container text-center text-md-end">
-            <div class="row gy-4">
-                <div class="col-md-6 col-lg-4">
-                    <h4 class="text-white mb-3">روابط سريعة</h4>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a class="text-light text-decoration-none" href="about.html">من نحن</a></li>
-                        <li class="mb-2"><a class="text-light text-decoration-none" href="contact.html">تواصل معنا</a></li>
-                        <li class="mb-2"><a class="text-light text-decoration-none" href="#">سياسة الخصوصية</a></li>
-                        <li class="mb-2"><a class="text-light text-decoration-none" href="#">الشروط والأحكام</a></li>
-                    </ul>
+    <main class="container">
+        <div class="projects-grid" id="projectsGrid">
+
+            <article class="project-card" data-title="منصة أداة علم">
+                <div class="project-image">
+                    <img src="2.jpg" alt="منصة أداة علم">
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <h4 class="text-white mb-3">تواصل معنا</h4>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>adatealm@gmail.com</p>
-                    <p class="mb-3"><i class="fab fa-telegram me-3"></i>@ADATEALM_bot</p>
-                    <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
-                         <a class="btn btn-outline-light btn-social rounded-circle" href="https://t.me/adatealm" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
-                         <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.facebook.com/profile.php?id=61560859966476" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                         <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.instagram.com/adat_ealm" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                         <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.tiktok.com/@adat_ealm" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <div class="project-content">
+                    <h3 class="project-title">منصة أداة علم</h3>
+                    <p class="project-description">منصة تعليمية متكاملة تهدف لتسهيل عملية التعلم بتقديم محتوى متنوع ومفيد.</p>
+                </div>
+                <div class="project-overlay">
+                    <h3 class="project-overlay-title">منصة أداة علم</h3>
+                    <div class="project-actions">
+                        <a href="EL MOLAKHS_MED02_U5_ANATOMIE_العمود الفقري.html" class="action-btn btn-direct-download"><i class="fas fa-download"></i> تحميل مباشر</a>
+                        <a href="#" class="action-btn btn-telegram"><i class="fab fa-telegram"></i> تحميل من تيليجرام</a>
+                        <button class="action-btn btn-share" onclick="shareProject('رابط المشروع الأول')"><i class="fas fa-share-alt"></i> مشاركة</button>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <h4 class="text-white mb-3">انضم إلى مجتمعنا</h4>
-                    <p class="mb-3">اشترك الآن وانضم إلى مجتمعنا المتنامي من المتعلمين الملتزمين.</p>
-                    <form>
-                        <div class="input-group">
-                            <input class="form-control" type="email" placeholder="بريدك الإلكتروني" required>
-                            <button type="button" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfzfMjzvpXfTTCTYNX6n5TlqbctCpkXTQxOCKFq1bCmya942g/viewform', '_blank')" class="btn btn-primary">انضم</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
-            <div class="text-center">
-                <p class="mb-0">&copy; <a class="text-primary fw-bold text-decoration-none" href="index.html">أداة علم</a>. جميع الحقوق محفوظة.</p>
-            </div>
-        </div>
-    </footer>
-    
-    <a href="#" class="btn btn-lg btn-primary rounded-circle back-to-top" aria-label="العودة إلى الأعلى"><i class="bi bi-arrow-up"></i></a>
+            </article>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+            <article class="project-card" data-title="تطبيق واجباتي">
+                <div class="project-image">
+                    <img src="WAJIBATI.jpg" alt="تطبيق واجباتي">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">تطبيق واجباتي</h3>
+                    <p class="project-description">نظّم يومك بذكاء! سجّل مهامك اليومية، وقسّمها إلى خطوات واضحة.</p>
+                </div>
+                 <div class="project-overlay">
+                    <h3 class="project-overlay-title">تطبيق واجباتي</h3>
+                    <div class="project-actions">
+                        <a href="WAJIBATI.html" class="action-btn btn-direct-download"><i class="fas fa-download"></i> تحميل مباشر</a>
+                        <a href="#" class="action-btn btn-telegram"><i class="fab fa-telegram"></i> تحميل من تيليجرام</a>
+                        <button class="action-btn btn-share" onclick="shareProject('رابط مشروع واجباتي')"><i class="fas fa-share-alt"></i> مشاركة</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-title="تطبيق اختم قرآنك">
+                <div class="project-image">
+                    <img src="adatealm/quran (1).png" alt="تطبيق اختم قرآنك" class="img-contain"> </div>
+                <div class="project-content">
+                    <h3 class="project-title">تطبيق اختم قرآنك</h3>
+                    <p class="project-description">يساعدك على ختم القرآن الكريم بتحديد ورد يومي حسب المدة التي تختارها.</p>
+                </div>
+                <div class="project-overlay">
+                    <h3 class="project-overlay-title">تطبيق اختم قرآنك</h3>
+                    <div class="project-actions">
+                        <a href="https://adatealm.github.io/khtam-alqaran/APP_SITE_KHATMA.html" class="action-btn btn-direct-download"><i class="fas fa-download"></i> تحميل مباشر</a>
+                        <a href="#" class="action-btn btn-telegram"><i class="fab fa-telegram"></i> تحميل من تيليجرام</a>
+                        <button class="action-btn btn-share" onclick="shareProject('https://adatealm.github.io/khtam-alqaran/')"><i class="fas fa-share-alt"></i> مشاركة</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-title="تطبيق اقرأ أذكارك">
+                <div class="project-image">
+                    <img src="التطبيقات/اقرا  اذكارك.jpg" alt="تطبيق اقرأ أذكارك" class="img-contain"> </div>
+                <div class="project-content">
+                    <h3 class="project-title">تطبيق اقرأ أذكارك</h3>
+                    <p class="project-description">تطبيق للأذكار والاستغفار والتسبيح مع عدّاد لمساعدتك على المداومة.</p>
+                </div>
+                <div class="project-overlay">
+                    <h3 class="project-overlay-title">تطبيق اقرأ أذكارك</h3>
+                    <div class="project-actions">
+                        <a href="https://t.me/adatealm/253" class="action-btn btn-direct-download"><i class="fas fa-download"></i> تحميل مباشر</a>
+                        <a href="https://t.me/adatealm/253" class="action-btn btn-telegram"><i class="fab fa-telegram"></i> تحميل من تيليجرام</a>
+                        <button class="action-btn btn-share" onclick="shareProject('https://adatealm.github.io/-Istighfar/')"><i class="fas fa-share-alt"></i> مشاركة</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-title="تطبيق السنة الأولى طب">
+                <div class="project-image">
+                    <img src="S22MCS PARTS/قسم الطب.jpg" alt="تطبيق السنة الأولى طب">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">تطبيق السنة الأولى طب</h3>
+                    <p class="project-description">دليلك العلمي الشامل لطلاب السنة الأولى طب، لدعم مسيرتكم التعليمية.</p>
+                </div>
+                <div class="project-overlay">
+                    <h3 class="project-overlay-title">تطبيق السنة الأولى طب</h3>
+                    <div class="project-actions">
+                        <a href="السنة الأولى طب أَداة علم.apk" class="action-btn btn-direct-download"><i class="fas fa-download"></i> تحميل مباشر</a>
+                        <a href="#" class="action-btn btn-telegram"><i class="fab fa-telegram"></i> تحميل من تيليجرام</a>
+                        <button class="action-btn btn-share" onclick="shareProject('https://s22mcs.github.io/S22MCS02-/MED01.html')"><i class="fas fa-share-alt"></i> مشاركة</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card" data-title="تطبيق السنة الثانية طب">
+                <div class="project-image">
+                    <img src="S22MCS PARTS/قسم الطب.jpg" alt="تطبيق السنة الثانية طب">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">تطبيق السنة الثانية طب</h3>
+                    <p class="project-description">تطبيق شامل لدعم مسيرة طلاب السنة الثانية طب وتقديم محتوى قيم.</p>
+                </div>
+                 <div class="project-overlay">
+                    <h3 class="project-overlay-title">تطبيق السنة الثانية طب</h3>
+                    <div class="project-actions">
+                        <a href="السنة الثانية طب أَداة علم.apk" class="action-btn btn-direct-download"><i class="fas fa-download"></i> تحميل مباشر</a>
+                        <a href="#" class="action-btn btn-telegram"><i class="fab fa-telegram"></i> تحميل من تيليجرام</a>
+                        <button class="action-btn btn-share" onclick="shareProject('https://s22mcs.github.io/S22MCS02-/MED02.html')"><i class="fas fa-share-alt"></i> مشاركة</button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+        
+        <p id="no-results">عفواً، لم يتم العثور على مشاريع تطابق بحثك.</p>
+    </main>
+
     <script>
-        (function ($) {
-            "use strict";
-    
-            // Spinner
-            var spinner = function () {
-                setTimeout(function () {
-                    if ($('#spinner').length > 0) {
-                        $('#spinner').removeClass('show');
-                    }
-                }, 300);
-            };
-            spinner();
-    
-            // Back to top button
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 300) {
-                    $('.back-to-top').fadeIn('slow').css('display', 'flex');
+        // --- وظيفة البحث والفلترة ---
+        function filterProjects() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const projects = document.querySelectorAll('.project-card');
+            const noResultsMessage = document.getElementById('no-results');
+            let found = false;
+
+            projects.forEach(project => {
+                const title = project.dataset.title.toLowerCase();
+                if (title.includes(searchInput)) {
+                    project.style.display = 'block';
+                    found = true;
                 } else {
-                    $('.back-to-top').fadeOut('slow');
+                    project.style.display = 'none';
                 }
             });
-            $('.back-to-top').click(function () {
-                $('html, body').animate({scrollTop: 0}, 800, 'swing');
-                return false;
-            });
-    
-        })(jQuery);
+            
+            noResultsMessage.style.display = found ? 'none' : 'block';
+        }
+
+        // --- وظيفة المشاركة ---
+        function shareProject(url) {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: 'تحقق من هذا المشروع الرائع!',
+                    url: url,
+                })
+                .catch((error) => console.log('خطأ في المشاركة:', error));
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('تم نسخ رابط المشروع!');
+                }, () => {
+                    alert('فشل نسخ الرابط.');
+                });
+            }
+        }
     </script>
 
 </body>
