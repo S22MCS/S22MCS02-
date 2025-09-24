@@ -368,3 +368,168 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* Style for the notification modal */
+    .notification-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(15, 23, 42, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .notification-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .notification-modal {
+        background-color: #1e293b;
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        border: 1px solid #334155;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        position: relative;
+        font-family: 'Cairo', sans-serif;
+        transform: scale(0.9);
+        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    .notification-overlay.active .notification-modal {
+        transform: scale(1);
+    }
+
+    .notification-modal h2 {
+        color: #f1f5f9;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .notification-modal p {
+        color: #94a3b8;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    /* New style for the store information box */
+    .notification-modal .store-info {
+        margin-top: 1.5rem;
+        padding: 12px;
+        background-color: rgba(15, 23, 42, 0.6); /* Slightly darker background */
+        border: 1px solid #334155;
+        border-radius: 8px;
+        color: #f1f5f9;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .close-notification-btn {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #334155;
+        border: none;
+        color: #f1f5f9;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        line-height: 35px;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    
+    .close-notification-btn:hover {
+        background-color: #ef4444;
+        transform: rotate(90deg);
+    }
+
+</style>
+
+<div class="notification-overlay" id="notificationOverlay">
+    <div class="notification-modal">
+        <button class="close-notification-btn" id="closeNotification">&times;</button>
+        <h2>📢 تحديث هام</h2>
+        <p>يتم حالياً العمل على مواد <strong>السنة الأولى</strong> و<strong>السنة الثالثة</strong>، وستتوفر في القريب العاجل. انتظرونا!</p>
+        
+        <div class="store-info">
+            🛒 ولا تنسى الاطلاع على متجرنا، فهو متوفر داخل <strong>السنة الأولى والثانية والثالثة</strong>.
+        </div>
+    </div>
+</div>
+
+<script>
+    // Script to control the notification modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const overlay = document.getElementById('notificationOverlay');
+        const closeBtn = document.getElementById('closeNotification');
+
+        const showModal = () => {
+            overlay.classList.add('active');
+        };
+
+        const hideModal = () => {
+            overlay.classList.remove('active');
+        };
+
+        setTimeout(showModal, 1500);
+
+        closeBtn.addEventListener('click', hideModal);
+
+        overlay.addEventListener('click', function(event) {
+            if (event.target === overlay) {
+                hideModal();
+            }
+        });
+    });
+</script>
