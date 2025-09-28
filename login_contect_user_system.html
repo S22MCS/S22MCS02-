@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الزوار - تسجيل الدخول</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ffffff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Style for active and inactive tabs */
+        .tab-button.active {
+            border-color: #4f46e5; /* indigo-600 */
+            color: #4f46e5;
+            background-color: #e0e7ff; /* indigo-100 */
+        }
+        .dark .tab-button.active {
+            border-color: #818cf8; /* indigo-400 */
+            color: #818cf8;
+            background-color: #374151; /* gray-700 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
+
+    <header class="bg-white dark:bg-gray-800 shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 md:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">نظام إدارة الزوار</h1>
+        </div>
+    </header>
+
+    <div id="app-container" class="container mx-auto p-4 sm:p-6 md:p-8">
+        
+        <div id="auth-view">
+            <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden md:max-w-lg mt-8">
+                
+                <div class="flex border-b border-gray-200 dark:border-gray-700">
+                    <button id="login-tab-button" class="tab-button active w-1/2 p-4 font-semibold text-center text-gray-500 bg-transparent border-b-2 border-transparent focus:outline-none">تسجيل الدخول</button>
+                    <button id="register-tab-button" class="tab-button w-1/2 p-4 font-semibold text-center text-gray-500 bg-transparent border-b-2 border-transparent focus:outline-none">إنشاء حساب</button>
+                </div>
+
+                <div class="p-8">
+                    <div id="login-view">
+                        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-2">مرحباً بعودتك!</h2>
+                        <p class="text-center text-gray-500 dark:text-gray-300 mb-8">أدخل بياناتك للمتابعة.</p>
+                        <form id="login-form" class="space-y-5">
+                            <div class="relative">
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
+                                </span>
+                                <input type="email" id="login-email" placeholder="البريد الإلكتروني" class="w-full px-4 py-3 pr-10 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white" required>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                   <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 0118 8zm-6-4a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" /></svg>
+                                </span>
+                                <input type="password" id="login-password" placeholder="كلمة المرور" class="w-full px-4 py-3 pr-10 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white" required>
+                            </div>
+                            <button type="submit" id="login-submit-button" class="w-full flex justify-center items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition-transform transform hover:scale-105 disabled:bg-indigo-400 disabled:cursor-not-allowed">
+                                <span class="button-text">تسجيل الدخول</span>
+                                <div class="loader button-loader hidden"></div>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="register-view" class="hidden">
+                        <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-2">إنشاء حساب جديد</h2>
+                        <p class="text-center text-gray-500 dark:text-gray-300 mb-8">املأ البيانات التالية للانضمام.</p>
+                        <form id="register-form" class="space-y-5">
+                            <div class="relative">
+                               <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"><svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg></span>
+                               <input type="text" id="register-name" placeholder="الاسم الكامل" class="w-full px-4 py-3 pr-10 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white" required>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"><svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg></span>
+                                <input type="email" id="register-email" placeholder="البريد الإلكتروني" class="w-full px-4 py-3 pr-10 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white" required>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"><svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg></span>
+                                <input type="tel" id="register-phone" placeholder="رقم الهاتف" class="w-full px-4 py-3 pr-10 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white" required>
+                            </div>
+                            <div class="relative">
+                               <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"><svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm0 4a1 1 0 000 2h6a1 1 0 100-2H7zm0 4a1 1 0 000 2h4a1 1 0 100-2H7z" clip-rule="evenodd" /></svg></span>
+                               <input type="text" id="register-specialization" placeholder="التخصص" class="w-full px-4 py-3 pr-10 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white" required>
+                            </div>
+                            <div class="relative">
+                               <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"><svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 0118 8zm-6-4a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" /></svg></span>
+                               <input type="password" id="register-password" placeholder="كلمة المرور (6 أحرف على الأقل)" class="w-full px-4 py-3 pr-10 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white" required>
+                            </div>
+                            <button type="submit" id="register-submit-button" class="w-full flex justify-center items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition-transform transform hover:scale-105 disabled:bg-indigo-400 disabled:cursor-not-allowed">
+                                <span class="button-text">إنشاء الحساب</span>
+                                <div class="loader button-loader hidden"></div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="message-box" class="fixed top-5 left-1/2 -translate-x-1/2 p-4 rounded-lg text-white shadow-lg text-center hidden transition-opacity duration-300 z-50"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, updateDoc, Timestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAEbxYuAHu5stGx5c02VbgsUKBhoidTeA",
+            authDomain: "informationpassmemberessystem.firebaseapp.com",
+            databaseURL: "https://informationpassmemberessystem-default-rtdb.firebaseio.com",
+            projectId: "informationpassmemberessystem",
+            storageBucket: "informationpassmemberessystem.appspot.com",
+            messagingSenderId: "890696552799",
+            appId: "1:890696552799:web:b0889cdfcd6e1e6b7466ea",
+            measurementId: "G-RTB7F6BK3Y"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // --- DOM Elements ---
+        const loginView = document.getElementById('login-view');
+        const registerView = document.getElementById('register-view');
+        const loginTabButton = document.getElementById('login-tab-button');
+        const registerTabButton = document.getElementById('register-tab-button');
+        
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const messageBox = document.getElementById('message-box');
+
+        // --- Tab Switching Logic ---
+        loginTabButton.addEventListener('click', () => {
+            loginView.classList.remove('hidden');
+            registerView.classList.add('hidden');
+            loginTabButton.classList.add('active');
+            registerTabButton.classList.remove('active');
+        });
+
+        registerTabButton.addEventListener('click', () => {
+            registerView.classList.remove('hidden');
+            loginView.classList.add('hidden');
+            registerTabButton.classList.add('active');
+            loginTabButton.classList.remove('active');
+        });
+        
+        // --- Helper Functions ---
+        function redirectToNextPage() {
+            // This function redirects after successful login or registration
+            setTimeout(() => {
+
+                 window.location.href = 'adatealm_med_intro.html'; // Redirect URL
+            }, 2500);
+        }
+
+        function showMessage(message, type = 'error', duration = 4000) {
+            messageBox.innerHTML = message; // Use innerHTML to render emoji
+            messageBox.classList.remove('hidden', 'bg-red-500', 'bg-green-500');
+            messageBox.classList.add(type === 'error' ? 'bg-red-500' : 'bg-green-500');
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, duration);
+        }
+
+        function toggleButtonState(button, isLoading) {
+            const buttonText = button.querySelector('.button-text');
+            const buttonLoader = button.querySelector('.button-loader');
+            
+            button.disabled = isLoading;
+            if (isLoading) {
+                buttonText.textContent = 'جاري المعالجة...';
+                buttonLoader.classList.remove('hidden');
+            } else {
+                // Restore original text
+                if(button.id.includes('login')){
+                    buttonText.textContent = 'تسجيل الدخول';
+                } else {
+                    buttonText.textContent = 'إنشاء الحساب';
+                }
+                buttonLoader.classList.add('hidden');
+            }
+        }
+
+        // --- Event Listener for Login Form ---
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = document.getElementById('login-submit-button');
+            toggleButtonState(submitButton, true);
+
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            if (!email || !password) {
+                showMessage('يرجى إدخال البريد الإلكتروني وكلمة المرور.');
+                toggleButtonState(submitButton, false);
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Update last login timestamp
+                const userDocRef = doc(db, 'users', user.uid);
+                await updateDoc(userDocRef, { lastLogin: Timestamp.now() });
+
+                showMessage('تم تسجيل الدخول بنجاح! يتم توجيهك الآن...', 'success');
+                redirectToNextPage();
+
+            } catch (error) {
+                console.error("Login Error:", error.code, error.message);
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+                    showMessage('البريد الإلكتروني أو كلمة المرور غير صحيحة.');
+                } else {
+                    showMessage(`حدث خطأ: ${error.message}`);
+                }
+            } finally {
+                toggleButtonState(submitButton, false);
+            }
+        });
+
+        // --- Event Listener for Registration Form ---
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = document.getElementById('register-submit-button');
+            toggleButtonState(submitButton, true);
+
+            const name = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const phone = document.getElementById('register-phone').value.trim();
+            const specialization = document.getElementById('register-specialization').value.trim();
+            const password = document.getElementById('register-password').value;
+
+            if (!name || !email || !phone || !specialization || password.length < 6) {
+                showMessage('يرجى ملء جميع الحقول والتأكد من أن كلمة المرور لا تقل عن 6 أحرف.');
+                toggleButtonState(submitButton, false);
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const newUser = userCredential.user;
+                
+                // Store user info in Firestore
+                await setDoc(doc(db, 'users', newUser.uid), {
+                    uid: newUser.uid,
+                    name,
+                    email,
+                    phone,
+                    specialization,
+                    registrationDate: Timestamp.now(),
+                    lastLogin: Timestamp.now()
+                });
+                
+                // Show the requested attractive message and redirect
+                showMessage('تم حفظ بيانات تسجيلك للدخول السريع 😄', 'success', 3000);
+                redirectToNextPage();
+
+            } catch (error) {
+                console.error("Registration Error:", error.code, error.message);
+                if (error.code === 'auth/email-already-in-use') {
+                    showMessage('هذا البريد الإلكتروني مسجل بالفعل. يمكنك تسجيل الدخول.');
+                } else {
+                    showMessage(`خطأ في التسجيل: ${error.message}`);
+                }
+            } finally {
+                toggleButtonState(submitButton, false);
+            }
+        });
+    </script>
+</body>
+</html>

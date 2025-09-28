@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>قسم الطب - بنك الدروس</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+   <style>
+      /* --- :root | المتغيرات العامة --- */
+      :root {
+         --primary-color: #00897b; /* أخضر مزرق أفتح */
+         --primary-dark: #00695c;
+         --bg-body: #f1f5f9; /* رمادي فاتح جداً للخلفية */
+         --bg-card: #ffffff;
+         --text-primary: #1e293b;
+         --text-secondary: #64748b;
+         --border-color: #e2e8f0;
+         --white: #ffffff;
+         --red: #ef4444;
+         --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+         --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+         --radius: 0.8rem;
+         /* Medical Alert Popup variables */
+         --medical-primary-color: #3498db;
+         --medical-primary-dark-color: #2980b9;
+         --medical-secondary-color: #ffffff;
+         --medical-text-color: #333;
+         --medical-light-bg-color: #f5f5f5;
+         --medical-overlay-bg-color: rgba(0, 0, 0, 0.8);
+         /* Danger Modal variables */
+         --main-color: #e74c3c;
+         --main-dark: #c0392b;
+         --dark-overlay: rgba(0, 0, 0, 0.8);
+         /* Updates Modal variables */
+         --TAWASLE_ADAT_TAHDITAT_MED02-primary-color: #3498db;
+         --TAWASLE_ADAT_TAHDITAT_MED02-primary-dark-color: #2980b9;
+      }
+      
+      body.dark-mode {
+         --bg-body: #0f172a;
+         --bg-card: #1e293b;
+         --text-primary: #f1f5f9;
+         --text-secondary: #94a3b8;
+         --border-color: #334155;
+      }
+
+      * {
+         font-family: 'Cairo', sans-serif;
+         margin: 0; padding: 0;
+         box-sizing: border-box;
+         outline: none; border: none;
+         text-decoration: none;
+      }
+      
+      html { font-size: 62.5%; overflow-x: hidden; }
+      body {
+         background-color: var(--bg-body);
+         color: var(--text-primary);
+         transition: background-color .3s, color .3s;
+         padding-top: 8rem;
+      }
+      body.popup-active, body.medical-popup-open, body.TAWASLE_ADAT_TAHDITAT_MED02-popup-open { overflow: hidden; }
+
+      .header {
+         background-color: var(--bg-card);
+         padding: 1.5rem 3%;
+         position: fixed; top: 0; right: 0; left: 0;
+         z-index: 1000;
+         box-shadow: var(--shadow-md);
+         border-bottom: 1px solid var(--border-color);
+      }
+      .header .flex { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+      .logo { font-size: 2.2rem; font-weight: 700; color: var(--primary-color); }
+      .header .icons { display: flex; align-items: center; gap: .5rem; position: relative; }
+      .icon-btn { font-size: 2rem; color: var(--text-secondary); cursor: pointer; height: 4.5rem; width: 4.5rem; line-height: 4.5rem; text-align: center; border-radius: 50%; transition: all .2s ease-in-out; }
+      .icon-btn:hover { background-color: var(--bg-body); color: var(--primary-color); }
+      
+      .profile-dropdown { position: absolute; top: calc(100% + 1rem); left: 0; background-color: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); width: 30rem; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; opacity: 0; transform: translateY(-10px); visibility: hidden; transition: all .2s ease-in-out; z-index: 1100; }
+      .profile-dropdown.active { opacity: 1; transform: translateY(0); visibility: visible; }
+      .profile-dropdown .image { width: 8rem; height: 8rem; border-radius: 50%; object-fit: cover; }
+      .profile-dropdown .name { font-size: 1.8rem; color: var(--text-primary); font-weight: 600; }
+      .profile-dropdown .role { font-size: 1.4rem; color: var(--text-secondary); }
+      .btn { width: 100%; padding: 1.2rem; background-color: var(--primary-color); color: var(--white); border-radius: var(--radius); cursor: pointer; font-size: 1.6rem; text-align: center; transition: background-color .2s; }
+      .btn:hover { background-color: var(--primary-dark); }
+      .btn.logout { background-color: var(--red); }
+
+      .side-bar { position: fixed; top: 0; right: -100%; width: 32rem; max-width: 90%; height: 100vh; background-color: var(--bg-card); border-left: 1px solid var(--border-color); z-index: 1200; transition: right 0.3s ease-in-out; display: flex; flex-direction: column; }
+      .side-bar.active { right: 0; }
+      .side-bar .close-btn-container { padding: 1.5rem; text-align: left; flex-shrink: 0; }
+      #close-btn { font-size: 2.5rem; }
+      .side-bar .navbar { padding-top: 1rem; flex-grow: 1; overflow-y: auto; }
+      .side-bar .navbar a { display: flex; align-items: center; gap: 2rem; padding: 1.5rem 2rem; font-size: 1.7rem; color: var(--text-secondary); transition: all .2s; }
+      .side-bar .navbar a:hover { background-color: var(--bg-body); color: var(--primary-color); padding-right: 2.5rem; }
+      .side-bar .navbar a i { font-size: 2rem; width: 2.5rem; text-align: center; }
+
+      main { padding: 2rem 3%; }
+      .dashboard-title { font-size: 2.8rem; font-weight: 700; margin-bottom: 2rem; color: var(--text-primary); }
+      .card-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr)); gap: 2rem; }
+      .card { background-color: var(--bg-card); padding: 2.5rem; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); color: var(--text-secondary); }
+      .card h3 { font-size: 2rem; color: var(--text-primary); margin-bottom: 1rem; }
+      
+      .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+      .overlay.active { opacity: 1; visibility: visible; }
+      
+      .logo { display: flex; align-items: center; direction: rtl; gap: 8px; font-size: 20px; text-decoration: none; }
+      .logo .subtitle { font-size: 12px; line-height: 1.4; text-align: right; }
+      .logo .main-title { font-weight: bold; }
+
+      /* Notification Widget Styles */
+      :root { --notif-bg-color: #ffffff; --notif-text-color: #333333; --notif-border-color: #eeeeee; --notif-shadow-color: rgba(0, 0, 0, 0.15); --notif-icon-color: #555555; --notif-accent-color: red; --notif-item-hover-bg: #f5f5f5; }
+      @media (prefers-color-scheme: dark) { :root { --notif-bg-color: #2c2c2c; --notif-text-color: #f1f1f1; --notif-border-color: #444444; --notif-shadow-color: rgba(0, 0, 0, 0.5); --notif-icon-color: #bbbbbb; --notif-accent-color: #ff4d4d; --notif-item-hover-bg: #3a3a3a; } }
+      .Tawasle-Notif-Icon-Btn { font-size: 24px; color: var(--notif-icon-color); cursor: pointer; position: relative; padding: 5px; }
+      .Tawasle-Notif-Count { position: absolute; top: -2px; right: -4px; background-color: var(--notif-accent-color); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: bold; display: none; justify-content: center; align-items: center; border: 1px solid var(--notif-bg-color); }
+      .Tawasle-Notif-Dropdown { display: none; position: absolute; top: calc(100% + 10px); left: 0px; background-color: var(--notif-bg-color); border-radius: 8px; width: 320px; max-width: 90vw; max-height: 450px; overflow-y: auto; box-shadow: 0 5px 15px var(--notif-shadow-color); z-index: 1001; border: 1px solid var(--notif-border-color); opacity: 0; transform: translateY(10px); transition: opacity 0.2s ease, transform 0.2s ease; }
+      .Tawasle-Notif-Dropdown.Tawasle-Notif-Dropdown-Show { display: block; opacity: 1; transform: translateY(0); }
+      .Tawasle-Notif-Item { padding: 12px 15px; border-bottom: 1px solid var(--notif-border-color); font-size: 14px; color: var(--notif-text-color); display: flex; align-items: center; gap: 12px; transition: background-color 0.2s ease; }
+      .Tawasle-Notif-Item:hover { background-color: var(--notif-item-hover-bg); }
+      .Tawasle-Notif-Item:last-child { border-bottom: none; }
+      .Tawasle-Notif-Item i { color: var(--notif-icon-color); }
+      .Tawasle-Notif-Item p { margin: 0; line-height: 1.4; }
+      .Tawasle-Notif-Item a { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 12px; width: 100%; }
+
+      /* Main Content & Modules Styles */
+      .summaries-title, .main-title { font-size: clamp(2.2rem, 5vw, 2.8rem); font-weight: 700; margin-bottom: 2.5rem; color: var(--text-primary); text-align: center; }
+      .summaries-navigation, .modules-navigation { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 3rem; }
+      .nav-button { padding: 12px 18px; font-size: clamp(1.5rem, 3vw, 1.6rem); font-weight: 600; color: var(--primary-color); background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); cursor: pointer; transition: all 0.25s ease; text-align: center; flex-grow: 1; flex-basis: 150px; box-shadow: var(--shadow-sm); touch-action: manipulation; }
+      .nav-button:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary-color); }
+      .nav-button .english-nav, .nav-button .foreign-nav { font-size: 1.2rem; font-weight: 400; color: var(--text-secondary); transition: color 0.25s ease; }
+      .nav-button.active { background-color: var(--primary-color); color: var(--white); border-color: var(--primary-color); transform: translateY(0); box-shadow: 0 4px 8px rgba(0, 137, 123, 0.25); }
+      .nav-button.active .english-nav, .nav-button.active .foreign-nav { color: rgba(255, 255, 255, 0.9); }
+      .content-section { display: none; }
+      .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+      .subject-block { background-color: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 2rem; border: 1px solid var(--border-color); overflow: hidden; transition: box-shadow 0.3s ease; }
+      .subject-header { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: clamp(1.5rem, 4vw, 2rem); background-color: transparent; border: none; cursor: pointer; text-align: right; }
+      .subject-title { font-size: clamp(1.8rem, 5vw, 2.2rem); color: var(--primary-dark); margin: 0; }
+      .toggle-icon { font-size: 2.8rem; font-weight: 300; color: var(--primary-color); transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-left: 15px; }
+      .subject-block.is-open .toggle-icon { transform: rotate(45deg); }
+      .subject-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; padding: 0 clamp(1.5rem, 4vw, 2rem); }
+      .empty-section-message { background-color: var(--bg-card); padding: 3rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); color: var(--text-secondary); text-align: center; font-size: 1.7rem; }
+      .module-group { background-color: var(--bg-card); border-radius: var(--radius); padding: 2.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
+      .module-group-title { font-size: clamp(2.2rem, 5vw, 2.6rem); font-weight: 700; color: var(--primary-dark); text-align: center; margin-bottom: 2rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 1rem; }
+      .module-group-title .foreign-title { display: block; font-size: clamp(1.4rem, 4vw, 1.6rem); color: var(--text-secondary); font-weight: 400; margin-top: 0.5rem; }
+      .modules-navigation .nav-button { flex-basis: 280px; }
+      .content-container { padding-top: 1.5rem; }
+
+      /* Medical "Contact Us" Popup Styles */
+      .medical-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--medical-overlay-bg-color); z-index: 1001; opacity: 0; visibility: hidden; backdrop-filter: blur(5px); transition: opacity 0.3s ease, visibility 0.3s ease; }
+      .medical-overlay.active { opacity: 1; visibility: visible; }
+      .medical-popup-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 8002; background: var(--medical-secondary-color); transform: scale(0.95); opacity: 0; visibility: hidden; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease; overscroll-behavior: contain; }
+      .medical-popup-container.active { transform: scale(1); opacity: 1; visibility: visible; }
+      .medical-popup-header { background: linear-gradient(to left, var(--medical-primary-color), var(--medical-primary-dark-color)); color: var(--medical-secondary-color); padding: 1rem 1.25rem; text-align: center; position: relative; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+      .medical-popup-header h2 { font-size: 1.25rem; font-weight: 600; }
+      .medical-popup-content { flex-grow: 1; overflow-y: auto; background-color: var(--medical-light-bg-color); }
+      .medical-close-btn { position: absolute; top: 50%; transform: translateY(-50%); left: 1rem; background: rgba(255, 255, 255, 0.2); color: var(--medical-secondary-color); border: none; width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: all 0.2s; }
+      .medical-loader { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 1.25rem; }
+      .medical-spinner { width: 3.125rem; height: 3.125rem; border: 5px solid rgba(52, 152, 219, 0.2); border-top: 5px solid var(--medical-primary-color); border-radius: 50%; animation: medicalSpin 1s linear infinite; }
+      @keyframes medicalSpin { to { transform: rotate(360deg); } }
+      .medical-loader p { color: #7f8c8d; font-size: 1.1rem; margin-top: 1rem; }
+      
+      /* Danger "INFATM" Modal Styles */
+      .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--dark-overlay); z-index: 1001; opacity: 0; visibility: hidden; backdrop-filter: blur(5px); transition: opacity 0.3s ease, visibility 0.3s ease; }
+      .modal-overlay.show { opacity: 1; visibility: visible; }
+      .modal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 8002; background: var(--white); transform: scale(0.95); opacity: 0; visibility: hidden; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease; overscroll-behavior: contain; }
+      .modal-container.show { transform: scale(1); opacity: 1; visibility: visible; }
+      .modal-header { background: linear-gradient(to left, var(--main-color), var(--main-dark)); color: var(--white); padding: 1rem 1.25rem; text-align: center; position: relative; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+      .modal-header h2 { font-size: 1.25rem; font-weight: 600; }
+      .modal-body { flex-grow: 1; overflow-y: auto; background-color: #f5f5f5; }
+      .modal-close { position: absolute; top: 50%; transform: translateY(-50%); left: 1rem; background: rgba(255, 255, 255, 0.2); color: var(--white); border: none; width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: all 0.2s; }
+      .loading-box { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 1.25rem; }
+      .loading-spinner { width: 3.125rem; height: 3.125rem; border: 5px solid rgba(231, 76, 60, 0.2); border-top: 5px solid var(--main-color); border-radius: 50%; animation: spin 1s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .loading-text { color: #7f8c8d; font-size: 1.1rem; margin-top: 1rem; }
+
+      /* Updates "TAWASLE" Popup Styles */
+      .TAWASLE_ADAT_TAHDITAT_MED02-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 1001; opacity: 0; visibility: hidden; backdrop-filter: blur(5px); transition: opacity 0.3s ease, visibility 0.3s ease; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-overlay.active { opacity: 1; visibility: visible; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 8002; background: #ffffff; transform: scale(0.95); opacity: 0; visibility: hidden; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease; overscroll-behavior: contain; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-container.active { transform: scale(1); opacity: 1; visibility: visible; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-header { background: linear-gradient(to left, var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color), var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-dark-color)); color: #ffffff; padding: 1rem 1.25rem; text-align: center; position: relative; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-header h2 { font-size: 1.25rem; font-weight: 600; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-content { flex-grow: 1; overflow-y: auto; background-color: #f5f5f5; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-close-btn { position: absolute; top: 50%; transform: translateY(-50%); left: 1rem; background: rgba(255, 255, 255, 0.2); color: #ffffff; border: none; width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: all 0.2s; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-loader { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 1.25rem; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-spinner { width: 3.125rem; height: 3.125rem; border: 5px solid rgba(52, 152, 219, 0.2); border-top: 5px solid var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color); border-radius: 50%; animation: TAWASLE_ADAT_TAHDITAT_MED02-spin 1s linear infinite; }
+      @keyframes TAWASLE_ADAT_TAHDITAT_MED02-spin { to { transform: rotate(360deg); } }
+      .TAWASLE_ADAT_TAHDITAT_MED02-loader p { color: #7f8c8d; font-size: 1.1rem; margin-top: 1rem; }
+      
+      @media (max-width: 450px) { html { font-size: 55%; } .logo { font-size: 2rem; } .header { padding: 1.5rem 2%; } main { padding: 1.5rem 2%; } }
+      @media (max-width: 400px) { .summaries-navigation { flex-direction: column; gap: 10px; } .nav-button { width: 100%; } }
+   </style>
+</head>
+<body class="">
+
+<div class="overlay"></div>
+
+<header class="header">
+   <section class="flex">
+      <a href="home.html" class="logo">
+         <span class="main-title">أداة علم</span>
+         <span class="subtitle">للثانية<br>طب</span>
+      </a>
+      <div class="icons">
+         <div id="toggle-btn" class="icon-btn fas fa-sun" title="الوضع"></div>
+         <div id="danger-btn" class="icon-btn fas fa-exclamation-triangle" title="تحذير" onclick="toggleModal()" aria-label="فتح نافذة التنبيه الطبي"></div>
+         <div id="Tawasle-Notif-Widget-Container" style="position: relative; display: inline-block;">
+            <div id="Tawasle-Notif-Btn" class="Tawasle-Notif-Icon-Btn fas fa-bell" title="الإشعارات">
+               <span id="Tawasle-Notif-Count" class="Tawasle-Notif-Count"></span>
+            </div>
+            <div id="Tawasle-Notif-Menu" class="Tawasle-Notif-Dropdown"></div>
+         </div>
+         <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
+         <div id="menu-btn" class="fas fa-bars icon-btn" title="القائمة"></div>
+         <div class="profile-dropdown">
+            <img src="S22MCS PARTS/قسم الطب.jpg" class="image" alt="صورة القسم">
+            <h3 class="name">قسم الطب</h3>
+            <p class="role">التابعة لأداة علم</p>
+            <a href="MED02_profile.html" class="btn">عرض الملف الشخصي</a>
+            <a href="#" id="logout-btn" class="btn logout">تسجيل الخروج</a>
+         </div>
+      </div>
+   </section>
+</header>
+
+<aside class="side-bar">
+   <div class="close-btn-container">
+      <div id="close-btn" class="fas fa-times icon-btn"></div>
+   </div>
+   <nav class="navbar">
+      <a href="home_MED02.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+      <a href="MED02_BANK_دروس.html"><i class="fas fa-chalkboard-user"></i><span>بنك الدروس</span></a>
+      <a href="MED02_BANK_EXAM.html"><i class="fas fa-file-alt"></i><span>بنك الاختبارات</span></a>
+      <a href="#"><i class="fas fa-project-diagram"></i><span>بنك الخرائط الذهنية</span></a>
+      <a href="#"><i class="fas fa-clone"></i><span>بنك بطاقات الذاكرة</span></a>
+      <a href="JADAWL_2MED.html"><i class="fas fa-clipboard-list"></i><span>جداول المراجعة</span></a>
+      <a href="#"><i class="fas fa-chart-line"></i><span>تحليل الأسئلة</span></a>
+      <a href="DRIVER_MED02.html"><i class="fas fa-folder"></i><span>الدرايفات</span></a>
+      <a href="KAM_BAKIYA_LI.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك (كم بقي لك)</span></a>
+      <a href="moyen_MED02_.html" class="calculate-average-button"><i class="fas fa-calculator"></i><span>حِسَابُ ٱلْمُعَدَّلِ</span></a>
+      <a href="#" class="alert-btn" onclick="toggleModal()" aria-label="فتح نافذة التنبيه الطبي"><i class="fas fa-exclamation-triangle"></i><span>زر الخطر مهم لكل مسلم ومسلمة</span></a>
+      <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"><i class="fas fa-quran"></i><span>وردك اليومي من القران الكريم</span></a>
+      <a href="اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ.html"><i class="fas fa-praying-hands"></i><span>زر الاستغفار والتسبيح</span></a>
+      <a href="#" class="TAWASLE_ADAT_TAHDITAT_MED02-btn" id="TAWASLE_ADAT_TAHDITAT_MED02Btn" data-count="3" onclick="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup()"><i class="fas fa-sync-alt"></i><span>التحديثات والإشعارات</span></a>
+      <a href="WAJIBATI_ADAT_EALM.html"><i class="fas fa-clipboard-check"></i><span>واجباتي</span></a>
+      <a href="s22market.html"><i class="fas fa-store" style="color: rgb(251, 200, 34);"></i><span>متجر طلبة الـ 22 (S22MARKET)</span></a>
+      <a href="#"><i class="fas fa-user-tie"></i><span>مشرفونا</span></a>
+      <a href="DA3MONA_ADATEALM.html"><i class="fas fa-hands-helping"></i><span>دعمنا</span></a>
+      <a href="#" class="medical-alert-btn" onclick="medicalTogglePopup()" aria-label="فتح نافذة تواصل معنا"><i class="fas fa-headset"></i><span>تواصل معنا</span></a>
+   </nav>
+</aside>
+
+<main>
+    <div class="module-group">
+        <h2 class="module-group-title">
+            وحدات التعليم المدمجة
+            <span class="foreign-title">Unités d'Enseignement Intégrées (UIE)</span>
+        </h2>
+        <nav class="modules-navigation">
+            <button class="nav-button active" onclick="showSection('uei1', this)">
+                <div>علم النفس، الأعراض، القلب والتنفس</div>
+                <span class="foreign-nav">Psycho, Sémio, Cardio-Respiratoire</span>
+            </button>
+            <button class="nav-button" onclick="showSection('uei2', this)">
+                <div>الجهاز العصبي، الحركي والجلدي</div>
+                <span class="foreign-nav">Neuro, Locomoteur & Cutané</span>
+            </button>
+            <button class="nav-button" onclick="showSection('uei3', this)">
+                <div>الغدد الصماء، التكاثر والجهاز البولي</div>
+                <span class="foreign-nav">Endocrine, Repro & Urinaire</span>
+            </button>
+            <button class="nav-button" onclick="showSection('uei4', this)">
+                <div>الجهاز الهضمي وأعضاء تكوين الدم</div>
+                <span class="foreign-nav">Digestif & Organes Hématopoïétiques</span>
+            </button>
+        </nav>
+    </div>
+
+    <div class="module-group">
+        <h2 class="module-group-title">
+            وحدات التعليم المتخصصة
+            <span class="foreign-title">Unités d'Enseignement Thématique (UET)</span>
+        </h2>
+        <nav class="modules-navigation">
+            <button class="nav-button" onclick="showSection('uet1', this)">
+                <div>التشريح وعلم الخلايا المرضي</div>
+                <span class="foreign-nav">Anatomie et Cytologie Pathologiques (ACP)</span>
+            </button>
+            <button class="nav-button" onclick="showSection('uet2', this)">
+                <div>علم المناعة</div>
+                <span class="foreign-nav">Immunologie</span>
+            </button>
+            <button class="nav-button" onclick="showSection('uet3', this)">
+                <div>علم الأحياء الدقيقة الطبي</div>
+                <span class="foreign-nav">Microbiologie Médicale</span>
+            </button>
+             <button class="nav-button" onclick="showSection('uet4', this)">
+                <div>علم الطفيليات والفطريات</div>
+                <span class="foreign-nav">Parasitologie Mycologie</span>
+            </button>
+             <button class="nav-button" onclick="showSection('uet5', this)">
+                <div>علم الأدوية السريري</div>
+                <span class="foreign-nav">Pharmacologie Clinique</span>
+            </button>
+        </nav>
+    </div>
+
+    <div class="content-container">
+        <div id="uei1-section" class="content-section active">
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)">
+                    <h2 class="subject-title">❤️ الجهاز القلبي الوعائي (Appareil Cardio-Vasculaire)</h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+                    <p class="empty-section-message" style="font-size: 1.6rem; padding: 2rem;">سيتم إضافة الاختبارات قريباً.</p>
+                </div>
+            </div>
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)">
+                    <h2 class="subject-title">🌬️ الجهاز التنفسي (Appareil Respiratoire)</h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+                    <p class="empty-section-message" style="font-size: 1.6rem; padding: 2rem;">سيتم إضافة الاختبارات قريباً.</p>
+                </div>
+            </div>
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)">
+                    <h2 class="subject-title">🧠 علم النفس (Psychologie)</h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+                    <p class="empty-section-message" style="font-size: 1.6rem; padding: 2rem;">سيتم إضافة الاختبارات قريباً.</p>
+                </div>
+            </div>
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)">
+                    <h2 class="subject-title">🩺 علم الأعراض العام (Sémiologie Générale)</h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+                    <p class="empty-section-message" style="font-size: 1.6rem; padding: 2rem;">سيتم إضافة الاختبارات قريباً.</p>
+                </div>
+            </div>
+        </div>
+        <div id="uei2-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+        <div id="uei3-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+        <div id="uei4-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+        <div id="uet1-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+        <div id="uet2-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+        <div id="uet3-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+        <div id="uet4-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+        <div id="uet5-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+    </div>
+</main>
+
+
+<div class="medical-overlay" id="medicalOverlay"></div>
+<div class="medical-popup-container" id="medicalPopupContainer" role="dialog" aria-modal="true" aria-labelledby="medicalPopupTitle">
+    <div class="medical-popup-header">
+        <button class="medical-close-btn" onclick="medicalTogglePopup()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="medicalPopupTitle">تواصل معنا - TAWASLE_ADAT</h2>
+    </div>
+    <div class="medical-popup-content" id="medicalContentContainer">
+        <div class="medical-loader">
+            <div class="medical-spinner"></div>
+            <p>جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal-container" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+        <button class="modal-close" onclick="toggleModal()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="modalTitle">تنبيه - محتوى INFATM</h2>
+    </div>
+    <div class="modal-body" id="contentBox">
+        <div class="loading-box">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<div class="TAWASLE_ADAT_TAHDITAT_MED02-overlay" id="TAWASLE_ADAT_TAHDITAT_MED02Overlay"></div>
+<div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-container" id="TAWASLE_ADAT_TAHDITAT_MED02PopupContainer" role="dialog" aria-modal="true" aria-labelledby="TAWASLE_ADAT_TAHDITAT_MED02PopupTitle">
+    <div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-header">
+        <button class="TAWASLE_ADAT_TAHDITAT_MED02-close-btn" onclick="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="TAWASLE_ADAT_TAHDITAT_MED02PopupTitle">التحديثات والإشعارات</h2>
+    </div>
+    <div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-content" id="TAWASLE_ADAT_TAHDITAT_MED02ContentContainer">
+        <div class="TAWASLE_ADAT_TAHDITAT_MED02-loader">
+            <div class="TAWASLE_ADAT_TAHDITAT_MED02-spinner"></div>
+            <p>جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+
+<script type="module">
+  // Firebase SDK imports
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAJK6IUSw2YbwNVfB_hRNsOFeO08LEp4c8",
+    authDomain: "adatealm-nofication.firebaseapp.com",
+    projectId: "adatealm-nofication",
+    storageBucket: "adatealm-nofication.firebasestorage.app",
+    messagingSenderId: "216068965336",
+    appId: "1:216068965336:web:310c95e8e9fc4561cbe8ad",
+    measurementId: "G-PDWFZKRMJP"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let notificationsLoaded = false;
+  let unreadCount = 0;
+
+  const notifBtn = document.getElementById('Tawasle-Notif-Btn');
+  const notifMenu = document.getElementById('Tawasle-Notif-Menu');
+  const notifCountSpan = document.getElementById('Tawasle-Notif-Count');
+
+  const toggleNotificationMenu = () => {
+    const isMenuOpen = notifMenu.classList.toggle('Tawasle-Notif-Dropdown-Show');
+    if (isMenuOpen && !notificationsLoaded) {
+      loadNotifications();
+    }
+  };
+
+  async function loadNotifications() {
+    notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">جارٍ تحميل الإشعارات...</div>';
+    try {
+      const querySnapshot = await getDocs(collection(db, "notifications"));
+      notificationsLoaded = true;
+      notifMenu.innerHTML = ''; 
+
+      if (querySnapshot.empty) {
+        notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">لا توجد إشعارات جديدة</div>';
+        return;
+      }
+      
+      unreadCount = 0;
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        const item = document.createElement('div');
+        item.className = 'Tawasle-Notif-Item';
+        const iconClass = data.icon || 'fas fa-bell';
+        const text = data.text || 'لا يوجد نص.';
+        let content = `<i class="${iconClass}"></i><p>${text.substring(0, 100)}</p>`;
+        if (data.link) {
+          item.innerHTML = `<a href="${data.link}" target="_blank">${content}</a>`;
+        } else {
+          item.innerHTML = content;
+        }
+        notifMenu.appendChild(item);
+        unreadCount++;
+      });
+      updateNotifCount();
+    } catch (e) {
+      console.error("Error loading notifications: ", e);
+      notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">خطأ في تحميل الإشعارات</div>';
+    }
+  }
+
+  function updateNotifCount() {
+    if (unreadCount > 0) {
+      notifCountSpan.textContent = unreadCount;
+      notifCountSpan.style.display = 'flex';
+    } else {
+      notifCountSpan.style.display = 'none';
+    }
+  }
+
+  notifBtn.addEventListener('click', toggleNotificationMenu);
+  document.addEventListener('click', function (event) {
+    if (!notifMenu.contains(event.target) && !notifBtn.contains(event.target)) {
+      notifMenu.classList.remove('Tawasle-Notif-Dropdown-Show');
+    }
+  });
+  updateNotifCount(); 
+</script>
+
+<script>
+    // Main page interaction script
+    document.addEventListener('DOMContentLoaded', () => {
+        const body = document.body;
+        const overlay = document.querySelector('.overlay');
+        const sideBar = document.querySelector('.side-bar');
+        const menuBtn = document.querySelector('#menu-btn');
+        const closeBtn = document.querySelector('#close-btn');
+        const profileBtn = document.querySelector('#user-btn');
+        const profileDropdown = document.querySelector('.profile-dropdown');
+        const toggleBtn = document.querySelector('#toggle-btn');
+
+        const closeAllPopups = () => {
+            sideBar.classList.remove('active');
+            profileDropdown.classList.remove('active');
+            overlay.classList.remove('active');
+            body.style.overflow = 'auto';
+        };
+
+        menuBtn.addEventListener('click', (e) => { e.stopPropagation(); closeAllPopups(); sideBar.classList.add('active'); overlay.classList.add('active'); body.style.overflow = 'hidden'; });
+        profileBtn.addEventListener('click', (e) => { e.stopPropagation(); const isActive = profileDropdown.classList.contains('active'); closeAllPopups(); if (!isActive) { profileDropdown.classList.add('active'); } });
+        closeBtn.addEventListener('click', closeAllPopups);
+        overlay.addEventListener('click', closeAllPopups);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllPopups(); });
+        document.querySelectorAll('.side-bar .navbar a').forEach(link => { link.addEventListener('click', closeAllPopups); });
+
+        document.querySelector('#logout-btn').addEventListener('click', (e) => { e.preventDefault(); alert('تم تسجيل الخروج بنجاح!'); window.location.href = 'INDEX.html'; });
+
+        const applyTheme = (theme) => {
+            if (theme === 'dark') { body.classList.add('dark-mode'); toggleBtn.classList.replace('fa-sun', 'fa-moon'); } 
+            else { body.classList.remove('dark-mode'); toggleBtn.classList.replace('fa-moon', 'fa-sun'); }
+        };
+        applyTheme(localStorage.getItem('theme'));
+        toggleBtn.addEventListener('click', () => { let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark'; applyTheme(newTheme); localStorage.setItem('theme', newTheme); });
+        
+        // Initialize first section
+        const firstNavButton = document.querySelector('.modules-navigation .nav-button');
+        if (firstNavButton) { showSection('uei1', firstNavButton); }
+    });
+
+    function showSection(sectionId, clickedButton) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
+        const targetSection = document.getElementById(sectionId + '-section');
+        if (targetSection) targetSection.classList.add('active');
+        if (clickedButton) clickedButton.classList.add('active');
+    }
+
+    function toggleSubject(headerButton) {
+        const subjectBlock = headerButton.parentElement;
+        const content = headerButton.nextElementSibling;
+        const isOpening = !subjectBlock.classList.contains('is-open');
+
+        subjectBlock.closest('.content-section').querySelectorAll('.subject-block').forEach(block => {
+            block.classList.remove('is-open');
+            const blockContent = block.querySelector('.subject-content');
+            if (blockContent) blockContent.style.maxHeight = '0px';
+        });
+
+        if (isOpening) {
+            subjectBlock.classList.add('is-open');
+            content.style.maxHeight = content.scrollHeight + 'px';
+        }
+    }
+
+    // "Contact Us" Popup script
+    let isMedicalContentLoaded = false;
+    const MEDICAL_TARGET_URL = "https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB.html";
+    const medicalPopupContainer = document.getElementById('medicalPopupContainer');
+    const medicalOverlay = document.getElementById('medicalOverlay');
+    const medicalContentContainer = document.getElementById('medicalContentContainer');
+    function medicalTogglePopup() { medicalPopupContainer.classList.contains('active') ? medicalClosePopup() : medicalOpenPopup(); }
+    function medicalOpenPopup() { medicalOverlay.classList.add('active'); medicalPopupContainer.classList.add('active'); document.body.classList.add('medical-popup-open'); if (!isMedicalContentLoaded) medicalLoadContent(); }
+    function medicalClosePopup() { medicalOverlay.classList.remove('active'); medicalPopupContainer.classList.remove('active'); document.body.classList.remove('medical-popup-open'); }
+    function medicalLoadContent() { medicalContentContainer.innerHTML = ''; const iframe = document.createElement('iframe'); iframe.src = MEDICAL_TARGET_URL; iframe.style.cssText = "width:100%; height:100%; border:none;"; iframe.title = "محتوى تواصل معنا"; medicalContentContainer.appendChild(iframe); isMedicalContentLoaded = true; }
+    medicalOverlay.addEventListener('click', medicalClosePopup);
+
+    // "Danger Alert" Modal script
+    let contentLoaded = false;
+    const CONTENT_URL = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    const modalBox = document.getElementById('modalBox');
+    const dangerModalOverlay = document.getElementById('modalOverlay');
+    const contentBox = document.getElementById('contentBox');
+    function toggleModal() { modalBox.classList.contains('show') ? closeModal() : openModal(); }
+    function openModal() { dangerModalOverlay.classList.add('show'); modalBox.classList.add('show'); document.body.classList.add('popup-active'); if (!contentLoaded) loadContent(); }
+    function closeModal() { dangerModalOverlay.classList.remove('show'); modalBox.classList.remove('show'); document.body.classList.remove('popup-active'); }
+    function loadContent() { contentBox.innerHTML = ''; const iframe = document.createElement('iframe'); iframe.src = CONTENT_URL; iframe.style.cssText = "width:100%; height:100%; border:none;"; iframe.title = "محتوى التنبيه"; contentBox.appendChild(iframe); contentLoaded = true; }
+    dangerModalOverlay.addEventListener('click', closeModal);
+
+    // "Updates & Notifications" Popup script
+    let TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = false;
+    const TAWASLE_ADAT_TAHDITAT_MED02_TARGET_URL = "https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB_ISHAARAT_MED02.html";
+    const TAWASLE_ADAT_TAHDITAT_MED02_popupContainer = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02PopupContainer');
+    const TAWASLE_ADAT_TAHDITAT_MED02_overlay = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02Overlay');
+    const TAWASLE_ADAT_TAHDITAT_MED02_contentContainer = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02ContentContainer');
+    function TAWASLE_ADAT_TAHDITAT_MED02_togglePopup() { TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.contains('active') ? TAWASLE_ADAT_TAHDITAT_MED02_closePopup() : TAWASLE_ADAT_TAHDITAT_MED02_openPopup(); }
+    function TAWASLE_ADAT_TAHDITAT_MED02_openPopup() { TAWASLE_ADAT_TAHDITAT_MED02_overlay.classList.add('active'); TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.add('active'); document.body.classList.add('TAWASLE_ADAT_TAHDITAT_MED02-popup-open'); if (!TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded) TAWASLE_ADAT_TAHDITAT_MED02_loadContent(); }
+    function TAWASLE_ADAT_TAHDITAT_MED02_closePopup() { TAWASLE_ADAT_TAHDITAT_MED02_overlay.classList.remove('active'); TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.remove('active'); document.body.classList.remove('TAWASLE_ADAT_TAHDITAT_MED02-popup-open'); }
+    function TAWASLE_ADAT_TAHDITAT_MED02_loadContent() { TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.innerHTML = ''; const iframe = document.createElement('iframe'); iframe.src = TAWASLE_ADAT_TAHDITAT_MED02_TARGET_URL; iframe.style.cssText = "width:100%; height:100%; border:none;"; iframe.title = "محتوى التحديثات"; TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.appendChild(iframe); TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = true; }
+    TAWASLE_ADAT_TAHDITAT_MED02_overlay.addEventListener('click', TAWASLE_ADAT_TAHDITAT_MED02_closePopup);
+
+    // Global Escape key listener for all modals
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            medicalClosePopup();
+            closeModal();
+            TAWASLE_ADAT_TAHDITAT_MED02_closePopup();
+        }
+    });
+</script>
+
+</body>
+</html>

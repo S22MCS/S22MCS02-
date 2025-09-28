@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرحبا بكم في أداة علم</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* --- General Styles & Variables --- */
+        :root {
+            --primary-bg: #0f172a; /* Darker Blue */
+            --secondary-bg: #1e293b; /* Slightly Lighter Blue */
+            --border-color: #334155;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- Animated Gradient Background --- */
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #334155);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* --- Page Container --- */
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            width: 100%;
+            opacity: 0; /* Initially hidden for animation */
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* --- Header & Title --- */
+        header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .welcome-title {
+            /* Fluid font size for perfect responsiveness */
+            font-size: clamp(2rem, 5vw + 0.5rem, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            animation: slideDown 0.8s ease-out forwards;
+        }
+
+        /* --- Year Navigation Buttons --- */
+        .year-buttons-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            animation: slideUp 0.8s 0.2s ease-out forwards;
+            opacity: 0;
+        }
+
+        .year-btn {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex; /* Use inline-flex for <a> tags */
+            align-items: center;
+            gap: 8px;
+            text-decoration: none; /* Remove underline from links */
+            position: relative; /* For tooltip positioning */
+        }
+
+        /* Hover effect for non-disabled buttons on devices that support hover */
+        @media (hover: hover) {
+            .year-btn:not(:disabled):hover {
+                background-color: var(--accent-blue);
+                border-color: var(--accent-blue);
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            }
+        }
+        
+        /* Focus state for accessibility (keyboard navigation) */
+        .year-btn:not(:disabled):focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 3px;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Active state for click/tap feedback */
+        .year-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Disabled button styles */
+        .year-btn:disabled {
+            background-color: #2a3547;
+            color: var(--text-muted);
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        /* Tooltip for disabled buttons */
+        @media (hover: hover) {
+            .year-btn[disabled]:hover::after {
+                content: attr(data-tooltip);
+                position: absolute;
+                bottom: 120%;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: var(--primary-bg);
+                color: var(--text-light);
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+                z-index: 10;
+            }
+        }
+
+        /* --- Main Content Section (Cards) --- */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 2.5rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 3rem;
+        }
+
+        /* --- 3D Hover Effect for Cards --- */
+        .card {
+            background-color: var(--secondary-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+            perspective: 1000px; /* For 3D effect */
+            animation: slideUp 0.8s 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        @media (hover: hover) {
+            .card:hover {
+                transform: translateY(-10px) rotateX(2deg) rotateY(1deg);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            }
+        }
+
+        /* --- Admonition Box Card --- */
+        .admonition-box {
+            padding: 25px;
+            text-align: center;
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .admonition-box p {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--text-light);
+            margin: 15px 0;
+            background-color: rgba(239, 68, 68, 0.15); /* Red with opacity */
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-red);
+        }
+
+        .admonition-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            outline: 3px solid var(--accent-blue);
+            margin-top: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        @media (hover: hover) {
+            .admonition-box img:hover {
+                transform: scale(1.05);
+            }
+        }
+        
+        /* --- Video Frame Card --- */
+        .video-frame-container {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background-color: #000;
+        }
+        
+        .video-frame-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* --- Footer Section --- */
+        footer {
+            width: 100%;
+            text-align: center;
+            margin-top: auto; /* Pushes footer to the bottom */
+            animation: slideUp 0.8s 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .footer-btn {
+            background-image: linear-gradient(45deg, var(--accent-green), #2dd4bf);
+            border: none;
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+            text-decoration: none; /* Remove underline from link */
+            display: inline-flex; /* To align icon and text */
+            align-items: center;
+            gap: 10px;
+        }
+        
+        @media (hover: hover) {
+            .footer-btn:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 25px rgba(16, 185, 129, 0.6);
+            }
+        }
+        .footer-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- Animation Keyframes --- */
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem; /* Reduced gap */
+            }
+            .admonition-box { order: 1; }
+            .video-frame-container { order: 2; width: 95%; max-width: 500px; }
+        }
+        
+        @media (max-width: 480px) {
+            .page-container { padding: 1.5rem 1rem; }
+            .year-buttons-nav { gap: 10px; } /* Smaller gap for wrapped buttons */
+            .year-btn { font-size: 0.9rem; padding: 10px 18px; }
+            .admonition-box p { font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+
+        <header>
+            <h1 class="welcome-title">مرحبا بكم في تطبيق اداة علم للسنوات الطب</h1>
+            
+            <nav class="year-buttons-nav">
+                <a href="MED01.html" class="year-btn">
+                    <i class="fas fa-microscope"></i> السنة الأولى
+                </a>
+                <a href="MED02.html" class="year-btn">
+                    <i class="fas fa-stethoscope"></i> السنة الثانية
+                </a>
+                <a href="MED03.html" class="year-btn">
+                    <i class="fas fa-book-medical"></i> السنة الثالثة
+                </a>
+                
+                <button class="year-btn" disabled data-tooltip="قريباً">
+                    <i class="fas fa-lock"></i> السنة الرابعة
+                </button>
+                <button class="year-btn" disabled data-tooltip="قريباً">
+                    <i class="fas fa-lock"></i> السنة الخامسة
+                </button>
+                <button class="year-btn" disabled data-tooltip="قريباً">
+                    <i class="fas fa-lock"></i> السنة السادسة
+                </button>
+                <button class="year-btn" disabled data-tooltip="قريباً">
+                    <i class="fas fa-lock"></i> السنة السابعة
+                </button>
+            </nav>
+        </header>
+
+        <main class="main-content">
+
+            <div class="admonition-box card">
+                <p>عَدُوُّكَ لَنْ يَنْتَظِرَكَ بِطَبَقٍ مِنْ وُرُود</p>
+                <a href="https://t.me/S22MCS" target="_blank">
+                    <img src="talabetelhaltibibelilagi.jpg" alt="Telegram Channel Image">
+                </a>
+                <p>لَا تَفْصِلْ عِلْمَكَ الدُّنْيَوِيَّ عَنْ دِينِ الْإِسْلَامِ</p>
+            </div>
+
+            <div class="video-frame-container card">
+                <video autoplay muted loop playsinline>
+                    <source src="S22MCS PARTS/LOGO VIDIO ADATEALM.mp4" type="video/mp4">
+                    متصفحك لا يدعم عرض الفيديو.
+                </video>
+            </div>
+
+        </main>
+
+        <footer>
+            <a href="index.html" class="footer-btn">
+                <i class="fas fa-atom"></i> اداة علم
+            </a>
+        </footer>
+
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* Style for the notification modal */
+    .notification-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(15, 23, 42, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .notification-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .notification-modal {
+        background-color: #1e293b;
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        border: 1px solid #334155;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        position: relative;
+        font-family: 'Cairo', sans-serif;
+        transform: scale(0.9);
+        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    .notification-overlay.active .notification-modal {
+        transform: scale(1);
+    }
+
+    .notification-modal h2 {
+        color: #f1f5f9;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .notification-modal p {
+        color: #94a3b8;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    /* New style for the store information box */
+    .notification-modal .store-info {
+        margin-top: 1.5rem;
+        padding: 12px;
+        background-color: rgba(15, 23, 42, 0.6); /* Slightly darker background */
+        border: 1px solid #334155;
+        border-radius: 8px;
+        color: #f1f5f9;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .close-notification-btn {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #334155;
+        border: none;
+        color: #f1f5f9;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        line-height: 35px;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    
+    .close-notification-btn:hover {
+        background-color: #ef4444;
+        transform: rotate(90deg);
+    }
+
+</style>
+
+<div class="notification-overlay" id="notificationOverlay">
+    <div class="notification-modal">
+        <button class="close-notification-btn" id="closeNotification">&times;</button>
+        <h2>📢 تحديث هام</h2>
+        <p>يتم حالياً العمل على مواد <strong>السنة الأولى</strong> و<strong>السنة الثالثة</strong>، وستتوفر في القريب العاجل. انتظرونا!</p>
+        
+        <div class="store-info">
+            🛒 ولا تنسى الاطلاع على متجرنا، فهو متوفر داخل <strong>السنة الأولى والثانية والثالثة</strong>.
+        </div>
+    </div>
+</div>
+
+<script>
+    // Script to control the notification modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const overlay = document.getElementById('notificationOverlay');
+        const closeBtn = document.getElementById('closeNotification');
+
+        const showModal = () => {
+            overlay.classList.add('active');
+        };
+
+        const hideModal = () => {
+            overlay.classList.remove('active');
+        };
+
+        setTimeout(showModal, 1500);
+
+        closeBtn.addEventListener('click', hideModal);
+
+        overlay.addEventListener('click', function(event) {
+            if (event.target === overlay) {
+                hideModal();
+            }
+        });
+    });
+</script>
