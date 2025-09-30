@@ -161,7 +161,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, Timestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -189,6 +189,42 @@
         const registerForm = document.getElementById('register-form');
         const messageBox = document.getElementById('message-box');
 
+        // --- Helper Functions ---
+        function redirectToNextPage() {
+            setTimeout(() => {
+                 window.location.href = 'adatealm_med_intro.html'; // Redirect URL
+            }, 2500);
+        }
+
+        function showMessage(message, type = 'error', duration = 4000) {
+            messageBox.innerHTML = message;
+            messageBox.classList.remove('hidden', 'bg-red-500', 'bg-green-500');
+            messageBox.classList.add(type === 'error' ? 'bg-red-500' : 'bg-green-500');
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, duration);
+        }
+        
+        // --- START: الكود المضاف لحل المشكلة ---
+        // يتحقق هذا الكود مما إذا كان المستخدم مسجلاً دخوله بالفعل عند تحميل الصفحة
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // إذا كان المستخدم مسجلاً دخوله، يتم إخفاء نموذج تسجيل الدخول
+                // وعرض رسالة ترحيب ثم إعادة التوجيه
+                console.log("User is already signed in:", user.uid);
+                const authView = document.getElementById('auth-view');
+                if (authView) {
+                    authView.style.display = 'none';
+                }
+                showMessage('أهلاً بعودتك! يتم تسجيل دخولك تلقائياً...', 'success');
+                redirectToNextPage();
+            } else {
+                // إذا لم يكن المستخدم مسجلاً دخوله، يتم عرض نموذج تسجيل الدخول كالمعتاد
+                console.log("No user is signed in.");
+            }
+        });
+        // --- END: الكود المضاف ---
+
         // --- Tab Switching Logic ---
         loginTabButton.addEventListener('click', () => {
             loginView.classList.remove('hidden');
@@ -213,22 +249,6 @@
             }
         });
         
-        // --- Helper Functions ---
-        function redirectToNextPage() {
-            setTimeout(() => {
-                 window.location.href = 'adatealm_med_intro.html'; // Redirect URL
-            }, 2500);
-        }
-
-        function showMessage(message, type = 'error', duration = 4000) {
-            messageBox.innerHTML = message;
-            messageBox.classList.remove('hidden', 'bg-red-500', 'bg-green-500');
-            messageBox.classList.add(type === 'error' ? 'bg-red-500' : 'bg-green-500');
-            setTimeout(() => {
-                messageBox.classList.add('hidden');
-            }, duration);
-        }
-
         function toggleButtonState(button, isLoading) {
             const buttonText = button.querySelector('.button-text');
             const buttonLoader = button.querySelector('.button-loader');
@@ -283,7 +303,7 @@
 
             try {
                 await sendPasswordResetEmail(auth, email);
-                showMessage('تم إرسال رابط إعادة تعيين كلمة المرور إلى   صندوق المهملات بريدك الإلكتروني.      الرجاء تفقد صندوق الوارد.', 'success');
+                showMessage('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني. الرجاء تفقد صندوق الوارد وأيضًا صندوق الرسائل غير المرغوب فيها (Spam).', 'success');
             } catch (error) {
                 console.error("Password Reset Error:", error);
                 if (error.code === 'auth/user-not-found') {
@@ -321,14 +341,11 @@
                     localStorage.removeItem('rememberedUserEmail');
                 }
 
-                // --- START: FIX for 'No document to update' error ---
-                // This will create the document if it doesn't exist, or update it if it does.
                 const userDocRef = doc(db, 'users', user.uid);
                 await setDoc(userDocRef, { 
                     lastLogin: Timestamp.now(),
-                    email: user.email // Also ensures email is stored
+                    email: user.email
                 }, { merge: true });
-                // --- END: FIX ---
 
                 showMessage('تم تسجيل الدخول بنجاح! يتم توجيهك الآن...', 'success');
                 redirectToNextPage();
@@ -367,7 +384,6 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const newUser = userCredential.user;
                 
-                // Store user info in Firestore
                 await setDoc(doc(db, 'users', newUser.uid), {
                     uid: newUser.uid,
                     name,
@@ -378,7 +394,7 @@
                     lastLogin: Timestamp.now()
                 });
                 
-                showMessage('تم حفظ بيانات تسجيلك للدخول السريع 😄', 'success', 3000);
+                showMessage('تم إنشاء حسابك بنجاح! يتم توجيهك الآن...', 'success', 3000);
                 redirectToNextPage();
 
             } catch (error) {
