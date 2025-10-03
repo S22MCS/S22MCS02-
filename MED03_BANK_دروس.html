@@ -8,7 +8,6 @@
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-
    <style>
       /* --- :root | المتغيرات العامة --- */
       :root {
@@ -193,16 +192,277 @@
       @media (max-width: 450px) { html { font-size: 55%; } .logo { font-size: 2rem; } .header { padding: 1.5rem 2%; } main { padding: 1.5rem 2%; } }
       @media (max-width: 400px) { .summaries-navigation { flex-direction: column; gap: 10px; } .nav-button { width: 100%; } }
    </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <style>
+        /*
+         * ملاحظة: هذه الأنماط مُحسّنة وتكمل الأنماط العامة للوحة التحكم.
+         */
+
+        .summaries-title {
+            font-size: clamp(2.2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        /* حاوية أزرار التنقل */
+        .summaries-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .nav-button {
+            padding: 12px 18px;
+            font-size: clamp(1.5rem, 3vw, 1.6rem);
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            flex-grow: 1;
+            flex-basis: 150px;
+            box-shadow: var(--shadow-sm);
+            touch-action: manipulation;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .nav-button .english-nav {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            transition: color 0.25s ease;
+        }
+
+        .nav-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 137, 123, 0.25);
+        }
+
+        .nav-button.active .english-nav {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subject-block {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .subject-block.is-open {
+             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: clamp(1.5rem, 4vw, 2rem);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .subject-title {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            color: var(--primary-dark);
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .toggle-icon {
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--primary-color);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-left: 15px;
+        }
+
+        .subject-block.is-open .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .subject-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 clamp(1.5rem, 4vw, 2rem);
+        }
+
+        .lesson-button {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-size: clamp(1.6rem, 4vw, 1.7rem);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: right;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .lesson-button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .lesson-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .lesson-button.active .lesson-lang { color: rgba(255, 255, 255, 0.85); }
+        .lesson-button .lesson-lang {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 5px;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+
+        .lesson-materials {
+            list-style: none; padding: 0;
+            background-color: var(--bg-body);
+            border-radius: 8px;
+            margin-top: -5px; margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+        }
+        .lesson-materials.open { padding: 1.5rem; }
+        
+        .summary-item a {
+            display: block; text-decoration: none;
+            color: var(--white); font-weight: 600;
+            font-size: 1.8rem; padding: 1.2rem;
+            background-color: var(--primary-color);
+            border-radius: 6px; text-align: center;
+            transition: background-color 0.2s;
+        }
+        .summary-item a:hover { background-color: var(--primary-dark); }
+        .summary-item p {
+            font-size: 1.3rem; color: var(--text-secondary);
+            margin: 8px 0 0 0; text-align: center;
+        }
+        
+        .empty-section-message {
+            background-color: var(--bg-card);
+            padding: 3rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
+            color: var(--text-secondary); text-align: center;
+            font-size: 1.7rem;
+        }
+
+        @media (max-width: 400px) {
+            .summaries-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-button { width: 100%; }
+        }
+    </style>
+
+
+
+
+
+
 </head>
 <body class="">
+
 
 <div class="overlay"></div>
 
 <header class="header">
    <section class="flex">
-      <a href="home.html" class="logo">
+      <a href="home_MED03.html" class="logo">
          <span class="main-title">أداة علم</span>
-         <span class="subtitle">للثانية<br>طب</span>
+         <span class="subtitle">الثالثة<br>طب</span>
       </a>
       <div class="icons">
          <div id="toggle-btn" class="icon-btn fas fa-sun" title="الوضع"></div>
@@ -219,37 +479,41 @@
             <img src="S22MCS PARTS/قسم الطب.jpg" class="image" alt="صورة القسم">
             <h3 class="name">قسم الطب</h3>
             <p class="role">التابعة لأداة علم</p>
-            <a href="MED02_profile.html" class="btn">عرض الملف الشخصي</a>
+            <a href="MED03_profile.html" class="btn">عرض الملف الشخصي</a>
             <a href="adatealm_med_intro.html" id="logout-btn" class="btn logout">تسجيل الخروج</a>
          </div>
       </div>
    </section>
 </header>
 
-<aside class="side-bar">
+
+
+
+
+
+
+
+
+      <aside class="side-bar">
    <div class="close-btn-container">
       <div id="close-btn" class="fas fa-times icon-btn"></div>
    </div>
    <nav class="navbar">
-      <a href="home_MED02.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-      <a href="MED02_BANK_دروس.html"><i class="fas fa-chalkboard-user"></i><span>بنك الدروس</span></a>
-      <a href="MED02_BANK_EXAM.html"><i class="fas fa-file-alt"></i><span>بنك الاختبارات</span></a>
-      <a href="#"><i class="fas fa-project-diagram"></i><span>بنك الخرائط الذهنية</span></a>
-      <a href="#"><i class="fas fa-clone"></i><span>بنك بطاقات الذاكرة</span></a>
-      <a href="JADAWL_2MED.html"><i class="fas fa-clipboard-list"></i><span>جداول المراجعة</span></a>
-      <a href="#"><i class="fas fa-chart-line"></i><span>تحليل الأسئلة</span></a>
-      <a href="DRIVER_MED02.html"><i class="fas fa-folder"></i><span>الدرايفات</span></a>
-      <a href="KAM_BAKIYA_LI.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك (كم بقي لك)</span></a>
-      <a href="moyen_MED02_.html" class="calculate-average-button"><i class="fas fa-calculator"></i><span>حِسَابُ ٱلْمُعَدَّلِ</span></a>
-      <a href="#" class="alert-btn" onclick="toggleModal()" aria-label="فتح نافذة التنبيه الطبي"><i class="fas fa-exclamation-triangle"></i><span>زر الخطر مهم لكل مسلم ومسلمة</span></a>
-      <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"><i class="fas fa-quran"></i><span>وردك اليومي من القران الكريم</span></a>
+      <a href="home_MED03.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+   <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"><i class="fas fa-quran"></i><span>وردك اليومي من القران الكريم</span></a>
       <a href="اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ.html"><i class="fas fa-praying-hands"></i><span>زر الاستغفار والتسبيح</span></a>
-      <a href="#" class="TAWASLE_ADAT_TAHDITAT_MED02-btn" id="TAWASLE_ADAT_TAHDITAT_MED02Btn" data-count="3" onclick="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup()"><i class="fas fa-sync-alt"></i><span>التحديثات والإشعارات</span></a>
+    
+      <a href="KAM_BAKIYA_LI.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك (كم بقي لك)</span></a>
       <a href="WAJIBATI_ADAT_EALM.html"><i class="fas fa-clipboard-check"></i><span>واجباتي</span></a>
-      <a href="s22market.html"><i class="fas fa-store" style="color: rgb(251, 200, 34);"></i><span>متجر طلبة الـ 22 (S22MARKET)</span></a>
-      <a href="#"><i class="fas fa-user-tie"></i><span>مشرفونا</span></a>
+      
+<a href="TBR3_BLDAM.html"><i class="fas fa-tint"></i><span>  التبرع بالدم     (أداة شفاء)</span></a>
+    <a href="s22market.html"><i class="fas fa-store" style="color: rgb(251, 200, 34);"></i><span>متجر طلبة الـ 22 (S22MARKET)</span></a>
       <a href="DA3MONA_ADATEALM.html"><i class="fas fa-hands-helping"></i><span>دعمنا</span></a>
-      <a href="#" class="medical-alert-btn" onclick="medicalTogglePopup()" aria-label="فتح نافذة تواصل معنا"><i class="fas fa-headset"></i><span>تواصل معنا</span></a>
+      <a href="TAWASLE_ADAT_EALM_KISM_EL_TIB.html" class="medical-alert-btn" aria-label="فتح صفحة تواصل معنا">
+  <i class="fas fa-headset"></i>
+  <span>تواصل معنا</span>
+</a>
+
    </nav>
 </aside>
 
@@ -309,6 +573,15 @@
     </div>
 
     <div class="content-container">
+
+
+
+
+
+
+
+
+
         <div id="uei1-section" class="content-section active">
             <div class="subject-block">
                 <button class="subject-header" onclick="toggleSubject(this)">
@@ -347,16 +620,465 @@
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
         <div id="uei2-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
         <div id="uei3-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
         <div id="uei4-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
-        <div id="uet1-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div id="uet1-section" class="content-section">
+
+
+
+
+
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                    <h2 class="subject-title"> التشريح وعلم الخلايا المرضي
+🔬🧫
+                        (Anatomie et Cytologie Pathologiques (ACP))
+ </h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+<div class="subject-content">
+
+<!-- الدرس 1 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-anatpath">
+  <span>مَكَانُ عِلْمِ الأَنَاتُومِيَا البَاتُولُوجِيَا فِي الطِّبِّ</span>
+  <span class="lesson-lang">PLACE DE L'ANATOMIE PATHOLOGIQUE EN MÉDECINE</span>
+  <span>PLACE OF PATHOLOGICAL ANATOMY IN MEDICINE</span>
+</button>
+<ul id="lesson-anatpath" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_PLACE_ANATOMIE_PATHOLOGIQUE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">إصْدَارُ 8 رَبِيعٍ الآخِر 1447 المُوَافِقُ لِ1 أُكْتُوبَر 2025</p>
+  </li>
+</ul>
+
+<!-- الدرس 2 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-inflam">
+  <span>العَمَلِيَّةُ الاِلْتِهَابِيَّةُ العَادِيَةُ</span>
+  <span class="lesson-lang">PROCESSUS INFLAMMATOIRE BANAL</span>
+  <span>COMMON INFLAMMATORY PROCESS</span>
+</button>
+<ul id="lesson-inflam" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_PROCESSUS_INFLAMMATOIRE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 3 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-lesions">
+  <span>الآفَاتُ الخَلَوِيَّةُ وَالنَّسِيجِيَّةُ (النَّخَرُ - الاِسْتِمَاتَةُ)</span>
+  <span class="lesson-lang">LÉSIONS CELLULAIRES ET TISSULAIRES (NÉCROSE - APOPTOSE)</span>
+  <span>CELLULAR AND TISSUE LESIONS</span>
+</button>
+<ul id="lesson-lesions" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_LESIONS_CELLULAIRES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 4 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-vasc">
+  <span>الأَمْرَاضُ الوِعَائِيَّةُ وَاضْطِرَابَاتُ الدَّوَرَانِ</span>
+  <span class="lesson-lang">PATHOLOGIE VASCULAIRE ET TROUBLES CIRCULATOIRES</span>
+  <span>VASCULAR PATHOLOGY AND CIRCULATORY DISORDERS</span>
+</button>
+<ul id="lesson-vasc" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_VASCULAIRE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 5 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-metabo">
+  <span>اضْطِرَابَاتُ الأَيْضِ الخَلَوِيِّ</span>
+  <span class="lesson-lang">TROUBLES DU MÉTABOLISME CELLULAIRE</span>
+  <span>CELLULAR METABOLISM DISORDERS</span>
+</button>
+<ul id="lesson-metabo" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_METABOLISME.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 6 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-atherosclero">
+  <span>تَصَلُّبُ الشَّرَايِينِ</span>
+  <span class="lesson-lang">ATHÉROSCLÉROSE</span>
+  <span>ATHEROSCLEROSIS</span>
+</button>
+<ul id="lesson-atherosclero" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_ATHEROSCLEROSE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 7 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-infarctus">
+  <span>الاِحْتِشَاءُ</span>
+  <span class="lesson-lang">INFARCTUS</span>
+  <span>INFARCTION</span>
+</button>
+<ul id="lesson-infarctus" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_INFARCTUS.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- باقي الدروس على نفس النموذج -->
+<!-- الدرس 8 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-matrix">
+  <span>أَمْرَاضُ المَادَّةِ الخَلْفِيَّةِ الخَلَوِيَّةِ</span>
+  <span class="lesson-lang">PATHOLOGIES DE LA MATRICE EXTRACELLULAIRE</span>
+  <span>EXTRACELLULAR MATRIX PATHOLOGIES</span>
+</button>
+<ul id="lesson-matrix" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_MATRICE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 9 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-formes-inflam">
+  <span>أَشْكَالُ الاِلْتِهَابِ العَادِيِّ</span>
+  <span class="lesson-lang">FORMES DE L'INFLAMMATION BANALE</span>
+  <span>FORMS OF COMMON INFLAMMATION</span>
+</button>
+<ul id="lesson-formes-inflam" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_FORMES_INFLAM.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 10 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-infections">
+  <span>المَظَاهِرُ الأَنَاتُومُوبَاتُولُوجِيَّةُ لِلعُدْوَى (الاِلْتِهَابُ الخَاصُّ)</span>
+  <span class="lesson-lang">ASPECTS ANATOMOPATHOLOGIQUES DES INFECTIONS (INFLAM. SPÉCIFIQUE)</span>
+  <span>PATHOLOGICAL FEATURES OF INFECTIONS</span>
+</button>
+<ul id="lesson-infections" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_INFECTIONS.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 11 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-immun">
+  <span>المَظَاهِرُ الأَنَاتُومُوبَاتُولُوجِيَّةُ لِلمَرَاضِ المَنَاعِيَّةِ</span>
+  <span class="lesson-lang">ASPECTS ANATOMOPATHOLOGIQUES DES AFFECTIONS IMMUNITAIRES</span>
+  <span>PATHOLOGICAL FEATURES OF IMMUNE DISEASES</span>
+</button>
+<ul id="lesson-immun" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_IMMUN.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 12 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-tumoral">
+  <span>الأَمْرَاضُ الوَرَمِيَّةُ</span>
+  <span class="lesson-lang">PATHOLOGIE TUMORALE</span>
+  <span>TUMOR PATHOLOGY</span>
+</button>
+<ul id="lesson-tumoral" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMORALE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 13 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-classif">
+  <span>أُسُسُ تَصْنِيفِ الأَوْرَامِ</span>
+  <span class="lesson-lang">BASES DE CLASSIFICATION DES TUMEURS</span>
+  <span>BASIS OF TUMOR CLASSIFICATION</span>
+</button>
+<ul id="lesson-classif" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_CLASSIFICATION_TUMEURS.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 14 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-carcino">
+  <span>آلِيَّاتُ التَّسَرْطُنِ</span>
+  <span class="lesson-lang">MÉCANISMES DE LA CARCINOGÉNÈSE</span>
+  <span>MECHANISMS OF CARCINOGENESIS</span>
+</button>
+<ul id="lesson-carcino" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_CARCINOGENESE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 15 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-etiopatho">
+  <span>مُسَبِّبَاتُ الأَوْرَامِ وَآلِيَّاتُهَا</span>
+  <span class="lesson-lang">ETIOPATHOGÉNIE DES CANCERS</span>
+  <span>ETIOPATHOGENESIS OF CANCERS</span>
+</button>
+<ul id="lesson-etiopatho" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_ETIOPATHOGENIE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 16 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-cell-cancer">
+  <span>الخَلِيَّةُ السَّرَطَانِيَّةُ</span>
+  <span class="lesson-lang">CELLULE CANCÉREUSE</span>
+  <span>CANCER CELL</span>
+</button>
+<ul id="lesson-cell-cancer" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_CELLULE_CANCEREUSE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 17 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-stroma">
+  <span>السِّدَى الوَرَمِيُّ</span>
+  <span class="lesson-lang">STROMA TUMORAL</span>
+  <span>TUMOR STROMA</span>
+</button>
+<ul id="lesson-stroma" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_STROMA.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 18 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-metastases">
+  <span>النَّقَائِلُ</span>
+  <span class="lesson-lang">MÉTASTASES</span>
+  <span>METASTASES</span>
+</button>
+<ul id="lesson-metastases" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_METASTASES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 19 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-epithel">
+  <span>الأَوْرَامُ الظِّهَارِيَّةُ</span>
+  <span class="lesson-lang">TUMEURS ÉPITHÉLIALES</span>
+  <span>EPITHELIAL TUMORS</span>
+</button>
+<ul id="lesson-epithel" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_EPITHELIALES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 20 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gland">
+  <span>الأَوْرَامُ الغُدِّيَّةُ</span>
+  <span class="lesson-lang">TUMEURS GLANDULAIRES</span>
+  <span>GLANDULAR TUMORS</span>
+</button>
+<ul id="lesson-gland" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_GLANDULAIRES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 21 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-urothelial">
+  <span>الأَوْرَامُ البَطَانِيَّةُ البَوْلِيَّةُ</span>
+  <span class="lesson-lang">TUMEURS UROTHÉLIALES</span>
+  <span>UROTHELIAL TUMORS</span>
+</button>
+<ul id="lesson-urothelial" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_UROTHELIALES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 22 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-conj">
+  <span>الأَوْرَامُ النَّسِيجِيَّةُ الرَّابِطَةُ</span>
+  <span class="lesson-lang">TUMEURS CONJONCTIVES</span>
+  <span>CONNECTIVE TISSUE TUMORS</span>
+</button>
+<ul id="lesson-conj" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_CONJONCTIVES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 23 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-lymphome">
+  <span>اللِّمْفُومَاتُ</span>
+  <span class="lesson-lang">LYMPHOMES</span>
+  <span>LYMPHOMAS</span>
+</button>
+<ul id="lesson-lymphome" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_LYMPHOMES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 24 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-embryon">
+  <span>الأَوْرَامُ الجَنِينِيَّةُ</span>
+  <span class="lesson-lang">TUMEURS EMBRYONNAIRES</span>
+  <span>EMBRYONAL TUMORS</span>
+</button>
+<ul id="lesson-embryon" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_EMBRYONNAIRES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 25 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-melano">
+  <span>الأَوْرَامُ المِيلَانِينِيَّةُ</span>
+  <span class="lesson-lang">TUMEURS MÉLANOCYTAIRES</span>
+  <span>MELANOCYTIC TUMORS</span>
+</button>
+<ul id="lesson-melano" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_MELANOCYTARES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+<!-- الدرس 26 -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-nerveuses">
+  <span>الأَوْرَامُ العَصَبِيَّةُ</span>
+  <span class="lesson-lang">TUMEURS NERVEUSES</span>
+  <span>NERVE TUMORS</span>
+</button>
+<ul id="lesson-nerveuses" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_NERVEUSES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+
+
+
+
+        </div>
+
+        </div>
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
         <div id="uet2-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
         <div id="uet3-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
         <div id="uet4-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
         <div id="uet5-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
     </div>
 </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <div class="medical-overlay" id="medicalOverlay"></div>
@@ -400,6 +1122,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 
 <script type="module">
@@ -597,6 +1322,7 @@
         }
     });
 </script>
+
 
 </body>
 </html>

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اتصل بنا - أدات العلم</title>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* تصميم الصفحة العام */
@@ -33,7 +32,7 @@
             color: white;
             padding: 25px 20px;
             border-radius: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 20px; /* Adjusted margin */
             text-align: center;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
         }
@@ -50,6 +49,34 @@
         .header p {
             opacity: 0.9;
             font-size: 0.95rem;
+        }
+        
+        /* زر العودة للخلف */
+        .back-button-container {
+            text-align: right; /* Aligns the button to the right in RTL */
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            background-color: #6c757d; /* A neutral grey color */
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .back-btn:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
         
         /* قسم التواصل */
@@ -169,6 +196,20 @@
             opacity: 0.95;
         }
         
+        /* Style for disabled button */
+        .contact-btn.disabled {
+            background-color: #ccc;
+            pointer-events: none;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .social-icon.disabled {
+            background-color: #ccc !important;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+        
         /* تحسينات للهواتف */
         @media (max-width: 768px) {
             .contact-methods {
@@ -183,6 +224,10 @@
                 width: 60px;
                 height: 60px;
                 font-size: 1.8rem;
+            }
+
+            .back-button-container {
+                text-align: center; /* Center the button on small screens */
             }
         }
         
@@ -426,35 +471,37 @@
         <h1><i class="fas fa-headset"></i> تواصل معنا</h1>
         <p>نحن هنا لمساعدتك! اختر طريقة التواصل التي تفضلها</p>
     </div>
+
+    <div class="back-button-container">
+        <a href="javascript:history.back()" class="back-btn">
+            <i class="fas fa-arrow-right"></i> العودة للخلف
+        </a>
+    </div>
     
     <div class="contact-section">
         <h2 class="section-title"><i class="fas fa-link"></i> طرق التواصل الرسمية</h2>
         
-
-
-               <div class="contact-card telegram-card">
-                <div class="contact-icon">
-                    <i class="fab fa-telegram"></i>
-                </div>
-                <h3>قناة التليجرام الخاصة بقسم الطب </h3>
-                <p>للحصول على آخر التحديثات </p>
-                <a href="https://t.me/EMDbyS22MCS" target="_blank" class="contact-btn">
-                    <i class="fas fa-users"></i> انضم إلى القناة
-                </a>
+        <div class="contact-card telegram-card">
+            <div class="contact-icon">
+                <i class="fab fa-telegram"></i>
             </div>
+            <h3>قناة التليجرام الخاصة بقسم الطب </h3>
+            <p>للحصول على آخر التحديثات </p>
+            <a href="https://t.me/EMDbyS22MCS" target="_blank" class="contact-btn">
+                <i class="fas fa-users"></i> انضم إلى القناة
+            </a>
+        </div>
 
-
-                   <div class="contact-card telegram-card">
-                <div class="contact-icon">
-                    <i class="fab fa-telegram"></i>
-                </div>
-                <h3> مجموعة  المراسلة   الخاصة  بقسم الطب على التليجرام  </h3>
-                <p>للحصول على آخر التحديثات </p>
-                <a href="https://t.me/+_WQae-hMT042YWI0" target="_blank" class="contact-btn">
-                    <i class="fas fa-users"></i> انضم إلى القناة
-                </a>
+        <div class="contact-card telegram-card">
+            <div class="contact-icon">
+                <i class="fab fa-telegram"></i>
             </div>
-
+            <h3> مجموعة  المراسلة   الخاصة  بقسم الطب على التليجرام </h3>
+            <p>للحصول على آخر التحديثات </p>
+            <a href="https://t.me/+_WQae-hMT042YWI0" target="_blank" class="contact-btn">
+                <i class="fas fa-users"></i> انضم إلى القناة
+            </a>
+        </div>
 
         <div class="contact-methods">
             <div class="contact-card telegram-card">
@@ -463,7 +510,7 @@
                 </div>
                 <h3>بوت التليجرام</h3>
                 <p>للحصول على إجابات فورية واستعلامات سريعة</p>
-                <a href="http://t.me/ADATEALM_bot" target="_blank" class="contact-btn">
+                <a href="#" class="contact-btn disabled">
                     <i class="fas fa-paper-plane"></i> تواصل عبر البوت
                 </a>
             </div>
@@ -510,46 +557,46 @@
             <h1 class="mb-5">روابط التواصل الخاصة بنا</h1>
             <p class="mb-4">يسعدنا تقديم المساعدة! تابعنا على وسائل التواصل الاجتماعي لكي لا يفوتك أي جديد</p>
         </div>
-                    
-                    <div class="text-center mt-5">
-                        <h4>تابعنا على وسائل التواصل الاجتماعي</h4>
-                        <div class="social-media-wrapper">
-                            <a href="https://t.me/adatealm" class="social-icon telegram">
-                                <i class="fab fa-telegram"></i>
-                                <span class="social-tooltip">تيليجرام</span>
-                            </a>
-                            <a href="http://t.me/ADATEALM_bot" class="social-icon telegram-bot">
-                                <i class="fas fa-robot"></i>
-                                <span class="social-tooltip">بوت التليجرام</span>
-                            </a>
-                            <a href="mailto:adatealm@gmail.com" class="social-icon email">
-                                <i class="fas fa-envelope"></i>
-                                <span class="social-tooltip">البريد الإلكتروني</span>
-                            </a>
-                            <a href="https://www.youtube.com/@adatealm" class="social-icon youtube">
-                                <i class="fab fa-youtube"></i>
-                                <span class="social-tooltip">يوتيوب</span>
-                            </a>
-                            <a href="https://www.facebook.com/profile.php?id=61560859966476" class="social-icon facebook">
-                                <i class="fab fa-facebook-f"></i>
-                                <span class="social-tooltip">فيسبوك</span>
-                            </a>
-                            <a href="https://www.instagram.com/adat_ealm" class="social-icon instagram">
-                                <i class="fab fa-instagram"></i>
-                                <span class="social-tooltip">إنستغرام</span>
-                            </a>
-                            <a href="https://www.tiktok.com/@adat_ealm" class="social-icon tiktok">
-                                <i class="fab fa-tiktok"></i>
-                                <span class="social-tooltip">تيك توك</span>
-                            </a>
-                            <a href="#" class="social-icon twitter">
-                                <i class="fab fa-twitter"></i>
-                                <span class="social-tooltip">تويتر</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                        
+        <div class="text-center mt-5">
+            <h4>تابعنا على وسائل التواصل الاجتماعي</h4>
+            <div class="social-media-wrapper">
+                <a href="https://t.me/adatealm" class="social-icon telegram">
+                    <i class="fab fa-telegram"></i>
+                    <span class="social-tooltip">تيليجرام</span>
+                </a>
+                <a href="#" class="social-icon telegram-bot disabled">
+                    <i class="fas fa-robot"></i>
+                    <span class="social-tooltip">بوت التليجرام</span>
+                </a>
+                <a href="mailto:adatealm@gmail.com" class="social-icon email">
+                    <i class="fas fa-envelope"></i>
+                    <span class="social-tooltip">البريد الإلكتروني</span>
+                </a>
+                <a href="https://www.youtube.com/@adatealm" class="social-icon youtube">
+                    <i class="fab fa-youtube"></i>
+                    <span class="social-tooltip">يوتيوب</span>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61560859966476" class="social-icon facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span class="social-tooltip">فيسبوك</span>
+                </a>
+                <a href="https://www.instagram.com/adat_ealm" class="social-icon instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span class="social-tooltip">إنستغرام</span>
+                </a>
+                <a href="https://www.tiktok.com/@adat_ealm" class="social-icon tiktok">
+                    <i class="fab fa-tiktok"></i>
+                    <span class="social-tooltip">تيك توك</span>
+                </a>
+                <a href="#" class="social-icon twitter">
+                    <i class="fab fa-twitter"></i>
+                    <span class="social-tooltip">تويتر</span>
+                </a>
             </div>
         </div>
     </div>
 </div>
+
+</body>
+</html>

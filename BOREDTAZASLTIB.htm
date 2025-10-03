@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>لوحة التحديثات - قسم الطب</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+   <style>
+      :root {
+         --primary-color: #00897b; --primary-dark: #00695c; --bg-body: #f1f5f9;
+         --bg-card: #ffffff; --text-primary: #1e293b; --text-secondary: #64748b;
+         --border-color: #e2e8f0; --white: #ffffff; --red: #ef4444;
+         --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+         --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+         --radius: 0.8rem;
+      }
+      body.dark-mode {
+         --bg-body: #0f172a; --bg-card: #1e293b; --text-primary: #f1f5f9;
+         --text-secondary: #94a3b8; --border-color: #334155;
+      }
+      * { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; box-sizing: border-box; outline: none; border: none; text-decoration: none; }
+      html { font-size: 62.5%; overflow-x: hidden; }
+      body { background-color: var(--bg-body); color: var(--text-primary); transition: background-color .3s, color .3s; padding-top: 8rem; }
+      
+      /* --- Header Styles --- */
+      .header { background-color: var(--bg-card); padding: 1.5rem 3%; position: fixed; top: 0; right: 0; left: 0; z-index: 1000; box-shadow: var(--shadow-md); border-bottom: 1px solid var(--border-color); }
+      .header .flex { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+      .logo { display: flex; align-items: center; gap: 8px; font-size: 2.2rem; font-weight: 700; color: var(--primary-color); }
+      .header .icons { display: flex; align-items: center; gap: 1rem; position: relative; }
+      .icon-btn { font-size: 2rem; color: var(--text-secondary); cursor: pointer; height: 4.5rem; width: 4.5rem; line-height: 4.5rem; text-align: center; border-radius: 50%; transition: all .2s ease-in-out; }
+      .icon-btn:hover { background-color: var(--bg-body); color: var(--primary-color); }
+      
+      /* --- Main Content and Notification Board Styles --- */
+      main { padding: 2rem 3%; }
+      .board-title { font-size: 3rem; font-weight: 700; margin-bottom: 2.5rem; color: var(--text-primary); text-align: center; }
+      #notification-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+      .notification-card {
+         background-color: var(--bg-card);
+         border-radius: var(--radius);
+         box-shadow: var(--shadow-md);
+         padding: 2rem;
+         display: flex;
+         flex-direction: column;
+         gap: 1.5rem;
+         border-left: 5px solid var(--primary-color);
+         transition: transform 0.2s ease, box-shadow 0.2s ease;
+         cursor: pointer;
+      }
+      .notification-card:hover {
+         transform: translateY(-5px);
+         box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      }
+      .card-header { display: flex; align-items: center; gap: 1.5rem; }
+      .card-icon { font-size: 2.4rem; color: var(--primary-color); }
+      .card-text { font-size: 1.6rem; line-height: 1.6; color: var(--text-primary); flex-grow: 1; transition: text-decoration 0.3s; }
+      .card-footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--text-secondary); font-size: 1.3rem; }
+      .card-link { background-color: var(--primary-color); color: var(--white) !important; padding: 0.8rem 1.2rem; border-radius: calc(var(--radius) / 2); font-size: 1.4rem; font-weight: 600; transition: background-color 0.2s; }
+      .card-link:hover { background-color: var(--primary-dark); }
+      
+      /* "Read" state styling */
+      .notification-card.read {
+         opacity: 0.7;
+         border-left-color: var(--text-secondary);
+      }
+      .notification-card.read .card-text {
+         text-decoration: line-through;
+      }
+      .notification-card.read .card-icon {
+         color: var(--text-secondary);
+      }
+
+      #loader-container { text-align: center; font-size: 2rem; padding: 5rem 0; color: var(--text-secondary); }
+   </style>
+</head>
+<body>
+
+<header class="header">
+   <section class="flex">
+      <a href="#" id="back-btn" class="icon-btn fas fa-arrow-right" title="رجوع"></a>
+      
+      <a href="home_MED03.html" class="logo"><span>قسم الطب</span></a>
+      
+      <div class="icons">
+         <div id="toggle-btn" class="icon-btn fas fa-sun" title="الوضع"></div>
+      </div>
+   </section>
+</header>
+
+<main>
+   <h1 class="board-title">📢 لوحة التحديثات والإشعارات</h1>
+   
+   <div id="notification-board">
+      <div id="loader-container">جاري تحميل الإشعارات...</div>
+   </div>
+</main>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJK6IUSw2YbwNVfB_hRNsOFeO08LEp4c8",
+      authDomain: "adatealm-nofication.firebaseapp.com",
+      projectId: "adatealm-nofication",
+      storageBucket: "adatealm-nofication.appspot.com",
+      messagingSenderId: "216068965336",
+      appId: "1:216068965336:web:310c95e8e9fc4561cbe8ad",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const notificationsCollection = collection(db, "notifications");
+    const board = document.getElementById('notification-board');
+    const loader = document.getElementById('loader-container');
+    const READ_NOTIFS_KEY = 'readNotifications_v1';
+
+    // --- Mark as Read Logic ---
+    function getReadNotifs() {
+        return JSON.parse(localStorage.getItem(READ_NOTIFS_KEY)) || [];
+    }
+
+    function saveReadNotifs(notifId) {
+        let readNotifs = getReadNotifs();
+        if (!readNotifs.includes(notifId)) {
+            readNotifs.push(notifId);
+            localStorage.setItem(READ_NOTIFS_KEY, JSON.stringify(readNotifs));
+        }
+    }
+
+    function toggleReadStatus(card, notifId) {
+        card.classList.toggle('read');
+        if (card.classList.contains('read')) {
+            saveReadNotifs(notifId);
+        }
+    }
+
+    // --- Fetch and Render Notifications ---
+    const q = query(notificationsCollection, orderBy("createdAt", "desc"));
+    onSnapshot(q, (querySnapshot) => {
+        board.innerHTML = '';
+        const readNotifs = getReadNotifs();
+
+        if (querySnapshot.empty) {
+            board.innerHTML = `<p style="font-size: 1.6rem; color: var(--text-secondary); text-align: center;">لا توجد إشعارات حالياً.</p>`;
+            return;
+        }
+
+        querySnapshot.forEach((doc) => {
+            const notif = doc.data();
+            const notifId = doc.id;
+            const isRead = readNotifs.includes(notifId);
+
+            const card = document.createElement('div');
+            card.className = `notification-card ${isRead ? 'read' : ''}`;
+            card.dataset.id = notifId;
+
+            const date = notif.createdAt?.toDate().toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' }) || 'بدون تاريخ';
+            const icon = notif.icon || 'fas fa-bell';
+            const text = notif.text;
+            const link = notif.link;
+
+            card.innerHTML = `
+                <div class="card-header">
+                    <i class="card-icon ${icon}"></i>
+                    <p class="card-text">${text}</p>
+                </div>
+                <div class="card-footer">
+                    <span>${date}</span>
+                    ${link ? `<a href="${link}" target="_blank" class="card-link" onclick="event.stopPropagation();">اضغط هنا لتفحص الرابط</a>` : ''}
+                </div>
+            `;
+            
+            card.addEventListener('click', () => toggleReadStatus(card, notifId));
+            board.appendChild(card);
+        });
+    }, (error) => {
+        console.error("Error fetching notifications: ", error);
+        loader.textContent = "حدث خطأ أثناء تحميل البيانات.";
+        board.appendChild(loader);
+    });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+    const toggleBtn = document.querySelector('#toggle-btn');
+    const backBtn = document.querySelector('#back-btn');
+
+    // --- Back Button Functionality ---
+    backBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent default link behavior
+        window.history.back(); // Go to the previous page in history
+    });
+    
+    // --- Dark Mode ---
+    const applyTheme = (theme) => {
+        if (theme === 'dark') {
+            body.classList.add('dark-mode');
+            if(toggleBtn) toggleBtn.classList.replace('fa-sun', 'fa-moon');
+        } else {
+            body.classList.remove('dark-mode');
+            if(toggleBtn) toggleBtn.classList.replace('fa-moon', 'fa-sun');
+        }
+    };
+    applyTheme(localStorage.getItem('theme'));
+
+    if(toggleBtn) toggleBtn.addEventListener('click', () => {
+        let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+});
+</script>
+
+</body>
+</html>
