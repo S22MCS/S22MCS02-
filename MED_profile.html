@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملف قسم الطب | تصميم جديد</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+      /* --- المتغيرات العامة --- */
+      :root {
+          --primary-color: #26a69a;
+          --primary-dark: #00796b;
+          --secondary-color: #ffab40;
+          --bg-body: #f5f5f5;
+          --bg-card: #ffffff;
+          --text-primary: #212121;
+          --text-secondary: #757575;
+          --border-color: #e0e0e0;
+          --white: #ffffff;
+          --red: #f44336;
+          --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+          --radius: 12px;
+          --font-family: 'Tajawal', sans-serif;
+          --transition-speed: 0.3s;
+      }
+      
+      body.dark-mode {
+          --bg-body: #121212;
+          --bg-card: #1e1e1e;
+          --text-primary: #e0e0e0;
+          --text-secondary: #bdbdbd;
+          --border-color: #424242;
+      }
+
+      /* --- التنسيقات الأساسية --- */
+      * {
+          font-family: var(--font-family);
+          margin: 0; padding: 0;
+          box-sizing: border-box;
+          text-decoration: none;
+      }
+      
+      html {
+          font-size: 62.5%;
+          scroll-behavior: smooth;
+          overflow-x: hidden;
+      }
+
+      body {
+          background-color: var(--bg-body);
+          color: var(--text-primary);
+          transition: background-color var(--transition-speed), color var(--transition-speed);
+      }
+
+      .container {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 2rem;
+      }
+
+      /* --- الشريط العلوي (Header) --- */
+      .header {
+          background: var(--bg-card);
+          padding: 1.5rem 5%;
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+          border-bottom: 1px solid var(--border-color);
+      }
+      
+      .header .flex {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+      }
+      
+      .logo {
+          font-size: 2.2rem;
+          font-weight: 900;
+          color: var(--primary-color);
+      }
+      
+      .header .nav a {
+          font-size: 1.6rem;
+          color: var(--text-secondary);
+          margin: 0 1.5rem;
+          font-weight: 700;
+          transition: color var(--transition-speed);
+      }
+
+      .header .nav a:hover {
+          color: var(--primary-color);
+      }
+
+      .header .icons {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+      }
+
+      .header .icons div, .header .icons a {
+          font-size: 2.2rem;
+          cursor: pointer;
+          color: var(--text-secondary);
+      }
+
+      #menu-btn { display: none; }
+
+      /* --- زر العودة الجديد --- */
+      .back-btn {
+          font-size: 1.6rem;
+          font-weight: 700;
+          color: var(--text-secondary);
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+          transition: color var(--transition-speed);
+      }
+      .back-btn i {
+          font-size: 2rem;
+      }
+      .back-btn:hover {
+          color: var(--primary-color);
+      }
+      .back-btn span {
+          display: inline; /* إظهار النص على الشاشات الكبيرة */
+      }
+      
+      /* --- قسم المقدمة (Hero) --- */
+      .hero {
+          text-align: center;
+          padding: 8rem 2rem;
+          background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+          color: var(--white);
+      }
+      .hero h1 {
+          font-size: 4.5rem;
+          font-weight: 900;
+          margin-bottom: 1rem;
+      }
+      .hero p {
+          font-size: 1.8rem;
+          max-width: 700px;
+          margin: 0 auto;
+          opacity: 0.9;
+      }
+
+      /* --- قسم الرحلة الدراسية --- */
+      .journey {
+          padding: 6rem 0;
+      }
+      .section-title {
+          font-size: 3.5rem;
+          font-weight: 900;
+          text-align: center;
+          margin-bottom: 5rem;
+          color: var(--text-primary);
+      }
+      .journey-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 3rem;
+      }
+      .journey-card {
+          background: var(--bg-card);
+          padding: 3rem;
+          border-radius: var(--radius);
+          box-shadow: var(--shadow-md);
+          border-top: 5px solid var(--primary-color);
+          transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+      }
+      .journey-card:hover {
+          transform: translateY(-10px);
+      }
+      .journey-card .icon {
+          font-size: 3.5rem;
+          color: var(--primary-color);
+          margin-bottom: 2rem;
+      }
+      .journey-card h3 {
+          font-size: 2.2rem;
+          font-weight: 700;
+          margin-bottom: 1.5rem;
+          color: var(--text-primary);
+      }
+      .journey-card p {
+          font-size: 1.6rem;
+          line-height: 1.7;
+          color: var(--text-secondary);
+      }
+
+      /* --- قسم الشهادة --- */
+      .degree-section {
+          background: var(--bg-card);
+          padding: 6rem 2rem;
+          margin-top: 4rem;
+          text-align: center;
+      }
+      .degree-section .icon {
+          font-size: 5rem;
+          color: var(--secondary-color);
+          margin-bottom: 2rem;
+      }
+      .degree-section h2 {
+          font-size: 2.8rem;
+          font-weight: 900;
+          margin-bottom: 1rem;
+      }
+      .degree-section p {
+          max-width: 600px;
+          margin: 0 auto;
+          font-size: 1.7rem;
+          color: var(--text-secondary);
+      }
+
+      /* --- قسم التواصل الاجتماعي --- */
+      .social-cta {
+          padding: 6rem 0;
+      }
+      .social-links {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 2rem;
+          margin-top: 3rem;
+      }
+      .social-links a {
+          font-size: 2.4rem;
+          color: var(--text-primary);
+          background: var(--bg-card);
+          width: 6rem;
+          height: 6rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          box-shadow: var(--shadow-md);
+          transition: all var(--transition-speed);
+      }
+      .social-links a:hover {
+          transform: scale(1.1);
+          color: var(--white);
+      }
+      .social-links a.facebook:hover { background: #1877F2; }
+      .social-links a.instagram:hover { background: #E4405F; }
+      .social-links a.telegram:hover { background: #24A1DE; }
+      .social-links a.youtube:hover { background: #FF0000; }
+      .social-links a.tiktok:hover { background: #000000; }
+      .social-links a.twitter:hover { background: #1DA1F2; }
+      .social-links a.email:hover { background: #D44638; }
+
+      /* --- Media Queries --- */
+      @media (max-width: 991px) {
+          html { font-size: 60%; }
+      }
+
+      @media (max-width: 768px) {
+          #menu-btn { display: inline-block; } 
+          
+          .header .nav {
+              position: fixed;
+              top: 0;
+              right: -100%; /* إخفاء القائمة خارج الشاشة */
+              width: 30rem;
+              height: 100vh;
+              background-color: var(--bg-card);
+              border-left: 1px solid var(--border-color); /* تغيير لليسار بما أن القائمة يمينية */
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              gap: 2rem;
+              transition: right var(--transition-speed) ease;
+          }
+          .header .nav.active {
+              right: 0; /* إظهار القائمة */
+          }
+          .header .nav a {
+              display: block;
+              margin: 1.5rem;
+              font-size: 2rem;
+              text-align: center;
+          }
+          .back-btn span {
+              display: none; /* إخفاء النص وترك الأيقونة فقط */
+          }
+          .hero h1 { font-size: 3.8rem; }
+          .hero p { font-size: 1.6rem; }
+          .section-title { font-size: 3rem; }
+      }
+
+      @media (max-width: 480px) {
+          html { font-size: 55%; }
+          .container { padding: 1.5rem; }
+          .social-links a { width: 5.5rem; height: 5.5rem; }
+          .hero { padding: 6rem 1.5rem; }
+          .section-title { font-size: 2.8rem; }
+      }
+    </style>
+</head>
+<body class="">
+
+<header class="header">
+    <section class="flex">
+        
+        <a href="#" class="logo">أداة علم</a>
+        
+        <nav class="nav">
+            <a href="#journey">الرحلة الدراسية</a>
+            <a href="#social">تواصل معنا</a>
+        </nav>
+
+        <div class="icons">
+            <a href="javascript:history.back()" class="back-btn" title="العودة للصفحة السابقة">
+                <i class="fas fa-arrow-right"></i>
+                <span>العودة للصفحة السابقة</span>
+            </a>
+            <div id="toggle-btn" class="fas fa-sun" title="تغيير الوضع"></div>
+            <div id="menu-btn" class="fas fa-bars" title="القائمة"></div>
+        </div>
+
+    </section>
+</header>
+
+<main>
+    <section class="hero">
+        <h1>مرحباً بك في قسم الطب</h1>
+        <p>اكتشف رحلة دراسة الطب في الجزائر من السنة الأولى حتى التخرج، وانضم إلى مجتمعنا الطبي المتفاعل.</p>
+    </section>
+
+    <div class="container">
+
+        <section class="journey" id="journey">
+            <h2 class="section-title">رحلة دراسة الطب</h2>
+            <div class="journey-grid">
+                <div class="journey-card">
+                    <div class="icon"><i class="fas fa-book-medical"></i></div>
+                    <h3>المرحلة قبل السريرية (1-2)</h3>
+                    <p>تركز على العلوم الأساسية مثل التشريح والكيمياء الحيوية، وهي مرحلة تأسيسية لبناء قاعدة علمية متينة.</p>
+                </div>
+
+                <div class="journey-card">
+                    <div class="icon"><i class="fas fa-stethoscope"></i></div>
+                    <h3>المرحلة السريرية (3-6)</h3>
+                    <p>ينتقل الطالب للمستشفيات لدراسة التخصصات السريرية وتطبيق المعارف على حالات مرضية حقيقية.</p>
+                </div>
+
+                <div class="journey-card">
+                    <div class="icon"><i class="fas fa-hospital-user"></i></div>
+                    <h3>سنة التربص (7)</h3>
+                    <p>سنة تدريب عملي إلزامية بدوام كامل في المستشفى لممارسة مهام الطبيب العام تحت الإشراف المباشر.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="degree-section">
+            <div class="icon"><i class="fas fa-user-graduate"></i></div>
+            <h2>شهادة دكتور في الطب</h2>
+            <p>بعد إتمام 7 سنوات بنجاح، يتوج الطالب بشهادة "دكتور في الطب"، مما يؤهله لممارسة الطب العام أو مواصلة التخصص.</p>
+        </section>
+
+        <section class="social-cta" id="social">
+            <h2 class="section-title">انضم إلى مجتمعنا الطبي</h2>
+            <div class="social-links">
+                <a href="https://t.me/adatealm" class="telegram" title="تيليجرام"><i class="fab fa-telegram"></i></a>
+                <a href="mailto:adatealm@gmail.com" class="email" title="البريد الإلكتروني"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.youtube.com/@adatealm" class="youtube" title="يوتيوب"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61560859966476" class="facebook" title="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/adat_ealm" class="instagram" title="إنستغرام"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@adat_ealm" class="tiktok" title="تيك توك"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="twitter" title="تويتر"><i class="fab fa-twitter"></i></a>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+    const toggleBtn = document.querySelector('#toggle-btn');
+    const menuBtn = document.querySelector('#menu-btn');
+    const navMenu = document.querySelector('.header .nav');
+
+    // --- القائمة الجانبية للشاشات الصغيرة ---
+    if (menuBtn && navMenu) {
+        menuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            menuBtn.classList.toggle('fa-times'); // لتغيير الأيقونة عند الفتح
+        });
+        
+        // إغلاق القائمة عند التمرير
+        window.onscroll = () => {
+            navMenu.classList.remove('active');
+            menuBtn.classList.remove('fa-times');
+        };
+    }
+
+    // --- الوضع الليلي ---
+    const applyTheme = (theme) => {
+        if (theme === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.classList.replace('fa-sun', 'fa-moon');
+        } else {
+            body.classList.remove('dark-mode');
+            toggleBtn.classList.replace('fa-moon', 'fa-sun');
+        }
+    };
+
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(currentTheme);
+
+    toggleBtn.addEventListener('click', () => {
+        let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+});
+</script>
+
+</body>
+</html>

@@ -138,7 +138,7 @@
       .subject-header { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: clamp(1.5rem, 4vw, 2rem); background-color: transparent; border: none; cursor: pointer; text-align: right; }
       .subject-title { font-size: clamp(1.8rem, 5vw, 2.2rem); color: var(--primary-dark); margin: 0; }
       .toggle-icon { font-size: 2.8rem; font-weight: 300; color: var(--primary-color); transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-left: 15px; }
-      .subject-block.is-open .toggle-icon { transform: rotate(45deg); }
+      .subject-block.is-open .toggle-icon, .lesson-button.active .toggle-icon { transform: rotate(45deg); }
       .subject-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; padding: 0 clamp(1.5rem, 4vw, 2rem); }
       .empty-section-message { background-color: var(--bg-card); padding: 3rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); color: var(--text-secondary); text-align: center; font-size: 1.7rem; }
       .module-group { background-color: var(--bg-card); border-radius: var(--radius); padding: 2.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
@@ -193,181 +193,34 @@
       @media (max-width: 400px) { .summaries-navigation { flex-direction: column; gap: 10px; } .nav-button { width: 100%; } }
    </style>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <style>
-        /*
-         * ملاحظة: هذه الأنماط مُحسّنة وتكمل الأنماط العامة للوحة التحكم.
-         */
-
-        .summaries-title {
-            font-size: clamp(2.2rem, 5vw, 2.8rem);
-            font-weight: 700;
-            margin-bottom: 2.5rem;
-            color: var(--text-primary);
-            text-align: center;
-        }
-        
-        /* حاوية أزرار التنقل */
-        .summaries-navigation {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 3rem;
-        }
-
-        .nav-button {
-            padding: 12px 18px;
-            font-size: clamp(1.5rem, 3vw, 1.6rem);
-            font-weight: 600;
-            color: var(--primary-color);
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            text-align: center;
-            flex-grow: 1;
-            flex-basis: 150px;
-            box-shadow: var(--shadow-sm);
-            touch-action: manipulation;
-        }
-
-        .nav-button:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary-color);
-        }
-
-        .nav-button .english-nav {
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: var(--text-secondary);
-            transition: color 0.25s ease;
-        }
-
-        .nav-button.active {
-            background-color: var(--primary-color);
-            color: var(--white);
-            border-color: var(--primary-color);
-            transform: translateY(0);
-            box-shadow: 0 4px 8px rgba(0, 137, 123, 0.25);
-        }
-
-        .nav-button.active .english-nav {
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .content-section { display: none; }
-        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .subject-block {
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            transition: box-shadow 0.3s ease;
-        }
-
         .subject-block.is-open {
              box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
         
         .subject-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: clamp(1.5rem, 4vw, 2rem);
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            text-align: right;
+            gap: 1.5rem;
+        }
+        
+        .subject-title-container {
+            flex-grow: 1;
         }
 
         .subject-title {
-            font-size: clamp(1.8rem, 5vw, 2.2rem);
-            color: var(--primary-dark);
-            margin: 0;
             padding: 0;
             border: none;
         }
-
-        .toggle-icon {
-            font-size: 2.8rem;
-            font-weight: 300;
-            color: var(--primary-color);
-            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-left: 15px;
+        
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
-
-        .subject-block.is-open .toggle-icon {
-            transform: rotate(45deg);
-        }
-
-        .subject-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
-            padding: 0 clamp(1.5rem, 4vw, 2rem);
-        }
-
+        
         .lesson-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             background-color: var(--bg-body);
             color: var(--text-primary);
             font-size: clamp(1.6rem, 4vw, 1.7rem);
@@ -414,8 +267,11 @@
             overflow: hidden;
             transition: max-height 0.4s ease-out, padding 0.4s ease-out;
         }
-        .lesson-materials.open { padding: 1.5rem; }
         
+        .summary-item {
+             padding: 1.5rem;
+        }
+
         .summary-item a {
             display: block; text-decoration: none;
             color: var(--white); font-weight: 600;
@@ -429,29 +285,8 @@
             font-size: 1.3rem; color: var(--text-secondary);
             margin: 8px 0 0 0; text-align: center;
         }
-        
-        .empty-section-message {
-            background-color: var(--bg-card);
-            padding: 3rem; border-radius: var(--radius);
-            box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
-            color: var(--text-secondary); text-align: center;
-            font-size: 1.7rem;
-        }
 
-        @media (max-width: 400px) {
-            .summaries-navigation {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .nav-button { width: 100%; }
-        }
     </style>
-
-
-
-
-
-
 </head>
 <body class="">
 
@@ -462,7 +297,7 @@
    <section class="flex">
       <a href="home_MED03.html" class="logo">
          <span class="main-title">أداة علم</span>
-         <span class="subtitle">الثالثة<br>طب</span>
+         <span class="subtitle">الأولى <br>طب</span>
       </a>
       <div class="icons">
          <div id="toggle-btn" class="icon-btn fas fa-sun" title="الوضع"></div>
@@ -486,600 +321,223 @@
    </section>
 </header>
 
-
-
-
-
-
-
-
-
-      <aside class="side-bar">
+<aside class="side-bar">
    <div class="close-btn-container">
       <div id="close-btn" class="fas fa-times icon-btn"></div>
    </div>
    <nav class="navbar">
       <a href="home_MED03.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-   <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"><i class="fas fa-quran"></i><span>وردك اليومي من القران الكريم</span></a>
+      <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"><i class="fas fa-quran"></i><span>وردك اليومي من القران الكريم</span></a>
       <a href="اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ.html"><i class="fas fa-praying-hands"></i><span>زر الاستغفار والتسبيح</span></a>
-    
       <a href="KAM_BAKIYA_LI.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك (كم بقي لك)</span></a>
       <a href="WAJIBATI_ADAT_EALM.html"><i class="fas fa-clipboard-check"></i><span>واجباتي</span></a>
-      
-<a href="TBR3_BLDAM.html"><i class="fas fa-tint"></i><span>  التبرع بالدم     (أداة شفاء)</span></a>
-    <a href="s22market.html"><i class="fas fa-store" style="color: rgb(251, 200, 34);"></i><span>متجر طلبة الـ 22 (S22MARKET)</span></a>
+      <a href="TBR3_BLDAM.html"><i class="fas fa-tint"></i><span>  التبرع بالدم     (أداة شفاء)</span></a>
+      <a href="s22market.html"><i class="fas fa-store" style="color: rgb(251, 200, 34);"></i><span>متجر طلبة الـ 22 (S22MARKET)</span></a>
       <a href="DA3MONA_ADATEALM.html"><i class="fas fa-hands-helping"></i><span>دعمنا</span></a>
       <a href="TAWASLE_ADAT_EALM_KISM_EL_TIB.html" class="medical-alert-btn" aria-label="فتح صفحة تواصل معنا">
-  <i class="fas fa-headset"></i>
-  <span>تواصل معنا</span>
-</a>
-
+         <i class="fas fa-headset"></i>
+         <span>تواصل معنا</span>
+      </a>
    </nav>
 </aside>
 
 <main>
-    <div class="module-group">
-        <h2 class="module-group-title">
-            وحدات التعليم المدمجة
-            <span class="foreign-title">Unités d'Enseignement Intégrées (UIE)</span>
-        </h2>
-        <nav class="modules-navigation">
-            <button class="nav-button active" onclick="showSection('uei1', this)">
-                <div>علم النفس، الأعراض، القلب والتنفس</div>
-                <span class="foreign-nav">Psycho, Sémio, Cardio-Respiratoire</span>
-            </button>
-            <button class="nav-button" onclick="showSection('uei2', this)">
-                <div>الجهاز العصبي، الحركي والجلدي</div>
-                <span class="foreign-nav">Neuro, Locomoteur & Cutané</span>
-            </button>
-            <button class="nav-button" onclick="showSection('uei3', this)">
-                <div>الغدد الصماء، التكاثر والجهاز البولي</div>
-                <span class="foreign-nav">Endocrine, Repro & Urinaire</span>
-            </button>
-            <button class="nav-button" onclick="showSection('uei4', this)">
-                <div>الجهاز الهضمي وأعضاء تكوين الدم</div>
-                <span class="foreign-nav">Digestif & Organes Hématopoïétiques</span>
-            </button>
-        </nav>
-    </div>
+    <h1 class="summaries-title">دروس الوحدات الدراسية</h1>
 
-    <div class="module-group">
-        <h2 class="module-group-title">
-            وحدات التعليم المتخصصة
-            <span class="foreign-title">Unités d'Enseignement Thématique (UET)</span>
-        </h2>
-        <nav class="modules-navigation">
-            <button class="nav-button" onclick="showSection('uet1', this)">
-                <div>التشريح وعلم الخلايا المرضي</div>
-                <span class="foreign-nav">Anatomie et Cytologie Pathologiques (ACP)</span>
-            </button>
-            <button class="nav-button" onclick="showSection('uet2', this)">
-                <div>علم المناعة</div>
-                <span class="foreign-nav">Immunologie</span>
-            </button>
-            <button class="nav-button" onclick="showSection('uet3', this)">
-                <div>علم الأحياء الدقيقة الطبي</div>
-                <span class="foreign-nav">Microbiologie Médicale</span>
-            </button>
-             <button class="nav-button" onclick="showSection('uet4', this)">
-                <div>علم الطفيليات والفطريات</div>
-                <span class="foreign-nav">Parasitologie Mycologie</span>
-            </button>
-             <button class="nav-button" onclick="showSection('uet5', this)">
-                <div>علم الأدوية السريري</div>
-                <span class="foreign-nav">Pharmacologie Clinique</span>
-            </button>
-        </nav>
-    </div>
+    <nav class="summaries-navigation" aria-label="التنقل بين الوحدات الدراسية">
+        <button class="nav-button active" onclick="showSection('anatomy', this)">
+            <div>التشريح</div>
+            <div class="english-nav">Anatomy</div>
+        </button>
+        <button class="nav-button" onclick="showSection('biophysics', this)">
+            <div>الفيزياء الحيوية</div>
+            <div class="english-nav">Biophysics</div>
+        </button>
+        <button class="nav-button" onclick="showSection('biochemistry', this)">
+            <div>الكيمياء الحيوية</div>
+            <div class="english-nav">Biochemistry</div>
+        </button>
+        <button class="nav-button" onclick="showSection('biostatistics', this)">
+            <div>الإحصاء الحيوي</div>
+            <div class="english-nav">Biostatistics</div>
+        </button>
+        <button class="nav-button" onclick="showSection('chemistry', this)">
+            <div>الكيمياء</div>
+            <div class="english-nav">Chemistry</div>
+        </button>
+        <button class="nav-button" onclick="showSection('cytology', this)">
+            <div>علم الخلية</div>
+            <div class="english-nav">Cytology</div>
+        </button>
+        <button class="nav-button" onclick="showSection('embryology', this)">
+            <div>علم الأجنة</div>
+            <div class="english-nav">Embryology</div>
+        </button>
+        <button class="nav-button" onclick="showSection('physiology', this)">
+            <div>علم وظائف الأعضاء</div>
+            <div class="english-nav">Physiology</div>
+        </button>
+        <button class="nav-button" onclick="showSection('shh', this)">
+            <div>علوم إنسانية واجتماعية</div>
+            <div class="english-nav">SHH</div>
+        </button>
+        <button class="nav-button" onclick="showSection('histology', this)">
+            <div>علم الأنسجة</div>
+            <div class="english-nav">Histology</div>
+        </button>
+    </nav>
 
     <div class="content-container">
-
-
-
-
-
-
-
-
-
-        <div id="uei1-section" class="content-section active">
+        <div id="anatomy-section" class="content-section active">
             <div class="subject-block">
-                <button class="subject-header" onclick="toggleSubject(this)">
-                    <h2 class="subject-title">❤️ الجهاز القلبي الوعائي (Appareil Cardio-Vasculaire)</h2>
-                    <span class="toggle-icon">+</span>
-                </button>
-                <div class="subject-content">
-                    <p class="empty-section-message" style="font-size: 1.6rem; padding: 2rem;">سيتم إضافة الاختبارات قريباً.</p>
+                <div class="subject-header" onclick="toggleSubject(this, event)">
+                    <div class="subject-title-container">
+                        <h2 class="subject-title">🦴 مقياس التشريح (Anatomy) 🦴</h2>
+                    </div>
+                    <div class="header-controls">
+                        <span class="toggle-icon">+</span>
+                    </div>
                 </div>
-            </div>
-            <div class="subject-block">
-                <button class="subject-header" onclick="toggleSubject(this)">
-                    <h2 class="subject-title">🌬️ الجهاز التنفسي (Appareil Respiratoire)</h2>
-                    <span class="toggle-icon">+</span>
-                </button>
                 <div class="subject-content">
-                    <p class="empty-section-message" style="font-size: 1.6rem; padding: 2rem;">سيتم إضافة الاختبارات قريباً.</p>
-                </div>
-            </div>
-            <div class="subject-block">
-                <button class="subject-header" onclick="toggleSubject(this)">
-                    <h2 class="subject-title">🧠 علم النفس (Psychologie)</h2>
-                    <span class="toggle-icon">+</span>
-                </button>
-                <div class="subject-content">
-                    <p class="empty-section-message" style="font-size: 1.6rem; padding: 2rem;">سيتم إضافة الاختبارات قريباً.</p>
-                </div>
-            </div>
-            <div class="subject-block">
-                <button class="subject-header" onclick="toggleSubject(this)">
-                    <h2 class="subject-title">🩺 علم الأعراض العام (Sémiologie Générale)</h2>
-                    <span class="toggle-icon">+</span>
-                </button>
-                <div class="subject-content">
-                    <p class="empty-section-message" style="font-size: 1.6rem; padding: 2rem;">سيتم إضافة الاختبارات قريباً.</p>
+                    <button class="lesson-button" onclick="toggleLesson(this, event)">
+                        <span><strong>السداسي الْأُولَى: S1</strong></span>
+                        <span class="toggle-icon">+</span>
+                    </button>
+                    <ul class="lesson-materials">
+                        <li>
+                            <button class="lesson-button" onclick="toggleLesson(this, event)">
+                                <span>التَّشْرِيحُ الْوَظِيفِيُّ لِلْجِهَازِ الْقَلْبِيِّ الْوِعَائِيِّ</span>
+                                <span class="lesson-lang">FUNCTIONAL ANATOMY OF THE CARDIOVASCULAR SYSTEM</span>
+                            </button>
+                            <ul class="lesson-materials">
+                                <li class="summary-item"> <a href="#" class="summary-link">الدُّخُولُ للاختبار</a><p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <button class="lesson-button" onclick="toggleLesson(this, event)">
+                        <span><strong>السداسي الثاني : S2</strong></span>
+                        <span class="toggle-icon">+</span>
+                    </button>
+                    <ul class="lesson-materials">
+                         <li>
+                            <button class="lesson-button" onclick="toggleLesson(this, event)">
+                                <span>التَّشْرِيحُ الْوَظِيفِيُّ لِلْجِهَازِ التَّنَفُّسِيِّ</span>
+                                <span class="lesson-lang">FUNCTIONAL ANATOMY OF THE RESPIRATORY SYSTEM</span>
+                            </button>
+                            <ul class="lesson-materials">
+                                <li class="summary-item"> <a href="#" class="summary-link">الدُّخُولُ للاختبار</a><p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-        <div id="uei2-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
-        <div id="uei3-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
-        <div id="uei4-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
         
+        <div id="biophysics-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="biochemistry-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="biostatistics-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="chemistry-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div id="uet1-section" class="content-section">
-
-
-
-
-
+        <div id="cytology-section" class="content-section">
             <div class="subject-block">
-                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
-                    <h2 class="subject-title"> التشريح وعلم الخلايا المرضي
-🔬🧫
-                        (Anatomie et Cytologie Pathologiques (ACP))
- </h2>
-                    <span class="toggle-icon">+</span>
-                </button>
-<div class="subject-content">
+                 <div class="subject-header" onclick="toggleSubject(this, event)">
+                    <div class="subject-title-container">
+                       <h2 class="subject-title">🔬 عِلْمِ الخلية (Cytology) 🔬</h2>
+                    </div>
+                    <div class="header-controls">
+                        <span class="toggle-icon">+</span>
+                    </div>
+                </div>
+                <div class="subject-content">
+                    
+                    <div class="subject-block">
+                        <div class="subject-header" onclick="toggleSubject(this, event)">
+                             <div class="subject-title-container">
+                               <h2 class="subject-title">كلية عنابة</h2>
+                            </div>
+                             <div class="header-controls">
+                                <span class="toggle-icon">+</span>
+                            </div>
+                        </div>
+                        <div class="subject-content">
+                            <button class="lesson-button" onclick="toggleLesson(this, event)">
+                                <span><strong>السداسي الْأُولَى: S1</strong></span>
+                                <span class="toggle-icon">+</span>
+                            </button>
+                            <ul class="lesson-materials">
+                               <li>
+                                    <button class="lesson-button" onclick="toggleLesson(this, event)">
+                                        <span>اِخْتِبَارُ الدَّوْرَةِ  العَادِيَّةِ 2024-2025</span>
+                                        <span class="lesson-lang">ANNABA 2024-2025 EXAM</span>
+                                    </button>
+                                    <ul class="lesson-materials">
+                                        <li class="summary-item"><a href="exam_med01_cytology_annaba_s1_2024_2025.html" class="summary-link">الدخول للاختبار</a><p>السنة 2025 قيد التجهيز.</p></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <button class="lesson-button" onclick="toggleLesson(this, event)">
+                                        <span>اِخْتِبَارُ الدَّوْرَةِ العاديةُ 2023-2024</span>
+                                        <span class="lesson-lang">ANNABA 2023-2024 EXAM</span>
+                                    </button>
+                                    <ul class="lesson-materials">
+                                        <li class="summary-item"><a href="" class="summary-link">الدخول للاختبار</a><p>السنة 2024 قيد التجهيز.</p></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <button class="lesson-button" onclick="toggleLesson(this, event)">
+                                <span><strong>السداسي الثاني : S2</strong></span>
+                                <span class="toggle-icon">+</span>
+                            </button>
+                             <ul class="lesson-materials">
+                                <li><p class="empty-section-message" style="padding: 1.5rem; font-size: 1.5rem;">لا يوجد محتوى حالياً.</p></li>
+                            </ul>
+                        </div>
+                    </div>
 
-<!-- الدرس 1 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-anatpath">
-  <span>مَكَانُ عِلْمِ الأَنَاتُومِيَا البَاتُولُوجِيَا فِي الطِّبِّ</span>
-  <span class="lesson-lang">PLACE DE L'ANATOMIE PATHOLOGIQUE EN MÉDECINE</span>
-  <span>PLACE OF PATHOLOGICAL ANATOMY IN MEDICINE</span>
-</button>
-<ul id="lesson-anatpath" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_PLACE_ANATOMIE_PATHOLOGIQUE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">إصْدَارُ 8 رَبِيعٍ الآخِر 1447 المُوَافِقُ لِ1 أُكْتُوبَر 2025</p>
-  </li>
-</ul>
+                    <div class="subject-block">
+                        <div class="subject-header" onclick="toggleSubject(this, event)">
+                           <div class="subject-title-container">
+                            <h2 class="subject-title">ملحقة سكيكدة</h2>
+                           </div>
+                           <div class="header-controls">
+                            <span class="toggle-icon">+</span>
+                           </div>
+                        </div>
+                        <div class="subject-content">
+                           <button class="lesson-button" onclick="toggleLesson(this, event)">
+                                <span><strong>السداسي الْأُولَى: S1</strong></span>
+                                <span class="toggle-icon">+</span>
+                            </button>
+                            <ul class="lesson-materials">
+                               <li>
+                                    <button class="lesson-button" onclick="toggleLesson(this, event)">
+                                        <span> اِخْتِبَارُ الدَّوْرَةِ العَادِيَّةِ 2024-2025 </span>
+                                        <span class="lesson-lang">SKIKDA 2024-2025 EXAM</span>
+                                    </button>
+                                    <ul class="lesson-materials">
+                                        <li class="summary-item"><a href="exam_med02_endocrine-2025-skikda.html" class="summary-link">الدخول للاختبار </a><p>السنة 2025 قيد التجهيز.</p></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                             <button class="lesson-button" onclick="toggleLesson(this, event)">
+                                <span><strong>السداسي الثاني : S2</strong></span>
+                                 <span class="toggle-icon">+</span>
+                            </button>
+                             <ul class="lesson-materials">
+                                <li><p class="empty-section-message" style="padding: 1.5rem; font-size: 1.5rem;">لا يوجد محتوى حالياً.</p></li>
+                            </ul>
+                        </div>
+                    </div>
 
-<!-- الدرس 2 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-inflam">
-  <span>العَمَلِيَّةُ الاِلْتِهَابِيَّةُ العَادِيَةُ</span>
-  <span class="lesson-lang">PROCESSUS INFLAMMATOIRE BANAL</span>
-  <span>COMMON INFLAMMATORY PROCESS</span>
-</button>
-<ul id="lesson-inflam" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_PROCESSUS_INFLAMMATOIRE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 3 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-lesions">
-  <span>الآفَاتُ الخَلَوِيَّةُ وَالنَّسِيجِيَّةُ (النَّخَرُ - الاِسْتِمَاتَةُ)</span>
-  <span class="lesson-lang">LÉSIONS CELLULAIRES ET TISSULAIRES (NÉCROSE - APOPTOSE)</span>
-  <span>CELLULAR AND TISSUE LESIONS</span>
-</button>
-<ul id="lesson-lesions" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_LESIONS_CELLULAIRES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 4 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-vasc">
-  <span>الأَمْرَاضُ الوِعَائِيَّةُ وَاضْطِرَابَاتُ الدَّوَرَانِ</span>
-  <span class="lesson-lang">PATHOLOGIE VASCULAIRE ET TROUBLES CIRCULATOIRES</span>
-  <span>VASCULAR PATHOLOGY AND CIRCULATORY DISORDERS</span>
-</button>
-<ul id="lesson-vasc" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_VASCULAIRE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 5 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-metabo">
-  <span>اضْطِرَابَاتُ الأَيْضِ الخَلَوِيِّ</span>
-  <span class="lesson-lang">TROUBLES DU MÉTABOLISME CELLULAIRE</span>
-  <span>CELLULAR METABOLISM DISORDERS</span>
-</button>
-<ul id="lesson-metabo" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_METABOLISME.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 6 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-atherosclero">
-  <span>تَصَلُّبُ الشَّرَايِينِ</span>
-  <span class="lesson-lang">ATHÉROSCLÉROSE</span>
-  <span>ATHEROSCLEROSIS</span>
-</button>
-<ul id="lesson-atherosclero" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_ATHEROSCLEROSE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 7 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-infarctus">
-  <span>الاِحْتِشَاءُ</span>
-  <span class="lesson-lang">INFARCTUS</span>
-  <span>INFARCTION</span>
-</button>
-<ul id="lesson-infarctus" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_INFARCTUS.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- باقي الدروس على نفس النموذج -->
-<!-- الدرس 8 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-matrix">
-  <span>أَمْرَاضُ المَادَّةِ الخَلْفِيَّةِ الخَلَوِيَّةِ</span>
-  <span class="lesson-lang">PATHOLOGIES DE LA MATRICE EXTRACELLULAIRE</span>
-  <span>EXTRACELLULAR MATRIX PATHOLOGIES</span>
-</button>
-<ul id="lesson-matrix" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_MATRICE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 9 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-formes-inflam">
-  <span>أَشْكَالُ الاِلْتِهَابِ العَادِيِّ</span>
-  <span class="lesson-lang">FORMES DE L'INFLAMMATION BANALE</span>
-  <span>FORMS OF COMMON INFLAMMATION</span>
-</button>
-<ul id="lesson-formes-inflam" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_FORMES_INFLAM.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 10 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-infections">
-  <span>المَظَاهِرُ الأَنَاتُومُوبَاتُولُوجِيَّةُ لِلعُدْوَى (الاِلْتِهَابُ الخَاصُّ)</span>
-  <span class="lesson-lang">ASPECTS ANATOMOPATHOLOGIQUES DES INFECTIONS (INFLAM. SPÉCIFIQUE)</span>
-  <span>PATHOLOGICAL FEATURES OF INFECTIONS</span>
-</button>
-<ul id="lesson-infections" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_INFECTIONS.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 11 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-immun">
-  <span>المَظَاهِرُ الأَنَاتُومُوبَاتُولُوجِيَّةُ لِلمَرَاضِ المَنَاعِيَّةِ</span>
-  <span class="lesson-lang">ASPECTS ANATOMOPATHOLOGIQUES DES AFFECTIONS IMMUNITAIRES</span>
-  <span>PATHOLOGICAL FEATURES OF IMMUNE DISEASES</span>
-</button>
-<ul id="lesson-immun" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_IMMUN.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 12 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-tumoral">
-  <span>الأَمْرَاضُ الوَرَمِيَّةُ</span>
-  <span class="lesson-lang">PATHOLOGIE TUMORALE</span>
-  <span>TUMOR PATHOLOGY</span>
-</button>
-<ul id="lesson-tumoral" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMORALE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 13 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-classif">
-  <span>أُسُسُ تَصْنِيفِ الأَوْرَامِ</span>
-  <span class="lesson-lang">BASES DE CLASSIFICATION DES TUMEURS</span>
-  <span>BASIS OF TUMOR CLASSIFICATION</span>
-</button>
-<ul id="lesson-classif" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_CLASSIFICATION_TUMEURS.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 14 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-carcino">
-  <span>آلِيَّاتُ التَّسَرْطُنِ</span>
-  <span class="lesson-lang">MÉCANISMES DE LA CARCINOGÉNÈSE</span>
-  <span>MECHANISMS OF CARCINOGENESIS</span>
-</button>
-<ul id="lesson-carcino" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_CARCINOGENESE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 15 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-etiopatho">
-  <span>مُسَبِّبَاتُ الأَوْرَامِ وَآلِيَّاتُهَا</span>
-  <span class="lesson-lang">ETIOPATHOGÉNIE DES CANCERS</span>
-  <span>ETIOPATHOGENESIS OF CANCERS</span>
-</button>
-<ul id="lesson-etiopatho" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_ETIOPATHOGENIE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 16 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-cell-cancer">
-  <span>الخَلِيَّةُ السَّرَطَانِيَّةُ</span>
-  <span class="lesson-lang">CELLULE CANCÉREUSE</span>
-  <span>CANCER CELL</span>
-</button>
-<ul id="lesson-cell-cancer" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_CELLULE_CANCEREUSE.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 17 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-stroma">
-  <span>السِّدَى الوَرَمِيُّ</span>
-  <span class="lesson-lang">STROMA TUMORAL</span>
-  <span>TUMOR STROMA</span>
-</button>
-<ul id="lesson-stroma" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_STROMA.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 18 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-metastases">
-  <span>النَّقَائِلُ</span>
-  <span class="lesson-lang">MÉTASTASES</span>
-  <span>METASTASES</span>
-</button>
-<ul id="lesson-metastases" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_METASTASES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 19 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-epithel">
-  <span>الأَوْرَامُ الظِّهَارِيَّةُ</span>
-  <span class="lesson-lang">TUMEURS ÉPITHÉLIALES</span>
-  <span>EPITHELIAL TUMORS</span>
-</button>
-<ul id="lesson-epithel" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_EPITHELIALES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 20 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gland">
-  <span>الأَوْرَامُ الغُدِّيَّةُ</span>
-  <span class="lesson-lang">TUMEURS GLANDULAIRES</span>
-  <span>GLANDULAR TUMORS</span>
-</button>
-<ul id="lesson-gland" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_GLANDULAIRES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 21 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-urothelial">
-  <span>الأَوْرَامُ البَطَانِيَّةُ البَوْلِيَّةُ</span>
-  <span class="lesson-lang">TUMEURS UROTHÉLIALES</span>
-  <span>UROTHELIAL TUMORS</span>
-</button>
-<ul id="lesson-urothelial" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_UROTHELIALES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 22 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-conj">
-  <span>الأَوْرَامُ النَّسِيجِيَّةُ الرَّابِطَةُ</span>
-  <span class="lesson-lang">TUMEURS CONJONCTIVES</span>
-  <span>CONNECTIVE TISSUE TUMORS</span>
-</button>
-<ul id="lesson-conj" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_CONJONCTIVES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 23 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-lymphome">
-  <span>اللِّمْفُومَاتُ</span>
-  <span class="lesson-lang">LYMPHOMES</span>
-  <span>LYMPHOMAS</span>
-</button>
-<ul id="lesson-lymphome" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_LYMPHOMES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 24 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-embryon">
-  <span>الأَوْرَامُ الجَنِينِيَّةُ</span>
-  <span class="lesson-lang">TUMEURS EMBRYONNAIRES</span>
-  <span>EMBRYONAL TUMORS</span>
-</button>
-<ul id="lesson-embryon" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_EMBRYONNAIRES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 25 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-melano">
-  <span>الأَوْرَامُ المِيلَانِينِيَّةُ</span>
-  <span class="lesson-lang">TUMEURS MÉLANOCYTAIRES</span>
-  <span>MELANOCYTIC TUMORS</span>
-</button>
-<ul id="lesson-melano" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_MELANOCYTARES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-<!-- الدرس 26 -->
-<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-nerveuses">
-  <span>الأَوْرَامُ العَصَبِيَّةُ</span>
-  <span class="lesson-lang">TUMEURS NERVEUSES</span>
-  <span>NERVE TUMORS</span>
-</button>
-<ul id="lesson-nerveuses" class="lesson-materials">
-  <li class="summary-item">
-    <a href="EL_MOLAKHS_MED02_U2_PATHOLOGIE_TUMEURS_NERVEUSES.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
-    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
-    <p style="color: #3498db; font-weight: bold">قريباً</p>
-  </li>
-</ul>
-
-
-
-
-
+                </div>
+            </div>
         </div>
-
-        </div>
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-        <div id="uet2-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
-        <div id="uet3-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
-        <div id="uet4-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
-        <div id="uet5-section" class="content-section"><p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p></div>
+        <div id="embryology-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="physiology-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="shh-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+        <div id="histology-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
     </div>
 </main>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <div class="medical-overlay" id="medicalOverlay"></div>
 <div class="medical-popup-container" id="medicalPopupContainer" role="dialog" aria-modal="true" aria-labelledby="medicalPopupTitle">
@@ -1122,11 +580,7 @@
         </div>
     </div>
 </div>
-
-
-
-
-
+   
 <script type="module">
   // Firebase SDK imports
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -1247,7 +701,6 @@
         applyTheme(localStorage.getItem('theme'));
         toggleBtn.addEventListener('click', () => { let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark'; applyTheme(newTheme); localStorage.setItem('theme', newTheme); });
         
-        // Initialize first section
         const firstNavButton = document.querySelector('.modules-navigation .nav-button');
         if (firstNavButton) { showSection('uei1', firstNavButton); }
     });
@@ -1260,21 +713,85 @@
         if (clickedButton) clickedButton.classList.add('active');
     }
 
-    function toggleSubject(headerButton) {
-        const subjectBlock = headerButton.parentElement;
-        const content = headerButton.nextElementSibling;
-        const isOpening = !subjectBlock.classList.contains('is-open');
+    function toggleSubject(headerButton, event) {
+        event.stopPropagation();
+        const subjectBlock = headerButton.closest('.subject-block');
+        const content = subjectBlock.querySelector(':scope > .subject-content');
+        if (!content) return;
 
-        subjectBlock.closest('.content-section').querySelectorAll('.subject-block').forEach(block => {
-            block.classList.remove('is-open');
-            const blockContent = block.querySelector('.subject-content');
-            if (blockContent) blockContent.style.maxHeight = '0px';
+        const isOpening = !subjectBlock.classList.contains('is-open');
+        const parentContainer = subjectBlock.parentElement;
+
+        // Close sibling .subject-block elements
+        parentContainer.querySelectorAll(':scope > .subject-block').forEach(sibling => {
+            if (sibling !== subjectBlock) {
+                sibling.classList.remove('is-open');
+                const siblingContent = sibling.querySelector(':scope > .subject-content');
+                if (siblingContent) siblingContent.style.maxHeight = '0px';
+            }
         });
 
         if (isOpening) {
             subjectBlock.classList.add('is-open');
             content.style.maxHeight = content.scrollHeight + 'px';
+        } else {
+            subjectBlock.classList.remove('is-open');
+            content.style.maxHeight = '0px';
         }
+
+        // Adjust parent scroll height
+        setTimeout(() => {
+            const parentContent = subjectBlock.closest('.subject-content');
+            if (parentContent && parentContent.style.maxHeight !== '0px') {
+                parentContent.style.maxHeight = parentContent.scrollHeight + 'px';
+            }
+        }, 400);
+    }
+
+    function toggleLesson(lessonButton, event) {
+        event.stopPropagation();
+        
+        const parentLi = lessonButton.closest('li');
+        const isDirectToggle = !parentLi; // Check if the button is not inside an LI
+        
+        const targetElement = isDirectToggle ? lessonButton : parentLi;
+        const content = targetElement.querySelector('.lesson-materials') || lessonButton.nextElementSibling;
+        
+        if (!content || !content.classList.contains('lesson-materials')) return;
+
+        const isOpening = !lessonButton.classList.contains('active');
+        const parentContainer = targetElement.parentElement;
+
+        // Close sibling lessons
+        parentContainer.querySelectorAll(':scope > li, :scope > .lesson-button').forEach(sibling => {
+            const siblingButton = sibling.tagName === 'LI' ? sibling.querySelector('.lesson-button') : sibling;
+            if (siblingButton && siblingButton !== lessonButton) {
+                siblingButton.classList.remove('active');
+                const siblingContent = sibling.querySelector('.lesson-materials') || siblingButton.nextElementSibling;
+                if (siblingContent && siblingContent.classList.contains('lesson-materials')) {
+                    siblingContent.style.maxHeight = '0px';
+                }
+            }
+        });
+        
+        if (isOpening) {
+            lessonButton.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + 'px';
+        } else {
+            lessonButton.classList.remove('active');
+            content.style.maxHeight = '0px';
+        }
+        
+        // Adjust parent scroll height
+        setTimeout(() => {
+            let parentContent = lessonButton.closest('.subject-content, .lesson-materials');
+            while(parentContent) {
+                if(parentContent.style.maxHeight && parentContent.style.maxHeight !== '0px') {
+                    parentContent.style.maxHeight = parentContent.scrollHeight + 'px';
+                }
+                parentContent = parentContent.parentElement.closest('.subject-content, .lesson-materials');
+            }
+        }, 400);
     }
 
     // "Contact Us" Popup script
@@ -1321,8 +838,7 @@
             TAWASLE_ADAT_TAHDITAT_MED02_closePopup();
         }
     });
+     
 </script>
-
-
 </body>
 </html>
