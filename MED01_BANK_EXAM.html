@@ -138,7 +138,7 @@
       .subject-header { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: clamp(1.5rem, 4vw, 2rem); background-color: transparent; border: none; cursor: pointer; text-align: right; }
       .subject-title { font-size: clamp(1.8rem, 5vw, 2.2rem); color: var(--primary-dark); margin: 0; }
       .toggle-icon { font-size: 2.8rem; font-weight: 300; color: var(--primary-color); transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-left: 15px; }
-      .subject-block.is-open .toggle-icon, .lesson-button.active .toggle-icon { transform: rotate(45deg); }
+      .subject-block.is-open .toggle-icon { transform: rotate(45deg); }
       .subject-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; padding: 0 clamp(1.5rem, 4vw, 2rem); }
       .empty-section-message { background-color: var(--bg-card); padding: 3rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); color: var(--text-secondary); text-align: center; font-size: 1.7rem; }
       .module-group { background-color: var(--bg-card); border-radius: var(--radius); padding: 2.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
@@ -193,34 +193,181 @@
       @media (max-width: 400px) { .summaries-navigation { flex-direction: column; gap: 10px; } .nav-button { width: 100%; } }
    </style>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <style>
+        /*
+         * ملاحظة: هذه الأنماط مُحسّنة وتكمل الأنماط العامة للوحة التحكم.
+         */
+
+        .summaries-title {
+            font-size: clamp(2.2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        /* حاوية أزرار التنقل */
+        .summaries-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .nav-button {
+            padding: 12px 18px;
+            font-size: clamp(1.5rem, 3vw, 1.6rem);
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            flex-grow: 1;
+            flex-basis: 150px;
+            box-shadow: var(--shadow-sm);
+            touch-action: manipulation;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .nav-button .english-nav {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            transition: color 0.25s ease;
+        }
+
+        .nav-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 137, 123, 0.25);
+        }
+
+        .nav-button.active .english-nav {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subject-block {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
         .subject-block.is-open {
              box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
         
         .subject-header {
-            gap: 1.5rem;
-        }
-        
-        .subject-title-container {
-            flex-grow: 1;
-        }
-
-        .subject-title {
-            padding: 0;
-            border: none;
-        }
-        
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .lesson-button {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
+            padding: clamp(1.5rem, 4vw, 2rem);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .subject-title {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            color: var(--primary-dark);
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .toggle-icon {
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--primary-color);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-left: 15px;
+        }
+
+        .subject-block.is-open .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .subject-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 clamp(1.5rem, 4vw, 2rem);
+        }
+
+        .lesson-button {
             background-color: var(--bg-body);
             color: var(--text-primary);
             font-size: clamp(1.6rem, 4vw, 1.7rem);
@@ -267,11 +414,8 @@
             overflow: hidden;
             transition: max-height 0.4s ease-out, padding 0.4s ease-out;
         }
+        .lesson-materials.open { padding: 1.5rem; }
         
-        .summary-item {
-             padding: 1.5rem;
-        }
-
         .summary-item a {
             display: block; text-decoration: none;
             color: var(--white); font-weight: 600;
@@ -285,11 +429,76 @@
             font-size: 1.3rem; color: var(--text-secondary);
             margin: 8px 0 0 0; text-align: center;
         }
+        
+        .empty-section-message {
+            background-color: var(--bg-card);
+            padding: 3rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
+            color: var(--text-secondary); text-align: center;
+            font-size: 1.7rem;
+        }
 
+        /* Logout Modal Styles */
+        .logout-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
+        }
+        .logout-modal {
+            background-color: var(--bg-card); color: var(--text-primary);
+            padding: 3rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); text-align: center;
+            width: 90%; max-width: 40rem;
+        }
+        .logout-modal h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .logout-modal p { font-size: 1.6rem; color: var(--text-secondary); margin-bottom: 2.5rem; }
+        .logout-modal-buttons { display: flex; justify-content: center; gap: 1.5rem; }
+        .logout-modal-buttons button {
+            padding: 1rem 2rem; font-size: 1.5rem; font-weight: 600;
+            border-radius: var(--radius); cursor: pointer; border: 1px solid transparent;
+            transition: all .2s;
+        }
+        .logout-modal-buttons .confirm-btn { background-color: var(--red); color: var(--white); }
+        .logout-modal-buttons .confirm-btn:hover { background-color: #c0392b; }
+        .logout-modal-buttons .cancel-btn {
+            background-color: transparent; color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+        .logout-modal-buttons .cancel-btn:hover { background-color: var(--bg-body); }
+
+        .message-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background-color: var(--bg-card); color: var(--text-primary);
+            padding: 3rem 4rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); text-align: center;
+            z-index: 2001; display: none;
+        }
+        .message-modal p { font-size: 2rem; font-weight: 600; }
+
+        @media (max-width: 400px) {
+            .summaries-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-button { width: 100%; }
+        }
     </style>
+
+
+
+
+
+
 </head>
 <body class="">
 
+
+
+
+
+
+
+  
 
 <div class="overlay"></div>
 
@@ -297,7 +506,7 @@
    <section class="flex">
       <a href="home_MED03.html" class="logo">
          <span class="main-title">أداة علم</span>
-         <span class="subtitle">الأولى <br>طب</span>
+         <span class="subtitle">الثالثة<br>طب</span>
       </a>
       <div class="icons">
          <div id="toggle-btn" class="icon-btn fas fa-sun" title="الوضع"></div>
@@ -308,38 +517,86 @@
             </div>
             <div id="Tawasle-Notif-Menu" class="Tawasle-Notif-Dropdown"></div>
          </div>
-         <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
+        <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
          <div id="menu-btn" class="fas fa-bars icon-btn" title="القائمة"></div>
          <div class="profile-dropdown">
             <img src="S22MCS PARTS/قسم الطب.jpg" class="image" alt="صورة القسم">
-            <h3 class="name">قسم الطب</h3>
-            <p class="role">التابعة لأداة علم</p>
+            <h3 class="name">قسم السنة ثالثة  طب </h3>
+            <p class="role">تسجيل الخروج سيقودك الى صفحة السنوات   </p>
             <a href="MED_profile.html" class="btn">عرض الملف الشخصي</a>
-            <a href="adatealm_med_intro.html" id="logout-btn" class="btn logout">تسجيل الخروج</a>
+            <a href="adatealm_med.html" id="logout-btn" class="btn logout">تسجيل الخروج</a>
          </div>
       </div>
    </section>
-</header>
+</header>   
 
-<aside class="side-bar">
+
+
+
+
+
+
+
+      <aside class="side-bar">
    <div class="close-btn-container">
       <div id="close-btn" class="fas fa-times icon-btn"></div>
    </div>
    <nav class="navbar">
       <a href="home_MED03.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-      <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"><i class="fas fa-quran"></i><span>وردك اليومي من القران الكريم</span></a>
+   <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"><i class="fas fa-quran"></i><span>وردك اليومي من القران الكريم</span></a>
       <a href="اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ.html"><i class="fas fa-praying-hands"></i><span>زر الاستغفار والتسبيح</span></a>
+    
       <a href="KAM_BAKIYA_LI.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك (كم بقي لك)</span></a>
       <a href="WAJIBATI_ADAT_EALM.html"><i class="fas fa-clipboard-check"></i><span>واجباتي</span></a>
-      <a href="TBR3_BLDAM.html"><i class="fas fa-tint"></i><span>  التبرع بالدم     (أداة شفاء)</span></a>
-      <a href="s22market.html"><i class="fas fa-store" style="color: rgb(251, 200, 34);"></i><span>متجر طلبة الـ 22 (S22MARKET)</span></a>
+      
+<a href="TBR3_BLDAM.html"><i class="fas fa-tint"></i><span>  التبرع بالدم     (أداة شفاء)</span></a>
+    <a href="s22market.html"><i class="fas fa-store" style="color: rgb(251, 200, 34);"></i><span>متجر طلبة الـ 22 (S22MARKET)</span></a>
       <a href="DA3MONA_ADATEALM.html"><i class="fas fa-hands-helping"></i><span>دعمنا</span></a>
       <a href="TAWASLE_ADAT_EALM_KISM_EL_TIB.html" class="medical-alert-btn" aria-label="فتح صفحة تواصل معنا">
-         <i class="fas fa-headset"></i>
-         <span>تواصل معنا</span>
-      </a>
+  <i class="fas fa-headset"></i>
+  <span>تواصل معنا</span>
+</a>
+
    </nav>
 </aside>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <main>
     <h1 class="summaries-title">دروس الوحدات الدراسية</h1>
@@ -539,6 +796,38 @@
     </div>
 </main>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="medical-overlay" id="medicalOverlay"></div>
 <div class="medical-popup-container" id="medicalPopupContainer" role="dialog" aria-modal="true" aria-labelledby="medicalPopupTitle">
     <div class="medical-popup-header">
@@ -580,7 +869,26 @@
         </div>
     </div>
 </div>
-   
+
+<div class="logout-modal-overlay" id="logout-confirm-overlay">
+    <div class="logout-modal">
+        <h3>تأكيد تسجيل الخروج</h3>
+        <p>سيتم نقلك إلى صفحة السنوات. هل تريد المتابعة؟</p>
+        <div class="logout-modal-buttons">
+            <button class="cancel-btn" id="cancel-logout-btn">لا</button>
+            <button class="confirm-btn" id="confirm-logout-btn">نعم</button>
+        </div>
+    </div>
+</div>
+
+<div class="message-modal" id="logout-message-modal">
+    <p>السلام عليكم</p>
+</div>
+
+
+
+
+
 <script type="module">
   // Firebase SDK imports
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -677,6 +985,13 @@
         const profileBtn = document.querySelector('#user-btn');
         const profileDropdown = document.querySelector('.profile-dropdown');
         const toggleBtn = document.querySelector('#toggle-btn');
+        
+        // Logout functionality
+        const logoutBtn = document.querySelector('#logout-btn');
+        const logoutConfirmOverlay = document.getElementById('logout-confirm-overlay');
+        const confirmLogoutBtn = document.getElementById('confirm-logout-btn');
+        const cancelLogoutBtn = document.getElementById('cancel-logout-btn');
+        const logoutMessageModal = document.getElementById('logout-message-modal');
 
         const closeAllPopups = () => {
             sideBar.classList.remove('active');
@@ -692,7 +1007,26 @@
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllPopups(); });
         document.querySelectorAll('.side-bar .navbar a').forEach(link => { link.addEventListener('click', closeAllPopups); });
 
-        document.querySelector('#logout-btn').addEventListener('click', (e) => { e.preventDefault(); alert('تم تسجيل الخروج بنجاح!'); window.location.href = 'INDEX.html'; });
+        // New logout logic
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logoutConfirmOverlay.style.display = 'flex';
+        });
+
+        cancelLogoutBtn.addEventListener('click', () => {
+            logoutConfirmOverlay.style.display = 'none';
+        });
+
+        confirmLogoutBtn.addEventListener('click', () => {
+            logoutConfirmOverlay.style.display = 'none';
+            logoutMessageModal.style.display = 'block';
+
+            setTimeout(() => {
+                logoutMessageModal.style.display = 'none';
+                window.location.href = 'adatealm_med.html'; 
+            }, 1500); // Wait 1.5 seconds before redirecting
+        });
+
 
         const applyTheme = (theme) => {
             if (theme === 'dark') { body.classList.add('dark-mode'); toggleBtn.classList.replace('fa-sun', 'fa-moon'); } 
@@ -701,6 +1035,7 @@
         applyTheme(localStorage.getItem('theme'));
         toggleBtn.addEventListener('click', () => { let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark'; applyTheme(newTheme); localStorage.setItem('theme', newTheme); });
         
+        // Initialize first section
         const firstNavButton = document.querySelector('.modules-navigation .nav-button');
         if (firstNavButton) { showSection('uei1', firstNavButton); }
     });
@@ -713,85 +1048,21 @@
         if (clickedButton) clickedButton.classList.add('active');
     }
 
-    function toggleSubject(headerButton, event) {
-        event.stopPropagation();
-        const subjectBlock = headerButton.closest('.subject-block');
-        const content = subjectBlock.querySelector(':scope > .subject-content');
-        if (!content) return;
-
+    function toggleSubject(headerButton) {
+        const subjectBlock = headerButton.parentElement;
+        const content = headerButton.nextElementSibling;
         const isOpening = !subjectBlock.classList.contains('is-open');
-        const parentContainer = subjectBlock.parentElement;
 
-        // Close sibling .subject-block elements
-        parentContainer.querySelectorAll(':scope > .subject-block').forEach(sibling => {
-            if (sibling !== subjectBlock) {
-                sibling.classList.remove('is-open');
-                const siblingContent = sibling.querySelector(':scope > .subject-content');
-                if (siblingContent) siblingContent.style.maxHeight = '0px';
-            }
+        subjectBlock.closest('.content-section').querySelectorAll('.subject-block').forEach(block => {
+            block.classList.remove('is-open');
+            const blockContent = block.querySelector('.subject-content');
+            if (blockContent) blockContent.style.maxHeight = '0px';
         });
 
         if (isOpening) {
             subjectBlock.classList.add('is-open');
             content.style.maxHeight = content.scrollHeight + 'px';
-        } else {
-            subjectBlock.classList.remove('is-open');
-            content.style.maxHeight = '0px';
         }
-
-        // Adjust parent scroll height
-        setTimeout(() => {
-            const parentContent = subjectBlock.closest('.subject-content');
-            if (parentContent && parentContent.style.maxHeight !== '0px') {
-                parentContent.style.maxHeight = parentContent.scrollHeight + 'px';
-            }
-        }, 400);
-    }
-
-    function toggleLesson(lessonButton, event) {
-        event.stopPropagation();
-        
-        const parentLi = lessonButton.closest('li');
-        const isDirectToggle = !parentLi; // Check if the button is not inside an LI
-        
-        const targetElement = isDirectToggle ? lessonButton : parentLi;
-        const content = targetElement.querySelector('.lesson-materials') || lessonButton.nextElementSibling;
-        
-        if (!content || !content.classList.contains('lesson-materials')) return;
-
-        const isOpening = !lessonButton.classList.contains('active');
-        const parentContainer = targetElement.parentElement;
-
-        // Close sibling lessons
-        parentContainer.querySelectorAll(':scope > li, :scope > .lesson-button').forEach(sibling => {
-            const siblingButton = sibling.tagName === 'LI' ? sibling.querySelector('.lesson-button') : sibling;
-            if (siblingButton && siblingButton !== lessonButton) {
-                siblingButton.classList.remove('active');
-                const siblingContent = sibling.querySelector('.lesson-materials') || siblingButton.nextElementSibling;
-                if (siblingContent && siblingContent.classList.contains('lesson-materials')) {
-                    siblingContent.style.maxHeight = '0px';
-                }
-            }
-        });
-        
-        if (isOpening) {
-            lessonButton.classList.add('active');
-            content.style.maxHeight = content.scrollHeight + 'px';
-        } else {
-            lessonButton.classList.remove('active');
-            content.style.maxHeight = '0px';
-        }
-        
-        // Adjust parent scroll height
-        setTimeout(() => {
-            let parentContent = lessonButton.closest('.subject-content, .lesson-materials');
-            while(parentContent) {
-                if(parentContent.style.maxHeight && parentContent.style.maxHeight !== '0px') {
-                    parentContent.style.maxHeight = parentContent.scrollHeight + 'px';
-                }
-                parentContent = parentContent.parentElement.closest('.subject-content, .lesson-materials');
-            }
-        }, 400);
     }
 
     // "Contact Us" Popup script
@@ -838,7 +1109,49 @@
             TAWASLE_ADAT_TAHDITAT_MED02_closePopup();
         }
     });
-     
 </script>
+
+<script>
+    // ... (كل الأكواد السابقة موجودة هنا) ...
+
+    function toggleLesson(button) {
+        const lessonMaterials = button.nextElementSibling;
+        const isOpen = lessonMaterials.classList.contains('open');
+
+        // إغلاق أي درس آخر مفتوح في نفس القائمة
+        const parentContent = button.closest('.subject-content');
+        parentContent.querySelectorAll('.lesson-materials.open').forEach(openLesson => {
+            if (openLesson !== lessonMaterials) {
+                openLesson.classList.remove('open');
+                openLesson.style.maxHeight = '0px';
+                openLesson.previousElementSibling.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // فتح أو إغلاق الدرس الحالي
+        if (isOpen) {
+            lessonMaterials.classList.remove('open');
+            lessonMaterials.style.maxHeight = '0px';
+            button.setAttribute('aria-expanded', 'false');
+        } else {
+            lessonMaterials.classList.add('open');
+            // أضفنا padding للـ scrollHeight ليتناسب مع التصميم
+            lessonMaterials.style.maxHeight = lessonMaterials.scrollHeight + 30 + 'px';
+            button.setAttribute('aria-expanded', 'true');
+        }
+    }
+
+
+    // Global Escape key listener for all modals
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            medicalClosePopup();
+            closeModal();
+            TAWASLE_ADAT_TAHDITAT_MED02_closePopup();
+        }
+    });
+</script>
+
+
 </body>
 </html>

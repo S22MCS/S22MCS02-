@@ -438,6 +438,43 @@
             font-size: 1.7rem;
         }
 
+        /* Logout Modal Styles */
+        .logout-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
+        }
+        .logout-modal {
+            background-color: var(--bg-card); color: var(--text-primary);
+            padding: 3rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); text-align: center;
+            width: 90%; max-width: 40rem;
+        }
+        .logout-modal h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .logout-modal p { font-size: 1.6rem; color: var(--text-secondary); margin-bottom: 2.5rem; }
+        .logout-modal-buttons { display: flex; justify-content: center; gap: 1.5rem; }
+        .logout-modal-buttons button {
+            padding: 1rem 2rem; font-size: 1.5rem; font-weight: 600;
+            border-radius: var(--radius); cursor: pointer; border: 1px solid transparent;
+            transition: all .2s;
+        }
+        .logout-modal-buttons .confirm-btn { background-color: var(--red); color: var(--white); }
+        .logout-modal-buttons .confirm-btn:hover { background-color: #c0392b; }
+        .logout-modal-buttons .cancel-btn {
+            background-color: transparent; color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+        .logout-modal-buttons .cancel-btn:hover { background-color: var(--bg-body); }
+
+        .message-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background-color: var(--bg-card); color: var(--text-primary);
+            padding: 3rem 4rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); text-align: center;
+            z-index: 2001; display: none;
+        }
+        .message-modal p { font-size: 2rem; font-weight: 600; }
+
         @media (max-width: 400px) {
             .summaries-navigation {
                 flex-direction: column;
@@ -456,6 +493,13 @@
 <body class="">
 
 
+
+
+
+
+
+  
+
 <div class="overlay"></div>
 
 <header class="header">
@@ -473,19 +517,18 @@
             </div>
             <div id="Tawasle-Notif-Menu" class="Tawasle-Notif-Dropdown"></div>
          </div>
-         <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
+        <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
          <div id="menu-btn" class="fas fa-bars icon-btn" title="القائمة"></div>
          <div class="profile-dropdown">
             <img src="S22MCS PARTS/قسم الطب.jpg" class="image" alt="صورة القسم">
-            <h3 class="name">قسم الطب</h3>
-            <p class="role">التابعة لأداة علم</p>
+            <h3 class="name">قسم السنة ثالثة  طب </h3>
+            <p class="role">تسجيل الخروج سيقودك الى صفحة السنوات   </p>
             <a href="MED_profile.html" class="btn">عرض الملف الشخصي</a>
-            <a href="adatealm_med_intro.html" id="logout-btn" class="btn logout">تسجيل الخروج</a>
+            <a href="adatealm_med.html" id="logout-btn" class="btn logout">تسجيل الخروج</a>
          </div>
       </div>
    </section>
-</header>
-
+</header>   
 
 
 
@@ -516,6 +559,26 @@
 
    </nav>
 </aside>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <main>
 
@@ -788,6 +851,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="medical-overlay" id="medicalOverlay"></div>
 <div class="medical-popup-container" id="medicalPopupContainer" role="dialog" aria-modal="true" aria-labelledby="medicalPopupTitle">
     <div class="medical-popup-header">
@@ -830,21 +909,29 @@
     </div>
 </div>
 
+<div class="logout-modal-overlay" id="logout-confirm-overlay">
+    <div class="logout-modal">
+        <h3>تأكيد تسجيل الخروج</h3>
+        <p>سيتم نقلك إلى صفحة السنوات. هل تريد المتابعة؟</p>
+        <div class="logout-modal-buttons">
+            <button class="cancel-btn" id="cancel-logout-btn">لا</button>
+            <button class="confirm-btn" id="confirm-logout-btn">نعم</button>
+        </div>
+    </div>
+</div>
 
-
-
-
+<div class="message-modal" id="logout-message-modal">
+    <p>السلام عليكم</p>
+</div>
 
 
 
 
 
 <script type="module">
-  // =================================================================
-  // القسم 1: إعداد Firebase واستيراد الوحدات المطلوبة
-  // =================================================================
+  // Firebase SDK imports
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAJK6IUSw2YbwNVfB_hRNsOFeO08LEp4c8",
@@ -859,343 +946,251 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  let notificationsLoaded = false;
+  let unreadCount = 0;
 
-  // =================================================================
-  // القسم 2: تشغيل الكود بعد تحميل الصفحة بالكامل
-  // =================================================================
-  document.addEventListener('DOMContentLoaded', () => {
+  const notifBtn = document.getElementById('Tawasle-Notif-Btn');
+  const notifMenu = document.getElementById('Tawasle-Notif-Menu');
+  const notifCountSpan = document.getElementById('Tawasle-Notif-Count');
 
-    const body = document.body;
-    const overlay = document.querySelector('.overlay');
-
-    // --- 2.1: إدارة القائمة الجانبية وقائمة الملف الشخصي ---
-    const sideBar = document.querySelector('.side-bar');
-    const menuBtn = document.querySelector('#menu-btn');
-    const closeBtn = document.querySelector('#close-btn');
-    const profileBtn = document.querySelector('#user-btn');
-    const profileDropdown = document.querySelector('.profile-dropdown');
-
-    const closeAllPopups = () => {
-      sideBar.classList.remove('active');
-      profileDropdown.classList.remove('active');
-      if (overlay) overlay.classList.remove('active');
-      body.style.overflow = 'auto';
-    };
-
-    if (menuBtn) {
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeAllPopups();
-            sideBar.classList.add('active');
-            if (overlay) overlay.classList.add('active');
-            body.style.overflow = 'hidden';
-        });
+  const toggleNotificationMenu = () => {
+    const isMenuOpen = notifMenu.classList.toggle('Tawasle-Notif-Dropdown-Show');
+    if (isMenuOpen && !notificationsLoaded) {
+      loadNotifications();
     }
+  };
 
-    if (profileBtn) {
-        profileBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isAlreadyActive = profileDropdown.classList.contains('active');
-            closeAllPopups();
-            if (!isAlreadyActive) {
-                profileDropdown.classList.add('active');
-            }
-        });
-    }
+  async function loadNotifications() {
+    notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">جارٍ تحميل الإشعارات...</div>';
+    try {
+      const querySnapshot = await getDocs(collection(db, "notifications"));
+      notificationsLoaded = true;
+      notifMenu.innerHTML = ''; 
 
-    if (closeBtn) closeBtn.addEventListener('click', closeAllPopups);
-    if (overlay) overlay.addEventListener('click', closeAllPopups);
-    
-    document.querySelectorAll('.side-bar .navbar a').forEach(link => {
-      link.addEventListener('click', closeAllPopups);
-    });
-
-    // --- 2.2: إدارة تسجيل الخروج ---
-    const logoutBtn = document.querySelector('#logout-btn');
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('تم تسجيل الخروج بنجاح!');
-        window.location.href = 'INDEX.html';
-      });
-    }
-
-    // --- 2.3: إدارة الوضع الليلي (Dark Mode) ---
-    const toggleBtn = document.querySelector('#toggle-btn');
-    if (toggleBtn) {
-      const applyTheme = (theme) => {
-        if (theme === 'dark') {
-          body.classList.add('dark-mode');
-          toggleBtn.classList.replace('fa-sun', 'fa-moon');
-        } else {
-          body.classList.remove('dark-mode');
-          toggleBtn.classList.replace('fa-moon', 'fa-sun');
-        }
-      };
-
-      applyTheme(localStorage.getItem('theme'));
-      toggleBtn.addEventListener('click', () => {
-        let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
-        applyTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-      });
-    }
-
-    // --- 2.4: نظام الإشعارات من Firebase ---
-    const notifBtn = document.getElementById('Tawasle-Notif-Btn');
-    const notifMenu = document.getElementById('Tawasle-Notif-Menu');
-    const notifCountSpan = document.getElementById('Tawasle-Notif-Count');
-    let notificationsLoaded = false;
-    
-    async function loadNotifications() {
-      if (!notifMenu) return;
-      notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">جارٍ تحميل الإشعارات...</div>';
-      try {
-        const querySnapshot = await getDocs(collection(db, "notifications"));
-        notificationsLoaded = true;
-        notifMenu.innerHTML = '';
-        
-        let unreadCount = 0;
-        if (querySnapshot.empty) {
-          notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">لا توجد إشعارات جديدة</div>';
-        } else {
-          querySnapshot.forEach(doc => {
-            const data = doc.data();
-            const item = document.createElement('div');
-            item.className = 'Tawasle-Notif-Item';
-            const iconClass = data.icon || 'fas fa-bell';
-            const text = data.text || 'لا يوجد نص.';
-            let content = `<i class="${iconClass}"></i><p>${text.substring(0, 100)}</p>`;
-            if (data.link) {
-              item.innerHTML = `<a href="${data.link}" target="_blank">${content}</a>`;
-            } else {
-              item.innerHTML = content;
-            }
-            notifMenu.appendChild(item);
-            unreadCount++;
-          });
-        }
-        updateNotifCount(unreadCount);
-      } catch (e) {
-        console.error("Error loading notifications: ", e);
-        notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">خطأ في تحميل الإشعارات</div>';
-      }
-    }
-
-    function updateNotifCount(count) {
-      if (!notifCountSpan) return;
-      if (count > 0) {
-        notifCountSpan.textContent = count;
-        notifCountSpan.style.display = 'flex';
-      } else {
-        notifCountSpan.style.display = 'none';
-      }
-    }
-    
-    if (notifBtn) {
-      notifBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isMenuOpen = notifMenu.classList.toggle('Tawasle-Notif-Dropdown-Show');
-        if (isMenuOpen && !notificationsLoaded) {
-          loadNotifications();
-        }
-      });
-    }
-
-    // --- 2.5: وظائف التحكم بالمحتوى الديناميكي (أقسام، وحدات، دروس) ---
-    
-    // وظيفة لإظهار قسم معين وإخفاء البقية (نظام التبويبات)
-    window.showSection = function(sectionId, clickedButton) {
-      document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
-      const targetSection = document.getElementById(sectionId + '-section');
-      if (targetSection) targetSection.classList.add('active');
-      if (clickedButton) clickedButton.classList.add('active');
-    }
-
-    // وظيفة للتمرير الذكي للعنصر مع مراعاة ارتفاع الهيدر
-    function smartScroll(element) {
-      const header = document.querySelector('.header');
-      const headerHeight = header ? header.offsetHeight : 0;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 15;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-
-    // وظيفة لفتح وإغلاق الوحدة (أكورديون)
-    window.toggleSubject = function(headerButton) {
-      const subjectBlock = headerButton.parentElement;
-      const content = headerButton.nextElementSibling;
-      const isOpening = !subjectBlock.classList.contains('is-open');
-
-      const parentContainer = subjectBlock.closest('.content-section');
-      if (!parentContainer) return;
-
-      parentContainer.querySelectorAll('.subject-block').forEach(block => {
-        block.classList.remove('is-open');
-        block.querySelector('.subject-header').setAttribute('aria-expanded', 'false');
-        const blockContent = block.querySelector('.subject-content');
-        if (blockContent) {
-          blockContent.style.maxHeight = '0px';
-          blockContent.style.paddingTop = '0';
-          blockContent.style.paddingBottom = '0';
-        }
-      });
-
-      if (isOpening) {
-        subjectBlock.classList.add('is-open');
-        headerButton.setAttribute('aria-expanded', 'true');
-        content.style.paddingTop = 'clamp(1.5rem, 4vw, 2rem)';
-        content.style.paddingBottom = 'clamp(1.5rem, 4vw, 2rem)';
-        content.style.maxHeight = content.scrollHeight + 'px';
-      }
-    }
-
-    // وظيفة لفتح وإغلاق الدرس داخل الوحدة (أكورديون متداخل)
-    window.toggleLesson = function(clickedButton) {
-      const materialsList = clickedButton.nextElementSibling;
-      if (!materialsList) return;
-
-      const parentContent = clickedButton.closest('.subject-content');
-      if (!parentContent) return;
-
-      const isCurrentlyOpen = clickedButton.getAttribute('aria-expanded') === 'true';
-
-      const parentList = clickedButton.parentElement.parentElement;
-      const currentlyOpenButton = parentList.querySelector('.lesson-button[aria-expanded="true"]');
-      if (currentlyOpenButton && currentlyOpenButton !== clickedButton) {
-        currentlyOpenButton.setAttribute('aria-expanded', 'false');
-        const listToClose = currentlyOpenButton.nextElementSibling;
-        if (listToClose) listToClose.style.maxHeight = '0px';
-      }
-
-      if (isCurrentlyOpen) {
-        clickedButton.setAttribute('aria-expanded', 'false');
-        materialsList.style.maxHeight = '0px';
-      } else {
-        clickedButton.setAttribute('aria-expanded', 'true');
-        materialsList.style.maxHeight = materialsList.scrollHeight + 'px';
-        setTimeout(() => smartScroll(clickedButton), 300);
+      if (querySnapshot.empty) {
+        notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">لا توجد إشعارات جديدة</div>';
+        return;
       }
       
-      setTimeout(() => {
-        if (parentContent.style.maxHeight !== '0px') {
-          parentContent.style.maxHeight = parentContent.scrollHeight + 'px';
+      unreadCount = 0;
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        const item = document.createElement('div');
+        item.className = 'Tawasle-Notif-Item';
+        const iconClass = data.icon || 'fas fa-bell';
+        const text = data.text || 'لا يوجد نص.';
+        let content = `<i class="${iconClass}"></i><p>${text.substring(0, 100)}</p>`;
+        if (data.link) {
+          item.innerHTML = `<a href="${data.link}" target="_blank">${content}</a>`;
+        } else {
+          item.innerHTML = content;
         }
-      }, 400);
+        notifMenu.appendChild(item);
+        unreadCount++;
+      });
+      updateNotifCount();
+    } catch (e) {
+      console.error("Error loading notifications: ", e);
+      notifMenu.innerHTML = '<div class="Tawasle-Notif-Item">خطأ في تحميل الإشعارات</div>';
     }
-    
-    // --- 2.6: نظام موحد لإدارة النوافذ المنبثقة (Popups/Modals) ---
-    function createPopup(config) {
-        const triggerButtons = document.querySelectorAll(config.triggerSelector);
-        if (triggerButtons.length === 0) return;
-        
-        const popupContainer = document.getElementById(config.containerId);
-        const overlay = document.getElementById(config.overlayId);
-        const contentContainer = document.getElementById(config.contentId);
-        let isContentLoaded = false;
-        
-        const openPopup = () => {
-            if (overlay) overlay.classList.add('active');
-            if (popupContainer) popupContainer.classList.add('active');
-            document.body.classList.add(config.bodyClass);
-            if (!isContentLoaded && config.url) {
-                loadContent();
-            }
-        };
+  }
 
-        const closePopup = () => {
-            if (overlay) overlay.classList.remove('active');
-            if (popupContainer) popupContainer.classList.remove('active');
-            document.body.classList.remove(config.bodyClass);
-        };
-
-        const loadContent = () => {
-            if (!contentContainer || !config.url) return;
-            contentContainer.innerHTML = '';
-            const iframe = document.createElement('iframe');
-            iframe.src = config.url;
-            iframe.style.cssText = "width:100%; height:100%; border:none;";
-            iframe.title = config.title;
-            contentContainer.appendChild(iframe);
-            isContentLoaded = true;
-        };
-
-        triggerButtons.forEach(btn => btn.addEventListener('click', openPopup));
-        if (overlay) overlay.addEventListener('click', closePopup);
-        
-        return { open: openPopup, close: closePopup };
+  function updateNotifCount() {
+    if (unreadCount > 0) {
+      notifCountSpan.textContent = unreadCount;
+      notifCountSpan.style.display = 'flex';
+    } else {
+      notifCountSpan.style.display = 'none';
     }
+  }
 
-    // تهيئة جميع النوافذ المنبثقة
-    const medicalPopup = createPopup({
-        triggerSelector: '[onclick*="medicalTogglePopup"]',
-        containerId: 'medicalPopupContainer',
-        overlayId: 'medicalOverlay',
-        contentId: 'medicalContentContainer',
-        url: 'https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB.html',
-        bodyClass: 'medical-popup-open',
-        title: 'محتوى تواصل معنا'
-    });
-
-    const dangerModal = createPopup({
-        triggerSelector: '[onclick*="toggleModal"]',
-        containerId: 'modalBox',
-        overlayId: 'modalOverlay',
-        contentId: 'contentBox',
-        url: 'https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html',
-        bodyClass: 'popup-active',
-        title: 'محتوى التنبيه'
-    });
-
-    const updatesPopup = createPopup({
-        triggerSelector: '[onclick*="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup"]',
-        containerId: 'TAWASLE_ADAT_TAHDITAT_MED02PopupContainer',
-        overlayId: 'TAWASLE_ADAT_TAHDITAT_MED02Overlay',
-        contentId: 'TAWASLE_ADAT_TAHDITAT_MED02ContentContainer',
-        url: 'https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB_ISHAARAT_MED02.html',
-        bodyClass: 'TAWASLE_ADAT_TAHDITAT_MED02-popup-open',
-        title: 'محتوى التحديثات'
-    });
-
-
-    // --- 2.7: إدارة الأحداث العامة (Global Event Listeners) ---
-    
-    // إغلاق أي نافذة مفتوحة عند الضغط على مفتاح الهروب (Escape)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeAllPopups(); // يغلق القائمة الجانبية والبروفايل
-        if (medicalPopup) medicalPopup.close();
-        if (dangerModal) dangerModal.close();
-        if (updatesPopup) updatesPopup.close();
-      }
-    });
-
-    // إغلاق قائمة الإشعارات عند النقر خارجها
-    document.addEventListener('click', (event) => {
-      if (notifMenu && notifBtn && !notifMenu.contains(event.target) && !notifBtn.contains(event.target)) {
-        notifMenu.classList.remove('Tawasle-Notif-Dropdown-Show');
-      }
-    });
-
-    // --- 2.8: تهيئة الحالة الأولية للصفحة ---
-
-    // إظهار القسم الأول عند تحميل الصفحة
-    const firstNavButton = document.querySelector('.modules-navigation .nav-button, .summaries-navigation .nav-button');
-    if (firstNavButton) {
-        // افترض أن أول قسم له ID مرتبط بأول زر
-        // هذا الجزء قد يحتاج لتعديل بسيط حسب بنية HTML الدقيقة لديك
-        const firstSectionId = firstNavButton.getAttribute('onclick').match(/'([^']+)'/)[1];
-        if (firstSectionId) {
-            showSection(firstSectionId, firstNavButton);
-        }
+  notifBtn.addEventListener('click', toggleNotificationMenu);
+  document.addEventListener('click', function (event) {
+    if (!notifMenu.contains(event.target) && !notifBtn.contains(event.target)) {
+      notifMenu.classList.remove('Tawasle-Notif-Dropdown-Show');
     }
-    
-    // تحديث عدد الإشعارات عند التحميل (يمكنك استدعاء دالة التحميل هنا مباشرة إذا أردت)
-    updateNotifCount(0); // يبدأ بصفر قبل التحميل
-
   });
+  updateNotifCount(); 
 </script>
+
+<script>
+    // Main page interaction script
+    document.addEventListener('DOMContentLoaded', () => {
+        const body = document.body;
+        const overlay = document.querySelector('.overlay');
+        const sideBar = document.querySelector('.side-bar');
+        const menuBtn = document.querySelector('#menu-btn');
+        const closeBtn = document.querySelector('#close-btn');
+        const profileBtn = document.querySelector('#user-btn');
+        const profileDropdown = document.querySelector('.profile-dropdown');
+        const toggleBtn = document.querySelector('#toggle-btn');
+        
+        // Logout functionality
+        const logoutBtn = document.querySelector('#logout-btn');
+        const logoutConfirmOverlay = document.getElementById('logout-confirm-overlay');
+        const confirmLogoutBtn = document.getElementById('confirm-logout-btn');
+        const cancelLogoutBtn = document.getElementById('cancel-logout-btn');
+        const logoutMessageModal = document.getElementById('logout-message-modal');
+
+        const closeAllPopups = () => {
+            sideBar.classList.remove('active');
+            profileDropdown.classList.remove('active');
+            overlay.classList.remove('active');
+            body.style.overflow = 'auto';
+        };
+
+        menuBtn.addEventListener('click', (e) => { e.stopPropagation(); closeAllPopups(); sideBar.classList.add('active'); overlay.classList.add('active'); body.style.overflow = 'hidden'; });
+        profileBtn.addEventListener('click', (e) => { e.stopPropagation(); const isActive = profileDropdown.classList.contains('active'); closeAllPopups(); if (!isActive) { profileDropdown.classList.add('active'); } });
+        closeBtn.addEventListener('click', closeAllPopups);
+        overlay.addEventListener('click', closeAllPopups);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllPopups(); });
+        document.querySelectorAll('.side-bar .navbar a').forEach(link => { link.addEventListener('click', closeAllPopups); });
+
+        // New logout logic
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logoutConfirmOverlay.style.display = 'flex';
+        });
+
+        cancelLogoutBtn.addEventListener('click', () => {
+            logoutConfirmOverlay.style.display = 'none';
+        });
+
+        confirmLogoutBtn.addEventListener('click', () => {
+            logoutConfirmOverlay.style.display = 'none';
+            logoutMessageModal.style.display = 'block';
+
+            setTimeout(() => {
+                logoutMessageModal.style.display = 'none';
+                window.location.href = 'adatealm_med.html'; 
+            }, 1500); // Wait 1.5 seconds before redirecting
+        });
+
+
+        const applyTheme = (theme) => {
+            if (theme === 'dark') { body.classList.add('dark-mode'); toggleBtn.classList.replace('fa-sun', 'fa-moon'); } 
+            else { body.classList.remove('dark-mode'); toggleBtn.classList.replace('fa-moon', 'fa-sun'); }
+        };
+        applyTheme(localStorage.getItem('theme'));
+        toggleBtn.addEventListener('click', () => { let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark'; applyTheme(newTheme); localStorage.setItem('theme', newTheme); });
+        
+        // Initialize first section
+        const firstNavButton = document.querySelector('.modules-navigation .nav-button');
+        if (firstNavButton) { showSection('uei1', firstNavButton); }
+    });
+
+    function showSection(sectionId, clickedButton) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
+        const targetSection = document.getElementById(sectionId + '-section');
+        if (targetSection) targetSection.classList.add('active');
+        if (clickedButton) clickedButton.classList.add('active');
+    }
+
+    function toggleSubject(headerButton) {
+        const subjectBlock = headerButton.parentElement;
+        const content = headerButton.nextElementSibling;
+        const isOpening = !subjectBlock.classList.contains('is-open');
+
+        subjectBlock.closest('.content-section').querySelectorAll('.subject-block').forEach(block => {
+            block.classList.remove('is-open');
+            const blockContent = block.querySelector('.subject-content');
+            if (blockContent) blockContent.style.maxHeight = '0px';
+        });
+
+        if (isOpening) {
+            subjectBlock.classList.add('is-open');
+            content.style.maxHeight = content.scrollHeight + 'px';
+        }
+    }
+
+    // "Contact Us" Popup script
+    let isMedicalContentLoaded = false;
+    const MEDICAL_TARGET_URL = "https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB.html";
+    const medicalPopupContainer = document.getElementById('medicalPopupContainer');
+    const medicalOverlay = document.getElementById('medicalOverlay');
+    const medicalContentContainer = document.getElementById('medicalContentContainer');
+    function medicalTogglePopup() { medicalPopupContainer.classList.contains('active') ? medicalClosePopup() : medicalOpenPopup(); }
+    function medicalOpenPopup() { medicalOverlay.classList.add('active'); medicalPopupContainer.classList.add('active'); document.body.classList.add('medical-popup-open'); if (!isMedicalContentLoaded) medicalLoadContent(); }
+    function medicalClosePopup() { medicalOverlay.classList.remove('active'); medicalPopupContainer.classList.remove('active'); document.body.classList.remove('medical-popup-open'); }
+    function medicalLoadContent() { medicalContentContainer.innerHTML = ''; const iframe = document.createElement('iframe'); iframe.src = MEDICAL_TARGET_URL; iframe.style.cssText = "width:100%; height:100%; border:none;"; iframe.title = "محتوى تواصل معنا"; medicalContentContainer.appendChild(iframe); isMedicalContentLoaded = true; }
+    medicalOverlay.addEventListener('click', medicalClosePopup);
+
+    // "Danger Alert" Modal script
+    let contentLoaded = false;
+    const CONTENT_URL = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
+    const modalBox = document.getElementById('modalBox');
+    const dangerModalOverlay = document.getElementById('modalOverlay');
+    const contentBox = document.getElementById('contentBox');
+    function toggleModal() { modalBox.classList.contains('show') ? closeModal() : openModal(); }
+    function openModal() { dangerModalOverlay.classList.add('show'); modalBox.classList.add('show'); document.body.classList.add('popup-active'); if (!contentLoaded) loadContent(); }
+    function closeModal() { dangerModalOverlay.classList.remove('show'); modalBox.classList.remove('show'); document.body.classList.remove('popup-active'); }
+    function loadContent() { contentBox.innerHTML = ''; const iframe = document.createElement('iframe'); iframe.src = CONTENT_URL; iframe.style.cssText = "width:100%; height:100%; border:none;"; iframe.title = "محتوى التنبيه"; contentBox.appendChild(iframe); contentLoaded = true; }
+    dangerModalOverlay.addEventListener('click', closeModal);
+
+    // "Updates & Notifications" Popup script
+    let TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = false;
+    const TAWASLE_ADAT_TAHDITAT_MED02_TARGET_URL = "https://s22mcs.github.io/S22MCS02-/TAWASLE_ADAT_EALM_KISM_EL_TIB_ISHAARAT_MED02.html";
+    const TAWASLE_ADAT_TAHDITAT_MED02_popupContainer = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02PopupContainer');
+    const TAWASLE_ADAT_TAHDITAT_MED02_overlay = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02Overlay');
+    const TAWASLE_ADAT_TAHDITAT_MED02_contentContainer = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02ContentContainer');
+    function TAWASLE_ADAT_TAHDITAT_MED02_togglePopup() { TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.contains('active') ? TAWASLE_ADAT_TAHDITAT_MED02_closePopup() : TAWASLE_ADAT_TAHDITAT_MED02_openPopup(); }
+    function TAWASLE_ADAT_TAHDITAT_MED02_openPopup() { TAWASLE_ADAT_TAHDITAT_MED02_overlay.classList.add('active'); TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.add('active'); document.body.classList.add('TAWASLE_ADAT_TAHDITAT_MED02-popup-open'); if (!TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded) TAWASLE_ADAT_TAHDITAT_MED02_loadContent(); }
+    function TAWASLE_ADAT_TAHDITAT_MED02_closePopup() { TAWASLE_ADAT_TAHDITAT_MED02_overlay.classList.remove('active'); TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.remove('active'); document.body.classList.remove('TAWASLE_ADAT_TAHDITAT_MED02-popup-open'); }
+    function TAWASLE_ADAT_TAHDITAT_MED02_loadContent() { TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.innerHTML = ''; const iframe = document.createElement('iframe'); iframe.src = TAWASLE_ADAT_TAHDITAT_MED02_TARGET_URL; iframe.style.cssText = "width:100%; height:100%; border:none;"; iframe.title = "محتوى التحديثات"; TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.appendChild(iframe); TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = true; }
+    TAWASLE_ADAT_TAHDITAT_MED02_overlay.addEventListener('click', TAWASLE_ADAT_TAHDITAT_MED02_closePopup);
+
+    // Global Escape key listener for all modals
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            medicalClosePopup();
+            closeModal();
+            TAWASLE_ADAT_TAHDITAT_MED02_closePopup();
+        }
+    });
+</script>
+
+<script>
+    // ... (كل الأكواد السابقة موجودة هنا) ...
+
+    function toggleLesson(button) {
+        const lessonMaterials = button.nextElementSibling;
+        const isOpen = lessonMaterials.classList.contains('open');
+
+        // إغلاق أي درس آخر مفتوح في نفس القائمة
+        const parentContent = button.closest('.subject-content');
+        parentContent.querySelectorAll('.lesson-materials.open').forEach(openLesson => {
+            if (openLesson !== lessonMaterials) {
+                openLesson.classList.remove('open');
+                openLesson.style.maxHeight = '0px';
+                openLesson.previousElementSibling.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // فتح أو إغلاق الدرس الحالي
+        if (isOpen) {
+            lessonMaterials.classList.remove('open');
+            lessonMaterials.style.maxHeight = '0px';
+            button.setAttribute('aria-expanded', 'false');
+        } else {
+            lessonMaterials.classList.add('open');
+            // أضفنا padding للـ scrollHeight ليتناسب مع التصميم
+            lessonMaterials.style.maxHeight = lessonMaterials.scrollHeight + 30 + 'px';
+            button.setAttribute('aria-expanded', 'true');
+        }
+    }
+
+
+    // Global Escape key listener for all modals
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            medicalClosePopup();
+            closeModal();
+            TAWASLE_ADAT_TAHDITAT_MED02_closePopup();
+        }
+    });
+</script>
+
 
 </body>
 </html>

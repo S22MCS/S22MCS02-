@@ -438,6 +438,43 @@
             font-size: 1.7rem;
         }
 
+        /* Logout Modal Styles */
+        .logout-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
+        }
+        .logout-modal {
+            background-color: var(--bg-card); color: var(--text-primary);
+            padding: 3rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); text-align: center;
+            width: 90%; max-width: 40rem;
+        }
+        .logout-modal h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .logout-modal p { font-size: 1.6rem; color: var(--text-secondary); margin-bottom: 2.5rem; }
+        .logout-modal-buttons { display: flex; justify-content: center; gap: 1.5rem; }
+        .logout-modal-buttons button {
+            padding: 1rem 2rem; font-size: 1.5rem; font-weight: 600;
+            border-radius: var(--radius); cursor: pointer; border: 1px solid transparent;
+            transition: all .2s;
+        }
+        .logout-modal-buttons .confirm-btn { background-color: var(--red); color: var(--white); }
+        .logout-modal-buttons .confirm-btn:hover { background-color: #c0392b; }
+        .logout-modal-buttons .cancel-btn {
+            background-color: transparent; color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+        .logout-modal-buttons .cancel-btn:hover { background-color: var(--bg-body); }
+
+        .message-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background-color: var(--bg-card); color: var(--text-primary);
+            padding: 3rem 4rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); text-align: center;
+            z-index: 2001; display: none;
+        }
+        .message-modal p { font-size: 2rem; font-weight: 600; }
+
         @media (max-width: 400px) {
             .summaries-navigation {
                 flex-direction: column;
@@ -456,6 +493,13 @@
 <body class="">
 
 
+
+
+
+
+
+  
+
 <div class="overlay"></div>
 
 <header class="header">
@@ -473,19 +517,18 @@
             </div>
             <div id="Tawasle-Notif-Menu" class="Tawasle-Notif-Dropdown"></div>
          </div>
-         <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
+        <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
          <div id="menu-btn" class="fas fa-bars icon-btn" title="القائمة"></div>
          <div class="profile-dropdown">
             <img src="S22MCS PARTS/قسم الطب.jpg" class="image" alt="صورة القسم">
-            <h3 class="name">قسم الطب</h3>
-            <p class="role">التابعة لأداة علم</p>
+            <h3 class="name">قسم السنة ثالثة  طب </h3>
+            <p class="role">تسجيل الخروج سيقودك الى صفحة السنوات   </p>
             <a href="MED_profile.html" class="btn">عرض الملف الشخصي</a>
-            <a href="adatealm_med_intro.html" id="logout-btn" class="btn logout">تسجيل الخروج</a>
+            <a href="adatealm_med.html" id="logout-btn" class="btn logout">تسجيل الخروج</a>
          </div>
       </div>
    </section>
-</header>
-
+</header>   
 
 
 
@@ -1100,6 +1143,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
 <div class="medical-overlay" id="medicalOverlay"></div>
 <div class="medical-popup-container" id="medicalPopupContainer" role="dialog" aria-modal="true" aria-labelledby="medicalPopupTitle">
     <div class="medical-popup-header">
@@ -1140,6 +1192,21 @@
             <p>جاري تحميل المحتوى...</p>
         </div>
     </div>
+</div>
+
+<div class="logout-modal-overlay" id="logout-confirm-overlay">
+    <div class="logout-modal">
+        <h3>تأكيد تسجيل الخروج</h3>
+        <p>سيتم نقلك إلى صفحة السنوات. هل تريد المتابعة؟</p>
+        <div class="logout-modal-buttons">
+            <button class="cancel-btn" id="cancel-logout-btn">لا</button>
+            <button class="confirm-btn" id="confirm-logout-btn">نعم</button>
+        </div>
+    </div>
+</div>
+
+<div class="message-modal" id="logout-message-modal">
+    <p>السلام عليكم</p>
 </div>
 
 
@@ -1242,6 +1309,13 @@
         const profileBtn = document.querySelector('#user-btn');
         const profileDropdown = document.querySelector('.profile-dropdown');
         const toggleBtn = document.querySelector('#toggle-btn');
+        
+        // Logout functionality
+        const logoutBtn = document.querySelector('#logout-btn');
+        const logoutConfirmOverlay = document.getElementById('logout-confirm-overlay');
+        const confirmLogoutBtn = document.getElementById('confirm-logout-btn');
+        const cancelLogoutBtn = document.getElementById('cancel-logout-btn');
+        const logoutMessageModal = document.getElementById('logout-message-modal');
 
         const closeAllPopups = () => {
             sideBar.classList.remove('active');
@@ -1257,7 +1331,26 @@
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllPopups(); });
         document.querySelectorAll('.side-bar .navbar a').forEach(link => { link.addEventListener('click', closeAllPopups); });
 
-        document.querySelector('#logout-btn').addEventListener('click', (e) => { e.preventDefault(); alert('تم تسجيل الخروج بنجاح!'); window.location.href = 'INDEX.html'; });
+        // New logout logic
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logoutConfirmOverlay.style.display = 'flex';
+        });
+
+        cancelLogoutBtn.addEventListener('click', () => {
+            logoutConfirmOverlay.style.display = 'none';
+        });
+
+        confirmLogoutBtn.addEventListener('click', () => {
+            logoutConfirmOverlay.style.display = 'none';
+            logoutMessageModal.style.display = 'block';
+
+            setTimeout(() => {
+                logoutMessageModal.style.display = 'none';
+                window.location.href = 'adatealm_med.html'; 
+            }, 1500); // Wait 1.5 seconds before redirecting
+        });
+
 
         const applyTheme = (theme) => {
             if (theme === 'dark') { body.classList.add('dark-mode'); toggleBtn.classList.replace('fa-sun', 'fa-moon'); } 
@@ -1331,6 +1424,47 @@
     function TAWASLE_ADAT_TAHDITAT_MED02_closePopup() { TAWASLE_ADAT_TAHDITAT_MED02_overlay.classList.remove('active'); TAWASLE_ADAT_TAHDITAT_MED02_popupContainer.classList.remove('active'); document.body.classList.remove('TAWASLE_ADAT_TAHDITAT_MED02-popup-open'); }
     function TAWASLE_ADAT_TAHDITAT_MED02_loadContent() { TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.innerHTML = ''; const iframe = document.createElement('iframe'); iframe.src = TAWASLE_ADAT_TAHDITAT_MED02_TARGET_URL; iframe.style.cssText = "width:100%; height:100%; border:none;"; iframe.title = "محتوى التحديثات"; TAWASLE_ADAT_TAHDITAT_MED02_contentContainer.appendChild(iframe); TAWASLE_ADAT_TAHDITAT_MED02_contentLoaded = true; }
     TAWASLE_ADAT_TAHDITAT_MED02_overlay.addEventListener('click', TAWASLE_ADAT_TAHDITAT_MED02_closePopup);
+
+    // Global Escape key listener for all modals
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            medicalClosePopup();
+            closeModal();
+            TAWASLE_ADAT_TAHDITAT_MED02_closePopup();
+        }
+    });
+</script>
+
+<script>
+    // ... (كل الأكواد السابقة موجودة هنا) ...
+
+    function toggleLesson(button) {
+        const lessonMaterials = button.nextElementSibling;
+        const isOpen = lessonMaterials.classList.contains('open');
+
+        // إغلاق أي درس آخر مفتوح في نفس القائمة
+        const parentContent = button.closest('.subject-content');
+        parentContent.querySelectorAll('.lesson-materials.open').forEach(openLesson => {
+            if (openLesson !== lessonMaterials) {
+                openLesson.classList.remove('open');
+                openLesson.style.maxHeight = '0px';
+                openLesson.previousElementSibling.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // فتح أو إغلاق الدرس الحالي
+        if (isOpen) {
+            lessonMaterials.classList.remove('open');
+            lessonMaterials.style.maxHeight = '0px';
+            button.setAttribute('aria-expanded', 'false');
+        } else {
+            lessonMaterials.classList.add('open');
+            // أضفنا padding للـ scrollHeight ليتناسب مع التصميم
+            lessonMaterials.style.maxHeight = lessonMaterials.scrollHeight + 30 + 'px';
+            button.setAttribute('aria-expanded', 'true');
+        }
+    }
+
 
     // Global Escape key listener for all modals
     document.addEventListener('keydown', (e) => {
