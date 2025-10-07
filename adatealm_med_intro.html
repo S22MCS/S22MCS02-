@@ -403,8 +403,27 @@
 
 
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إشعارات الموقع</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-    /* Style for the notification modal */
+    /* ---------------------------------- */
+    /* ----- Global & General Styles ---- */
+    /* ---------------------------------- */
+    body {
+        font-family: 'Cairo', sans-serif;
+        background-color: #0f172a; /* Dark background for context */
+    }
+
+    /* ---------------------------------- */
+    /* --- Notification Overlay Styles -- */
+    /* ---------------------------------- */
     .notification-overlay {
         position: fixed;
         top: 0;
@@ -431,17 +450,16 @@
         background-color: #1e293b;
         padding: 2.5rem;
         border-radius: 15px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
         border: 1px solid #334155;
         text-align: center;
         max-width: 500px;
         width: 90%;
         position: relative;
-        font-family: 'Cairo', sans-serif;
         transform: scale(0.9);
         transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    
+
     .notification-overlay.active .notification-modal {
         transform: scale(1);
     }
@@ -460,11 +478,10 @@
         margin-bottom: 1.5rem;
     }
 
-    /* New style for the store information box */
     .notification-modal .store-info {
         margin-top: 1.5rem;
         padding: 12px;
-        background-color: rgba(15, 23, 42, 0.6); /* Slightly darker background */
+        background-color: rgba(15, 23, 42, 0.6);
         border: 1px solid #334155;
         border-radius: 8px;
         color: #f1f5f9;
@@ -487,105 +504,418 @@
         line-height: 35px;
         transition: background-color 0.2s ease, transform 0.2s ease;
     }
-    
+
     .close-notification-btn:hover {
         background-color: #ef4444;
         transform: rotate(90deg);
     }
 
+    /* ---------------------------------- */
+    /* ------- General Modal Styles ----- */
+    /* ---------------------------------- */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+        background-color: #1e293b;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #334155;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        position: relative;
+        color: #f1f5f9;
+        text-align: right;
+    }
+
+    .modal-title {
+        color: #f1f5f9;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .modal-body p,
+    .modal-body ul {
+        color: #94a3b8;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 1rem;
+    }
+
+    .btn-close {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #334155;
+        border: none;
+        color: #f1f5f9;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        line-height: 35px;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-close:hover {
+        background-color: #ef4444;
+        transform: rotate(90deg);
+    }
+    
+    /* ---------------------------------- */
+    /* --- Specific Modal Styles -------- */
+    /* ---------------------------------- */
+
+    /* "Eid Notification" modal */
+    #taraweehModal .greeting {
+        font-size: 1.3rem;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    #taraweehModal .quran-text,
+    #thirdModal .quran-text {
+        background-color: rgba(15, 23, 42, 0.6);
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        font-size: 1.1rem;
+        line-height: 2;
+    }
+
+    /* "Science Tool Paragraphs" modal */
+    .bullet-list {
+        list-style: none;
+        padding: 0;
+        margin-right: 20px;
+    }
+
+    .bullet-list li {
+        position: relative;
+        margin-bottom: 10px;
+        padding-right: 25px;
+    }
+
+    .bullet-list li::before {
+        content: "•";
+        color: #60a5fa;
+        position: absolute;
+        right: 0;
+        font-size: 1.2rem;
+        top: 0;
+    }
+
+    .posts-container {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+        border-top: 1px solid #334155;
+        padding-top: 20px;
+    }
+
+    .posts-container li {
+        background-color: rgba(15, 23, 42, 0.6);
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .posts-container .post-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #f1f5f9;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .post-text-ar {
+        color: #f1f5f9;
+        font-size: 1.1rem;
+        margin-top: 10px;
+    }
+
+    .link-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .link-container a {
+        background-color: #60a5fa;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+    }
+
+    .link-container a:hover {
+        background-color: #3b82f6;
+    }
+
+    .glowing-text {
+        color: #f1f5f9;
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000;
+        transition: text-shadow 0.3s ease;
+    }
+
+    .glowing-text:hover {
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+    }
+
+    /* "Quran Challenge" modal */
+    #thirdModal .quran-text {
+        font-size: 1.2rem;
+        line-height: 2.2;
+        text-align: center;
+    }
+    
+    #thirdModal .challenge-button a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        transition: background-color 0.2s ease;
+    }
+    #thirdModal .challenge-button a:hover {
+        background-color: #45a049;
+    }
+
+    #thirdModal .hadith-box {
+        background-color: rgba(15, 23, 42, 0.6);
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    #thirdModal .hadith-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        font-weight: 500;
+    }
+
+    /* ---------------------------------- */
+    /* --- Responsive (Mobile) Styles --- */
+    /* ---------------------------------- */
+    @media (max-width: 600px) {
+        .notification-modal {
+            padding: 1.5rem;
+        }
+        .notification-modal h2, .modal-title {
+            font-size: 1.5rem;
+        }
+        .notification-modal p, .modal-body p, .modal-body ul {
+            font-size: 1rem;
+        }
+
+        .modal-content {
+            padding: 20px;
+            width: 95%; /* Use more screen width on small devices */
+        }
+        
+        .post-text-ar,
+        #thirdModal .hadith-text,
+        .link-container a,
+        #thirdModal .challenge-button a {
+            font-size: 0.95rem;
+        }
+        
+        .link-container a {
+            padding: 8px 12px;
+        }
+
+        #thirdModal .quran-text {
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+    }
 </style>
+</head>
+<body>
 
 <div class="notification-overlay" id="notificationOverlay">
     <div class="notification-modal">
         <button class="close-notification-btn" id="closeNotification">&times;</button>
         <h2>📢 تحديث هام</h2>
         <p>يتم حالياً العمل على مواد <strong>السنة الأولى</strong> و<strong>السنة الثالثة</strong>، وستتوفر في القريب العاجل. انتظرونا!</p>
-        
         <div class="store-info">
             🛒 ولا تنسى الاطلاع على متجرنا، فهو متوفر داخل <strong>السنة الأولى والثانية والثالثة</strong>.
         </div>
     </div>
 </div>
 
+<div id="taraweehModal" class="modal">
+    <div class="modal-content">
+        <button class="btn-close" onclick="closeModal('taraweehModal')">&times;</button>
+        <p class="greeting">السلام عليكم ورحمة الله تعالى وبركاته</p>
+        <div class="modal-body">
+            <div class="quran-text">
+                <p style="text-align: center;">سيتم تحديث الموقع يوميا</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="secondModal" class="modal">
+    <div class="modal-content">
+        <button class="btn-close" onclick="closeModal('secondModal')">&times;</button>
+        <h1 class="modal-title">فقرات أداة علم</h1>
+        <div class="modal-body">
+            <p style="text-align: center;">في شوال هذا العام 1446هـ - 2025م، تقدم أداة علم فقرات مميزة:</p>
+            <ul class="bullet-list">
+                <li>فقرة علماء مسلمون سيتم تعويضها بمنشورات S22MCS اليومية</li>
+            </ul>
+            <ul class="posts-container">
+                <li><p class="post-title">📢 منشورات اليوم:</p></li>
+                <li>
+                    <p class="post-text-ar" style="text-align: center;">📌 <strong>أول منشور (لا يحتاج تعريفاً للمسلمين):</strong> تريد فتحه على</p>
+                    <p class="post-text-ar" style="text-align: center;">
+                        <a href="https://t.me/S22MCS/1945" class="glowing-text">🔻 المقاومة الفلسطينية 🔻</a>
+                    </p>
+                    <p class="post-text-ar" style="font-weight: bold;">قال رسول الله (ﷺ): "مَنْ جهَّزَ غَازِيًا في سبيلِ اللَّهِ فَقَدْ غَزَا، ومنْ خَلَفَ غَازيًا في أَهْلِهِ بخَيْر فَقَدْ غزَا"</p>
+                </li>
+                <li>
+                    <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور الثاني:</strong> تريد فتحه على</p>
+                    <div class="link-container">
+                        <a href="https://t.me/S22MCS/1884" target="_blank" rel="noopener">تيليجرام</a>
+                        <a href="https://youtu.be/QCY5-tSDyU0?si=YjF9GHv363j1pOKe" target="_blank" rel="noopener">يوتيوب</a>
+                    </div>
+                    <p class="post-text-ar" style="font-weight: bold;">عقيدة نسوية | هل تتعارض النسوية مع الإسلام؟ نقاش عميق حول أخطر 15 سؤال نسوي</p>
+                </li>
+                <li>
+                    <p class="post-text-ar" style="text-align: center;">📌 <strong>المنشور الرابع:</strong> تريد فتحه على</p>
+                    <div class="link-container">
+                        <a href="https://t.me/S22MCS/1706" target="_blank" rel="noopener">تيليجرام</a>
+                        <a href="https://youtu.be/onxqPZMeOjs?si=x4Ol1nL51tW6F5tU" target="_blank" rel="noopener">يوتيوب</a>
+                    </div>
+                    <p class="post-text-ar" style="font-weight: bold;">الواجبات التي يجب أن يقوم بها المسلم تجاه دينه - حازم صلاح أبو اسماعيل</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="thirdModal" class="modal">
+    <div class="modal-content">
+        <button class="btn-close" onclick="closeModal('thirdModal')">&times;</button>
+        <h1 class="modal-title">لا تنسَ تحدي ختم القرآن اليومي</h1>
+        <div class="modal-body">
+            <p style="text-align: center;">يقول الله عز وجل:</p>
+            <div class="quran-text">
+                ﴿ الَّذِينَ آتَيْنَاهُمُ الْكِتَابَ يَتْلُونَهُ حَقَّ تِلَاوَتِهِ أُولَٰئِكَ يُؤْمِنُونَ بِهِ ۗ وَمَن يَكْفُرْ بِهِ فَأُولَٰئِكَ هُمُ الْخَاسِرُونَ ﴾
+                <br>[البقرة: 121]
+            </div>
+            <br>
+            <p class="challenge-button" style="text-align: center; font-weight: bold;">
+                <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html">ابدأ التحدي اليومي لتلاوة القرآن</a>
+            </p>
+            <div class="hadith-box">
+                <p class="hadith-text">"مَنْ قرأَ حرفًا من كتابِ اللهِ فله به حسنةٌ، والحسنةُ بعشرِ أمثالِها، لا أقولُ آلم حرفٌ، ولكن ألِفٌ حرفٌ، ولامٌ حرفٌ، وميمٌ حرفٌ"</p>
+                <p style="margin-top: 10px; font-size: 0.9rem;">الراوي: عبدالله بن مسعود | المحدث: الألباني | المصدر: صحيح الترمذي | خلاصة حكم المحدث: صحيح</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Script to control the notification modal
     document.addEventListener('DOMContentLoaded', function() {
-        const overlay = document.getElementById('notificationOverlay');
-        const closeBtn = document.getElementById('closeNotification');
+        const notificationOverlay = document.getElementById('notificationOverlay');
+        const closeNotificationBtn = document.getElementById('closeNotification');
 
-        const showModal = () => {
-            overlay.classList.add('active');
+        const modals = [
+            document.getElementById('taraweehModal'),
+            document.getElementById('secondModal'),
+            document.getElementById('thirdModal')
+        ];
+        
+        let currentModalIndex = -1;
+
+        const showModal = (modalElement) => {
+            if (modalElement) {
+                if (modalElement === notificationOverlay) {
+                    modalElement.classList.add('active');
+                } else {
+                    modalElement.style.display = 'flex';
+                }
+            }
         };
 
-        const hideModal = () => {
-            overlay.classList.remove('active');
+        const hideModal = (modalElement) => {
+            if (modalElement) {
+                if (modalElement === notificationOverlay) {
+                    modalElement.classList.remove('active');
+                } else {
+                    modalElement.style.display = 'none';
+                }
+            }
         };
 
-        setTimeout(showModal, 1500);
+        const showNextModal = () => {
+            currentModalIndex++;
+            if (currentModalIndex < modals.length) {
+                setTimeout(() => showModal(modals[currentModalIndex]), 500);
+            }
+        };
 
-        closeBtn.addEventListener('click', hideModal);
+        setTimeout(() => showModal(notificationOverlay), 1500);
 
-        overlay.addEventListener('click', function(event) {
-            if (event.target === overlay) {
-                hideModal();
+        const closeInitialNotification = () => {
+            hideModal(notificationOverlay);
+            showNextModal();
+        };
+
+        closeNotificationBtn.addEventListener('click', closeInitialNotification);
+        notificationOverlay.addEventListener('click', function(event) {
+            if (event.target === notificationOverlay) {
+                closeInitialNotification();
+            }
+        });
+
+        window.closeModal = (modalId) => {
+            const modalToClose = document.getElementById(modalId);
+            hideModal(modalToClose);
+            showNextModal();
+        };
+
+        modals.forEach(modal => {
+            if (modal) {
+                modal.addEventListener('click', function(event) {
+                    if (event.target === modal) {
+                        window.closeModal(modal.id);
+                    }
+                });
             }
         });
     });
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</body>
+</html>
