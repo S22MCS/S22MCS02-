@@ -504,7 +504,7 @@
 
 <header class="header">
    <section class="flex">
-      <a href="home_MED03.html" class="logo">
+      <a href="home_MED01.html" class="logo">
          <span class="main-title">أداة علم</span>
          <span class="subtitle">الثالثة<br>طب</span>
       </a>
@@ -542,7 +542,7 @@
       <div id="close-btn" class="fas fa-times icon-btn"></div>
    </div>
    <nav class="navbar">
-      <a href="home_MED03.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+      <a href="home_MED01.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
    <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"><i class="fas fa-quran"></i><span>وردك اليومي من القران الكريم</span></a>
       <a href="اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ.html"><i class="fas fa-praying-hands"></i><span>زر الاستغفار والتسبيح</span></a>
     
@@ -582,219 +582,737 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <main>
-    <h1 class="summaries-title">دروس الوحدات الدراسية</h1>
+    <style>
+        /*
+         * ملاحظة: هذه الأنماط مُحسّنة وتكمل الأنماط العامة للوحة التحكم.
+         */
 
+        .summaries-title {
+            font-size: clamp(2.2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        /* حاوية أزرار التنقل */
+        .summaries-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .nav-button {
+            padding: 12px 18px;
+            font-size: clamp(1.5rem, 3vw, 1.6rem);
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            flex-grow: 1;
+            flex-basis: 150px;
+            box-shadow: var(--shadow-sm);
+            touch-action: manipulation;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .nav-button .english-nav {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            transition: color 0.25s ease;
+        }
+
+        .nav-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 137, 123, 0.25);
+        }
+
+        .nav-button.active .english-nav {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subject-block {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .subject-block.is-open {
+             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: clamp(1.5rem, 4vw, 2rem);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .subject-title {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            color: var(--primary-dark);
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .toggle-icon {
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--primary-color);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-left: 15px;
+        }
+
+        .subject-block.is-open .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .subject-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 clamp(1.5rem, 4vw, 2rem);
+        }
+
+        .lesson-button {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-size: clamp(1.6rem, 4vw, 1.7rem);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: right;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .lesson-button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .lesson-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .lesson-button.active .lesson-lang { color: rgba(255, 255, 255, 0.85); }
+        .lesson-button .lesson-lang {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 5px;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+
+        .lesson-materials {
+            list-style: none; padding: 0;
+            background-color: var(--bg-body);
+            border-radius: 8px;
+            margin-top: -5px; margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+        }
+        .lesson-materials.open { padding: 1.5rem; }
+        
+        .summary-item a {
+            display: block; text-decoration: none;
+            color: var(--white); font-weight: 600;
+            font-size: 1.8rem; padding: 1.2rem;
+            background-color: var(--primary-color);
+            border-radius: 6px; text-align: center;
+            transition: background-color 0.2s;
+        }
+        .summary-item a:hover { background-color: var(--primary-dark); }
+        .summary-item p {
+            font-size: 1.3rem; color: var(--text-secondary);
+            margin: 8px 0 0 0; text-align: center;
+        }
+        
+        .empty-section-message {
+            background-color: var(--bg-card);
+            padding: 3rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
+            color: var(--text-secondary); text-align: center;
+            font-size: 1.7rem;
+        }
+
+        @media (max-width: 400px) {
+            .summaries-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-button { width: 100%; }
+        }
+    </style>
+
+    <h1 class="summaries-title">اختبارات  الوحدات الدراسية  (  تتوفر حسب الدروس  قريبا   )
+</h1>
     <nav class="summaries-navigation" aria-label="التنقل بين الوحدات الدراسية">
+
+
+
+
+
         <button class="nav-button active" onclick="showSection('anatomy', this)">
-            <div>التشريح</div>
+            <div>التشريح  </div>
             <div class="english-nav">Anatomy</div>
         </button>
-        <button class="nav-button" onclick="showSection('biophysics', this)">
-            <div>الفيزياء الحيوية</div>
-            <div class="english-nav">Biophysics</div>
-        </button>
-        <button class="nav-button" onclick="showSection('biochemistry', this)">
-            <div>الكيمياء الحيوية</div>
-            <div class="english-nav">Biochemistry</div>
-        </button>
-        <button class="nav-button" onclick="showSection('biostatistics', this)">
-            <div>الإحصاء الحيوي</div>
-            <div class="english-nav">Biostatistics</div>
-        </button>
-        <button class="nav-button" onclick="showSection('chemistry', this)">
-            <div>الكيمياء</div>
-            <div class="english-nav">Chemistry</div>
-        </button>
+
         <button class="nav-button" onclick="showSection('cytology', this)">
             <div>علم الخلية</div>
             <div class="english-nav">Cytology</div>
         </button>
-        <button class="nav-button" onclick="showSection('embryology', this)">
-            <div>علم الأجنة</div>
-            <div class="english-nav">Embryology</div>
-        </button>
-        <button class="nav-button" onclick="showSection('physiology', this)">
-            <div>علم وظائف الأعضاء</div>
-            <div class="english-nav">Physiology</div>
-        </button>
-        <button class="nav-button" onclick="showSection('shh', this)">
-            <div>علوم إنسانية واجتماعية</div>
-            <div class="english-nav">SHH</div>
-        </button>
-        <button class="nav-button" onclick="showSection('histology', this)">
-            <div>علم الأنسجة</div>
-            <div class="english-nav">Histology</div>
-        </button>
+
+
+         <button class="nav-button" onclick="showSection('histology', this)">
+             <div>علم الأنسجة </div>
+             <div class="english-nav">Histology</div>
+         </button>
+
+
+
+         <button class="nav-button" onclick="showSection('emberyology', this)">
+             <div>علم الأجنة  </div>
+             <div class="english-nav">Emberyology</div>
+         </button>
+         <button class="nav-button" onclick="showSection('physiology', this)">
+             <div>علم وظائف الأعضاء</div>
+             <div class="english-nav">Physiology</div>
+         </button>
+         <button class="nav-button" onclick="showSection('ssh', this)">
+             <div>الصحة والمجتمع  </div>
+             <div class="english-nav">SSH</div>
+         </button>
+
+
+   <button class="nav-button" onclick="showSection('biochemie', this)">
+             <div> الكيمياء العضوية  </div>
+             <div class="english-nav">Biochemie</div>
+         </button>
+         
     </nav>
 
+
+
+
+
+
+
     <div class="content-container">
+
+
+
+
         <div id="anatomy-section" class="content-section active">
+
+
             <div class="subject-block">
-                <div class="subject-header" onclick="toggleSubject(this, event)">
-                    <div class="subject-title-container">
-                        <h2 class="subject-title">🦴 مقياس التشريح (Anatomy) 🦴</h2>
-                    </div>
-                    <div class="header-controls">
-                        <span class="toggle-icon">+</span>
-                    </div>
-                </div>
-                <div class="subject-content">
-                    <button class="lesson-button" onclick="toggleLesson(this, event)">
-                        <span><strong>السداسي الْأُولَى: S1</strong></span>
-                        <span class="toggle-icon">+</span>
-                    </button>
-                    <ul class="lesson-materials">
-                        <li>
-                            <button class="lesson-button" onclick="toggleLesson(this, event)">
-                                <span>التَّشْرِيحُ الْوَظِيفِيُّ لِلْجِهَازِ الْقَلْبِيِّ الْوِعَائِيِّ</span>
-                                <span class="lesson-lang">FUNCTIONAL ANATOMY OF THE CARDIOVASCULAR SYSTEM</span>
-                            </button>
-                            <ul class="lesson-materials">
-                                <li class="summary-item"> <a href="#" class="summary-link">الدُّخُولُ للاختبار</a><p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <button class="lesson-button" onclick="toggleLesson(this, event)">
-                        <span><strong>السداسي الثاني : S2</strong></span>
-                        <span class="toggle-icon">+</span>
-                    </button>
-                    <ul class="lesson-materials">
-                         <li>
-                            <button class="lesson-button" onclick="toggleLesson(this, event)">
-                                <span>التَّشْرِيحُ الْوَظِيفِيُّ لِلْجِهَازِ التَّنَفُّسِيِّ</span>
-                                <span class="lesson-lang">FUNCTIONAL ANATOMY OF THE RESPIRATORY SYSTEM</span>
-                            </button>
-                            <ul class="lesson-materials">
-                                <li class="summary-item"> <a href="#" class="summary-link">الدُّخُولُ للاختبار</a><p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                                            <h2 class="subject-title">كلية عنابة </h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+<div class="subject-content">
+    <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-7-strike">
+        <span>اِخْتِبَارُ الدَّوْرَةِ العَادِيَّةِ (إضراب) 2024-2025</span>
+        <span class="lesson-lang">ANNABA 2024-2025 STRIKE EXAM</span>
+        <span>EXAMEN DE RATTRAPAGE (GRÈVE) ANNABA 2024-2025</span>
+    </button>
+    <ul id="lesson-7-strike" class="lesson-materials">
+        <li class="summary-item">
+        <a href="#" class="summary-link">الدخول للاختبار  </a>
+            <p>قيد التجهيز.</p>
+        </li>
+    </ul>
+
+
+    <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-7-strike">
+        <span> قريبا </span>
+        <span class="lesson-lang">empty </span>
+        <span> empty </span>
+    </button>
+    <ul id="lesson-7-normal" class="lesson-materials">
+        <li class="summary-item">
+        <a href="#" class="summary-link">الدخول للاختبار  </a>
+            <p>قيد التجهيز.</p>
+        </li>
+        <li class="summary-item">
+            <a href="#" class="summary-link">اختبار الأعمال التطبيقية لمقياس التشريح (TP)</a>
+            <p>كلية عنابة 2024-2025، قيد التجهيز.</p>
+        </li>
+        <li class="summary-item">
+            <a href="#" class="summary-link">اختبار الأعمال التطبيقية لمقياس علم الأنسجة (TP)</a>
+            <p>قيد التجهيز.</p>
+        </li>
+    </ul>
+
+
         
-        <div id="biophysics-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
-        <div id="biochemistry-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
-        <div id="biostatistics-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
-        <div id="chemistry-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
         
-        <div id="cytology-section" class="content-section">
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+</div></div>
+
+
+
+
+
             <div class="subject-block">
-                 <div class="subject-header" onclick="toggleSubject(this, event)">
-                    <div class="subject-title-container">
-                       <h2 class="subject-title">🔬 عِلْمِ الخلية (Cytology) 🔬</h2>
-                    </div>
-                    <div class="header-controls">
-                        <span class="toggle-icon">+</span>
-                    </div>
-                </div>
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                                            <h2 class="subject-title">ملحقة سكيكدة  </h2>
+                    <span class="toggle-icon">+</span>
+                </button>
                 <div class="subject-content">
                     
-                    <div class="subject-block">
-                        <div class="subject-header" onclick="toggleSubject(this, event)">
-                             <div class="subject-title-container">
-                               <h2 class="subject-title">كلية عنابة</h2>
-                            </div>
-                             <div class="header-controls">
-                                <span class="toggle-icon">+</span>
-                            </div>
-                        </div>
-                        <div class="subject-content">
-                            <button class="lesson-button" onclick="toggleLesson(this, event)">
-                                <span><strong>السداسي الْأُولَى: S1</strong></span>
-                                <span class="toggle-icon">+</span>
-                            </button>
-                            <ul class="lesson-materials">
-                               <li>
-                                    <button class="lesson-button" onclick="toggleLesson(this, event)">
-                                        <span>اِخْتِبَارُ الدَّوْرَةِ  العَادِيَّةِ 2024-2025</span>
-                                        <span class="lesson-lang">ANNABA 2024-2025 EXAM</span>
-                                    </button>
-                                    <ul class="lesson-materials">
-                                        <li class="summary-item"><a href="exam_med01_cytology_annaba_s1_2024_2025.html" class="summary-link">الدخول للاختبار</a><p>السنة 2025 قيد التجهيز.</p></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <button class="lesson-button" onclick="toggleLesson(this, event)">
-                                        <span>اِخْتِبَارُ الدَّوْرَةِ العاديةُ 2023-2024</span>
-                                        <span class="lesson-lang">ANNABA 2023-2024 EXAM</span>
-                                    </button>
-                                    <ul class="lesson-materials">
-                                        <li class="summary-item"><a href="" class="summary-link">الدخول للاختبار</a><p>السنة 2024 قيد التجهيز.</p></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <button class="lesson-button" onclick="toggleLesson(this, event)">
-                                <span><strong>السداسي الثاني : S2</strong></span>
-                                <span class="toggle-icon">+</span>
-                            </button>
-                             <ul class="lesson-materials">
-                                <li><p class="empty-section-message" style="padding: 1.5rem; font-size: 1.5rem;">لا يوجد محتوى حالياً.</p></li>
-                            </ul>
-                        </div>
-                    </div>
+                    
+                    
 
-                    <div class="subject-block">
-                        <div class="subject-header" onclick="toggleSubject(this, event)">
-                           <div class="subject-title-container">
-                            <h2 class="subject-title">ملحقة سكيكدة</h2>
-                           </div>
-                           <div class="header-controls">
-                            <span class="toggle-icon">+</span>
-                           </div>
-                        </div>
-                        <div class="subject-content">
-                           <button class="lesson-button" onclick="toggleLesson(this, event)">
-                                <span><strong>السداسي الْأُولَى: S1</strong></span>
-                                <span class="toggle-icon">+</span>
-                            </button>
-                            <ul class="lesson-materials">
-                               <li>
-                                    <button class="lesson-button" onclick="toggleLesson(this, event)">
-                                        <span> اِخْتِبَارُ الدَّوْرَةِ العَادِيَّةِ 2024-2025 </span>
-                                        <span class="lesson-lang">SKIKDA 2024-2025 EXAM</span>
-                                    </button>
-                                    <ul class="lesson-materials">
-                                        <li class="summary-item"><a href="exam_med02_endocrine-2025-skikda.html" class="summary-link">الدخول للاختبار </a><p>السنة 2025 قيد التجهيز.</p></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                             <button class="lesson-button" onclick="toggleLesson(this, event)">
-                                <span><strong>السداسي الثاني : S2</strong></span>
-                                 <span class="toggle-icon">+</span>
-                            </button>
-                             <ul class="lesson-materials">
-                                <li><p class="empty-section-message" style="padding: 1.5rem; font-size: 1.5rem;">لا يوجد محتوى حالياً.</p></li>
-                            </ul>
-                        </div>
-                    </div>
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
 
-                </div>
-            </div>
-        </div>
-        <div id="embryology-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
-        <div id="physiology-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
-        <div id="shh-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
-        <div id="histology-section" class="content-section"><p class="empty-section-message">لا يوجد محتوى في هذا القسم حالياً.</p></div>
-    </div>
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+
+    </div>    </div>
+
+
+
+
+
+<div class="subject-block">
+    <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+<h2 class="subject-title">
+  <span>📋 اِخْتِبَارات أَدَاة عِلْم في علم التشريح 🦴</span>
+</h2>
+        <span class="toggle-icon">+</span>
+    </button>
+    <div class="subject-content">
+
+   
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+    </div></div></div>
+
+
+
+
+
+
+
+        <div id="cytology-section" class="content-section">
+            
+        
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                                            <h2 class="subject-title">كلية عنابة </h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+
+
+       <div class="subject-content">
+
+        <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-1"><span>اختبار الدورة العادية السداسي الأول 2024 2025 </span> <span class="lesson-lang">  EXAMEN DE LA SESSION NORMALE SEMESTRE 1 2024 2025  </span> <span class="lesson-lang">REGULAR SESSION EXAM SEMESTER 1 2024 2025</span></button>
+        <ul id="lesson-gen-1" class="lesson-materials">
+            <li class="summary-item">
+                <a href="exam_med01_cytology_annaba_s1_2024_2025.html" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+    </div></div> </div>
+        
+
+
+
+
+
+
+
+
+
+        <div id="histology-section" class="content-section">
+            
+        
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                                            <h2 class="subject-title">كلية عنابة </h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+
+
+                <div class="subject-content">
+                    
+         
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+
+
+    </div></div> </div>
+        
+
+
+
+
+
+
+
+
+        <div id="emberyology-section" class="content-section">
+            
+        
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                                            <h2 class="subject-title">كلية عنابة </h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+                    
+                    
+                    
+                    
+                    
+   
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+    </div></div> </div>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        <div id="physiology-section" class="content-section">
+            
+        
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                                            <h2 class="subject-title">كلية عنابة </h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+   
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+
+    </div></div> </div>
+        
+
+
+
+        <div id="ssh-section" class="content-section">
+            
+        
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                                            <h2 class="subject-title">كلية عنابة </h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+                    
+                
+                    
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+
+
+    </div></div> </div>
+        
+
+
+
+        <div id="biochemie-section" class="content-section">
+            
+        
+            <div class="subject-block">
+                <button class="subject-header" onclick="toggleSubject(this)" aria-expanded="false">
+                                            <h2 class="subject-title">كلية عنابة </h2>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="subject-content">
+                    
+                  
+                    
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+        
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+  <button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-gen-12"><span> فارغ </span><span class="lesson-lang">   empty</span><span class="lesson-lang">   </span></button>
+        <ul id="lesson-gen-12" class="lesson-materials">
+            <li class="summary-item">
+                <a href="#" class="summary-link">الاختبار</a>
+                <p>قيد التجهيز.</p>
+            </li>
+        </ul>
+
+
+
+    </div></div> </div>
+        
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+</div>
+
+
 </main>
+
+
+
+
+
+
 
 
 
