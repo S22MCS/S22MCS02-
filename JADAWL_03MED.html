@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التحضير والمراجعة | سنة ثالثة طب</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- General Styles --- */
+        :root {
+            --primary-color: #007bff;
+            --dark-blue: #1a2a4c;
+            --light-bg: #f4f7f9;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--light-bg);
+            line-height: 1.7;
+            color: var(--text-color);
+        }
+
+        /* --- Main Container & Cards --- */
+        .main-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .main-header h1 {
+            font-size: clamp(2em, 5vw, 2.5em); /* خط مرن */
+            color: var(--dark-blue);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .main-header p {
+            font-size: clamp(1em, 3vw, 1.2em); /* خط مرن */
+            color: #555;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 25px auto;
+            background-color: white;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 87, 184, 0.1);
+            border-top: 5px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 87, 184, 0.15);
+        }
+
+        /* --- Typography & Titles --- */
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .unit-title {
+            font-size: clamp(1.3em, 4vw, 1.5em);
+            color: var(--dark-blue);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .foreign-title {
+            display: block;
+            font-size: 0.8em;
+            color: #555;
+            font-weight: 400;
+        }
+
+        /* --- Links & Buttons --- */
+        .links-container {
+            display: flex;
+            flex-direction: column; 
+            gap: 12px;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, var(--primary-color), #0056b3);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+        }
+
+        .back-link:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+        }
+        
+        /* --- Footer Styles --- */
+        footer {
+            background: var(--dark-blue);
+            color: #fff;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        footer .social-group {
+            margin-bottom: 2rem;
+        }
+
+        footer .social-group h3 {
+             font-weight: 700;
+             margin-bottom: 1.5rem;
+             color: #66ccff;
+        }
+
+        footer .social-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        footer .social-links a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.3s ease;
+            font-weight: 700;
+        }
+
+        footer .social-links a:hover {
+            transform: scale(1.15);
+        }
+
+        footer .social-links a img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 8px;
+            border-radius: 50%;
+            padding: 8px;
+            background-color: rgba(255, 255, 255, 0.05);
+            transition: background-color 0.3s;
+        }
+
+        footer .social-links a:hover img {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        footer .copyright {
+            margin: 0;
+            font-size: 1rem;
+            color: #c0c0c0; 
+        }
+
+        footer .copyright span {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* --- Media Queries for Responsiveness --- */
+        
+        /* Tablets & Large Phones (max-width: 768px) */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .footer .social-links {
+                justify-content: space-around;
+            }
+        }
+        
+        /* Small Phones (max-width: 480px) */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .back-link {
+                font-size: 1em;
+                padding: 10px 12px;
+            }
+            footer .social-links {
+                gap: 1rem;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 10px;
+                -webkit-overflow-scrolling: touch; 
+                scrollbar-width: none; /* Firefox */
+            }
+            footer .social-links::-webkit-scrollbar {
+                display: none; /* Chrome/Safari */
+            }
+            footer .social-links a {
+                min-width: 90px; /* ضمان عدم انضغاط العناصر */
+            }
+            footer .copyright {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <h1>منصة المراجعة والتحضير</h1>
+        <p>برامج دراسية مكثفة ومخصصة لطلبة السنة الثالثة طب</p>
+    </header>
+
+    <div class="container">
+        <h2 class="unit-title">
+            وحدات التعليم المدمجة
+            <span class="foreign-title">Unités d'Enseignement Intégrées (UIE)</span>
+        </h2>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">علم النفس، الأعراض، القلب والتنفس <span class="foreign-title">Psycho, Sémio, Cardio-Respiratoire</span></p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج 4 أيام</a>
+            <a href="#" class="back-link">برنامج 8 أيام</a>
+            <a href="#" class="back-link">برنامج 10 أيام</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">الجهاز العصبي، الحركي والجلدي <span class="foreign-title">Neuro, Locomoteur & Cutané</span></p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج 4 أيام</a>
+            <a href="#" class="back-link">برنامج 10 أيام</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <p class="unit-title">الغدد الصماء، التكاثر والجهاز البولي <span class="foreign-title">Endocrine, Repro & Urinaire</span></p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج 4 أيام</a>
+            <a href="#" class="back-link">برنامج 10 أيام</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <p class="unit-title">الجهاز الهضمي وأعضاء تكوين الدم <span class="foreign-title">Digestif & Organes Hématopoïétiques</span></p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج 4 أيام</a>
+            <a href="#" class="back-link">برنامج 10 أيام</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="unit-title">
+            وحدات التعليم المتخصصة
+            <span class="foreign-title">Unités d'Enseignement Thématique (UET)</span>
+        </h2>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">التشريح وعلم الخلايا المرضي <span class="foreign-title">Anatomie et Cytologie Pathologiques (ACP)</span></p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج 4 أيام</a>
+            <a href="JADAWL_3MED_uet_anatomie_et_cytologie_pathologiques_FI_05AYAM.html" class="back-link">برنامج 05 أيام</a>
+
+            <a href="#" class="back-link">برنامج 10 أيام</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">علم المناعة <span class="foreign-title">Immunologie</span></p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج 3 أيام</a>
+            <a href="#" class="back-link">برنامج 6 أيام</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">علم الأحياء الدقيقة الطبي <span class="foreign-title">Microbiologie Médicale</span></p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج 5 أيام</a>
+            <a href="#" class="back-link">برنامج 10 أيام</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">علم الطفيليات والفطريات <span class="foreign-title">Parasitologie Mycologie</span></p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج 4 أيام</a>
+            <a href="#" class="back-link">برنامج 8 أيام</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">علم الأدوية السريري <span class="foreign-title">Pharmacologie Clinique</span></p>
+        <div class="links-container">
+            <a href="#" class="back-link">برنامج 5 أيام</a>
+            <a href="#" class="back-link">برنامج 10 أيام</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-group s22mcs-group">
+           <h3>
+                طلبة الحل الطبي العلاجي
+                <br>
+                (ط.ح.ط.ع)  
+            </h3>
+            <div class="social-links">
+                <a href="https://instagram.com/s22mcs?igshid=NzZlODBkYWE4Ng" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram">
+                   <span>Instagram</span>
+                </a>
+                <a href="https://t.me/S22MCS" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png" alt="Telegram">
+                    <span>Telegram</span>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61552919247921&mibextid=ZbWKwL" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook">
+                    <span>Facebook</span>
+                </a>
+                <a href="https://www.tiktok.com/@s22mcs?_t=8kfut6Df4lC&_r=1" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok">
+                    <span>TikTok</span>
+                </a>
+                <a href="https://x.com/S22MCS?t=a7d9JIT0p_r-26CRAkYo0A&s=09" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/twitter.png" alt="X (Twitter)">
+                    <span>Twitter</span>
+                </a>
+                <a href="#" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube">
+                    <span>YouTube</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="social-group alat-alm-group">
+            <h3>أداة علم</h3>
+            <div class="social-links">
+                <a href="https://www.instagram.com/adat_ealm/profilecard/?igsh=bGNlZHBxenEzM2Uw" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram">
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.telegram.org" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png" alt="Telegram">
+                    <span>Telegram</span>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61560859966476" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook">
+                    <span>Facebook</span>
+                </a>
+                <a href="https://www.tiktok.com" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok">
+                    <span>TikTok</span>
+                </a>
+                <a href="#" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube">
+                    <span>YouTube</span>
+                </a>
+            </div>
+        </div>
+        <p class="copyright">مخصص <span>لطلبة السنة الثالثة طب</span> - جميع الحقوق محفوظة © 2025</p>
+    </footer>
+
+</body>
+</html>
