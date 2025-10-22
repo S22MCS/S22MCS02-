@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحدي مراجعة التشريح المرضي (10 ساعات)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f0f4f8;
+      --card-bg-color: #ffffff;
+      --primary-text-color: #102a43;
+      --secondary-text-color: #5a7184;
+      --accent-color-1: #3b82f6; /* Blue */
+      --accent-color-2: #10b981; /* Green */
+      --accent-color-3: #f97316; /* Orange */
+      --accent-color-4: #8b5cf6; /* Purple */
+      --accent-color-5: #0ea5e9; /* Cyan */
+      --danger-color: #ef4444;
+      --success-color: #22c55e;
+      --border-color: #e2e8f0;
+      --font-arabic: 'Tajawal', 'Arial', sans-serif;
+      --font-latin: 'Roboto', 'Helvetica', sans-serif;
+    }
+
+    /* General Body Styles */
+    body {
+      font-family: var(--font-arabic);
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 1.5rem 1rem;
+      color: var(--primary-text-color);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-text-color);
+      margin-bottom: 2.5rem;
+      font-weight: 700;
+      font-size: 2.25em;
+    }
+
+    /* Statistics Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .stat-card {
+      background-color: var(--card-bg-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+      text-align: center;
+      border-bottom: 4px solid var(--accent-color-1);
+    }
+    .stat-card h3 { 
+        margin: 0 0 10px 0; 
+        color: var(--secondary-text-color); 
+        font-size: 1em; 
+        font-weight: 500;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 8px;
+    }
+    .stat-value { 
+        font-size: 2.5em; 
+        font-weight: 700; 
+        color: var(--primary-text-color); 
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      background-color: var(--border-color);
+      border-radius: 50px;
+      margin-bottom: 2.5rem;
+      height: 28px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-5));
+      width: 0%;
+      transition: width 0.5s ease-in-out;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.85em;
+      font-weight: bold;
+    }
+    
+    /* Info Grid (Dates & Timers) */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .info-card {
+      background-color: var(--card-bg-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border-left: 4px solid var(--accent-color-5);
+    }
+
+    .info-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1em;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .info-card-header i { color: var(--accent-color-5); }
+    .info-card-body {
+      font-size: 1.1em;
+      color: var(--secondary-text-color);
+      text-align: center;
+      font-weight: 500;
+    }
+    .info-card-body.timer-display {
+      font-family: var(--font-latin);
+      font-size: 2em;
+      font-weight: 700;
+      color: var(--accent-color-5);
+    }
+
+    /* Main Schedule Layout */
+    .schedule-grid { 
+        display: grid; 
+        gap: 3rem; 
+    }
+    .tasks-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+
+    /* Task Card Styling */
+    .task-card {
+      background-color: var(--card-bg-color);
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      border-right: 5px solid transparent; /* RTL default border */
+    }
+    .task-card:hover { 
+        transform: translateY(-5px); 
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+    }
+
+    .task-subject {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+    }
+    .subject-patho-gen { background-color: var(--accent-color-1); }
+    .subject-patho-vasc { background-color: var(--accent-color-4); }
+    .subject-patho-spec { background-color: var(--accent-color-2); }
+    .subject-onco-gen { background-color: var(--accent-color-3); }
+    .subject-onco-spec { background-color: #c026d3; }
+    .subject-review { background-color: var(--danger-color); }
+
+    .task-content { margin-bottom: 1.5rem; }
+    .lang-ar {  
+        font-weight: 700;  
+        font-size: 1.2em;  
+        margin-bottom: 0.75rem;  
+        display: flex;  
+        gap: 10px;  
+        align-items: center;  
+    }
+    .lang-ar i { color: var(--secondary-text-color); }
+
+    .lang-en, .lang-fr {
+        font-family: var(--font-latin);
+        font-size: 0.95em;
+        color: var(--secondary-text-color);
+        padding-right: 25px;
+        margin-bottom: 0.25rem;
+        line-height: 1.5;
+    }
+    
+    .task-footer {
+      border-top: 1px solid var(--border-color);
+      padding-top: 1rem;
+      margin-top: auto; /* Pushes footer to the bottom */
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .timer { font-family: var(--font-latin); font-size: 1.6em; font-weight: 700; color: var(--primary-text-color); }
+    
+    .button-group { display: flex; gap: 8px; }
+    .btn { 
+        color: white; 
+        background-color: var(--secondary-text-color); 
+        border: none; 
+        padding: 8px 12px; 
+        cursor: pointer; 
+        border-radius: 8px; 
+        font-size: 0.9em; 
+        transition: all 0.2s ease; 
+        display: inline-flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 6px; 
+        min-width: 40px; /* Ensures buttons don't get too small */
+    }
+    .btn:hover { opacity: 0.85; transform: scale(1.05); }
+    .btn-start { background-color: var(--accent-color-1); }
+    .btn-complete { background-color: var(--success-color); }
+    .btn-reset { background-color: var(--danger-color); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Completed State */
+    .completed {
+      background-color: #f8fafc;
+      border-right: 5px solid var(--success-color);
+    }
+    .completed .task-content { text-decoration: line-through; color: #94a3b8; }
+    .completed .lang-ar, .completed .lang-en, .completed .lang-fr, .completed .task-subject, .completed .timer { opacity: 0.6; }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body { padding: 1rem 0.5rem; }
+      h1 { font-size: 1.8em; }
+      .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+      .stat-value { font-size: 2em; }
+      .info-grid { gap: 1rem; }
+      .tasks-container { grid-template-columns: 1fr; gap: 1.25rem; }
+      .timer-controls { flex-wrap: wrap; justify-content: center; }
+      .timer { margin-bottom: 0.5rem; text-align: center; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+    <h1><i class="fas fa-rocket"></i> تحدي مراجعة التشريح المرضي (10 ساعات)</h1>
+  
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3><i class="fas fa-tasks"></i> المهام الكلية</h3>
+        <div class="stat-value" id="totalTasks">28</div>
+      </div>
+      <div class="stat-card">
+        <h3><i class="fas fa-check-circle"></i> المهام المكتملة</h3>
+        <div class="stat-value" id="completedTasks">0</div>
+      </div>
+      <div class="stat-card">
+        <h3><i class="fas fa-hourglass-half"></i> وقت الدراسة الإجمالي</h3>
+        <div class="stat-value" id="totalStudyTimeDisplay">10 ساعات</div>
+      </div>
+    </div>
+  
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+  
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-header"><i class="fas fa-calendar-alt"></i><span>التقويم الميلادي</span></div>
+        <div class="info-card-body" id="gregorianDateDisplay">...</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-header"><i class="fas fa-moon"></i><span>التقويم الهجري</span></div>
+        <div class="info-card-body" id="hijriDateDisplay">...</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-header"><i class="fas fa-hourglass-end"></i><span>الوقت المتبقي لانتهاء اليوم</span></div>
+        <div class="info-card-body timer-display" id="countdownToEndOfDay">00:00:00</div>
+      </div>
+    </div>
+
+  <div class="schedule-grid">
+      <div class="tasks-container">
+        <div class="task-card" id="task1"><div class="task-header"><span class="task-subject subject-patho-gen">علم الأمراض العام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-notes-medical"></i>مكانة التشريح المرضي في الطب</div><div class="lang-en">Place of Pathological Anatomy in Medicine</div><div class="lang-fr">Place de l'Anatomie Pathologique en Médecine</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t1">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task1', 't1', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task1')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task1', 't1', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task2"><div class="task-header"><span class="task-subject subject-patho-gen">علم الأمراض العام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-disease"></i>الآفات الخلوية والنسيجية (النخر - الموت المبرمج)</div><div class="lang-en">Cellular and Tissue Lesions (Necrosis - Apoptosis)</div><div class="lang-fr">Lésions cellulaires et Tissulaires (Nécrose - Apoptose)</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t2">00:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task2', 't2', 1800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task2')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task2', 't2', 1800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task3"><div class="task-header"><span class="task-subject subject-patho-gen">علم الأمراض العام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-fire"></i>العملية الالتهابية الشائعة</div><div class="lang-en">Common Inflammatory Process</div><div class="lang-fr">Processus Inflammatoire Banal</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t3">00:20:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task3', 't3', 1200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task3')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task3', 't3', 1200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task4"><div class="task-header"><span class="task-subject subject-patho-gen">علم الأمراض العام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-fire-extinguisher"></i>أشكال الالتهاب الشائع</div><div class="lang-en">Forms of Common Inflammation</div><div class="lang-fr">Formes de l'Inflammation Banale</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t4">00:20:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task4', 't4', 1200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task4')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task4', 't4', 1200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task5"><div class="task-header"><span class="task-subject subject-patho-gen">علم الأمراض العام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-atom"></i>اضطرابات الأيض الخلوي</div><div class="lang-en">Cellular Metabolism Disorders</div><div class="lang-fr">Troubles du Métabolisme Cellulaire</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t5">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task5', 't5', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task5')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task5', 't5', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task6"><div class="task-header"><span class="task-subject subject-patho-gen">علم الأمراض العام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-border-all"></i>أمراض النسيج خارج الخلية</div><div class="lang-en">Extracellular Matrix Pathologies</div><div class="lang-fr">Pathologies de la Matrice Extracellulaire</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t6">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task6', 't6', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task6', 't6', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        
+        <div class="task-card" id="task7"><div class="task-header"><span class="task-subject subject-patho-vasc">أمراض الأوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-water"></i>أمراض الأوعية الدموية واضطرابات الدورة الدموية</div><div class="lang-en">Vascular Pathology and Circulatory Disorders</div><div class="lang-fr">Pathologie Vasculaire et Troubles Circulatoires</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t7">00:50:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task7', 't7', 3000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task7')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task7', 't7', 3000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task8"><div class="task-header"><span class="task-subject subject-patho-vasc">أمراض الأوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-bacon"></i>تصلب الشرايين</div><div class="lang-en">Atherosclerosis</div><div class="lang-fr">Athérosclérose</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t8">00:35:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task8', 't8', 2100)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task8')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task8', 't8', 2100)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task9"><div class="task-header"><span class="task-subject subject-patho-vasc">أمراض الأوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-heart-broken"></i>الاحتشاء</div><div class="lang-en">Infarction</div><div class="lang-fr">Infarctus</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t9">00:35:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task9', 't9', 2100)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task9')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task9', 't9', 2100)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        
+        <div class="task-card" id="task10"><div class="task-header"><span class="task-subject subject-patho-spec">أمراض نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-bacteria"></i>الجوانب المرضية للعدوى (الالتهاب النوعي)</div><div class="lang-en">Anatomopathological Aspects of Infections (Specific Inflam.)</div><div class="lang-fr">Aspects Anatomopathologiques des Infections (Inflam. Spécifique)</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t10">00:50:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task10', 't10', 3000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task10')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task10', 't10', 3000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task11"><div class="task-header"><span class="task-subject subject-patho-spec">أمراض نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-shield-alt"></i>الجوانب المرضية للأمراض المناعية</div><div class="lang-en">Anatomopathological Aspects of Immune Disorders</div><div class="lang-fr">Aspects Anatomopathologiques des Affections Immunitaires</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t11">00:50:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task11', 't11', 3000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task11')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task11', 't11', 3000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task12"><div class="task-header"><span class="task-subject subject-onco-gen">علم الأورام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-dna"></i>علم أمراض الأورام (مقدمة)</div><div class="lang-en">Tumor Pathology (Introduction)</div><div class="lang-fr">Pathologie Tumorale (Introduction)</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t12">00:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task12', 't12', 1800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task12')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task12', 't12', 1800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        
+        <div class="task-card" id="task13"><div class="task-header"><span class="task-subject subject-onco-gen">علم الأورام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-sitemap"></i>أسس تصنيف الأورام</div><div class="lang-en">Bases of Tumor Classification</div><div class="lang-fr">Bases de Classification des Tumeurs</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t13">00:20:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task13', 't13', 1200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task13')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task13', 't13', 1200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task14"><div class="task-header"><span class="task-subject subject-onco-gen">علم الأورام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-cogs"></i>آليات التسرطن</div><div class="lang-en">Mechanisms of Carcinogenesis</div><div class="lang-fr">Mécanismes de la Carcinogénèse</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t14">00:20:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task14', 't14', 1200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task14')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task14', 't14', 1200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task15"><div class="task-header"><span class="task-subject subject-onco-gen">علم الأورام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-vial"></i>المسببات المرضية للسرطان</div><div class="lang-en">Etiopathogenesis of Cancers</div><div class="lang-fr">Étiopathogénie des Cancers</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t15">00:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task15', 't15', 1800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task15')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task15', 't15', 1800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task16"><div class="task-header"><span class="task-subject subject-onco-gen">علم الأورام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-microscope"></i>الخلية السرطانية</div><div class="lang-en">The Cancer Cell</div><div class="lang-fr">Cellule cancéreuse</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t16">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task16', 't16', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task16')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task16', 't16', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task17"><div class="task-header"><span class="task-subject subject-onco-gen">علم الأورام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-network-wired"></i>سدى الورم</div><div class="lang-en">Tumor Stroma</div><div class="lang-fr">Stroma tumoral</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t17">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task17', 't17', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task17')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task17', 't17', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task18"><div class="task-header"><span class="task-subject subject-onco-gen">علم الأورام</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-shipping-fast"></i>النقائل</div><div class="lang-en">Metastases</div><div class="lang-fr">Métastases</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t18">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task18', 't18', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task18')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task18', 't18', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        
+        <div class="task-card" id="task19"><div class="task-header"><span class="task-subject subject-onco-spec">أورام نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-layer-group"></i>الأورام الظهارية</div><div class="lang-en">Epithelial Tumors</div><div class="lang-fr">Tumeurs Epithéliales</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t19">00:20:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task19', 't19', 1200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task19')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task19', 't19', 1200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task20"><div class="task-header"><span class="task-subject subject-onco-spec">أورام نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-layer-group"></i>الأورام الغدية</div><div class="lang-en">Glandular Tumors</div><div class="lang-fr">Tumeurs Glandulaires</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t20">00:20:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task20', 't20', 1200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task20')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task20', 't20', 1200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task21"><div class="task-header"><span class="task-subject subject-onco-spec">أورام نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-tint"></i>أورام الظهارة البولية</div><div class="lang-en">Urothelial Tumors</div><div class="lang-fr">Tumeurs Urothéliales</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t21">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task21', 't21', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task21')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task21', 't21', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task22"><div class="task-header"><span class="task-subject subject-onco-spec">أورام نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-project-diagram"></i>الأورام الضامة</div><div class="lang-en">Connective Tissue Tumors</div><div class="lang-fr">Tumeurs Conjonctives</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t22">00:20:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task22', 't22', 1200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task22')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task22', 't22', 1200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task23"><div class="task-header"><span class="task-subject subject-onco-spec">أورام نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-dot-circle"></i>اللمفومات</div><div class="lang-en">Lymphomas</div><div class="lang-fr">Lymphomes</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t23">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task23', 't23', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task23')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task23', 't23', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task24"><div class="task-header"><span class="task-subject subject-onco-spec">أورام نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-baby"></i>الأورام الجنينية</div><div class="lang-en">Embryonic Tumors</div><div class="lang-fr">Tumeurs Embryonnaires</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t24">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task24', 't24', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task24')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task24', 't24', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task25"><div class="task-header"><span class="task-subject subject-onco-spec">أورام نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-palette"></i>الأورام الميلانينية</div><div class="lang-en">Melanocytic Tumors</div><div class="lang-fr">Tumeurs Mélanocytaires</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t25">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task25', 't25', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task25')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task25', 't25', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task26"><div class="task-header"><span class="task-subject subject-onco-spec">أورام نوعية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-brain"></i>الأورام العصبية</div><div class="lang-en">Nervous System Tumors</div><div class="lang-fr">Tumeurs Nerveuses</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t26">00:15:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task26', 't26', 900)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task26')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task26', 't26', 900)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task27"><div class="task-header"><span class="task-subject subject-review">مراجعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-question-circle"></i>مراجعة شاملة للأورام (عام وخاص)</div><div class="lang-en">Comprehensive review of Oncology (Gen & Spec)</div><div class="lang-fr">Révision complète d'Oncologie (Gén & Spé)</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t27">00:20:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task27', 't27', 1200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task27')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task27', 't27', 1200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+         <div class="task-card" id="task28"><div class="task-header"><span class="task-subject subject-review">مراجعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-tasks"></i>حل أسئلة وتدريبات</div><div class="lang-en">MCQ Practice & Exercises</div><div class="lang-fr">Pratique QCM & Exercices</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t28">00:20:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task28', 't28', 1200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task28')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task28', 't28', 1200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+  </div>
+</div>
+
+<script>
+const TOTAL_TASKS = 28;
+// تم تغيير مفاتيح الحفظ لضمان عدم التداخل مع الخطة القديمة
+const LS_KEYS = {
+    STATUS: 'tasksStatus_anapath_10hr_challenge_v1',
+    TIMERS: 'activeTimers_anapath_10hr_challenge_v1'
+};
+let activeTimers = {};
+
+function formatTime(seconds) {
+    if (isNaN(seconds) || seconds < 0) return "00:00:00";
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
+}
+
+function updateProgress() {
+    const completedCount = document.querySelectorAll('.task-card.completed').length;
+    document.getElementById('completedTasks').innerText = completedCount;
+    document.getElementById('totalTasks').innerText = TOTAL_TASKS;
+    const progress = TOTAL_TASKS > 0 ? (completedCount / TOTAL_TASKS) * 100 : 0;
+    const progressBar = document.getElementById('progressBar');
+    progressBar.style.width = progress + '%';
+    progressBar.innerText = Math.round(progress) + '%';
+}
+
+function saveState() {
+    const tasksStatus = {};
+    document.querySelectorAll('.task-card').forEach(card => {
+        tasksStatus[card.id] = card.classList.contains('completed');
+    });
+    localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(tasksStatus));
+}
+
+function loadState() {
+    const tasksStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS));
+    if (tasksStatus) {
+        Object.keys(tasksStatus).forEach(taskId => {
+            const taskElement = document.getElementById(taskId);
+            if (taskElement && tasksStatus[taskId]) {
+                taskElement.classList.add('completed');
+                const buttons = taskElement.querySelectorAll('.btn-start, .btn-complete');
+                buttons.forEach(btn => btn.disabled = true);
+            }
+        });
+    }
+    updateProgress();
+}
+
+function startTimer(taskId, timerId, initialSeconds) {
+    const taskElement = document.getElementById(taskId);
+    if (taskElement.classList.contains('completed') || activeTimers[timerId]) return;
+    
+    let timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    
+    if(timersState[timerId]) delete timersState[timerId];
+
+    const endTime = Date.now() + initialSeconds * 1000;
+    timersState[timerId] = { endTime, taskId, initialSeconds };
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    
+    runTimer(taskId, timerId);
+}
+
+function runTimer(taskId, timerId) {
+    const taskElement = document.getElementById(taskId);
+    if (!taskElement) return;
+    const timerElement = document.getElementById(timerId);
+    const startBtn = taskElement.querySelector('.btn-start');
+    if (startBtn) startBtn.disabled = true;
+
+    if (activeTimers[timerId]) clearInterval(activeTimers[timerId]);
+
+    activeTimers[timerId] = setInterval(() => {
+        const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+        const timerData = timersState[timerId];
+        
+        if (!timerData) {
+            clearInterval(activeTimers[timerId]);
+            delete activeTimers[timerId];
+            return;
+        }
+
+        const now = Date.now();
+        let secondsLeft = Math.round((timerData.endTime - now) / 1000);
+
+        if (secondsLeft <= 0) {
+            clearInterval(activeTimers[timerId]);
+            delete activeTimers[timerId];
+            delete timersState[timerId];
+            localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+            timerElement.textContent = formatTime(0);
+            if (startBtn) startBtn.disabled = false;
+        } else {
+            timerElement.textContent = formatTime(secondsLeft);
+        }
+    }, 1000);
+}
+
+function completeTask(taskId) {
+    const taskElement = document.getElementById(taskId);
+    if (!taskElement) return;
+    taskElement.classList.add('completed');
+    const buttons = taskElement.querySelectorAll('.btn-start, .btn-complete');
+    buttons.forEach(btn => btn.disabled = true);
+    const timerId = taskElement.querySelector('.timer').id;
+    if (activeTimers[timerId]) {
+        clearInterval(activeTimers[timerId]);
+        delete activeTimers[timerId];
+    }
+    let timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    delete timersState[timerId];
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    updateProgress();
+    saveState();
+}
+
+function resetTask(taskId, timerId, initialSeconds) {
+    const taskElement = document.getElementById(taskId);
+    if (!taskElement) return;
+    taskElement.classList.remove('completed');
+    const buttons = taskElement.querySelectorAll('.btn');
+    buttons.forEach(btn => btn.disabled = false);
+    if (activeTimers[timerId]) {
+        clearInterval(activeTimers[timerId]);
+        delete activeTimers[timerId];
+    }
+    let timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    delete timersState[timerId];
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    document.getElementById(timerId).textContent = formatTime(initialSeconds);
+    updateProgress();
+    saveState();
+}
+
+function initializeTimers() {
+    const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    const now = Date.now();
+    for (const timerId in timersState) {
+        const { endTime, taskId, initialSeconds } = timersState[timerId];
+        const remainingSeconds = Math.max(0, Math.floor((endTime - now) / 1000));
+        const taskElement = document.getElementById(taskId);
+
+        if (taskElement && !taskElement.classList.contains('completed')) {
+            document.getElementById(timerId).textContent = formatTime(remainingSeconds);
+            if (remainingSeconds > 0) {
+                 runTimer(taskId, timerId);
+            } else {
+                delete timersState[timerId];
+            }
+        } else {
+             delete timersState[timerId];
+        }
+    }
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+}
+
+function displayDates() {
+    const today = new Date();
+    const gregOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('gregorianDateDisplay').textContent = today.toLocaleDateString('ar-DZ', gregOpt);
+    
+    try {
+        const hijriOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', calendar: 'islamic-umalqura' };
+        const hijriDate = new Intl.DateTimeFormat('ar-SA', hijriOpt).format(today);
+        document.getElementById('hijriDateDisplay').textContent = hijriDate;
+    } catch (e) {
+        console.warn("Hijri calendar not supported in this browser.");
+        document.getElementById('hijriDateDisplay').textContent = "غير مدعوم في المتصفح";
+    }
+}
+
+function startEndOfDayCountdown() {
+    const countdownElement = document.getElementById('countdownToEndOfDay');
+    function updateCountdown() {
+        const now = new Date();
+        const endOfDay = new Date(now);
+        endOfDay.setHours(24, 0, 0, 0);
+        const totalSeconds = Math.floor((endOfDay - now) / 1000);
+        
+        if (totalSeconds < 0) {
+            countdownElement.textContent = "00:00:00";
+            return;
+        }
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = Math.floor(totalSeconds % 60);
+        countdownElement.textContent = 
+            `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    initializeTimers();
+    displayDates();
+    startEndOfDayCountdown();
+});
+</script>
+
+</body>
+</html>
