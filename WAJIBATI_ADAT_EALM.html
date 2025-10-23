@@ -3,207 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title> واجباتي </title>
+    <title>واجباتي</title>
     <link rel="icon" type="image/png" href="../images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 
     <style>
-        /* أنماط الهيدر الجديدة */
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        
-        .date-clock-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            background-color: var(--primary-color);
-            padding: 10px;
-            border-radius: 8px;
-            min-width: 200px;
-           
-        }
-        
-        .date-display {
-        
-            font-size: 0.9rem;
-            color: var(--text-color);
-            margin-bottom: 5px;
-        }
-        
-        .countdown-clock {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: var(--accent-color);
-            direction: ltr;
-            text-align: center;
-            width: 100%;
-        }
-        
-        .app-title {
-            flex-grow: 1;
-            text-align: center;
-        }
-        
-        .app-header {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-            padding: 6px 8px;
-            width: 100%;
-            text-align: center;
-            border-bottom: 1px solid var(--accent-color);
-            font-size: 0.8rem;
-            line-height: 1.4;
-            margin-bottom: 0;
-            border-radius: 8px;
-        }
-        .app-header strong {
-            color: var(--accent-color);
-        }
-        .header-buttons {
-            margin-top: 4px;
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .header-buttons a {
-            background-color: var(--accent-color);
-            color: var(--background);
-            padding: 5px 12px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.75rem;
-            transition: background-color 0.3s;
-        }
-        .header-buttons a:hover {
-            background-color: #00cfa1;
-        }
-
-        @media (max-width: 480px) {
-            .header-container {
-                flex-direction: column;
-            }
-            
-            .date-clock-container {
-                width: 100%;
-                margin-bottom: 10px;
-                align-items: center;
-            }
-            
-            .app-title {
-                order: -1;
-                margin-bottom: 10px;
-            }
-            
-            .app-header {
-                font-size: 0.75rem;
-                padding: 5px 6px;
-            }
-            .header-buttons a {
-                padding: 4px 10px;
-                font-size: 0.7rem;
-            }
-        }
-
+        /* ================= */
+        /* المتغيرات الأساسية (الوضع المظلم الافتراضي) */
+        /* ================= */
         :root {
             --background: #101114;
             --primary-color: #1C1D20;
             --secondary-color: #4A4D57;
             --accent-color: #00FFC4;
             --text-color: #F9F9F9;
-    --category-1: #FF6B6B;
-    --category-2: #4ECDC4;
-    --category-3: #45B7D1;
-    --category-4: #FFA07A;
-    --category-5: #98D8C8;
-    /* ألوان جديدة */
-    --category-6: #FFD166; /* أصفر */
-    --category-7: #A05195; /* بنفسجي */
-    --category-8: #FF7C43; /* برتقالي */
-}
+            --danger-color: #ff0033;
+            --danger-hover: #cc0022;
+            
+            --category-1: #FF6B6B;
+            --category-2: #4ECDC4;
+            --category-3: #45B7D1;
+            --category-4: #FFA07A;
+            --category-5: #98D8C8;
+            --category-6: #FFD166;
+            --category-7: #A05195;
+            --category-8: #FF7C43;
+        }
+
+        /* ================= */
+        /* متغيرات الوضع المضيء (جديد) */
+        /* ================= */
+        body.light-mode {
+            --background: #F4F7F6;         /* رمادي فاتح جداً */
+            --primary-color: #FFFFFF;       /* أبيض */
+            --secondary-color: #A9B4C2;    /* رمادي متوسط */
+            --text-color: #101114;         /* نص داكن */
+            --accent-color: #00A881;       /* أخضر أغمق (لتباين أفضل على الأبيض) */
+            --danger-color: #D90429;
+            --danger-hover: #B20021;
+        }
+        
+        /* ================= */
+        /* الأنماط العامة  */
+        /* ================= */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             touch-action: manipulation;
         }
+
         html {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 16pt;
-            color: var(--text-color);
+            color: var(--text-color); /* يتغير تلقائياً مع الثيم */
         }
+
         body {
             min-height: 100vh;
             padding: 10px;
-            background-color: var(--background);
+            background-color: var(--background); /* يتغير تلقائياً مع الثيم */
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease; /* تأثير انتقال */
         }
-        h1 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 3rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            text-align: center;
-            color: var(--accent-color);
-        }
+
         .wrapper {
             width: 700px;
             max-width: 100%;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            margin-bottom: 20px;
         }
-        #todo-input {
-            box-sizing: border-box;
-            padding: 12px 20px;
+
+        /* ================= */
+        /* الهيدر العلوي (الروابط)  */
+        /* ================= */
+        .app-links-header {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 10px 15px;
             width: 100%;
-            background: none;
+            text-align: center;
+            border-bottom: 1px solid var(--accent-color);
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .app-links-header strong {
+            color: var(--accent-color);
+        }
+
+        .header-buttons {
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .header-buttons a {
+            background-color: var(--accent-color);
+            color: var(--background); /* استخدام لون الخلفية للنص لمطابقة الثيم */
+            padding: 5px 12px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.75rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .header-buttons a:hover {
+            background-color: #00cfa1;
+        }
+        
+        /* الوضع المضيء لأزرار الهيدر */
+        body.light-mode .header-buttons a {
+            color: var(--primary-color); /* استخدام لون أبيض للنص على الزر الأخضر */
+        }
+        body.light-mode .header-buttons a:hover {
+            background-color: #007d60;
+        }
+
+        /* ================= */
+        /* الهيدر الرئيسي (العنوان ولوحة التحكم)  */
+        /* ================= */
+        #main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .app-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+        
+        #main-header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--accent-color);
+        }
+        
+        /* زر تبديل الثيم (جديد) */
+        #theme-toggle-btn {
+            background: var(--primary-color);
+            border: 2px solid var(--secondary-color);
+            color: var(--accent-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+        #theme-toggle-btn:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.1) rotate(15deg);
+        }
+        
+        /* منطق تبديل الأيقونات (جديد) */
+        #theme-toggle-btn .fa-moon { display: none; }
+        #theme-toggle-btn .fa-sun { display: inline-block; }
+
+        body.light-mode #theme-toggle-btn .fa-moon { display: inline-block; }
+        body.light-mode #theme-toggle-btn .fa-sun { display: none; }
+        /* نهاية زر تبديل الثيم */
+
+        .dashboard {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            flex-grow: 1;
+        }
+
+        .clock-widget {
+            background-color: var(--primary-color);
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-align: center;
+            flex-grow: 1;
+            min-width: 120px;
+            border: 1px solid var(--secondary-color);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .clock-widget .label {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .clock-widget .value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            direction: ltr;
+        }
+        
+        /* تخصيص لعرض التاريخ */
+        #date-container .value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+            line-height: 1.4;
+            direction: rtl;
+        }
+        
+        #date-container .value div:first-child {
+            color: var(--accent-color);
+        }
+
+        /* ================= */
+        /* نموذج الإضافة  */
+        /* ================= */
+        form {
+            position: relative;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        #todo-input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            background: var(--primary-color); /* تعديل ليستخدم المتغير */
             border: 2px solid var(--secondary-color);
             border-radius: 1000px;
             font: inherit;
             color: var(--text-color);
             caret-color: var(--accent-color);
+            min-width: 200px;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
+        
+        body.light-mode #todo-input {
+            background: var(--background); /* في الوضع المضيء، نجعله كخلفية الصفحة */
+        }
+
         #todo-input:focus {
             outline: none;
             border-color: var(--accent-color);
         }
-        form {
-            position: relative;
-        }
+
         #add-button {
-            position: absolute;
-            top: -0px;
-            right: -170px;
+            position: static;
+            flex-shrink: 0;
             background-color: var(--accent-color);
-            height: 60%;
             padding: 0 30px;
             border: none;
             border-radius: 1000px;
             font: inherit;
             font-weight: 600;
-            color: var(--background);
+            color: var(--background); /* استخدام لون الخلفية للنص */
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         #add-button:hover {
             background-color: #00cfa1;
         }
+        
+        body.light-mode #add-button {
+            color: var(--primary-color); /* نص أبيض على الزر الأخضر */
+        }
+        body.light-mode #add-button:hover {
+            background-color: #007d60;
+        }
+
+
         .form-actions {
             display: flex;
             gap: 10px;
             margin-top: 10px;
+            width: 100%;
         }
         
         .drag-mode-btn, .color-picker-btn {
@@ -221,159 +314,23 @@
         .drag-mode-btn:hover, .drag-mode-btn.active,
         .color-picker-btn:hover, .color-picker-btn.active {
             background-color: var(--accent-color);
-            color: var(--background);
+            color: var(--background); /* استخدام لون الخلفية للنص */
         }
 
-        .todo {
-            margin-bottom: 10px;
-            padding: 0 16px;
-            background-color: var(--primary-color);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            transition: transform 0.2s;
-            position: relative;
-            touch-action: pan-y;
-            -webkit-user-select: none;
-            user-select: none;
+        body.light-mode .drag-mode-btn:hover, 
+        body.light-mode .drag-mode-btn.active,
+        body.light-mode .color-picker-btn:hover, 
+        body.light-mode .color-picker-btn.active {
+            color: var(--primary-color); /* نص أبيض على الزر الأخضر */
         }
-        .todo.dragging {
-            opacity: 0.5;
+        
+        body.light-mode .drag-mode-btn, 
+        body.light-mode .color-picker-btn {
             background-color: var(--secondary-color);
-            box-shadow: 0 0 10px rgba(0, 255, 196, 0.5);
+            color: var(--background); /* نص داكن على الزر الرمادي الفاتح */
         }
-        .todo .todo-text {
-            padding: 15px;
-            padding-right: 0;
-            flex-grow: 1;
-            transition: 200ms ease;
-        }
-        .todo .todo-time {
-            font-size: 0.7rem;
-            color: var(--secondary-color);
-            margin-right: 10px;
-            min-width: 80px;
-            text-align: left;
-        }
-        .todo-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .delete-button, .edit-button, .drag-handle, .copy-button, .color-button {
-            padding: 3px;
-            background: none;
-            border: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-        .delete-button svg, .edit-button svg, 
-        .drag-handle svg, .copy-button svg,
-        .color-button svg {
-            transition: 200ms ease;
-        }
-        .delete-button:hover svg {
-            fill: #ff0033;
-        }
-        .edit-button:hover svg {
-            fill: var(--accent-color);
-        }
-        .drag-handle svg, .copy-button svg,
-        .color-button svg {
-            fill: var(--secondary-color);
-        }
-        .drag-handle:hover svg, .copy-button:hover svg,
-        .color-button:hover svg {
-            fill: var(--accent-color);
-        }
-        .custom-checkbox {
-            border: 2px solid var(--accent-color);
-            border-radius: 50%;
-            min-height: 20px;
-            min-width: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-            transition: 200ms ease;
-            cursor: pointer;
-        }
-        input[type="checkbox"]:checked ~ .custom-checkbox {
-            background-color: var(--accent-color);
-        }
-        input[type="checkbox"]:checked ~ .custom-checkbox svg {
-            fill: var(--primary-color);
-        }
-        input[type="checkbox"]:checked ~ .todo-text {
-            text-decoration: line-through;
-            color: var(--secondary-color);
-        }
-        input[type="checkbox"] {
-            display: none;
-        }
-        .confirm-dialog {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .confirm-content {
-            background-color: var(--primary-color);
-            padding: 20px;
-           
-            border-radius: 10px;
-            max-width: 90%;
-            width: 400px;
-            text-align: center;
-            border: 1px solid var(--accent-color);
-        }
-        .confirm-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .confirm-buttons button {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .confirm-yes {
-            background-color: #ff0033;
-            color: white;
-        }
-        .confirm-no {
-            background-color: var(--accent-color);
-            color: var(--background);
-        }
-        
-        /* أنماط التلوين */
-        .category-1 {
-            border-right: 4px solid var(--category-1);
-        }
-        .category-2 {
-            border-right: 4px solid var(--category-2);
-        }
-        .category-3 {
-            border-right: 4px solid var(--category-3);
-        }
-        .category-4 {
-            border-right: 4px solid var(--category-4);
-        }
-        .category-5 {
-            border-right: 4px solid var(--category-5);
-        }
-        
+
+
         .color-picker {
             display: none;
             position: absolute;
@@ -403,7 +360,7 @@
             transform: scale(1.1);
         }
         .color-option.selected {
-            border-color: white;
+            border-color: var(--text-color); /* يتغير مع الثيم */
         }
         .color-1 { background-color: var(--category-1); }
         .color-2 { background-color: var(--category-2); }
@@ -411,33 +368,302 @@
         .color-4 { background-color: var(--category-4); }
         .color-5 { background-color: var(--category-5); }
         .color-6 { background-color: var(--category-6); }
-.color-7 { background-color: var(--category-7); }
-.color-8 { background-color: var(--category-8); }
+        .color-7 { background-color: var(--category-7); }
+        .color-8 { background-color: var(--category-8); }
 
-.category-6 { border-right: 4px solid var(--category-6); }
-.category-7 { border-right: 4px solid var(--category-7); }
-.category-8 { border-right: 4px solid var(--category-8); }
+        /* ================= */
+        /* الفلاتر والإحصائيات */
+        /* ================= */
+        .controls-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: var(--primary-color);
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
 
-        /* تحسينات للهواتف */
+        .filter-buttons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--background);
+        }
+
+        body.light-mode .filter-btn {
+             background-color: var(--secondary-color);
+             color: var(--background);
+        }
+        body.light-mode .filter-btn.active, 
+        body.light-mode .filter-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        .stats-and-clear {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #task-stats {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .danger-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .danger-btn:hover {
+            background-color: var(--danger-hover);
+        }
+
+        /* ================= */
+        /* قائمة المهام  */
+        /* ================= */
+        #todo-list {
+            list-style: none;
+            width: 100%;
+        }
+        
+        .todo {
+            margin-bottom: 10px;
+            padding: 0 16px;
+            background-color: var(--primary-color);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s, background-color 0.3s ease;
+            position: relative;
+            touch-action: pan-y;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .todo.dragging {
+            opacity: 0.5;
+            background-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(0, 255, 196, 0.5);
+        }
+        .todo .todo-text {
+            padding: 15px;
+            padding-right: 0;
+            flex-grow: 1;
+            transition: 200ms ease;
+            word-break: break-word;
+        }
+        .todo .todo-time {
+            font-size: 0.7rem;
+            color: var(--secondary-color);
+            margin-right: 10px;
+            min-width: 80px;
+            text-align: left;
+            flex-shrink: 0;
+        }
+        .todo-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .delete-button, .edit-button, .drag-handle, .copy-button, .color-button {
+            padding: 3px;
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .delete-button svg, .edit-button svg, 
+        .drag-handle svg, .copy-button svg,
+        .color-button svg {
+            transition: 200ms ease;
+        }
+        .delete-button:hover svg {
+            fill: var(--danger-color);
+        }
+        .edit-button:hover svg {
+            fill: var(--accent-color);
+        }
+        .drag-handle svg, .copy-button svg,
+        .color-button svg {
+            fill: var(--secondary-color);
+        }
+        .drag-handle:hover svg, .copy-button:hover svg,
+        .color-button:hover svg {
+            fill: var(--accent-color);
+        }
+
+        /* تخصيص Checkbox */
+        .custom-checkbox {
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            min-height: 20px;
+            min-width: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            transition: 200ms ease;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked ~ .custom-checkbox {
+            background-color: var(--accent-color);
+        }
+        input[type="checkbox"]:checked ~ .custom-checkbox svg {
+            fill: var(--primary-color); /* يتغير مع الثيم */
+        }
+        
+        body.light-mode input[type="checkbox"]:checked ~ .custom-checkbox svg {
+             fill: var(--background); /* في الوضع المضيء، استخدم لون الخلفية */
+        }
+
+        input[type="checkbox"]:checked ~ .todo-text {
+            text-decoration: line-through;
+            color: var(--secondary-color);
+        }
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        /* أنماط التلوين */
+        .category-1 { border-right: 4px solid var(--category-1); }
+        .category-2 { border-right: 4px solid var(--category-2); }
+        .category-3 { border-right: 4px solid var(--category-3); }
+        .category-4 { border-right: 4px solid var(--category-4); }
+        .category-5 { border-right: 4px solid var(--category-5); }
+        .category-6 { border-right: 4px solid var(--category-6); }
+        .category-7 { border-right: 4px solid var(--category-7); }
+        .category-8 { border-right: 4px solid var(--category-8); }
+        
+        /* تأثيرات النسخ */
+        @keyframes highlight {
+            0% { background-color: rgba(0, 255, 196, 0.2); }
+            100% { background-color: var(--primary-color); }
+        }
+        body.light-mode @keyframes highlight {
+            0% { background-color: rgba(0, 168, 129, 0.2); }
+            100% { background-color: var(--primary-color); }
+        }
+
+        .copied-item {
+            animation: highlight 0.5s;
+        }
+        
+        /* ================= */
+        /* نافذة التأكيد  */
+        /* ================= */
+        .confirm-dialog {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .confirm-content {
+            background-color: var(--primary-color);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            border: 1px solid var(--accent-color);
+        }
+        .confirm-content h3 {
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+        .confirm-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .confirm-buttons button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .confirm-yes {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        .confirm-no {
+            background-color: var(--accent-color);
+            color: var(--background);
+        }
+        
+        body.light-mode .confirm-no {
+             color: var(--primary-color);
+        }
+        
+        /* ================= */
+        /* الفوتر (التذييل)  */
+        /* ================= */
+        footer.app-links-header {
+            margin-top: auto;
+            margin-bottom: 0;
+            font-size: 0.85em;
+            padding: 1em;
+        }
+        
+        /* ================= */
+        /* أنماط الاستجابة (الهواتف)  */
+        /* ================= */
         @media (max-width: 768px) {
             html {
                 font-size: 14px;
             }
             
-            h1 {
+            #main-header h1 {
                 font-size: 2rem;
-                margin-top: 20px;
             }
             
             #add-button {
-                position: static;
-                transform: none;
                 width: 100%;
-                height: auto;
                 padding: 12px;
-                margin-top: 10px;
+                margin-top: 0;
             }
-            
+            #todo-input {
+                width: 100%;
+            }
+
             .todo {
                 padding: 12px;
             }
@@ -456,12 +682,24 @@
                 height: 18px;
             }
             
-            .form-actions {
-                flex-direction: column;
-            }
-            
             .color-picker {
                 width: 120px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            #main-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            .dashboard {
+                width: 100%;
+                justify-content: center;
+            }
+            .app-title {
+                 justify-content: center;
+                 width: 100%;
             }
         }
 
@@ -470,22 +708,31 @@
                 font-size: 12px;
             }
             
-            h1 {
+            #main-header h1 {
                 font-size: 1.8rem;
             }
             
             .todo {
                 flex-wrap: wrap;
+                padding: 10px;
             }
             
+            .todo-text {
+                width: calc(100% - 40px);
+            }
+
             .todo-time {
                 order: 1;
                 width: 100%;
                 margin-top: 5px;
-                margin-left: 40px;
+                margin-right: 40px;
+                text-align: right;
             }
             
             .todo-actions {
+                order: 2;
+                width: 100%;
+                justify-content: flex-end;
                 margin-top: 8px;
                 gap: 5px;
             }
@@ -493,166 +740,127 @@
             .color-picker {
                 width: 100px;
             }
-        }
 
-        /* تأثيرات النسخ */
-        @keyframes highlight {
-            0% { background-color: rgba(0, 255, 196, 0.2); }
-            100% { background-color: var(--primary-color); }
+            .controls-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-buttons {
+                justify-content: center;
+            }
+            .stats-and-clear {
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+            .danger-btn, .filter-btn {
+                 flex-grow: 1;
+                 text-align: center;
+                 padding: 8px;
+            }
         }
-        .copied-item {
-            animation: highlight 0.5s;
+        
+        .empty-list-message {
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
         }
     </style>
 </head>
 
-
-<header class="app-header">
-    <p>
-        مرحباً بك في تطبيق <strong>واجباتي</strong> تم بواسطة <strong>أداة علم</strong> – 
-        يمكنك الوصول إلى <strong>موقعنا</strong> و <strong>صفحاتنا</strong> أو على تطبيق <strong>تيليجرام</strong> من الروابط التالية:
-    </p>
-    <div class="header-buttons">
-
-<a href="https://adatealm.github.io/TO_DO_APP/WAJIBATI" target="_blank" rel="noopener noreferrer external"> تحميل تطبيق واجباتي</a>
-
-        <a href="https://adatealm.github.io/ADATEALM/?fbclid=IwY2xjawKC4FxleHRuA2FlbQIxMABicmlkETFhVDVUTmNWRTNJTExUb1E1AR6IoqOP7mGxEVYPq9jI-fXzmU73BTMA3eAdoaA_eXXnsZURbTu2Dlk14rsirQ_aem_bgqzUZJ81cBfmw-eEb9fPA#Download" target="_blank" rel="noopener noreferrer">زيارة موقع أداة علم </a>
-        <a href="https://t.me/adatealm/238" target="_blank" rel="noopener noreferrer">قناتنا على تطبيق التيليجرام</a>
-    </div>
-</header>
-
-
-
-
 <body>
 
-
-
-
-    <div class="app-title">
-        <h1>واجباتي</h1>
-    </div>
-
-    <div style="display: flex; align-items: center;">
-        <div style=" padding: 5px;">
-          <img src="chronometer.gif" style="width: 50px; height: auto;">
+    <header class="app-links-header">
+        <p>
+            مرحباً بك في تطبيق <strong>واجباتي</strong> تم بواسطة <strong>أداة علم</strong> – 
+            يمكنك الوصول إلى <strong>موقعنا</strong> و <strong>صفحاتنا</strong> أو على تطبيق <strong>تيليجرام</strong> من الروابط التالية:
+        </p>
+        <div class="header-buttons">
+            <a href="https://adatealm.github.io/TO_DO_APP/WAJIBATI" target="_blank" rel="noopener noreferrer external"> تحميل تطبيق واجباتي</a>
+            <a href="https://adatealm.github.io/ADATEALM/?fbclid=IwY2xjawKC4FxleHRuA2FlbQIxMABicmlkETFhVDVUTmNWRTNJTExUb1E1AR6IoqOP7mGxEVYPq9jI-fXzmU73BTMA3eAdoaA_eXXnsZURbTu2Dlk14rsirQ_aem_bgqzUZJ81cBfmw-eEb9fPA#Download" target="_blank" rel="noopener noreferrer">زيارة موقع أداة علم </a>
+            <a href="https://t.me/adatealm/238" target="_blank" rel="noopener noreferrer">قناتنا على تطبيق التيليجرام</a>
         </div>
+    </header>
 
-     
-        <div class="countdown-clock" id="countdown-clock" style="margin-left: 0px;">
-          <!-- هنا مؤقت العد التنازلي -->
+    <header id="main-header">
+        <div class="app-title">
+            <h1>واجباتي</h1>
+            <button id="theme-toggle-btn" title="تبديل المظهر">
+                <i class="fa-solid fa-sun"></i>
+                <i class="fa-solid fa-moon"></i>
+            </button>
         </div>
-
-          &nbsp;  
-          
-        <div style=" padding: 5px;">
-            <img src="chronometer.gif" style="width: 50px; height: auto;">
-          </div>
-
-      </div>
-      
-      
-      
-   
-      
-
-    <div class="header-container">
-       
-
-
-
-        <div class="date-clock-container">
-            <div class="date-display" id="current-date"></div>     
-        </div>   
-          
-          <style>
         
-          
-            .date-display {
-              font-size: 0.9rem;
-              font-weight: 600;              /* خط متوسط السماكة */
-              color: white;                  /* لون النص */
-              background-color: #444;        /* خلفية داكنة */
-              border: 2px solid #ccc;        /* إطار رقيق */
-              border-radius: 10px;           /* حواف مستديرة */
-              padding: 10px 20px;            /* مسافة داخلية */
-              text-align: center;
-              min-width: 150px;
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* ظل خفيف */
-            }
-          </style>
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="digital-clock" id="digital-clock"></div>
-        
-          
-          <style>
+        <div class="dashboard">
+            <div class="clock-widget" id="date-container">
+                <div class="label">التاريخ</div>
+                <div class="value" id="current-date">
+                    </div>
+            </div>
+            
+            <div class="clock-widget" id="digital-clock-container">
+                <div class="label">الساعة</div>
+                <div class="value" id="digital-clock">
+                    </div>
+            </div>
+            
+            <div class="clock-widget" id="countdown-container">
+                <div class="label">متبقي لانتهاء اليوم</div>
+                <div class="value" id="countdown-clock">
+                    </div>
+            </div>
+        </div>
+    </header>
     
-          
-            .digital-clock {
-              font-size: 1.2rem;
-              font-weight: bold;
-              color: white;                     /* لون أبيض للساعة */
-              background-color: #333;           /* خلفية داكنة لتمييز الإطار */
-              border: 2px solid #ccc;           /* إطار خارجي */
-              border-radius: 10px;              /* حواف مستديرة */
-              padding: 15px 25px;               /* مسافة داخلية */
-              text-align: center;
-              min-width: 120px;
-            }
-          </style>
-      
-        
-          
-        
-      
-    </div> 
- 
-
- 
-
     <div class="wrapper">
         <form>
             <input id="todo-input" type="text" 
-            placeholder="⚡ اكتب أي شيء واضغط Enter لإضافة ⚡ " autocomplete="off">
-            <button id="add-button">اضافة </button>
+                   placeholder="⚡ اكتب أي شيء واضغط Enter لإضافة ⚡ " autocomplete="off">
+            <button id="add-button">اضافة</button>
+            
             <div class="form-actions">
-                <button type="button" class="drag-mode-btn" id="dragModeBtn">وضع الترتيب</button>
-                <button type="button" class="color-picker-btn" id="colorPickerBtn">اختيار اللون</button>
+                <button type="button" class="drag-mode-btn" id="dragModeBtn">
+                    <i class="fa-solid fa-sort"></i> وضع الترتيب
+                </button>
+                <button type="button" class="color-picker-btn" id="colorPickerBtn">
+                    <i class="fa-solid fa-palette"></i> اختيار اللون
+                </button>
             </div>
+            
             <div class="color-picker" id="colorPicker">
                 <div class="color-option color-1 selected" data-color="1"></div>
                 <div class="color-option color-2" data-color="2"></div>
                 <div class="color-option color-3" data-color="3"></div>
                 <div class="color-option color-4" data-color="4"></div>
                 <div class="color-option color-5" data-color="5"></div>
-                <!-- ألوان جديدة -->
                 <div class="color-option color-6" data-color="6"></div>
                 <div class="color-option color-7" data-color="7"></div>
                 <div class="color-option color-8" data-color="8"></div>
             </div>
         </form>
 
+        <div class="controls-container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="active">قيد الإنجاز</button>
+                <button class="filter-btn" data-filter="completed">مكتملة</button>
+            </div>
+            <div class="stats-and-clear">
+                 <span id="task-stats"></span>
+                 <button id="clear-completed-btn" class="danger-btn" style="display: none;">
+                    <i class="fa-solid fa-trash-check"></i> حذف المكتمل
+                 </button>
+            </div>
+        </div>
+
         <ul id="todo-list">
-            <!-- المهام ستضاف هنا ديناميكيا -->
-        </ul>
+            </ul>
     </div>
 
     <div class="confirm-dialog" id="confirmDialog">
         <div class="confirm-content">
-            <h3>تأكيد الحذف</h3>
-            <p>هل أنت متأكد من أنك تريد حذف هذه المهمة؟</p>
+            <h3 id="confirmTitle">تأكيد الحذف</h3>
+            <p id="confirmMessage">هل أنت متأكد من أنك تريد حذف هذه المهمة؟</p>
             <div class="confirm-buttons">
                 <button class="confirm-yes" id="confirmYes">نعم</button>
                 <button class="confirm-no" id="confirmNo">لا</button>
@@ -660,60 +868,68 @@
         </div>
     </div>
 
-    <footer class="app-header" dir="rtl" style="font-size: 0.85em; padding: 1em;">
+    <footer class="app-links-header" dir="rtl">
         <p style="margin-top: 1em;">
             تم بواسطة <strong>أداة علم</strong>، الجناح الدراسي لـ 
             <strong>
-                
-
-           طلبة الحل الطبي العلاجي      
-
-                (ط.ح.ط.ع)
+                طلبة الحل الطبي العلاجي (ط.ح.ط.ع)
             </strong>.
-
-         
         </p>
-        <div class="header-buttons" style="display: flex; gap: 1em; flex-wrap: wrap;">
+        <div class="header-buttons">
             <a href="https://t.me/S22MCS" target="_blank" rel="noopener noreferrer">
-                قناة 
-                 طلبة الحل الطبي العلاجي    
-                على التيليجرام
+                قناة طلبة الحل الطبي العلاجي على التيليجرام
             </a>
             <a href="https://t.me/S22MCS/720" target="_blank" rel="noopener noreferrer">
-                ما هي 
-                
-                طلبة الحل الطبي العلاجي      
-
-                ؟
+                ما هي طلبة الحل الطبي العلاجي ؟
             </a>
             <a href="https://s22mcs.github.io/S22MCS-/" target="_blank" rel="noopener noreferrer">
-                زيارة موقع 
-                
-                 طلبة الحل الطبي العلاجي    
+                زيارة موقع طلبة الحل الطبي العلاجي
             </a>
         </div>
     </footer>
 
     <script>
-        // دالة لتحويل التاريخ الميلادي إلى هجري
+        // =======================
+        //  منطق تبديل الثيم (جديد)
+        // =======================
+        const themeToggleBtn = document.getElementById('theme-toggle-btn');
+        
+        // دالة لتطبيق الثيم (تُستدعى عند التحميل وعند التبديل)
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // تطبيق الثيم المحفوظ عند تحميل الصفحة
+        // الوضع المظلم هو الافتراضي إذا لم يوجد شيء محفوظ
+        const savedTheme = localStorage.getItem('theme') || 'dark'; 
+        applyTheme(savedTheme);
+
+        // إضافة مستمع الحدث لزر التبديل
+        themeToggleBtn.addEventListener('click', () => {
+            // تحقق من الثيم الحالي وقم بعكسه
+            const newTheme = document.body.classList.contains('light-mode') ? 'dark' : 'light';
+            applyTheme(newTheme);
+        });
+
+        // =======================
+        //  التاريخ والوقت
+        // =======================
+
         function gregorianToHijri(date) {
-            const gregDate = new Date(date);
-            const gregYear = gregDate.getFullYear();
-            const gregMonth = gregDate.getMonth() + 1;
-            const gregDay = gregDate.getDate();
-            
-            // معادلة تقريبية للتحويل (ليست دقيقة تماماً)
-            const hijriYear = Math.floor((gregYear - 622) * (33 / 32));
             const hijriDate = new Intl.DateTimeFormat('ar-u-ca-islamic', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
-            }).format(gregDate);
-            
+            }).format(date);
             return hijriDate;
         }
 
-        // دالة لعرض التاريخ الحالي
         function updateCurrentDate() {
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -726,17 +942,17 @@
             `;
         }
 
-        // دالة لعرض الساعة الرقمية
         function updateDigitalClock() {
             const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            
-            document.getElementById('digital-clock').textContent = `${hours}:${minutes}:${seconds}`;
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('digital-clock').textContent = timeString;
         }
 
-        // دالة لحساب الوقت المتبقي حتى منتصف الليل
         function updateCountdownClock() {
             const now = new Date();
             const midnight = new Date();
@@ -750,36 +966,51 @@
             document.getElementById('countdown-clock').textContent = `${hours}:${minutes}:${seconds}`;
         }
 
-        // تحديث التاريخ والساعة كل ثانية
+        // التحديث الأولي
         updateCurrentDate();
         updateDigitalClock();
         updateCountdownClock();
-        setInterval(updateCurrentDate, 1000 * 60 * 60); // تحديث التاريخ كل ساعة
+        // إعداد المؤقتات
+        setInterval(updateCurrentDate, 1000 * 60 * 60);
         setInterval(updateDigitalClock, 1000);
         setInterval(updateCountdownClock, 1000);
 
-        // بقية الكود الخاص بقائمة المهام
+        // =======================
+        //  منطق تطبيق المهام
+        // =======================
+        
+        // (باقي كود الجافاسكربت الخاص بالمهام يبقى كما هو)
+        
         const todoForm = document.querySelector('form');
         const todoInput = document.getElementById('todo-input');
         const todoListUL = document.getElementById('todo-list');
         const addButton = document.getElementById('add-button');
         const confirmDialog = document.getElementById('confirmDialog');
+        const confirmTitle = document.getElementById('confirmTitle');
+        const confirmMessage = document.getElementById('confirmMessage');
         const confirmYes = document.getElementById('confirmYes');
         const confirmNo = document.getElementById('confirmNo');
         const dragModeBtn = document.getElementById('dragModeBtn');
         const colorPickerBtn = document.getElementById('colorPickerBtn');
         const colorPicker = document.getElementById('colorPicker');
         const colorOptions = document.querySelectorAll('.color-option');
+        
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const taskStatsEl = document.getElementById('task-stats');
+        const clearCompletedBtn = document.getElementById('clear-completed-btn');
 
         let allTodos = getTodos();
         let currentlyEditingIndex = null;
-        let todoToDeleteIndex = null;
+        let confirmCallback = null;
         let isDragMode = false;
         let sortable;
-        let selectedColor = '1'; // اللون الافتراضي
-        
-        // تهيئة السحب والإفلات مع دعم اللمس
+        let selectedColor = '1';
+        let currentFilter = 'all';
+
         function initSortable() {
+            if (sortable) {
+                sortable.destroy();
+            }
             sortable = new Sortable(todoListUL, {
                 animation: 150,
                 ghostClass: 'dragging',
@@ -793,43 +1024,45 @@
                     const items = todoListUL.querySelectorAll('li');
                     items.forEach(item => {
                         const index = parseInt(item.getAttribute('data-index'));
-                        newOrder.push(allTodos[index]);
+                        const originalTodo = allTodos.find((todo, i) => i === index);
+                        if(originalTodo) {
+                            newOrder.push(originalTodo);
+                        }
                     });
-                    allTodos = newOrder;
+                    
+                    const otherTodos = allTodos.filter(todo => {
+                        if (currentFilter === 'all') return false;
+                        if (currentFilter === 'active' && todo.completed) return true;
+                        if (currentFilter === 'completed' && !todo.completed) return true;
+                        return false;
+                    });
+                    
+                    allTodos = [...newOrder, ...otherTodos];
                     saveTodos();
+                    updateTodoList();
                 },
-                // إعدادات خاصة باللمس
                 touchStartThreshold: 3,
                 delay: 150,
                 delayOnTouchOnly: true,
-                forceFallback: true, // لتحسين الأداء على الهواتف
-                fallbackTolerance: 3 // حساسية السحب على الهواتف
+                forceFallback: true,
+                fallbackTolerance: 3
             });
         }
-
-        // تبديل وضع الترتيب
+        
         function toggleDragMode() {
             isDragMode = !isDragMode;
             dragModeBtn.classList.toggle('active', isDragMode);
+            dragModeBtn.innerHTML = isDragMode ? 
+                '<i class="fa-solid fa-check"></i> تمكين الترتيب' : 
+                '<i class="fa-solid fa-sort"></i> وضع الترتيب';
             
-            const dragHandles = document.querySelectorAll('.drag-handle');
-            dragHandles.forEach(handle => {
-                handle.style.display = isDragMode ? 'flex' : 'none';
-            });
-            
-            if (isDragMode) {
-                initSortable();
-            } else if (sortable) {
-                sortable.destroy();
-            }
+            updateTodoList();
         }
 
-        // تبديل عرض منتقي الألوان
         function toggleColorPicker() {
             colorPicker.classList.toggle('show');
         }
 
-        // اختيار لون جديد
         function selectColor(color) {
             selectedColor = color;
             colorOptions.forEach(option => {
@@ -838,53 +1071,36 @@
             colorPicker.classList.remove('show');
         }
 
-        updateTodoList();
-
-        // بدء التحديث التلقائي للوقت
-        setInterval(updateTodoListTimes, 60000);
-
-        dragModeBtn.addEventListener('click', toggleDragMode);
-        colorPickerBtn.addEventListener('click', toggleColorPicker);
-        
-        colorOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                selectColor(option.dataset.color);
+        function updateColorPickerSelection() {
+            colorOptions.forEach(option => {
+                option.classList.toggle('selected', option.dataset.color === selectedColor);
             });
-        });
+        }
         
-        document.addEventListener('click', (e) => {
-            if (!colorPicker.contains(e.target) && e.target !== colorPickerBtn) {
-                colorPicker.classList.remove('show');
-            }
-        });
+        function showConfirmationDialog(title, message, onConfirm) {
+            confirmTitle.textContent = title;
+            confirmMessage.textContent = message;
+            confirmCallback = onConfirm;
+            confirmDialog.style.display = 'flex';
+        }
 
         confirmYes.addEventListener('click', () => {
-            if (todoToDeleteIndex !== null) {
-                deleteTodoItem(todoToDeleteIndex);
-                todoToDeleteIndex = null;
+            if (typeof confirmCallback === 'function') {
+                confirmCallback();
             }
+            confirmCallback = null;
             confirmDialog.style.display = 'none';
         });
 
         confirmNo.addEventListener('click', () => {
-            todoToDeleteIndex = null;
+            confirmCallback = null;
             confirmDialog.style.display = 'none';
         });
 
-        todoForm.addEventListener('submit', function(e){
-            e.preventDefault();
-            if(currentlyEditingIndex !== null) {
-                updateTodo();
-            } else {
-                addTodo();
-            }
-        });
-
-        function addTodo(){
+        function addTodo() {
             const todoText = todoInput.value.trim();
-            if(todoText.length > 0){
+            if (todoText.length > 0) {
                 const now = new Date();
-                
                 const todoObject = {
                     text: todoText,
                     completed: false,
@@ -892,16 +1108,16 @@
                     color: selectedColor,
                     copiedFrom: null
                 }
-                allTodos.push(todoObject);
+                allTodos.unshift(todoObject);
                 updateTodoList();
                 saveTodos();
                 todoInput.value = "";
-            }  
+            }
         }
 
         function updateTodo() {
             const todoText = todoInput.value.trim();
-            if(todoText.length > 0) {
+            if (todoText.length > 0 && currentlyEditingIndex !== null) {
                 allTodos[currentlyEditingIndex].text = todoText;
                 allTodos[currentlyEditingIndex].color = selectedColor;
                 updateTodoList();
@@ -912,59 +1128,98 @@
             }
         }
 
-        function updateTodoList(){
+        function deleteTodoItem(todoIndex) {
+            allTodos = allTodos.filter((_, i) => i !== todoIndex);
+            saveTodos();
+            updateTodoList();
+        }
+        
+        function startEditingTodo(todoIndex) {
+            currentlyEditingIndex = todoIndex;
+            todoInput.value = allTodos[todoIndex].text;
+            selectedColor = allTodos[todoIndex].color || '1';
+            updateColorPickerSelection();
+            todoInput.focus();
+            addButton.textContent = 'حفظ التعديل';
+        }
+        
+        function copyTodoItem(todoIndex) {
+            const now = new Date();
+            const originalTodo = allTodos[todoIndex];
+            const copiedTodo = {
+                text: originalTodo.text,
+                completed: false,
+                addedAt: now.getTime(),
+                color: originalTodo.color || '1',
+                copiedFrom: todoIndex
+            };
+            allTodos.splice(todoIndex + 1, 0, copiedTodo);
+            saveTodos();
+            updateTodoList();
+            
+            const newTodoIndex = allTodos.findIndex(todo => todo === copiedTodo);
+            const newTodoItem = document.querySelector(`li[data-index="${newTodoIndex}"]`);
+            if (newTodoItem) {
+                newTodoItem.classList.add('copied-item');
+                newTodoItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => {
+                    newTodoItem.classList.remove('copied-item');
+                }, 500);
+            }
+        }
+
+        function changeTodoColor(todoIndex) {
+            const currentColor = allTodos[todoIndex].color || '1';
+            const totalColors = 8;
+            const newColor = (parseInt(currentColor) % totalColors + 1).toString();
+            allTodos[todoIndex].color = newColor;
+            saveTodos();
+            updateTodoList();
+        }
+
+        function updateTodoList() {
             todoListUL.innerHTML = "";
-            allTodos.forEach((todo, todoIndex)=>{
+            let itemsToShow = false;
+            
+            allTodos.forEach((todo, todoIndex) => {
+                if (currentFilter === 'active' && todo.completed) {
+                    return;
+                }
+                if (currentFilter === 'completed' && !todo.completed) {
+                    return;
+                }
+                
+                itemsToShow = true;
                 todoItem = createTodoItem(todo, todoIndex);
                 todoListUL.append(todoItem);
             });
             
+            if(!itemsToShow) {
+                let message = "لا توجد مهام بعد. ابدأ بإضافة مهمة جديدة!";
+                if(currentFilter === 'active') message = "رائع! لا توجد مهام قيد الإنجاز.";
+                if(currentFilter === 'completed') message = "لا توجد مهام مكتملة لعرضها.";
+                
+                todoListUL.innerHTML = `<li class="empty-list-message">${message}</li>`;
+            }
+
             if (isDragMode) {
                 initSortable();
             }
-        }
-
-        function updateTodoListTimes() {
-            const timeElements = document.querySelectorAll('.todo-time');
-            timeElements.forEach((el, index) => {
-                const todoIndex = parseInt(el.closest('li').getAttribute('data-index'));
-                if (allTodos[todoIndex]) {
-                    el.textContent = calculateTimePassed(allTodos[todoIndex].addedAt);
-                }
-            });
-        }
-
-        function calculateTimePassed(timestamp) {
-            const now = new Date().getTime();
-            const diff = now - timestamp;
-            const minutes = Math.floor(diff / (1000 * 60));
             
-            if (minutes < 1) return "الآن";
-            if (minutes < 60) return `منذ ${minutes} دقيقة`;
-            
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return `منذ ${hours} ساعة`;
-            
-            const days = Math.floor(hours / 24);
-            return `منذ ${days} يوم`;
+            updateTaskStats();
         }
-
-        function createTodoItem(todo, todoIndex){
-            const todoId = "todo-"+todoIndex;
+        
+        function createTodoItem(todo, todoIndex) {
+            const todoId = "todo-" + todoIndex;
             const todoLI = document.createElement("li");
             todoLI.setAttribute('data-index', todoIndex);
             
             let displayText = todo.text;
             if (todo.copiedFrom !== null) {
-                displayText = `${todo.text} <span style="color: var(--secondary-color); font-size: 0.8em;">←</span>`;
+                displayText = `${todo.text} <span style="color: var(--secondary-color); font-size: 0.8em; user-select: none;"> (منسوخة)</span>`;
             }
             
             const timePassed = calculateTimePassed(todo.addedAt);
-            
-            // إضافة فئة اللون إذا كان موجوداً
-            if (todo.color) {
-                todoLI.classList.add(`category-${todo.color}`);
-            }
             
             todoLI.className = `todo ${todo.color ? 'category-' + todo.color : ''}`;
             todoLI.innerHTML = `
@@ -977,7 +1232,7 @@
                 </label>
                 <span class="todo-time">${timePassed}</span>
                 <div class="todo-actions">
-                    <button class="drag-handle" title="سحب لإعادة الترتيب" style="display: ${isDragMode ? 'flex' : 'none'}">
+                    <button class="drag-handle" title="سحب لإعادة الترتيب" style="display: ${isDragMode ? 'flex' : 'none'}; cursor: move;">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
                             <path d="M360-160q-33 0-56.5-23.5T280-240q0-33 23.5-56.5T360-320q33 0 56.5 23.5T440-240q0 33-23.5 56.5T360-160Zm0-240q-33 0-56.5-23.5T280-480q0-33 23.5-56.5T360-560q33 0 56.5 23.5T440-480q0 33-23.5 56.5T360-400Zm0-240q-33 0-56.5-23.5T280-720q0-33 23.5-56.5T360-800q33 0 56.5 23.5T440-720q0 33-23.5 56.5T360-640Zm240 0q-33 0-56.5-23.5T520-720q0-33 23.5-56.5T600-800q33 0 56.5 23.5T680-720q0 33-23.5 56.5T600-640Zm0 240q-33 0-56.5-23.5T520-480q0-33 23.5-56.5T600-560q33 0 56.5 23.5T680-480q0 33-23.5 56.5T600-400Zm0 240q-33 0-56.5-23.5T520-240q0-33 23.5-56.5T600-320q33 0 56.5 23.5T680-240q0 33-23.5 56.5T600-160Z"/>
                         </svg>
@@ -998,164 +1253,165 @@
             `;
             
             const deleteButton = todoLI.querySelector(".delete-button");
-            deleteButton.addEventListener("click", (e)=>{
+            deleteButton.addEventListener("click", (e) => {
                 e.stopPropagation();
-                showDeleteConfirmation(todoIndex);
+                showConfirmationDialog(
+                    'تأكيد الحذف',
+                    'هل أنت متأكد من أنك تريد حذف هذه المهمة؟',
+                    () => {
+                        deleteTodoItem(todoIndex);
+                    }
+                );
             });
             
             const editButton = todoLI.querySelector(".edit-button");
-            editButton.addEventListener("click", (e)=>{
+            editButton.addEventListener("click", (e) => {
                 e.stopPropagation();
                 startEditingTodo(todoIndex);
             });
             
             const copyButton = todoLI.querySelector(".copy-button");
-            copyButton.addEventListener("click", (e)=>{
+            copyButton.addEventListener("click", (e) => {
                 e.stopPropagation();
                 copyTodoItem(todoIndex);
             });
             
             const colorButton = todoLI.querySelector(".color-button");
-            colorButton.addEventListener("click", (e)=>{
+            colorButton.addEventListener("click", (e) => {
                 e.stopPropagation();
                 changeTodoColor(todoIndex);
             });
             
-            const dragHandle = todoLI.querySelector(".drag-handle");
-            dragHandle.addEventListener("mousedown", (e)=>{
-                e.stopPropagation();
-            });
-            
-            // تحسينات لدعم اللمس
-            dragHandle.addEventListener("touchstart", (e) => {
-                e.stopPropagation();
-            }, { passive: true });
-            
             const checkbox = todoLI.querySelector("input");
-            checkbox.addEventListener("change", ()=>{
+            checkbox.addEventListener("change", () => {
                 allTodos[todoIndex].completed = checkbox.checked;
                 saveTodos();
+                if (currentFilter !== 'all') {
+                    updateTodoList();
+                } else {
+                    updateTaskStats();
+                }
             });
             
             checkbox.checked = todo.completed;
             return todoLI;
         }
 
-        function showDeleteConfirmation(index) {
-            todoToDeleteIndex = index;
-            confirmDialog.style.display = 'flex';
+        function calculateTimePassed(timestamp) {
+            const now = new Date().getTime();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / (1000 * 60));
+            
+            if (minutes < 1) return "الآن";
+            if (minutes < 60) return `منذ ${minutes} د`;
+            
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `منذ ${hours} س`;
+            
+            const days = Math.floor(hours / 24);
+            return `منذ ${days} ي`;
         }
 
-        function startEditingTodo(todoIndex) {
-            currentlyEditingIndex = todoIndex;
-            todoInput.value = allTodos[todoIndex].text;
-            selectedColor = allTodos[todoIndex].color || '1';
-            updateColorPickerSelection();
-            todoInput.focus();
-            addButton.textContent = 'حفظ التعديل';
-        }
-
-        function changeTodoColor(todoIndex) {
-            const currentColor = allTodos[todoIndex].color || '1';
-            const newColor = currentColor === '5' ? '1' : (parseInt(currentColor) + 1).toString();
-            allTodos[todoIndex].color = newColor;
-            saveTodos();
-            updateTodoList();
-        }
-
-        function updateColorPickerSelection() {
-            colorOptions.forEach(option => {
-                option.classList.toggle('selected', option.dataset.color === selectedColor);
+        function updateTodoListTimes() {
+            const timeElements = document.querySelectorAll('.todo-time');
+            timeElements.forEach((el) => {
+                const todoIndex = parseInt(el.closest('li').getAttribute('data-index'));
+                if (allTodos[todoIndex]) {
+                    el.textContent = calculateTimePassed(allTodos[todoIndex].addedAt);
+                }
             });
         }
+        
+        function updateTaskStats() {
+            const activeTasks = allTodos.filter(todo => !todo.completed).length;
+            const completedTasks = allTodos.length - activeTasks;
 
-        function copyTodoItem(todoIndex) {
-            const now = new Date();
-            const originalTodo = allTodos[todoIndex];
-            
-            const copiedTodo = {
-                text: originalTodo.text,
-                completed: false,
-                addedAt: now.getTime(),
-                color: originalTodo.color || '1',
-                copiedFrom: todoIndex
-            };
-            
-            // إدراج المهمة المنسوخة بعد المهمة الأصلية مباشرة
-            allTodos.splice(todoIndex + 1, 0, copiedTodo);
-            saveTodos();
-            
-            // تطبيق تأثير التمييز على العنصر المنسوخ
-            updateTodoList();
-            const newTodoIndex = todoIndex + 1;
-            const newTodoItem = document.querySelector(`li[data-index="${newTodoIndex}"]`);
-            if (newTodoItem) {
-                newTodoItem.classList.add('copied-item');
-                setTimeout(() => {
-                    newTodoItem.classList.remove('copied-item');
-                }, 500);
+            if (allTodos.length === 0) {
+                taskStatsEl.textContent = 'لا توجد مهام بعد.';
+            } else if (activeTasks === 0) {
+                taskStatsEl.textContent = 'جميع المهام مكتملة! 🎉';
+            } else if (activeTasks === 1) {
+                taskStatsEl.textContent = 'مهمة واحدة متبقية.';
+            } else if (activeTasks === 2) {
+                taskStatsEl.textContent = 'مهمتان متبقيتان.';
+            } else if (activeTasks > 2 && activeTasks < 11) {
+                taskStatsEl.textContent = `${activeTasks} مهام متبقية.`;
+            } else {
+                taskStatsEl.textContent = `${activeTasks} مهمة متبقية.`;
             }
+            
+            clearCompletedBtn.style.display = completedTasks > 0 ? 'inline-block' : 'none';
         }
 
-        function deleteTodoItem(todoIndex){
-            allTodos = allTodos.filter((_, i) => i !== todoIndex);
-            saveTodos();
-            updateTodoList();
-        }
-
-        function saveTodos(){
+        function saveTodos() {
             const todosJson = JSON.stringify(allTodos);
             localStorage.setItem("todos", todosJson);
         }
 
-        function getTodos(){
+        function getTodos() {
             const todos = localStorage.getItem("todos") || "[]";
             return JSON.parse(todos);
         }
 
-        // تحسينات للهواتف: إعادة تهيئة السحب عند تغيير حجم الشاشة
+        // بدء تشغيل التطبيق
+        updateTodoList();
+        setInterval(updateTodoListTimes, 60000);
+
+        dragModeBtn.addEventListener('click', toggleDragMode);
+        colorPickerBtn.addEventListener('click', toggleColorPicker);
+        
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                selectColor(option.dataset.color);
+            });
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!colorPicker.contains(e.target) && e.target !== colorPickerBtn) {
+                colorPicker.classList.remove('show');
+            }
+        });
+
+        todoForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (currentlyEditingIndex !== null) {
+                updateTodo();
+            } else {
+                addTodo();
+            }
+        });
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                currentFilter = button.dataset.filter;
+                updateTodoList();
+            });
+        });
+        
+        clearCompletedBtn.addEventListener('click', () => {
+            const completedCount = allTodos.filter(t => t.completed).length;
+            showConfirmationDialog(
+                'حذف المهام المكتملة',
+                `هل أنت متأكد من حذف (${completedCount}) مهام مكتملة؟`,
+                () => {
+                    allTodos = allTodos.filter(todo => !todo.completed);
+                    saveTodos();
+                    updateTodoList();
+                }
+            );
+        });
+        
         window.addEventListener('resize', function() {
-            if (isDragMode && sortable) {
-                sortable.destroy();
+            if (isDragMode) {
                 initSortable();
             }
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
