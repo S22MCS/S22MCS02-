@@ -159,6 +159,14 @@
             text-transform: uppercase;
             color: var(--accent-color);
         }
+
+        /* === ⭐️⭐️⭐️ هذا هو الإصلاح ⭐️⭐️⭐️ === */
+        /* إصلاح لمشكلة اختفاء العنوان في الوضع المضيء */
+        body.light-mode #main-header h1 {
+            color: var(--text-color); /* استخدام لون النص الأساسي (الداكن) */
+        }
+        /* === ⭐️⭐️⭐️ نهاية الإصلاح ⭐️⭐️⭐️ === */
+
         
         /* زر تبديل الثيم (جديد) */
         #theme-toggle-btn {
@@ -1415,6 +1423,10 @@
 
 
 
+
+
+
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -1422,13 +1434,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>إشعارات هامة</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
+        /* ================= */
+        /* متغيرات التصميم الأساسية (متطابقة مع تطبيق واجباتي) */
+        /* ================= */
+        :root {
+            --background: #101114;
+            --primary-color: #1C1D20;
+            --secondary-color: #4A4D57;
+            --accent-color: #00FFC4;
+            --text-color: #F9F9F9;
+            --danger-color: #ff0033;
+            --danger-hover: #cc0022;
+        }
+
+        /* متغيرات الوضع المضيء */
+        body.light-mode {
+            --background: #F4F7F6;
+            --primary-color: #FFFFFF;
+            --secondary-color: #A9B4C2;
+            --text-color: #101114;
+            --accent-color: #00A881;
+            --danger-color: #D90429;
+            --danger-hover: #B20021;
+        }
+
+        /* ================= */
+        /* الأنماط العامة */
+        /* ================= */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            touch-action: manipulation;
         }
+
+        html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ================= */
+        /* أنماط الإشعارات (Modal) */
+        /* ================= */
         .custom-modal {
             display: flex;
             position: fixed;
@@ -1437,60 +1493,110 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.1);
+            /* استخدام خلفية داكنة شفافة قياسية */
+            background-color: rgba(0, 0, 0, 0.7);
             justify-content: center;
             align-items: center;
             padding: 10px;
             box-sizing: border-box;
         }
+
         .custom-modal-content {
-            background-color: #1a1a1a;
-            color: #fff;
-            padding: 15px;
-            border-radius: 15px;
+            /* استخدام لون الخلفية الأساسي من التطبيق */
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 20px;
+            /* استخدام نفس حواف نافذة التأكيد */
+            border-radius: 10px;
             width: 95%;
-            max-width: 350px;
+            max-width: 400px; /* زيادة طفيفة للعرض */
             max-height: 90vh;
             overflow-y: auto;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+            /* استخدام نفس حدود نافذة التأكيد */
+            border: 1px solid var(--accent-color);
             animation: fadeIn 0.3s ease-in-out;
             box-sizing: border-box;
             margin: 10px;
         }
-        .custom-button {
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            text-align: center;
-            cursor: pointer;
-            border: none;
-            transition: background 0.3s, transform 0.2s;
-            width: 100%;
-            margin: 5px 0;
-            box-sizing: border-box;
-        }
-        .btn-close {
-            background-color: #d9534f;
-            color: white;
-        }
-        .btn-close:hover {
-            background-color: #c9302c;
-            transform: scale(1.05);
-        }
+
         h1 {
             font-size: 1.3rem;
             margin-top: 0;
+            margin-bottom: 15px;
+            /* استخدام لون التمييز للعناوين */
+            color: var(--accent-color);
         }
+
         p {
             font-size: 0.9rem;
             line-height: 1.5;
             margin-bottom: 15px;
+            text-align: right; /* محاذاة أفضل للنصوص العربية */
         }
         
+        /* تنسيق الاقتباسات */
+        p:first-of-type {
+            font-style: italic;
+            padding: 10px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        
+        body.light-mode p:first-of-type {
+            background: rgba(0,0,0,0.05);
+        }
+
+
+        /* ================= */
+        /* أنماط الأزرار (Modal Buttons) */
+        /* ================= */
+        .custom-button {
+            padding: 10px 20px;
+            border-radius: 5px; /* تطابق أزرار التطبيق */
+            font-size: 1rem; /* حجم خط أوضح */
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s, color 0.3s;
+            width: 100%;
+            margin: 5px 0;
+            box-sizing: border-box;
+            font-weight: bold; /* تطابق أزرار التطبيق */
+
+            /* الزر الافتراضي (مثل "انتقل إليها") يأخذ لون التمييز */
+            background-color: var(--accent-color);
+            color: var(--background);
+        }
+        
+        /* زر الإغلاق يأخذ لون الخطر */
+        .btn-close {
+            background-color: var(--danger-color);
+            color: white; /* اللون الأبيض ثابت لأزرار الخطر */
+        }
+
+        /* تأثيرات Hover */
+        body.light-mode .custom-button {
+            color: var(--primary-color);
+        }
+        body.light-mode .custom-button:hover {
+            background-color: #007d60; /* نفس تأثير الهوفر في التطبيق */
+        }
+        
+        .custom-button:not(.btn-close):hover {
+             background-color: #00cfa1; /* تأثير هوفر خفيف */
+        }
+
+        .btn-close:hover {
+            background-color: var(--danger-hover);
+        }
+        
+        /* ================= */
+        /* الاستجابة للهواتف والرسوم المتحركة */
+        /* ================= */
         @media (max-width: 480px) {
             .custom-modal-content {
-                padding: 12px;
+                padding: 15px;
                 width: 98%;
             }
             h1 {
@@ -1500,7 +1606,7 @@
                 font-size: 0.85rem;
             }
             .custom-button {
-                padding: 8px;
+                padding: 10px;
                 font-size: 0.9rem;
             }
         }
@@ -1513,19 +1619,17 @@
 </head>
 <body>
 
-    <!-- إشعار سورة الكهف -->
     <div id="kahfModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
             <h1>فضل سورة الكهف</h1>
             <p>من قرأ سورةَ ( الكهفِ ) في يومِ الجمعةِ أضاء له من النورِ ما بين الجمُعَتَين
-              الراوي : أبو سعيد الخدري | المحدث : الألباني | المصدر : صحيح الترغيب | الصفحة أو الرقم : 736 | خلاصة حكم المحدث : صحيح | التخريج : أخرجه البيهقي (6209) واللفظ له، وأخرجه الحاكم (3392) باختلاف يسير</p>
-           
+             <br><small>(الراوي: أبو سعيد الخدري | المحدث: الألباني | المصدر: صحيح الترغيب | الرقم: 736)</small></p>
+            
             <button onclick="window.location.href='سورة الكهف مكتوبة.html'" class="custom-button">انتقل إليها الآن</button>
             <button class="custom-button btn-close" onclick="closeModal('kahfModal')">إغلاق</button>
         </div>
     </div>
     
-    <!-- إشعار صلاة الجمعة -->
     <div id="jumaaModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
             <h1>فضل صلاة الجمعة</h1>
@@ -1534,39 +1638,48 @@
                 متصفحك لا يدعم تشغيل الصوت.
             </audio>
 
-            <p>من غسَّلَ يومَ الجمعةِ واغتسلَ ثمَّ بَكَّرَ وابتَكرَ ومشى ولم يرْكب ودنا منَ الإمامِ فاستمعَ ولم يلغُ كانَ لَهُ بِكلِّ خطوةٍ عملُ سنةٍ أجرُ صيامِها وقيامِها
-            الراوي : أوس بن أبي أوس وقيل أوس بن أوس والد عمرو | المحدث : الألباني | المصدر : صحيح أبي داود
-            الصفحة أو الرقم: 345 | خلاصة حكم المحدث : صحيح</p>
-           
-            <p>الصَّلَوَاتُ الخَمْسُ، وَالْجُمْعَةُ إلى الجُمْعَةِ، وَرَمَضَانُ إلى رَمَضَانَ، مُكَفِّرَاتٌ ما بيْنَهُنَّ إِذَا اجْتَنَبَ الكَبَائِرَ.
-            الراوي : أبو هريرة | المحدث : مسلم | المصدر : صحيح مسلم
-            الصفحة أو الرقم: 233 | خلاصة حكم المحدث : [صحيح]</p>
-
-            <p>قال رسول الله ﷺ: "أفضلُ يومٍ طلعتْ فيه الشمسُ يومُ الجمعةِ، فيه خُلِقَ آدمُ، وفيه أُدخلَ الجنةَ، وفيه أُخرجَ منها"
-            . [صحيح] - [رواه مسلم] - [صحيح مسلم - 854]</p>
+            <p>من غسَّلَ يومَ الجمعةِ واغتسلَ ثمَّ بَكَّرَ وابتَكرَ ومشى ولم يرْكب ودنا منَ الإمامِ فاستمعَ ولم يلغُ كانَ لَهُ بِكلِّ خطوةٍ عملُ سنةٍ أجرُ صيامِها وقيامِها
+             <br><small>(الراوي: أوس بن أبي أوس | المحدث: الألباني | المصدر: صحيح أبي داود | الرقم: 345)</small></p>
+            
+            <p>الصَّلَوَاتُ الخَمْسُ، وَالْجُمْعَةُ إلى الجُمْعَةِ، وَرَمَضَانُ إلى رَمَضَانَ، مُكَفِّرَاتٌ ما بيْنَهُنَّ إِذَا اجْتَنَبَ الكَبَائِرَ.
+             <br><small>(الراوي: أبو هريرة | المحدث: مسلم | المصدر: صحيح مسلم | الرقم: 233)</small></p>
 
             <button class="custom-button btn-close" onclick="closeModal('jumaaModal')">إغلاق</button>
         </div>
     </div>
 
-    <!-- الإشعار العام -->
     <div id="generalModal" class="custom-modal" style="display: none;">
         <div class="custom-modal-content">
             <h1>⚡ أَدَاة عِلْم ⚡</h1>
             <p>نحن نعمل باستمرار على تطوير وتحسين موقعنا لنقدم لك أفضل تجربة ممكنة.</p>
-            <p>المزيد قادم والتحديثات يومية ان شاء الله</p>
+            <p>المزيد قادم والتحديثات يومية ان شاء الله.</p>
             <button class="custom-button btn-close" onclick="closeModal('generalModal')">إغلاق</button>
         </div>
     </div>
 
-
-
-
-
-
-
-
     <script>
+        // =======================
+        //  منطق تبديل الثيم (من تطبيق واجباتي)
+        //  (يجب أن يعمل أولاً ليتم تطبيق الثيم قبل إظهار الإشعار)
+        // =======================
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        // تطبيق الثيم المحفوظ عند تحميل الصفحة
+        const savedTheme = localStorage.getItem('theme') || 'dark'; // الوضع المظلم هو الافتراضي
+        applyTheme(savedTheme);
+
+
+        // =======================
+        //  منطق الإشعارات (الكود الأصلي الخاص بك)
+        // =======================
+        
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = "none";
         }
@@ -1579,11 +1692,8 @@
             // ✅ عرض الإشعار العام فورًا
             document.getElementById("generalModal").style.display = "flex";
     
-
-                
-            // ✅ عرض الإشعار العام فورًا
-            document.getElementById("eidAdhaModal").style.display = "flex";
-    
+            // ✅ تم حذف السطر الخاص بـ eidAdhaModal لأنه غير موجود
+            
             if (dayOfWeek === 5) { // الجمعة فقط
                 document.getElementById("kahfModal").style.display = "flex"; // إشعار سورة الكهف
     
@@ -1599,12 +1709,10 @@
                             }).catch(error => console.log("تشغيل الصوت يتطلب تفاعل المستخدم", error));
                         };
     
-                        if (document.hasFocus()) {
-                            playAudio();
-                        } else {
-                            document.addEventListener("click", playAudio, { once: true });
-                            document.addEventListener("touchstart", playAudio, { once: true });
-                        }
+                        // محاولة التشغيل التلقائي، إذا فشل، انتظر تفاعل المستخدم
+                        playAudio();
+                        document.addEventListener("click", playAudio, { once: true });
+                        document.addEventListener("touchstart", playAudio, { once: true });
     
                         audio.onended = function () {
                             console.log("انتهى تشغيل ملف الصوت.");
@@ -1614,6 +1722,8 @@
             }
         }
     
+        // (الكود بالأسفل لم يعد ضرورياً لأننا دمجنا التشغيل في showModals)
+        /*
         document.addEventListener("DOMContentLoaded", function() {
             let today = new Date();
             let dayOfWeek = today.getDay();
@@ -1630,662 +1740,10 @@
                 }
             }
         });
+        */
     
         // ✅ تشغيل `showModals` دائمًا لإظهار الإشعار العام مباشرةً
         window.onload = showModals;
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تنبيه طبي - INFATM</title>
-    <style>
-        /* تهيئة عامة */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-text-size-adjust: 100%;
-            touch-action: manipulation;
-        }
-
-        /* زر الخطر الثابت - تصميم جديد */
-        .danger-btn {
-            width: 65px;
-            height: 65px;
-            background: linear-gradient(135deg, #ff0000, #c00000);
-            color: white;
-            font-size: 28px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3), 
-                        inset 0 2px 4px rgba(255, 255, 255, 0.3);
-            transition: all 0.2s ease;
-            z-index: 100;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            animation: pulse 2s infinite;
-            margin: 10px; /* يمكن تعديلها حسب الحاجة */
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
-        }
-
-        .danger-btn:hover {
-            transform: scale(1.1);
-            background: linear-gradient(135deg, #ff3333, #d10000);
-        }
-
-        .danger-btn:active {
-            transform: scale(0.95);
-            animation: none;
-        }
-
-        /* طبقة التعتيم */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1001;
-            display: none;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-
-        /* نافذة المحتوى */
-        .popup-container {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            z-index: 1002;
-            display: none;
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            background: white;
-        }
-
-        .popup-header {
-            background: linear-gradient(to right, #e74c3c, #c0392b);
-            color: white;
-            padding: 18px;
-            text-align: center;
-            position: relative;
-            flex-shrink: 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .popup-header h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        }
-
-        .popup-content {
-            flex-grow: 1;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            background-color: #f5f5f5;
-        }
-
-        /* زر الإغلاق الجديد */
-        .close-btn {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: white;
-            color: #e74c3c;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s;
-        }
-
-        .close-btn:hover {
-            transform: rotate(90deg);
-            background: #ffebee;
-        }
-
-        /* مؤشر التحميل */
-        .loader {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            padding: 20px;
-        }
-
-        .spinner {
-            width: 45px;
-            height: 45px;
-            border: 5px solid rgba(231, 76, 60, 0.2);
-            border-top: 5px solid #e74c3c;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loader p {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
-
-        /* المحتوى المعروض */
-        .content-wrapper {
-            padding: 18px;
-            line-height: 1.7;
-            font-size: 1rem;
-            color: #333;
-        }
-
-        /* التكيف مع الشاشات الصغيرة */
-        @media (max-width: 480px) {
-            .danger-btn {
-                width: 60px;
-                height: 60px;
-                font-size: 26px;
-            }
-            
-            .popup-header {
-                padding: 15px;
-            }
-            
-            .popup-header h2 {
-                font-size: 1.1rem;
-            }
-            
-            .close-btn {
-                width: 28px;
-                height: 28px;
-                font-size: 1rem;
-            }
-        }
-
-        /* تحسينات لللمس على الهواتف */
-        @media (hover: none) {
-            .danger-btn:hover {
-                transform: scale(1);
-                background: linear-gradient(135deg, #ff0000, #c00000);
-            }
-            
-            .close-btn:hover {
-                transform: rotate(0deg);
-                background: white;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<!-- يمكن وضع الزر في أي مكان في الصفحة -->
-<div style="text-align: center; padding: 20px;">
-    <button class="danger-btn" onclick="togglePopup()">⚠️</button>
-</div>
-
-<!-- طبقة التعتيم -->
-<div class="overlay" id="overlay"></div>
-
-<!-- نافذة المحتوى -->
-<div class="popup-container" id="popupContainer">
-    <div class="popup-header">
-        <button class="close-btn" onclick="togglePopup()">×</button>
-        <h2>تنبيه  - محتوى </h2>
-    </div>
-    <div class="popup-content" id="contentContainer">
-        <div class="loader">
-            <div class="spinner"></div>
-            <p>جاري تحميل المحتوى ...</p>
-        </div>
-    </div>
-</div>
-
-<script>
-    // متغيرات التطبيق
-    let contentLoaded = false;
-    const TARGET_URL = "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html";
-    
-    // عناصر DOM
-    const popupContainer = document.getElementById('popupContainer');
-    const overlay = document.getElementById('overlay');
-    const contentContainer = document.getElementById('contentContainer');
-    const dangerBtn = document.querySelector('.danger-btn');
-    
-    // تبديل عرض/إخفاء النافذة
-    function togglePopup() {
-        if (popupContainer.style.display === 'flex') {
-            closePopup();
-        } else {
-            openPopup();
-        }
-    }
-    
-    function openPopup() {
-        // إيقاف تأثير النبض عند الفتح
-        dangerBtn.style.animation = 'none';
-        
-        overlay.style.display = 'block';
-        popupContainer.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        
-        if (!contentLoaded) {
-            loadContent();
-        }
-    }
-    
-    function closePopup() {
-        // إعادة تشغيل تأثير النبض عند الإغلاق
-        dangerBtn.style.animation = 'pulse 2s infinite';
-        
-        overlay.style.display = 'none';
-        popupContainer.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-    
-    // تحميل المحتوى
-    async function loadContent() {
-        try {
-            // استخدام iframe كحل أساسي
-            showIframeContent();
-            contentLoaded = true;
-        } catch (error) {
-            showError(error);
-        }
-    }
-    
-    // عرض المحتوى باستخدام iframe
-    function showIframeContent() {
-        contentContainer.innerHTML = `
-            <iframe src="${TARGET_URL}" 
-                    style="width:100%; height:100%; border:none;"
-                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-                    loading="lazy">
-            </iframe>
-        `;
-    }
-    
-    // عرض رسالة الخطأ
-    function showError(error) {
-        contentContainer.innerHTML = `
-            <div class="loader">
-                <div style="color: #e74c3c; margin-bottom: 15px; font-size: 1.2rem;">⚠️ خطأ في تحميل المحتوى</div>
-                <p style="margin-bottom: 20px; color: #555;">${error.message}</p>
-                <button onclick="retryLoading()" 
-                        style="padding: 10px 20px; 
-                               background: linear-gradient(to right, #e74c3c, #c0392b); 
-                               color: white; 
-                               border: none; 
-                               border-radius: 30px;
-                               font-size: 1rem;
-                               box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
-                               transition: all 0.2s;">
-                    إعادة المحاولة
-                </button>
-            </div>
-        `;
-    }
-    
-    // إعادة تحميل المحتوى
-    function retryLoading() {
-        contentContainer.innerHTML = `
-            <div class="loader">
-                <div class="spinner"></div>
-                <p>جاري تحميل المحتوى الطبي...</p>
-            </div>
-        `;
-        loadContent();
-    }
-    
-    // إغلاق النافذة عند النقر خارجها
-    overlay.addEventListener('click', closePopup);
-    
-    // منع إغلاق النافذة عند النقر داخلها
-    popupContainer.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-    
-    // تحسين الأداء للهواتف
-    if ('connection' in navigator) {
-        if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
-            // تحسينات لشبكات الجيل الثاني
-            dangerBtn.style.animation = 'none';
-        }
-    }
-    
-    // إضافة اهتزاز عند النقر (للهواتف)
-    function vibrate() {
-        if ('vibrate' in navigator) {
-            navigator.vibrate(10);
-        }
-    }
-    
-    // إضافة الاهتزاز للأزرار
-    document.querySelector('.danger-btn').addEventListener('click', vibrate);
-    document.querySelector('.close-btn')?.addEventListener('click', vibrate);
-</script>
-
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

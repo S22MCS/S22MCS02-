@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>رسالة ترحيب | أداة علم</title>
+  <style>
+    :root {
+      --accent: #ff6b35; /* لون برتقالي جذاب */
+      --bg: #0f1724;
+      --card: #0b1220;
+      --glass: rgba(255, 255, 255, 0.03);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Arial, "Noto Kufi Arabic", sans-serif;
+      background: linear-gradient(180deg, #071029 0%, #0c1a2b 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    /* الحاوية العامة متجاوبة مع الشاشات */
+    .wrap {
+      width: 100%;
+      max-width: 420px; /* مناسب للهواتف */
+      margin: auto;
+      text-align: center;
+    }
+    
+    .card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      
+      /* تحسين: حركة ظهور احترافية */
+      opacity: 0;
+      transform: scale(0.97);
+      animation: fadeInScale 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards;
+    }
+    
+    @keyframes fadeInScale {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .logo {
+      height: 68px;
+      width: 68px;
+      margin: 0 auto 12px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #ff9b6b);
+      color: #0b0b0b;
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.18);
+      
+      /* تحسين: استخدام حرف واحد كشعار أوضح */
+      font-size: 36px;
+    }
+    
+    h1 {
+      font-size: 20px;
+      margin: 6px 0 8px;
+    }
+    p {
+      margin: 0 0 18px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .btn {
+      flex: 1;
+      min-width: 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 0;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease, opacity .12s ease;
+    }
+    
+    /* تحسين: إضافة تأثيرات hover و focus */
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+    
+    /* تحسين: حالة التعطيل */
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(90deg, var(--accent), #ff9b6b);
+      color: #081018;
+      font-weight: 700;
+      box-shadow: 0 8px 28px rgba(255, 107, 53, 0.14);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #ff7b47, #ffa880); /* تفتيح اللون عند الـ hover */
+      box-shadow: 0 8px 28px rgba(255, 107, 53, 0.2);
+    }
+    
+    .btn-ghost {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+    
+    /* رسالة صغيرة للعد التنازلي */
+    .count {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    /* رسومات متجاوبة صغيرة */
+    @media (max-width: 360px) {
+      .card {
+        padding: 20px;
+        border-radius: 14px;
+      }
+      .logo {
+        height: 60px;
+        width: 60px;
+        font-size: 32px; /* تعديل حجم الشعار الصغير */
+      }
+      h1 {
+        font-size: 18px;
+      }
+      .btn {
+        padding: 12px 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <div class="card" role="dialog" aria-labelledby="welcome-title" aria-describedby="welcome-desc">
+      <div class="logo" aria-hidden="true">ع</div>
+      <h1 id="welcome-title">السلام عليكم ورحمة الله</h1>
+      <p id="welcome-desc">أهلًا بك! سنحوِّلك الآن إلى صفحة تسجيل الدخول — اضغط متابعة أو انتظر لثوانٍ قليلة.</p>
+      
+      <div class="btn-row">
+        <button id="continueBtn" class="btn btn-primary" aria-label="متابعة إلى تسجيل الدخول">متابعة</button>
+        <button id="cancelBtn" class="btn btn-ghost" aria-label="إلغاء والعودة">إلغاء</button>
+      </div>
+      
+      <div class="count" id="countdown" aria-live="polite" aria-atomic="true">
+        سيتم التحويل تلقائيًا خلال <strong id="secs">5</strong> ثانية.
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    (function() {
+      const target = 'login_contect_user_system.html'; // الصفحة الهدف
+      const continueBtn = document.getElementById('continueBtn');
+      const cancelBtn = document.getElementById('cancelBtn');
+      const countdownEl = document.getElementById('countdown');
+      const secsEl = document.getElementById('secs');
+      
+      let secs = 5;
+      let interval; // تعريف المؤقت في النطاق الأعلى
+      
+      // تحسين: وظيفة لتعطيل الأزرار
+      function disableButtons(isGoing) {
+        continueBtn.disabled = true;
+        cancelBtn.disabled = true;
+        if (isGoing) {
+          continueBtn.textContent = '...جاري التحويل';
+        }
+      }
+      
+      // تحسين: وظيفة الانتقال
+      function go() {
+        clearInterval(interval); // إيقاف المؤقت
+        disableButtons(true); // تعطيل الأزرار وإظهار رسالة التحويل
+        window.location.replace(target); // استخدام replace أفضل
+      }
+      
+      // بدء العد التنازلي
+      interval = setInterval(() => {
+        secs -= 1;
+        if (secs <= 0) {
+          go(); // الانتقال عند انتهاء الوقت
+        } else {
+          secsEl.textContent = secs;
+        }
+      }, 1000);
+      
+      // زر المتابعة
+      continueBtn.addEventListener('click', go); // استدعاء وظيفة الانتقال مباشرة
+      
+      // زر الإلغاء
+      cancelBtn.addEventListener('click', () => {
+        clearInterval(interval);
+        countdownEl.textContent = 'تم الإلغاء.';
+        disableButtons(false); // تعطيل الأزرار بدون تغيير النص
+      });
+      
+      // دعم الضغط على Enter أو Space للمتابعة
+      continueBtn.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') go();
+      });
+      
+      // تحسين للعرض على أجهزة لمس: تعيين التركيز على زر المتابعة
+      continueBtn.focus();
+      
+      // لمن يريد تعطيل التحويل التلقائي
+      const params = new URLSearchParams(location.search);
+      if (params.get('noauto') === '1') {
+        clearInterval(interval);
+        countdownEl.textContent = 'التحويل التلقائي معطَّل.';
+      }
+    })();
+  </script>
+  
+</body>
+</html>

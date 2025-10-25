@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرحبا بكم في أداة علم</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* --- General Styles & Variables --- */
+        :root {
+            --primary-bg: #0f172a; /* Darker Blue */
+            --secondary-bg: #1e293b; /* Slightly Lighter Blue */
+            --border-color: #334155;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- Animated Gradient Background --- */
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #334155);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-light);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* --- Page Container --- */
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            width: 100%;
+            opacity: 0; /* Initially hidden for animation */
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* --- Header & Title --- */
+        header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .welcome-title {
+            /* Fluid font size for perfect responsiveness */
+            font-size: clamp(2rem, 5vw + 0.5rem, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            animation: slideDown 0.8s ease-out forwards;
+        }
+
+        /* --- Year Navigation Buttons --- */
+        .year-buttons-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            animation: slideUp 0.8s 0.2s ease-out forwards;
+            opacity: 0;
+        }
+
+        .year-btn {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex; /* Use inline-flex for <a> tags */
+            align-items: center;
+            gap: 8px;
+            text-decoration: none; /* Remove underline from links */
+            position: relative; /* For tooltip positioning */
+        }
+
+        /* Hover effect for non-disabled buttons on devices that support hover */
+        @media (hover: hover) {
+            .year-btn:not(:disabled):hover {
+                background-color: var(--accent-blue);
+                border-color: var(--accent-blue);
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            }
+        }
+        
+        /* Focus state for accessibility (keyboard navigation) */
+        .year-btn:not(:disabled):focus-visible {
+            outline: 2px solid var(--accent-blue);
+            outline-offset: 3px;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Active state for click/tap feedback */
+        .year-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Disabled button styles */
+        .year-btn:disabled {
+            background-color: #2a3547;
+            color: var(--text-muted);
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        /* Tooltip for disabled buttons */
+        @media (hover: hover) {
+            .year-btn[disabled]:hover::after {
+                content: attr(data-tooltip);
+                position: absolute;
+                bottom: 120%;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: var(--primary-bg);
+                color: var(--text-light);
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+                z-index: 10;
+            }
+        }
+
+        /* --- Main Content Section (Cards) --- */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 2.5rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 3rem;
+        }
+
+        /* --- 3D Hover Effect for Cards --- */
+        .card {
+            background-color: var(--secondary-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+            perspective: 1000px; /* For 3D effect */
+            animation: slideUp 0.8s 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        @media (hover: hover) {
+            .card:hover {
+                transform: translateY(-10px) rotateX(2deg) rotateY(1deg);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            }
+        }
+
+        /* --- Admonition Box Card --- */
+        .admonition-box {
+            padding: 25px;
+            text-align: center;
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .admonition-box p {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--text-light);
+            margin: 15px 0;
+            background-color: rgba(239, 68, 68, 0.15); /* Red with opacity */
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-red);
+        }
+
+        .admonition-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            outline: 3px solid var(--accent-blue);
+            margin-top: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        @media (hover: hover) {
+            .admonition-box img:hover {
+                transform: scale(1.05);
+            }
+        }
+        
+        /* --- Video Frame Card --- */
+        .video-frame-container {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background-color: #000;
+        }
+        
+        .video-frame-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* --- Footer Section --- */
+        footer {
+            width: 100%;
+            text-align: center;
+            margin-top: auto; /* Pushes footer to the bottom */
+            animation: slideUp 0.8s 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .footer-btn {
+            background-image: linear-gradient(45deg, var(--accent-green), #2dd4bf);
+            border: none;
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+            text-decoration: none; /* Remove underline from link */
+            display: inline-flex; /* To align icon and text */
+            align-items: center;
+            gap: 10px;
+        }
+        
+        @media (hover: hover) {
+            .footer-btn:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 25px rgba(16, 185, 129, 0.6);
+            }
+        }
+        .footer-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- Animation Keyframes --- */
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem; /* Reduced gap */
+            }
+            .admonition-box { order: 1; }
+            .video-frame-container { order: 2; width: 95%; max-width: 500px; }
+        }
+        
+        @media (max-width: 480px) {
+            .page-container { padding: 1.5rem 1rem; }
+            .year-buttons-nav { gap: 10px; } /* Smaller gap for wrapped buttons */
+            .year-btn { font-size: 0.9rem; padding: 10px 18px; }
+            .admonition-box p { font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+
+        <header>
+            <h1 class="welcome-title">مرحبا بكم في تطبيق اداة علم لسنوات الشبه الطبي </h1>
+            
+            <nav class="year-buttons-nav">
+                <a href="para01.html" class="year-btn">
+                    <i class="fas fa-microscope"></i>  السنة الأولى جذع مشترك 
+                </a>
+                <a href="MED02.html" class="year-btn">
+                    <i class="fas fa-stethoscope"></i> السنة الثانية
+                </a>
+                <a href="MED03.html" class="year-btn">
+                    <i class="fas fa-book-medical"></i> السنة الثالثة
+                </a>
+                
+               
+            </nav>
+        </header>
+
+        <main class="main-content">
+
+            <div class="admonition-box card">
+                <p>عَدُوُّكَ لَنْ يَنْتَظِرَكَ بِطَبَقٍ مِنْ وُرُود</p>
+                <a href="https://t.me/S22MCS" target="_blank">
+                    <img src="talabetelhaltibibelilagi.jpg" alt="Telegram Channel Image">
+                </a>
+                <p>لَا تَفْصِلْ عِلْمَكَ الدُّنْيَوِيَّ عَنْ دِينِ الْإِسْلَامِ</p>
+            </div>
+
+            <div class="video-frame-container card">
+                <video autoplay muted loop playsinline>
+                    <source src="S22MCS PARTS/LOGO VIDIO ADATEALM.mp4" type="video/mp4">
+                    متصفحك لا يدعم عرض الفيديو.
+                </video>
+            </div>
+
+        </main>
+
+        <footer>
+            <a href="index.html" class="footer-btn">
+                <i class="fas fa-atom"></i> اداة علم
+            </a>
+        </footer>
+
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إشعارات متتالية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Style for the notification modal */
+        .notification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .notification-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .notification-modal {
+            background-color: #1e293b;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid #334155;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            font-family: 'Cairo', sans-serif;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .notification-overlay.active .notification-modal {
+            transform: scale(1);
+        }
+
+        .notification-modal h2 {
+            color: #f1f5f9;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .notification-modal p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .notification-modal .store-info {
+            margin-top: 1.5rem;
+            padding: 12px;
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #f1f5f9;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        /* Container for multiple action buttons */
+        .actions-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Spacing between buttons */
+            flex-wrap: wrap; /* Allows buttons to stack on small screens */
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            display: inline-block;
+            background-color: #3b82f6;
+            color: #f1f5f9;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .close-notification-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #334155;
+            border: none;
+            color: #f1f5f9;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 35px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            z-index: 10;
+        }
+        
+        .close-notification-btn:hover {
+            background-color: #ef4444;
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notification-overlay">
+        <div class="notification-modal">
+            <button class="close-notification-btn">&times;</button>
+            <h2>📢 تحديث هام</h2>
+            <p>يتم حالياً العمل على مواد <strong>السنة الأولى</strong> و<strong>السنة الثالثة</strong>، وستتوفر في القريب العاجل. انتظرونا!</p>
+            <div class="store-info">
+                🛒 ولا تنسى الاطلاع على متجرنا، فهو متوفر داخل <strong>السنة الأولى والثانية والثالثة</strong>.
+            </div>
+        </div>
+    </div>
+
+    <div class="notification-overlay">
+        <div class="notification-modal">
+            <button class="close-notification-btn">&times;</button>
+            <h2>📌 دعم ومساندة</h2>
+            <p>قال رسول الله (ﷺ): "مَنْ جهَّزَ غَازِيًا في سبيلِ اللَّهِ فَقَدْ غَزَا، ومنْ خَلَفَ غَازِيًا في أَهْلِهِ بخَيْر فَقَدْ غزَا".</p>
+            <div class="actions-container">
+                <a href="https://t.me/S22MCS/1945" target="_blank" class="action-btn">🔻 الاطلاع على المنشور 🔻</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification-overlay">
+        <div class="notification-modal">
+            <button class="close-notification-btn">&times;</button>
+            <h2>🎉 موقع شباب العصر</h2>
+            <p>نتشرف بأن نزف إليكم موقع وقناة شباب العصر. انضموا إلينا وكونوا جزءًا من مجتمعنا.</p>
+            <div class="actions-container">
+                <a href="https://t.me/shabab_al_easr" target="_blank" class="action-btn">الموقع الرسمي</a>
+                <a href="https://t.me/shabab_al_easr/12" target="_blank" class="action-btn">قناة التيليجرام</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const notificationOverlays = document.querySelectorAll('.notification-overlay');
+        let currentNotificationIndex = 0;
+
+        function showNotification(index) {
+            if (index >= notificationOverlays.length) {
+                return;
+            }
+
+            const overlay = notificationOverlays[index];
+            const closeBtn = overlay.querySelector('.close-notification-btn');
+
+            const hideAndProceed = () => {
+                overlay.classList.remove('active');
+                setTimeout(() => {
+                    closeBtn.removeEventListener('click', hideAndProceed);
+                    overlay.removeEventListener('click', handleOverlayClick);
+                    showNotification(index + 1);
+                }, 300);
+            };
+
+            const handleOverlayClick = (event) => {
+                if (event.target === overlay) {
+                    hideAndProceed();
+                }
+            };
+
+            closeBtn.addEventListener('click', hideAndProceed);
+            overlay.addEventListener('click', handleOverlayClick);
+            overlay.classList.add('active');
+        }
+
+        setTimeout(() => {
+            showNotification(currentNotificationIndex);
+        }, 1500);
+    });
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> - نافذة ترحيب وأذكار</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* =================================================================== */
+        /* S22MARKET - نسخة مطورة ومنقحة (منطق كل ساعتين + تحسينات للهاتف)   */
+        /* =================================================================== */
+
+        :root {
+            --adm-bg-color: #f0f4f8;
+            --adm-modal-bg: #5e5d5d;
+            --adm-primary-text: #1c3d5a;
+            --adm-secondary-text: #5a7b9d;
+            --adm-reminder-text: #607d8b;
+            --adm-primary-accent: #007bff;
+            --adm-primary-accent-hover: #0056b3;
+            --adm-success-color: #28a745;
+            --adm-subtle-border: rgba(0, 123, 255, 0.15);
+            
+            --adm-border-radius-lg: 20px;
+            --adm-border-radius-md: 14px;
+            
+            --adm-shadow: 0 15px 45px rgba(0, 123, 255, 0.18);
+            --adm-transition: all 0.3s ease-in-out;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: 'Scheherazade New', serif;
+            font-weight: 500;
+            margin: 0;
+            background-color: var(--adm-bg-color);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .adm-modal-overlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            padding: 1rem;
+            background-color: rgba(10, 30, 50, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .adm-modal-overlay.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .adm-modal-content, .adm-jumaa-message-content, .isn-modal-content {
+            background: var(--adm-modal-bg);
+            padding: clamp(1.2rem, 5vw, 2.2rem);
+            border-radius: var(--adm-border-radius-lg);
+            box-shadow: var(--adm-shadow);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border-top: 6px solid var(--adm-primary-accent);
+            transform: translateY(25px) scale(0.97);
+            opacity: 0;
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1rem, 4vw, 1.5rem);
+        }
+
+        .is-visible .adm-modal-content,
+        .is-visible .adm-jumaa-message-content,
+        .is-visible .isn-modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            transition-delay: 0.1s;
+        }
+        
+        .adm-hidden { display: none !important; }
+        
+        .adm-modal-header h2, .isn-modal-header h2 {
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            font-weight: 700;
+            color: var(--adm-primary-text);
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+        .adm-tasks-header {
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            line-height: 1.8;
+            color: var(--adm-secondary-text);
+            margin: 0.25rem 0 0 0;
+        }
+
+        .adm-dhikr-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: clamp(0.8rem, 3.5vw, 1rem) clamp(1rem, 4.5vw, 1.3rem);
+            font-size: clamp(1.2rem, 5vw, 1.4rem);
+            font-weight: 700;
+            font-family: 'Scheherazade New', serif;
+            color: #abaaaa;
+            background: linear-gradient(45deg, var(--adm-primary-accent), #4dabf7);
+            border: none;
+            border-bottom: 3px solid var(--adm-primary-accent-hover);
+            border-radius: var(--adm-border-radius-md);
+            cursor: pointer;
+            transition: var(--adm-transition);
+            text-decoration: none;
+        }
+        
+        .adm-dhikr-btn .adm-icon { margin-left: 15px; font-size: 1.3em; }
+        .adm-dhikr-btn .adm-btn-text { flex-grow: 1; text-align: right; }
+
+        .adm-dhikr-btn:hover:not(:disabled) {
+            transform: translateY(-4px);
+            border-bottom-width: 5px;
+        }
+        .adm-dhikr-btn:active:not(:disabled) {
+            transform: translateY(-1px);
+            border-bottom-width: 3px;
+        }
+
+        .adm-dhikr-btn:disabled {
+            background: var(--adm-success-color);
+            cursor: default;
+            border-bottom-color: #1e7e34;
+        }
+
+        .adm-dhikr-btn .adm-counter {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        
+        .adm-modal-footer {
+            margin-top: auto;
+            padding-top: clamp(0.8rem, 3vw, 1.2rem);
+            border-top: 1px solid var(--adm-subtle-border);
+        }
+        
+        .adm-dhikr-reminder .quran-verse {
+            color: var(--adm-primary-text);
+            font-weight: 700;
+            font-family: 'Amiri Quran', serif;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            line-height: 2;
+        }
+
+        .adm-progress-bar-container {
+            background-color: rgba(0, 123, 255, 0.1);
+            border-radius: 50px;
+            height: 10px;
+            overflow: hidden;
+        }
+        #adm-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--adm-success-color);
+            border-radius: 50px;
+            transition: width 0.6s ease-in-out;
+        }
+        
+        .closing-message {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: clamp(0.8rem, 3.5vw, 1.1rem);
+            border-radius: var(--adm-border-radius-md);
+        }
+        .closing-message p {
+            color: #0c5460;
+            font-weight: 700;
+            margin: 0;
+            font-size: clamp(1rem, 3.5vw, 1.1rem);
+        }
+        .isn-modal-content .quran-text {
+            font-size: clamp(1.3rem, 4.5vw, 1.6rem);
+            line-height: 1.8;
+        }
+        .hadith-source {
+            font-size: 1rem;
+            color: var(--adm-secondary-text);
+            margin-top: -0.8rem;
+        }
+        .isn-btn {
+            font-family: 'Scheherazade New', serif;
+            font-size: 1.2rem;
+            padding: 0.8rem;
+            border-radius: var(--adm-border-radius-md);
+            transition: var(--adm-transition);
+        }
+        .isn-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="adm-modal-overlay" class="adm-modal-overlay">
+        
+
+
+        <div id="adm-jumaa-message" class="isn-modal-content jumaa-style adm-hidden">
+            <div class="isn-modal-header"><h2>📿 تذكير بصلاة الجمعة</h2></div>
+            <p class="quran-text" style="font-family: 'Amiri Quran', serif; line-height: 2.2;">
+                يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓاْ إِذَا نُودِيَ لِلصَّلَوٰةِ مِن يَوۡمِ ٱلۡجُمُعَةِ فَٱسۡعَوۡاْ إِلَىٰ ذِكۡرِ ٱللَّهِ وَذَرُواْ ٱلۡبَيۡعَۚ
+            </p>
+            <p class="hadith-source">[سورة الجمعة: 9]</p>
+            
+            <div class="closing-message">
+                <p>⛔ تغلق  <strong>أداة علم</strong> أبوابهت يوم الجمعة من <strong>11:30</strong> إلى <strong>14:00</strong>.</p>
+            </div>
+            
+            <div class="buttons-container" style="display:flex; flex-direction: column; gap:0.8rem; margin-top: 1rem;">
+                <button id="play-jumaa-audio" class="isn-btn" style="background-color: var(--adm-primary-accent); color:white; border:none; cursor:pointer;">
+                     <span class="adm-btn-text">
+                        <i class="fa-solid fa-volume-high adm-icon" style="font-size: 1em; vertical-align: middle;"></i> تشغيل التلاوة
+                    </span>
+                </button>
+                <button class="isn-btn" style="background-color: #e9ecef; color:#495057; border:none; cursor:pointer;" aria-label="تحديث الصفحة" onclick="location.reload();">
+                    اضغط هنا بعد الساعة 14:00
+                </button>
+            </div>
+        </div>
+        <div id="kahfModal" class="isn-modal-content jumaa-style adm-hidden">
+            <div class="isn-modal-header"><h2>📿 فضل سورة الكهف</h2></div>
+            <p class="quran-text">"من قرأ سورةَ الكهفِ في يومِ الجمعةِ أضاء له من النورِ ما بين الجمُعَتَين."</p>
+            <p class="hadith-source">الراوي : أبو سعيد الخدري | المحدث : الألباني | المصدر : صحيح الجامع
+الصفحة أو الرقم: 6470 | خلاصة حكم المحدث : صحيح
+التخريج : أخرجه البيهقي (6209) واللفظ له، وأخرجه الحاكم (3392) باختلاف يسير</p>
+            <div class="buttons-container" style="display:flex; gap:1rem;">
+                <a href="سورة الكهف مكتوبة.html" class="isn-btn" style="flex:1; background-color: var(--adm-primary-accent); color:white; text-decoration:none;">قراءة السورة</a>
+                <button id="closeKahfModal" class="isn-btn" style="flex:1; background-color: #e9ecef; color:#495057; border:none; cursor:pointer;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="jumaa-audio" src="JOMAA.mp3" preload="auto"></audio>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const overlay = document.getElementById('adm-modal-overlay');
+            const modals = {
+                dhikr: document.getElementById('adm-modal-content'),
+                jumaa: document.getElementById('adm-jumaa-message'),
+                kahf: document.getElementById('kahfModal')
+            };
+
+            function handleWelcomeMessage() {
+                const WELCOME_COOLDOWN = 6 * 60 * 60 * 1000; // 6 ساعات
+                const lastShown = localStorage.getItem('welcomeMessageLastShown');
+                const now = new Date().getTime();
+                const header = modals.dhikr.querySelector('.adm-modal-header');
+
+                if (header && (!lastShown || (now - lastShown > WELCOME_COOLDOWN))) {
+                    const existingWelcomeEl = header.querySelector('.s22-welcome-msg');
+                    if (existingWelcomeEl) return; 
+
+                    const welcomeEl = document.createElement('p');
+                    welcomeEl.className = 's22-welcome-msg';
+                    welcomeEl.innerHTML = `🌟 مرحبا بكم في <strong>أداة علم </strong>`;
+                    welcomeEl.style.cssText = `
+                        color: var(--adm-primary-accent-hover); font-weight: 700; margin-bottom: 1rem;
+                        font-size: clamp(1.3rem, 5vw, 1.5rem); background-color: rgba(0, 123, 255, 0.08);
+                        padding: 0.7rem; border-radius: var(--adm-border-radius-md);
+                        border: 1px solid rgba(0, 123, 255, 0.1);`;
+                    header.prepend(welcomeEl);
+                    localStorage.setItem('welcomeMessageLastShown', now);
+                }
+            }
+            
+            // =========================================================================
+            // [تعديل للمرة الثانية] هذا هو المنطق النهائي والصحيح
+            // =========================================================================
+            function handleModalsVisibility() {
+                const now = new Date();
+                const day = now.getDay(); // 5 = Friday
+                const isFriday = (day === 5);
+
+                Object.values(modals).forEach(modal => modal.classList.add('adm-hidden'));
+                
+                let modalToShow = null;
+
+                if (isFriday) {
+                    const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+                    const isJumaaClosingTime = currentTimeInMinutes >= 690 && currentTimeInMinutes < 840; // 11:30 to 14:00
+                    
+                    if (isJumaaClosingTime) {
+                        modalToShow = modals.jumaa;
+                    } else {
+                        // [تحسين] استخدام sessionStorage لمنع ظهورها عند كل تحديث في نفس الجلسة
+                        const kahfShownThisSession = sessionStorage.getItem('kahfModalShown');
+                        if (!kahfShownThisSession) {
+                           modalToShow = modals.kahf;
+                           sessionStorage.setItem('kahfModalShown', 'true');
+                        }
+                    }
+                } else {
+                    // هذا الكود يعمل فقط في الأيام غير الجمعة
+                    const DHIKR_COOLDOWN = 2 * 60 * 60 * 1000; // ساعتان
+                    const lastCompleted = localStorage.getItem('dhikrLastCompleted');
+                    if (!lastCompleted || (now.getTime() - lastCompleted > DHIKR_COOLDOWN)) {
+                        modalToShow = modals.dhikr;
+                        handleWelcomeMessage();
+                    }
+                }
+
+                if (modalToShow) {
+                    modalToShow.classList.remove('adm-hidden');
+                    overlay.classList.add('is-visible');
+                }
+            }
+            
+            handleModalsVisibility();
+
+            // --- باقي السكربت للتحكم في الأزرار والصوت والأذكار (بدون تغيير) ---
+            const jumaaAudio = document.getElementById('jumaa-audio');
+            document.getElementById('play-jumaa-audio')?.addEventListener('click', (e) => {
+                const btnText = e.currentTarget.querySelector('.adm-btn-text');
+                if (jumaaAudio.paused) {
+                    jumaaAudio.play();
+                    btnText.innerHTML = '<i class="fa-solid fa-pause adm-icon" style="font-size: 1em; vertical-align: middle;"></i> جارٍ التشغيل...';
+                } else {
+                    jumaaAudio.pause();
+                    btnText.innerHTML = '<i class="fa-solid fa-volume-high adm-icon" style="font-size: 1em; vertical-align: middle;"></i> تشغيل التلاوة';
+                }
+            });
+            if(jumaaAudio) jumaaAudio.onended = () => {
+                document.querySelector('#play-jumaa-audio .adm-btn-text').innerHTML = '<i class="fa-solid fa-volume-high adm-icon" style="font-size: 1em; vertical-align: middle;"></i> تشغيل التلاوة';
+            };
+            
+            document.getElementById('closeKahfModal')?.addEventListener('click', () => {
+                overlay.classList.remove('is-visible');
+            });
+
+            const dhikrModule = (() => {
+                const dhikrModal = modals.dhikr;
+                if (!dhikrModal) return;
+
+                const buttons = Array.from(dhikrModal.querySelectorAll('.adm-dhikr-btn'));
+                if (buttons.length === 0) return;
+
+                const progressBar = document.getElementById('adm-progress-bar');
+                const totalClicksRequired = buttons.length;
+                let completedClicks = 0;
+
+                const updateProgressBar = () => {
+                    if (progressBar) {
+                        progressBar.style.width = `${(completedClicks / totalClicksRequired) * 100}%`;
+                    }
+                };
+
+                const onTaskComplete = () => {
+                    localStorage.setItem('dhikrLastCompleted', new Date().getTime());
+                    const tasksContainer = document.getElementById('adm-dhikr-tasks');
+                    if(tasksContainer) {
+                       tasksContainer.innerHTML = `<p style="color: var(--adm-success-color); font-size: 1.5rem; font-weight: bold;">جزاكم الله خيرًا!</p>`;
+                    }
+                    setTimeout(() => overlay.classList.remove('is-visible'), 2000);
+                };
+
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if (btn.disabled) return;
+                        
+                        completedClicks++;
+                        updateProgressBar();
+                        btn.disabled = true;
+                        
+                        const textSpan = btn.querySelector('.adm-btn-text');
+                        if (textSpan) {
+                           textSpan.innerHTML = (textSpan.querySelector('.adm-icon')?.outerHTML || '') + 'أُنجِز';
+                        }
+                        const counterSpan = btn.querySelector('.adm-counter');
+                        if (counterSpan) {
+                            counterSpan.style.display = 'none';
+                        }
+
+                        if (completedClicks === totalClicksRequired) {
+                            onTaskComplete();
+                        }
+                    }, { once: true });
+                });
+                updateProgressBar();
+            })();
+
+        } catch (error) {
+            console.error("Script Error:", error);
+            const overlay = document.getElementById('adm-modal-overlay');
+            if (overlay) overlay.style.display = 'none';
+        }
+    });
+    </script>
+
+</body>
+</html>
