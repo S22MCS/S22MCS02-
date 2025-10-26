@@ -1719,3 +1719,262 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إشعارات متتالية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f2f5; /* لون خلفية بسيط للصفحة */
+        }
+
+        /* Style for the notification modal */
+        .notification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .notification-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .notification-modal {
+            background-color: #1e293b;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid #334155;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .notification-overlay.active .notification-modal {
+            transform: scale(1);
+        }
+
+        .notification-modal h2 {
+            color: #f1f5f9;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 1rem; /* إضافة مسافة لزر الإغلاق */
+            margin-bottom: 1rem;
+        }
+
+        .notification-modal p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .notification-modal .store-info {
+            margin-top: 1.5rem;
+            padding: 12px;
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #f1f5f9;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        /* Container for multiple action buttons */
+        .actions-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Spacing between buttons */
+            flex-wrap: wrap; /* Allows buttons to stack on small screens */
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            display: inline-block;
+            background-color: #3b82f6;
+            color: #f1f5f9;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            cursor: pointer; /* لضمان ظهور مؤشر اليد */
+            border: none; /* لإزالة أي حدود افتراضية للعنصر a */
+            font-family: 'Cairo', sans-serif; /* لضمان تطبيق الخط */
+        }
+
+        .action-btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .close-notification-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px; /* تغيير من left إلى right ليناسب RTL */
+            background: #334155;
+            border: none;
+            color: #f1f5f9;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 35px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            z-index: 10;
+        }
+        
+        .close-notification-btn:hover {
+            background-color: #ef4444;
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notification-overlay">
+        <div class="notification-modal">
+            <button class="close-notification-btn">&times;</button>
+            <h2>🩺 أداة علم — قسم الطب</h2>
+            <p>بث العربية والسعي للتخلص من التبعية اللغوية 🌍</p>
+
+            <div class="actions-container">
+                <a href="https://s22mcs.github.io/S22MCS02-/adatealm_med.html" target="_blank" class="action-btn">
+                    🔬 الدخول إلى الموقع طب لأداة علم 
+                </a>
+                <a href="https://t.me/EMDbyS22MCS" target="_blank" class="action-btn">
+                    💬 انضم للتيليجرام
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification-overlay">
+        <div class="notification-modal">
+            <button class="close-notification-btn">&times;</button>
+            <h2>📢 تحديث جديد</h2>
+            <p>هذا هو الإشعار الثاني في السلسلة. يمكنك وضع أي محتوى تريده هنا.</p>
+            
+            <div class="store-info">
+                S22MARKET - دائماً في خدمتكم
+            </div>
+
+            <div class="actions-container">
+                <a class="action-btn">متابعة</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const notificationOverlays = document.querySelectorAll('.notification-overlay');
+        let currentNotificationIndex = 0;
+
+        function showNotification(index) {
+            if (index >= notificationOverlays.length) {
+                return; // لا توجد إشعارات أخرى
+            }
+
+            const overlay = notificationOverlays[index];
+            const closeBtn = overlay.querySelector('.close-notification-btn');
+            // البحث عن جميع أزرار الإجراء داخل هذا الإشعار
+            const actionBtns = overlay.querySelectorAll('.action-btn');
+
+            const hideAndProceed = () => {
+                overlay.classList.remove('active');
+                
+                // إزالة المستمعات لتجنب تكرارها
+                closeBtn.removeEventListener('click', hideAndProceed);
+                overlay.removeEventListener('click', handleOverlayClick);
+                actionBtns.forEach(btn => btn.removeEventListener('click', hideAndProceed));
+
+                // الانتظار لانتهاء أنيميشن الإخفاء قبل إظهار التالي
+                setTimeout(() => {
+                    showNotification(index + 1); // إظهار الإشعار التالي
+                }, 300); // يجب أن يتطابق مع مدة الانتقال في CSS
+            };
+
+            const handleOverlayClick = (event) => {
+                // الإغلاق فقط عند الضغط على الخلفية نفسها، وليس على النافذة
+                if (event.target === overlay) {
+                    hideAndProceed();
+                }
+            };
+
+            // إضافة مستمعات الإغلاق
+            closeBtn.addEventListener('click', hideAndProceed);
+            overlay.addEventListener('click', handleOverlayClick);
+            
+            // إضافة مستمعات لجميع أزرار الإجراء
+            actionBtns.forEach(btn => {
+                // لا نضف المستمع إذا كان الزر رابطاً يفتح في نافذة جديدة
+                // نتركه ليغلق النافذة وينتقل للتالي
+                btn.addEventListener('click', hideAndProceed);
+            });
+
+            // إظهار الإشعار
+            overlay.classList.add('active');
+        }
+
+        // إظهار الإشعار الأول بعد فترة قصيرة
+        setTimeout(() => {
+            showNotification(currentNotificationIndex);
+        }, 1500); // تأخير 1.5 ثانية
+    });
+    </script>
+
+</body>
+</html>
