@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملخص الجهاز التنفسي التفاعلي</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /*
+         * CSS VARIABLES (LIGHT & DARK MODE)
+        */
+        :root {
+            --font-arabic: 'Tajawal', sans-serif;
+            --font-latin: 'Roboto', sans-serif;
+
+            --color-light-bg: #f4f7f9;
+            --color-light-card: #ffffff;
+            --color-light-text: #2c3e50;
+            --color-light-header: #ffffff;
+            --color-light-border: #e6ecf0;
+            --color-light-accent: #007aff;
+            --color-light-success: #28a745;
+            --color-light-success-bg: #e2f5e6;
+            --color-light-tab-bg: #f0f2f5;
+
+            --color-dark-bg: #121212;
+            --color-dark-card: #1e1e1e;
+            --color-dark-text: #e0e0e0;
+            --color-dark-header: #1a1a1a;
+            --color-dark-border: #333333;
+            --color-dark-accent: #0a84ff;
+            --color-dark-success: #30d158;
+            --color-dark-success-bg: #1c3623;
+            --color-dark-tab-bg: #2c2c2e;
+        }
+
+        /*
+         * GLOBAL STYLES & RESET
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-arabic);
+            background-color: var(--color-light-bg);
+            color: var(--color-light-text);
+            line-height: 1.8;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: var(--color-dark-bg);
+            color: var(--color-dark-text);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            /* Add padding to avoid content being hidden by sticky header */
+            padding: 100px 15px 30px 15px; 
+        }
+
+        ul, ol {
+            padding-right: 20px; /* Default RTL padding */
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        strong {
+            font-weight: 700;
+            color: var(--color-light-accent);
+        }
+        
+        body.dark-mode strong {
+            color: var(--color-dark-accent);
+        }
+
+        /* $CO2$ notation */
+        code {
+            font-family: var(--font-latin), monospace;
+            background-color: var(--color-light-tab-bg);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: var(--color-light-text);
+        }
+        
+        body.dark-mode code {
+             background-color: var(--color-dark-tab-bg);
+             color: var(--color-dark-text);
+        }
+
+        /*
+         * STICKY HEADER & PROGRESS BAR
+        */
+        .sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--color-light-header);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 15px 20px;
+            z-index: 1000;
+            transition: background-color 0.3s, border-color 0.3s;
+            border-bottom: 1px solid var(--color-light-border);
+        }
+
+        body.dark-mode .sticky-header {
+            background-color: var(--color-dark-header);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-bottom-color: var(--color-dark-border);
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-title i {
+            color: var(--color-light-accent);
+        }
+        body.dark-mode .header-title i {
+            color: var(--color-dark-accent);
+        }
+        
+        .theme-toggle {
+            font-size: 1.3rem;
+            background: none;
+            border: none;
+            color: var(--color-light-text);
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 5px;
+        }
+
+        body.dark-mode .theme-toggle {
+            color: var(--color-dark-text);
+        }
+        
+        .theme-toggle:hover {
+            opacity: 0.7;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        #progressText {
+            font-family: var(--font-latin);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-light-accent);
+            white-space: nowrap;
+        }
+        body.dark-mode #progressText {
+            color: var(--color-dark-accent);
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 12px;
+            background-color: var(--color-light-border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--color-light-accent);
+            border-radius: 6px;
+            transition: width 0.4s ease, background-color 0.3s;
+        }
+
+        body.dark-mode .progress-bar-container {
+             background-color: var(--color-dark-tab-bg);
+        }
+        body.dark-mode #progressBar {
+            background-color: var(--color-dark-accent);
+        }
+
+        /*
+         * TOPIC SECTION TITLE
+        */
+        .topic-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--color-light-border);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title i {
+            color: var(--color-light-accent);
+            opacity: 0.7;
+            font-size: 1.5rem;
+        }
+        body.dark-mode .section-title {
+            border-bottom-color: var(--color-dark-border);
+        }
+        body.dark-mode .section-title i {
+            color: var(--color-dark-accent);
+        }
+
+
+        /*
+         * LESSON BUBBLE (CARD)
+        */
+        .lesson-bubble {
+            background-color: var(--color-light-card);
+            border: 1px solid var(--color-light-border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+        
+        .lesson-bubble:not(.completed):hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07);
+        }
+        
+        body.dark-mode .lesson-bubble {
+            background-color: var(--color-dark-card);
+            border-color: var(--color-dark-border);
+            box-shadow: none;
+        }
+        
+        body.dark-mode .lesson-bubble:not(.completed):hover {
+            border-color: var(--color-dark-accent);
+            box-shadow: 0 5px 15px rgba(0, 122, 255, 0.1);
+        }
+        
+        /* Completed State */
+        .lesson-bubble.completed {
+            border-left: 5px solid var(--color-light-success);
+        }
+        body.dark-mode .lesson-bubble.completed {
+            border-left-color: var(--color-dark-success);
+        }
+        
+        .lesson-bubble.completed::after {
+            content: '\f058'; /* Font Awesome checkmark */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 15px;
+            left: 20px; /* Switched to left for LTR/RTL consistency */
+            font-size: 1.5rem;
+            color: var(--color-light-success);
+            opacity: 0.15;
+        }
+        body.dark-mode .lesson-bubble.completed::after {
+            color: var(--color-dark-success);
+        }
+
+        /*
+         * LANGUAGE TABS
+        */
+        .lang-tabs {
+            display: flex;
+            background-color: var(--color-light-tab-bg);
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--color-light-border);
+            gap: 10px;
+            flex-wrap: wrap; /* Added for mobile */
+        }
+        
+        body.dark-mode .lang-tabs {
+            background-color: var(--color-dark-tab-bg);
+            border-bottom-color: var(--color-dark-border);
+        }
+        
+        .lang-tab {
+            font-family: var(--font-latin);
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 8px 15px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--color-light-text);
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+        
+        body.dark-mode .lang-tab {
+            color: var(--color-dark-text);
+        }
+        
+        .lang-tab:hover {
+            opacity: 1;
+            background-color: rgba(0,0,0,0.05);
+        }
+        
+        .lang-tab.active {
+            opacity: 1;
+            background-color: var(--color-light-accent);
+            color: #ffffff;
+        }
+        body.dark-mode .lang-tab.active {
+            background-color: var(--color-dark-accent);
+        }
+        
+        .lang-tab .fa-globe {
+            margin-right: 5px;
+        }
+
+        /*
+         * LANGUAGE CONTENT
+        */
+        .lang-content-wrapper {
+            padding: 25px;
+        }
+        
+        .lang-content {
+            display: none; /* Hidden by default */
+        }
+        
+        .lang-content.active {
+            display: block; /* Shown when active */
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Set direction for LTR languages */
+        .lang-content[data-lang="en"],
+        .lang-content[data-lang="fr"] {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        .lang-content[data-lang="en"] ul,
+        .lang-content[data-lang="en"] ol,
+        .lang-content[data-lang="fr"] ul,
+        .lang-content[data-lang="fr"] ol {
+            padding-right: 0;
+            padding-left: 20px;
+        }
+
+        /*
+         * COMPLETE BUTTON
+        */
+        .bubble-actions {
+            padding: 0 25px 25px 25px;
+            text-align: left; /* Always LTR for the button */
+            direction: ltr;
+        }
+        
+        .complete-btn {
+            font-family: var(--font-arabic); /* Use Arabic font for button text */
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--color-light-accent);
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        body.dark-mode .complete-btn {
+            background-color: var(--color-dark-accent);
+        }
+        
+        .complete-btn:hover {
+            opacity: 0.8;
+        }
+        
+        .complete-btn .fa-check {
+            margin-right: 8px;
+        }
+        
+        /* Completed button state */
+        .complete-btn:disabled {
+            background-color: var(--color-light-success-bg);
+            color: var(--color-light-success);
+            cursor: not-allowed;
+        }
+        
+        body.dark-mode .complete-btn:disabled {
+            background-color: var(--color-dark-success-bg);
+            color: var(--color-dark-success);
+        }
+        
+        .complete-btn:disabled .fa-check {
+            display: none;
+        }
+        .complete-btn:disabled .fa-check-double {
+            margin-right: 8px;
+        }
+        .complete-btn .fa-check-double {
+            display: none; /* Hide double check initially */
+        }
+
+        /*
+         * FOOTER
+        */
+        footer {
+            text-align: center;
+            padding: 30px 15px;
+            font-size: 0.9rem;
+            color: #999;
+            border-top: 1px solid var(--color-light-border);
+            margin-top: 40px;
+        }
+        body.dark-mode footer {
+            border-top-color: var(--color-dark-border);
+        }
+        
+        /*
+         * RESPONSIVE DESIGN
+        */
+        @media (max-width: 768px) {
+            .header-title {
+                display: none; /* Hide title on small screens */
+            }
+            main {
+                padding-top: 80px;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .section-title i {
+                font-size: 1.3rem;
+            }
+            .lang-tabs {
+                padding: 5px;
+            }
+            .lang-tab {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            .lang-content-wrapper {
+                padding: 20px;
+            }
+            .bubble-actions {
+                 padding: 0 20px 20px 20px;
+            }
+        }
+
+    </style>
+</head>
+<body class="dark-mode"> <header class="sticky-header">
+        <div class="header-content">
+            <h1 class="header-title"><i class="fa-solid fa-lungs"></i> ملخص الجهاز التنفسي</h1>
+            <div class="progress-container">
+                <div class="progress-bar-container">
+                    <div id="progressBar"></div>
+                </div>
+                <span id="progressText">0%</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                <i class="fa-solid fa-sun"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="topic-section">
+            <h2 class="section-title"><i class="fa-solid fa-book-open"></i> I. مقدمة عامة</h2>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>التعريف:</strong> جهاز يضمن التبادلات الغازية بين الهواء المحيط والدم.
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>Definition:</strong> System ensuring gas exchange between ambient air and blood.
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>Définition :</strong> Système assurant les échanges gazeux entre l'air ambiant et le sang.
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>الوظائف الرئيسية:</strong>
+                        <ol>
+                            <li><strong>التبادلات الغازية:</strong> التخليص الدموي (أكسجة الدم والتخلص من <code>$CO_{2}$</code>).</li>
+                            <li><strong>تكييف الهواء:</strong> ترشيح، تسخين، وترطيب.</li>
+                            <li><strong>الدفاع المناعي:</strong> حاجز ضد مسببات الأمراض والجسيمات.</li>
+                            <li><strong>نشاط استقلابي وهرموني:</strong> استقلاب المواد (أنجيوتنسين I، بروستاغلاندين).</li>
+                            <li><strong>الشم:</strong> إدراك الروائح.</li>
+                            <li><strong>التصويت:</strong> إنتاج الأصوات.</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>Main Functions:</strong>
+                        <ol>
+                            <li><strong>Gas exchange:</strong> Hematosis (oxygenation of blood and elimination of <code>$CO_{2}$</code>).</li>
+                            <li><strong>Air conditioning:</strong> Filtration, warming, and humidification.</li>
+                            <li><strong>Immune defense:</strong> Barrier against pathogens and particles.</li>
+                            <li><strong>Metabolic & endocrine activity:</strong> Metabolism of substances (angiotensin I, prostaglandins).</li>
+                            <li><strong>Olfaction:</strong> Perception of smells.</li>
+                            <li><strong>Phonation:</strong> Production of sounds.</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>Fonctions Principales :</strong>
+                        <ol>
+                            <li><strong>Échanges gazeux :</strong> Hématose (oxygénation du sang et élimination du <code>$CO_{2}$</code>).</li>
+                            <li><strong>Conditionnement de l'air :</strong> Filtration, réchauffement et humidification.</li>
+                            <li><strong>Défense immunitaire :</strong> Barrière contre les pathogènes et particules.</li>
+                            <li><strong>Activité métabolique & endocrine :</strong> Métabolisme de substances (angiotensine I, prostaglandines).</li>
+                            <li><strong>Olfaction :</strong> Perception des odeurs.</li>
+                            <li><strong>Phonation :</strong> Production des sons.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>التقسيمات التشريحية:</strong>
+                        <ol>
+                            <li><strong>المسالك الهوائية العلوية:</strong> الأنف، الجيوب، البلعوم، الحنجرة.</li>
+                            <li><strong>المسالك الهوائية السفلية:</strong> الرغامي، القصبات.</li>
+                            <li><strong>الرئتان:</strong> القصبات داخل الرئة، القصيبات، منطقة التبادل (الأسناخ).</li>
+                            <li><strong>الجنبة (الغشاء البلوري):</strong> أغشية مصلية للرئتين.</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>Anatomical Subdivisions:</strong>
+                        <ol>
+                            <li><strong>Upper airways:</strong> Nose, sinuses, pharynx, larynx.</li>
+                            <li><strong>Lower airways:</strong> Trachea, bronchi.</li>
+                            <li><strong>Lungs:</strong> Intra-pulmonary bronchi, bronchioles, exchange zone (alveoli).</li>
+                            <li><strong>Pleurae:</strong> Serous membranes of the lungs.</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>Subdivisions Anatomiques :</strong>
+                        <ol>
+                            <li><strong>Voies aériennes supérieures :</strong> Nez, sinus, pharynx, larynx.</li>
+                            <li><strong>Voies aériennes inférieures :</strong> Trachée, bronches.</li>
+                            <li><strong>Poumons :</strong> Bronches intra-pulmonaires, bronchioles, zone d'échange (alvéoles).</li>
+                            <li><strong>Plèvres :</strong> Enveloppes séreuses des poumons.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>التقسيمات الوظيفية:</strong>
+                        <ol>
+                            <li><strong>منطقة التوصيل:</strong> تنقل وتكيف الهواء (بدون تبادل غازي).</li>
+                            <li><strong>المنطقة التنفسية:</strong> موقع التبادلات الغازية (الأسناخ).</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>Functional Subdivisions:</strong>
+                        <ol>
+                            <li><strong>Conduction zone:</strong> Conducts and conditions air (no gas exchange).</li>
+                            <li><strong>Respiratory zone:</strong> Site of gas exchange (alveoli).</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>Subdivisions Fonctionnelles :</strong>
+                        <ol>
+                            <li><strong>Zone de conduction :</strong> Conduit et conditionne l'air (sans échange gazeux).</li>
+                            <li><strong>Zone respiratoire :</strong> Site des échanges gazeux (alvéoles).</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="topic-section">
+            <h2 class="section-title"><i class="fa-solid fa-dna"></i> II. التطور الجنيني</h2>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>A. تكوين البرعم التنفسي:</strong>
+                        <ul>
+                            <li><strong>الأسبوع الرابع:</strong> ظهور <strong>الرتج التنفسي</strong> (أو الميزاب الحنجري الرغامي) من المعي الأمامي.</li>
+                            <li><strong>الانفصال:</strong> تكوين <strong>الحاجز الرغامي المريئي</strong> الذي يفصل الأنبوب الحنجري الرغامي (في الأمام) عن المريء (في الخلف).</li>
+                            <li>استمرار <strong>الفتحة الحنجرية الأولية</strong>.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>A. Formation of the respiratory bud:</strong>
+                        <ul>
+                            <li><strong>4th week:</strong> Appearance of the <strong>respiratory diverticulum</strong> from the foregut.</li>
+                            <li><strong>Separation:</strong> Formation of the <strong>tracheo-esophageal septum</strong> separating the laryngo-tracheal tube (anterior) from the esophagus (posterior).</li>
+                            <li>Persistence of the primitive laryngeal orifice.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>A. Formation de l'ébauche respiratoire :</strong>
+                        <ul>
+                            <li><strong>4ème semaine :</strong> Apparition du <strong>diverticule respiratoire</strong> à partir de l'intestin antérieur.</li>
+                            <li><strong>Séparation :</strong> Formation du <strong>septum trachéo-œsophagien</strong> qui isole le tube laryngo-trachéal (en avant) de l'œsophage (en arrière).</li>
+                            <li>Persistance de l'<strong>orifice laryngé primitif</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                         <strong>B. تطور البنى:</strong>
+                        <ul>
+                            <li><strong>الحنجرة:</strong> الظهارة (من أصل أديمي باطن)، الغضاريف (من العرف العصبي)، العضلات (من القوسين البلعوميين 4 و 6).</li>
+                            <li><strong>الرغامي والقصبات:</strong> يتكون الرغامي ويتفرع إلى <strong>برعمين قصبيين</strong> (بدايات القصبات الأصلية).</li>
+                            <li><strong>الرئتان:</strong> تنقسم البراعم القصبية بشكل ثنائي لتكوين الشجرة القصبية.</li>
+                            <li><strong>الجنبة (الغشاء البلوري):</strong> تتكون من الأديم المتوسط.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>B. Development of structures:</strong>
+                        <ul>
+                            <li><strong>Larynx:</strong> Epithelium (endoblastic origin), Cartilages (from neural crests), Musculature (from 4th and 6th branchial arches).</li>
+                            <li><strong>Trachea and Bronchi:</strong> The tube forms the trachea and bifurcates into two <strong>bronchial buds</strong>.</li>
+                            <li><strong>Lungs:</strong> Bronchial buds divide dichotomously, forming the bronchial tree.</li>
+                            <li><strong>Pleurae:</strong> Form from the mesoderm.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>B. Développement des structures :</strong>
+                        <ul>
+                            <li><strong>Larynx :</strong> Épithélium (origine endoblastique), Cartilages (dérivent des crêtes neurales), Musculature (issue des 4ème et 6ème arcs branchiaux).</li>
+                            <li><strong>Trachée et Bronches :</strong> L'extrémité caudale se bifurque en deux <strong>bourgeons bronchiques</strong>.</li>
+                            <li><strong>Poumons :</strong> Les bourgeons bronchiques se divisent de manière dichotomique.</li>
+                            <li><strong>Plèvres :</strong> Se forment à partir du mésoderme.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>C. تكوّن الأنسجة الرئوية (النضج):</strong>
+                        <ol>
+                            <li><strong>المرحلة الشبيهة بالغدية (6-16 أسبوعًا):</strong> تكوين مسالك التوصيل. <strong>غير قابلة للحياة.</strong></li>
+                            <li><strong>المرحلة القنيوية (15-24 أسبوعًا):</strong> ظهور القصيبات التنفسية والأوعية الدموية. <strong>البقاء نادر.</strong></li>
+                            <li><strong>المرحلة الكيسية (حتى 28 أسبوعًا):</strong> تكوين الأكياس السنخية. تمايز الخلايا الرئوية من النوع الأول والثاني. بدء إفراز الفاعل بالسطح (Surfactant). <strong>البقاء ممكن.</strong></li>
+                            <li><strong>المرحلة السنخية (36 أسبوعًا - 8 سنوات):</strong> تكاثر ونضج الأسناخ (من 50 إلى 300 مليون).</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>C. Pulmonary Histogenesis (Maturation):</strong>
+                        <ol>
+                            <li><strong>Pseudo-glandular stage (6-16 weeks):</strong> Formation of conducting airways. <strong>NOT VIABLE.</strong></li>
+                            <li><strong>Canalicular stage (15-24 weeks):</strong> Appearance of respiratory bronchioles and vascularization. <strong>Survival rare.</strong></li>
+                            <li><strong>Saccular stage (up to 28 weeks):</strong> Formation of alveolar sacs. Differentiation of pneumocytes I and II. Surfactant secretion begins. <strong>Survival possible.</strong></li>
+                            <li><strong>Alveolar stage (36 weeks - 8 years):</strong> Multiplication and maturation of alveoli (50 to 300 million).</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>C. Histogenèse pulmonaire (Maturation) :</strong>
+                        <ol>
+                            <li><strong>Stade pseudo-glandulaire (6-16 semaines) :</strong> Formation des voies de conduction. <strong>NON VIABLE.</strong></li>
+                            <li><strong>Stade canaliculaire (15-24 semaines) :</strong> Apparition des bronchioles respiratoires et vascularisation. <strong>Survie rare.</strong></li>
+                            <li><strong>Stade sacculaire (jusqu'à 28 semaines) :</strong> Formation des sacs alvéolaires. Différenciation des pneumocytes I et II. Début de la sécrétion du surfactant. <strong>Survie possible.</strong></li>
+                            <li><strong>Stade alvéolaire (36 semaines - 8 ans) :</strong> Multiplication et maturation des alvéoles (de 50 millions à 300 millions).</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>D. عناصر النضج الرئيسية:</strong>
+                        <ul>
+                            <li><strong>السائل الرئوي الجنيني:</strong> يحافظ على الضغط والشكل.</li>
+                            <li><strong>الفاعل بالسطح (Surfactant):</strong> يُفرز من الخلايا الرئوية من النوع الثاني (بدءًا من ~ 28 أسبوعًا). يقلل التوتر السطحي ويمنع انخماص الأسناخ.</li>
+                            <li><strong>ارتباط سريري:</strong> <strong>مرض الأغشية الهيالينية (متلازمة الضائقة التنفسية)</strong> لدى الخدج، بسبب نقص الفاعل بالسطح.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>D. Key elements of maturation:</strong>
+                        <ul>
+                            <li><strong>Fetal pulmonary fluid:</strong> Maintains pressure and shape.</li>
+                            <li><strong>Surfactant:</strong> Secreted by type II pneumocytes (from ~28 weeks). Reduces surface tension and prevents alveolar collapse (atelectasis).</li>
+                            <li><strong>Clinical correlation:</strong> <strong>Hyaline Membrane Disease (Respiratory Distress Syndrome)</strong> in premature infants, due to surfactant deficiency.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>D. Éléments clés de la maturation :</strong>
+                        <ul>
+                            <li><strong>Liquide pulmonaire fœtal :</strong> Maintient la pression et la forme.</li>
+                            <li><strong>Surfactant :</strong> Sécrété par les pneumocytes de type II (dès ~28 semaines). Diminue la tension de surface et empêche l'affaissement (atélectasie).</li>
+                            <li><strong>Corrélation clinique :</strong> <strong>Maladie des membranes hyalines (Syndrome de Détresse Respiratoire)</strong> chez le prématuré (déficit en surfactant).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="topic-section">
+            <h2 class="section-title"><i class="fa-solid fa-microscope"></i> III. هستولوجيا المسالك الهوائية</h2>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>A. الغشاء المخاطي التنفسي النموذجي:</strong>
+                        <ul>
+                            <li><strong>الظهارة:</strong> <strong>أسطوانية مطبقة كاذبة مهدبة تحتوي على خلايا كأسية.</strong></li>
+                            <li><strong>الخلايا:</strong> خلايا مهدبة (للمصعد المخاطي الهدبي)، خلايا كأسية (لإفراز المخاط)، خلايا قاعدية (للتجديد)، خلايا عصبية صماوية (لإفراز الببتيدات).</li>
+                            <li><strong>الصفيحة المخصوصة (Chorion):</strong> نسيج ضام رخو غني بالألياف المرنة، يحتوي على غدد مصلية مخاطية، أوعية، وخلايا مناعية.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>A. The Typical Respiratory Mucosa:</strong>
+                        <ul>
+                            <li><strong>Epithelium:</strong> <strong>Ciliated pseudostratified columnar epithelium with goblet cells.</strong></li>
+                            <li><strong>Cells:</strong> Ciliated cells (mucociliary escalator), Goblet cells (mucus secretion), Basal cells (renewal), Neuroendocrine cells (peptide secretion).</li>
+                            <li><strong>Chorion (Lamina Propria):</strong> Loose connective tissue rich in elastic fibers, containing sero-mucous glands, vessels, and immune cells.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>A. La Muqueuse Respiratoire Type :</strong>
+                        <ul>
+                            <li><strong>Épithélium :</strong> <strong>Cylindrique pseudo-stratifié cilié à cellules caliciformes.</strong></li>
+                            <li><strong>Cellules :</strong> Cellules ciliées (ascenseur muco-ciliaire), Cellules caliciformes (sécrétion de mucus), Cellules basales (renouvellement), Cellules neuroendocrines (sécrétion peptides).</li>
+                            <li><strong>Chorion (Lamina Propria) :</strong> Tissu conjonctif lâche, riche en fibres élastiques, glandes séro-muqueuses, vaisseaux, cellules immunitaires.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>B. المسالك الهوائية العلوية:</strong>
+                        <ol>
+                            <li><strong>الحفر الأنفية:</strong> الدهليز (ظهارة حرشفية مطبقة متقرنة)، المنطقة التنفسية (مخاطية تنفسية نموذجية)، المنطقة الشمية (ظهارة مطبقة كاذبة مع عصبونات شمية).</li>
+                            <li><strong>الجيوب:</strong> مخاطية تنفسية رقيقة.</li>
+                            <li><strong>البلعوم (البلعوم الأنفي):</strong> ظهارة تنفسية وبقع من ظهارة رصفية مطبقة غير متقرنة.</li>
+                            <li><strong>الحنجرة:</strong> الطيات الصوتية الكاذبة (مخاطية تنفسية)، <strong>الطيات الصوتية الحقيقية</strong> (<strong>ظهارة حرشفية مطبقة غير متقرنة</strong> لمقاومة الاحتكاك).</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>B. Upper Airways:</strong>
+                        <ol>
+                            <li><strong>Nasal Fossae:</strong> Vestibule (keratinized squamous epithelium), Respiratory region (typical respiratory mucosa), Olfactory region (pseudostratified epithelium with olfactory neurons).</li>
+                            <li><strong>Sinuses:</strong> Thin respiratory mucosa.</li>
+                            <li><strong>Pharynx (Nasopharynx):</strong> Respiratory epithelium and patches of non-keratinized stratified squamous epithelium.</li>
+                            <li><strong>Larynx:</strong> False vocal cords (respiratory mucosa), <strong>True vocal cords</strong> (<strong>Non-keratinized squamous epithelium</strong> for friction resistance).</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>B. Voies Aériennes Supérieures :</strong>
+                        <ol>
+                            <li><strong>Fosses Nasales :</strong> Vestibule (épithélium malpighien kératinisé), Région respiratoire (muqueuse respiratoire type), Région olfactive (épithélium pseudostratifié avec neurones olfactifs).</li>
+                            <li><strong>Sinus :</strong> Muqueuse respiratoire fine.</li>
+                            <li><strong>Pharynx (Rhinopharynx) :</strong> Épithélium respiratoire et plages d'épithélium pavimenteux stratifié non kératinisé.</li>
+                            <li><strong>Larynx :</strong> Fausses cordes vocales (muqueuse respiratoire), <strong>Vraies cordes vocales</strong> (<strong>Épithélium malpighien non kératinisé</strong> pour résistance).</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>C. المسالك الهوائية السفلية:</strong>
+                        <ol>
+                            <li><strong>الرغامي:</strong> بنية أنبوبية مع <strong>حلقات غضروفية (زجاجية) على شكل "C"</strong>. الطبقات: مخاطية، تحت مخاطية (غدد)، عضلية غضروفية، وبرانية.</li>
+                            <li><strong>القصبات الأصلية:</strong> بنية مشابهة للرغامي، لكن الحلقات الغضروفية كاملة.</li>
+                            <li><strong>القصبات داخل الرئة:</strong> تطور تدريجي: الظهارة تصبح أرق، الغضروف يتحول من حلقات إلى <strong>صفائح</strong> غير منتظمة، العضلة الملساء (<strong>عضلة رايسيسن</strong>) تصبح أبرز، ظهور <strong>BALT</strong> (النسيج اللمفاوي المرتبط بالقصبات).</li>
+                            <li><strong>القصيبات (&lt;1 مم):</strong> <strong>غياب الغضروف والغدد.</strong> الظهارة تصبح <strong>بسيطة</strong> (مكعبة إلى أسطوانية). ظهور <strong>خلايا كلارا</strong> (إزالة السموم، تجديد).</li>
+                            <li><strong>القصيبة الانتهائية (&lt;0.5 مم):</strong> ظهارة مكعبة بسيطة، غنية بخلايا كلارا.</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>C. Lower Airways:</strong>
+                        <ol>
+                            <li><strong>Trachea:</strong> Conduit with <strong>"C" shaped cartilaginous rings</strong> (hyaline). Tunics: Mucosa, Submucosa (glands), Musculo-cartilaginous, Adventitia.</li>
+                            <li><strong>Main Bronchi:</strong> Similar structure to trachea, but complete cartilaginous rings.</li>
+                            <li><strong>Intra-pulmonary Bronchi:</strong> Progressive evolution: Epithelium thins, Cartilage changes from rings to irregular <strong>plates</strong>, Smooth muscle (<strong>Reissessen's muscle</strong>) becomes more prominent, Appearance of <strong>BALT</strong>.</li>
+                            <li><strong>Bronchioles (<1 mm):</strong> <strong>Absence of cartilage and glands.</strong> Epithelium becomes <strong>simple</strong> (cuboidal to columnar). Appearance of <strong>Clara cells</strong> (detoxification, regeneration).</li>
+                            <li><strong>Terminal Bronchiole (<0.5 mm):</strong> Simple cuboidal epithelium, rich in Clara cells.</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>C. Voies Aériennes Inférieures :</strong>
+                        <ol>
+                            <li><strong>Trachée :</strong> Conduit avec <strong>anneaux cartilagineux en "C"</strong> (hyalin). Tuniques : Muqueuse, Sous-muqueuse (glandes), Tunique musculo-cartilagineuse, Adventice.</li>
+                            <li><strong>Bronches Souches :</strong> Structure similaire, mais anneaux cartilagineux complets.</li>
+                            <li><strong>Bronches Intra-pulmonaires :</strong> Évolution progressive : Épithélium s'amincit, Cartilage en <strong>plaques</strong> irrégulières, Muscle lisse (<strong>muscle de Reissessen</strong>) plus prominent, Apparition du <strong>BALT</strong>.</li>
+                            <li><strong>Bronchioles (<1 mm) :</strong> <strong>Absence de cartilage et de glandes.</strong> Épithélium devenant <strong>simple</strong> (cubique à colonnaire). Apparition des <strong>Cellules de Clara</strong> (détoxification, régénération).</li>
+                            <li><strong>Bronchiole Terminale (<0.5 mm) :</strong> Épithélium cubique simple, riche en cellules de Clara.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="topic-section">
+            <h2 class="section-title"><i class="fa-solid fa-vial"></i> IV. هستولوجيا الرئة</h2>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>A. التنظيم البنيوي:</strong>
+                        <ul>
+                            <li><strong>الفص (Lobe):</strong> وحدة تشريحية.</li>
+                            <li><strong>الفصيص (Lobule):</strong> وحدة هستولوجية.</li>
+                            <li><strong>العنيبة (Acinus):</strong> <strong>وحدة وظيفية</strong> تهووية، تصرفها قصيبة انتهائية.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>A. Structural Organization:</strong>
+                        <ul>
+                            <li><strong>Lobe:</strong> Anatomical unit.</li>
+                            <li><strong>Lobule:</strong> Histological unit.</li>
+                            <li><strong>Acinus:</strong> <strong>Functional</strong> ventilatory unit, drained by a terminal bronchiole.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>A. Organisation Structurale :</strong>
+                        <ul>
+                            <li><strong>Lobe :</strong> Unité anatomique.</li>
+                            <li><strong>Lobule :</strong> Unité histologique.</li>
+                            <li><strong>Acinus :</strong> <strong>Unité fonctionnelle</strong> ventilatoire, drainée par une bronchiole terminale.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>B. مكونات العنيبة:</strong>
+                        <ol>
+                            <li><strong>القصيبة التنفسية:</strong> أول موقع للتبادل الغازي. جدارها مثقوب بأسناخ.</li>
+                            <li><strong>القناة السنخية:</strong> قناة تتكون جدرانها من أسناخ.</li>
+                            <li><strong>الكيس السنخي:</strong> عنقود من الأسناخ ينفتح في فضاء مشترك.</li>
+                            <li><strong>السنخ (Alvéole):</strong> <strong>الوحدة البنيوية والوظيفية للتبادلات.</strong> ~300 مليون توفر 75 م² من السطح.</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>B. Components of the Acinus:</strong>
+                        <ol>
+                            <li><strong>Respiratory Bronchiole:</strong> First site of gas exchange. Wall pierced by alveoli.</li>
+                            <li><strong>Alveolar Duct:</strong> Duct whose walls are made of alveoli.</li>
+                            <li><strong>Alveolar Sac:</strong> Cluster of alveoli opening into a common space.</li>
+                            <li><strong>Alveolus:</strong> <strong>Structural and functional unit of exchange.</strong> ~300 million providing 75 m² of surface.</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>B. Composants de l'Acinus :</strong>
+                        <ol>
+                            <li><strong>Bronchiole Respiratoire :</strong> Premier site d'échange gazeux. Paroi percée d'alvéoles.</li>
+                            <li><strong>Canal Alvéolaire :</strong> Conduit dont les parois sont constituées d'alvéoles.</li>
+                            <li><strong>Sac Alvéolaire :</strong> Grappe d'alvéoles s'ouvrant dans un espace commun.</li>
+                            <li><strong>Alvéole :</strong> <strong>Unité structurale et fonctionnelle des échanges.</strong> ~300 millions offrant 75 m² de surface.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>C. الجدار السنخي (الحاجز بين الأسناخ):</strong>
+                        <ul>
+                            <li><strong>الظهارة السنخية:</strong>
+                                <ul>
+                                    <li><strong>الخلية الرئوية من النوع الأول (Pneumocyte I):</strong> (40% من الخلايا، 90% من السطح): خلايا حرشفية، رقيقة جدًا، مخصصة للتبادلات الغازية.</li>
+                                    <li><strong>الخلية الرئوية من النوع الثاني (Pneumocyte II):</strong> (60% من الخلايا، 5-10% من السطح): خلايا مكعبة تفرز <strong>الفاعل بالسطح (Surfactant)</strong> وتضمن تجديد الظهارة.</li>
+                                </ul>
+                            </li>
+                            <li><strong>البطانة الشعرية (Endothélium Capillaire):</strong> شعيرات دموية مستمرة، قريبة جدًا من الظهارة.</li>
+                            <li><strong>النسيج الخلالي (Tissu Interstitiel):</strong> طبقة رقيقة من النسيج الضام.</li>
+                            <li><strong>البلاعم السنخية (Macrophages Alvéolaires) (خلايا الغبار):</strong> حرة في اللمعة، تبلعم الحطام ومسببات الأمراض.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>C. The Alveolar Wall (Interalveolar Septum):</strong>
+                        <ul>
+                            <li><strong>Alveolar Epithelium:</strong>
+                                <ul>
+                                    <li><strong>Type I Pneumocyte</strong> (40% of cells, 90% of surface): Squamous, very thin cells, dedicated to gas exchange.</li>
+                                    <li><strong>Type II Pneumocyte</strong> (60% of cells, 5-10% of surface): Cuboidal cells secreting <strong>surfactant</strong> and ensuring epithelial regeneration.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Capillary Endothelium:</strong> Continuous capillaries, very close to the epithelium.</li>
+                            <li><strong>Interstitial Tissue:</strong> Thin layer of connective tissue.</li>
+                            <li><strong>Alveolar Macrophages (Dust Cells):</strong> Free in the lumen, phagocytose debris and pathogens.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>C. La Paroi Alvéolaire (Cloison Interalvéolaire) :</strong>
+                        <ul>
+                            <li><strong>Épithélium Alvéolaire :</strong>
+                                <ul>
+                                    <li><strong>Pneumocyte de Type I</strong> (40% des cellules, 90% de la surface) : Cellules squameuses, très fines, dédiées aux échanges gazeux.</li>
+                                    <li><strong>Pneumocyte de Type II</strong> (60% des cellules, 5-10% de la surface) : Cellules cubiques sécrétant le <strong>surfactant</strong> et assurant la régénération épithéliale.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Endothélium Capillaire :</strong> Capillaires continus, très proches de l'épithélium.</li>
+                            <li><strong>Tissu Interstitiel :</strong> Mince couche de tissu conjonctif.</li>
+                            <li><strong>Macrophages Alvéolaires (Cellules à Poussières) :</strong> Libres dans la lumière, phagocytent les débris et pathogènes.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>D. الحاجز الدموي الهوائي (الغشاء السنخي الشعيري):</strong>
+                        <ul>
+                            <li>يتكون من (من الهواء إلى الدم):
+                                <ol>
+                                    <li>طبقة الفاعل بالسطح (Surfactant).</li>
+                                    <li>سيتوبلازم الخلية الرئوية من النوع الأول.</li>
+                                    <li>الغشاء القاعدي المندمج (للخلية الرئوية I والخلية البطانية).</li>
+                                    <li>سيتوبلازم خلية بطانية شعرية.</li>
+                                </ol>
+                            </li>
+                            <li>*هذه البنية فائقة الرقة تسمح بانتشار سريع للغازات.*</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>D. The Air-Blood Barrier (Alveolo-Capillary Membrane):</strong>
+                        <ul>
+                            <li>Composed of (from air to blood):
+                                <ol>
+                                    <li>Surfactant film.</li>
+                                    <li>Cytoplasm of a type I pneumocyte.</li>
+                                    <li>Fused basement membrane (pneumocyte I and endothelial cell).</li>
+                                    <li>Cytoplasm of a capillary endothelial cell.</li>
+                                </ol>
+                            </li>
+                            <li>*This ultra-thin structure allows rapid diffusion of gases.*</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>D. La Barrière Hémato-Aérienne (Membrane Alvéolo-Capillaire) :</strong>
+                        <ul>
+                            <li>Composée de, de l'air vers le sang :
+                                <ol>
+                                    <li>Film de surfactant.</li>
+                                    <li>Cytoplasme d'un pneumocyte de type I.</li>
+                                    <li>Membrane basale fusionnée (pneumocyte I et cellule endothéliale).</li>
+                                    <li>Cytoplasme d'une cellule endothéliale capillaire.</li>
+                                </ol>
+                            </li>
+                            <li>*Cette structure ultra-mince permet une diffusion rapide des gaz.*</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>E. الهستوفيزيولوجيا الرئوية:</strong>
+                        <ul>
+                            <li><strong>التبادلات الغازية:</strong> انتشار سلبي.</li>
+                            <li><strong>ميكانيكا التهوية:</strong> دور الجنبة والسائل الجنبي.</li>
+                            <li><strong>الدفاع:</strong> المصعد المخاطي الهدبي، البلاعم السنخية وإفراز IgA، ليزوزيم، إلخ.</li>
+                            <li><strong>الوظائف الاستقلابية:</strong> تحويل الأنجيوتنسين I إلى II.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>E. Pulmonary Histophysiology:</strong>
+                        <ul>
+                            <li><strong>Gas exchange:</strong> Passive diffusion.</li>
+                            <li><strong>Ventilatory mechanics:</strong> Role of pleurae and pleural fluid.</li>
+                            <li><strong>Defense:</strong> Mucociliary escalator, Alveolar macrophages and IgA secretion, Lysozyme, etc.</li>
+                            <li><strong>Metabolic functions:</strong> Conversion of angiotensin I to II.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>E. Histophysiologie Pulmonaire :</strong>
+                        <ul>
+                            <li><strong>Échanges gazeux :</strong> Diffusion passive.</li>
+                            <li><strong>Mécanique ventilatoire :</strong> Rôle des plèvres et du liquide pleural.</li>
+                            <li><strong>Défense :</strong> Ascenseur muco-ciliaire, Macrophages alvéolaires et sécrétion d'IgA, Lysozyme, etc.</li>
+                            <li><strong>Fonctions métaboliques :</strong> Conversion de l'angiotensine I en II.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="topic-section">
+            <h2 class="section-title"><i class="fa-solid fa-layer-group"></i> V. الجنبة (الغشاء البلوري)</h2>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>A. البنية الهستولوجية:</strong>
+                        <ul>
+                            <li><strong>التعريف:</strong> أغشية مصلية (ظهارة متوسطة + نسيج ضام).</li>
+                            <li><strong>ورقتان:</strong>
+                                <ul>
+                                    <li><strong>الجنبة الحشوية:</strong> تلتصق بسطح الرئة.</li>
+                                    <li><strong>الجنبة الجدارية:</strong> تبطن القفص الصدري، المنصف، والحجاب الحاجز.</li>
+                                </ul>
+                            </li>
+                            <li><strong>الطبقات (من اللمعة إلى الخارج):</strong>
+                                <ol>
+                                    <li>الظهارة المتوسطة (ظهارة رصفية بسيطة).</li>
+                                    <li>الطبقة تحت الظهارة المتوسطة (رقيقة، ليفية).</li>
+                                    <li>المستوى الليفي المرن السطحي.</li>
+                                    <li>الطبقة تحت الجنبية (نسيج ضام رخو مع أوعية وأعصاب).</li>
+                                    <li>المستوى الليفي المرن العميق.</li>
+                                </ol>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>A. Histological Structure:</strong>
+                        <ul>
+                            <li><strong>Definition:</strong> Serous membranes (mesothelium + connective tissue).</li>
+                            <li><strong>Two layers (feuillets):</strong>
+                                <ul>
+                                    <li><strong>Visceral Pleura:</strong> Adheres to the lung surface.</li>
+                                    <li><strong>Parietal Pleura:</strong> Lines the thoracic cage, mediastinum, and diaphragm.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Layers (from lumen outwards):</strong>
+                                <ol>
+                                    <li>Mesothelium (simple squamous epithelium).</li>
+                                    <li>Sub-mesothelial layer (thin, fibrous).</li>
+                                    <li>Superficial fibro-elastic plane.</li>
+                                    <li>Sub-pleural layer (loose connective tissue with vessels and nerves).</li>
+                                    <li>Deep fibro-elastic plane.</li>
+                                </ol>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>A. Structure Histologique :</strong>
+                        <ul>
+                            <li><strong>Définition :</strong> Membranes séreuses (mésothélium + tissu conjonctif).</li>
+                            <li><strong>Deux feuillets :</strong>
+                                <ul>
+                                    <li><strong>Plèvre Viscérale :</strong> Adhère à la surface du poumon.</li>
+                                    <li><strong>Plèvre Pariétale :</strong> Tapisse la cage thoracique, le médiastin et le diaphragme.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Couches (de la lumière vers l'extérieur) :</strong>
+                                <ol>
+                                    <li>Mésothélium (épithélium pavimenteux simple).</li>
+                                    <li>Couche sous-mésothéliale (mince, fibreuse).</li>
+                                    <li>Plan fibro-élastique superficiel.</li>
+                                    <li>Couche sous-pleurale (tissu conjonctif lâche avec vaisseaux et nerfs).</li>
+                                    <li>Plan fibro-élastique profond.</li>
+                                </ol>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>B. الفيزيولوجيا والدور الميكانيكي:</strong>
+                        <ul>
+                            <li><strong>التجويف الجنبي:</strong> فضاء افتراضي يحتوي على <strong>السائل الجنبي</strong>.</li>
+                            <li><strong>الأدوار:</strong>
+                                <ul>
+                                    <li>يسمح بانزلاق الوريقتين أثناء حركات التنفس.</li>
+                                    <li>ينقل قوى القفص الصدري إلى الرئة عبر الضغط السلبي.</li>
+                                    <li>يضمن توزيعًا متجانسًا للقوى.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>B. Physiology and Mechanical Role:</strong>
+                        <ul>
+                            <li><strong>Pleural Cavity:</strong> Virtual space containing <strong>pleural fluid</strong>.</li>
+                            <li><strong>Roles:</strong>
+                                <ul>
+                                    <li>Allows sliding of the layers during respiratory movements.</li>
+                                    <li>Transmits forces from the thoracic cage to the lung via negative pressure.</li>
+                                    <li>Ensures homogeneous distribution of forces.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>B. Physiologie et Rôle Mécanique :</strong>
+                        <ul>
+                            <li><strong>Cavité Pleurale :</strong> Espace virtuel contenant le <strong>liquide pleural</strong>.</li>
+                            <li><strong>Rôles :</strong>
+                                <ul>
+                                    <li>Permet le glissement des feuillets lors des mouvements respiratoires.</li>
+                                    <li>Transmet les forces de la cage thoracique au poumon via la pression négative.</li>
+                                    <li>Assure une répartition homogène des forces.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>C. أمراض الجنبة (ارتباطات سريرية):</strong>
+                        <ul>
+                            <li><strong>الانصباب الجنبي:</strong> تراكم غير طبيعي للسائل في التجويف الجنبي (عدوى، سرطان، قصور القلب).</li>
+                            <li><strong>ورم الظهارة المتوسطة الجنبي:</strong> سرطان أولي للجنبة، مرتبط بقوة بالتعرض للأسبستوس (الأميانت).</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>C. Pleural Pathologies (Clinical Correlations):</strong>
+                        <ul>
+                            <li><strong>Pleural effusion:</strong> Abnormal accumulation of fluid in the pleural cavity (infection, cancer, heart failure).</li>
+                            <li><strong>Pleural mesothelioma:</strong> Primary cancer of the pleura, strongly associated with asbestos exposure.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>C. Pathologies Pleurales (Corrélations Cliniques) :</strong>
+                        <ul>
+                            <li><strong>Épanchement pleural :</strong> Accumulation anormale de liquide dans la cavité pleurale (infection, cancer, insuffisance cardiaque).</li>
+                            <li><strong>Mésothéliome pleural :</strong> Cancer primitif de la plèvre, fortement associé à l'exposition à l'amiante.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+
+        </section>
+        
+        <section class="topic-section">
+            <h2 class="section-title"><i class="fa-solid fa-heart-pulse"></i> VI. التوعية والتعصيب</h2>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>A. التوعية الدموية (مزدوجة):</strong>
+                        <ul>
+                            <li><strong>الدورة الرئوية (وظيفية):</strong> الشريان الرئوي (دم غير مؤكسج) ← الشعيرات السنخية (تبادل) ← الأوردة الرئوية (دم مؤكسج).</li>
+                            <li><strong>الدورة القصبية (تغذوية):</strong> الشرايين القصبية (من الأبهر) تغذي القصبات والجنبة ← الأوردة القصبية.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>A. Vascularization (Dual):</strong>
+                        <ul>
+                            <li><strong>Pulmonary Circulation (Functional):</strong> Pulmonary artery (deoxygenated blood) → Alveolar capillaries (exchange) → Pulmonary veins (oxygenated blood).</li>
+                            <li><strong>Bronchial Circulation (Nutritive):</strong> Bronchial arteries (from aorta) supply bronchi & pleura → Bronchial veins.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>A. Vascularisation (Double) :</strong>
+                        <ul>
+                            <li><strong>Circulation Pulmonaire (Fonctionnelle) :</strong> Artère pulmonaire (sang désoxygéné) → Capillaires alvéolaires (échanges) → Veines pulmonaires (sang oxygéné).</li>
+                            <li><strong>Circulation Bronchique (Nutritive) :</strong> Artères bronchiques (issues de l'aorte) irriguent les bronches & la plèvre → Veines bronchiques.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <strong>B. التعصيب (ذاتي):</strong>
+                        <ul>
+                            <li><strong>نظير الودي (العصب الحائر):</strong> يسبب تضيق القصبات وزيادة إفراز المخاط.</li>
+                            <li><strong>الودي:</strong> يسبب توسع القصبات.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <strong>B. Innervation (Autonomic):</strong>
+                        <ul>
+                            <li><strong>Parasympathetic (Vagus nerve):</strong> Causes bronchoconstriction and increased mucus secretion.</li>
+                            <li><strong>Sympathetic:</strong> Causes bronchodilation.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <strong>B. Innervation (Autonome) :</strong>
+                        <ul>
+                            <li><strong>Parasympathique (Nerf Vague) :</strong> Entraîne une bronchoconstriction et une augmentation de la sécrétion de mucus.</li>
+                            <li><strong>Sympathique :</strong> Entraîne une bronchodilatation.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+        </section>
+        
+        <section class="topic-section">
+            <h2 class="section-title"><i class="fa-solid fa-stethoscope"></i> VII. ارتباطات سريرية هامة</h2>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <ul>
+                            <li><strong>الربو (Asthma):</strong> تشنج قصبي (تضيق المسالك الهوائية) مع التهاب مزمن وزيادة في إفراز المخاط. (يؤثر على القصبات والقصيبات).</li>
+                            <li><strong>النفاخ الرئوي (Emphysema):</strong> تدمير جدران الأسناخ، مما يقلل سطح التبادل الغازي.</li>
+                            <li><strong>الالتهاب الرئوي (Pneumonia):</strong> عدوى تسبب التهاب الأسناخ وامتلاءها بالسوائل أو القيح.</li>
+                            <li><strong>مرض الانسداد الرئوي المزمن (COPD):</strong> مزيج من التهاب القصبات المزمن والنفاخ الرئوي، غالبًا بسبب التدخين.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <ul>
+                            <li><strong>Asthma:</strong> Bronchospasm (airway constriction) with chronic inflammation and excess mucus. (Affects bronchi and bronchioles).</li>
+                            <li><strong>Emphysema:</strong> Destruction of alveolar walls, reducing the surface area for gas exchange.</li>
+                            <li><strong>Pneumonia:</strong> Infection causing inflammation and fluid or pus filling the alveoli.</li>
+                            <li><strong>COPD (Chronic Obstructive Pulmonary Disease):</strong> A mix of chronic bronchitis and emphysema, often from smoking.</li>
+                        </ul>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <ul>
+                            <li><strong>Asthme :</strong> Bronchospasme (constriction des voies aériennes) avec inflammation chronique et excès de mucus. (Affecte les bronches et bronchioles).</li>
+                            <li><strong>Emphysème :</strong> Destruction des parois alvéolaires, réduisant la surface d'échange gazeux.</li>
+                            <li><strong>Pneumonie :</strong> Infection provoquant une inflammation et un remplissage des alvéoles par du liquide ou du pus.</li>
+                            <li><strong>BPCO (Bronchopneumopathie Chronique Obstructive) :</strong> Mélange de bronchite chronique et d'emphysème, souvent dû au tabagisme.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+        </section>
+        
+        <section class="topic-section">
+            <h2 class="section-title"><i class="fa-solid fa-star"></i> VIII. ملخص النقاط الرئيسية</h2>
+
+            <div class="lesson-bubble">
+                <div class="lang-tabs">
+                    <button class="lang-tab active" data-lang="ar"><i class="fa-solid fa-globe"></i> AR</button>
+                    <button class="lang-tab" data-lang="en"><i class="fa-solid fa-globe"></i> EN</button>
+                    <button class="lang-tab" data-lang="fr"><i class="fa-solid fa-globe"></i> FR</button>
+                </div>
+                <div class="lang-content-wrapper">
+                    <div class="lang-content active" data-lang="ar">
+                        <ol>
+                            <li><strong>الخلية الأهم:</strong> الخلية الرئوية من النوع الثاني (Pneumocyte II) تنتج الفاعل بالسطح (Surfactant) وهي ضرورية لمنع انخماص الأسناخ.</li>
+                            <li><strong>البنية الأهم:</strong> الحاجز الدموي الهوائي، وهو رقيق للغاية (0.5 ميكرومتر) للسماح بانتشار الغازات.</li>
+                            <li><strong>الفرق الأهم (هستولوجيا):</strong> القصبات (Bronchi) تحتوي على غضروف وغدد. القصيبات (Bronchioles) لا تحتوي عليهما.</li>
+                            <li><strong>الدفاع الأهم:</strong> المصعد المخاطي الهدبي (في منطقة التوصيل) والبلاعم السنخية (في منطقة التنفس).</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="en">
+                        <ol>
+                            <li><strong>Most Critical Cell:</strong> Type II Pneumocyte produces surfactant, essential for preventing alveolar collapse.</li>
+                            <li><strong>Most Critical Structure:</strong> The Air-Blood Barrier, extremely thin (0.5 µm) to allow gas diffusion.</li>
+                            <li><strong>Most Critical Difference (Histo):</strong> Bronchi have cartilage and glands. Bronchioles do not.</li>
+                            <li><strong>Most Critical Defense:</strong> The Mucociliary Escalator (conduction zone) and Alveolar Macrophages (respiratory zone).</li>
+                        </ol>
+                    </div>
+                    <div class="lang-content" data-lang="fr">
+                        <ol>
+                            <li><strong>Cellule la plus Critique :</strong> Le Pneumocyte de Type II produit le surfactant, essentiel pour empêcher le collapsus alvéolaire.</li>
+                            <li><strong>Structure la plus Critique :</strong> La Barrière Hémato-Aérienne, extrêmement fine (0.5 µm) pour permettre la diffusion des gaz.</li>
+                            <li><strong>Différence la plus Critique (Histo) :</strong> Les Bronches ont du cartilage et des glandes. Les Bronchioles n'en ont pas.</li>
+                            <li><strong>Défense la plus Critique :</strong> L'Ascenseur Muco-Ciliaire (zone de conduction) et les Macrophages Alvéolaires (zone respiratoire).</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bubble-actions">
+                    <button class="complete-btn" data-text-ar="حفظتها" data-text-completed="تم الحفظ">
+                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check-double"></i>
+                        حفظتها
+                    </button>
+                </div>
+            </div>
+            
+        </section>
+        
+    </main>
+
+    <footer>
+        <p>تم تطوير هذا الملخص التفاعلي لغرض تعليمي. بالتوفيق في دراستك!</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- THEME TOGGLE ---
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const sunIcon = '<i class="fa-solid fa-sun"></i>';
+        const moonIcon = '<i class="fa-solid fa-moon"></i>';
+        
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.innerHTML = sunIcon;
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                themeToggle.innerHTML = moonIcon;
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // Set initial theme
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+
+        // --- LANGUAGE TABS ---
+        const allLangTabs = document.querySelectorAll('.lang-tab');
+        allLangTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const bubble = tab.closest('.lesson-bubble');
+                const lang = tab.dataset.lang;
+
+                // Remove active class from all tabs and content in this bubble
+                bubble.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+                bubble.querySelectorAll('.lang-content').forEach(c => c.classList.remove('active'));
+
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                bubble.querySelector(`.lang-content[data-lang="${lang}"]`).classList.add('active');
+            });
+        });
+
+
+        // --- PROGRESS TRACKING ---
+        const allBubbles = document.querySelectorAll('.lesson-bubble');
+        const allCompleteButtons = document.querySelectorAll('.complete-btn');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const totalBubbles = allBubbles.length;
+        const storageKey = 'lessonProgress_Respiratory';
+
+        function updateProgress() {
+            const completedBubbles = document.querySelectorAll('.lesson-bubble.completed').length;
+            const percentage = totalBubbles > 0 ? (completedBubbles / totalBubbles) * 100 : 0;
+            
+            progressBar.style.width = percentage + '%';
+            progressText.innerText = Math.round(percentage) + '%';
+        }
+
+        function saveProgress() {
+            let completedIndices = [];
+            allBubbles.forEach((bubble, index) => {
+                if (bubble.classList.contains('completed')) {
+                    completedIndices.push(index);
+                }
+            });
+            localStorage.setItem(storageKey, JSON.stringify(completedIndices));
+        }
+
+        function loadProgress() {
+            const savedIndices = JSON.parse(localStorage.getItem(storageKey)) || [];
+            savedIndices.forEach(index => {
+                if (allBubbles[index]) {
+                    allBubbles[index].classList.add('completed');
+                    const button = allBubbles[index].querySelector('.complete-btn');
+                    setButtonCompleted(button);
+                }
+            });
+            updateProgress();
+        }
+
+        function setButtonCompleted(button) {
+            button.disabled = true;
+            // Use dataset for text, fallback to default
+            const completedText = button.dataset.textCompleted || 'تم الحفظ';
+            button.innerHTML = `
+                <i class="fa-solid fa-check"></i>
+                <i class="fa-solid fa-check-double"></i>
+                ${completedText}
+            `;
+            // Swap icons visibility
+            button.querySelector('.fa-check').style.display = 'none';
+            button.querySelector('.fa-check-double').style.display = 'inline-block';
+        }
+
+        allCompleteButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                const bubble = button.closest('.lesson-bubble');
+                bubble.classList.add('completed');
+                setButtonCompleted(button);
+                
+                saveProgress();
+                updateProgress();
+            });
+            
+            // Set initial text from data-attribute
+            const initialText = button.dataset.textAr || 'حفظتها';
+             button.innerHTML = `
+                <i class="fa-solid fa-check"></i>
+                <i class="fa-solid fa-check-double"></i>
+                ${initialText}
+            `;
+             // Ensure correct initial icon visibility
+             button.querySelector('.fa-check-double').style.display = 'none';
+        });
+
+        // Initial load
+        loadProgress();
+
+    });
+    </script>
+</body>
+</html>
