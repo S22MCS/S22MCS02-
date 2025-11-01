@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>قسم الطب - بنك الدروس</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+   <style>
+      /* --- :root | المتغيرات العامة --- */
+      :root {
+         --primary-color: #00897b; /* أخضر مزرق أفتح */
+         --primary-dark: #00695c;
+         --bg-body: #f1f5f9; /* رمادي فاتح جداً للخلفية */
+         --bg-card: #ffffff;
+         --text-primary: #1e293b;
+         --text-secondary: #64748b;
+         --border-color: #e2e8f0;
+         --white: #ffffff;
+         --red: #ef4444;
+         --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+         --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+         --radius: 0.8rem;
+         /* Medical Alert Popup variables */
+         --medical-primary-color: #3498db;
+         --medical-primary-dark-color: #2980b9;
+         --medical-secondary-color: #ffffff;
+         --medical-text-color: #333;
+         --medical-light-bg-color: #f5f5f5;
+         --medical-overlay-bg-color: rgba(0, 0, 0, 0.8);
+         /* Danger Modal variables */
+         --main-color: #e74c3c;
+         --main-dark: #c0392b;
+         --dark-overlay: rgba(0, 0, 0, 0.8);
+         /* Updates Modal variables */
+         --TAWASLE_ADAT_TAHDITAT_MED02-primary-color: #3498db;
+         --TAWASLE_ADAT_TAHDITAT_MED02-primary-dark-color: #2980b9;
+      }
+      
+      body.dark-mode {
+         --bg-body: #0f172a;
+         --bg-card: #1e293b;
+         --text-primary: #f1f5f9;
+         --text-secondary: #94a3b8;
+         --border-color: #334155;
+      }
+
+      * {
+         font-family: 'Cairo', sans-serif;
+         margin: 0; padding: 0;
+         box-sizing: border-box;
+         outline: none; border: none;
+         text-decoration: none;
+      }
+      
+      html { font-size: 62.5%; overflow-x: hidden; }
+      body {
+         background-color: var(--bg-body);
+         color: var(--text-primary);
+         transition: background-color .3s, color .3s;
+         padding-top: 8rem;
+      }
+      body.popup-active, body.medical-popup-open, body.TAWASLE_ADAT_TAHDITAT_MED02-popup-open { overflow: hidden; }
+
+      .header {
+         background-color: var(--bg-card);
+         padding: 1.5rem 3%;
+         position: fixed; top: 0; right: 0; left: 0;
+         z-index: 1000;
+         box-shadow: var(--shadow-md);
+         border-bottom: 1px solid var(--border-color);
+      }
+      .header .flex { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+      .logo { font-size: 2.2rem; font-weight: 700; color: var(--primary-color); }
+      .header .icons { display: flex; align-items: center; gap: .5rem; position: relative; }
+      .icon-btn { font-size: 2rem; color: var(--text-secondary); cursor: pointer; height: 4.5rem; width: 4.5rem; line-height: 4.5rem; text-align: center; border-radius: 50%; transition: all .2s ease-in-out; }
+      .icon-btn:hover { background-color: var(--bg-body); color: var(--primary-color); }
+      
+      .profile-dropdown { position: absolute; top: calc(100% + 1rem); left: 0; background-color: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); width: 30rem; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; opacity: 0; transform: translateY(-10px); visibility: hidden; transition: all .2s ease-in-out; z-index: 1100; }
+      .profile-dropdown.active { opacity: 1; transform: translateY(0); visibility: visible; }
+      .profile-dropdown .image { width: 8rem; height: 8rem; border-radius: 50%; object-fit: cover; }
+      .profile-dropdown .name { font-size: 1.8rem; color: var(--text-primary); font-weight: 600; }
+      .profile-dropdown .role { font-size: 1.4rem; color: var(--text-secondary); }
+      .btn { width: 100%; padding: 1.2rem; background-color: var(--primary-color); color: var(--white); border-radius: var(--radius); cursor: pointer; font-size: 1.6rem; text-align: center; transition: background-color .2s; }
+      .btn:hover { background-color: var(--primary-dark); }
+      .btn.logout { background-color: var(--red); }
+
+      .side-bar { position: fixed; top: 0; right: -100%; width: 32rem; max-width: 90%; height: 100vh; background-color: var(--bg-card); border-left: 1px solid var(--border-color); z-index: 1200; transition: right 0.3s ease-in-out; display: flex; flex-direction: column; }
+      .side-bar.active { right: 0; }
+      .side-bar .close-btn-container { padding: 1.5rem; text-align: left; flex-shrink: 0; }
+      #close-btn { font-size: 2.5rem; }
+      .side-bar .navbar { padding-top: 1rem; flex-grow: 1; overflow-y: auto; }
+      .side-bar .navbar a { display: flex; align-items: center; gap: 2rem; padding: 1.5rem 2rem; font-size: 1.7rem; color: var(--text-secondary); transition: all .2s; }
+      .side-bar .navbar a:hover { background-color: var(--bg-body); color: var(--primary-color); padding-right: 2.5rem; }
+      .side-bar .navbar a i { font-size: 2rem; width: 2.5rem; text-align: center; }
+
+      main { padding: 2rem 3%; }
+      .dashboard-title { font-size: 2.8rem; font-weight: 700; margin-bottom: 2rem; color: var(--text-primary); }
+      .card-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr)); gap: 2rem; }
+      .card { background-color: var(--bg-card); padding: 2.5rem; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); color: var(--text-secondary); }
+      .card h3 { font-size: 2rem; color: var(--text-primary); margin-bottom: 1rem; }
+      
+      .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+      .overlay.active { opacity: 1; visibility: visible; }
+      
+      .logo { display: flex; align-items: center; direction: rtl; gap: 8px; font-size: 20px; text-decoration: none; }
+      .logo .subtitle { font-size: 12px; line-height: 1.4; text-align: right; }
+      .logo .main-title { font-weight: bold; }
+
+      /* Notification Widget Styles */
+      :root { --notif-bg-color: #ffffff; --notif-text-color: #333333; --notif-border-color: #eeeeee; --notif-shadow-color: rgba(0, 0, 0, 0.15); --notif-icon-color: #555555; --notif-accent-color: red; --notif-item-hover-bg: #f5f5f5; }
+      @media (prefers-color-scheme: dark) { :root { --notif-bg-color: #2c2c2c; --notif-text-color: #f1f1f1; --notif-border-color: #444444; --notif-shadow-color: rgba(0, 0, 0, 0.5); --notif-icon-color: #bbbbbb; --notif-accent-color: #ff4d4d; --notif-item-hover-bg: #3a3a3a; } }
+      .Tawasle-Notif-Icon-Btn { font-size: 24px; color: var(--notif-icon-color); cursor: pointer; position: relative; padding: 5px; }
+      .Tawasle-Notif-Count { position: absolute; top: -2px; right: -4px; background-color: var(--notif-accent-color); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; font-weight: bold; display: none; justify-content: center; align-items: center; border: 1px solid var(--notif-bg-color); }
+      .Tawasle-Notif-Dropdown { display: none; position: absolute; top: calc(100% + 10px); left: 0px; background-color: var(--notif-bg-color); border-radius: 8px; width: 320px; max-width: 90vw; max-height: 450px; overflow-y: auto; box-shadow: 0 5px 15px var(--notif-shadow-color); z-index: 1001; border: 1px solid var(--notif-border-color); opacity: 0; transform: translateY(10px); transition: opacity 0.2s ease, transform 0.2s ease; }
+      .Tawasle-Notif-Dropdown.Tawasle-Notif-Dropdown-Show { display: block; opacity: 1; transform: translateY(0); }
+      .Tawasle-Notif-Item { padding: 12px 15px; border-bottom: 1px solid var(--notif-border-color); font-size: 14px; color: var(--notif-text-color); display: flex; align-items: center; gap: 12px; transition: background-color 0.2s ease; }
+      .Tawasle-Notif-Item:hover { background-color: var(--notif-item-hover-bg); }
+      .Tawasle-Notif-Item:last-child { border-bottom: none; }
+      .Tawasle-Notif-Item i { color: var(--notif-icon-color); }
+      .Tawasle-Notif-Item p { margin: 0; line-height: 1.4; }
+      .Tawasle-Notif-Item a { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 12px; width: 100%; }
+
+      /* Main Content & Modules Styles */
+      .summaries-title, .main-title { font-size: clamp(2.2rem, 5vw, 2.8rem); font-weight: 700; margin-bottom: 2.5rem; color: var(--text-primary); text-align: center; }
+      .summaries-navigation, .modules-navigation { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 3rem; }
+      .nav-button { padding: 12px 18px; font-size: clamp(1.5rem, 3vw, 1.6rem); font-weight: 600; color: var(--primary-color); background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); cursor: pointer; transition: all 0.25s ease; text-align: center; flex-grow: 1; flex-basis: 150px; box-shadow: var(--shadow-sm); touch-action: manipulation; }
+      .nav-button:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary-color); }
+      .nav-button .english-nav, .nav-button .foreign-nav { font-size: 1.2rem; font-weight: 400; color: var(--text-secondary); transition: color 0.25s ease; }
+      .nav-button.active { background-color: var(--primary-color); color: var(--white); border-color: var(--primary-color); transform: translateY(0); box-shadow: 0 4px 8px rgba(0, 137, 123, 0.25); }
+      .nav-button.active .english-nav, .nav-button.active .foreign-nav { color: rgba(255, 255, 255, 0.9); }
+      .content-section { display: none; }
+      .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+      .subject-block { background-color: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 2rem; border: 1px solid var(--border-color); overflow: hidden; transition: box-shadow 0.3s ease; }
+      .subject-header { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: clamp(1.5rem, 4vw, 2rem); background-color: transparent; border: none; cursor: pointer; text-align: right; }
+      .subject-title { font-size: clamp(1.8rem, 5vw, 2.2rem); color: var(--primary-dark); margin: 0; }
+      .toggle-icon { font-size: 2.8rem; font-weight: 300; color: var(--primary-color); transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-left: 15px; }
+      .subject-block.is-open .toggle-icon { transform: rotate(45deg); }
+      .subject-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; padding: 0 clamp(1.5rem, 4vw, 2rem); }
+      .empty-section-message { background-color: var(--bg-card); padding: 3rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); color: var(--text-secondary); text-align: center; font-size: 1.7rem; }
+      .module-group { background-color: var(--bg-card); border-radius: var(--radius); padding: 2.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
+      .module-group-title { font-size: clamp(2.2rem, 5vw, 2.6rem); font-weight: 700; color: var(--primary-dark); text-align: center; margin-bottom: 2rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 1rem; }
+      .module-group-title .foreign-title { display: block; font-size: clamp(1.4rem, 4vw, 1.6rem); color: var(--text-secondary); font-weight: 400; margin-top: 0.5rem; }
+      .modules-navigation .nav-button { flex-basis: 280px; }
+      .content-container { padding-top: 1.5rem; }
+
+      /* Medical "Contact Us" Popup Styles */
+      .medical-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--medical-overlay-bg-color); z-index: 1001; opacity: 0; visibility: hidden; backdrop-filter: blur(5px); transition: opacity 0.3s ease, visibility 0.3s ease; }
+      .medical-overlay.active { opacity: 1; visibility: visible; }
+      .medical-popup-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 8002; background: var(--medical-secondary-color); transform: scale(0.95); opacity: 0; visibility: hidden; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease; overscroll-behavior: contain; }
+      .medical-popup-container.active { transform: scale(1); opacity: 1; visibility: visible; }
+      .medical-popup-header { background: linear-gradient(to left, var(--medical-primary-color), var(--medical-primary-dark-color)); color: var(--medical-secondary-color); padding: 1rem 1.25rem; text-align: center; position: relative; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+      .medical-popup-header h2 { font-size: 1.25rem; font-weight: 600; }
+      .medical-popup-content { flex-grow: 1; overflow-y: auto; background-color: var(--medical-light-bg-color); }
+      .medical-close-btn { position: absolute; top: 50%; transform: translateY(-50%); left: 1rem; background: rgba(255, 255, 255, 0.2); color: var(--medical-secondary-color); border: none; width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: all 0.2s; }
+      .medical-loader { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 1.25rem; }
+      .medical-spinner { width: 3.125rem; height: 3.125rem; border: 5px solid rgba(52, 152, 219, 0.2); border-top: 5px solid var(--medical-primary-color); border-radius: 50%; animation: medicalSpin 1s linear infinite; }
+      @keyframes medicalSpin { to { transform: rotate(360deg); } }
+      .medical-loader p { color: #7f8c8d; font-size: 1.1rem; margin-top: 1rem; }
+      
+      /* Danger "INFATM" Modal Styles */
+      .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--dark-overlay); z-index: 1001; opacity: 0; visibility: hidden; backdrop-filter: blur(5px); transition: opacity 0.3s ease, visibility 0.3s ease; }
+      .modal-overlay.show { opacity: 1; visibility: visible; }
+      .modal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 8002; background: var(--white); transform: scale(0.95); opacity: 0; visibility: hidden; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease; overscroll-behavior: contain; }
+      .modal-container.show { transform: scale(1); opacity: 1; visibility: visible; }
+      .modal-header { background: linear-gradient(to left, var(--main-color), var(--main-dark)); color: var(--white); padding: 1rem 1.25rem; text-align: center; position: relative; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+      .modal-header h2 { font-size: 1.25rem; font-weight: 600; }
+      .modal-body { flex-grow: 1; overflow-y: auto; background-color: #f5f5f5; }
+      .modal-close { position: absolute; top: 50%; transform: translateY(-50%); left: 1rem; background: rgba(255, 255, 255, 0.2); color: var(--white); border: none; width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: all 0.2s; }
+      .loading-box { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 1.25rem; }
+      .loading-spinner { width: 3.125rem; height: 3.125rem; border: 5px solid rgba(231, 76, 60, 0.2); border-top: 5px solid var(--main-color); border-radius: 50%; animation: spin 1s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .loading-text { color: #7f8c8d; font-size: 1.1rem; margin-top: 1rem; }
+
+      /* Updates "TAWASLE" Popup Styles */
+      .TAWASLE_ADAT_TAHDITAT_MED02-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 1001; opacity: 0; visibility: hidden; backdrop-filter: blur(5px); transition: opacity 0.3s ease, visibility 0.3s ease; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-overlay.active { opacity: 1; visibility: visible; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 8002; background: #ffffff; transform: scale(0.95); opacity: 0; visibility: hidden; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease; overscroll-behavior: contain; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-container.active { transform: scale(1); opacity: 1; visibility: visible; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-header { background: linear-gradient(to left, var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color), var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-dark-color)); color: #ffffff; padding: 1rem 1.25rem; text-align: center; position: relative; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-header h2 { font-size: 1.25rem; font-weight: 600; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-popup-content { flex-grow: 1; overflow-y: auto; background-color: #f5f5f5; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-close-btn { position: absolute; top: 50%; transform: translateY(-50%); left: 1rem; background: rgba(255, 255, 255, 0.2); color: #ffffff; border: none; width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: all 0.2s; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-loader { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 1.25rem; }
+      .TAWASLE_ADAT_TAHDITAT_MED02-spinner { width: 3.125rem; height: 3.125rem; border: 5px solid rgba(52, 152, 219, 0.2); border-top: 5px solid var(--TAWASLE_ADAT_TAHDITAT_MED02-primary-color); border-radius: 50%; animation: TAWASLE_ADAT_TAHDITAT_MED02-spin 1s linear infinite; }
+      @keyframes TAWASLE_ADAT_TAHDITAT_MED02-spin { to { transform: rotate(360deg); } }
+      .TAWASLE_ADAT_TAHDITAT_MED02-loader p { color: #7f8c8d; font-size: 1.1rem; margin-top: 1rem; }
+      
+      @media (max-width: 450px) { html { font-size: 55%; } .logo { font-size: 2rem; } .header { padding: 1.5rem 2%; } main { padding: 1.5rem 2%; } }
+      @media (max-width: 400px) { .summaries-navigation { flex-direction: column; gap: 10px; } .nav-button { width: 100%; } }
+   </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <style>
+        /*
+         * ملاحظة: هذه الأنماط مُحسّنة وتكمل الأنماط العامة للوحة التحكم.
+         */
+
+        .summaries-title {
+            font-size: clamp(2.2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        /* حاوية أزرار التنقل */
+        .summaries-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .nav-button {
+            padding: 12px 18px;
+            font-size: clamp(1.5rem, 3vw, 1.6rem);
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            flex-grow: 1;
+            flex-basis: 150px;
+            box-shadow: var(--shadow-sm);
+            touch-action: manipulation;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .nav-button .english-nav {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            transition: color 0.25s ease;
+        }
+
+        .nav-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 137, 123, 0.25);
+        }
+
+        .nav-button.active .english-nav {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subject-block {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .subject-block.is-open {
+             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: clamp(1.5rem, 4vw, 2rem);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .subject-title {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            color: var(--primary-dark);
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .toggle-icon {
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--primary-color);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-left: 15px;
+        }
+
+        .subject-block.is-open .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .subject-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 clamp(1.5rem, 4vw, 2rem);
+        }
+
+        .lesson-button {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-size: clamp(1.6rem, 4vw, 1.7rem);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: right;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .lesson-button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .lesson-button.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .lesson-button.active .lesson-lang { color: rgba(255, 255, 255, 0.85); }
+        .lesson-button .lesson-lang {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 5px;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+
+        .lesson-materials {
+            list-style: none; padding: 0;
+            background-color: var(--bg-body);
+            border-radius: 8px;
+            margin-top: -5px; margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+        }
+        .lesson-materials.open { padding: 1.5rem; }
+        
+        .summary-item a {
+            display: block; text-decoration: none;
+            color: var(--white); font-weight: 600;
+            font-size: 1.8rem; padding: 1.2rem;
+            background-color: var(--primary-color);
+            border-radius: 6px; text-align: center;
+            transition: background-color 0.2s;
+        }
+        .summary-item a:hover { background-color: var(--primary-dark); }
+        .summary-item p {
+            font-size: 1.3rem; color: var(--text-secondary);
+            margin: 8px 0 0 0; text-align: center;
+        }
+        
+        .empty-section-message {
+            background-color: var(--bg-card);
+            padding: 3rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
+            color: var(--text-secondary); text-align: center;
+            font-size: 1.7rem;
+        }
+
+        /* Logout Modal Styles */
+        .logout-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
+        }
+        .logout-modal {
+            background-color: var(--bg-card); color: var(--text-primary);
+            padding: 3rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); text-align: center;
+            width: 90%; max-width: 40rem;
+        }
+        .logout-modal h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .logout-modal p { font-size: 1.6rem; color: var(--text-secondary); margin-bottom: 2.5rem; }
+        .logout-modal-buttons { display: flex; justify-content: center; gap: 1.5rem; }
+        .logout-modal-buttons button {
+            padding: 1rem 2rem; font-size: 1.5rem; font-weight: 600;
+            border-radius: var(--radius); cursor: pointer; border: 1px solid transparent;
+            transition: all .2s;
+        }
+        .logout-modal-buttons .confirm-btn { background-color: var(--red); color: var(--white); }
+        .logout-modal-buttons .confirm-btn:hover { background-color: #c0392b; }
+        .logout-modal-buttons .cancel-btn {
+            background-color: transparent; color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+        .logout-modal-buttons .cancel-btn:hover { background-color: var(--bg-body); }
+
+        .message-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background-color: var(--bg-card); color: var(--text-primary);
+            padding: 3rem 4rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); text-align: center;
+            z-index: 2001; display: none;
+        }
+        .message-modal p { font-size: 2rem; font-weight: 600; }
+
+        @media (max-width: 400px) {
+            .summaries-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-button { width: 100%; }
+        }
+    </style>
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+
+
+
+
+
+  
+
+<div class="overlay"></div>
+
+<header class="header">
+   <section class="flex">
+      <a href="home_MED03.html" class="logo">
+         <span class="main-title">أداة علم</span>
+         <span class="subtitle">الثالثة<br>طب</span>
+      </a>
+      <div class="icons">
+         <div id="toggle-btn" class="icon-btn fas fa-sun" title="الوضع"></div>
+         <div id="danger-btn" class="icon-btn fas fa-exclamation-triangle" title="تحذير" onclick="toggleModal()" aria-label="فتح نافذة التنبيه الطبي"></div>
+         <div id="Tawasle-Notif-Widget-Container" style="position: relative; display: inline-block;">
+            <div id="Tawasle-Notif-Btn" class="Tawasle-Notif-Icon-Btn fas fa-bell" title="الإشعارات">
+               <span id="Tawasle-Notif-Count" class="Tawasle-Notif-Count"></span>
+            </div>
+            <div id="Tawasle-Notif-Menu" class="Tawasle-Notif-Dropdown"></div>
+         </div>
+        <div id="user-btn" class="fas fa-user icon-btn" title="الملف الشخصي"></div>
+         <div id="menu-btn" class="fas fa-bars icon-btn" title="القائمة"></div>
+         <div class="profile-dropdown">
+            <img src="S22MCS PARTS/قسم الطب.jpg" class="image" alt="صورة القسم">
+            <h3 class="name">قسم السنة ثالثة  طب </h3>
+            <p class="role">تسجيل الخروج سيقودك الى صفحة السنوات   </p>
+            <a href="MED_profile.html" class="btn">عرض الملف الشخصي</a>
+            <a href="adatealm_med.html" id="logout-btn" class="btn logout">تسجيل الخروج</a>
+         </div>
+      </div>
+   </section>
+</header>   
+
+
+
+
+
+
+
+
+      <aside class="side-bar">
+   <div class="close-btn-container">
+      <div id="close-btn" class="fas fa-times icon-btn"></div>
+   </div>
+   <nav class="navbar">
+      <a href="home_MED03.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+   <a href="ٱخْتِمْ قُرْآنَكَ يَشْفَعْ لَكَ.html"><i class="fas fa-quran"></i><span>وردك اليومي من القران الكريم</span></a>
+      <a href="اِقْرَأْ أَذْكَارَكَ تَشْفَعْ لَكَ.html"><i class="fas fa-praying-hands"></i><span>زر الاستغفار والتسبيح</span></a>
+    
+      <a href="KAM_BAKIYA_LI.html"><i class="fas fa-stopwatch"></i><span>عداد اختبارك (كم بقي لك)</span></a>
+      <a href="WAJIBATI_ADAT_EALM.html"><i class="fas fa-clipboard-check"></i><span>واجباتي</span></a>
+      
+<a href="TBR3_BLDAM.html"><i class="fas fa-tint"></i><span>  التبرع بالدم     (أداة شفاء)</span></a>
+    <a href="s22market.html"><i class="fas fa-store" style="color: rgb(251, 200, 34);"></i><span>متجر طلبة الـ 22 (S22MARKET)</span></a>
+      <a href="DA3MONA_ADATEALM.html"><i class="fas fa-hands-helping"></i><span>دعمنا</span></a>
+      <a href="TAWASLE_ADAT_EALM_KISM_EL_TIB.html" class="medical-alert-btn" aria-label="فتح صفحة تواصل معنا">
+  <i class="fas fa-headset"></i>
+  <span>تواصل معنا</span>
+</a>
+
+   </nav>
+</aside>
+
+
+
+
+<main>
+    <div class="module-group">
+        <h2 class="module-group-title">
+            المقاييس الدراسية 
+            <span class="foreign-title">Modules</span>
+        </h2>
+
+        <nav class="modules-navigation">
+
+            <button class="nav-button" onclick="showSection('uei1', this)">
+                <div>🧪 الكيمياء الحيوية</div>
+                <span class="foreign-nav">Biochemistry</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei2', this)">
+                <div>🇬🇧 اللغة الإنجليزية</div>
+                <span class="foreign-nav">English</span>
+            </button>
+            
+            <button class="nav-button" onclick="showSection('uei3', this)">
+                <div> anatomical_structure علم التشريح</div>
+                <span class="foreign-nav">Anatomy</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei4', this)">
+                <div>⚗️ الكيمياء</div>
+                <span class="foreign-nav">Chemistry</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei5', this)">
+                <div>📊 الإحصاء الحيوي</div>
+                <span class="foreign-nav">Biostatistics</span>
+            </button>
+            
+            <button class="nav-button" onclick="showSection('uei6', this)">
+                <div>🔬 الفيزياء الحيوية</div>
+                <span class="foreign-nav">Biophysics</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei7', this)">
+                <div>🇫🇷 اللغة الفرنسية</div>
+                <span class="foreign-nav">French</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei8', this)">
+                <div>👶 علم الأجنة</div>
+                <span class="foreign-nav">Embryology</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei9', this)">
+                <div>🦠 علم الخلية</div>
+                <span class="foreign-nav">Cytology</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei10', this)">
+                <div>🫁 علم وظائف الأعضاء</div>
+                <span class="foreign-nav">Physiology</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei11', this)">
+                <div>🔬 علم الأنسجة</div>
+                <span class="foreign-nav">Histology</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei12', this)">
+                <div>🧬 علم الوراثة</div>
+                <span class="foreign-nav">Genetics</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei13', this)">
+                <div>👥 علوم إنسانية واجتماعية</div>
+                <span class="foreign-nav">Social & Human Sciences (SSH)</span>
+            </button>
+
+            <button class="nav-button" onclick="showSection('uei14', this)">
+                <div>⚛️ الفيزياء</div>
+                <span class="foreign-nav">Physics</span>
+            </button>
+
+        </nav>
+            
+        <div class="content-container">
+
+
+            <div id="uei1-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei2-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei3-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei4-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei5-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei6-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei7-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            <div id="uei8-section" class="content-section">
+
+        <div class="subject-block">
+            <button class="subject-header" onclick="toggleSubject(this)">
+                <h2 class="subject-title">🧠 علم الأجنة (EMBERYOLOGY)</h2>
+                <span class="toggle-icon">+</span>
+            </button>
+
+
+            <div class="subject-content">
+
+
+
+            <div class="subject-content">
+
+
+<!-- مقدمة في دراسة علم الأجنة -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-intro-embryology">
+  <span>مقدمة في دراسة علم الأجنة</span>
+  <span class="lesson-lang">Introduction à l'embryologie</span>
+  <span>Introduction to Embryology</span>
+</button>
+
+<ul id="lesson-intro-embryology" class="lesson-materials">
+  <li class="summary-item">
+    <a href="" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold;">قريباً</p>
+  </li>
+</ul>
+
+<!-- الأسبوع الأول من التطور الجنيني -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-week1">
+  <span>الأسبوع الأول من التطور الجنيني</span>
+  <span class="lesson-lang">La première semaine du développement embryonnaire</span>
+  <span>The first week of embryonic development</span>
+</button>
+
+<ul id="lesson-week1" class="lesson-materials">
+  <li class="summary-item">
+    <a href="EL MOLAKHS_DENT_01_EMBRYOLOGY_ الأسبوع الأول من التطور الجنيني.html" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold;">قريباً</p>
+  </li>
+</ul>
+
+<!-- الأسبوع الثاني من التطور الجنيني -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-week2">
+  <span>الأسبوع الثاني من التطور الجنيني</span>
+  <span class="lesson-lang">La deuxième semaine du développement embryonnaire</span>
+  <span>The second week of embryonic development</span>
+</button>
+
+<ul id="lesson-week2" class="lesson-materials">
+  <li class="summary-item">
+    <a href="" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold;">قريباً</p>
+  </li>
+</ul>
+
+<!-- الأسبوع الثالث من التطور الجنيني -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-week3">
+  <span>الأسبوع الثالث من التطور الجنيني</span>
+  <span class="lesson-lang">La troisième semaine du développement embryonnaire</span>
+  <span>The third week of embryonic development</span>
+</button>
+
+<ul id="lesson-week3" class="lesson-materials">
+  <li class="summary-item">
+    <a href="" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold;">قريباً</p>
+  </li>
+</ul>
+
+<!-- الملحقات الجنينية -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-fetal-membranes">
+  <span>الملحقات الجنينية</span>
+  <span class="lesson-lang">Les annexes embryonnaires</span>
+  <span>Embryonic attachments</span>
+</button>
+
+<ul id="lesson-fetal-membranes" class="lesson-materials">
+  <li class="summary-item">
+    <a href="" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold;">قريباً</p>
+  </li>
+</ul>
+
+<!-- تشوه خلقي -->
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-malformation">
+  <span>تشوه خلقي</span>
+  <span class="lesson-lang">Malformation congénitale</span>
+  <span>Congenital malformation</span>
+</button>
+
+<ul id="lesson-malformation" class="lesson-materials">
+  <li class="summary-item">
+    <a href="" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold;">قريباً</p>
+  </li>
+</ul>
+
+
+
+
+<button class="lesson-button" onclick="toggleLesson(this)" aria-expanded="false" aria-controls="lesson-nerveuses">
+  <span> أداة علم  </span>
+  <span class="lesson-lang">أداة علم  </span>
+  <span>     أداة علم    </span>
+</button>
+<ul id="lesson-nerveuses" class="lesson-materials">
+  <li class="summary-item">
+    <a href="" class="summary-link">الدُّخُولُ لِلدَّرْسِ</a>
+    <p>الدَّرْسُ قَيْدَ التَّجْهِيزِ</p>
+    <p style="color: #3498db; font-weight: bold">قريباً</p>
+  </li>
+</ul>
+
+      
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div id="uei9-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei10-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei11-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei12-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei13-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+            <div id="uei14-section" class="content-section">
+                <p class="empty-section-message">سيتم إضافة اختبارات هذه الوحدة قريباً.</p>
+            </div>
+
+        </div> </div> 
+    
+    
+    
+    </main>
+
+
+
+<div class="medical-overlay" id="medicalOverlay"></div>
+<div class="medical-popup-container" id="medicalPopupContainer" role="dialog" aria-modal="true" aria-labelledby="medicalPopupTitle">
+    <div class="medical-popup-header">
+        <button class="medical-close-btn" onclick="medicalTogglePopup()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="medicalPopupTitle">تواصل معنا - TAWASLE_ADAT</h2>
+    </div>
+    <div class="medical-popup-content" id="medicalContentContainer">
+        <div class="medical-loader">
+            <div class="medical-spinner"></div>
+            <p>جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal-container" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+        <button class="modal-close" onclick="toggleModal()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="modalTitle">تنبيه - محتوى INFATM</h2>
+    </div>
+    <div class="modal-body" id="contentBox">
+        <div class="loading-box">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<div class="TAWASLE_ADAT_TAHDITAT_MED02-overlay" id="TAWASLE_ADAT_TAHDITAT_MED02Overlay"></div>
+<div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-container" id="TAWASLE_ADAT_TAHDITAT_MED02PopupContainer" role="dialog" aria-modal="true" aria-labelledby="TAWASLE_ADAT_TAHDITAT_MED02PopupTitle">
+    <div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-header">
+        <button class="TAWASLE_ADAT_TAHDITAT_MED02-close-btn" onclick="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup()" aria-label="إغلاق النافذة">×</button>
+        <h2 id="TAWASLE_ADAT_TAHDITAT_MED02PopupTitle">التحديثات والإشعارات</h2>
+    </div>
+    <div class="TAWASLE_ADAT_TAHDITAT_MED02-popup-content" id="TAWASLE_ADAT_TAHDITAT_MED02ContentContainer">
+        <div class="TAWASLE_ADAT_TAHDITAT_MED02-loader">
+            <div class="TAWASLE_ADAT_TAHDITAT_MED02-spinner"></div>
+            <p>جاري تحميل المحتوى...</p>
+        </div>
+    </div>
+</div>
+
+<div class="logout-modal-overlay" id="logout-confirm-overlay">
+    <div class="logout-modal">
+        <h3>تأكيد تسجيل الخروج</h3>
+        <p>سيتم نقلك إلى صفحة السنوات. هل تريد المتابعة؟</p>
+        <div class="logout-modal-buttons">
+            <button class="cancel-btn" id="cancel-logout-btn">لا</button>
+            <button class="confirm-btn" id="confirm-logout-btn">نعم</button>
+        </div>
+    </div>
+</div>
+
+<div class="message-modal" id="logout-message-modal">
+    <p>السلام عليكم</p>
+</div>
+
+
+<script>
+/**
+ * =================================================================
+ * স্ক্রিপ্ট كامل لتشغيل لوحة تحكم أداة علم (MED03_BANK_دروس)
+ * يتضمن هذا السكريبت وظائف عامة للـ onclick ووظائف تعمل
+ * بعد تحميل الصفحة لضمان عمل جميع العناصر التفاعلية.
+ *
+ * (نسخة محسّنة مع تهيئة ذكية للحالة الأولية)
+ * =================================================================
+ */
+
+/* =================================================================
+ * FUNCTIONS GLOBALES (للاستخدام مع سمات onclick في HTML)
+ * =================================================================
+ */
+
+/**
+ * 1. تبديل الأقسام (نظام التبويبات)
+ * @param {string} sectionId - مُعرّف القسم المطلوب إظهاره (مثل 'uei1')
+ * @param {HTMLElement} buttonElement - الزر الذي تم النقر عليه (this)
+ */
+function showSection(sectionId, buttonElement) {
+    // إخفاء جميع أقسام المحتوى
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // إزالة الصنف 'active' من جميع أزرار التنقل (في كلا المجموعتين)
+    document.querySelectorAll('.modules-navigation .nav-button').forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // إظهار القسم المستهدف
+    const targetSection = document.getElementById(sectionId + '-section');
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
+
+    // تفعيل الزر الحالي
+    if (buttonElement) {
+        buttonElement.classList.add('active');
+    }
+}
+
+/**
+ * 2. طي/فتح قسم المادة (الأكورديون الرئيسي)
+ * @param {HTMLElement} headerElement - رأس القسم (الزر) الذي تم النقر عليه
+ */
+function toggleSubject(headerElement) {
+    const subjectBlock = headerElement.closest('.subject-block');
+    const content = subjectBlock.querySelector('.subject-content');
+    
+    subjectBlock.classList.toggle('is-open');
+
+    if (subjectBlock.classList.contains('is-open')) {
+        // فتح الأكورديون
+        content.style.maxHeight = content.scrollHeight + 'px';
+        headerElement.setAttribute('aria-expanded', 'true');
+    } else {
+        // إغلاق الأكورديون
+        content.style.maxHeight = '0';
+        headerElement.setAttribute('aria-expanded', 'false');
+    }
+}
+
+/**
+ * 3. طي/فتح قسم الدرس (الأكورديون الفرعي)
+ * @param {HTMLElement} lessonButton - زر الدرس الذي تم النقر عليه
+ */
+function toggleLesson(lessonButton) {
+    const materials = lessonButton.nextElementSibling;
+    const isActive = lessonButton.classList.contains('active');
+    const subjectContent = lessonButton.closest('.subject-content');
+
+    // إغلاق جميع الدروس الأخرى في نفس المادة
+    subjectContent.querySelectorAll('.lesson-button').forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-expanded', 'false');
+    });
+    subjectContent.querySelectorAll('.lesson-materials').forEach(mat => {
+        mat.classList.remove('open');
+        mat.style.maxHeight = '0';
+    });
+
+    // فتح الدرس الحالي فقط إذا كان مغلقاً
+    if (!isActive && materials) {
+        lessonButton.classList.add('active');
+        materials.classList.add('open'); // لإضافة padding
+        materials.style.maxHeight = materials.scrollHeight + 'px';
+        lessonButton.setAttribute('aria-expanded', 'true');
+    }
+}
+
+/**
+ * 4. فتح/إغلاق نافذة الخطر (INFATM)
+ * (مرتبطة بـ onclick="toggleModal()")
+ */
+function toggleModal() {
+    document.getElementById('modalOverlay').classList.toggle('show');
+    document.getElementById('modalBox').classList.toggle('show');
+    document.body.classList.toggle('popup-active');
+}
+
+/**
+ * 5. فتح/إغلاق نافذة التواصل الطبي (TAWASLE_ADAT)
+ */
+function medicalTogglePopup() {
+    document.getElementById('medicalOverlay').classList.toggle('active');
+    document.getElementById('medicalPopupContainer').classList.toggle('active');
+    document.body.classList.toggle('medical-popup-open');
+}
+
+/**
+ * 6. فتح/إغلاق نافذة التحديثات (TAWASLE_ADAT_TAHDITAT_MED02)
+ */
+function TAWASLE_ADAT_TAHDITAT_MED02_togglePopup() {
+    document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02Overlay').classList.toggle('active');
+    document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02PopupContainer').classList.toggle('active');
+    document.body.classList.toggle('TAWASLE_ADAT_TAHDITAT_MED02-popup-open');
+}
+
+
+/* =================================================================
+ * EVENT LISTENERS (يتم تفعيلها بعد تحميل الصفحة)
+ * =================================================================
+ */
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- تحديد العناصر الأساسية ---
+    const body = document.body;
+    const overlay = document.querySelector('.overlay');
+
+    // القائمة العلوية
+    const toggleBtn = document.getElementById('toggle-btn');
+    const menuBtn = document.getElementById('menu-btn');
+    const userBtn = document.getElementById('user-btn');
+    
+    // القائمة الجانبية والملف الشخصي
+    const sideBar = document.querySelector('.side-bar');
+    const closeBtn = document.getElementById('close-btn');
+    const profileDropdown = document.querySelector('.profile-dropdown');
+
+    // الإشعارات
+    const notifBtn = document.getElementById('Tawasle-Notif-Btn');
+    const notifMenu = document.getElementById('Tawasle-Notif-Menu');
+
+    // تسجيل الخروج
+    const logoutBtn = document.getElementById('logout-btn');
+    const logoutOverlay = document.getElementById('logout-confirm-overlay');
+    const cancelLogoutBtn = document.getElementById('cancel-logout-btn');
+    const confirmLogoutBtn = document.getElementById('confirm-logout-btn');
+
+    // النوافذ المنبثقة (أزرار الإغلاق والربط)
+    const medicalAlertBtn = document.querySelector('.medical-alert-btn');
+    const medicalCloseBtn = document.querySelector('.medical-close-btn');
+    const medicalOverlayEl = document.getElementById('medicalOverlay');
+    const dangerOverlayEl = document.getElementById('modalOverlay');
+    const updatesCloseBtn = document.querySelector('.TAWASLE_ADAT_TAHDITAT_MED02-close-btn');
+    const updatesOverlayEl = document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02Overlay');
+
+    
+    // --- 1. الوضع الليلي (Dark Mode) ---
+    const darkModeKey = 'dark-mode';
+    const enableDarkMode = () => {
+        body.classList.add('dark-mode');
+        toggleBtn.classList.replace('fa-sun', 'fa-moon');
+        localStorage.setItem(darkModeKey, 'enabled');
+    };
+    const disableDarkMode = () => {
+        body.classList.remove('dark-mode');
+        toggleBtn.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem(darkModeKey, 'disabled');
+    };
+
+    // التحقق من التفضيل عند تحميل الصفحة
+    if (localStorage.getItem(darkModeKey) === 'enabled') {
+        enableDarkMode();
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        if (body.classList.contains('dark-mode')) {
+            disableDarkMode();
+        } else {
+            enableDarkMode();
+        }
+    });
+
+    // --- 2. القائمة الجانبية والملف الشخصي ---
+    const closeAllPopups = () => {
+        sideBar.classList.remove('active');
+        profileDropdown.classList.remove('active');
+        overlay.classList.remove('active');
+    };
+
+    menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileDropdown.classList.remove('active'); // إغلاق الملف الشخصي
+        sideBar.classList.toggle('active');
+        overlay.classList.toggle('active');
+    });
+
+    userBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeAllPopups(); // إغلاق القائمة الجانبية
+        profileDropdown.classList.toggle('active');
+    });
+
+    closeBtn.addEventListener('click', closeAllPopups);
+    overlay.addEventListener('click', closeAllPopups);
+
+    // --- 3. القائمة المنسدلة للإشعارات ---
+    if (notifBtn && notifMenu) {
+        notifBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifMenu.classList.toggle('Tawasle-Notif-Dropdown-Show');
+        });
+
+        // إغلاق قائمة الإشعارات عند النقر خارجها
+        document.addEventListener('click', (e) => {
+            if (!notifMenu.contains(e.target) && !notifBtn.contains(e.target)) {
+                notifMenu.classList.remove('Tawasle-Notif-Dropdown-Show');
+            }
+        });
+    }
+
+    // --- 4. نافذة تأكيد تسجيل الخروج ---
+    if (logoutBtn && logoutOverlay && cancelLogoutBtn && confirmLogoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // منع الرابط من التوجه مباشرة
+            logoutOverlay.style.display = 'flex';
+        });
+
+        cancelLogoutBtn.addEventListener('click', () => {
+            logoutOverlay.style.display = 'none';
+        });
+
+        confirmLogoutBtn.addEventListener('click', () => {
+            // تنفيذ الخروج (الانتقال إلى الرابط الأصلي للزر)
+            window.location.href = logoutBtn.href;
+        });
+    }
+
+    // --- 5. مشغلات النوافذ المنبثقة (غير onclick) ---
+    
+    // نافذة التواصل الطبي
+    if (medicalAlertBtn) {
+        medicalAlertBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            medicalTogglePopup();
+        });
+    }
+    if (medicalCloseBtn) medicalCloseBtn.addEventListener('click', medicalTogglePopup);
+    if (medicalOverlayEl) medicalOverlayEl.addEventListener('click', medicalTogglePopup);
+
+    // نافذة الخطر (إضافة إغلاق عبر الخلفية)
+    if (dangerOverlayEl) dangerOverlayEl.addEventListener('click', toggleModal);
+    // منع النافذة نفسها من إغلاق نفسها عند النقر عليها
+    document.getElementById('modalBox')?.addEventListener('click', (e) => e.stopPropagation());
+
+
+    // نافذة التحديثات
+    if (updatesCloseBtn) updatesCloseBtn.addEventListener('click', TAWASLE_ADAT_TAHDITAT_MED02_togglePopup);
+    if (updatesOverlayEl) updatesOverlayEl.addEventListener('click', TAWASLE_ADAT_TAHDITAT_MED02_togglePopup);
+    document.getElementById('TAWASLE_ADAT_TAHDITAT_MED02PopupContainer')?.addEventListener('click', (e) => e.stopPropagation());
+
+
+    // --- 6. (محسّن) تهيئة الحالة الأولية للتبويبات ---
+    
+    // أولاً، قم بإلغاء تنشيط جميع الأزرار
+    document.querySelectorAll('.modules-navigation .nav-button').forEach(btn => btn.classList.remove('active'));
+    
+    // ثانيًا، ابحث عن القسم النشط المحدد مسبقًا في HTML
+    const activeSection = document.querySelector('.content-section.active');
+    
+    if (activeSection) {
+        // إذا وجدنا قسمًا نشطًا (مثل uei1-section)
+        const activeSectionId = activeSection.id; // "uei1-section"
+        // قم بإزالة "-section" للحصول على معرّف الزر
+        const buttonId = activeSectionId.replace('-section', ''); // "uei1"
+        
+        // ابحث عن الزر المطابق
+        const activeButton = document.querySelector(`.nav-button[onclick*="'${buttonId}'"]`);
+        
+        if (activeButton) {
+            // إذا وجدنا الزر، قم بتفعيله
+            activeButton.classList.add('active');
+        } else {
+            // حالة احتياطية: إذا لم يتم العثور على زر مطابق (خطأ في HTML)
+            // قم بتنشيط الزر الأول في المجموعة الأولى
+            const firstNavButton = document.querySelector('.modules-navigation .nav-button');
+            if (firstNavButton) firstNavButton.classList.add('active');
+        }
+        
+        // تأكد من أن الأقسام الأخرى غير نشطة (للتنظيف)
+        document.querySelectorAll('.content-section').forEach(section => {
+            if (section.id !== activeSectionId) {
+                section.classList.remove('active');
+            }
+        });
+        
+    } else {
+        // حالة احتياطية: لا يوجد قسم نشط في HTML
+        // قم بتنشيط الزر الأول والقسم الأول
+        const firstNavButton = document.querySelector('.modules-navigation .nav-button');
+        const firstContentSection = document.querySelector('.content-section');
+        
+        if (firstNavButton && firstContentSection) {
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+            firstNavButton.classList.add('active');
+            firstContentSection.classList.add('active');
+        }
+    }
+
+});
+</script>
