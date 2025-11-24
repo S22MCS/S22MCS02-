@@ -1,246 +1,376 @@
 <!DOCTYPE html>
-<html lang="ar">
-
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="utf-8">
-    <title>أداة  علم  تسجيل دخول على </title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <!-- Favicon -->
-    <link href="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
-        rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الدخول الموحدة - أداة علم</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .loader { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .tab-btn.active { color: #4f46e5; border-bottom: 2px solid #4f46e5; background: #eef2ff; }
+        /* لتجنب تداخل الأيقونة مع النص */
+        #login-pass, #reg-pass { padding-left: 2.5rem; } 
+    </style>
 </head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-
-<body>
-    <!-- Spinner Start -->
-    <div id="spinner"
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only"> .....جاري تحميل </span>
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+        
+        <div class="bg-indigo-600 p-6 text-center">
+            <h1 class="text-2xl font-bold text-white mb-1">أداة علم</h1>
+            <p class="text-indigo-200 text-sm">بوابتك التعليمية الموحدة</p>
         </div>
-    </div>
-    <!-- Spinner End -->
 
-
-   
-    
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <p class="m-0 fw-bold" style="font-size: 25px;"><img src="S22MCS PIC/s22mcs/S22MCS BLUE.jpg" alt="" height="50px">    أداة  علم  <span
-                    style="color: #fb873f;"></span></p>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                 <a href="index.html" class="nav-item nav-link">الرئيسية</a>
-                <a href="about.html" class="nav-item nav-link">من نحن</a>
-                <a href="index.html" class="nav-item nav-link">أقسامنا</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">الصفحات</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="team.html" class="dropdown-item">فريقنا</a>
-                        <a href="testimonial.html" class="dropdown-item">آراء أعضائنا</a>
-                    </div>
-                </div>
-                <a href="contact.html" class="nav-item nav-link active">تواصل معنا</a>
-                <a href="https://adatealm.github.io/ADATEALM/" class="nav-item nav-link">تحميل تطبيقنا</a>
-                    <a href="MACHRI3NA.html" class="nav-item nav-link">مشاريعنا </a>
-                <a href="login.html" class="nav-item nav-link"><i class="fa fa-user"></i></a>
-                <a href="#" class="nav-item nav-link">
-
-                <div id="google_translate_element">
-                </div>
-
-
-                </a>
-            </div>
+        <div class="flex border-b">
+            <button id="tab-login" class="tab-btn active w-1/2 py-4 font-bold text-gray-500 hover:bg-gray-50 transition">تسجيل الدخول</button>
+            <button id="tab-register" class="tab-btn w-1/2 py-4 font-bold text-gray-500 hover:bg-gray-50 transition">إنشاء حساب</button>
         </div>
-    </nav>
-    <!-- Navbar End -->
 
-
-        <!-- Header Start -->
-        <div class="container-fluid bg-primary py-5 mb-5 page-header">
-            <div class="container py-5">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10 text-center">
-                        <h1 class="display-3 text-white animated slideInDown">تسجيل الدخول</h1>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb justify-content-center">
-                                <li class="breadcrumb-item"><a class="text-white" href="index.html">الصفحة الرئيسية</a></li>
-                                <li class="breadcrumb-item text-white active" aria-current="page"> تسجيل الدخول</li>
-                            </ol>
-                        </nav>
-                    </div>
+        <form id="login-form" class="p-8 space-y-5">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
+                <div class="relative">
+                    <i class="fas fa-envelope absolute top-3 right-3 text-gray-400"></i>
+                    <input type="email" id="login-email" required class="w-full pr-10 pl-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
             </div>
-        </div>
-        <!-- Header End -->
-    
-
-
-    <!-- Login Start -->
-    <div class="container-xxl py-2 mt-4">
-        <div class="container">
-          
-            <div class="row g-4 wow fadeInUp" data-wow-delay="0.5s ">
-                <center>
-                    <form class="shadow p-4" style="max-width: 550px;">
-                        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                        
-                            <a  herf="https://forms.gle/9V27ZeUdgnkapMAPA" </a>
-                                <h1
-                            <button   class="mb-5 bg-white text-center px-3"  >تسجيل الدخول</button></h1>
             
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" id="email" placeholder="Email Address">
-                                    <label for="email">عنوان الايميل</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="password" class="form-control" id="password" placeholder="Password">
-                                    <label for="password">كلمة السر </label>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <p><a href="https://forms.gle/9V27ZeUdgnkapMAPA"> تسجيل الدخول </a></p>
-                            </div>
-                            
-                            <div class="col-12">
-                      
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">كلمة المرور</label>
+                <div class="relative">
+                    <i class="fas fa-lock absolute top-3 right-3 text-gray-400"></i>
                     
-
-                           
-
-                          
-                               
-                            </div>
-                       
-                            <div class="col-12 text-center">
-                                <p> ليس لديك حساب؟<a class="text-decoration-none" href="signup.html">تسجيل</a></p>
-                            </div>
-                        </div>
-                    </form>
-                </center>     
-               
-
+                    <input type="password" id="login-pass" required class="w-full pr-10 pl-10 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    
+                    <button type="button" id="toggle-login-pass" class="absolute top-3 left-3 text-gray-400 hover:text-indigo-600 focus:outline-none transition">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                
+                <div class="flex justify-between items-center mt-3">
+                    <div class="flex items-center">
+                        <input id="remember-me" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <label for="remember-me" class="mr-2 block text-sm text-gray-900 cursor-pointer">
+                            تذكرني
+                        </label>
+                    </div>
+                    
+                    <a href="#" id="forgot-pass" class="text-xs text-indigo-600 hover:underline">نسيت كلمة المرور؟</a>
+                </div>
             </div>
-        </div>
-    </div>
-    <!-- Login End -->
-
-
-   <!-- Footer Start -->
-   <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-        <div class="row g-5">
-            <div class="col-lg-4 col-md-6">
-                <h4 class="text-white mb-3">روابط سريعة </h4>
-                <p><a class="text-light" href="about.html">من نحن </a></p>
-                <p><a class="text-light" href="contact.html">تواصل معنا </a></p>
-                <p><a class="text-light" href="">سياسة الخصوصية</a></p>
-                <p><a class="text-light" href="">الشروط والأحكام</a></p>
-                <p><a class="text-light" href="">الأسئلة الشائعة والمساعدة</a></p>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <h4 class="text-white mb-3">تواصل معنا</h4>
-                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i> غير متوفر حاليا </p>
-                <p class="mb-2"><i class="fa fa-envelope me-3"></i>S22MCS@gmail.com</p>
-
-                <div class="d-flex pt-2">
-                    <a class="btn btn-outline-light btn-social" href="https://t.me/S22MCS"><i class="fab fa-telegram "></i></a>
-                    <a class="btn btn-outline-light btn-social" href="https://youtube.com/@S22MCS?si=Rejig-EPpBcuvEgD"><i class="fab fa-youtube"></i></a>
-                    <a class="btn btn-outline-light btn-social" href="https://instagram.com/s22mcs?igshid=NzZlODBkYWE4Ng"><i class="fab fa-instagram "></i></a>
-                    <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/profile.php?id=61552919247921&mibextid=ZbWKwL"><i class="fab fa-facebook-f"></i></a>
-
-                     <a class="btn btn-outline-light btn-social" href="https://www.tiktok.com/@s22mcs?_t=8kfut6Df4lC&_r=1"><i class="fab fa-tiktok"></i></a>
-
-                    <a class="btn btn-outline-light btn-social" href="https://www.linkedin.com/in/s-mcs-3b26902ba?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-outline-light btn-social" href="https://x.com/S22MCS?t=a7d9JIT0p_r-26CRAkYo0A&s=09"><i class="fab fa-twitter"></i></a>
             
+            <button type="submit" id="btn-login" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition flex justify-center items-center gap-2">
+                <span>دخول</span>
+                <div class="loader hidden"></div>
+            </button>
+        </form>
 
-                </div>
+        <form id="register-form" class="p-8 space-y-4 hidden">
+            <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="reg-name" placeholder="الاسم الكامل" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                <input type="tel" id="reg-phone" placeholder="رقم الهاتف" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+            </div>
+            <input type="email" id="reg-email" placeholder="البريد الإلكتروني" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+            
+            <div>
+                <select id="reg-spec" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white mb-2">
+                    <option value="" disabled selected>اختر التخصص</option>
+                    <option value="طب بشري">طب بشري</option>
+                    <option value="طب بشري واعلام آلي">طب بشري واعلام آلي</option>
+                    <option value="طب أسنان">طب أسنان</option>
+                    <option value="صيدلة">صيدلة</option>
+                    <option value="شبه طبي">شبه طبي</option>
+                    <option value="other">تخصص آخر (أكتبه يدوياً)</option>
+                </select>
+                <input type="text" id="reg-spec-other" placeholder="اكتب تخصصك هنا..." class="hidden w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50">
             </div>
 
-            <div class="col-lg-4 col-md-6">
-                <h4 class="text-white mb-3">انضم الى مجتمعنا </h4>
-                <p>
-                     اشترك الآن وانضم إلى مجتمعنا المتنامي من رواد العلم و  المتعلمين الملتزمين بالتعليم ان شاء الله                     </p>
-                <div class="position-relative mx-auto" style="max-width: 400px;">
-                    <form action="#">
-                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="email"
-                            placeholder="Your email" required>
-                        <button type="submit"
-                            class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"><a
-                                href="mailto:keertidvcorai@gmail.com">انضم </a></button>
-                    </form>
-                </div>
+            <div class="relative">
+                <input type="password" id="reg-pass" placeholder="كلمة المرور (6 أحرف)" required minlength="6" class="w-full pr-4 pl-10 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                
+                <button type="button" id="toggle-reg-pass" class="absolute top-2.5 left-3 text-gray-400 hover:text-green-600 focus:outline-none transition">
+                    <i class="fas fa-eye"></i>
+                </button>
             </div>
-        </div>
+            
+            <button type="submit" id="btn-register" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition flex justify-center items-center gap-2">
+                <span>إنشاء حساب</span>
+                <div class="loader hidden"></div>
+            </button>
+        </form>
+
+        <div id="msg-box" class="hidden p-4 text-center text-sm font-bold"></div>
     </div>
-    <div class="container">
-        <div class="copyright">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    &copy; <a class="border-bottom" href="index.html">S22MCS</a>, جميع الحقوق محفوظة.
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Footer End -->
 
 
+<script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        // تم التأكد من استيراد setPersistence
+        import { getAuth, setPersistence, browserLocalPersistence, browserSessionPersistence, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, Timestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAEbxYuAHu5stGx5c02VbgsUKBhoidTeA",
+            authDomain: "informationpassmemberessystem.firebaseapp.com",
+            projectId: "informationpassmemberessystem",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // --- متغيرات خاصة بحفظ البريد الإلكتروني ---
+        const loginEmailInput = document.getElementById('login-email');
+        const rememberMeCheckbox = document.getElementById('remember-me');
+        const REMEMBER_ME_KEY = 'rememberedEmail';
+
+        // دالة تحميل البريد الإلكتروني المحفوظ عند فتح الصفحة
+        function loadRememberedEmail() {
+            const rememberedEmail = localStorage.getItem(REMEMBER_ME_KEY);
+            if (rememberedEmail) {
+                loginEmailInput.value = rememberedEmail;
+                rememberMeCheckbox.checked = true; // تحديد مربع الاختيار
+            }
+        }
+        
+        // تحميل البريد الإلكتروني عند تشغيل السكربت
+        loadRememberedEmail();
+        // ------------------------------------------
+        
+        // --- ميزة إظهار/إخفاء كلمة المرور ---
+        function setupPasswordToggle(inputId, toggleId) {
+            const input = document.getElementById(inputId);
+            const btn = document.getElementById(toggleId);
+            const icon = btn.querySelector('i');
+
+            btn.addEventListener('click', () => {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        }
+
+        setupPasswordToggle('login-pass', 'toggle-login-pass');
+        setupPasswordToggle('reg-pass', 'toggle-reg-pass');
 
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        // --- Logic for "Other" Specialization Toggle ---
+        const specSelect = document.getElementById('reg-spec');
+        const otherInput = document.getElementById('reg-spec-other');
 
+        specSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                otherInput.classList.remove('hidden');
+                otherInput.required = true;
+            } else {
+                otherInput.classList.add('hidden');
+                otherInput.required = false;
+                otherInput.value = '';
+            }
+        });
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        // --- Smart Routing System (Prioritizes ?redirect= URL parameter) ---
+        async function smartRedirect(user) {
+            const msgBox = document.getElementById('msg-box');
+            msgBox.textContent = "جاري توجيهك حسب تخصصك...";
+            msgBox.className = "p-4 text-center text-sm font-bold bg-indigo-100 text-indigo-700 block";
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect');
+            
+            // 1. الأولوية لرابط التوجيه القادم من الصفحة السابقة
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+                return;
+            }
+
+            // 2. التوجيه الافتراضي بناءً على التخصص في قاعدة البيانات
+            try {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                let targetUrl = 'adatealm_med_intro.html'; 
+                
+                if (userDoc.exists()) {
+                    const spec = userDoc.data().specialization;
+                    switch(spec) {
+                        case 'طب أسنان':
+                            targetUrl = 'adatealm_dent_intro.html';
+                            break;
+                        case 'صيدلة':
+                            targetUrl = 'adatealm_pharma_intro.html'; 
+                            break;
+                        case 'شبه طبي':
+                            targetUrl = 'adatealm_paramedical_intro.html';
+                            break;
+                        default:
+                            targetUrl = 'adatealm_med_intro.html';
+                            break;
+                    }
+                }
+                
+                window.location.href = targetUrl;
+
+            } catch (error) {
+                console.error("Redirect Error:", error);
+                window.location.href = 'adatealm_med_intro.html'; 
+            }
+        }
+
+        // --- UI Logic ---
+        const loginForm = document.getElementById('login-form');
+        const regForm = document.getElementById('register-form');
+        const tabLogin = document.getElementById('tab-login');
+        const tabReg = document.getElementById('tab-register');
+
+        tabLogin.onclick = () => {
+            loginForm.classList.remove('hidden');
+            regForm.classList.add('hidden');
+            tabLogin.classList.add('active');
+            tabReg.classList.remove('active');
+        };
+
+        tabReg.onclick = () => {
+            regForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+            tabReg.classList.add('active');
+            tabLogin.classList.remove('active');
+        };
+
+        function showMsg(msg, type) {
+            const box = document.getElementById('msg-box');
+            box.innerHTML = msg; // استخدام innerHTML لدعم تنسيق Bold
+            box.className = `p-4 text-center text-sm font-bold block ${type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`;
+            const duration = type === 'success' && msg.includes('SPAM') ? 7000 : 4000;
+            setTimeout(() => box.classList.add('hidden'), duration);
+        }
+
+        // --- Login Handler (FINAL FIX: Implemented Email Persistence alongside Auth Persistence) ---
+        loginForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-login');
+            const loader = btn.querySelector('.loader');
+            // استخدام متغير loginEmailInput لضمان قراءة القيمة الحالية
+            const email = loginEmailInput.value; 
+            const pass = document.getElementById('login-pass').value;
+            
+            const rememberMe = rememberMeCheckbox.checked;
+            const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+            
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+
+            try {
+                // 1. حفظ جلسة الدخول في Firebase
+                await setPersistence(auth, persistence); 
+                
+                // 2. حفظ/إزالة البريد الإلكتروني في التخزين المحلي (Local Storage)
+                if (rememberMe) {
+                    localStorage.setItem(REMEMBER_ME_KEY, email);
+                } else {
+                    localStorage.removeItem(REMEMBER_ME_KEY);
+                }
+
+                // 3. محاولة تسجيل الدخول
+                const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, 'users', userCredential.user.uid), { lastLogin: Timestamp.now() }, { merge: true });
+                await smartRedirect(userCredential.user);
+
+            } catch (err) {
+                console.error(err);
+                showMsg("خطأ في الدخول: تأكد من البريد الإلكتروني أو كلمة المرور.", "error");
+                btn.disabled = false;
+                loader.classList.add('hidden');
+            }
+        };
+
+        // --- Register Handler ---
+        regForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-register');
+            const loader = btn.querySelector('.loader');
+            
+            const name = document.getElementById('reg-name').value;
+            const phone = document.getElementById('reg-phone').value;
+            const email = document.getElementById('reg-email').value;
+            const pass = document.getElementById('reg-pass').value;
+            
+            const selectVal = document.getElementById('reg-spec').value;
+            const otherVal = document.getElementById('reg-spec-other').value;
+            const finalSpec = (selectVal === 'other') ? otherVal : selectVal;
+
+            if (!finalSpec) {
+                showMsg("يرجى تحديد التخصص", "error");
+                btn.disabled = false;
+                loader.classList.add('hidden');
+                return;
+            }
+
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                const user = userCredential.user;
+
+                await updateProfile(user, { displayName: name });
+
+                await setDoc(doc(db, 'users', user.uid), {
+                    uid: user.uid,
+                    displayName: name,
+                    email: email,
+                    phone: phone,
+                    specialization: finalSpec,
+                    registrationDate: Timestamp.now(),
+                    role: 'student'
+                });
+
+                // ملاحظة: التسجيل لا يحتاج لـ setPersistence، الافتراضي هو الجلسة المستمرة (Local)
+
+                showMsg("تم إنشاء الحساب بنجاح! جاري الدخول...", "success");
+                await smartRedirect(user);
+
+            } catch (err) {
+                console.error(err);
+                let msg = "حدث خطأ أثناء التسجيل";
+                if (err.code === 'auth/email-already-in-use') msg = "البريد الإلكتروني مستخدم بالفعل";
+                if (err.code === 'auth/weak-password') msg = "كلمة المرور ضعيفة";
+                showMsg(msg, "error");
+                btn.disabled = false;
+                loader.classList.add('hidden');
+            }
+        };
+
+        // --- Forgot Password ---
+        document.getElementById('forgot-pass').onclick = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            
+            if(!email) {
+                return showMsg("يرجى كتابة البريد الإلكتروني أولاً في حقل الدخول.", "error");
+            }
+            
+            showMsg("جاري إرسال رابط إعادة تعيين كلمة المرور...", "success");
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                
+                // رسالة واضحة تحتوي على تنبيه SPAM
+                showMsg("✅ تم الإرسال بنجاح! **تحقق من بريدك الإلكتروني (بما في ذلك مجلد رسائل المهملات/SPAM)** للحصول على رابط إعادة التعيين.", "success");
+                
+            } catch(err) {
+                console.error(err);
+                showMsg("⚠️ حدث خطأ: لم يتم العثور على هذا البريد الإلكتروني في نظامنا أو فشل الإرسال.", "error");
+            }
+        };
+    </script>
 </body>
-
 </html>

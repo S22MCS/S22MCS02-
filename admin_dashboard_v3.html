@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم المركزية - الإدارة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 3px; }
+        .nav-item.active { background-color: #e0e7ff; color: #4338ca; border-right: 4px solid #4338ca; }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen flex overflow-hidden">
+
+    <aside class="w-64 bg-white shadow-lg flex flex-col z-10 hidden md:flex">
+        <div class="p-6 flex items-center gap-3 border-b">
+            <i class="fas fa-shield-alt text-indigo-600 text-2xl"></i>
+            <h1 class="text-xl font-bold text-gray-800">إدارة النظام</h1>
+        </div>
+        <nav class="flex-1 py-6 space-y-2 px-3 overflow-y-auto">
+            <button onclick="switchTab('analytics')" id="nav-analytics" class="nav-item active w-full text-right px-4 py-3 rounded-lg hover:bg-gray-50 transition flex items-center gap-3 text-gray-600">
+                <i class="fas fa-chart-pie w-6 text-center"></i> <span>التحليلات المتقدمة</span>
+            </button>
+            <button onclick="switchTab('users')" id="nav-users" class="nav-item w-full text-right px-4 py-3 rounded-lg hover:bg-gray-50 transition flex items-center gap-3 text-gray-600">
+                <i class="fas fa-users-cog w-6 text-center"></i> <span>تعديل الأعضاء</span>
+            </button>
+            <button onclick="switchTab('contributions')" id="nav-contributions" class="nav-item w-full text-right px-4 py-3 rounded-lg hover:bg-gray-50 transition flex items-center gap-3 text-gray-600 relative">
+                <i class="fas fa-inbox w-6 text-center"></i> <span>بريد المساهمات</span>
+                <span id="new-msg-badge" class="absolute top-3 left-4 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+            </button>
+        </nav>
+        <div class="p-4 border-t bg-gray-50">
+            <button id="logout-btn" class="w-full bg-red-50 text-red-600 py-2 rounded-lg hover:bg-red-100 transition text-sm font-bold">
+                <i class="fas fa-sign-out-alt ml-2"></i> خروج آمن
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 relative">
+        <div id="login-overlay" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center">
+            <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full mx-4 text-center">
+                <h2 class="text-2xl font-bold mb-6">دخول المشرفين</h2>
+                <form id="login-form" class="space-y-4">
+                    <input type="email" id="admin-email" placeholder="البريد الإلكتروني" class="w-full px-4 py-3 border rounded-lg" required>
+                    <input type="password" id="admin-password" placeholder="كلمة المرور" class="w-full px-4 py-3 border rounded-lg" required>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold">دخول</button>
+                </form>
+            </div>
+        </div>
+
+        <section id="section-analytics" class="space-y-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-800">لوحة المعلومات والتحليل</h2>
+                <button onclick="loadData()" class="bg-white p-2 rounded-full shadow hover:bg-gray-50 text-indigo-600" title="تحديث البيانات"><i class="fas fa-sync-alt"></i></button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-r-4 border-indigo-500"><p class="text-gray-500">إجمالي الطلاب</p><h3 class="text-3xl font-bold text-gray-800" id="stat-total-users">0</h3></div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-r-4 border-green-500"><p class="text-gray-500">مساهمات علمية</p><h3 class="text-3xl font-bold text-gray-800" id="stat-total-contrib">0</h3></div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-r-4 border-purple-500"><p class="text-gray-500">تخصصات مسجلة</p><h3 class="text-3xl font-bold text-gray-800" id="stat-specs-count">0</h3></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="font-bold text-gray-700 mb-4 text-center">توزيع الطلاب حسب التخصص</h3><div class="h-64 flex justify-center"><canvas id="specializationChart"></canvas></div></div>
+                <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="font-bold text-gray-700 mb-4 text-center">توزيع الطلاب حسب السنة الدراسية</h3><div class="h-64 flex justify-center"><canvas id="yearChart"></canvas></div></div>
+            </div>
+        </section>
+
+        <section id="section-users" class="hidden space-y-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-800">إدارة وتوحيد بيانات الأعضاء</h2>
+                <input type="text" id="user-search" onkeyup="filterUsers()" placeholder="بحث بالاسم أو البريد..." class="px-4 py-2 border rounded-lg w-64 shadow-sm">
+            </div>
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden overflow-x-auto">
+                <table class="w-full text-right">
+                    <thead class="bg-gray-50 text-gray-600 font-semibold border-b">
+                        <tr><th class="px-6 py-4">الاسم / البريد</th><th class="px-6 py-4">التخصص الحالي</th><th class="px-6 py-4">السنة</th><th class="px-6 py-4">الإجراء</th></tr>
+                    </thead>
+                    <tbody id="users-table-body" class="divide-y divide-gray-100"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="section-contributions" class="hidden">
+             <h2 class="text-2xl font-bold text-gray-800 mb-6">بريد المساهمات</h2>
+             <div id="contributions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+    </main>
+
+    <div id="edit-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
+            <h3 class="text-xl font-bold mb-4 text-gray-800 border-b pb-2">تعديل بيانات الطالب</h3>
+            <input type="hidden" id="edit-uid">
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">تعديل التخصص</label>
+                    <select id="edit-spec" class="w-full border rounded-lg px-3 py-2 bg-gray-50 focus:ring-2 focus:ring-indigo-500 mb-2">
+                        <option value="طب بشري">طب بشري</option>
+                        <option value="طب بشري واعلام آلي">طب بشري واعلام آلي</option>
+                        <option value="طب أسنان">طب أسنان</option>
+                        <option value="صيدلة">صيدلة</option>
+                        <option value="شبه طبي">شبه طبي</option>
+                        <option value="بيولوجيا">بيولوجيا</option>
+                        <option value="other">تخصص آخر (يدوياً)</option>
+                    </select>
+                    <input type="text" id="edit-spec-other" class="hidden w-full border rounded-lg px-3 py-2 bg-gray-50 focus:ring-2 focus:ring-indigo-500" placeholder="اكتب التخصص...">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">السنة الدراسية</label>
+                    <select id="edit-year" class="w-full border rounded-lg px-3 py-2 bg-gray-50">
+                        <option value="السنة الأولى">السنة الأولى</option>
+                        <option value="السنة الثانية">السنة الثانية</option>
+                        <option value="السنة الثالثة">السنة الثالثة</option>
+                        <option value="السنة الرابعة">السنة الرابعة</option>
+                        <option value="السنة الخامسة">السنة الخامسة</option>
+                        <option value="السنة السادسة">السنة السادسة</option>
+                        <option value="إمتياز / تخرج">إمتياز / تخرج</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end gap-3">
+                <button onclick="closeEditModal()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">إلغاء</button>
+                <button onclick="saveUserChanges()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, query, orderBy, updateDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAEbxYuAHu5stGx5c02VbgsUKBhoidTeA",
+            authDomain: "informationpassmemberessystem.firebaseapp.com",
+            projectId: "informationpassmemberessystem",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const authorizedAdmins = ['s22market@gmail.com', 'adatealm@gmail.com', 'adatshifa@gmail.com', 'yacinee474474@gmail.com', 'nourmt01@gmail.com'];
+        let allUsers = [];
+        let allContribs = [];
+        let chart1, chart2;
+
+        window.switchTab = (tabId) => {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(`section-${tabId}`).classList.remove('hidden');
+            document.getElementById(`nav-${tabId}`).classList.add('active');
+        };
+
+        // --- Logic for Admin Modal Toggle ---
+        const adminSpecSelect = document.getElementById('edit-spec');
+        const adminOtherInput = document.getElementById('edit-spec-other');
+        
+        adminSpecSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                adminOtherInput.classList.remove('hidden');
+            } else {
+                adminOtherInput.classList.add('hidden');
+                adminOtherInput.value = '';
+            }
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user && authorizedAdmins.includes(user.email)) {
+                document.getElementById('login-overlay').classList.add('hidden');
+                loadData();
+            } else {
+                document.getElementById('login-overlay').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value.toLowerCase().trim();
+            const pass = document.getElementById('admin-password').value;
+            if (!authorizedAdmins.includes(email)) return Swal.fire({icon: 'error', title: 'دخول مرفوض'});
+            try { await signInWithEmailAndPassword(auth, email, pass); } catch(err) { Swal.fire({icon: 'error', title: 'خطأ'}); }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+        window.loadData = async () => {
+            try {
+                const uQ = query(collection(db, 'users'), orderBy('registrationDate', 'desc'));
+                const uSnap = await getDocs(uQ);
+                allUsers = uSnap.docs.map(d => ({id: d.id, ...d.data()}));
+                renderUsers(allUsers);
+                
+                const cQ = query(collection(db, 'student_contributions'), orderBy('createdAt', 'desc'));
+                const cSnap = await getDocs(cQ);
+                allContribs = cSnap.docs.map(d => ({id: d.id, ...d.data()}));
+                renderContributions(allContribs);
+
+                updateStats();
+                const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                Toast.fire({ icon: 'success', title: 'تم تحديث البيانات' });
+            } catch (error) { console.error("Error loading data:", error); Swal.fire('خطأ', 'فشل تحميل البيانات', 'error'); }
+        }
+
+        function renderUsers(list) {
+            document.getElementById('users-table-body').innerHTML = list.map(u => `
+                <tr class="hover:bg-gray-50 border-b border-gray-100 group">
+                    <td class="px-6 py-4"><div class="font-bold text-gray-800">${u.displayName || 'مجهول'}</div><div class="text-xs text-gray-400 font-mono">${u.email || ''}</div></td>
+                    <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs font-bold border ${getSpecColor(u.specialization)}">${u.specialization || 'غير محدد'}</span></td>
+                    <td class="px-6 py-4 text-sm text-gray-500">${u.year || '-'}</td>
+                    <td class="px-6 py-4"><button onclick="openEditUser('${u.id}')" class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-lg text-sm font-bold hover:bg-indigo-600 hover:text-white transition shadow-sm"><i class="fas fa-edit ml-1"></i> تعديل</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function getSpecColor(spec) {
+            if (!spec) return 'bg-gray-50 text-gray-500 border-gray-200';
+            if (spec === 'طب بشري') return 'bg-blue-50 text-blue-700 border-blue-200';
+            if (spec === 'طب بشري واعلام آلي') return 'bg-cyan-50 text-cyan-700 border-cyan-200';
+            if (spec === 'طب أسنان') return 'bg-green-50 text-green-700 border-green-200';
+            if (spec === 'صيدلة') return 'bg-purple-50 text-purple-700 border-purple-200';
+            if (spec === 'شبه طبي') return 'bg-rose-50 text-rose-700 border-rose-200';
+            return 'bg-yellow-50 text-yellow-700 border-yellow-200';
+        }
+
+        window.openEditUser = (uid) => {
+            const u = allUsers.find(user => user.id === uid);
+            if (!u) return;
+            document.getElementById('edit-uid').value = uid;
+            
+            const userSpec = u.specialization || 'آخر';
+            const options = Array.from(adminSpecSelect.options).map(o => o.value);
+            
+            if (options.includes(userSpec)) {
+                adminSpecSelect.value = userSpec;
+                adminOtherInput.classList.add('hidden');
+            } else {
+                adminSpecSelect.value = 'other';
+                adminOtherInput.value = userSpec;
+                adminOtherInput.classList.remove('hidden');
+            }
+
+            document.getElementById('edit-year').value = u.year || 'السنة الأولى';
+            document.getElementById('edit-modal').classList.remove('hidden');
+        };
+
+        window.closeEditModal = () => document.getElementById('edit-modal').classList.add('hidden');
+
+        window.saveUserChanges = async () => {
+            const uid = document.getElementById('edit-uid').value;
+            const selectVal = adminSpecSelect.value;
+            const otherVal = adminOtherInput.value;
+            const newSpec = (selectVal === 'other') ? otherVal : selectVal;
+            const newYear = document.getElementById('edit-year').value;
+
+            try {
+                await updateDoc(doc(db, 'users', uid), { specialization: newSpec, year: newYear });
+                const idx = allUsers.findIndex(u => u.id === uid);
+                if(idx !== -1) { allUsers[idx].specialization = newSpec; allUsers[idx].year = newYear; }
+                renderUsers(allUsers);
+                updateStats();
+                closeEditModal();
+                Swal.fire({position: 'center', icon: 'success', title: 'تم الحفظ', showConfirmButton: false, timer: 1500});
+            } catch (e) { console.error(e); Swal.fire('خطأ', 'فشل حفظ التغييرات', 'error'); }
+        };
+
+        function updateStats() {
+            document.getElementById('stat-total-users').textContent = allUsers.length;
+            document.getElementById('stat-total-contrib').textContent = allContribs.length;
+            const specs = {}; allUsers.forEach(u => { const s = u.specialization || 'غير محدد'; specs[s] = (specs[s] || 0) + 1; });
+            document.getElementById('stat-specs-count').textContent = Object.keys(specs).length;
+            renderChart1(specs); renderChart2();
+        }
+
+        function renderChart1(data) {
+            const ctx = document.getElementById('specializationChart').getContext('2d');
+            if (chart1) chart1.destroy();
+            const colors = ['#4f46e5', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#6366f1', '#8b5cf6', '#ef4444'];
+            chart1 = new Chart(ctx, { type: 'doughnut', data: { labels: Object.keys(data), datasets: [{ data: Object.values(data), backgroundColor: colors.slice(0, Object.keys(data).length), borderWidth: 1 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { family: 'Cairo' } } } } } });
+        }
+
+        function renderChart2() {
+            const ctx = document.getElementById('yearChart').getContext('2d');
+            const years = {}; allUsers.forEach(u => { const y = u.year || 'غير محدد'; years[y] = (years[y] || 0) + 1; });
+            if (chart2) chart2.destroy();
+            chart2 = new Chart(ctx, { type: 'bar', data: { labels: Object.keys(years), datasets: [{ label: 'عدد الطلاب', data: Object.values(years), backgroundColor: '#4f46e5', borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } } });
+        }
+
+        window.filterUsers = () => {
+            const term = document.getElementById('user-search').value.toLowerCase();
+            const filtered = allUsers.filter(u => (u.displayName && u.displayName.toLowerCase().includes(term)) || (u.email && u.email.toLowerCase().includes(term)));
+            renderUsers(filtered);
+        };
+        
+         function renderContributions(list) {
+            const grid = document.getElementById('contributions-grid');
+            if(list.length === 0) { grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">لا توجد مساهمات حتى الآن</p>'; return; }
+             grid.innerHTML = list.map(item => `
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-3"><span class="bg-indigo-50 text-indigo-700 text-xs px-2 py-1 rounded font-bold">${item.type || 'عام'}</span><span class="text-xs text-gray-400">${item.createdAt?.toDate().toLocaleDateString('ar-EG') || '-'}</span></div>
+                    <p class="text-gray-700 text-sm mb-4 line-clamp-3 leading-relaxed">${item.content}</p>
+                    <div class="flex items-center gap-2 border-t pt-3 mt-auto"><div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-600 font-bold">${item.authorName ? item.authorName[0] : '?'}</div><p class="text-xs text-gray-500 font-medium">${item.authorName || 'فاعل خير'}</p></div>
+                </div>
+            `).join('');
+         }
+    </script>
+</body>
+</html>

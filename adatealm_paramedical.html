@@ -106,51 +106,31 @@
     </div>
   </div>
 
-  <script>
+ <script>
     (function(){
-      const target = 'login_contect_user_system.html'; // الصفحة الهدف
+      // === التعديل: تحديد وجهة الشبه طبي ===
+      const target = 'login.html?redirect=adatealm_paramedical_intro.html'; 
+      // =====================================
+
       const continueBtn = document.getElementById('continueBtn');
       const cancelBtn = document.getElementById('cancelBtn');
       const secsEl = document.getElementById('secs');
 
-      // عد تنازلي بسيط ثم تحويل
       let secs = 5;
       const interval = setInterval(()=>{
         secs -= 1;
-        if(secs <= 0){
-          clearInterval(interval);
-          go();
-        }
+        if(secs <= 0){ clearInterval(interval); go(); }
         secsEl.textContent = secs;
       },1000);
 
-      function go(){
-        // نستخدم replace حتى لا يبقى صفحة التحويل في تاريخ التصفح
-        window.location.replace(target);
-      }
+      function go(){ window.location.replace(target); }
 
-      continueBtn.addEventListener('click', ()=>{
-        clearInterval(interval);
-        go();
+      continueBtn.addEventListener('click', ()=>{ clearInterval(interval); go(); });
+      cancelBtn.addEventListener('click', ()=>{ 
+          clearInterval(interval); 
+          document.getElementById('countdown').textContent = 'تم الإلغاء.'; 
       });
-
-      cancelBtn.addEventListener('click', ()=>{
-        clearInterval(interval);
-        document.getElementById('countdown').textContent = 'تم الإلغاء.';
-      });
-
-      // دعم الضغط على Enter أو Space للمتابعة من لوحة المفاتيح
-      continueBtn.addEventListener('keyup', (e)=>{ if(e.key === 'Enter' || e.key === ' ') go(); });
-
-      // تحسين للعرض على أجهزة لمس: تعيين التركيز على زر المتابعة تلقائيًا
       continueBtn.focus();
-
-      // لمن يريد تعطيل التحويل التلقائي: ضع ?noauto=1 في رابط الصفحة الحالية
-      const params = new URLSearchParams(location.search);
-      if(params.get('noauto') === '1'){
-        clearInterval(interval);
-        document.getElementById('countdown').textContent = 'التحويل التلقائي معطَّل.';
-      }
     })();
   </script>
 </body>
