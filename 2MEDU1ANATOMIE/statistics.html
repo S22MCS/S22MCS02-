@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة القيادة - التحليلات الشاملة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; }
+        .nav-item.active { background-color: #e0e7ff; color: #4338ca; border-right: 4px solid #4338ca; }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        /* تنسيق الجدول التحليلي */
+        .matrix-table th, .matrix-table td { text-align: center; border: 1px solid #e5e7eb; padding: 0.75rem; }
+        .matrix-table th { background-color: #f9fafb; font-weight: 700; color: #374151; }
+        .matrix-table tr:hover { background-color: #f3f4f6; }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden">
+
+    <div class="flex-shrink-0 w-64 bg-white border-l border-gray-200 overflow-y-auto hidden md:block z-20">
+        <div class="p-6 text-center border-b border-gray-200">
+            <h1 class="text-xl font-extrabold text-indigo-700">بوابة الإشراف</h1>
+            <p class="text-xs text-gray-400 mt-1">Analytics Module</p>
+        </div>
+        <nav class="p-4 space-y-2">
+            <a href="statistics.html" class="nav-item active flex items-center p-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                <i class="fas fa-chart-pie ml-3 text-lg"></i>
+                <span>التحليلات الشاملة</span>
+            </a>
+            <a href="users_v2.html" class="nav-item flex items-center p-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                <i class="fas fa-users ml-3 text-lg"></i>
+                <span>قاعدة بيانات الطلاب</span>
+            </a>
+            <a href="contributions_v2.html" class="nav-item flex items-center p-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                <i class="fas fa-file-signature ml-3 text-lg"></i>
+                <span>مراجعة المساهمات</span>
+            </a>
+            <button id="logout-btn" class="w-full flex items-center p-3 text-sm font-medium rounded-lg text-red-600 hover:bg-red-50 transition mt-6 border-t pt-4">
+                <i class="fas fa-sign-out-alt ml-3 text-lg"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </nav>
+    </div>
+
+    <div class="flex-1 flex flex-col overflow-hidden relative">
+        
+        <div id="login-overlay" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center">
+            <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full mx-4 text-center border-t-4 border-indigo-600">
+                <div class="mb-6"><div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto"><i class="fas fa-chart-line text-4xl text-indigo-600"></i></div></div>
+                <h2 class="text-2xl font-bold mb-2 text-gray-800">تحليلات النظام</h2>
+                <form id="login-form" class="space-y-4 mt-6">
+                    <input type="email" id="admin-email" placeholder="البريد الإلكتروني" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" required>
+                    <input type="password" id="admin-password" placeholder="كلمة المرور" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" required>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg">دخول المشرف</button>
+                </form>
+            </div>
+        </div>
+
+        <header class="flex-shrink-0 border-b border-gray-200 bg-white shadow-sm p-4 sm:p-6 flex justify-between items-center z-10">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800">التحليلات الشاملة</h2>
+                <p class="text-sm text-gray-500 mt-1">نظرة عامة ورسوم بيانية لأداء النظام</p>
+            </div>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="text-left hidden sm:block">
+                    <p id="admin-name" class="text-sm font-bold text-gray-800">المشرف</p>
+                    <p class="text-xs text-green-600">متصل الآن</p>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff&size=40" class="w-10 h-10 rounded-full border-2 border-white shadow-md">
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8 bg-gray-50/50">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 flex items-center justify-between">
+                    <div><p class="text-sm font-medium text-gray-500 mb-1">إجمالي الطلاب</p><h3 id="total-users" class="text-3xl font-extrabold text-indigo-600">...</h3></div>
+                    <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600"><i class="fas fa-users text-xl"></i></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-green-100 flex items-center justify-between">
+                    <div><p class="text-sm font-medium text-gray-500 mb-1">المساهمات</p><h3 id="total-contributions" class="text-3xl font-extrabold text-green-600">...</h3></div>
+                    <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-600"><i class="fas fa-check-circle text-xl"></i></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-yellow-100 flex items-center justify-between">
+                    <div><p class="text-sm font-medium text-gray-500 mb-1">التخصصات النشطة</p><h3 id="active-specs" class="text-3xl font-extrabold text-yellow-600">...</h3></div>
+                    <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center text-yellow-600"><i class="fas fa-flask text-xl"></i></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-chart-line text-blue-500"></i> معدل التسجيل (شهرياً)</h4>
+                    <div class="chart-container">
+                        <canvas id="registration-chart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h4 class="text-lg font-bold text-gray-800 mb-4">توزيع التخصصات</h4>
+                    <div class="chart-container">
+                        <canvas id="specialization-doughnut"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-layer-group text-indigo-500"></i> التحليل العميق: التخصصات والسنوات</h4>
+                <div style="height: 400px; width: 100%;">
+                    <canvas id="years-spec-bar-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-table text-gray-500"></i> التفاصيل الرقمية الدقيقة</h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 matrix-table">
+                        <thead id="matrix-head"></thead>
+                        <tbody id="matrix-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // إعدادات فايربيس
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAEbxYuAHu5stGx5c02VbgsUKBhoidTeA",
+            authDomain: "informationpassmemberessystem.firebaseapp.com",
+            projectId: "informationpassmemberessystem",
+            storageBucket: "informationpassmemberessystem.appspot.com",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const adminEmails = ['s22market@gmail.com', 'adatealm@gmail.com', 'adatshifa@gmail.com', 'yacinee474474@gmail.com', 'nourmt01@gmail.com'];
+
+        // متغيرات الشارت لتفادي التكرار عند التحديث
+        let regChart = null;
+        let specChart = null;
+        let yearsChart = null;
+
+        // --- المصادقة (Authentication) ---
+        onAuthStateChanged(auth, (user) => {
+            const overlay = document.getElementById('login-overlay');
+            if (user && adminEmails.includes(user.email)) {
+                overlay.classList.add('hidden');
+                document.getElementById('admin-name').textContent = user.displayName || 'المشرف';
+                initDashboard(); // بدء جلب البيانات
+            } else {
+                overlay.classList.remove('hidden');
+                if(user) signOut(auth); // طرد المستخدم إذا لم يكن مشرفاً
+            }
+        });
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value.trim();
+            const pass = document.getElementById('admin-password').value;
+            try {
+                if (!adminEmails.includes(email)) throw new Error("Unauthorized");
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (err) {
+                Swal.fire({ icon: 'error', title: 'خطأ', text: 'بيانات الدخول غير صحيحة أو ليس لديك صلاحية' });
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+        // --- منطق البيانات والرسوم البيانية ---
+        function initDashboard() {
+            // جلب المساهمات (للعدد فقط هنا)
+            onSnapshot(collection(db, "student_contributions"), (snap) => {
+                document.getElementById('total-contributions').textContent = snap.size;
+            });
+
+            // جلب المستخدمين وتحليل البيانات
+            const q = query(collection(db, "users"), orderBy("registrationDate", "desc"));
+            onSnapshot(q, (snapshot) => {
+                const users = snapshot.docs.map(doc => {
+                    const d = doc.data();
+                    // تحويل التاريخ ليكون قابلاً للقراءة
+                    const regDate = d.registrationDate && d.registrationDate.toDate ? d.registrationDate.toDate() : new Date(d.registrationDate || Date.now());
+                    return { ...d, _regDate: regDate };
+                });
+
+                updateKPIs(users);
+                renderRegistrationChart(users);
+                renderSpecializationChart(users);
+                renderYearsMatrix(users); // الشارت التراكمي + الجدول
+            });
+        }
+
+        function updateKPIs(users) {
+            document.getElementById('total-users').textContent = users.length;
+            const uniqueSpecs = new Set(users.map(u => u.specialization));
+            document.getElementById('active-specs').textContent = uniqueSpecs.size;
+        }
+
+        // 1. شارت التسجيل الشهري
+        function renderRegistrationChart(users) {
+            const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+            const counts = new Array(12).fill(0);
+            users.forEach(u => {
+                if(u._regDate) counts[u._regDate.getMonth()]++;
+            });
+
+            const ctx = document.getElementById('registration-chart').getContext('2d');
+            if(regChart) regChart.destroy();
+
+            regChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'المسجلين',
+                        data: counts,
+                        borderColor: '#4f46e5', backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        borderWidth: 3, tension: 0.4, fill: true
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        }
+
+        // 2. شارت التخصصات (دونات)
+        function renderSpecializationChart(users) {
+            const data = {};
+            users.forEach(u => {
+                const s = u.specialization || 'غير محدد';
+                data[s] = (data[s] || 0) + 1;
+            });
+
+            const ctx = document.getElementById('specialization-doughnut').getContext('2d');
+            if(specChart) specChart.destroy();
+
+            specChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        data: Object.values(data),
+                        backgroundColor: ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#6366f1'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        // 3. تحليل المصفوفة (Matrix) والشارت التراكمي
+        function renderYearsMatrix(users) {
+            const matrix = {};
+            const years = ["السنة الأولى", "السنة الثانية", "السنة الثالثة", "السنة الرابعة", "السنة الخامسة", "السنة السادسة", "السنة السابعة", "إمتياز / تخرج"];
+            
+            // تجميع البيانات
+            users.forEach(u => {
+                const s = u.specialization || 'غير محدد';
+                const y = u.year || 'غير محدد';
+                if (!matrix[s]) matrix[s] = {};
+                matrix[s][y] = (matrix[s][y] || 0) + 1;
+            });
+
+            const specs = Object.keys(matrix);
+
+            // أ. رسم الشارت العمودي التراكمي
+            const datasets = years.map((year, i) => ({
+                label: year,
+                data: specs.map(s => matrix[s][year] || 0),
+                backgroundColor: `hsl(${220 + (i * 10)}, 70%, ${90 - (i * 10)}%)`, // تدرجات لونية ذكية
+                stack: 'Stack 0'
+            }));
+
+            const ctx = document.getElementById('years-spec-bar-chart').getContext('2d');
+            if(yearsChart) yearsChart.destroy();
+
+            yearsChart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels: specs, datasets: datasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: { x: { stacked: true }, y: { stacked: true } }
+                }
+            });
+
+            // ب. تعبئة الجدول
+            const thead = document.getElementById('matrix-head');
+            const tbody = document.getElementById('matrix-body');
+            
+            // رأس الجدول
+            thead.innerHTML = `<tr><th class="text-right p-3">التخصص</th>${years.map(y => `<th>${y.split(" ")[1] || y}</th>`).join('')}<th>المجموع</th></tr>`;
+            
+            // جسم الجدول
+            tbody.innerHTML = specs.map(spec => {
+                let rowSum = 0;
+                const cols = years.map(y => {
+                    const val = matrix[spec][y] || 0;
+                    rowSum += val;
+                    return `<td class="${val ? 'bg-indigo-50 font-bold text-indigo-700' : ''}">${val || '-'}</td>`;
+                }).join('');
+                return `<tr><td class="font-bold text-gray-700">${spec}</td>${cols}<td class="bg-gray-100 font-bold">${rowSum}</td></tr>`;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
