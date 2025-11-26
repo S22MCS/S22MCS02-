@@ -25,229 +25,175 @@
             --font-family-main: 'Cairo', sans-serif;
         }
 
-        /* --- الأنماط العامة --- */
+        /* --- General Styles --- */
         body {
             font-family: var(--font-family-main);
             margin: 0;
-            padding: 0; /* تم إزالة الحشو لإعطاء التحكم للعناصر الداخلية */
+            padding: 20px;
             background-color: var(--background-light);
             background-image: linear-gradient(160deg, var(--background-light) 0%, var(--light-blue) 100%);
             line-height: 1.7;
-            color: var(--text-dark);
-            -webkit-font-smoothing: antialiased; /* تحسين عرض الخطوط */
-            -moz-osx-font-smoothing: grayscale;
+            color: var(--text-light);
         }
 
-        /* --- الهيدر الرئيسي --- */
+        /* --- Header Styles --- */
         .main-header {
             text-align: center;
-            padding: 2.5rem 1rem;
+            margin-bottom: 40px;
+            position: relative; /* <<---- تم إضافة هذا السطر */
         }
 
         .main-header h1 {
-            /* خط مرن يتكيف مع حجم الشاشة */
-            font-size: clamp(2em, 5vw, 2.8em);
+            font-size: 2.5em;
             color: var(--dark-blue);
-            font-weight: 800;
-            margin: 0 0 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        /* أيقونة الكتاب بجانب العنوان */
-        .main-header h1::before {
-            content: '📖';
-            font-size: 0.9em;
-            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.1));
+            font-weight: 800; /* خط سميك جداً */
+            margin-bottom: 5px;
         }
 
         .main-header p {
-            font-size: clamp(1.1em, 2.5vw, 1.25em);
+            font-size: 1.2em;
             color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
         }
 
-        /* --- الحاويات والبطاقات --- */
-        .card-container {
+        /* <<---- بداية تنسيقات زر العودة الجديد ---->> */
+        .back-button-top {
+            position: absolute;
+            top: 50%;
+            right: 20px; /* في الجزء الأيمن لتصميم RTL */
+            transform: translateY(-50%);
+            background: var(--white-color);
+            color: var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        .back-button-top:hover {
+            background-color: #e0f2ff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button-top svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 2.5;
+        }
+        /* <<---- نهاية تنسيقات زر العودة الجديد ---->> */
+
+        /* --- Container & Cards --- */
+        .container {
             max-width: 800px;
-            margin: 1.5rem auto;
+            margin: 25px auto;
             background-color: var(--white-color);
-            padding: 1.5rem 2rem;
+            padding: 25px 30px;
             border-radius: 12px;
             box-shadow: 0 8px 30px var(--shadow-color);
-            border-top: 4px solid var(--primary-color);
+            border-top: 5px solid var(--primary-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
-        .card-container:hover {
+        .container:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 40px var(--shadow-hover-color);
         }
 
-        /* --- النصوص والعناوين --- */
         .unit-title {
-            font-size: clamp(1.4em, 4vw, 1.6em); 
+            font-size: 1.6em; 
             color: var(--dark-blue);
-            margin: 0 0 1.5rem;
+            margin-bottom: 20px;
             text-align: center;
-            font-weight: 700;
+            font-weight: 800;
+            padding: 10px 0;
+            border-bottom: 2px solid var(--light-blue);
         }
 
-        /* --- الروابط والأزرار --- */
         .links-container {
             display: flex;
             flex-direction: column; 
-            gap: 1rem;
+            gap: 12px;
         }
         
-        .action-link {
+        .link-button {
             display: block;
             text-align: center;
-            padding: 0.8rem 1rem;
+            padding: 14px 15px;
             background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             color: var(--white-color);
             text-decoration: none;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
             font-size: 1.1em;
             font-weight: 700;
             border: none;
             box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
         }
 
-        .action-link:hover {
+        .link-button:hover {
             background: linear-gradient(135deg, var(--primary-dark), #004085);
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
         }
-
-        /* --- الفوتر (Footer) --- */
+        
+        /* --- Footer Styles --- */
         footer {
-            background: var(--dark-blue);
+            background: linear-gradient(135deg, var(--dark-blue), var(--dark-blue));
             color: var(--white-color);
             text-align: center;
-            padding: 3rem 1rem 1.5rem;
+            padding: 2.5rem 1rem;
             box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
-            margin-top: 3rem;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
+            margin-top: 40px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
         }
 
-        footer .social-group {
-            margin-bottom: 2.5rem;
-        }
-
-        footer .social-group h3 {
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #66ccff;
-            font-size: 1.4em;
-        }
-        
-        footer .social-group h3 br {
-            display: none; /* إخفاء فاصل الأسطر لعنوان S22MCS */
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-
-        .social-links a {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--white-color);
-            transition: transform 0.3s ease;
-            font-weight: 700;
-        }
-
-        .social-links a:hover {
-            transform: scale(1.15);
-        }
-
-        .social-links img {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 8px;
-            border-radius: 50%;
-            padding: 8px;
-            background-color: rgba(255, 255, 255, 0.08);
-            transition: background-color 0.3s ease;
-        }
-
-        .social-links a:hover img {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .copyright {
-            margin: 0;
-            font-size: 1rem;
-            color: #c0c0c0;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .copyright span {
-            color: #ffd700;
-            font-weight: bold;
-        }
-        
-        /* --- Media Queries للتجاوب --- */
-
-        /* Tablets & Large Phones (<= 768px) */
+        /* --- Media Queries for Responsiveness --- */
         @media (max-width: 768px) {
             body {
-                padding: 0;
+                padding: 15px 10px;
             }
-            .main-header, .card-container {
-                padding-left: 1rem;
-                padding-right: 1rem;
+            .main-header h1 {
+                font-size: 2em;
             }
-            
-            .card-container {
-                margin: 1.5rem 1rem; /* إضافة هوامش جانبية */
+            .main-header p {
+                font-size: 1em;
             }
-
-            /* تفعيل التمرير الأفقي لروابط التواصل مع تصميم أفضل */
-            .social-links {
+            .container {
+                padding: 20px;
+            }
+            .unit-title {
+                font-size: 1.3em;
+            }
+            .link-button {
+                font-size: 1em;
+            }
+            /* تصغير زر العودة على الشاشات الصغيرة */
+            .back-button-top {
+                font-size: 0.85em;
+                padding: 6px 10px;
+                right: 10px;
+            }
+            /* ترتيب العناصر في الفوتر ليناسب العرض الضيق */
+            footer .social-links {
                 flex-wrap: nowrap;
                 overflow-x: auto;
                 justify-content: flex-start;
-                padding: 1rem 1rem 1.5rem;
-                scrollbar-width: none; /* Firefox */
-                -ms-overflow-style: none; /* IE/Edge */
-                -webkit-overflow-scrolling: touch; /* سلاسة التمرير على iOS */
-                margin: 0 -1rem; /* لتتمدد منطقة التمرير */
+                padding: 10px 0;
+                gap: 1rem;
             }
-            
-            .social-links::-webkit-scrollbar {
-                display: none; /* Chrome/Safari */
+            footer .social-links a {
+                min-width: 70px;
             }
-
-            .social-links a {
-                min-width: 90px; /* ضمان وجود مساحة كافية لكل أيقونة */
-            }
-        }
-        
-        /* Small Phones (<= 480px) */
-        @media (max-width: 480px) {
-            .card-container {
-                padding: 1.5rem;
-            }
-
-            .action-link {
-                font-size: 1em;
-            }
-
-            .copyright {
-                font-size: 0.9rem;
+            footer .social-links span {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -257,39 +203,89 @@
     <header class="main-header">
         <h1>منصة المراجعة والتحضير</h1>
         <p>برامج دراسية مكثفة ومخصصة لطلبة السنة الأولى طب</p>
+        
+        
+        <a href="javascript:history.back()" class="back-button-top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            العودة
+        </a>
     </header>
 
-    <main>
-        <div class="card-container">
-            <h2 class="unit-title">السداسي الأول</h2>
-            <div class="links-container">
-                <a href="JADAWL_01MED_السداسي الأول _FI_06AYAM.html" class="action-link">برنامج 6 أيام</a>
-            </div>
+    <div class="container">
+        <p class="unit-title">الوحدة الأولى: علم التشريح (Anatomy) 🦴</p>
+        <div class="links-container">
+            <a href="JADAWL_1MED_ANATOMY__FI_07AYAM.html" class="link-button">برنامج 07 أيام</a>
+            <a href="JADAWL_1MED_ANATOMY__FI_15AYAM.html" class="link-button">برنامج 15 يوم</a>
         </div>
-        
-        <div class="card-container">
-            <h2 class="unit-title">السداسي الثاني</h2>
-            <div class="links-container">
-                <a href="JADAWL_01MED السداسي الثاني_FI_06AYAM.html" class="action-link">برنامج 6 أيام</a>
-            </div>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">الوحدة الثانية: علم وظائف الأعضاء (Physiology) ❤️</p>
+        <div class="links-container">
+            <a href="JADAWL_1MED_PHYSIOLOGY__FI_07AYAM.html" class="link-button">برنامج 07 أيام</a>
+            <a href="JADAWL_1MED_PHYSIOLOGY__FI_15AYAM.html" class="link-button">برنامج 15 يوم</a>
         </div>
-        
-        <div class="card-container">
-            <h2 class="unit-title">كلا السداسيين</h2>
-            <div class="links-container">
-                <a href="JADAWL_01MED_كلا السداسين _FI_30AYAM.html" class="action-link">برنامج 30 يوماً</a>
-            </div>
+    </div>
+    
+    <div class="container">
+        <p class="unit-title">الوحدة الثالثة: علم الأنسجة (Histology) 🔬</p>
+        <div class="links-container">
+            <a href="JADAWL_1MED_HISTOLOGY__FI_07AYAM.html" class="link-button">برنامج 07 أيام</a>
+            <a href="JADAWL_1MED_HISTOLOGY__FI_15AYAM.html" class="link-button">برنامج 15 يوم</a>
         </div>
-    </main>
+    </div>
+    
+    <div class="container">
+        <p class="unit-title">الوحدة الرابعة: الكيمياء الحيوية (Biochemistry) 🧪</p>
+        <div class="links-container">
+            <a href="JADAWL_1MED_BIOCHEMISTRY__FI_07AYAM.html" class="link-button">برنامج 07 أيام</a>
+            <a href="JADAWL_1MED_BIOCHEMISTRY__FI_15AYAM.html" class="link-button">برنامج 15 يوم</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">الوحدة الخامسة: البيولوجيا الخلوية (Cell Biology) 🧬</p>
+        <div class="links-container">
+            <a href="JADAWL_1MED_CELL_BIOLOGY__FI_07AYAM.html" class="link-button">برنامج 07 أيام</a>
+            <a href="JADAWL_1MED_CELL_BIOLOGY__FI_15AYAM.html" class="link-button">برنامج 15 يوم</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <p class="unit-title">الوحدة السادسة: الفيزياء الطبية (Medical Physics) ⚛️</p>
+        <div class="links-container">
+            <a href="JADAWL_1MED_MEDICAL_PHYSICS__FI_07AYAM.html" class="link-button">برنامج 07 أيام</a>
+            <a href="JADAWL_1MED_MEDICAL_PHYSICS__FI_15AYAM.html" class="link-button">برنامج 15 يوم</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="unit-title">الوحدة السابعة: طرق العمل بالعلوم الطبية (Techniques) 🗃️</p>
+        <div class="links-container">
+            <a href="JADAWL_1MED_TECHNIQUES__FI_07AYAM.html" class="link-button">برنامج 07 أيام</a>
+            <a href="JADAWL_1MED_TECHNIQUES__FI_15AYAM.html" class="link-button">برنامج 15 يوم</a>
+        </div>
+    </div>
+
 
     <footer>
         <div class="social-group s22mcs-group">
-            <h3>ط.22.ح.ط.ع (S22MCS)</h3>
+           
+           
+           <h3>
+طلبة الحل الطبي العلاجي
+
+<br>
+                (ط.ح.ط.ع)  
+            
+            </h3>
             <div class="social-links">
                 <a href="https://instagram.com/s22mcs?igshid=NzZlODBkYWE4Ng" target="_blank">
                     <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram">
-                    <span>Instagram</span>
-                </a>
+                   <span>Instagram</span>
+                                </a>
                 <a href="https://t.me/S22MCS" target="_blank">
                     <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png" alt="Telegram">
                     <span>Telegram</span>
@@ -338,8 +334,7 @@
                 </a>
             </div>
         </div>
-        
-        <p class="copyright">مخصص لـ <span>طلبة السنة الأولى طب</span> - جميع الحقوق محفوظة © 2025</p>
+        <p class="copyright">مخصص <span>لطلبة السنة الأولى طب</span> - جميع الحقوق محفوظة © 2025</p>
     </footer>
 
 </body>

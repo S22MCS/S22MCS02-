@@ -3,87 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>درايفات كليات الطب </title>
+    <title>درايفات كليات الطب - السنة الأولى</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
+        /* التنسيقات العامة */
         body {
             font-family: 'Tajawal', sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #f8f9fa;
+            background-color: #f0f4f8; /* خلفية أفتح */
+            direction: rtl; /* دعم اللغة العربية */
         }
+        
+        /* شريط العنوان والرأس */
         header {
-            background-color: #0056b3;
+            background-color: #0077b6; /* أزرق طبي */
             color: white;
-            padding: 20px;
+            padding: 25px 20px;
             font-size: 1.8em;
-            font-weight: bold;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative; /* لتثبيت زر العودة */
+        }
+        
+        /* زر العودة للصفحة السابقة */
+        .back-button {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: #ffffff;
+            color: #0077b6;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #e0f2ff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
+        /* أيقونة السهم لزر العودة (SVG) */
+        .back-button svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.5;
+        }
+
+        /* كونتينر البطاقات */
         .container {
             display: grid;
+            /* تجاوب ذكي: 280px كحد أدنى للعرض، وهذا يعني عمودين أو ثلاثة بحسب الشاشة */
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            padding: 20px;
-            max-width: 900px;
+            padding: 25px 15px;
+            max-width: 1000px;
             margin: auto;
         }
+        
+        /* تصميم البطاقة الواحدة */
         .card {
-            background: white;
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e0e0e0;
         }
+        
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-7px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            border-color: #0077b6;
         }
+        
+        /* صورة الجامعة (الشعار) */
         .card img {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            border: 3px solid #0077b6; /* إطار أزرق */
         }
+        
+        /* محتوى البطاقة */
         .card-content {
             width: 100%;
         }
+        
         .card h3 {
-            color: #0056b3;
-            margin: 10px 0;
-            font-size: 1.2em;
+            color: #1e3a8a; /* أزرق داكن */
+            margin: 10px 0 15px 0;
+            font-size: 1.3em;
+            font-weight: 800;
         }
+        
+        /* روابط الدرايف */
         .card a {
             display: block;
-            background-color: #0056b3;
+            background-color: #3b82f6; /* أزرق قياسي */
             color: white;
-            padding: 10px;
-            margin: 5px 0;
-            width: 90%;
+            padding: 12px;
+            margin: 8px 10px;
+            width: auto;
             text-align: center;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background 0.3s ease;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.1s;
+            box-shadow: 0 4px 8px rgba(0, 119, 182, 0.2);
         }
+        
         .card a:hover {
-            background-color: #003d80;
+            background-color: #1e40af; /* أزرق أغمق عند التمرير */
+            transform: translateY(-2px);
         }
+
+        /* التجاوب مع الهواتف الصغيرة (أقل من 600px) */
         @media (max-width: 600px) {
+            header {
+                font-size: 1.5em;
+                padding: 20px 10px;
+            }
             .container {
-                grid-template-columns: repeat(2, 1fr);
+                /* الانتقال إلى عمود واحد لزيادة سهولة القراءة على الهواتف الضيقة */
+                grid-template-columns: 1fr;
+                padding: 15px 10px;
+            }
+            .card {
+                padding: 15px;
+                border-radius: 15px;
+            }
+            .card h3 {
+                font-size: 1.2em;
+            }
+            .card img {
+                width: 80px;
+                height: 80px;
+            }
+            /* تصغير زر العودة على الشاشات الصغيرة */
+            .back-button {
+                font-size: 0.85em;
+                padding: 6px 10px;
+                right: 10px;
             }
         }
     </style>
 </head>
 <body>
 
-    <header>درايفات كليات الطب للسنة الأولى </header>
+    <header>
+        درايفات كليات الطب للسنة الأولى 
+        <a href="javascript:history.back()" class="back-button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            العودة
+        </a>
+    </header>
     <div class="container">
 
 
@@ -97,12 +189,8 @@
             <div class="card-content">
                 <h3> جامعة عنابة - كلية الطب</h3>
               
-
-                <a href="#">درايف 2024 - 2025</a>
+                <a href="#">درايف 2024 - 2025 (قريباً)</a>
                 <a href="https://drive.google.com/drive/folders/1CAQs5L-JK0-MZEXDuhjEWMN6PW_8PM__">درايف 2023 - 2024</a>
-               
-                
-
             </div>
         </div>
 
@@ -111,15 +199,8 @@
             <img src="sidi_bel_abbes_medicine.png" alt="جامعة سيدي بلعباس">
             <div class="card-content">
                 <h3>جامعة سيدي بلعباس - كلية الطب</h3>
-               
-          
-               
-
                 <a href="https://drive.google.com/drive/folders/1FI-25w_QA8lqmfNhl-ieBEOj3gbJAq-0">درايف 2022 - 2023</a>
-           
                 <a href="https://drive.google.com/drive/folders/1sWWhnRUTT2YoJm44T5hMC775lMVp6Nyb">درايف 2020 - 2021</a>
-            
-                
             </div>
         </div>
 
@@ -131,12 +212,9 @@
             <img src="medicine2.png" alt="جامعة وهران">
             <div class="card-content">
                 <h3>جامعة وهران - كلية الطب</h3>
-
                 <a href="https://drive.google.com/drive/folders/15298x8srAqQysst_2QGkMqJl1EnFEDwc">درايف 2024 - 2025</a>
                 <a href="https://drive.google.com/drive/folders/1awYurCtMrbZM7_LOjKvQYpasi5O1H4hr">درايف 2023 - 2024</a>
                 <a href="https://drive.google.com/drive/folders/1hM-CgZqsjj11h6i-Hyk1SXcAA099M97N">درايف 2022 - 2023</a>
-              
-                
             </div>
         </div>
 
@@ -151,14 +229,8 @@
             <div class="card-content">
                
                 <h3> جامعة الجزائر - كلية الطب</h3>
-
-
-                
-                <a href="#">درايف 2024 - 2025</a>
+                <a href="#">درايف 2024 - 2025 (قريباً)</a>
                 <a href="https://drive.google.com/drive/folders/1-82phy0-203VSWIZrmo82gIO8q2D0B0Q">درايف 2023 - 2024</a>
-              
-
-
             </div>
         </div>
 
@@ -169,11 +241,8 @@
             <img src="medicine3.png" alt="جامعة قسنطينة">
             <div class="card-content">
                 <h3>جامعة قسنطينة - كلية الطب</h3>
-         
-                <a href="#">درايف 2024 - 2025</a>
+                <a href="#">درايف 2024 - 2025 (قريباً)</a>
                 <a href="https://drive.google.com/drive/folders/1bSxdd6zVEZSuIzV1H2-oUxZ7JI9tt6n6">درايف 2023 - 2024</a>
-             
-
             </div>
         </div>
 
@@ -184,13 +253,9 @@
             <img src="ouargla_medicine.png" alt="جامعة ورقلة">
             <div class="card-content">
                 <h3>جامعة ورقلة - كلية الطب</h3>
-             
                 <a href="https://drive.google.com/drive/folders/1-3CekYZXMkWJLbQOYQnRINM6rT60kxck">درايف 2021 - 2022</a>
-        
                 <a href="https://drive.google.com/drive/folders/1-3CekYZXMkWJLbQOYQnRINM6rT60kxck">درايف 2020 - 2021</a>
-                    
-                
-                </div>
+            </div>
         </div>
 
 
@@ -200,9 +265,7 @@
             <img src="batna_medicine.png" alt="جامعة باتنة">
             <div class="card-content">
                 <h3>جامعة باتنة - كلية الطب</h3>
-
                 <a href="https://drive.google.com/drive/folders/1QNPyVu4rfvTLWQLUTd1vBLAxIlc6ukVI">درايف 2023 - 2024</a>
-          
             </div>
         </div>
 
@@ -216,9 +279,7 @@
             <img src="bejaia_medicine.png" alt="جامعة بجاية">
             <div class="card-content">
                 <h3>جامعة بجاية - كلية الطب</h3>
-
                 <a href="https://drive.google.com/drive/folders/1kiDC21fNmc5TlIdjCtieDisgfRa8FdS3">درايف 2023 - 2024</a>
-             
             </div>
         </div>
 
@@ -226,94 +287,70 @@
 
 
 
-        <!-- جامعة تيارت -->
-<div class="card">
+        <div class="card">
     <img src="tiaret_medicine.png" alt="جامعة تيارت">
     <div class="card-content">
         <h3>جامعة تيارت - كلية الطب</h3>
-  
         <a href="https://drive.google.com/drive/folders/1usMMhzEfebajLUoLArMvWotFwd_E3AkO">درايف 2023 - 2024</a>
- 
-       
     </div>
 </div>
 
-<!-- جامعة تلمسان -->
 <div class="card">
     <img src="tlemcen_medicine.png" alt="جامعة تلمسان">
     <div class="card-content">
         <h3>جامعة تلمسان - كلية الطب</h3>
-
         <a href="https://drive.google.com/drive/folders/1ybtSERw66hq91WRABnh0dqYRY4iXltJM">درايف 2023 - 2024</a>
-    
     </div>
 </div>
 
-<!-- جامعة البليدة -->
 <div class="card">
     <img src="blida_medicine.png" alt="جامعة البليدة">
     <div class="card-content">
         <h3>جامعة البليدة - كلية الطب</h3>
-
         <a href="https://drive.google.com/drive/folders/1-0NO8jm-_mZSEoMMQs6AKHVVBM4xmcBx">درايف 2023 - 2024</a>
-        
     </div>
 </div>
 
-<!-- جامعة المسيلة -->
 <div class="card">
     <img src="msila_medicine.png" alt="جامعة المسيلة">
     <div class="card-content">
         <h3>جامعة المسيلة - كلية الطب</h3>
-    
         <a href="https://drive.google.com/drive/folders/1CeDO_C-0QI6zNXwJQegmjob_5ybma3In">درايف 2023 - 2024</a>
-      
     </div>
 </div>
 
         
 
-<!-- جامعة سطيف -->
 <div class="card">
     <img src="setif_medicine.png" alt="جامعة سطيف">
     <div class="card-content">
         <h3>جامعة سطيف - كلية الطب</h3>
-    
         <a href="https://drive.google.com/drive/folders/10kqovx23LgAld9AMi5VHrEvD8nWuYp76">درايف 2021 - 2022</a>
-
     </div>
 </div>
 
-<!-- جامعة الأغواط -->
 <div class="card">
     <img src="laghouat_medicine.png" alt="جامعة الأغواط">
     <div class="card-content">
         <h3>جامعة الأغواط - كلية الطب</h3>
-     
         <a href="https://drive.google.com/drive/folders/1PvajV8HpbMWnForknJ_v2_cP9HE2NhdV">درايف 2021 - 2022</a>
         <a href="https://drive.google.com/drive/folders/1MQL-ScIzVX072g9KktqM9n8b4ELaWDKT">درايف 2020 - 2021</a>
-
     </div>
 </div>
 
-<!-- جامعة تيزي وزو -->
 <div class="card">
     <img src="tiziouzou_medicine.png" alt="جامعة تيزي وزو">
     <div class="card-content">
         <h3>جامعة تيزي وزو - كلية الطب</h3>
- 
- 
         <a href="https://drive.google.com/drive/folders/1AuKeUNZ3Ixv3hoS1UjTQnVtVznRR4OKE">درايف 2020 - 2021</a>
-     
     </div>
 </div>
 
-<!-- جامعة الشلف 1 -->
 <div class="card">
     <img src="chlef1_medicine.png" alt="جامعة الشلف ">
     <div class="card-content">
         <h3>جامعة الشلف - كلية الطب</h3>
-        <a href="#">درايف 2024 - 2025</a>
+        <a href="#">درايف 2024 - 2025 (قريباً)</a>
         <br>
         <a href="https://drive.google.com/drive/folders/1-7X1xCx1Kgtm2PPwlYpGAxFT5HMJD34e">درايف السداسي الاول  2023 - 2024</a>
         <a href="https://drive.google.com/drive/folders/1-8IJY34Yxa-Nu3R-dsRtDcsoj96terp_">درايف السداسي الثاني  2023 - 2024</a>
@@ -331,15 +368,11 @@
 
 
 
-<!-- جامعة مستغانم -->
 <div class="card">
     <img src="mostaganem_medicine.png" alt="جامعة مستغانم">
     <div class="card-content">
         <h3>جامعة مستغانم - كلية الطب</h3>
-
-        <a href="#">درايف 2024 - 2025</a>
-
-
+        <a href="#">درايف 2024 - 2025 (قريباً)</a>
         <a href="https://drive.google.com/drive/folders/1nseeYD_IMRdgV9E4ZtI3A6VPn3jEd0Hl">درايف 2023 - 2024</a>
         <a href="https://drive.google.com/drive/folders/13aF9lJzMFjbGzAzcNaRLSH0MbAOCdsm-?usp=share_link">درايف 2022 - 2023</a>
         <a href="https://drive.google.com/drive/folders/13aF9lJzMFjbGzAzcNaRLSH0MbAOCdsm-">درايف 2021 - 2022</a>
@@ -353,17 +386,12 @@
     </div>
 </div>
 
-<!-- جامعة تيبازة -->
 <div class="card">
     <img src="tipaza_medicine.png" alt="جامعة تيبازة">
     <div class="card-content">
         <h3>جامعة تيبازة - كلية الطب</h3>
-        <a href="#">درايف 2024 - 2025</a>
-
-       
+        <a href="#">درايف 2024 - 2025 (قريباً)</a>
         <a href="https://drive.google.com/drive/folders/19aTsodb1yVMW9ZaQNaSqDyePQhdGLBkp">درايف 2023 - 2024</a>
-        
-  
     </div>
 </div>
 
@@ -375,17 +403,12 @@
 
 
 
-<!-- جامعة بسكرة -->
 <div class="card">
     <img src="biskra_medicine.png" alt="جامعة بسكرة">
     <div class="card-content">
         <h3>جامعة بسكرة - كلية الطب</h3>
-     
-
-        <a href="#">درايف 2024 - 2025</a>
+        <a href="#">درايف 2024 - 2025 (قريباً)</a>
         <a href="https://drive.google.com/drive/folders/1BDJmzRwBrmzbYeI6LSFHmcOcz4qWc1j-">درايف 2023 - 2024</a>
-        
-
     </div>
 </div>
 
@@ -394,16 +417,12 @@
 
 
 
-<!-- جامعة سكيكدة -->
 <div class="card">
     <img src="skikda_medicine.png" alt="جامعة سكيكدة">
     <div class="card-content">
         <h3>جامعة سكيكدة - كلية الطب</h3>
-    
-        <a href="#">درايف 2024 - 2025</a>
+        <a href="#">درايف 2024 - 2025 (قريباً)</a>
         <a href="https://drive.google.com/drive/folders/1m64fqlL_DD9jlhSFiW-eJl5H-KQ3ZN9X">درايف 2023 - 2024</a>
-
-
     </div>
 </div>
 
@@ -415,14 +434,11 @@
 
 
 
-<!-- جامعة الجلفة -->
 <div class="card">
     <img src="djelfa_medicine.png" alt="جامعة الجلفة">
     <div class="card-content">
         <h3>جامعة الجلفة - كلية الطب</h3>
-       
         <a href="https://drive.google.com/drive/folders/1BlDYrex_Q1ZxhJzRHywbrM6E0eN5jXab">درايف 2023 - 2024</a>
-
     </div>
 </div>
 
@@ -438,8 +454,6 @@
     <img src="saida_medicine.png" alt="جامعة سعيدة">
     <div class="card-content">
         <h3>جامعة سعيدة - كلية الطب</h3>
-
-        
         <a href="https://drive.google.com/drive/folders/1-0gBHDzlq8glTabHvmetgd3BsAZM5Inx">درايف 2023 - 2024</a>
     </div>
 </div>

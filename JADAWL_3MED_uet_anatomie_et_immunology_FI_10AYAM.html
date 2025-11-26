@@ -1,0 +1,639 @@
+
+
+
+
+<div style="text-align: center; margin: 20px 0;">
+  <button onclick="window.history.back()" style="
+      background-color: #3b82f6; 
+      color: white; 
+      border: none; 
+      padding: 12px 24px; 
+      border-radius: 8px; 
+      font-size: 16px; 
+      cursor: pointer; 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 10px;
+      font-family: 'Tajawal', sans-serif;">
+    <i class="fas fa-arrow-right"></i>
+    عودة للصفحة السابقة
+  </button>
+
+
+
+  
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خطة المراجعة النهائية - علم المناعة (10 أيام)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f0f4f8;
+      --card-bg-color: #ffffff;
+      --primary-text-color: #102a43;
+      --secondary-text-color: #5a7184;
+      --accent-color-1: #3b82f6; /* Blue */
+      --accent-color-2: #10b981; /* Green */
+      --accent-color-3: #f97316; /* Orange */
+      --accent-color-4: #8b5cf6; /* Purple */
+      --accent-color-5: #0ea5e9; /* Cyan */
+      --danger-color: #ef4444;
+      --success-color: #22c55e;
+      --border-color: #e2e8f0;
+      --font-arabic: 'Tajawal', 'Arial', sans-serif;
+      --font-latin: 'Roboto', 'Helvetica', sans-serif;
+    }
+
+    /* General Body Styles */
+    body {
+      font-family: var(--font-arabic);
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 1.5rem 1rem;
+      color: var(--primary-text-color);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-text-color);
+      margin-bottom: 2.5rem;
+      font-weight: 700;
+      font-size: 2.25em;
+    }
+
+    /* Statistics Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .stat-card {
+      background-color: var(--card-bg-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+      text-align: center;
+      border-bottom: 4px solid var(--accent-color-1);
+    }
+    .stat-card h3 { 
+        margin: 0 0 10px 0; 
+        color: var(--secondary-text-color); 
+        font-size: 1em; 
+        font-weight: 500;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 8px;
+    }
+    .stat-value { 
+        font-size: 2.5em; 
+        font-weight: 700; 
+        color: var(--primary-text-color); 
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      background-color: var(--border-color);
+      border-radius: 50px;
+      margin-bottom: 2.5rem;
+      height: 28px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-5));
+      width: 0%;
+      transition: width 0.5s ease-in-out;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.85em;
+      font-weight: bold;
+    }
+    
+    /* Info Grid (Dates & Timers) */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .info-card {
+      background-color: var(--card-bg-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border-left: 4px solid var(--accent-color-5);
+    }
+
+    .info-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1em;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .info-card-header i { color: var(--accent-color-5); }
+    .info-card-body {
+      font-size: 1.1em;
+      color: var(--secondary-text-color);
+      text-align: center;
+      font-weight: 500;
+    }
+    .info-card-body.timer-display {
+      font-family: var(--font-latin);
+      font-size: 2em;
+      font-weight: 700;
+      color: var(--accent-color-5);
+    }
+
+    /* Main Schedule Layout */
+    .schedule-grid { 
+        display: grid; 
+        gap: 3rem; 
+    }
+    .day-header {
+      font-size: 1.9em;
+      font-weight: 700;
+      color: var(--primary-text-color);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 3px solid var(--accent-color-1);
+      display: inline-block;
+    }
+    .tasks-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+
+    /* Task Card Styling */
+    .task-card {
+      background-color: var(--card-bg-color);
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      border-right: 5px solid transparent; /* RTL default border */
+    }
+    .task-card:hover { 
+        transform: translateY(-5px); 
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+    }
+
+    .task-subject {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+    }
+    .subject-immuno-gen { background-color: var(--accent-color-1); } /* Blue */
+    .subject-immuno-hyper { background-color: var(--accent-color-4); } /* Purple */
+    .subject-immuno-patho { background-color: var(--accent-color-2); } /* Green */
+    .subject-immuno-diag { background-color: var(--accent-color-3); } /* Orange */
+    .subject-review { background-color: var(--danger-color); } /* Red */
+
+
+    .task-content { margin-bottom: 1.5rem; }
+    .lang-ar {  
+        font-weight: 700;  
+        font-size: 1.2em;  
+        margin-bottom: 0.75rem;  
+        display: flex;  
+        gap: 10px;  
+        align-items: center;  
+    }
+    .lang-ar i { color: var(--secondary-text-color); }
+
+    .lang-en, .lang-fr {
+        font-family: var(--font-latin);
+        font-size: 0.95em;
+        color: var(--secondary-text-color);
+        padding-right: 25px;
+        margin-bottom: 0.25rem;
+        line-height: 1.5;
+    }
+    
+    .task-footer {
+      border-top: 1px solid var(--border-color);
+      padding-top: 1rem;
+      margin-top: auto; /* Pushes footer to the bottom */
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .timer { font-family: var(--font-latin); font-size: 1.6em; font-weight: 700; color: var(--primary-text-color); }
+    
+    .button-group { display: flex; gap: 8px; }
+    .btn { 
+        color: white; 
+        background-color: var(--secondary-text-color); 
+        border: none; 
+        padding: 8px 12px; 
+        cursor: pointer; 
+        border-radius: 8px; 
+        font-size: 0.9em; 
+        transition: all 0.2s ease; 
+        display: inline-flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 6px; 
+        min-width: 40px; 
+    }
+    .btn:hover { opacity: 0.85; transform: scale(1.05); }
+    .btn-start { background-color: var(--accent-color-1); }
+    .btn-complete { background-color: var(--success-color); }
+    .btn-reset { background-color: var(--danger-color); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Completed State */
+    .completed {
+      background-color: #f8fafc;
+      border-right: 5px solid var(--success-color);
+    }
+    .completed .task-content { text-decoration: line-through; color: #94a3b8; }
+    .completed .lang-ar, .completed .lang-en, .completed .lang-fr, .completed .task-subject, .completed .timer { opacity: 0.6; }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body { padding: 1rem 0.5rem; }
+      h1 { font-size: 1.8em; }
+      .day-header { font-size: 1.6em; }
+      .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+      .stat-value { font-size: 2em; }
+      .info-grid { gap: 1rem; }
+      .tasks-container { grid-template-columns: 1fr; gap: 1.25rem; }
+      .timer-controls { flex-wrap: wrap; justify-content: center; }
+      .timer { margin-bottom: 0.5rem; text-align: center; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+    <h1><i class="fas fa-shield-alt"></i> خطة مراجعة علم المناعة المفصلة (10 أيام)</h1>
+  
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3><i class="fas fa-tasks"></i> المهام الكلية</h3>
+        <div class="stat-value" id="totalTasks">16</div>
+      </div>
+      <div class="stat-card">
+        <h3><i class="fas fa-check-circle"></i> المهام المكتملة</h3>
+        <div class="stat-value" id="completedTasks">0</div>
+      </div>
+      <div class="stat-card">
+        <h3><i class="fas fa-hourglass-half"></i> وقت الدراسة المقدر</h3>
+        <div class="stat-value" id="totalStudyTimeDisplay">~40 ساعة</div>
+      </div>
+    </div>
+  
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+  
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-header"><i class="fas fa-calendar-alt"></i><span>التقويم الميلادي</span></div>
+        <div class="info-card-body" id="gregorianDateDisplay">...</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-header"><i class="fas fa-moon"></i><span>التقويم الهجري</span></div>
+        <div class="info-card-body" id="hijriDateDisplay">...</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-header"><i class="fas fa-hourglass-end"></i><span>الوقت المتبقي لانتهاء اليوم</span></div>
+        <div class="info-card-body timer-display" id="countdownToEndOfDay">00:00:00</div>
+      </div>
+    </div>
+
+  <div class="schedule-grid">
+    <div class="day-section">
+      <h2 class="day-header">اليوم الأول: مقدمة وتفاعلات</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task1"><div class="task-header"><span class="task-subject subject-immuno-gen">أساسيات المناعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-book-medical"></i>مقدمة في المناعة والمفاهيم الأساسية</div><div class="lang-en">Introduction to Immunology & Key Concepts</div><div class="lang-fr">Introduction à l'Immunologie & Concepts Clés</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t1">01:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task1', 't1', 3600)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task1')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task1', 't1', 3600)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task2"><div class="task-header"><span class="task-subject subject-immuno-gen">أساسيات المناعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-exchange-alt"></i>تفاعل ضد-مستضد</div><div class="lang-en">Antigen-Antibody Reaction</div><div class="lang-fr">Réaction antigène anticorps</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t2">02:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task2', 't2', 9000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task2')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task2', 't2', 9000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم الثاني: HLA وفرط الحساسية 1</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task3"><div class="task-header"><span class="task-subject subject-immuno-gen">أساسيات المناعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-dna"></i>نظام HLA</div><div class="lang-en">HLA System</div><div class="lang-fr">Système HLA</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t3">02:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task3', 't3', 9000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task3')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task3', 't3', 9000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task4"><div class="task-header"><span class="task-subject subject-immuno-hyper">فرط الحساسية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-allergies"></i>آلية الحساسية / فرط الحساسية نوع 1</div><div class="lang-en">Mechanism of Allergy / Hypersensitivity type I</div><div class="lang-fr">Mécanisme de l'Allergie / Hypersensibilité type I</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t4">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task4', 't4', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task4')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task4', 't4', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم الثالث: فرط الحساسية 2</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task5"><div class="task-header"><span class="task-subject subject-immuno-hyper">فرط الحساسية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-bomb"></i>فرط الحساسية نوع 2</div><div class="lang-en">Hypersensitivity type II</div><div class="lang-fr">Hypersensibilité type II</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t5">02:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task5', 't5', 9000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task5')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task5', 't5', 9000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم الرابع: فرط الحساسية 3</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task6"><div class="task-header"><span class="task-subject subject-immuno-hyper">فرط الحساسية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-object-group"></i>فرط الحساسية نوع 3</div><div class="lang-en">Hypersensitivity type III</div><div class="lang-fr">Hypersensibilité type III</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t6">02:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task6', 't6', 9000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task6')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task6', 't6', 9000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم الخامس: فرط الحساسية 4 والعوز المناعي</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task7"><div class="task-header"><span class="task-subject subject-immuno-hyper">فرط الحساسية</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-user-clock"></i>فرط الحساسية نوع 4</div><div class="lang-en">Hypersensitivity type IV</div><div class="lang-fr">Hypersensibilité type IV</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t7">02:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task7', 't7', 9000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task7')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task7', 't7', 9000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task8"><div class="task-header"><span class="task-subject subject-immuno-patho">أمراض المناعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-shield-virus"></i>العوز المناعي</div><div class="lang-en">Immunodeficiencies</div><div class="lang-fr">Déficits Immunitaires</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t8">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task8', 't8', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task8')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task8', 't8', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم السادس: أمراض المناعة الذاتية والاعتلالات</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task9"><div class="task-header"><span class="task-subject subject-immuno-patho">أمراض المناعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-user-ninja"></i>أمراض المناعة الذاتية</div><div class="lang-en">Autoimmune Diseases</div><div class="lang-fr">Maladies Autoimmunes</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t9">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task9', 't9', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task9')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task9', 't9', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task10"><div class="task-header"><span class="task-subject subject-immuno-patho">أمراض المناعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-clone"></i>الاعتلالات الغامائية أحادية النسيلة</div><div class="lang-en">Monoclonal Gammopathies</div><div class="lang-fr">Gammapathies Monoclonale</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t10">02:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task10', 't10', 9000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task10')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task10', 't10', 9000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم السابع: التشخيصات المخبرية (1)</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task11"><div class="task-header"><span class="task-subject subject-immuno-diag">تطبيقات وتشخيص</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-chart-bar"></i>مخطط البروتينات المصلية</div><div class="lang-en">Serum Protein Profiles</div><div class="lang-fr">Profils Protéiques Sériques</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t11">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task11', 't11', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task11')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task11', 't11', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم الثامن: المناعة ضد العدوى والتشخيصات (2)</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task12"><div class="task-header"><span class="task-subject subject-immuno-gen">أساسيات المناعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-bacteria"></i>المناعة ضد العدوى</div><div class="lang-en">Anti-Infectious Immunity</div><div class="lang-fr">Immunité Anti-Infectieuse</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t12">02:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task12', 't12', 9000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task12')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task12', 't12', 9000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+        <div class="task-card" id="task13"><div class="task-header"><span class="task-subject subject-immuno-diag">تطبيقات وتشخيص</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-vial"></i>الاختبارات المناعية</div><div class="lang-en">Immunological Tests</div><div class="lang-fr">Test Immunologiques</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t13">02:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task13', 't13', 9000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task13')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task13', 't13', 9000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم التاسع: العلاجيات</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task14"><div class="task-header"><span class="task-subject subject-immuno-diag">تطبيقات وتشخيص</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-syringe"></i>العلاجات المناعية</div><div class="lang-en">Immunological Therapeutics</div><div class="lang-fr">Thérapeutiques Immunologiques</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t14">03:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task14', 't14', 10800)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task14')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task14', 't14', 10800)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+    <div class="day-section">
+      <h2 class="day-header">اليوم العاشر: المراجعة النهائية والتمارين</h2>
+      <div class="tasks-container">
+        <div class="task-card" id="task15"><div class="task-header"><span class="task-subject subject-review">مراجعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-question-circle"></i>مراجعة شاملة للمنهج</div><div class="lang-en">Comprehensive Review</div><div class="lang-fr">Révision complète</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t15">02:00:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task15', 't15', 7200)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task15')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task15', 't15', 7200)"><i class="fas fa-redo"></i></button></div></div></div></div>
+         <div class="task-card" id="task16"><div class="task-header"><span class="task-subject subject-review">مراجعة</span></div><div class="task-content"><div class="lang-ar"><i class="fas fa-tasks"></i>حل أسئلة وتدريبات (QCM)</div><div class="lang-en">MCQ Practice & Exercises</div><div class="lang-fr">Pratique QCM & Exercices</div></div><div class="task-footer"><div class="timer-controls"><span class="timer" id="t16">02:30:00</span><div class="button-group"><button class="btn btn-start" onclick="startTimer('task16', 't16', 9000)"><i class="fas fa-play"></i></button><button class="btn btn-complete" onclick="completeTask('task16')"><i class="fas fa-check"></i></button><button class="btn btn-reset" onclick="resetTask('task16', 't16', 9000)"><i class="fas fa-redo"></i></button></div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</script>
+</div>
+
+<script>
+const TOTAL_TASKS = 16; // تم تحديث العدد الإجمالي للمهام
+const LS_KEYS = {
+    STATUS: 'tasksStatus_immuno_10day_v1', // مفتاح جديد لخطة 10 أيام
+    TIMERS: 'activeTimers_immuno_10day_v1' // مفتاح جديد لخطة 10 أيام
+};
+let activeTimers = {};
+
+function formatTime(seconds) {
+    if (isNaN(seconds) || seconds < 0) return "00:00:00";
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
+}
+
+function updateProgress() {
+    const completedCount = document.querySelectorAll('.task-card.completed').length;
+    document.getElementById('completedTasks').innerText = completedCount;
+    document.getElementById('totalTasks').innerText = TOTAL_TASKS;
+    const progress = TOTAL_TASKS > 0 ? (completedCount / TOTAL_TASKS) * 100 : 0;
+    const progressBar = document.getElementById('progressBar');
+    progressBar.style.width = progress + '%';
+    progressBar.innerText = Math.round(progress) + '%';
+}
+
+function saveState() {
+    const tasksStatus = {};
+    document.querySelectorAll('.task-card').forEach(card => {
+        tasksStatus[card.id] = card.classList.contains('completed');
+    });
+    localStorage.setItem(LS_KEYS.STATUS, JSON.stringify(tasksStatus));
+}
+
+function loadState() {
+    const tasksStatus = JSON.parse(localStorage.getItem(LS_KEYS.STATUS));
+    if (tasksStatus) {
+        Object.keys(tasksStatus).forEach(taskId => {
+            const taskElement = document.getElementById(taskId);
+            if (taskElement && tasksStatus[taskId]) {
+                taskElement.classList.add('completed');
+                const buttons = taskElement.querySelectorAll('.btn-start, .btn-complete');
+                buttons.forEach(btn => btn.disabled = true);
+            }
+        });
+    }
+    updateProgress();
+}
+
+function startTimer(taskId, timerId, initialSeconds) {
+    const taskElement = document.getElementById(taskId);
+    if (taskElement.classList.contains('completed') || activeTimers[timerId]) return;
+    
+    let timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    
+    if(timersState[timerId]) delete timersState[timerId];
+
+    const endTime = Date.now() + initialSeconds * 1000;
+    timersState[timerId] = { endTime, taskId, initialSeconds };
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    
+    runTimer(taskId, timerId);
+}
+
+function runTimer(taskId, timerId) {
+    const taskElement = document.getElementById(taskId);
+    if (!taskElement) return;
+    const timerElement = document.getElementById(timerId);
+    const startBtn = taskElement.querySelector('.btn-start');
+    if (startBtn) startBtn.disabled = true;
+
+    if (activeTimers[timerId]) clearInterval(activeTimers[timerId]);
+
+    activeTimers[timerId] = setInterval(() => {
+        const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+        const timerData = timersState[timerId];
+        
+        if (!timerData) {
+            clearInterval(activeTimers[timerId]);
+            delete activeTimers[timerId];
+            return;
+        }
+
+        const now = Date.now();
+        let secondsLeft = Math.round((timerData.endTime - now) / 1000);
+
+        if (secondsLeft <= 0) {
+            clearInterval(activeTimers[timerId]);
+            delete activeTimers[timerId];
+            delete timersState[timerId];
+            localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+            timerElement.textContent = formatTime(0);
+            if (startBtn) startBtn.disabled = false;
+        } else {
+            timerElement.textContent = formatTime(secondsLeft);
+        }
+    }, 1000);
+}
+
+function completeTask(taskId) {
+    const taskElement = document.getElementById(taskId);
+    if (!taskElement) return;
+    taskElement.classList.add('completed');
+    const buttons = taskElement.querySelectorAll('.btn-start, .btn-complete');
+    buttons.forEach(btn => btn.disabled = true);
+    const timerId = taskElement.querySelector('.timer').id;
+    if (activeTimers[timerId]) {
+        clearInterval(activeTimers[timerId]);
+        delete activeTimers[timerId];
+    }
+    let timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    delete timersState[timerId];
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    updateProgress();
+    saveState();
+}
+
+function resetTask(taskId, timerId, initialSeconds) {
+    const taskElement = document.getElementById(taskId);
+    if (!taskElement) return;
+    taskElement.classList.remove('completed');
+    const buttons = taskElement.querySelectorAll('.btn');
+    buttons.forEach(btn => btn.disabled = false);
+    if (activeTimers[timerId]) {
+        clearInterval(activeTimers[timerId]);
+        delete activeTimers[timerId];
+    }
+    let timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    delete timersState[timerId];
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+    document.getElementById(timerId).textContent = formatTime(initialSeconds);
+    updateProgress();
+    saveState();
+}
+
+function initializeTimers() {
+    const timersState = JSON.parse(localStorage.getItem(LS_KEYS.TIMERS)) || {};
+    const now = Date.now();
+    for (const timerId in timersState) {
+        const { endTime, taskId, initialSeconds } = timersState[timerId];
+        const remainingSeconds = Math.max(0, Math.floor((endTime - now) / 1000));
+        const taskElement = document.getElementById(taskId);
+
+        if (taskElement && !taskElement.classList.contains('completed')) {
+            document.getElementById(timerId).textContent = formatTime(remainingSeconds);
+            if (remainingSeconds > 0) {
+                 runTimer(taskId, timerId);
+            } else {
+                delete timersState[timerId];
+            }
+        } else {
+             delete timersState[timerId];
+        }
+    }
+    localStorage.setItem(LS_KEYS.TIMERS, JSON.stringify(timersState));
+}
+
+function displayDates() {
+    const today = new Date();
+    const gregOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('gregorianDateDisplay').textContent = today.toLocaleDateString('ar-DZ', gregOpt);
+    
+    try {
+        const hijriOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', calendar: 'islamic-umalqura' };
+        const hijriDate = new Intl.DateTimeFormat('ar-SA', hijriOpt).format(today);
+        document.getElementById('hijriDateDisplay').textContent = hijriDate;
+    } catch (e) {
+        console.warn("Hijri calendar not supported in this browser.");
+        document.getElementById('hijriDateDisplay').textContent = "غير مدعوم في المتصفح";
+    }
+}
+
+function startEndOfDayCountdown() {
+    const countdownElement = document.getElementById('countdownToEndOfDay');
+    function updateCountdown() {
+        const now = new Date();
+        const endOfDay = new Date(now);
+        endOfDay.setHours(24, 0, 0, 0);
+        const totalSeconds = Math.floor((endOfDay - now) / 1000);
+        
+        if (totalSeconds < 0) {
+            countdownElement.textContent = "00:00:00";
+            return;
+        }
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = Math.floor(totalSeconds % 60);
+        countdownElement.textContent = 
+            `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    initializeTimers();
+    displayDates();
+    startEndOfDayCountdown();
+});
+</script>
+
+</body>
+</html>

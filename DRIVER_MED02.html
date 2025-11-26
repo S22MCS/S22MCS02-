@@ -3,221 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>درايفات كليات الطب </title>
+    <title>درايفات كليات الطب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
+        /* التنسيقات العامة */
         body {
             font-family: 'Tajawal', sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #f8f9fa;
+            background-color: #f0f4f8; /* خلفية أفتح */
+            direction: rtl; /* دعم اللغة العربية */
         }
+        
+        /* شريط العنوان والرأس */
         header {
-            background-color: #0056b3;
+            background-color: #0077b6; /* أزرق طبي */
             color: white;
-            padding: 20px;
+            padding: 25px 20px;
             font-size: 1.8em;
-            font-weight: bold;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative; /* لتثبيت زر العودة */
+        }
+        
+        /* زر العودة للصفحة السابقة */
+        .back-button {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: #ffffff;
+            color: #0077b6;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #e0f2ff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
+        /* أيقونة السهم لزر العودة */
+        .back-button svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.5;
+        }
+
+        /* كونتينر البطاقات */
         .container {
             display: grid;
+            /* تجاوب ذكي: 280px كحد أدنى للعرض */
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            padding: 20px;
-            max-width: 900px;
+            padding: 25px 15px;
+            max-width: 1000px;
             margin: auto;
         }
+        
+        /* تصميم البطاقة الواحدة */
         .card {
-            background: white;
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e0e0e0;
         }
+        
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-7px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            border-color: #0077b6;
         }
+        
+        /* صورة الجامعة (الشعار) */
         .card img {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            border: 3px solid #0077b6; /* إطار أزرق */
         }
+        
+        /* محتوى البطاقة */
         .card-content {
             width: 100%;
         }
+        
         .card h3 {
-            color: #0056b3;
-            margin: 10px 0;
-            font-size: 1.2em;
+            color: #1e3a8a; /* أزرق داكن */
+            margin: 10px 0 15px 0;
+            font-size: 1.3em;
+            font-weight: 800;
         }
+        
+        /* روابط الدرايف */
         .card a {
             display: block;
-            background-color: #0056b3;
+            background-color: #3b82f6; /* أزرق قياسي */
             color: white;
-            padding: 10px;
-            margin: 5px 0;
-            width: 90%;
+            padding: 12px;
+            margin: 8px 10px;
+            width: auto;
             text-align: center;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background 0.3s ease;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.1s;
+            box-shadow: 0 4px 8px rgba(0, 119, 182, 0.2);
         }
+        
         .card a:hover {
-            background-color: #003d80;
+            background-color: #1e40af; /* أزرق أغمق عند التمرير */
+            transform: translateY(-2px);
         }
+
+        /* التجاوب مع الهواتف الصغيرة (أقل من 600px) */
         @media (max-width: 600px) {
+            header {
+                font-size: 1.5em;
+                padding: 20px 10px;
+            }
             .container {
-                grid-template-columns: repeat(2, 1fr);
+                /* الانتقال إلى عمود واحد لزيادة سهولة القراءة على الهواتف الضيقة */
+                grid-template-columns: 1fr;
+                padding: 15px 10px;
+            }
+            .card {
+                padding: 15px;
+                border-radius: 15px;
+            }
+            .card h3 {
+                font-size: 1.2em;
+            }
+            .card img {
+                width: 80px;
+                height: 80px;
+            }
+            /* تصغير زر العودة على الشاشات الصغيرة */
+            .back-button {
+                font-size: 0.85em;
+                padding: 6px 10px;
+                right: 10px;
             }
         }
     </style>
 </head>
 <body>
 
-    <header>درايفات كليات الطب للسنة الثانية</header>
+    <header>
+        درايفات كليات الطب للسنة الثانية
+        <a href="javascript:history.back()" class="back-button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            العودة
+        </a>
+    </header>
     <div class="container">
-
-
-
-
-
-
 
         <div class="card">
             <img src="medicine4.png" alt="جامعة عنابة">
             <div class="card-content">
-                <h3> جامعة عنابة - كلية الطب</h3>
-              
-
+                <h3>جامعة عنابة - كلية الطب</h3>
                 <a href="https://drive.google.com/drive/folders/17VLFVjS4qPgvN6fXL8AxfQqpUinz9PMn">درايف 2024 - 2025</a>
                 <a href="https://drive.google.com/drive/folders/1EUznVq1cxD-mwho5e2g8uzmZ_e0MiwPC">درايف 2023 - 2024</a>
-          
-                
-
             </div>
         </div>
-
-
 
         <div class="card">
             <img src="sidi_bel_abbes_medicine.png" alt="جامعة سيدي بلعباس">
             <div class="card-content">
                 <h3>جامعة سيدي بلعباس - كلية الطب</h3>
-               
-          
-              
                 <a href="https://drive.google.com/drive/folders/1VsrqcpmvjhMYzhH7nCsRTG2Lz79LMdfB">درايف 2024 - 2025</a>
                 <a href="https://drive.google.com/drive/folders/1TZWANm3FmRoIbcY1Al-KdCbS7c42ME9v">درايف 2023 - 2024</a>
-                
-                <a href="https://drive.google.com/drive/folders/1rWi705ue3LR102O1nuY30w5o7pXPyTdy">درايف 2023 - 2024</a>
-      
+                <a href="https://drive.google.com/drive/folders/1rWi705ue3LR102O1nuY30w5o7pXPyTdy">درايف سابق إضافي</a>
             </div>
         </div>
 
+        <div class="card">
+            <img src="setif_medicine.png" alt="جامعة سطيف">
+            <div class="card-content">
+                <h3>جامعة سطيف - كلية الطب</h3>
+                <a href="https://drive.google.com/drive/folders/1AvbQ4GHKWzJ8NnpL6ZNWjgk6lmH-DeNm?usp=drive_link">درايف 2022 - 2023</a>
+                <a href="https://drive.google.com/drive/folders/1V2mSVJUIe6Z2hydJy9EOnG2mhr8qKgdT?usp=drive_link">درايف 2021 - 2022</a>
+                <a href="https://drive.google.com/drive/folders/1oSXhQD9cDo3RSWNbIBDbh3q3_6GnFOJ1?usp=drive_link">درايف 2020 - 2021</a>
+            </div>
+        </div>
 
+        <div class="card">
+            <img src="medicine3.png" alt="جامعة قسنطينة">
+            <div class="card-content">
+                <h3>جامعة قسنطينة - كلية الطب</h3>
+                <a href="#">درايف 2024 - 2025 (قريباً)</a>
+                <a href="https://drive.google.com/drive/folders/1-0DNG8BiUevlS6gBYzwx8kUT7glC3_3C">درايف 2020 - 2021</a>
+            </div>
+        </div>
 
+        <div class="card">
+            <img src="medicine3.png" alt="جامعة باتنة">
+            <div class="card-content">
+                <h3>جامعة باتنة - كلية الطب</h3>
+                <a href="#">درايف 2024 - 2025 (قريباً)</a>
+                <a href="https://drive.google.com/drive/folders/1-5bMz9LZ2naKHMSGnDAyKqKt2cbKVgl5?usp=sharing">درايف 2020 - 2021</a>
+            </div>
+        </div>
 
-
-
-
-
-<!-- جامعة سطيف -->
-<div class="card">
-    <img src="setif_medicine.png" alt="جامعة سطيف">
-    <div class="card-content">
-        <h3>جامعة سطيف - كلية الطب</h3>
-
-      
-        <a href="https://drive.google.com/drive/folders/1AvbQ4GHKWzJ8NnpL6ZNWjgk6lmH-DeNm?usp=drive_link">درايف 2022 - 2023</a>
-      
-        <a href="https://drive.google.com/drive/folders/1V2mSVJUIe6Z2hydJy9EOnG2mhr8qKgdT?usp=drive_link">درايف 2021 - 2022</a>
-      
-        <a href="https://drive.google.com/drive/folders/1oSXhQD9cDo3RSWNbIBDbh3q3_6GnFOJ1?usp=drive_link">درايف 2020 - 2021</a>
-      
-        
-
-    </div>
-</div>
-
-</body>
-</html>
-
-
-
-
-
-<div class="card">
-    <img src="medicine3.png" alt="جامعة قسنطينة">
-    <div class="card-content">
-        <h3>جامعة قسنطينة - كلية الطب</h3>
- 
-        <a href="#">درايف 2024 - 2025</a>
-        <a href="https://drive.google.com/drive/folders/1-0DNG8BiUevlS6gBYzwx8kUT7glC3_3C">درايف 2020 - 2021</a>
-     
-
-    </div>
-</div>
-
-
-
-
-
-
-<div class="card">
-    <img src="medicine3.png" alt="جامعة باتنة">
-    <div class="card-content">
-        <h3>جامعة باتنة - كلية الطب</h3>
- 
-        <a href="#">درايف 2024 - 2025</a>
-        <a href="https://drive.google.com/drive/folders/1-5bMz9LZ2naKHMSGnDAyKqKt2cbKVgl5?usp=sharing">درايف 2020 - 2021</a>
-    </div>
-</div>
-
-
-
-<div class="card">
-    <img src="medicine3.png" alt="جامعة وهران">
-    <div class="card-content">
-        <h3>جامعة وهران - كلية الطب</h3>
- 
-        <a href="#">درايف 2024 - 2025</a>
-        <a href="https://drive.google.com/drive/folders/1--u9N0LLT5AducKA6hf_pYokZaW10Odq?usp=sharing">درايف 2020 - 2021</a>
-    </div>
-</div>
+        <div class="card">
+            <img src="medicine3.png" alt="جامعة وهران">
+            <div class="card-content">
+                <h3>جامعة وهران - كلية الطب</h3>
+                <a href="#">درايف 2024 - 2025 (قريباً)</a>
+                <a href="https://drive.google.com/drive/folders/1--u9N0LLT5AducKA6hf_pYokZaW10Odq?usp=sharing">درايف 2020 - 2021</a>
+            </div>
+        </div>
 
         <div class="card">
             <img src="saida_medicine.png" alt="جامعة سعيدة">
             <div class="card-content">
                 <h3>جامعة سعيدة - كلية الطب</h3>
-        
                 <a href="https://drive.google.com/drive/folders/1-96nqP8pHmZltou_QclBI78sbeiBv9es">درايف 2024 - 2025</a>
-               
             </div>
         </div>
-        
-
-
 
         <div class="card">
             <img src="medicine3.png" alt="جامعة الجزائر">
             <div class="card-content">
                 <h3>جامعة الجزائر - كلية الطب</h3>
-         
-                <a href="#">درايف 2024 - 2025</a>
+                <a href="#">درايف 2024 - 2025 (قريباً)</a>
                 <a href="https://drive.google.com/drive/folders/1N-GOlg84CWR0xQOF3vy8wFUrZXtw0Kla?usp=drive_link">درايف 2020 - 2021</a>
             </div>
         </div>
-        
-
 
     </div>
 </body>
