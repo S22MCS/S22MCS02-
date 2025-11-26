@@ -258,7 +258,7 @@
         </div>
     </div>
 
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', () => {
             const modalContent = document.getElementById('modal-content');
 
@@ -274,12 +274,13 @@
                 timeDiff = currentTime - parseInt(lastVisitTime);
             }
 
+            // سيناريو العودة السريعة (أقل من 3 ساعات)
             if (timeDiff < THREE_HOURS_MS) {
                 modalContent.innerHTML = `
                     <h2 style="color: var(--primary-color);">مرحباً بعودتك!</h2>
                     <p style="font-size: 0.9rem; line-height: 1.5;">أقل من 3 ساعات قد مرت. جاري توجيهك مباشرة...</p>`;
                 setTimeout(() => {
-                    window.location.href = 'home_MED03.html';
+                    window.location.href = 'home_MED03.html'; // هذا الرابط صحيح
                 }, 2500);
                 return;
             } 
@@ -339,13 +340,14 @@
                         <p style="font-size: 0.9rem; line-height: 1.5;">تم إنجاز جميع المهام. جاري تحويلك الآن...</p>`;
                     
                     setTimeout(() => {
-                        window.location.href = 'home_paramedical_01.html';
+                        // هنا تم التصحيح: تغيير الرابط من home_paramedical_01.html إلى home_MED03.html
+                        window.location.href = 'home_MED03.html'; 
                     }, 2500);
                 }
             }
             
             taskButtons.forEach(task => {
-                if(task.btn) { // التأكد من أن الزر موجود قبل إضافة المستمع
+                if(task.btn) {
                     task.btn.addEventListener('click', () => {
                         if (counts[task.key] < task.req) {
                             task.btn.classList.add('clicked');
