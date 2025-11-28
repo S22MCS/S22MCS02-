@@ -230,7 +230,7 @@
             document.getElementById('info-email').textContent = userAuth.email;
             document.getElementById('info-spec').textContent = data.specialization || 'غير محدد';
             document.getElementById('info-year').textContent = data.year || 'غير محدد';
-            document.getElementById('info-phone').textContent = data.phone || 'غير محدد'; // ✅ عرض الهاتف
+            document.getElementById('info-phone').textContent = data.phone || 'غير محدد';
             
             if(data.registrationDate) {
                 const date = data.registrationDate.toDate ? data.registrationDate.toDate() : new Date(data.registrationDate);
@@ -270,7 +270,7 @@
         editBtn.addEventListener('click', () => {
             const currentSpec = document.getElementById('info-spec').textContent;
             const currentYear = document.getElementById('info-year').textContent;
-            const currentPhone = document.getElementById('info-phone').textContent; // ✅ جلب الهاتف الحالي
+            const currentPhone = document.getElementById('info-phone').textContent;
             const yearSelect = document.getElementById('input-year');
 
             // Handle Specialization Logic
@@ -308,19 +308,21 @@
             const otherVal = otherInput.value;
             const newSpec = (selectVal === 'other') ? otherVal : selectVal;
             const newYear = document.getElementById('input-year').value;
-            const newPhone = document.getElementById('input-phone').value; // ✅ قراءة الهاتف الجديد
+            const newPhone = document.getElementById('input-phone').value;
             
             try {
                 const uid = auth.currentUser.uid;
+                
+                // هذا هو الجزء الأهم: استخدام الأسماء الصحيحة (phone, year, specialization)
                 await updateDoc(doc(db, 'users', uid), {
                     specialization: newSpec,
                     year: newYear,
-                    phone: newPhone // ✅ حفظ الهاتف في فايربيس
+                    phone: newPhone
                 });
 
                 document.getElementById('info-spec').textContent = newSpec;
                 document.getElementById('info-year').textContent = newYear;
-                document.getElementById('info-phone').textContent = newPhone || 'غير محدد'; // ✅ تحديث العرض
+                document.getElementById('info-phone').textContent = newPhone || 'غير محدد';
 
                 closeModal();
                 Swal.fire({

@@ -13,8 +13,7 @@
         body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; }
         .nav-item.active { background-color: #e0e7ff; color: #4338ca; border-right: 4px solid #4338ca; }
         .chart-container { position: relative; height: 300px; width: 100%; }
-        /* تنسيق الجدول التحليلي */
-        .matrix-table th, .matrix-table td { text-align: center; border: 1px solid #e5e7eb; padding: 0.75rem; }
+        .matrix-table th, .matrix-table td { text-align: center; border: 1px solid #e5e7eb; padding: 0.75rem; white-space: nowrap; }
         .matrix-table th { background-color: #f9fafb; font-weight: 700; color: #374151; }
         .matrix-table tr:hover { background-color: #f3f4f6; }
     </style>
@@ -119,6 +118,7 @@
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 matrix-table">
                         <thead id="matrix-head"></thead>
                         <tbody id="matrix-body"></tbody>
+                        <tfoot id="matrix-foot" class="bg-gray-50 font-bold text-indigo-900"></tfoot>
                     </table>
                 </div>
             </div>
@@ -129,7 +129,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // إعدادات فايربيس
         const firebaseConfig = {
@@ -144,21 +144,19 @@
         const db = getFirestore(app);
         const adminEmails = ['s22market@gmail.com', 'adatealm@gmail.com', 'adatshifa@gmail.com', 'yacinee474474@gmail.com', 'nourmt01@gmail.com'];
 
-        // متغيرات الشارت لتفادي التكرار عند التحديث
         let regChart = null;
         let specChart = null;
         let yearsChart = null;
 
-        // --- المصادقة (Authentication) ---
         onAuthStateChanged(auth, (user) => {
             const overlay = document.getElementById('login-overlay');
             if (user && adminEmails.includes(user.email)) {
                 overlay.classList.add('hidden');
                 document.getElementById('admin-name').textContent = user.displayName || 'المشرف';
-                initDashboard(); // بدء جلب البيانات
+                initDashboard();
             } else {
                 overlay.classList.remove('hidden');
-                if(user) signOut(auth); // طرد المستخدم إذا لم يكن مشرفاً
+                if(user) signOut(auth);
             }
         });
 
@@ -176,113 +174,106 @@
 
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
-        // --- منطق البيانات والرسوم البيانية ---
         function initDashboard() {
-            // جلب المساهمات (للعدد فقط هنا)
             onSnapshot(collection(db, "student_contributions"), (snap) => {
                 document.getElementById('total-contributions').textContent = snap.size;
-            });
+            }, (err) => document.getElementById('total-contributions').textContent = "0");
 
-            // جلب المستخدمين وتحليل البيانات
-            const q = query(collection(db, "users"), orderBy("registrationDate", "desc"));
+            const q = query(collection(db, "users"));
             onSnapshot(q, (snapshot) => {
-                const users = snapshot.docs.map(doc => {
+                let users = snapshot.docs.map(doc => {
                     const d = doc.data();
-                    // تحويل التاريخ ليكون قابلاً للقراءة
-                    const regDate = d.registrationDate && d.registrationDate.toDate ? d.registrationDate.toDate() : new Date(d.registrationDate || Date.now());
+                    let regDate = d.registrationDate && d.registrationDate.toDate ? d.registrationDate.toDate() : new Date(0);
                     return { ...d, _regDate: regDate };
                 });
+
+                users.sort((a, b) => b._regDate - a._regDate);
 
                 updateKPIs(users);
                 renderRegistrationChart(users);
                 renderSpecializationChart(users);
-                renderYearsMatrix(users); // الشارت التراكمي + الجدول
+                renderYearsMatrix(users); 
             });
         }
 
         function updateKPIs(users) {
             document.getElementById('total-users').textContent = users.length;
-            const uniqueSpecs = new Set(users.map(u => u.specialization));
+            const uniqueSpecs = new Set();
+            users.forEach(u => {
+                if(u.specialization && u.specialization !== 'غير محدد') uniqueSpecs.add(u.specialization);
+            });
             document.getElementById('active-specs').textContent = uniqueSpecs.size;
         }
 
-        // 1. شارت التسجيل الشهري
         function renderRegistrationChart(users) {
             const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
             const counts = new Array(12).fill(0);
-            users.forEach(u => {
-                if(u._regDate) counts[u._regDate.getMonth()]++;
-            });
+            users.forEach(u => { if(u._regDate.getFullYear() > 1970) counts[u._regDate.getMonth()]++; });
 
             const ctx = document.getElementById('registration-chart').getContext('2d');
             if(regChart) regChart.destroy();
-
             regChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: months,
-                    datasets: [{
-                        label: 'المسجلين',
-                        data: counts,
-                        borderColor: '#4f46e5', backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                        borderWidth: 3, tension: 0.4, fill: true
-                    }]
+                    datasets: [{ label: 'المسجلين', data: counts, borderColor: '#4f46e5', backgroundColor: 'rgba(79, 70, 229, 0.1)', borderWidth: 3, tension: 0.4, fill: true }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
         }
 
-        // 2. شارت التخصصات (دونات)
         function renderSpecializationChart(users) {
             const data = {};
             users.forEach(u => {
                 const s = u.specialization || 'غير محدد';
                 data[s] = (data[s] || 0) + 1;
             });
-
             const ctx = document.getElementById('specialization-doughnut').getContext('2d');
             if(specChart) specChart.destroy();
-
             specChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(data),
-                    datasets: [{
-                        data: Object.values(data),
-                        backgroundColor: ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#6366f1'],
-                        borderWidth: 0
-                    }]
+                    datasets: [{ data: Object.values(data), backgroundColor: ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#6366f1'], borderWidth: 0 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
             });
         }
 
-        // 3. تحليل المصفوفة (Matrix) والشارت التراكمي
+        // --- التعديل الجوهري هنا لضمان تطابق الأرقام ---
         function renderYearsMatrix(users) {
             const matrix = {};
-            const years = ["السنة الأولى", "السنة الثانية", "السنة الثالثة", "السنة الرابعة", "السنة الخامسة", "السنة السادسة", "السنة السابعة", "إمتياز / تخرج"];
-            
-            // تجميع البيانات
+            // السنوات الرسمية
+            const standardYears = ["السنة الأولى", "السنة الثانية", "السنة الثالثة", "السنة الرابعة", "السنة الخامسة", "السنة السادسة", "السنة السابعة", "إمتياز / تخرج"];
+            // نضيف عمود إضافي لاستيعاب الأخطاء أو البيانات الناقصة
+            const allColumns = [...standardYears, "سنة غير محددة"];
+
+            // 1. معالجة البيانات وتوزيعها بدقة
             users.forEach(u => {
-                const s = u.specialization || 'غير محدد';
-                const y = u.year || 'غير محدد';
+                const s = u.specialization ? u.specialization : 'تخصص غير محدد';
+                let y = u.year ? u.year : 'سنة غير محددة';
+
+                // إذا كانت السنة الموجودة في قاعدة البيانات غير موجودة في القائمة الرسمية، نضعها في "سنة غير محددة"
+                if (!standardYears.includes(y)) {
+                    y = 'سنة غير محددة';
+                }
+
                 if (!matrix[s]) matrix[s] = {};
                 matrix[s][y] = (matrix[s][y] || 0) + 1;
             });
 
             const specs = Object.keys(matrix);
 
-            // أ. رسم الشارت العمودي التراكمي
-            const datasets = years.map((year, i) => ({
-                label: year,
-                data: specs.map(s => matrix[s][year] || 0),
-                backgroundColor: `hsl(${220 + (i * 10)}, 70%, ${90 - (i * 10)}%)`, // تدرجات لونية ذكية
+            // أ. الرسم البياني
+            const datasets = allColumns.map((colName, i) => ({
+                label: colName,
+                data: specs.map(s => matrix[s][colName] || 0),
+                backgroundColor: i === allColumns.length - 1 ? '#9ca3af' : `hsl(${220 + (i * 10)}, 70%, ${90 - (i * 10)}%)`,
                 stack: 'Stack 0'
             }));
 
             const ctx = document.getElementById('years-spec-bar-chart').getContext('2d');
             if(yearsChart) yearsChart.destroy();
-
             yearsChart = new Chart(ctx, {
                 type: 'bar',
                 data: { labels: specs, datasets: datasets },
@@ -293,23 +284,40 @@
                 }
             });
 
-            // ب. تعبئة الجدول
+            // ب. بناء الجدول
             const thead = document.getElementById('matrix-head');
             const tbody = document.getElementById('matrix-body');
-            
+            const tfoot = document.getElementById('matrix-foot');
+
             // رأس الجدول
-            thead.innerHTML = `<tr><th class="text-right p-3">التخصص</th>${years.map(y => `<th>${y.split(" ")[1] || y}</th>`).join('')}<th>المجموع</th></tr>`;
+            thead.innerHTML = `<tr><th class="text-right p-3">التخصص</th>${allColumns.map(y => `<th>${y.replace("السنة ", "")}</th>`).join('')}<th>المجموع</th></tr>`;
             
+            let grandTotal = 0; // لحساب المجموع الكلي للتأكد
+
             // جسم الجدول
             tbody.innerHTML = specs.map(spec => {
                 let rowSum = 0;
-                const cols = years.map(y => {
+                const cols = allColumns.map(y => {
                     const val = matrix[spec][y] || 0;
                     rowSum += val;
                     return `<td class="${val ? 'bg-indigo-50 font-bold text-indigo-700' : ''}">${val || '-'}</td>`;
                 }).join('');
-                return `<tr><td class="font-bold text-gray-700">${spec}</td>${cols}<td class="bg-gray-100 font-bold">${rowSum}</td></tr>`;
+                grandTotal += rowSum;
+                return `<tr><td class="font-bold text-gray-700">${spec}</td>${cols}<td class="bg-gray-100 font-bold text-gray-900">${rowSum}</td></tr>`;
             }).join('');
+
+            // تذييل الجدول (مجموع الأعمدة)
+            let footerHtml = `<tr><td class="p-3 text-right">الإجمالي الكلي</td>`;
+            allColumns.forEach(col => {
+                let colSum = 0;
+                specs.forEach(spec => colSum += (matrix[spec][col] || 0));
+                footerHtml += `<td>${colSum}</td>`;
+            });
+            footerHtml += `<td class="text-xl">${grandTotal}</td></tr>`;
+            tfoot.innerHTML = footerHtml;
+
+            // تحديث الرقم الكبير في الأعلى ليكون مطابقاً تماماً لمجموع الجدول
+            document.getElementById('total-users').textContent = grandTotal;
         }
     </script>
 </body>

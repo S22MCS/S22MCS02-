@@ -14,6 +14,9 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 4px; }
+        /* تصميم زر التحميل */
+        .loading-spinner { border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid #ffffff; border-radius: 50%; width: 1.5rem; height: 1.5rem; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="h-screen flex overflow-hidden">
@@ -151,7 +154,10 @@
 
             <div class="mt-8 flex justify-end gap-3 border-t pt-4">
                 <button onclick="closeEditModal()" class="px-6 py-2.5 text-gray-700 hover:bg-gray-100 rounded-xl font-medium transition">إلغاء</button>
-                <button onclick="saveUserChanges()" class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition">حفظ التعديلات</button>
+                <button id="save-btn" onclick="saveUserChanges()" class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition flex items-center justify-center disabled:opacity-75">
+                    <span id="save-text">حفظ التعديلات</span>
+                    <span id="save-spinner" class="loading-spinner ml-2 hidden"></span>
+                </button>
             </div>
         </div>
     </div>
@@ -201,13 +207,25 @@
         });
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
-        // --- Loading Users ---
+        // --- Loading Users (The Core of Quick Response) ---
         function loadUsers() {
+            // استخدام onSnapshot يضمن التحديث الفوري للجدول فور تغيير البيانات في Firestore
             const q = query(collection(db, "users"), orderBy("registrationDate", "desc"));
             onSnapshot(q, (snapshot) => {
                 allUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 document.getElementById('users-count').textContent = allUsers.length;
-                renderUsersTable(allUsers);
+                
+                // إعادة عرض الجدول بعد تحديث البيانات
+                const searchTerm = document.getElementById('user-search').value;
+                if(searchTerm) {
+                    filterUsers(); // إذا كان هناك بحث نشط، نطبق الفلتر على البيانات الجديدة
+                } else {
+                    renderUsersTable(allUsers);
+                }
+            }, (error) => {
+                console.error("Error loading users:", error);
+                const tbody = document.getElementById('users-table-body');
+                tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-red-500">فشل في تحميل البيانات. تحقق من الاتصال وقواعد Firestore.</td></tr>'; 
             });
         }
 
@@ -252,6 +270,9 @@
         const editModal = document.getElementById('edit-user-modal');
         const specSelect = document.getElementById('edit-spec');
         const otherInput = document.getElementById('edit-spec-other');
+        const saveBtn = document.getElementById('save-btn');
+        const saveText = document.getElementById('save-text');
+        const saveSpinner = document.getElementById('save-spinner');
 
         specSelect.addEventListener('change', () => {
             if(specSelect.value === 'other') otherInput.classList.remove('hidden');
@@ -281,33 +302,59 @@
         window.closeEditModal = () => editModal.classList.add('hidden');
 
         window.saveUserChanges = async () => {
+            saveBtn.disabled = true;
+            saveText.textContent = 'جاري الحفظ...';
+            saveSpinner.classList.remove('hidden');
+
             const uid = document.getElementById('edit-uid').value;
             const specVal = specSelect.value === 'other' ? otherInput.value : specSelect.value;
             const yearVal = document.getElementById('edit-year').value;
             const phoneVal = document.getElementById('edit-phone').value;
 
             try {
+                // تنفيذ عملية الحفظ
                 await updateDoc(doc(db, 'users', uid), {
                     specialization: specVal,
                     year: yearVal,
                     phone: phoneVal
                 });
-                closeEditModal();
-                Swal.fire({ position: 'top-end', icon: 'success', title: 'تم الحفظ', showConfirmButton: false, timer: 1500, toast: true });
+                
+                // هنا يحدث التحقق السريع: onSnapshot يلتقط التغيير فوراً ويقوم بتحديث الجدول
+                closeEditModal(); 
+                Swal.fire({ 
+                    icon: 'success', 
+                    title: 'تم التحقق والحفظ بنجاح', 
+                    text: 'تم تحديث بيانات الطالب في النظام فورياً.',
+                    showConfirmButton: false, 
+                    timer: 1800 
+                });
             } catch (error) {
-                Swal.fire('خطأ', 'فشل الحفظ', 'error');
+                Swal.fire({ icon: 'error', title: 'فشل الحفظ', text: 'حدث خطأ أثناء تحديث البيانات.' });
+            } finally {
+                saveBtn.disabled = false;
+                saveText.textContent = 'حفظ التعديلات';
+                saveSpinner.classList.add('hidden');
             }
         };
 
         // --- Delete Logic ---
         window.deleteUser = async (uid) => {
-             const result = await Swal.fire({ title: 'حذف السجل؟', text: "سيتم حذف بيانات هذا المستخدم من قاعدة البيانات فقط (لن يتم حذف حساب الدخول Authentication).", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#6b7280', confirmButtonText: 'نعم، حذف' });
+             const result = await Swal.fire({ 
+                 title: 'هل أنت متأكد من الحذف؟', 
+                 text: "سيتم حذف بيانات هذا المستخدم من قاعدة البيانات (لن يتم حذف حساب الدخول Authentication).", 
+                 icon: 'warning', 
+                 showCancelButton: true, 
+                 confirmButtonColor: '#ef4444', 
+                 cancelButtonColor: '#6b7280', 
+                 confirmButtonText: 'نعم، حذف السجل' 
+             });
              if (result.isConfirmed) {
                  try {
                      await deleteDoc(doc(db, "users", uid));
-                     Swal.fire('تم الحذف', '', 'success');
+                     // onSnapshot سيتولى تحديث الجدول تلقائياً
+                     Swal.fire({ icon: 'success', title: 'تم الحذف بنجاح', showConfirmButton: false, timer: 1500 });
                  } catch (e) {
-                     Swal.fire('خطأ', 'فشل الحذف', 'error');
+                     Swal.fire({ icon: 'error', title: 'خطأ', text: 'فشل الحذف.' });
                  }
              }
         }
@@ -319,6 +366,7 @@
                 (u.displayName?.toLowerCase().includes(term)) || 
                 (u.email?.toLowerCase().includes(term)) || 
                 (u.specialization?.includes(term)) ||
+                (u.year?.includes(term)) ||
                 (u.phone?.includes(term))
             );
             renderUsersTable(filtered);
