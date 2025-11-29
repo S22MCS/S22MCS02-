@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>المذاكرة - الذاكرة PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>body { font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }</style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col relative overflow-hidden">
+
+    <div class="p-4 flex justify-between items-center z-20">
+        <a href="srs_index.html" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition backdrop-blur-md flex items-center gap-2">
+            <i class="fas fa-arrow-right"></i> خروج
+        </a>
+        <div class="flex gap-3">
+            <button onclick="togglePomodoro()" class="bg-red-500/20 hover:bg-red-500/40 text-red-300 px-4 py-2 rounded-xl transition backdrop-blur-md flex items-center gap-2 border border-red-500/30">
+                <i class="fas fa-stopwatch"></i> <span id="pomoTimerDisplay">25:00</span>
+            </button>
+            <div class="bg-blue-600 px-4 py-2 rounded-xl font-bold shadow-lg shadow-blue-900/50">
+                متبقي <span id="remainingCount">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-1 flex items-center justify-center p-4 z-10">
+        <div class="w-full max-w-2xl group cursor-pointer perspective-1000" id="cardContainer">
+            <div id="flashcard" class="relative w-full aspect-[4/3] md:aspect-[2/1] bg-slate-800 rounded-3xl shadow-2xl border border-slate-700 transition-all duration-500 transform-style-3d">
+                
+                <div id="cardFront" class="absolute inset-0 flex flex-col items-center justify-center p-6 transition-all duration-300 backface-hidden">
+                    <span class="bg-blue-900/50 text-blue-300 px-4 py-1.5 rounded-full text-sm font-bold mb-6 border border-blue-500/20" id="lessonSubject">المادة</span>
+                    <h1 class="text-3xl md:text-5xl font-black leading-tight text-center" id="lessonTitle">...</h1>
+                    <p class="text-gray-500 mt-10 text-sm animate-pulse flex items-center gap-2">
+                        <i class="fas fa-hand-pointer"></i> اضغط لإظهار الإجابة
+                    </p>
+                </div>
+
+                <div id="cardBack" class="absolute inset-0 bg-slate-800 rounded-3xl flex flex-col items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-all duration-300 transform rotate-y-180">
+                    <h2 class="text-xl md:text-2xl font-bold mb-6 text-gray-300">قيّم حفظك بصدق:</h2>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full">
+                        <button onclick="rateLesson(0)" class="p-4 rounded-2xl bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/30 transition group">
+                            <i class="fas fa-redo text-2xl mb-2 group-hover:rotate-180 transition"></i>
+                            <div class="text-xs font-bold">نسيت (0)</div>
+                        </button>
+
+                        <button onclick="rateLesson(2)" class="p-4 rounded-2xl bg-yellow-500/10 hover:bg-yellow-500 text-yellow-500 hover:text-white border border-yellow-500/30 transition">
+                            <i class="fas fa-exclamation text-2xl mb-2"></i>
+                            <div class="text-xs font-bold">صعب (2)</div>
+                        </button>
+                        
+                        <button onclick="rateLesson(3)" class="p-4 rounded-2xl bg-blue-500/10 hover:bg-blue-500 text-blue-500 hover:text-white border border-blue-500/30 transition">
+                            <i class="fas fa-check text-2xl mb-2"></i>
+                            <div class="text-xs font-bold">جيد (3)</div>
+                        </button>
+
+                        <button onclick="rateLesson(4)" class="p-4 rounded-2xl bg-green-500/10 hover:bg-green-600 text-green-500 hover:text-white border border-green-500/30 transition">
+                            <i class="fas fa-star text-2xl mb-2"></i>
+                            <div class="text-xs font-bold">مثالي (4)</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pomoModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 p-8 rounded-3xl text-center max-w-sm w-full shadow-2xl">
+            <h3 class="text-2xl font-black text-white mb-2">مؤقت التركيز 🍅</h3>
+            <p class="text-gray-400 text-sm mb-6">ادرس لمدة 25 دقيقة بتركيز تام!</p>
+            <div class="text-6xl font-black text-white mb-8 tabular-nums tracking-widest" id="pomoBigTimer">25:00</div>
+            <div class="flex gap-4 justify-center">
+                <button onclick="startPomo()" class="bg-brand hover:bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center text-2xl transition shadow-lg shadow-brand/40"><i class="fas fa-play ml-1"></i></button>
+                <button onclick="resetPomo()" class="bg-slate-700 hover:bg-slate-600 w-16 h-16 rounded-full flex items-center justify-center text-2xl transition"><i class="fas fa-undo"></i></button>
+                <button onclick="closePomo()" class="bg-slate-700 hover:bg-slate-600 w-16 h-16 rounded-full flex items-center justify-center text-2xl transition"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- SRS Logic ---
+        const DB_KEY = 'srs_pro_db_v1';
+        const PARAMS_KEY = 'srs_pro_params_v1';
+        let appData = JSON.parse(localStorage.getItem(DB_KEY)) || { lessons: [], user: { totalReviews: 0 } };
+        let srsParams = JSON.parse(localStorage.getItem(PARAMS_KEY)) || { i1: 1, i2: 6, i3: 16 };
+        
+        let queue = appData.lessons.filter(l => {
+            if (l.layer === undefined) l.layer = 0;
+            if (l.easeFactor === undefined) l.easeFactor = 2.5;
+            return new Date(l.nextReview) <= new Date();
+        }).sort((a, b) => a.layer - b.layer);
+        
+        let currentLesson = null;
+
+        function init() {
+            if(queue.length === 0) {
+                Swal.fire({
+                    icon: 'success', title: 'أحسنت! 🎉', text: 'لا توجد مراجعات الآن.',
+                    confirmButtonText: 'عودة', confirmButtonColor: '#2563eb', allowOutsideClick: false
+                }).then(() => window.location.href = 'srs_index.html');
+                return;
+            }
+            document.getElementById('remainingCount').innerText = queue.length;
+            loadNextCard();
+        }
+
+        function loadNextCard() {
+            if(queue.length === 0) return init();
+            currentLesson = queue[0];
+            const card = document.getElementById('flashcard');
+            const front = document.getElementById('cardFront');
+            const back = document.getElementById('cardBack');
+            
+            front.style.opacity = '1';
+            back.style.opacity = '0';
+            back.style.pointerEvents = 'none';
+            
+            document.getElementById('lessonSubject').innerText = currentLesson.subject;
+            document.getElementById('lessonTitle').innerText = currentLesson.title;
+
+            card.onclick = function() {
+                front.style.opacity = '0';
+                back.style.opacity = '1';
+                back.style.pointerEvents = 'auto';
+                card.onclick = null;
+            };
+        }
+
+        function rateLesson(quality) {
+            let current = currentLesson;
+            current.easeFactor = Math.max(1.3, current.easeFactor + (0.1 - (4 - quality) * (0.08 + (4 - quality) * 0.02)));
+            let nextInterval = 1;
+
+            if (quality < 2) { 
+                current.layer = 0; nextInterval = 1; 
+            } else {
+                current.layer += 1;
+                if (current.layer === 1) nextInterval = srsParams.i1;
+                else if (current.layer === 2) nextInterval = srsParams.i2;
+                else if (current.layer === 3) nextInterval = srsParams.i3;
+                else nextInterval = Math.round(Math.round((new Date() - new Date(current.lastReview)) / 864e5) * current.easeFactor);
+            }
+            
+            const nextDate = new Date();
+            nextDate.setDate(nextDate.getDate() + Math.max(1, nextInterval));
+            current.nextReview = nextDate.toISOString();
+            current.lastReview = new Date().toISOString();
+            
+            const index = appData.lessons.findIndex(l => l.id === current.id);
+            appData.lessons[index] = current;
+            appData.user.totalReviews = (appData.user.totalReviews || 0) + 1;
+            localStorage.setItem(DB_KEY, JSON.stringify(appData));
+            
+            queue.shift();
+            document.getElementById('remainingCount').innerText = queue.length;
+            loadNextCard();
+        }
+
+        // --- Pomodoro Logic ---
+        let pomoInterval;
+        let pomoTime = 25 * 60;
+        
+        function togglePomodoro() { document.getElementById('pomoModal').classList.remove('hidden'); }
+        function closePomo() { document.getElementById('pomoModal').classList.add('hidden'); }
+        
+        function updateDisplay() {
+            const m = Math.floor(pomoTime / 60).toString().padStart(2, '0');
+            const s = (pomoTime % 60).toString().padStart(2, '0');
+            document.getElementById('pomoBigTimer').innerText = `${m}:${s}`;
+            document.getElementById('pomoTimerDisplay').innerText = `${m}:${s}`;
+        }
+
+        function startPomo() {
+            if(pomoInterval) clearInterval(pomoInterval);
+            pomoInterval = setInterval(() => {
+                if(pomoTime > 0) {
+                    pomoTime--;
+                    updateDisplay();
+                } else {
+                    clearInterval(pomoInterval);
+                    new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play();
+                    Swal.fire('انتهى الوقت!', 'خذ استراحة قصيرة ☕', 'info');
+                    resetPomo();
+                }
+            }, 1000);
+            closePomo();
+        }
+
+        function resetPomo() {
+            clearInterval(pomoInterval);
+            pomoTime = 25 * 60;
+            updateDisplay();
+        }
+
+        init();
+    </script>
+</body>
+</html>

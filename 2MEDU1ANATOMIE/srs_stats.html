@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>التحليل - الذاكرة PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Tajawal', 'sans-serif'] }, colors: { brand: { DEFAULT: '#2563eb', dark: '#1d4ed8' }, dark: { bg: '#0f172a', card: '#1e293b', sidebar: '#111827' } }, padding: { 'safe': 'env(safe-area-inset-bottom)' } } } }
+    </script>
+    <style>body { -webkit-tap-highlight-color: transparent; }</style>
+</head>
+<body class="bg-slate-50 dark:bg-dark-bg text-slate-800 font-sans transition-colors duration-300 pb-24 md:pb-0">
+
+    <aside class="hidden md:flex fixed top-0 right-0 h-full w-64 bg-white dark:bg-dark-sidebar border-l border-gray-200 dark:border-gray-700 z-50 flex-col p-6 shadow-xl">
+        <div class="flex items-center gap-3 mb-10">
+            <div class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/40"><i class="fas fa-brain text-xl"></i></div>
+            <h1 class="font-black text-xl dark:text-white">الذاكرة <span class="text-brand">PRO</span></h1>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="srs_index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-home w-6"></i> لوحة القيادة</a>
+            <a href="srs_schedule.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="far fa-calendar-alt w-6"></i> الجدول</a>
+            <a href="srs_study.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-play-circle w-6"></i> المذاكرة</a>
+            <a href="srs_stats.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"><i class="fas fa-chart-pie w-6"></i> التحليل</a>
+            <div class="my-4 border-t border-gray-100 dark:border-gray-700"></div>
+            <a href="srs_settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-cog w-6"></i> الإعدادات</a>
+        </nav>
+    </aside>
+
+    <main class="md:mr-64 min-h-screen p-4 md:p-8">
+        <h1 class="text-3xl font-black text-slate-800 dark:text-white mb-8">تحليل الأداء</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <div class="text-gray-500 text-sm font-bold mb-2">إجمالي الدروس</div>
+                <div class="text-4xl font-black text-brand" id="totalCount">0</div>
+            </div>
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <div class="text-gray-500 text-sm font-bold mb-2">مراجعات مكتملة</div>
+                <div class="text-4xl font-black text-green-500" id="reviewCount">0</div>
+            </div>
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <div class="text-gray-500 text-sm font-bold mb-2">عدد المواد</div>
+                <div class="text-4xl font-black text-purple-500" id="subCount">0</div>
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="font-bold text-lg mb-4 dark:text-white flex items-center gap-2"><i class="fas fa-trophy text-yellow-500"></i> إنجازاتك</h3>
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 grid grid-cols-2 md:grid-cols-4 gap-4" id="badgesContainer">
+                </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 class="font-bold text-lg mb-4 dark:text-white">توزيع المواد</h3>
+                <div class="h-64 flex items-center justify-center"><canvas id="subjectChart"></canvas></div>
+            </div>
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 class="font-bold text-lg mb-4 dark:text-white">جودة الحفظ</h3>
+                <div class="space-y-4" id="progressBars"></div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-gray-200 dark:border-gray-700 pb-safe z-50 flex justify-around items-center h-16 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+        <a href="srs_index.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">الرئيسية</span></a>
+        <a href="srs_schedule.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="far fa-calendar-alt text-xl mb-1"></i><span class="text-[10px] font-bold">الجدول</span></a>
+        <div class="relative -top-5"><a href="srs_study.html" class="w-14 h-14 bg-brand text-white rounded-full shadow-lg shadow-brand/40 flex items-center justify-center text-2xl transform transition active:scale-90 border-4 border-slate-50 dark:border-dark-bg"><i class="fas fa-play pl-1"></i></a></div>
+        <a href="srs_stats.html" class="flex flex-col items-center justify-center w-full h-full text-brand dark:text-blue-400 transition"><i class="fas fa-chart-pie text-xl mb-1"></i><span class="text-[10px] font-bold">تحليل</span></a>
+        <a href="srs_settings.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-cog text-xl mb-1"></i><span class="text-[10px] font-bold">إعدادات</span></a>
+    </nav>
+
+    <script>
+        const DB_KEY = 'srs_pro_db_v1';
+        const SETTINGS_KEY = 'srs_pro_settings_v1';
+        let appData = { lessons: [], user: { totalReviews: 0 } };
+
+        function init() {
+            const d = localStorage.getItem(DB_KEY);
+            if(d) appData = JSON.parse(d);
+            const s = localStorage.getItem(SETTINGS_KEY);
+            if(s && JSON.parse(s).darkMode) document.documentElement.classList.add('dark');
+            updateStats();
+            renderBadges();
+        }
+
+        function renderBadges() {
+            const reviews = appData.user.totalReviews || 0;
+            const badges = [
+                { name: 'بداية الطريق', req: 1, icon: 'fa-shoe-prints', color: 'text-blue-400' },
+                { name: 'مثابر', req: 50, icon: 'fa-fire', color: 'text-orange-500' },
+                { name: 'خبير ذاكرة', req: 100, icon: 'fa-brain', color: 'text-purple-500' },
+                { name: 'أسطوري', req: 500, icon: 'fa-crown', color: 'text-yellow-500' }
+            ];
+
+            const container = document.getElementById('badgesContainer');
+            container.innerHTML = badges.map(b => {
+                const unlocked = reviews >= b.req;
+                return `
+                    <div class="flex flex-col items-center p-3 rounded-2xl ${unlocked ? 'bg-gray-50 dark:bg-slate-800' : 'bg-gray-50/50 opacity-40 grayscale'} transition">
+                        <i class="fas ${b.icon} text-3xl mb-2 ${b.color}"></i>
+                        <div class="text-xs font-bold text-center dark:text-gray-300">${b.name}</div>
+                        <div class="text-[10px] text-gray-400">${b.req} مراجعة</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('totalCount').innerText = appData.lessons.length;
+            document.getElementById('reviewCount').innerText = appData.user.totalReviews || 0;
+            const subjects = [...new Set(appData.lessons.map(l => l.subject))];
+            document.getElementById('subCount').innerText = subjects.length;
+
+            if (subjects.length > 0) {
+                new Chart(document.getElementById('subjectChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: subjects,
+                        datasets: [{ data: subjects.map(s => appData.lessons.filter(l => l.subject === s).length), backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'], borderWidth: 0 }]
+                    },
+                    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } } }
+                });
+            }
+
+            const layers = [0, 0, 0, 0];
+            appData.lessons.forEach(l => {
+                if(l.layer === 0) layers[0]++; else if(l.layer < 3) layers[1]++; else if(l.layer < 5) layers[2]++; else layers[3]++;
+            });
+            
+            const labels = ['جديد / نسيت', 'قيد التعلم', 'مراجعة', 'تم الحفظ'];
+            const colors = ['bg-red-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
+            
+            document.getElementById('progressBars').innerHTML = labels.map((label, i) => {
+                const pct = appData.lessons.length ? (layers[i] / appData.lessons.length * 100).toFixed(0) : 0;
+                return `<div><div class="flex justify-between text-xs font-bold mb-1 dark:text-gray-300"><span>${label}</span><span>${layers[i]}</span></div><div class="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-2"><div class="${colors[i]} h-2 rounded-full" style="width: ${pct}%"></div></div></div>`;
+            }).join('');
+        }
+        init();
+    </script>
+</body>
+</html>
