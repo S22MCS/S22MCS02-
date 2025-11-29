@@ -401,37 +401,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -449,7 +418,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(15, 23, 42, 0.8);
+            background-color: rgba(15, 23, 42, 0.9); /* خلفية أغمق قليلاً للتركيز */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -467,13 +436,17 @@
 
         .notification-modal {
             background-color: #1e293b;
-            padding: 2.5rem;
+            padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
             border: 1px solid #334155;
             text-align: center;
             max-width: 500px;
             width: 90%;
+            /* تحديد ارتفاع أقصى للإشعار لضمان ظهوره كاملاً */
+            max-height: 85vh; 
+            display: flex;
+            flex-direction: column;
             position: relative;
             font-family: 'Cairo', sans-serif;
             transform: scale(0.9);
@@ -484,17 +457,43 @@
             transform: scale(1);
         }
 
+        /* منطقة المحتوى القابلة للتمرير */
+        .modal-scroll-content {
+            overflow-y: auto; /* تفعيل التمرير العمودي */
+            padding-right: 5px; /* مسافة بسيطة */
+            padding-left: 5px;
+            margin-bottom: 15px;
+            text-align: right; /* محاذاة النص لليمين للقراءة الأفضل */
+        }
+
+        /* تنسيق شريط التمرير */
+        .modal-scroll-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-scroll-content::-webkit-scrollbar-track {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        .modal-scroll-content::-webkit-scrollbar-thumb {
+            background: #64748b; 
+            border-radius: 4px;
+        }
+        .modal-scroll-content::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
         .notification-modal h2 {
             color: #f1f5f9;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
             margin-bottom: 1rem;
+            text-align: center;
         }
 
         .notification-modal p {
             color: #94a3b8;
             font-size: 1.1rem;
-            line-height: 1.6;
+            line-height: 1.7;
             margin-bottom: 1.5rem;
         }
 
@@ -507,25 +506,28 @@
             color: #f1f5f9;
             font-weight: 600;
             font-size: 1rem;
+            text-align: center;
         }
         
         /* Container for multiple action buttons */
         .actions-container {
             display: flex;
             justify-content: center;
-            gap: 15px; /* Spacing between buttons */
-            flex-wrap: wrap; /* Allows buttons to stack on small screens */
+            gap: 15px;
+            flex-wrap: wrap;
             margin-top: 1rem;
+            margin-bottom: 1rem;
         }
 
         .action-btn {
             display: inline-block;
             background-color: #3b82f6;
             color: #f1f5f9;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.95rem;
             transition: background-color 0.2s ease, transform 0.2s ease;
         }
 
@@ -534,62 +536,271 @@
             transform: translateY(-2px);
         }
 
-        .close-notification-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: #334155;
+        /* تنسيق زر التأكيد الأخضر الجديد */
+        .confirm-read-btn {
+            background-color: #22c55e; /* لون أخضر */
+            color: white;
             border: none;
-            color: #f1f5f9;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
             font-size: 1.2rem;
-            line-height: 35px;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            z-index: 10;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: auto; /* يدفعه للأسفل */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
         }
-        
-        .close-notification-btn:hover {
-            background-color: #ef4444;
-            transform: rotate(90deg);
+
+        .confirm-read-btn:hover {
+            background-color: #16a34a;
+            transform: translateY(-2px);
         }
+
+        .confirm-read-btn:active {
+            transform: translateY(0);
+        }
+
     </style>
 </head>
 <body>
 
     <div class="notification-overlay">
         <div class="notification-modal">
-            <button class="close-notification-btn">&times;</button>
-            <h2>📢 تحديث هام</h2>
-            <p>يتم حالياً العمل على مواد <strong>السنة الأولى</strong> و<strong>السنة الثالثة</strong>، وستتوفر في القريب العاجل. انتظرونا!</p>
-            <div class="store-info">
-                🛒 ولا تنسى الاطلاع على متجرنا، فهو متوفر داخل <strong>السنة الأولى والثانية والثالثة</strong>.
+            <div class="modal-scroll-content">
+                <h2>📢 تحديث هام</h2>
+                <p style="text-align: center;">يتم حالياً العمل على مواد <strong>السنة الأولى</strong> و<strong>السنة الثالثة</strong>، وستتوفر في القريب العاجل. انتظرونا!</p>
+                <div class="store-info">
+                    🛒 ولا تنسى الاطلاع على متجر S22MARKET، فهو متوفر داخل <strong>السنة الأولى والثانية والثالثة</strong>.
+                </div>
             </div>
+            <button class="confirm-read-btn">نعم، قرأت ذلك</button>
         </div>
     </div>
 
+
     <div class="notification-overlay">
         <div class="notification-modal">
-            <button class="close-notification-btn">&times;</button>
-            <h2>📌 دعم ومساندة</h2>
-            <p>قال رسول الله (ﷺ): "مَنْ جهَّزَ غَازِيًا في سبيلِ اللَّهِ فَقَدْ غَزَا، ومنْ خَلَفَ غَازِيًا في أَهْلِهِ بخَيْر فَقَدْ غزَا".</p>
-            <div class="actions-container">
-                <a href="https://t.me/S22MCS/1945" target="_blank" class="action-btn">🔻 الاطلاع على المنشور 🔻</a>
+            <div class="modal-scroll-content">
+                <h2> السلام عليكم ورحمة الله تعالى وبركاته </h2>
+                <p>نتشرف بانضمامك الينا  وانك تسعى   الى   الدراسة  والتلقين  الأولي بالغة العربية الى جانب  بقية اللغات الاخرى .</p>
+                <p> كل خدماتنا  مجانية لذا نرجو منكم فقط ان  تلين قلوبكم وان لا تتجاهلوا بعض الاعلانات والأخبار التي نقدمها  لكم وان لا تجعلو الغيظ   وسيلة تبرير لتجاهل اوضاع المسلمين المعايشة بزمننا نعلم ان الابتلاءات والمحن كثيرة لذا لنحاول الصبر معنا وتدريب انفسنا فالمسلم عليه ان يؤطر نفسه فلا يعلم  متى سيموت وغايته الوحيدة التقرب الى الله مدام حيا بما يرضي الله عنى   .</p>
+                
+                <p>
+                  لذا حاول ثم حاول ان تشحن نفسك  ولا تدع ملهيات الغرب والعدو تنسيك دورك وغايتك الدنيوية ولا تدع الشيطان يزين لك ان الأعمال والنهايات الصالحة يجب ن تكون سابقاتها اعمال صالحة   فالا انت ولا نحن  ولا اي اي مسلم ندري اي عمل سيغفر لنا  به لذلك علينا السعي مهما بلغت  ذنوبنا على وجه الارض فما دمت بك روح اسثمرها في اي عمل يرضي الله به عنك 
+                </p>
+
+                <p>   معنا ستكون فردا باذن الله معايشا لهويتك الاسلامية ان شاء الله   وقريبا من واقعك  سنحاول بما نستطيع السعي في هاذا الطريق 
+                <br><br>
+                   طريق رد الاعتبار للتلقين الأولي بالغة العربية للطلاب الجامعين   في شتى المجالات فالفكرة اليوم عادة جيل غداً 
+                <br>
+                ازالة الشوائب و المغالطات  بما  نقدر عليه باذن الله عز وجل و السعي للتصدي لاجندة   العدو على المسلمين   
+                <br><br>
+                تذكر ان دين الاسلام شريعة حياة لا جزء ثانوي فهما بلغت خطايانا لا نجهل  ونبرر ان هناك خيرا من حكم الله علينا  
+                يعني مهما بلغت ذنوبك حاول العودة ما دمت حي وبيدك الفرصة فما الحياة  الدنيا الى ساعات فانية وعند الله  تلتقي الخصوم 
+                <br><br>
+                حاول ان تجد لنفسك ايها المسلم ثغرا تقف عليه  فعصرنا مليئ بها  فجانح الاعلام غير موجود بامتنا حاول ان تساهم به  وتضيف جناح اخر تساهم به وترتبط المسلمين بما تجده من خير  واجرك على الله 
+                <br><br>
+                تذكر لا يشحد الحديد الى الحديد فان تعرض عن  دور تراه بسيط او لن يغني   كالاعلام  هاذا  مساهمة منك  في جانب عدوك على المسلمين والله اعلى و اعلم 
+                </p>
+                
+                <div class="actions-container">
+                    <a href="https://t.me/S22MCS" target="_blank" class="action-btn">قناة طلبة الحل النهائي الفعال  التيليجرام</a>
+                </div>
             </div>
+             <button class="confirm-read-btn">نعم، قرأت ذلك</button>
         </div>
     </div>
-    
+
+
     <div class="notification-overlay">
         <div class="notification-modal">
-            <button class="close-notification-btn">&times;</button>
-            <h2>🎉 موقع شباب العصر</h2>
-            <p>نتشرف بأن نزف إليكم موقع وقناة شباب العصر. انضموا إلينا وكونوا جزءًا من مجتمعنا.</p>
-            <div class="actions-container">
-                <a href="https://t.me/shabab_al_easr" target="_blank" class="action-btn">الموقع الرسمي</a>
-                <a href="https://t.me/shabab_al_easr/12" target="_blank" class="action-btn">قناة التيليجرام</a>
+             <div class="modal-scroll-content">
+                <h2>📌يخص كل مسلم دعم ومساندة</h2>
+                <h2>📌 دماء  المسلمين في اعنقائنا الى يوم القيامة مادمنا من المسلمين  سواء بغزة او بفلسطين او بالسودان او الصين او  الأمصار العربية وكل المعمورة    </h2>
+            
+                <h2> تحفظ دمائنا  لما تكون غالية في نظرنا  قبل غيرها</h2>
+
+                <p>
+            </p>
+
+
+
+
+
+
+
+
+
+<section class="content" aria-labelledby="intro" style="display:flex; flex-direction:column; gap:18px;">
+
+  <!-- فقرة 1 -->
+  <p id="intro" 
+     style="
+        background:rgb(250, 250, 250);
+        padding:14px 16px;
+        border-radius:14px;
+        border:1px solid rgb(255, 255, 255);
+        font-size:17px;
+        line-height:1.8;
+     ">
+    بسم الله الرحمن الرحيم
+    
+    <br>
+                ﴿ الذين آمنوا وهاجروا وجاهدوا في سبيل الله بأموالهم وأنفسهم أعظم درجة عند الله وأولئك هم الفائزون ﴾ [ التوبة: 20]
+             
+
+  </p>
+
+  <!-- بلوك اقتباس -->
+  <blockquote 
+     style="
+        background:rgb(229, 227, 227);
+        padding:16px;
+        border-left:4px solid rgb(255, 255, 255);
+        border-radius:10px;
+        font-size:16px;
+        line-height:1.8;
+     ">
+    <strong>حديث عن رسول الله صلى الله عليه وسلم</strong><br>
+
+
+
+    أنَّ رَسولَ اللَّهِ صَلَّى اللهُ عليه وسلَّمَ قالَ:  
+    <em>
+        
+             أنَّ رَسولَ اللَّهِ صَلَّى اللهُ عليه وسلَّمَ قالَ: مَن جَهَّزَ غَازِيًا في سَبيلِ اللَّهِ فقَدْ غَزَا، وَمَن خَلَفَ غَازِيًا في سَبيلِ اللَّهِ بخَيْرٍ فقَدْ غَزَا.
+              
+
+    </em><br><br>
+
+                الراوي : زيد بن خالد الجهني | المحدث : البخاري | المصدر : صحيح البخاري
+                الصفحة أو الرقم: 2843 | خلاصة حكم المحدث : [صحيح]
+              
+  </blockquote>
+
+
+
+                <p>
+                🔻المشاركات نوع من الدعم  المعنوي لكل مسلم من اهل السنة والجماعة عامة و المجاهدين خاصة  فقد يوقع في نفس المسلم التبرع وبذل المال كما يبذل داعمِ العدو من كل مكان عداوة في دين الله عز وجل 
+
+                التبرع للمجاهدين بقناتهم او لاهلهم بجمعية البركة الجزائرية او مرقاة بغزة الأبية
+                او الى اهلهم في البلد المقيم به 
+                </p>
+
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="actions-container">
+  <a href="https://dorar.net/hadith/sharh/85895" target="_blank" class="action-btn">
+    🔻 مصدر الحديث موقع الدرر السنية: 🔻
+  </a>
+</div>
+
+<div class="actions-container">
+  <a href="https://t.me/S22MCS/3093" target="_blank" class="action-btn">
+    🔻 مصدر الفيديو للمقاومة الفلسطينية من طرف كتائب الشهيد عز الدين القسام 🔻
+  </a>
+</div>
+
+<div class="actions-container">
+  <a href="https://telegram.org/apps" target="_blank" class="action-btn">
+    لتحميل التيليجرام من المصدر الرسمي لمختلف الأجهزة كون متاجر كقوقل وابل تحجب المسلم عن المسلم:
+  </a>
+</div>
+
+<div class="actions-container">
+  <a href="https://t.me/elbarakadz" target="_blank" class="action-btn">
+    قناة جمعية البركة الجزائرية على تطبيق التيليجرام
+  </a>
+</div>
+
+<div class="actions-container">
+  <a href="https://t.me/almarqaa" target="_blank" class="action-btn">
+    قناة المرقاة على تطبيق التيليجرام
+  </a>
+</div>
+
+<div class="actions-container">
+  <a href="https://t.me/S22MCS/3094" target="_blank" class="action-btn">
+    🔻 الاطلاع على المنشور 🔻
+  </a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             
+       
+
+  
             </div>
+             <button class="confirm-read-btn">نعم، قرأت ذلك</button>
         </div>
     </div>
 
@@ -604,25 +815,24 @@
             }
 
             const overlay = notificationOverlays[index];
-            const closeBtn = overlay.querySelector('.close-notification-btn');
+            // تحديد الزر الأخضر داخل هذا الإشعار
+            const confirmBtn = overlay.querySelector('.confirm-read-btn');
 
             const hideAndProceed = () => {
                 overlay.classList.remove('active');
+                
+                // إزالة المستمع لتجنب التكرار
+                confirmBtn.removeEventListener('click', hideAndProceed);
+                
                 setTimeout(() => {
-                    closeBtn.removeEventListener('click', hideAndProceed);
-                    overlay.removeEventListener('click', handleOverlayClick);
                     showNotification(index + 1);
                 }, 300);
             };
 
-            const handleOverlayClick = (event) => {
-                if (event.target === overlay) {
-                    hideAndProceed();
-                }
-            };
-
-            closeBtn.addEventListener('click', hideAndProceed);
-            overlay.addEventListener('click', handleOverlayClick);
+            // تفعيل الزر الأخضر فقط للانتقال
+            confirmBtn.addEventListener('click', hideAndProceed);
+            
+            // إظهار الإشعار
             overlay.classList.add('active');
         }
 
@@ -634,13 +844,6 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
 
 
 

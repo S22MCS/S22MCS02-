@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الجدول الزمني - الذاكرة PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = { 
+            darkMode: 'class', 
+            theme: { 
+                extend: { 
+                    fontFamily: { sans: ['Tajawal', 'sans-serif'] }, 
+                    colors: { 
+                        brand: { DEFAULT: '#2563eb', dark: '#1d4ed8' }, 
+                        dark: { bg: '#0f172a', card: '#1e293b', sidebar: '#111827' } 
+                    },
+                    padding: { 'safe': 'env(safe-area-inset-bottom)' } // لدعم شريط التنقل السفلي
+                } 
+            } 
+        }
+    </script>
+    <style>
+        body { -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-dark-bg text-slate-800 font-sans transition-colors duration-300 pb-24 md:pb-0">
+
+    <aside class="hidden md:flex fixed top-0 right-0 h-full w-64 bg-white dark:bg-dark-sidebar border-l border-gray-200 dark:border-gray-700 z-50 flex-col p-6 shadow-xl">
+        <div class="flex items-center gap-3 mb-10">
+            <div class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/40"><i class="fas fa-brain text-xl"></i></div>
+            <h1 class="font-black text-xl dark:text-white">الذاكرة <span class="text-brand">PRO</span></h1>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="srs_index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-home w-6"></i> لوحة القيادة</a>
+            <a href="srs_schedule.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"><i class="far fa-calendar-alt w-6"></i> الجدول</a>
+            <a href="srs_manage.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-edit w-6"></i> المحتوى</a>
+            <a href="srs_library.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-layer-group w-6"></i> المكتبة</a>
+            <a href="srs_stats.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-chart-pie w-6"></i> التحليل</a>
+            <div class="my-4 border-t border-gray-100 dark:border-gray-700"></div>
+            <a href="srs_settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-cog w-6"></i> الإعدادات</a>
+        </nav>
+    </aside>
+
+    <main class="md:mr-64 min-h-screen p-4 md:p-8">
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-black text-slate-800 dark:text-white">جدول المراجعة 🗓️</h1>
+            <a href="srs_study.html" class="bg-brand hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-brand/30 transition flex items-center gap-2 active:scale-95">
+                <i class="fas fa-play"></i> ابدأ المذاكرة الآن
+            </a>
+        </header>
+
+        <div class="space-y-8" id="scheduleContainer">
+            </div>
+    </main>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-gray-200 dark:border-gray-700 pb-safe z-50 flex justify-around items-center h-16 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+        <a href="srs_index.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">الرئيسية</span></a>
+        
+        <a href="srs_schedule.html" class="flex flex-col items-center justify-center w-full h-full text-brand dark:text-blue-400 transition"><i class="far fa-calendar-alt text-xl mb-1"></i><span class="text-[10px] font-bold">الجدول</span></a>
+        
+        <div class="relative -top-5">
+            <button onclick="openModal()" class="w-14 h-14 bg-brand text-white rounded-full shadow-xl shadow-brand/40 flex items-center justify-center text-2xl transform transition active:scale-90 hover:scale-105 border-4 border-slate-50 dark:border-dark-bg">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+
+        <a href="srs_stats.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-chart-pie text-xl mb-1"></i><span class="text-[10px] font-bold">تحليل</span></a>
+        
+        <a href="srs_settings.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-cog text-xl mb-1"></i><span class="text-[10px] font-bold">إعدادات</span></a>
+    </nav>
+    
+    <div id="addModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="relative bg-white dark:bg-dark-card w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-8 transform scale-90 opacity-0 transition-all duration-300" id="modalCard">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-black text-slate-800 dark:text-white">إضافة محتوى جديد</h3>
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-gray-500 dark:text-gray-300 transition hover:bg-red-500/10 hover:text-red-500"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 mb-1 block">المادة</label>
+                    <input type="text" id="inpSubject" list="subjectsList" class="w-full bg-gray-50 dark:bg-slate-800 border-transparent focus:border-brand rounded-xl p-4 font-bold dark:text-white outline-none border-2 transition" placeholder="مثال: تشريح...">
+                    <datalist id="subjectsList"></datalist>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 mb-1 block">عنوان الدرس / المراجعة</label>
+                    <input type="text" id="inpTitle" class="w-full bg-gray-50 dark:bg-slate-800 border-transparent focus:border-brand rounded-xl p-4 font-bold dark:text-white outline-none border-2 transition" placeholder="ما هي دورة كريبس؟">
+                </div>
+                <button onclick="saveLesson()" class="w-full bg-brand text-white font-black py-4 rounded-xl shadow-lg shadow-brand/30 mt-4 active:scale-95 transition hover:bg-brand-dark">حفظ في الجدول</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DB_KEY = 'srs_pro_db_v1';
+        const SETTINGS_KEY = 'srs_pro_settings_v1';
+        let appData = { lessons: [], user: { streak: 0, lastLogin: null, totalReviews: 0 } };
+
+        function init() {
+            // تحميل البيانات
+            const d = localStorage.getItem(DB_KEY);
+            if(d) appData = JSON.parse(d);
+
+            // تفعيل الوضع الليلي
+            const s = localStorage.getItem(SETTINGS_KEY);
+            if(s && JSON.parse(s).darkMode) document.documentElement.classList.add('dark');
+            
+            renderSchedule();
+
+            // تعبئة قائمة المواد المقترحة (لنافذة الإضافة)
+            const subs = [...new Set(appData.lessons.map(l => l.subject).filter(s => s))];
+            document.getElementById('subjectsList').innerHTML = subs.map(s => `<option value="${s}">`).join('');
+        }
+        
+        // ===================================
+        //           منطق الجدول الزمني
+        // ===================================
+
+        function renderSchedule() {
+            const data = JSON.parse(localStorage.getItem(DB_KEY)) || { lessons: [] };
+            const lessons = data.lessons;
+            const container = document.getElementById('scheduleContainer');
+            
+            // تهيئة التواريخ للمقارنة
+            const today = new Date(); today.setHours(0,0,0,0);
+            const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const groups = { overdue: [], today: [], tomorrow: [], later: [] };
+
+            lessons.sort((a, b) => new Date(a.nextReview) - new Date(b.nextReview));
+
+            lessons.forEach(l => {
+                // التأكد من وجود خصائص أساسية
+                if (l.layer === undefined) l.layer = 0;
+
+                const due = new Date(l.nextReview); due.setHours(0,0,0,0);
+                
+                if (due < today) groups.overdue.push(l);
+                else if (due.getTime() === today.getTime()) groups.today.push(l);
+                else if (due.getTime() === tomorrow.getTime()) groups.tomorrow.push(l);
+                else groups.later.push(l);
+            });
+
+            let html = '';
+
+            // 1. المتأخرة
+            if (groups.overdue.length > 0) {
+                html += createSection('متأخرة', groups.overdue, 'text-red-500', 'border-red-500', 'يجب مراجعتها فوراً');
+            }
+
+            // 2. اليوم
+            html += createSection('اليوم', groups.today, 'text-green-600', 'border-green-500', 'لا يوجد مهام لليوم، خذ راحة!');
+
+            // 3. غداً
+            if (groups.tomorrow.length > 0) {
+                html += createSection('غداً', groups.tomorrow, 'text-blue-500', 'border-blue-500', 'كل شيء معد للمراجعة غداً');
+            }
+
+            // 4. قادمة
+            if (groups.later.length > 0) {
+                html += createSection('قادمة', groups.later, 'text-gray-500', 'border-gray-300', 'خطتك المستقبلية');
+            }
+            
+            if (lessons.length === 0) {
+                container.innerHTML = `<div class="text-center py-16 bg-white dark:bg-dark-card rounded-3xl border border-dashed border-gray-200 dark:border-gray-700 shadow-inner">
+                    <div class="w-16 h-16 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand text-2xl"><i class="fas fa-clipboard-list"></i></div>
+                    <h3 class="font-black text-xl dark:text-white mb-2">الجدول فارغ!</h3>
+                    <p class="text-gray-500 mb-4">أضف أول درس لك لبدء رحلة التكرار المتباعد.</p>
+                    <button onclick="openModal()" class="bg-brand text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg shadow-brand/30 active:scale-95 transition">
+                        <i class="fas fa-plus ml-1"></i> إضافة درس جديد
+                    </button>
+                </div>`;
+                return;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function createSection(title, items, colorClass, borderClass, emptyMsg) {
+            if (items.length === 0 && !emptyMsg) return '';
+            
+            let sectionHtml = `
+                <div class="py-4 border-b border-gray-100 dark:border-gray-800 last:border-b-0">
+                    <h2 class="text-xl font-bold mb-4 ${colorClass} flex items-center gap-2">
+                        <i class="fas fa-calendar-day"></i> ${title} 
+                        <span class="text-sm font-medium bg-gray-100 dark:bg-slate-700 px-3 py-0.5 rounded-full text-gray-500">${items.length}</span>
+                    </h2>
+            `;
+
+            if (items.length === 0) {
+                sectionHtml += `<div class="p-4 rounded-2xl bg-gray-50 dark:bg-slate-800 text-gray-400 text-sm font-bold text-center border-2 border-dashed border-gray-200 dark:border-gray-700">${emptyMsg}</div>`;
+            } else {
+                sectionHtml += `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">`;
+                items.forEach(l => {
+                    const date = new Date(l.nextReview).toLocaleDateString('ar-EG', { weekday: 'long', month: 'long', day: 'numeric' });
+                    sectionHtml += `
+                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl shadow-sm border-r-4 ${borderClass} dark:border-opacity-50 hover:shadow-lg transition">
+                            <div class="text-[10px] text-gray-400 font-bold mb-1">${l.subject}</div>
+                            <h3 class="font-bold text-slate-800 dark:text-white truncate">${l.title}</h3>
+                            <div class="mt-3 flex justify-between items-center text-xs text-gray-400">
+                                <span class="text-blue-500"><i class="fas fa-layer-group"></i> مستوى ${l.layer}</span>
+                                <span>${date}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                sectionHtml += `</div>`;
+            }
+            sectionHtml += `</div>`;
+            return sectionHtml;
+        }
+
+        // ===================================
+        //           منطق نافذة الإضافة
+        // ===================================
+
+        function openModal() {
+            document.getElementById('addModal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('modalCard').classList.remove('scale-90', 'opacity-0');
+                document.getElementById('modalCard').classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            document.getElementById('modalCard').classList.remove('scale-100', 'opacity-100');
+            document.getElementById('modalCard').classList.add('scale-90', 'opacity-0');
+            setTimeout(() => document.getElementById('addModal').classList.add('hidden'), 300);
+        }
+
+        function saveLesson() {
+            const subject = document.getElementById('inpSubject').value.trim();
+            const title = document.getElementById('inpTitle').value.trim();
+            
+            if(!subject || !title) {
+                Swal.fire({ icon: 'error', title: 'خطأ', text: 'الرجاء ملء حقل المادة والعنوان.', toast: true, position: 'top-end', showConfirmButton: false, timer: 2000 });
+                return;
+            }
+            
+            const now = new Date();
+            const next = new Date(); 
+            next.setDate(now.getDate() + 1); // أول مراجعة بعد يوم واحد
+
+            appData.lessons.push({ 
+                id: Date.now() + Math.random(), 
+                subject, 
+                title, 
+                layer: 0, 
+                nextReview: next.toISOString(), 
+                lastReview: now.toISOString(), 
+                easeFactor: 2.5 
+            });
+            
+            localStorage.setItem(DB_KEY, JSON.stringify(appData));
+            
+            closeModal();
+            renderSchedule(); // لتحديث الجدول فوراً
+            document.getElementById('inpTitle').value = '';
+            
+            Swal.fire({ 
+                icon: 'success', 
+                title: 'تمت إضافة الدرس!', 
+                toast: true, 
+                position: 'top-end', 
+                showConfirmButton: false, 
+                timer: 1500 
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>

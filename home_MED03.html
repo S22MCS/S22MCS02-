@@ -1,3 +1,13 @@
+<script>
+// نخزن عنوان هذه الصفحة الحالية كعنوان للعودة إليه لاحقًا.
+// هذه هي "بطاقة العنوان" التي نضعها في جيب المستخدم.
+sessionStorage.setItem('return_url_safe', window.location.href);
+</script>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -128,17 +138,34 @@
    </section>
 </header>
 
+
+
+
+
+
 <aside class="side-bar">
    <div class="close-btn-container">
       <div id="close-btn" class="fas fa-times icon-btn"></div>
    </div>
+
+
+
+
+
+
+
+
    <nav class="navbar">
-      <a href="home_MED03.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+
+
+
+  <a href="home_MED03.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
     
   <a href="user_profile.html" class="special-btn">
         <i class="fas fa-id-card-alt"></i>
         <span>حسابي الشخصي</span>
     </a>
+
 
     <a href="contribute.html" class="special-btn">
         <i class="fas fa-lightbulb"></i>
@@ -182,6 +209,40 @@
       </span></a>
 
 
+
+
+
+
+
+
+<a href="#" onclick="goBackWithAccuracy()" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"> 
+    <i class="fas fa-arrow-left w-6"></i> العودة للصفحة السابقة
+</a>
+
+<script>
+function goBackWithAccuracy() {
+    // 1. نبحث عن "بطاقة العنوان" المخزنة
+    const storedUrl = sessionStorage.getItem('return_url_safe');
+
+    if (storedUrl) {
+        // 2. إذا وجدنا العنوان، ننتقل إليه مباشرةً!
+        window.location.href = storedUrl;
+    } else {
+        // 3. إذا لم نجد العنوان (لأن المستخدم بدأ التصفح من هنا)، نعود خطوة واحدة عادية.
+        window.history.back();
+    }
+}
+</script>
+
+
+
+
+
+
+      <a href="srs_index.html" class="new-pro-btn">
+    <i class="fas fa-brain" style="color: #ffaa00;"></i> 
+    <span>الذاكرة أداة علم </span>
+</a>
 
   
 <a href="BOREDTAZASLTIB.htm"class="TAWASLE_ADAT_TAHDITAT_MED02-btn" id="TAWASLE_ADAT_TAHDITAT_MED02Btn" data-count="3" onclick="TAWASLE_ADAT_TAHDITAT_MED02_togglePopup()">

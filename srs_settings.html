@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الإعدادات - الذاكرة PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Tajawal', 'sans-serif'] }, colors: { brand: { DEFAULT: '#2563eb', dark: '#1d4ed8' }, dark: { bg: '#0f172a', card: '#1e293b', sidebar: '#111827' } }, padding: { 'safe': 'env(safe-area-inset-bottom)' } } } }
+    </script>
+    <style>body { -webkit-tap-highlight-color: transparent; }</style>
+</head>
+<body class="bg-slate-50 dark:bg-dark-bg text-slate-800 font-sans transition-colors duration-300 pb-24 md:pb-0">
+
+    <aside class="hidden md:flex fixed top-0 right-0 h-full w-64 bg-white dark:bg-dark-sidebar border-l border-gray-200 dark:border-gray-700 z-50 flex-col p-6 shadow-xl">
+        <div class="flex items-center gap-3 mb-10">
+            <div class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/40"><i class="fas fa-brain text-xl"></i></div>
+            <h1 class="font-black text-xl dark:text-white">الذاكرة <span class="text-brand">PRO</span></h1>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="srs_index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-home w-6"></i> لوحة القيادة</a>
+            <a href="srs_schedule.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="far fa-calendar-alt w-6"></i> الجدول</a>
+            <a href="srs_study.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-play-circle w-6"></i> المذاكرة</a>
+            <a href="srs_stats.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-chart-pie w-6"></i> التحليل</a>
+            <div class="my-4 border-t border-gray-100 dark:border-gray-700"></div>
+            <a href="srs_settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"><i class="fas fa-cog w-6"></i> الإعدادات</a>
+        </nav>
+    </aside>
+
+    <main class="md:mr-64 min-h-screen p-4 md:p-8">
+        <h1 class="text-3xl font-black text-slate-800 dark:text-white mb-8">الإعدادات</h1>
+
+        <div class="max-w-3xl space-y-6 mx-auto md:mx-0">
+            
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 class="font-bold text-lg dark:text-white mb-2 flex items-center gap-2"><i class="fas fa-cloud-upload-alt text-brand"></i> النسخ الاحتياطي</h3>
+                <p class="text-sm text-gray-500 mb-6">احفظ بياناتك في ملف خارجي لاستعادتها لاحقاً أو نقلها لجهاز آخر.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button onclick="exportData()" class="flex items-center justify-center gap-2 py-4 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 rounded-xl font-bold hover:bg-blue-100 transition border border-blue-200 dark:border-blue-800">
+                        <i class="fas fa-download"></i> تصدير البيانات
+                    </button>
+                    
+                    <label class="cursor-pointer flex items-center justify-center gap-2 py-4 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-300 rounded-xl font-bold hover:bg-green-100 transition border border-green-200 dark:border-green-800">
+                        <i class="fas fa-upload"></i> استعادة نسخة
+                        <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(this)">
+                    </label>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 class="font-bold text-lg dark:text-white mb-4"><i class="fas fa-cogs ml-2 text-brand"></i> فواصل التكرار (SRS)</h3>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500">مراجعة 1 (يوم)</label>
+                        <input type="number" id="interval-1" class="w-full p-3 mt-1 border rounded-xl dark:bg-slate-800 dark:text-white dark:border-slate-600 text-center font-bold" min="1">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500">مراجعة 2 (أيام)</label>
+                        <input type="number" id="interval-2" class="w-full p-3 mt-1 border rounded-xl dark:bg-slate-800 dark:text-white dark:border-slate-600 text-center font-bold" min="2">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500">مراجعة 3 (أيام)</label>
+                        <input type="number" id="interval-3" class="w-full p-3 mt-1 border rounded-xl dark:bg-slate-800 dark:text-white dark:border-slate-600 text-center font-bold" min="3">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 flex justify-between items-center cursor-pointer" onclick="toggleTheme()">
+                <div>
+                    <h3 class="font-bold text-lg dark:text-white">الوضع الليلي</h3>
+                    <p class="text-sm text-gray-500">مريح للعين أثناء الليل</p>
+                </div>
+                <div class="w-14 h-8 bg-gray-200 dark:bg-brand rounded-full relative transition-colors duration-300">
+                    <div class="w-6 h-6 bg-white rounded-full absolute top-1 left-1 dark:left-7 transition-all shadow-sm"></div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-dark-card p-6 rounded-3xl shadow-sm border border-red-100 dark:border-red-900/30">
+                <h3 class="font-bold text-lg text-red-500 mb-4">منطقة الخطر</h3>
+                <button onclick="resetData()" class="w-full py-4 bg-red-50 text-red-500 font-bold rounded-xl hover:bg-red-100 transition border border-red-100">
+                    <i class="fas fa-trash-alt ml-2"></i> حذف جميع البيانات
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-gray-200 dark:border-gray-700 pb-safe z-50 flex justify-around items-center h-16 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+        <a href="srs_index.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">الرئيسية</span></a>
+        <a href="srs_schedule.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="far fa-calendar-alt text-xl mb-1"></i><span class="text-[10px] font-bold">الجدول</span></a>
+        <div class="relative -top-5"><a href="srs_study.html" class="w-14 h-14 bg-brand text-white rounded-full shadow-lg shadow-brand/40 flex items-center justify-center text-2xl transform transition active:scale-90 border-4 border-slate-50 dark:border-dark-bg"><i class="fas fa-play pl-1"></i></a></div>
+        <a href="srs_stats.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-chart-pie text-xl mb-1"></i><span class="text-[10px] font-bold">تحليل</span></a>
+        <a href="srs_settings.html" class="flex flex-col items-center justify-center w-full h-full text-brand dark:text-blue-400 transition"><i class="fas fa-cog text-xl mb-1"></i><span class="text-[10px] font-bold">إعدادات</span></a>
+    </nav>
+
+    <script>
+        const DB_KEY = 'srs_pro_db_v1';
+        const SETTINGS_KEY = 'srs_pro_settings_v1';
+        const PARAMS_KEY = 'srs_pro_params_v1';
+        
+        let settings = { darkMode: false };
+        let srsParams = { i1: 1, i2: 6, i3: 16 };
+
+        function init() {
+            const s = localStorage.getItem(SETTINGS_KEY);
+            if(s) {
+                settings = JSON.parse(s);
+                if(settings.darkMode) document.documentElement.classList.add('dark');
+            }
+            const p = localStorage.getItem(PARAMS_KEY);
+            if(p) srsParams = JSON.parse(p);
+            
+            ['interval-1', 'interval-2', 'interval-3'].forEach((id, i) => {
+                const el = document.getElementById(id);
+                el.value = Object.values(srsParams)[i];
+                el.addEventListener('change', saveParams);
+            });
+        }
+
+        function saveParams() {
+            srsParams.i1 = parseInt(document.getElementById('interval-1').value) || 1;
+            srsParams.i2 = parseInt(document.getElementById('interval-2').value) || 6;
+            srsParams.i3 = parseInt(document.getElementById('interval-3').value) || 16;
+            localStorage.setItem(PARAMS_KEY, JSON.stringify(srsParams));
+        }
+
+        function toggleTheme() {
+            settings.darkMode = !settings.darkMode;
+            localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+            document.documentElement.classList.toggle('dark');
+        }
+
+        function exportData() {
+            const data = {
+                db: JSON.parse(localStorage.getItem(DB_KEY) || '{"lessons":[]}'),
+                params: srsParams,
+                settings: settings
+            };
+            const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `srs_backup_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            Swal.fire('تم التصدير', 'تم تحميل ملف النسخة الاحتياطية بنجاح.', 'success');
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if(data.db) localStorage.setItem(DB_KEY, JSON.stringify(data.db));
+                    if(data.params) localStorage.setItem(PARAMS_KEY, JSON.stringify(data.params));
+                    if(data.settings) localStorage.setItem(SETTINGS_KEY, JSON.stringify(data.settings));
+                    
+                    Swal.fire({
+                        title: 'تمت الاستعادة!',
+                        text: 'تم تحديث البيانات بنجاح. سيتم إعادة تحميل الصفحة.',
+                        icon: 'success'
+                    }).then(() => location.reload());
+                } catch(err) {
+                    Swal.fire('خطأ', 'ملف غير صالح أو تالف.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetData() {
+            Swal.fire({
+                title: 'هل أنت متأكد؟', text: "سيتم حذف كل شيء!", icon: 'warning',
+                showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'نعم، احذف'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem(DB_KEY);
+                    location.href = 'srs_index.html';
+                }
+            })
+        }
+
+        init();
+    </script>
+</body>
+</html>

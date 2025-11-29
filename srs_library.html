@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>المكتبة - الذاكرة PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Tajawal', 'sans-serif'] }, colors: { brand: { DEFAULT: '#2563eb', dark: '#1d4ed8' }, dark: { bg: '#0f172a', card: '#1e293b', sidebar: '#111827' } }, padding: { 'safe': 'env(safe-area-inset-bottom)' } } } }
+    </script>
+    <style>body { -webkit-tap-highlight-color: transparent; }</style>
+</head>
+<body class="bg-slate-50 dark:bg-dark-bg text-slate-800 font-sans transition-colors duration-300 pb-24 md:pb-0">
+
+    <aside class="hidden md:flex fixed top-0 right-0 h-full w-64 bg-white dark:bg-dark-sidebar border-l border-gray-200 dark:border-gray-700 z-50 flex-col p-6 shadow-xl">
+        <div class="flex items-center gap-3 mb-10">
+            <div class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/40"><i class="fas fa-brain text-xl"></i></div>
+            <h1 class="font-black text-xl dark:text-white">الذاكرة <span class="text-brand">PRO</span></h1>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="srs_index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-home w-6"></i> لوحة القيادة</a>
+            <a href="srs_schedule.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="far fa-calendar-alt w-6"></i> الجدول</a>
+            <a href="srs_library.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"><i class="fas fa-layer-group w-6"></i> المكتبة</a>
+            <a href="srs_stats.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-chart-pie w-6"></i> التحليل</a>
+            <div class="my-4 border-t border-gray-100 dark:border-gray-700"></div>
+            <a href="srs_settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-cog w-6"></i> الإعدادات</a>
+        </nav>
+    </aside>
+
+    <main class="md:mr-64 min-h-screen p-4 md:p-8">
+        <header class="mb-8">
+            <h1 class="text-3xl font-black text-slate-800 dark:text-white mb-2">مكتبة المناهج 📚</h1>
+            <p class="text-gray-500 dark:text-gray-400">استورد مناهج جاهزة وابدأ الدراسة فوراً.</p>
+        </header>
+
+        <div id="libraryContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+    </main>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-gray-200 dark:border-gray-700 pb-safe z-50 flex justify-around items-center h-16 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+        <a href="srs_index.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">الرئيسية</span></a>
+        <a href="srs_schedule.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="far fa-calendar-alt text-xl mb-1"></i><span class="text-[10px] font-bold">الجدول</span></a>
+        <a href="srs_library.html" class="flex flex-col items-center justify-center w-full h-full text-brand dark:text-blue-400 transition"><i class="fas fa-layer-group text-xl mb-1"></i><span class="text-[10px] font-bold">المكتبة</span></a>
+        <a href="srs_stats.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-chart-pie text-xl mb-1"></i><span class="text-[10px] font-bold">تحليل</span></a>
+        <a href="srs_settings.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-cog text-xl mb-1"></i><span class="text-[10px] font-bold">إعدادات</span></a>
+    </nav>
+
+    <script>
+        const REPO_KEY = 'srs_repo_content_v1';
+        const DB_KEY = 'srs_pro_db_v1';
+        const SETTINGS_KEY = 'srs_pro_settings_v1';
+        
+        let repoData = [];
+
+        function init() {
+            // تحميل الوضع الليلي
+            const s = localStorage.getItem(SETTINGS_KEY);
+            if(s && JSON.parse(s).darkMode) document.documentElement.classList.add('dark');
+
+            // تحميل بيانات المكتبة (أو إنشاء بيانات افتراضية إذا كانت فارغة)
+            const storedRepo = localStorage.getItem(REPO_KEY);
+            if (storedRepo) {
+                repoData = JSON.parse(storedRepo);
+            } else {
+                // البيانات الافتراضية كما طلبت
+                repoData = [
+                    {
+                        id: 1,
+                        title: "طب بشري - سنة أولى",
+                        desc: "تشريح، بيولوجيا، فيزيولوجيا (دروس الفصل الأول)",
+                        color: "bg-blue-500",
+                        icon: "fa-user-md",
+                        subjects: [
+                            { name: "تشريح", lessons: ["عظام الجمجمة", "القفص الصدري", "العمود الفقري", "عضلات الوجه"] },
+                            { name: "بيولوجيا", lessons: ["الخلية الحيوانية", "الانقسام المنصف", "DNA & RNA"] },
+                            { name: "فيزيولوجيا", lessons: ["الجهاز العصبي", "جهد الفعل", "نقل السيالة العصبية", "الهرمونات"] }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        title: "بكالوريا - علوم تجريبية",
+                        desc: "أهم الوحدات في العلوم والفيزياء",
+                        color: "bg-green-500",
+                        icon: "fa-flask",
+                        subjects: [
+                            { name: "علوم طبيعية", lessons: ["تركيب البروتين", "العلاقة بين البنية والوظيفة", "النشاط الإنزيمي", "المناعة"] },
+                            { name: "فيزياء", lessons: ["المتابعة الزمنية لتحول كيميائي", "التحولات النووية", "الظواهر الكهربائية"] }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        title: "إنجليزية - مستوى B1",
+                        desc: "قواعد ومفردات أساسية للمحادثة",
+                        color: "bg-purple-500",
+                        icon: "fa-language",
+                        subjects: [
+                            { name: "Grammar", lessons: ["Present Perfect", "Past Continuous", "Conditionals", "Passive Voice"] },
+                            { name: "Vocabulary", lessons: ["Travel & Transport", "Work & Careers", "Feelings & Emotions"] }
+                        ]
+                    }
+                ];
+                // حفظ البيانات الافتراضية ليستطيع المدير تعديلها لاحقاً
+                localStorage.setItem(REPO_KEY, JSON.stringify(repoData));
+            }
+
+            renderLibrary();
+        }
+
+        function renderLibrary() {
+            const container = document.getElementById('libraryContainer');
+            container.innerHTML = repoData.map(item => {
+                // حساب إجمالي الدروس والمواد
+                let lessonCount = 0;
+                let subjectCount = item.subjects.length;
+                item.subjects.forEach(sub => lessonCount += sub.lessons.length);
+
+                return `
+                <div class="bg-white dark:bg-dark-card rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg transition flex flex-col h-full">
+                    <div class="h-32 ${item.color} relative p-6 flex flex-col justify-between">
+                        <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-white text-2xl shadow-inner">
+                            <i class="fas ${item.icon}"></i>
+                        </div>
+                        <h3 class="text-white font-black text-xl drop-shadow-md leading-tight">${item.title}</h3>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <p class="text-gray-500 text-sm mb-4 flex-1">${item.desc}</p>
+                        
+                        <div class="flex items-center gap-4 text-xs font-bold text-gray-400 mb-6">
+                            <span class="bg-gray-100 dark:bg-slate-800 px-3 py-1 rounded-full"><i class="fas fa-book ml-1"></i> ${subjectCount} مواد</span>
+                            <span class="bg-gray-100 dark:bg-slate-800 px-3 py-1 rounded-full"><i class="fas fa-list-ul ml-1"></i> ${lessonCount} درس</span>
+                        </div>
+
+                        <button onclick="importCourse(${item.id})" class="w-full py-3 bg-brand/10 text-brand font-bold rounded-xl hover:bg-brand hover:text-white transition active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fas fa-download"></i> استيراد للمكتبة
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function importCourse(id) {
+            const course = repoData.find(c => c.id === id);
+            if (!course) return;
+
+            Swal.fire({
+                title: 'تأكيد الاستيراد',
+                text: `هل تريد إضافة منهج "${course.title}" إلى جدولك؟`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'نعم، أضف الدروس',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // جلب قاعدة بيانات المستخدم الحالية
+                    let userDB = JSON.parse(localStorage.getItem(DB_KEY)) || { lessons: [], user: {} };
+                    
+                    let addedCount = 0;
+                    const now = new Date();
+                    const next = new Date(); next.setDate(now.getDate() + 1); // موعد المراجعة غداً
+
+                    // إضافة الدروس
+                    course.subjects.forEach(sub => {
+                        sub.lessons.forEach(lessonTitle => {
+                            userDB.lessons.push({
+                                id: Date.now() + Math.random(),
+                                subject: sub.name,
+                                title: lessonTitle,
+                                layer: 0,
+                                nextReview: next.toISOString(),
+                                lastReview: now.toISOString(),
+                                easeFactor: 2.5
+                            });
+                            addedCount++;
+                        });
+                    });
+
+                    // حفظ البيانات
+                    localStorage.setItem(DB_KEY, JSON.stringify(userDB));
+
+                    Swal.fire({
+                        title: 'تم بنجاح! 🎉',
+                        text: `تمت إضافة ${addedCount} درساً إلى جدولك.`,
+                        icon: 'success'
+                    });
+                }
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>

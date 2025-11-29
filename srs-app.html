@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2563eb">
+    <title>الذاكرة PRO - المطور الذكي</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Tajawal', 'sans-serif'] },
+                    colors: {
+                        brand: { DEFAULT: '#2563eb', dark: '#3b82f6', light: '#60a5fa' },
+                        dark: { bg: '#0f172a', card: '#1e293b', text: '#f1f5f9' }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(37, 99, 235, 0.3)',
+                    },
+                    animation: { 'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite' }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { -webkit-tap-highlight-color: transparent; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* تأثير الزجاج (Glassmorphism) */
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .dark .glass { background: rgba(30, 41, 59, 0.9); }
+        
+        /* دائرة البومودورو */
+        .progress-ring__circle { transition: stroke-dashoffset 0.5s ease-in-out; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        
+        /* Fab Animation */
+        .fab-btn { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .fab-btn:active { transform: scale(0.9); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 transition-colors duration-300 pb-28 selection:bg-brand selection:text-white font-sans">
+
+    <header class="fixed top-0 w-full z-40 glass border-b border-gray-200 dark:border-gray-700 transition-colors">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="relative group cursor-pointer" onclick="switchTab('stats')">
+                    <div class="w-10 h-10 bg-gradient-to-br from-brand to-cyan-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/30 group-hover:scale-105 transition">
+                        <i class="fas fa-brain animate-pulse-slow text-lg"></i>
+                    </div>
+                    <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500 border-2 border-white dark:border-dark-bg"></span>
+                    </span>
+                </div>
+                <div>
+                    <h1 class="font-black text-lg leading-tight dark:text-white tracking-tight">الذاكرة <span class="text-brand">PRO</span></h1>
+                    <div class="text-[10px] text-gray-500 dark:text-gray-400 font-bold flex items-center gap-1 bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded-full w-fit">
+                        <i class="fas fa-fire text-orange-500"></i>
+                        <span id="streakCount">0</span> أيام حماس
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex gap-2">
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-600 dark:text-yellow-400 transition hover:bg-gray-200 dark:hover:bg-slate-700">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+                <button onclick="openPomodoro()" class="w-10 h-10 rounded-full bg-red-50 dark:bg-red-900/20 text-red-500 flex items-center justify-center transition border border-red-100 dark:border-red-900/50 hover:bg-red-100">
+                    <i class="fas fa-stopwatch"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContent" class="container mx-auto px-4 mt-24 max-w-2xl min-h-screen">
+        </main>
+
+    <button onclick="openAddModal()" class="fab-btn fixed bottom-24 left-6 bg-gradient-to-r from-brand to-brand-dark text-white w-14 h-14 rounded-2xl flex items-center justify-center text-2xl z-40 shadow-glow hover:shadow-xl">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <nav class="fixed bottom-0 w-full glass border-t border-gray-200 dark:border-gray-700 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <button onclick="switchTab('home')" class="nav-btn active flex flex-col items-center gap-1 p-2 rounded-xl transition-all w-1/4">
+                <i class="fas fa-home text-xl mb-0.5"></i>
+                <span class="text-[10px] font-bold">الرئيسية</span>
+            </button>
+            <button onclick="switchTab('stats')" class="nav-btn flex flex-col items-center gap-1 p-2 rounded-xl transition-all w-1/4">
+                <i class="fas fa-chart-pie text-xl mb-0.5"></i>
+                <span class="text-[10px] font-bold">تحليل</span>
+            </button>
+            <button onclick="switchTab('library')" class="nav-btn flex flex-col items-center gap-1 p-2 rounded-xl transition-all w-1/4">
+                <i class="fas fa-layer-group text-xl mb-0.5"></i>
+                <span class="text-[10px] font-bold">المواد</span>
+            </button>
+            <button onclick="switchTab('settings')" class="nav-btn flex flex-col items-center gap-1 p-2 rounded-xl transition-all w-1/4">
+                <i class="fas fa-cog text-xl mb-0.5"></i>
+                <span class="text-[10px] font-bold">إعدادات</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="addModal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal('addModal')"></div>
+        <div class="absolute bottom-0 w-full bg-white dark:bg-dark-card rounded-t-[2rem] p-6 transition-transform transform translate-y-full duration-300 shadow-2xl" id="addModalContent">
+            <div class="w-16 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-6"></div>
+            
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-black text-slate-800 dark:text-white">إضافة محتوى</h3>
+                <button onclick="openLibraryModal()" class="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-indigo-100 transition">
+                    <i class="fas fa-download"></i> استيراد منهج جاهز
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 dark:text-gray-400 mr-1">المادة / المقياس</label>
+                    <div class="relative">
+                        <i class="fas fa-tag absolute right-4 top-4 text-gray-400 text-sm"></i>
+                        <input type="text" id="inpSubject" list="subjectsList" class="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl p-3 pr-10 focus:ring-2 focus:ring-brand dark:text-white font-medium" placeholder="اختر المادة...">
+                    </div>
+                    <datalist id="subjectsList"></datalist>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 dark:text-gray-400 mr-1">عنوان الدرس</label>
+                    <div class="relative">
+                        <i class="fas fa-heading absolute right-4 top-4 text-gray-400 text-sm"></i>
+                        <input type="text" id="inpTitle" class="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl p-3 pr-10 focus:ring-2 focus:ring-brand dark:text-white font-medium" placeholder="مثال: عظام الطرف العلوي">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 mr-1">الوقت (د)</label>
+                        <input type="number" id="inpDuration" class="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl p-3 text-center font-bold dark:text-white" value="20">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 mr-1">الصعوبة الأولية</label>
+                        <select id="inpDiff" class="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl p-3 text-sm font-bold dark:text-white text-center">
+                            <option value="1">عادي</option>
+                            <option value="0.5">صعب جداً 🔥</option>
+                            <option value="1.5">سهل ✅</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="saveLesson()" class="w-full bg-brand hover:bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-brand/20 mt-2 active:scale-95 transition-transform">حفظ وإضافة</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="libraryModal" class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeLibraryModal()"></div>
+        <div class="relative bg-white dark:bg-dark-card w-full max-w-md rounded-3xl p-6 shadow-2xl overflow-hidden max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-black dark:text-white"><i class="fas fa-layer-group text-brand ml-2"></i>مكتبة المناهج</h3>
+                <button onclick="closeLibraryModal()" class="w-8 h-8 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-gray-500"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">اختر تخصصاً لإضافة جميع مقاييسه ودروسه تلقائياً:</p>
+            
+            <div class="overflow-y-auto hide-scrollbar space-y-3 flex-1 pb-4" id="curriculumList">
+                </div>
+        </div>
+    </div>
+
+    <div id="pomodoroModal" class="fixed inset-0 z-[80] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closePomodoro()"></div>
+        <div class="relative bg-white dark:bg-dark-card w-full max-w-sm rounded-3xl p-8 text-center shadow-2xl border-2 border-white/10">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-8">جلسة تركيز</h3>
+            <div class="relative w-56 h-56 mx-auto mb-8 flex items-center justify-center">
+                <svg class="w-full h-full transform -rotate-90 drop-shadow-2xl">
+                    <circle class="text-gray-100 dark:text-slate-800" stroke-width="12" stroke="currentColor" fill="transparent" r="100" cx="112" cy="112" />
+                    <circle id="pomoRing" class="text-red-500 transition-all duration-1000" stroke-width="12" stroke-dasharray="628" stroke-dashoffset="0" stroke-linecap="round" stroke="currentColor" fill="transparent" r="100" cx="112" cy="112" />
+                </svg>
+                <div class="absolute text-6xl font-black text-slate-800 dark:text-white font-mono tracking-tighter" id="pomoTimer">25:00</div>
+            </div>
+            <div class="flex gap-4 justify-center">
+                <button onclick="startPomo()" id="btnPomoStart" class="bg-brand text-white w-16 h-16 rounded-2xl text-xl shadow-lg shadow-brand/30 hover:scale-105 transition flex items-center justify-center"><i class="fas fa-play"></i></button>
+                <button onclick="resetPomo()" class="bg-gray-200 dark:bg-slate-700 text-gray-600 dark:text-white w-16 h-16 rounded-2xl text-xl flex items-center justify-center hover:bg-gray-300"><i class="fas fa-redo"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === DATABASE & CONFIG ===
+        const DB_KEY = 'srs_pro_v4_db'; // Updated version key
+        const SETTINGS_KEY = 'srs_pro_settings_v4';
+        
+        // === CURRICULA DATA (بيانات المناهج الجاهزة) ===
+        const CURRICULA_DB = {
+            med1: {
+                title: "الطب - سنة أولى (Medicine Year 1)",
+                icon: "fa-user-md",
+                color: "text-red-500",
+                desc: "تشريح، بيولوجيا، فيزيولوجيا، أنسجة...",
+                subjects: [
+                    { 
+                        name: "Anatomy (تشريح)", 
+                        lessons: ["Introduction to Anatomy", "Osteology (عظام)", "Myology (عضلات)", "Upper Limb Bones", "Upper Limb Muscles", "Lower Limb Bones", "Lower Limb Muscles", "Joints Generalities", "Spinal Column"] 
+                    },
+                    { 
+                        name: "Cytology (بيولوجيا خلوية)", 
+                        lessons: ["Cell Membrane", "Cytoskeleton", "Nucleus", "Ribosomes", "Endoplasmic Reticulum", "Golgi Apparatus", "Mitochondria", "Cell Cycle"] 
+                    },
+                    { 
+                        name: "Physiology (فيزيولوجيا)", 
+                        lessons: ["Homeostasis", "Membrane Transport", "Resting Potential", "Action Potential", "Muscle Contraction", "Autonomic Nervous System"] 
+                    },
+                    { 
+                        name: "Biochemistry (كيمياء حيوية)", 
+                        lessons: ["Amino Acids", "Proteins Structure", "Enzymes", "Carbohydrates", "Lipids", "Vitamins"] 
+                    },
+                    {
+                        name: "Histology (أنسجة)",
+                        lessons: ["Epithelial Tissue", "Connective Tissue", "Cartilage", "Bone Tissue", "Blood"]
+                    }
+                ]
+            },
+            med2: {
+                title: "الطب - سنة ثانية (قريباً)",
+                icon: "fa-heartbeat",
+                color: "text-pink-500",
+                desc: "قريباً سيتم إضافة القلب والمناعة والميكروبيلوجيا...",
+                subjects: [] 
+            },
+            bac_dz: {
+                title: "بكالوريا - علوم تجريبية",
+                icon: "fa-graduation-cap",
+                color: "text-green-500",
+                desc: "علوم، فيزياء، رياضيات... (المقاييس الرئيسية)",
+                subjects: [
+                    { name: "علوم طبيعية", lessons: ["تركيب البروتين", "العلاقة بين البنية والوظيفة", "النشاط الإنزيمي", "المناعة", "الاتصال العصبي"] },
+                    { name: "فيزياء", lessons: ["المتابعة الزمنية لتحول كيميائي", "التحولات النووية", "الظواهر الكهربائية (RC, RL)", "تطور جملة كيميائية"] }
+                ]
+            }
+        };
+
+        let appData = {
+            lessons: [],
+            user: { streak: 0, lastLogin: null, totalReviews: 0, level: 1 }
+        };
+
+        let settings = { darkMode: false, notifications: true };
+        
+        // فواصل التكرار المتباعد المحدثة (أيام): 1، 3، 7، 30، 90، 180، 365
+        const INTERVALS = [1, 3, 7, 30, 90, 180, 365];
+
+        // === INITIALIZATION ===
+        function init() {
+            loadData();
+            applyTheme();
+            checkStreak();
+            switchTab('home');
+            updateSubjectsList();
+            renderLibrary();
+        }
+
+        function loadData() {
+            const savedData = localStorage.getItem(DB_KEY);
+            if (savedData) appData = JSON.parse(savedData);
+            const savedSettings = localStorage.getItem(SETTINGS_KEY);
+            if (savedSettings) settings = JSON.parse(savedSettings);
+        }
+
+        function saveData() {
+            localStorage.setItem(DB_KEY, JSON.stringify(appData));
+            localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+        }
+
+        // === NAVIGATION ===
+        function switchTab(tabName) {
+            // تحديث أزرار التنقل السفلية
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-brand', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-slate-800');
+                btn.classList.add('text-gray-400', 'dark:text-gray-500');
+            });
+            const activeBtn = document.querySelector(`button[onclick="switchTab('${tabName}')"]`);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-gray-400', 'dark:text-gray-500');
+                activeBtn.classList.add('text-brand', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-slate-800');
+            }
+
+            const main = document.getElementById('mainContent');
+            main.innerHTML = '';
+            
+            if (tabName === 'home') renderHome(main);
+            else if (tabName === 'stats') renderStats(main);
+            else if (tabName === 'library') renderSubjectsView(main); // New Tab
+            else if (tabName === 'settings') renderSettings(main);
+            
+            // تمرير سلس للأعلى
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // === RENDER HOME ===
+        function renderHome(container) {
+            const now = new Date();
+            const dueLessons = appData.lessons.filter(l => new Date(l.nextReview) <= now).sort((a,b) => new Date(a.nextReview) - new Date(b.nextReview));
+            const upcomingLessons = appData.lessons.filter(l => new Date(l.nextReview) > now).sort((a,b) => new Date(a.nextReview) - new Date(b.nextReview));
+            
+            let html = `
+                <div class="mb-8">
+                    <h2 class="text-3xl font-black text-slate-800 dark:text-white mb-2">أهلاً بك 🚀</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">لديك <span class="bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold">${dueLessons.length}</span> دروس للمراجعة.</p>
+                </div>
+            `;
+
+            if (appData.lessons.length === 0) {
+                html += `
+                    <div class="text-center py-12 flex flex-col items-center justify-center h-[50vh]">
+                        <div class="w-32 h-32 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6 animate-pulse-slow">
+                            <i class="fas fa-box-open text-4xl text-gray-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold dark:text-gray-300 mb-2">لا يوجد دروس بعد</h3>
+                        <p class="text-gray-400 text-sm mb-6 max-w-xs mx-auto">أضف دروسك يدوياً أو استخدم "المكتبة" لتحميل منهج كامل.</p>
+                        <button onclick="openLibraryModal()" class="bg-brand text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-brand/30 hover:scale-105 transition">
+                            <i class="fas fa-download ml-2"></i> تحميل منهج جاهز
+                        </button>
+                    </div>
+                `;
+                container.innerHTML = html;
+                return;
+            }
+
+            if (dueLessons.length > 0) {
+                html += `<div class="flex items-center gap-2 mb-4"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span><h3 class="font-bold text-slate-700 dark:text-white">مستحقة الآن</h3></div>`;
+                html += `<div class="space-y-3 mb-8">`;
+                dueLessons.forEach(l => html += createCard(l, true));
+                html += `</div>`;
+            } else {
+                 html += `
+                    <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-2xl text-green-600 dark:text-green-400 font-bold mb-8 flex items-center gap-3">
+                        <i class="fas fa-check-circle text-xl"></i>
+                        <span>لا يوجد دروس مستحقة للمراجعة حالياً. أحسنت!</span>
+                    </div>
+                 `;
+            }
+
+            if (upcomingLessons.length > 0) {
+                html += `<h3 class="font-bold text-gray-400 mb-4 text-sm uppercase tracking-wider">القادمة</h3>`;
+                html += `<div class="space-y-3">`;
+                upcomingLessons.slice(0, 10).forEach(l => html += createCard(l, false));
+                html += `</div>`;
+                if(upcomingLessons.length > 10) html += `<div class="text-center text-xs text-gray-400 mt-4">و ${upcomingLessons.length - 10} دروس أخرى...</div>`;
+            }
+            
+            container.innerHTML += html;
+             container.innerHTML += `<div class="h-24"></div>`; // spacer
+        }
+
+        function createCard(lesson, isDue) {
+            const retention = calculateRetention(lesson);
+            const borderColor = isDue ? 'border-red-500 dark:border-red-500' : 'border-transparent';
+            
+            // تحديد النص الخاص بالمراجعة القادمة
+            let nextReviewText = 'تم الانتهاء';
+            if(new Date(lesson.nextReview) > new Date()) {
+                const diffDays = Math.ceil((new Date(lesson.nextReview) - new Date()) / (1000 * 60 * 60 * 24));
+                nextReviewText = `بعد ${diffDays} يوم`;
+                if(diffDays === 1) nextReviewText = 'غداً';
+            }
+
+            let btns = '';
+            if(isDue) {
+                btns = `
+                <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
+                    <button onclick="reviewLesson(${lesson.id}, 'good')" class="py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 font-bold text-xs hover:bg-green-100 transition">سهل</button>
+                    <button onclick="reviewLesson(${lesson.id}, 'hard')" class="py-2 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400 font-bold text-xs hover:bg-yellow-100 transition">صعب</button>
+                    <button onclick="reviewLesson(${lesson.id}, 'forgot')" class="py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-bold text-xs hover:bg-red-100 transition">نسيت</button>
+                </div>`;
+            } else {
+                btns = `
+                <div class="flex justify-between items-center mt-3 pt-2 border-t border-dashed border-gray-100 dark:border-gray-700">
+                    <span class="text-[10px] text-gray-400"><i class="far fa-calendar-alt ml-1"></i> ${nextReviewText} (${new Date(lesson.nextReview).toLocaleDateString('ar-EG', {day:'numeric', month:'short'})})</span>
+                    <button onclick="deleteLesson(${lesson.id})" class="text-gray-300 hover:text-red-500 text-xs p-1"><i class="fas fa-trash-alt"></i></button>
+                </div>`;
+            }
+
+            return `
+                <div class="bg-white dark:bg-dark-card p-5 rounded-2xl shadow-sm border-r-4 ${borderColor} relative group transition hover:shadow-md">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-bold text-brand bg-blue-50 dark:bg-blue-900/20 px-2 py-0.5 rounded-md mb-2 inline-block">${lesson.subject}</span>
+                            <h4 class="font-bold text-lg dark:text-white leading-tight mb-1">${lesson.title}</h4>
+                            <div class="flex gap-3 text-xs text-gray-400">
+                                <span><i class="fas fa-layer-group ml-1"></i>مستوى ${lesson.layer}</span>
+                                <span><i class="far fa-clock ml-1"></i>${lesson.duration}د</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center bg-gray-50 dark:bg-slate-800 w-12 h-12 rounded-xl">
+                            <span class="font-black text-sm ${retention < 50 ? 'text-red-500' : 'text-green-500'}">${retention}%</span>
+                            <span class="text-[8px] text-gray-400">الحفظ</span>
+                        </div>
+                    </div>
+                    ${btns}
+                </div>
+            `;
+        }
+
+        // === LIBRARY & IMPORT LOGIC ===
+        function openLibraryModal() {
+            closeModal('addModal');
+            document.getElementById('libraryModal').classList.remove('hidden');
+        }
+
+        function closeLibraryModal() {
+            document.getElementById('libraryModal').classList.add('hidden');
+        }
+
+        function renderLibrary() {
+            const list = document.getElementById('curriculumList');
+            if(!list) return;
+
+            list.innerHTML = '';
+            
+            Object.keys(CURRICULA_DB).forEach(key => {
+                const item = CURRICULA_DB[key];
+                const isActive = item.subjects.length > 0;
+                
+                list.innerHTML += `
+                    <div class="bg-gray-50 dark:bg-slate-800 p-4 rounded-2xl flex items-center gap-4 transition cursor-pointer border border-transparent ${isActive ? 'hover:shadow-md hover:bg-white dark:hover:bg-slate-700' : 'opacity-60 cursor-default'} " 
+                         onclick="${isActive ? `confirmImport('${key}')` : 'void(0)'}">
+                        <div class="w-12 h-12 rounded-full bg-white dark:bg-slate-600 flex items-center justify-center text-xl shadow-sm ${item.color}">
+                            <i class="fas ${item.icon}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-slate-800 dark:text-white">${item.title}</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">${item.desc}</p>
+                        </div>
+                        ${isActive ? '<i class="fas fa-download text-brand"></i>' : '<span class="text-[10px] bg-gray-200 text-gray-500 px-2 rounded">قريباً</span>'}
+                    </div>
+                `;
+            });
+        }
+
+        function confirmImport(key) {
+            const cur = CURRICULA_DB[key];
+            let lessonCount = cur.subjects.reduce((sum, subj) => sum + subj.lessons.length, 0);
+
+            Swal.fire({
+                title: `إضافة ${cur.title}؟`,
+                html: `<p class="text-sm">سيتم إضافة <b>${cur.subjects.length}</b> مقاييس و <b>${lessonCount}</b> درساً إلى خطتك.</p>`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'نعم، ابدأ الدراسة!',
+                cancelButtonText: 'إلغاء',
+                confirmButtonColor: '#2563eb'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    importCurriculum(cur);
+                }
+            });
+        }
+
+        function importCurriculum(curriculum) {
+            let count = 0;
+            const now = new Date();
+            
+            curriculum.subjects.forEach(subj => {
+                subj.lessons.forEach((lessonTitle, index) => {
+                    const next = new Date();
+                    // توزيع الدروس: ليس كلها في يوم واحد (لتجنب التكدس)
+                    // أول درس اليوم، الباقي موزع على الأسبوع الأول
+                    next.setDate(now.getDate() + (index % 5)); 
+                    
+                    appData.lessons.push({
+                        id: Date.now() + Math.random(), // Unique ID
+                        subject: subj.name,
+                        title: lessonTitle,
+                        duration: 20, // Default duration
+                        layer: 0,
+                        nextReview: next.toISOString(),
+                        lastReview: now.toISOString(),
+                        history: []
+                    });
+                    count++;
+                });
+            });
+
+            saveData();
+            closeLibraryModal();
+            updateSubjectsList();
+            switchTab('home');
+
+            Swal.fire({
+                icon: 'success',
+                title: 'تمت الإضافة بنجاح!',
+                text: `تم إضافة ${count} درساً جديداً.`,
+                timer: 2500,
+                showConfirmButton: false
+            });
+        }
+
+        // === CORE FUNCTIONS ===
+        function checkStreak() {
+            const today = new Date().toDateString();
+            if (appData.user.lastLogin !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (appData.user.lastLogin === yesterday.toDateString()) appData.user.streak++;
+                else appData.user.streak = 1;
+                appData.user.lastLogin = today;
+                saveData();
+            }
+            document.getElementById('streakCount').innerText = appData.user.streak;
+        }
+
+        function openAddModal() {
+            document.getElementById('addModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('addModalContent').classList.remove('translate-y-full'), 10);
+            document.getElementById('inpTitle').focus();
+        }
+
+        function closeModal(id) {
+            const content = document.getElementById(id + 'Content');
+            if(content) content.classList.add('translate-y-full');
+            setTimeout(() => document.getElementById(id).classList.add('hidden'), 300);
+        }
+
+        function updateSubjectsList() {
+            const subjects = [...new Set(appData.lessons.map(l => l.subject))].filter(s => s.trim() !== '');
+            document.getElementById('subjectsList').innerHTML = subjects.map(s => `<option value="${s}">`).join('');
+        }
+
+        function saveLesson() {
+            const subject = document.getElementById('inpSubject').value.trim();
+            const title = document.getElementById('inpTitle').value.trim();
+            const duration = parseInt(document.getElementById('inpDuration').value) || 20;
+            const diff = parseFloat(document.getElementById('inpDiff').value);
+            
+            if(!subject || !title) return Swal.fire({icon: 'warning', title: 'بيانات ناقصة', toast: true, position: 'top', timer: 2000, showConfirmButton: false});
+
+            const now = new Date();
+            const next = new Date();
+            // تحديد أول مراجعة بناءً على الصعوبة الأولية
+            if(diff < 1) { // صعب
+                 next.setHours(now.getHours() + 12); // أول مراجعة خلال 12 ساعة
+            } else { // عادي/سهل
+                 next.setDate(now.getDate() + INTERVALS[0]); // أول مراجعة بعد يوم
+            }
+
+
+            appData.lessons.push({
+                id: Date.now(),
+                subject, title, duration, layer: 0,
+                nextReview: next.toISOString(), 
+                lastReview: now.toISOString(),
+                history: []
+            });
+            
+            saveData();
+            closeModal('addModal');
+            document.getElementById('inpTitle').value = '';
+            document.getElementById('inpSubject').value = subject; // Keep subject for next entry
+            updateSubjectsList();
+            switchTab('home');
+            Swal.fire({icon: 'success', title: 'تم الحفظ', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500});
+        }
+
+        function reviewLesson(id, quality) {
+            const l = appData.lessons.find(x => x.id === id);
+            if(!l) return;
+
+            appData.user.totalReviews++;
+            
+            // SRS Logic
+            if(quality === 'forgot') l.layer = 0; // العودة إلى البداية
+            else if(quality === 'hard') l.layer = Math.max(0, l.layer); // تبقى في نفس المستوى
+            else l.layer = Math.min(l.layer + 1, INTERVALS.length - 1); // التقدم للمستوى التالي
+
+            const days = INTERVALS[l.layer];
+            const nextDate = new Date();
+            nextDate.setDate(nextDate.getDate() + days);
+            
+            l.nextReview = nextDate.toISOString();
+            l.lastReview = new Date().toISOString();
+            l.history.push({date: new Date().toISOString(), quality});
+            
+            saveData();
+            renderHome(document.getElementById('mainContent')); // Re-render only home
+            
+            // Sound effect
+            playSuccessSound();
+        }
+
+        function calculateRetention(lesson) {
+            const now = new Date();
+            const last = new Date(lesson.lastReview);
+            const hours = (now - last) / 36e5;
+            // عامل استقرار يتناسب مع الفاصل الحالي (Layer)
+            const stability = (lesson.layer + 1) * 24 * 1.8; 
+            const ret = Math.exp(-hours / stability) * 100;
+            return Math.min(100, Math.max(0, Math.round(ret)));
+        }
+
+        function deleteLesson(id) {
+            Swal.fire({
+                title: 'حذف؟',
+                text: "لن تستطيع استرجاعه.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'حذف',
+                cancelButtonText: 'لا'
+            }).then((r) => {
+                if(r.isConfirmed) {
+                    appData.lessons = appData.lessons.filter(l => l.id !== id);
+                    saveData();
+                    switchTab('home');
+                }
+            });
+        }
+
+        // === RENDER SUBJECTS VIEW (NEW LIBRARY TAB) ===
+        function renderSubjectsView(container) {
+            const subjects = {};
+            appData.lessons.forEach(l => {
+                if(!subjects[l.subject]) subjects[l.subject] = {count: 0, totalLayer: 0, dueCount: 0};
+                subjects[l.subject].count++;
+                subjects[l.subject].totalLayer += l.layer;
+                if(new Date(l.nextReview) <= new Date()) subjects[l.subject].dueCount++;
+            });
+
+            let html = `<h2 class="text-2xl font-black mb-6 dark:text-white"><i class="fas fa-layer-group text-brand ml-2"></i>ملخص المقاييس</h2><div class="grid grid-cols-1 gap-4">`;
+            
+            if(Object.keys(subjects).length === 0) {
+                 html += `
+                    <div class="text-center py-12 flex flex-col items-center justify-center">
+                        <i class="fas fa-folder-open text-4xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-400 text-sm mb-6 max-w-xs mx-auto">لم يتم إضافة أي مقاييس بعد.</p>
+                    </div>`;
+            } else {
+                for (const [name, data] of Object.entries(subjects)) {
+                    const avgLevel = (data.totalLayer / data.count).toFixed(1);
+                    const progress = Math.round((data.totalLayer / (data.count * (INTERVALS.length - 1))) * 100);
+                    
+                    html += `
+                        <div class="bg-white dark:bg-dark-card p-5 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 transition hover:scale-[1.01]">
+                            <h3 class="font-bold text-lg dark:text-white mb-2 truncate">${name}</h3>
+                            <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                <span><i class="fas fa-list-ul ml-1"></i> ${data.count} درس</span>
+                                ${data.dueCount > 0 ? `<span class="text-red-500 font-bold"><i class="fas fa-exclamation-circle ml-1"></i> ${data.dueCount} مستحق</span>` : `<span class="text-green-500"><i class="fas fa-check-circle ml-1"></i> كل شيء مُراجع</span>`}
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                <div class="bg-brand h-2.5 rounded-full" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs mt-1">
+                                <span class="text-gray-500 dark:text-gray-400">الإتقان العام</span>
+                                <span class="font-bold text-brand">${progress}%</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            html += `</div>
+            
+            <div class="mt-8 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl p-6 text-white text-center shadow-lg">
+                <i class="fas fa-download text-3xl mb-3"></i>
+                <h3 class="font-bold text-lg mb-1">المكتبة الذكية</h3>
+                <p class="text-xs opacity-90 mb-4">أضف منهج كامل (كطب سنة أولى) بضغطة زر</p>
+                <button onclick="openLibraryModal()" class="bg-white text-purple-600 px-6 py-2 rounded-full font-bold text-sm shadow hover:bg-gray-100 transition">تصفح المناهج الجاهزة</button>
+            </div>
+            <div class="h-24"></div>`;
+            container.innerHTML = html;
+        }
+        
+        // === STATS & SETTINGS ===
+        function renderStats(container) {
+            container.innerHTML = `
+                <h2 class="text-2xl font-black dark:text-white mb-4">إحصائياتك 📈</h2>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                     <div class="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-2xl">
+                        <div class="text-3xl font-black text-blue-600 dark:text-blue-400">${appData.user.totalReviews}</div>
+                        <div class="text-xs text-gray-500 font-bold">مراجعة مكتملة</div>
+                     </div>
+                     <div class="bg-orange-50 dark:bg-orange-900/20 p-5 rounded-2xl">
+                        <div class="text-3xl font-black text-orange-500">${appData.lessons.length}</div>
+                        <div class="text-xs text-gray-500 font-bold">درس محفوظ</div>
+                     </div>
+                </div>
+
+                <div class="bg-white dark:bg-dark-card p-4 rounded-2xl shadow-sm mb-4 h-64">
+                    <h3 class="text-sm font-bold text-gray-500 mb-4">توزيع الدروس حسب المقاييس</h3>
+                    <canvas id="chartSubject"></canvas>
+                </div>
+                
+                <div class="h-24"></div>
+            `;
+            setTimeout(() => {
+                const ctx = document.getElementById('chartSubject').getContext('2d');
+                const subs = [...new Set(appData.lessons.map(l=>l.subject))];
+                const counts = subs.map(s => appData.lessons.filter(l=>l.subject===s).length);
+                
+                const backgroundColors = ['#2563eb', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#f97316'];
+
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: subs,
+                        datasets: [{ 
+                            label: 'الدروس', 
+                            data: counts, 
+                            backgroundColor: backgroundColors.slice(0, subs.length),
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: { family: 'Tajawal' }
+                                }
+                            }
+                        }
+                    }
+                });
+            }, 50);
+        }
+
+        function renderSettings(container) {
+            container.innerHTML = `
+                <h2 class="text-2xl font-black dark:text-white mb-6">الإعدادات</h2>
+                
+                <div class="bg-white dark:bg-dark-card rounded-2xl p-4 shadow-sm mb-4 flex justify-between items-center transition">
+                    <span class="dark:text-white font-bold"><i class="fas fa-moon ml-2 text-gray-400"></i> الوضع الليلي</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" ${settings.darkMode ? 'checked' : ''} onchange="toggleTheme()">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand/50 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-brand"></div>
+                    </label>
+                </div>
+
+                <h3 class="text-sm font-bold text-gray-500 mb-3 mt-8">إدارة البيانات</h3>
+                <button onclick="exportData()" class="w-full bg-white dark:bg-dark-card p-4 rounded-2xl mb-3 text-right font-bold text-gray-600 dark:text-gray-300 shadow-sm flex justify-between items-center hover:bg-gray-50 dark:hover:bg-slate-700 transition">
+                    <span class="flex items-center gap-2"><i class="fas fa-cloud-download-alt text-blue-500"></i> تحميل نسخة احتياطية (JSON)</span>
+                    <i class="fas fa-chevron-left text-gray-300"></i>
+                </button>
+                <label class="w-full bg-white dark:bg-dark-card p-4 rounded-2xl mb-3 text-right font-bold text-gray-600 dark:text-gray-300 shadow-sm flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 transition">
+                    <span class="flex items-center gap-2"><i class="fas fa-cloud-upload-alt text-green-500"></i> استرجاع بيانات</span>
+                    <i class="fas fa-chevron-left text-gray-300"></i>
+                    <input type="file" hidden onchange="importData(this)">
+                </label>
+
+                <div class="mt-12 text-center">
+                    <button onclick="resetApp()" class="text-red-500 text-sm font-bold hover:bg-red-50 dark:hover:bg-red-900/20 px-4 py-2 rounded-xl transition"><i class="fas fa-trash-alt ml-1"></i> حذف جميع البيانات والبدء من جديد</button>
+                </div>
+                
+                <div class="h-24"></div>
+            `;
+        }
+
+        // === UTILS ===
+        function toggleTheme() {
+            settings.darkMode = !settings.darkMode;
+            applyTheme();
+            saveData();
+        }
+        function applyTheme() {
+            document.documentElement.classList.toggle('dark', settings.darkMode);
+            // إعادة رسم الشارت لتحديث الألوان
+            if(document.getElementById('chartSubject')) switchTab('stats');
+        }
+        
+        // Pomo Logic
+        let pomoInterval, pomoTime = 1500;
+        function openPomodoro() { document.getElementById('pomodoroModal').classList.remove('hidden'); updatePomo(); }
+        function closePomodoro() { document.getElementById('pomodoroModal').classList.add('hidden'); resetPomo(); }
+        function startPomo() {
+            const btn = document.getElementById('btnPomoStart');
+            if(btn.querySelector('i').classList.contains('fa-play')) {
+                btn.innerHTML = '<i class="fas fa-pause"></i>';
+                pomoInterval = setInterval(() => {
+                    pomoTime--;
+                    updatePomo();
+                    if(pomoTime<=0) { 
+                        clearInterval(pomoInterval); 
+                        new Audio('https://actions.google.com/sounds/v1/alarms/bugle_tune.ogg').play(); 
+                        Swal.fire({icon: 'info', title: 'انتهى الوقت!', text: 'خذ استراحة قصيرة قبل البدء من جديد.', timer: 5000});
+                        resetPomo(); 
+                    }
+                }, 1000);
+            } else {
+                clearInterval(pomoInterval);
+                btn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+        function resetPomo() { clearInterval(pomoInterval); pomoTime = 1500; updatePomo(); document.getElementById('btnPomoStart').innerHTML = '<i class="fas fa-play"></i>'; }
+        function updatePomo() {
+            const m = Math.floor(pomoTime/60).toString().padStart(2,'0');
+            const s = (pomoTime%60).toString().padStart(2,'0');
+            document.getElementById('pomoTimer').innerText = `${m}:${s}`;
+            document.getElementById('pomoRing').style.strokeDashoffset = 628 - (pomoTime/1500)*628;
+        }
+
+        // Data Management
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+            const node = document.createElement('a');
+            node.setAttribute("href", dataStr);
+            node.setAttribute("download", "memory_pro_backup_" + new Date().toISOString().slice(0,10) + ".json");
+            document.body.appendChild(node); node.click(); node.remove();
+            Swal.fire({icon: 'success', title: 'تم التحميل', toast: true, position: 'top-end', showConfirmButton: false, timer: 2000});
+        }
+        function importData(input) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                     if (importedData && importedData.lessons) {
+                        appData = importedData;
+                        saveData();
+                        location.reload();
+                    } else {
+                        Swal.fire({icon: 'error', title: 'ملف غير صالح', text: 'تأكد أن الملف يحتوي على بيانات التطبيق الصحيحة.'});
+                    }
+                } catch(err) { Swal.fire({icon: 'error', title: 'خطأ', text: 'حدث خطأ أثناء قراءة الملف.'}); }
+            };
+            reader.readAsText(input.files[0]);
+        }
+        function resetApp() { 
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: "سيتم حذف جميع الدروس والإحصائيات نهائياً.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'نعم، احذف كل شيء',
+                cancelButtonText: 'إلغاء'
+            }).then((r) => {
+                if(r.isConfirmed) {
+                    localStorage.removeItem(DB_KEY);
+                    localStorage.removeItem(SETTINGS_KEY);
+                    location.reload();
+                }
+            });
+        }
+        
+        function playSuccessSound() {
+             const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, ctx.currentTime); 
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.3);
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+</html>

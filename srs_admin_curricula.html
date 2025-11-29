@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إدارة المناهج (Admin) - الذاكرة PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Tajawal', 'sans-serif'] }, colors: { brand: { DEFAULT: '#2563eb', dark: '#1d4ed8' }, dark: { bg: '#0f172a', card: '#1e293b', sidebar: '#111827' } }, padding: { 'safe': 'env(safe-area-inset-bottom)' } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-dark-bg text-slate-800 font-sans transition-colors duration-300 pb-24 md:pb-0">
+
+    <aside class="hidden md:flex fixed top-0 right-0 h-full w-64 bg-white dark:bg-dark-sidebar border-l border-gray-200 dark:border-gray-700 z-50 flex-col p-6 shadow-xl">
+        <div class="flex items-center gap-3 mb-10">
+            <div class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/40"><i class="fas fa-shield-alt text-xl"></i></div>
+            <h1 class="font-black text-xl dark:text-white">لوحة <span class="text-brand">المدير</span></h1>
+        </div>
+        <nav class="space-y-2 flex-1">
+            <a href="srs_index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-arrow-right w-6"></i> عودة للتطبيق</a>
+            <div class="my-4 border-t border-gray-100 dark:border-gray-700"></div>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-purple-100 text-purple-600 font-bold transition dark:bg-purple-900/30 dark:text-purple-400"><i class="fas fa-book w-6"></i> إدارة المناهج</a>
+        </nav>
+    </aside>
+
+    <main class="md:mr-64 min-h-screen p-4 md:p-8">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-black text-slate-800 dark:text-white">إدارة المناهج</h1>
+                <p class="text-sm text-gray-500">تحكم بالمحتوى الذي يظهر في مكتبة الطلاب.</p>
+            </div>
+            <button onclick="createNewCourse()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-purple-600/30 transition flex items-center gap-2 active:scale-95">
+                <i class="fas fa-plus"></i> منهج جديد
+            </button>
+        </div>
+
+        <div id="adminList" class="space-y-6">
+            </div>
+    </main>
+
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-gray-200 dark:border-gray-700 pb-safe z-50 flex justify-around items-center h-16 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+        <a href="srs_index.html" class="flex flex-col items-center justify-center w-full h-full text-brand dark:text-blue-400 transition"><i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">الرئيسية</span></a>
+        <a href="srs_library.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-layer-group text-xl mb-1"></i><span class="text-[10px] font-bold">المكتبة</span></a>
+    </nav>
+
+    <script>
+        const REPO_KEY = 'srs_repo_content_v1';
+        const SETTINGS_KEY = 'srs_pro_settings_v1';
+        
+        // الألوان المتاحة للكروت
+        const colors = [
+            { bg: 'bg-blue-500', name: 'أزرق' },
+            { bg: 'bg-green-500', name: 'أخضر' },
+            { bg: 'bg-purple-500', name: 'بنفسجي' },
+            { bg: 'bg-orange-500', name: 'برتقالي' },
+            { bg: 'bg-red-500', name: 'أحمر' },
+            { bg: 'bg-teal-500', name: 'فيروزي' },
+            { bg: 'bg-slate-600', name: 'رمادي' }
+        ];
+
+        let repoData = [];
+
+        function init() {
+            const s = localStorage.getItem(SETTINGS_KEY);
+            if(s && JSON.parse(s).darkMode) document.documentElement.classList.add('dark');
+            
+            // تحميل البيانات
+            repoData = JSON.parse(localStorage.getItem(REPO_KEY) || '[]');
+            renderAdminView();
+        }
+
+        function save() {
+            localStorage.setItem(REPO_KEY, JSON.stringify(repoData));
+            renderAdminView();
+        }
+
+        function renderAdminView() {
+            const container = document.getElementById('adminList');
+            if(repoData.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-3xl">
+                        <div class="text-gray-400 text-4xl mb-4"><i class="fas fa-box-open"></i></div>
+                        <p class="text-gray-500 font-bold">المكتبة فارغة حالياً</p>
+                        <button onclick="createNewCourse()" class="mt-4 text-purple-600 font-bold hover:underline">أضف أول منهج</button>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = repoData.map((course, idx) => `
+                <div class="bg-white dark:bg-dark-card rounded-3xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden transition hover:shadow-lg">
+                    <div class="flex flex-col md:flex-row border-b border-gray-100 dark:border-gray-700">
+                        <div class="p-6 ${course.color} md:w-64 flex flex-col justify-center items-center text-white text-center relative group">
+                            <i class="fas ${course.icon} text-4xl mb-3 drop-shadow-md"></i>
+                            <h3 class="font-black text-xl drop-shadow-md px-2">${course.title}</h3>
+                            <button onclick="editHeader(${idx})" class="mt-4 text-xs bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full backdrop-blur-md transition border border-white/30 font-bold shadow-sm">
+                                <i class="fas fa-pen ml-1"></i> تعديل الغلاف
+                            </button>
+                        </div>
+
+                        <div class="p-6 flex-1">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h4 class="font-bold text-lg dark:text-white mb-1">المحتوى التعليمي</h4>
+                                    <p class="text-gray-500 text-sm leading-relaxed">${course.desc}</p>
+                                </div>
+                                <button onclick="deleteCourse(${idx})" class="text-red-400 hover:text-red-600 bg-red-50 dark:bg-red-900/20 w-10 h-10 rounded-xl flex items-center justify-center transition hover:bg-red-100">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+
+                            <div class="space-y-4 mb-6">
+                                ${course.subjects.map((sub, subIdx) => `
+                                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-slate-700">
+                                        <div class="flex justify-between items-center mb-3">
+                                            <h5 class="font-bold text-brand dark:text-blue-400 flex items-center gap-2">
+                                                <i class="fas fa-book-open"></i> ${sub.name}
+                                            </h5>
+                                            <div class="flex gap-2">
+                                                <button onclick="addLesson(${idx}, ${subIdx})" class="text-xs bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 px-3 py-1.5 rounded-lg hover:bg-green-200 transition font-bold">+ درس</button>
+                                                <button onclick="deleteSubject(${idx}, ${subIdx})" class="text-xs text-red-400 hover:text-red-600 px-2 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition"><i class="fas fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2">
+                                            ${sub.lessons.map((lesson, lIdx) => `
+                                                <span class="text-xs bg-white dark:bg-dark-card border border-gray-200 dark:border-slate-600 px-3 py-1.5 rounded-lg flex items-center gap-2 group shadow-sm text-gray-600 dark:text-gray-300">
+                                                    ${lesson}
+                                                    <i onclick="deleteLesson(${idx}, ${subIdx}, ${lIdx})" class="fas fa-times text-gray-300 hover:text-red-500 cursor-pointer transition"></i>
+                                                </span>
+                                            `).join('')}
+                                            ${sub.lessons.length === 0 ? '<span class="text-xs text-gray-400 italic">لا توجد دروس مضافة لهذه المادة</span>' : ''}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <button onclick="addSubject(${idx})" class="w-full py-3 border-2 border-dashed border-gray-300 dark:border-slate-600 text-gray-400 rounded-xl font-bold hover:border-brand hover:text-brand hover:bg-brand/5 transition text-sm flex items-center justify-center gap-2">
+                                <i class="fas fa-plus-circle"></i> إضافة مادة جديدة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ==========================================
+        //           Logic Functions
+        // ==========================================
+
+        async function createNewCourse() {
+            const { value: formValues } = await Swal.fire({
+                title: 'إضافة منهج جديد',
+                html: `
+                    <div class="space-y-3 pt-2">
+                        <input id="swal-title" class="swal2-input dark:bg-slate-800 dark:text-white m-0 w-full" placeholder="عنوان المنهج (مثال: فيزياء 101)">
+                        <input id="swal-desc" class="swal2-input dark:bg-slate-800 dark:text-white m-0 w-full" placeholder="وصف قصير للمنهج">
+                        <select id="swal-color" class="swal2-input dark:bg-slate-800 dark:text-white m-0 w-full">
+                            ${colors.map(c => `<option value="${c.bg}">${c.name}</option>`).join('')}
+                        </select>
+                    </div>
+                `,
+                focusConfirm: false,
+                confirmButtonText: 'إنشاء',
+                cancelButtonText: 'إلغاء',
+                showCancelButton: true,
+                preConfirm: () => {
+                    const title = document.getElementById('swal-title').value;
+                    const desc = document.getElementById('swal-desc').value;
+                    const color = document.getElementById('swal-color').value;
+                    if (!title) { Swal.showValidationMessage('عنوان المنهج مطلوب'); return false; }
+                    return [title, desc, color]
+                }
+            });
+
+            if (formValues) {
+                repoData.push({
+                    id: Date.now(),
+                    title: formValues[0],
+                    desc: formValues[1],
+                    color: formValues[2],
+                    icon: 'fa-graduation-cap',
+                    subjects: []
+                });
+                save();
+                Swal.fire({ icon: 'success', title: 'تم الإنشاء بنجاح', timer: 1500, showConfirmButton: false, toast: true, position: 'top-end' });
+            }
+        }
+
+        // --- الدالة التي كانت مفقودة (تعديل الغلاف) ---
+        async function editHeader(idx) {
+            const course = repoData[idx];
+            
+            const { value: formValues } = await Swal.fire({
+                title: 'تعديل غلاف المنهج',
+                html: `
+                    <div class="text-right mb-4 space-y-4">
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 block mb-1">اسم المنهج</label>
+                            <input id="swal-edit-title" class="swal2-input dark:bg-slate-800 dark:text-white w-full m-0" value="${course.title}">
+                        </div>
+                        
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 block mb-1">الوصف</label>
+                            <textarea id="swal-edit-desc" class="swal2-textarea dark:bg-slate-800 dark:text-white w-full m-0 h-20 resize-none">${course.desc}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 block mb-1">لون الخلفية</label>
+                            <select id="swal-edit-color" class="swal2-input dark:bg-slate-800 dark:text-white w-full m-0">
+                                ${colors.map(c => `<option value="${c.bg}" ${c.bg === course.color ? 'selected' : ''}>${c.name}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                `,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'حفظ التعديلات',
+                cancelButtonText: 'إلغاء',
+                preConfirm: () => {
+                    const title = document.getElementById('swal-edit-title').value;
+                    if (!title) { Swal.showValidationMessage('الاسم مطلوب'); return false; }
+                    return [
+                        title,
+                        document.getElementById('swal-edit-desc').value,
+                        document.getElementById('swal-edit-color').value
+                    ]
+                }
+            });
+
+            if (formValues) {
+                course.title = formValues[0];
+                course.desc = formValues[1];
+                course.color = formValues[2];
+                save();
+                
+                const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2000, timerProgressBar: true });
+                Toast.fire({ icon: 'success', title: 'تم تعديل الغلاف بنجاح' });
+            }
+        }
+
+        async function addSubject(courseIdx) {
+            const { value: name } = await Swal.fire({
+                title: 'إضافة مادة جديدة',
+                input: 'text',
+                inputPlaceholder: 'اكتب اسم المادة (مثال: رياضيات)',
+                confirmButtonText: 'إضافة',
+                showCancelButton: true,
+                cancelButtonText: 'إلغاء'
+            });
+
+            if (name) {
+                repoData[courseIdx].subjects.push({ name: name, lessons: [] });
+                save();
+            }
+        }
+
+        async function addLesson(courseIdx, subjectIdx) {
+            const { value: title } = await Swal.fire({
+                title: 'عنوان الدرس الجديد',
+                input: 'text',
+                inputPlaceholder: 'مثال: الدوال الأسية',
+                confirmButtonText: 'إضافة',
+                showCancelButton: true,
+                cancelButtonText: 'إلغاء'
+            });
+
+            if (title) {
+                repoData[courseIdx].subjects[subjectIdx].lessons.push(title);
+                save();
+            }
+        }
+
+        function deleteLesson(cIdx, sIdx, lIdx) {
+            repoData[cIdx].subjects[sIdx].lessons.splice(lIdx, 1);
+            save();
+        }
+
+        function deleteSubject(cIdx, sIdx) {
+            Swal.fire({
+                title: 'هل أنت متأكد؟', 
+                text: "سيتم حذف المادة وجميع الدروس بداخلها.", 
+                icon: 'warning', 
+                showCancelButton: true,
+                confirmButtonText: 'نعم، احذف',
+                cancelButtonText: 'تراجع',
+                confirmButtonColor: '#d33'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    repoData[cIdx].subjects.splice(sIdx, 1);
+                    save();
+                }
+            });
+        }
+
+        function deleteCourse(idx) {
+            Swal.fire({
+                title: 'حذف المنهج بالكامل؟', 
+                text: "لا يمكن التراجع عن هذا الإجراء وسيختفي من المكتبة.", 
+                icon: 'warning', 
+                showCancelButton: true, 
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'حذف نهائي',
+                cancelButtonText: 'إلغاء'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    repoData.splice(idx, 1);
+                    save();
+                    Swal.fire({ icon: 'success', title: 'تم الحذف', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500 });
+                }
+            });
+        }
+
+        // تشغيل التطبيق
+        init();
+    </script>
+</body>
+</html>
+
+
+
+
+srs_admin_curricula.html
+srs_guide.html
+srs_index.html
+srs_library.html
+srs_manage.html
+srs_schedule.html
+srs_settings.html
+srs_stats.html
+srs_study.html
+srs-app.html
