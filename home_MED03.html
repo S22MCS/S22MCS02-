@@ -117,6 +117,8 @@ sessionStorage.setItem('return_url_safe', window.location.href);
       </a>      
       <div class="icons">
 
+
+
 <a href="user_profile.html" class="icon-btn fas fa-user-circle" title="حسابي الشخصي"></a>
 
          <div id="toggle-btn" class="icon-btn fas fa-sun" title="الوضع"></div>
@@ -160,7 +162,18 @@ sessionStorage.setItem('return_url_safe', window.location.href);
 
 
   <a href="home_MED03.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-    
+
+
+
+
+    <a href="#" onclick="startTour(); return false;" class="special-btn" style="background: linear-gradient(45deg, #00897b, #4db6ac); color: white;">
+    <i class="fas fa-route"></i>
+    <span>جولة في القائمة (شرح)</span>
+</a>
+
+
+
+
   <a href="user_profile.html" class="special-btn">
         <i class="fas fa-id-card-alt"></i>
         <span>حسابي الشخصي</span>
@@ -1028,3 +1041,209 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+<script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+
+<style>
+    /* ------------------------------------ */
+    /* --- تنسيقات نافذة الشرح الاحترافية --- */
+    /* ------------------------------------ */
+    .driver-popover.driverjs-theme {
+        font-family: 'Cairo', sans-serif !important;
+        background-color: var(--bg-card, #ffffff) !important;
+        color: var(--text-primary, #1e293b) !important;
+        border-radius: 18px; /* حواف أكثر نعومة */
+        padding: 20px;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.3); /* ظل أعمق وأكثر نعومة */
+        border: 1px solid rgba(0, 137, 123, 0.2); /* إطار خفيف */
+        
+        /* جعل العرض مرناً للهواتف */
+        min-width: 280px !important;
+        max-width: 95vw !important; 
+        width: auto !important;
+        box-sizing: border-box;
+        z-index: 1000000000 !important; 
+    }
+
+    /* العنوان */
+    .driver-popover-title {
+        font-size: 1.6rem !important;
+        font-weight: 800 !important; /* وزن ثقيل للوضوح */
+        color: #00897b !important;
+        margin-bottom: 10px !important;
+        text-align: right;
+        direction: rtl;
+        line-height: 1.4;
+    }
+
+    /* النص (الشرح) */
+    .driver-popover-description {
+        font-size: 1.3rem !important;
+        line-height: 1.6 !important;
+        font-weight: 600 !important; /* وزن متوسط لسهولة القراءة */
+        color: var(--text-secondary, #475569) !important;
+        text-align: right;
+        direction: rtl;
+        margin-bottom: 20px !important;
+    }
+
+    /* زر الإغلاق (X) */
+    .driver-popover-close-btn {
+        color: #fff !important; 
+        font-size: 18px !important;
+        top: 15px !important;
+        right: auto !important;
+        left: 15px !important; 
+        background: #ef4444 !important; /* لون أحمر واضح */
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.2s;
+        z-index: 10;
+        opacity: 0.9;
+    }
+
+    .driver-popover-close-btn:hover {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+    /* حاوية الأزرار السفلية */
+    .driver-popover-footer {
+        display: flex !important;
+        justify-content: space-between !important;
+        flex-direction: row-reverse !important; 
+        gap: 10px;
+        margin-top: 15px !important;
+    }
+
+    /* تنسيق الأزرار (التالي / السابق / انتهيت) */
+    .driver-popover-footer button {
+        font-family: 'Cairo', sans-serif !important;
+        font-weight: 700 !important;
+        background-color: #00897b !important;
+        color: #fff !important;
+        border-radius: 10px !important;
+        padding: 10px 20px !important;
+        font-size: 1.3rem !important; /* حجم أكبر للهواتف */
+        border: none !important;
+        flex: 1; 
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .driver-popover-footer button:hover {
+         background-color: #00695c !important;
+         transform: translateY(-1px);
+    }
+    
+    /* زر السابق بلون ثانوي */
+    .driver-popover-footer .driver-popover-prev-btn {
+        background-color: #f1f5f9 !important;
+        color: #334155 !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+
+    /* تحسين شكل الإطار حول العنصر */
+    .driver-active-element {
+        outline: 4px solid #00897b !important; /* إطار أسمك */
+        outline-offset: 4px;
+        border-radius: 8px;
+    }
+
+    /* --- إصلاحات الموبايل (نافذة ثابتة في الأسفل) --- */
+    @media (max-width: 480px) {
+        .driver-popover.driverjs-theme {
+            position: fixed !important;
+            bottom: 10px !important; /* تثبيت في الأسفل */
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: 98vw !important; 
+            top: auto !important; 
+            margin: 0 !important;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            max-height: 80vh; /* لضمان عدم تغطية الشاشة بالكامل */
+            overflow-y: auto;
+        }
+    }
+</style>
+
+<script>
+// متغير عام لتخزين كائن الجولة
+let tourDriver;
+
+function startTour() {
+    const driver = window.driver.js.driver;
+    
+    // قائمة الخطوات (لم يتم تغيير الترتيب أو المحددات بناءً على طلبك)
+    const steps = [
+        { element: '.side-bar', popover: { title: 'القائمة الرئيسية', description: 'هنا تجد كل أدواتك الدراسية.' , side: "left"} },
+        { element: '.navbar a[href="home_MED03.html"]', popover: { title: 'الرئيسية', description: 'للعودة للوحة التحكم.' , side: "left"} },
+        { element: '.navbar a[onclick*="startTour"]', popover: { title: 'جولة الشرح', description: 'لإعادة تشغيل هذا الشرح.' , side: "left"} },
+        { element: '.navbar a[href="user_profile.html"]', popover: { title: 'حسابي الشخصي', description: 'صفحة ملفك الشخصي.' , side: "left"} },
+        { element: '.navbar a[href="contribute.html"]', popover: { title: 'شاركنا أثرك', description: 'أضف ملخصاتك لتفيد غيرك.' , side: "left"} },
+        { element: '#TAWASLE_ADAT_TAHDITAT_MED02Btn', popover: { title: 'التحديثات والإشعارات', description: 'آخر الأخبار والملفات المضافة.' , side: "left"} },
+        { element: '.navbar a[href="MED03_BANK_دروس.html"]', popover: { title: 'بنك الدروس', description: 'المحاضرات والملخصات.' , side: "left"} },
+        { element: '.navbar a[href="MED03_BANK_EXAM.html"]', popover: { title: 'بنك الاختبارات', description: 'أسئلة السنوات السابقة (QCM).' , side: "left"} },
+        { element: '.navbar a:has(.fa-project-diagram)', popover: { title: 'بنك الخرائط الذهنية', description: 'لتسهيل الحفظ والمراجعة.' , side: "left"} },
+        { element: '.navbar a:has(.fa-clone)', popover: { title: 'بنك بطاقات الذاكرة', description: 'للمراجعة السريعة.' , side: "left"} },
+        { element: '.navbar a[href="JADAWL_03MED.html"]', popover: { title: 'جداول المراجعة', description: 'خطط تنظيم الوقت.' , side: "left"} },
+        { element: '.navbar a:has(.fa-chart-line)', popover: { title: 'تحليل الأسئلة', description: 'فهم نمط الامتحانات.' , side: "left"} },
+        { element: '.navbar a[href="DRIVER_MED03.html"]', popover: { title: 'الدرايفات', description: 'روابط المصادر الخارجية.' , side: "left"} },
+        { element: '.navbar a[href="KAM_BAKIYA_LI.html"]', popover: { title: 'عداد اختبارك', description: 'عداد تنازلي للاختبار.' , side: "left"} },
+        { element: '.alert-btn', popover: { title: 'زر الخطر', description: 'تنبيهات هامة جداً لكل مسلم ومسلمة.' , side: "left"} },
+        { element: '.navbar a:has(.fa-quran)', popover: { title: 'وردك اليومي', description: 'لا تنس نصيبك من القرآن الكريم.' , side: "left"} },
+        { element: '.navbar a:has(.fa-praying-hands)', popover: { title: 'الاستغفار والتسبيح', description: 'حصن المسلم وأذكاره.' , side: "left"} },
+        { element: '.navbar a[onclick*="goBackWithAccuracy"]', popover: { title: 'الذاكرة أداة علم', description: 'نظام العودة للصفحة السابقة.' , side: "left"} },
+        { element: '.navbar a[href="srs_index.html"]', popover: { title: 'الذاكرة (SRS)', description: 'نظام المراجعة الذكية لتثبيت المعلومات.' , side: "left"} },
+        { element: '.navbar a[href="WAJIBATI_ADAT_EALM.html"]', popover: { title: 'واجباتي', description: 'سجل مهامك اليومية.' , side: "left"} },
+        { element: '.navbar a:has(.fa-user-tie)', popover: { title: 'مشرفونا', description: 'فريق العمل.' , side: "left"} },
+        { element: '.navbar a[href="TBR3_BLDAM.html"]', popover: { title: 'التبرع بالدم', description: 'ساهم في إنقاذ حياة.' , side: "left"} },
+        { element: '.navbar a[href="s22market.html"]', popover: { title: 'متجر طلبة الـ 22', description: 'خدمات ومنتجات طبية.' , side: "left"} },
+        { element: '.navbar a[href="DA3MONA_ADATEALM.html"]', popover: { title: 'دعمنا', description: 'لدعم استمرار المنصة.' , side: "left"} },
+        { element: '.medical-alert-btn', popover: { title: 'تواصل معنا', description: 'للمساعدة والاستفسار.' , side: "left"} },
+        { element: '.navbar a[href="adatealm_med_intro.html"]', popover: { title: 'العودة إلى مركز السنوات', description: 'لتغيير السنة الدراسية.' , side: "left"} },
+        { element: '.navbar a[href="download_MED_ADAT_EALM.html"]', popover: { title: 'تحميل التطبيق', description: 'حمل التطبيق لتجربة أسرع وأفضل.' , side: "left"} }
+    ];
+
+    // إعدادات الجولة
+    tourDriver = driver({
+        showProgress: true,
+        animate: true,
+        allowClose: true, // يتيح عمل زر X
+
+        // نصوص الأزرار
+        nextBtnText: 'التالي ⬅️',
+        prevBtnText: '➡️ السابق',
+        doneBtnText: 'إنهاء الجولة ✅', // يعمل هذا الزر على الخطوة الأخيرة
+
+        // إعدادات الخطوات
+        steps: steps,
+
+        // إجبار القائمة على الفتح عند البدء
+        onHighlightStarted: (element) => {
+            const sidebar = document.querySelector('.side-bar');
+            const overlay = document.querySelector('.overlay');
+            if (sidebar && !sidebar.classList.contains('active')) {
+                sidebar.classList.add('active');
+                if(overlay) overlay.classList.add('active');
+            }
+        },
+
+        // **هام:** هذه الدالة تضمن إغلاق الجولة بالكامل عند الضغط على زر X أو "إنهاء الجولة"
+        onDestroyStarted: () => {
+            tourDriver.destroy(); 
+        }
+    });
+
+    tourDriver.drive();
+}
+</script>

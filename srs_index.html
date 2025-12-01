@@ -9,7 +9,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // إعدادات Tailwind CSS: الوضع الليلي، الخط، والألوان المخصصة
         tailwind.config = { 
             darkMode: 'class', 
             theme: { 
@@ -19,142 +18,82 @@
                         brand: { DEFAULT: '#2563eb', dark: '#1d4ed8' }, 
                         dark: { bg: '#0f172a', card: '#1e293b', sidebar: '#111827' } 
                     }, 
-                    padding: { 'safe': 'env(safe-area-inset-bottom)' } // لدعم شريط التنقل السفلي في هواتف iOS
+                    padding: { 'safe': 'env(safe-area-inset-bottom)' }
                 } 
             } 
         }
     </script>
     <style>
-        /* إزالة التظليل عند اللمس على الأزرار في الهواتف */
         body { -webkit-tap-highlight-color: transparent; }
         
-        /* تحسينات للقائمة الجانبية على الشاشات الصغيرة */
+        /* تأثيرات الانتقال للجولة التعليمية */
+        .tutorial-slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .tutorial-slide.active {
+            display: block;
+            opacity: 1;
+        }
+
         @media (max-width: 767px) {
             .mobile-sidebar {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 85%;
-                max-width: 320px;
-                height: 100%;
-                background: white;
-                z-index: 100;
-                transition: right 0.3s ease;
-                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-                overflow-y: auto;
+                position: fixed; top: 0; right: -100%; width: 85%; max-width: 320px; height: 100%;
+                background: white; z-index: 100; transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1); overflow-y: auto;
             }
-            
-            .mobile-sidebar.open {
-                right: 0;
-            }
-            
+            .mobile-sidebar.open { right: 0; }
             .mobile-sidebar-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                z-index: 99;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; visibility: hidden; transition: all 0.3s ease;
             }
-            
-            .mobile-sidebar-overlay.open {
-                opacity: 1;
-                visibility: visible;
-            }
-            
-            .dark .mobile-sidebar {
-                background: #111827;
-            }
-        }
-        
-        /* تحسينات شريط التمرير للقائمة الجانبية */
-        .nav-scrollable {
-            max-height: calc(100vh - 180px);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .nav-scrollable::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .nav-scrollable::-webkit-scrollbar-thumb {
-            background-color: #ccc;
-            border-radius: 10px;
-        }
-        
-        .dark .nav-scrollable::-webkit-scrollbar-thumb {
-            background-color: #4b5563;
+            .mobile-sidebar-overlay.open { opacity: 1; visibility: visible; }
+            .dark .mobile-sidebar { background: #111827; }
         }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-dark-bg text-slate-800 font-sans transition-colors duration-300 pb-24 md:pb-0">
 
-    <!-- القائمة الجانبية للشاشات الكبيرة -->
-    <aside class="hidden md:flex fixed top-0 right-0 h-full w-64 bg-white dark:bg-dark-sidebar border-l border-gray-200 dark:border-gray-700 z-50 flex-col p-6 shadow-xl">
+    <aside class="hidden md:flex fixed top-0 right-0 h-full w-64 bg-white dark:bg-dark-sidebar border-l border-gray-200 dark:border-gray-700 z-40 flex-col p-6 shadow-xl">
         <div class="flex items-center gap-3 mb-10">
             <div class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/40"><i class="fas fa-brain text-xl"></i></div>
-            <h1 class="font-black text-xl dark:text-white">الذاكرة   <span class="text-brand">
-                أداة علم
-                PRO</span></h1>
+            <h1 class="font-black text-xl dark:text-white">الذاكرة <span class="text-brand">PRO</span></h1>
         </div>
-
-        <nav class="space-y-2 flex-1 nav-scrollable">
-            <a href="#" onclick="goBackWithAccuracy()" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"> 
-                <i class="fas fa-arrow-left w-6"></i> العودة للصفحة السابقة
-            </a>
-
+        <nav class="space-y-2 flex-1">
             <a href="srs_index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"><i class="fas fa-home w-6"></i> لوحة القيادة</a>
-            
             <a href="srs_schedule.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="far fa-calendar-alt w-6"></i> الجدول</a>
             <a href="srs_manage.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-edit w-6"></i> المحتوى</a>
             <a href="srs_library.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-layer-group w-6"></i> المكتبة</a>
             <a href="srs_stats.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-chart-pie w-6"></i> التحليل</a>
-            
             <div class="my-4 border-t border-gray-100 dark:border-gray-700"></div>
-            <a href="srs_guide.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"><i class="fas fa-book-open w-6"></i> الدليل والإرشاد</a>
+            <button onclick="startTutorial()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 transition"><i class="fas fa-question-circle w-6"></i> شرح التطبيق</button>
             <a href="srs_settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-cog w-6"></i> الإعدادات</a>
         </nav>
     </aside>
 
-    <!-- القائمة الجانبية للشاشات الصغيرة -->
     <div id="mobileSidebarOverlay" class="mobile-sidebar-overlay" onclick="closeMobileSidebar()"></div>
-    
     <aside id="mobileSidebar" class="mobile-sidebar md:hidden p-6">
         <div class="flex items-center justify-between mb-8">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand/40"><i class="fas fa-brain text-xl"></i></div>
-                <h1 class="font-black text-xl dark:text-white">الذاكرة   <span class="text-brand">PRO</span></h1>
+                <h1 class="font-black text-xl dark:text-white">الذاكرة <span class="text-brand">PRO</span></h1>
             </div>
-            <button onclick="closeMobileSidebar()" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-gray-500 dark:text-gray-300 transition hover:bg-red-500/10 hover:text-red-500">
-                <i class="fas fa-times"></i>
-            </button>
+            <button onclick="closeMobileSidebar()" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center text-gray-500 dark:text-gray-300 transition hover:bg-red-500/10 hover:text-red-500"><i class="fas fa-times"></i></button>
         </div>
-
-        <nav class="space-y-2 flex-1 nav-scrollable">
-            <a href="#" onclick="goBackWithAccuracy(); closeMobileSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"> 
-                <i class="fas fa-arrow-left w-6"></i> العودة للصفحة السابقة
-            </a>
-
-            <a href="srs_index.html" onclick="closeMobileSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"><i class="fas fa-home w-6"></i> لوحة القيادة</a>
-            
-            <a href="srs_schedule.html" onclick="closeMobileSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="far fa-calendar-alt w-6"></i> الجدول</a>
-            <a href="srs_manage.html" onclick="closeMobileSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-edit w-6"></i> المحتوى</a>
-            <a href="srs_library.html" onclick="closeMobileSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-layer-group w-6"></i> المكتبة</a>
-            <a href="srs_stats.html" onclick="closeMobileSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-chart-pie w-6"></i> التحليل</a>
-            
+        <nav class="space-y-2 flex-1">
+            <a href="srs_index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"><i class="fas fa-home w-6"></i> لوحة القيادة</a>
+            <a href="srs_schedule.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="far fa-calendar-alt w-6"></i> الجدول</a>
+            <a href="srs_manage.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-edit w-6"></i> المحتوى</a>
+            <a href="srs_library.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-layer-group w-6"></i> المكتبة</a>
+            <a href="srs_stats.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-chart-pie w-6"></i> التحليل</a>
             <div class="my-4 border-t border-gray-100 dark:border-gray-700"></div>
-            <a href="srs_guide.html" onclick="closeMobileSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand/10 text-brand font-bold transition"><i class="fas fa-book-open w-6"></i> الدليل والإرشاد</a>
-            <a href="srs_settings.html" onclick="closeMobileSidebar()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-cog w-6"></i> الإعدادات</a>
+            <button onclick="startTutorial(); closeMobileSidebar()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-purple-600 bg-purple-50 dark:bg-purple-900/20 font-bold transition"><i class="fas fa-question-circle w-6"></i> كيف أستخدم التطبيق؟</button>
+            <a href="srs_settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 transition"><i class="fas fa-cog w-6"></i> الإعدادات</a>
         </nav>
     </aside>
 
     <main class="md:mr-64 min-h-screen p-4 md:p-8">
-        <!-- زر فتح القائمة الجانبية للهواتف -->
         <div class="md:hidden flex justify-between items-center mb-6">
             <button onclick="openMobileSidebar()" class="w-10 h-10 rounded-full bg-white dark:bg-dark-card shadow-md flex items-center justify-center text-gray-500 dark:text-gray-300">
                 <i class="fas fa-bars"></i>
@@ -166,42 +105,23 @@
         </div>
         
         <div id="dashboardContent">
-            <!-- محتوى لوحة القيادة سيتم تعبئته هنا -->
-        </div>
+            </div>
     </main>
 
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-gray-200 dark:border-gray-700 pb-safe z-50 flex justify-around items-center h-16 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
-        
-        <a href="srs_index.html" class="flex flex-col items-center justify-center w-full h-full text-brand dark:text-blue-400 transition">
-            <i class="fas fa-home text-xl mb-1"></i>
-            <span class="text-[10px] font-bold">الرئيسية</span>
-        </a>
-        
-        <a href="srs_schedule.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition">
-            <i class="far fa-calendar-alt text-xl mb-1"></i>
-            <span class="text-[10px] font-bold">الجدول</span>
-        </a>
-        
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-gray-200 dark:border-gray-700 pb-safe z-40 flex justify-around items-center h-16 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+        <a href="srs_index.html" class="flex flex-col items-center justify-center w-full h-full text-brand dark:text-blue-400 transition"><i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">الرئيسية</span></a>
+        <a href="srs_schedule.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="far fa-calendar-alt text-xl mb-1"></i><span class="text-[10px] font-bold">الجدول</span></a>
         <div class="relative -top-5">
             <button onclick="openModal()" class="w-14 h-14 bg-brand text-white rounded-full shadow-xl shadow-brand/40 flex items-center justify-center text-2xl transform transition active:scale-90 hover:scale-105 border-4 border-slate-50 dark:border-dark-bg">
                 <i class="fas fa-plus"></i>
             </button>
         </div>
-
-        <a href="srs_stats.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition">
-            <i class="fas fa-chart-pie text-xl mb-1"></i>
-            <span class="text-[10px] font-bold">تحليل</span>
-        </a>
-        
-        <a href="srs_settings.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition">
-            <i class="fas fa-cog text-xl mb-1"></i>
-            <span class="text-[10px] font-bold">إعدادات</span>
-        </a>
+        <a href="srs_stats.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-chart-pie text-xl mb-1"></i><span class="text-[10px] font-bold">تحليل</span></a>
+        <a href="srs_settings.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-cog text-xl mb-1"></i><span class="text-[10px] font-bold">إعدادات</span></a>
     </nav>
 
     <div id="addModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
-        
         <div class="relative bg-white dark:bg-dark-card w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-8 transform scale-90 opacity-0 transition-all duration-300" id="modalCard">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-black text-slate-800 dark:text-white">إضافة محتوى جديد</h3>
@@ -222,14 +142,78 @@
         </div>
     </div>
 
+    <div id="tutorialModal" class="fixed inset-0 z-[90] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-md"></div>
+        <div class="relative bg-white dark:bg-dark-card w-full max-w-md rounded-[2rem] shadow-2xl overflow-hidden">
+            
+            <button onclick="closeTutorial(true)" class="absolute top-4 left-4 z-10 w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-400 flex items-center justify-center hover:bg-red-100 hover:text-red-500 transition">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="p-8 text-center min-h-[400px] flex flex-col items-center justify-center">
+                
+                <div class="tutorial-slide active" data-step="1">
+                    <div class="w-24 h-24 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-4xl text-brand mx-auto mb-6 animate-bounce">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-slate-800 dark:text-white mb-3">نقلة نوعية في دراستك!</h2>
+                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
+                        أهلاً بك في التحديث الجديد. لقد تحول الموقع إلى <span class="text-brand font-bold">تطبيق متكامل</span> بصفحات متعددة لتنظيم كل جانب من جوانب مذاكرتك.
+                    </p>
+                </div>
+
+                <div class="tutorial-slide" data-step="2">
+                    <div class="w-24 h-24 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center text-4xl text-purple-600 mx-auto mb-6">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-slate-800 dark:text-white mb-3">مكتبة المناهج</h2>
+                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
+                        لا داعي لإدخال كل شيء بيدك! زر صفحة <span class="font-bold text-slate-700 dark:text-slate-200">"المكتبة"</span> لاستيراد مناهج جاهزة (طب، لغات، بكالوريا) أو أنشئ مناهجك الخاصة وشاركها.
+                    </p>
+                </div>
+
+                <div class="tutorial-slide" data-step="3">
+                    <div class="w-24 h-24 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center text-4xl text-green-600 mx-auto mb-6">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-slate-800 dark:text-white mb-3">أضف أفكارك فوراً</h2>
+                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
+                        هل لديك فكرة سريعة أو درس جديد؟ استخدم زر <span class="inline-block bg-brand text-white w-6 h-6 rounded-full text-xs leading-6 text-center mx-1">+</span> في الشريط السفلي لإضافتها للجدول فوراً دون تعقيد.
+                    </p>
+                </div>
+
+                <div class="tutorial-slide" data-step="4">
+                    <div class="w-24 h-24 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center text-4xl text-orange-500 mx-auto mb-6">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-slate-800 dark:text-white mb-3">راجع بذكاء</h2>
+                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed">
+                        نحن لا نضيع وقتك. النظام سيخبرك فقط بما <span class="text-red-500 font-bold">أوشكت على نسيانه</span>. قيم صدق حفظك (0-4) وسنتولى نحن تحديد الموعد القادم.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="px-8 pb-8 flex justify-between items-center">
+                <div class="flex gap-1">
+                    <div class="w-2 h-2 rounded-full bg-brand transition-all duration-300 step-dot active-dot" id="dot-1"></div>
+                    <div class="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300 step-dot" id="dot-2"></div>
+                    <div class="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300 step-dot" id="dot-3"></div>
+                    <div class="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 transition-all duration-300 step-dot" id="dot-4"></div>
+                </div>
+                <button onclick="nextTutorialStep()" id="nextBtn" class="bg-brand text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-600 transition shadow-lg shadow-brand/30">
+                    التالي <i class="fas fa-arrow-left mr-2 text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const DB_KEY = 'srs_pro_db_v1';
         const SETTINGS_KEY = 'srs_pro_settings_v1';
-        let appData = { 
-            lessons: [], 
-            user: { streak: 0, lastLogin: null, totalReviews: 0 } 
-        };
+        let appData = { lessons: [], user: { streak: 0, lastLogin: null, totalReviews: 0 } };
         
+        // --- Initialization ---
         function init() {
             // تحميل البيانات
             const d = localStorage.getItem(DB_KEY);
@@ -242,40 +226,96 @@
             checkStreak();
             renderDashboard();
             
-            // تعبئة قائمة المواد المقترحة في نافذة الإضافة
+            // إعداد القائمة
             const subs = [...new Set(appData.lessons.map(l => l.subject).filter(s => s))];
             document.getElementById('subjectsList').innerHTML = subs.map(s => `<option value="${s}">`).join('');
-            
-            // تحديث شارة الأيام المتتالية للهواتف
             document.getElementById('mobileStreak').textContent = appData.user.streak || 0;
+
+            // ** التحقق من الجولة التعليمية **
+            if (!localStorage.getItem('srs_tutorial_seen_v2')) {
+                setTimeout(startTutorial, 1000); // تأخير بسيط لجمالية الظهور
+            }
         }
 
-        // === منطق الأيام المتتالية (Streak) ===
+        // --- Tutorial Logic (الجولة التعليمية) ---
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function startTutorial() {
+            currentStep = 1;
+            updateTutorialUI();
+            document.getElementById('tutorialModal').classList.remove('hidden');
+        }
+
+        function closeTutorial(save = false) {
+            document.getElementById('tutorialModal').classList.add('hidden');
+            if(save) localStorage.setItem('srs_tutorial_seen_v2', 'true');
+        }
+
+        function nextTutorialStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateTutorialUI();
+            } else {
+                closeTutorial(true); // إنهاء وحفظ
+                Swal.fire({
+                    title: 'أنت جاهز!',
+                    text: 'ابدأ بإضافة أول درس لك الآن.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }
+
+        function updateTutorialUI() {
+            // تحديث الشرائح
+            document.querySelectorAll('.tutorial-slide').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.tutorial-slide[data-step="${currentStep}"]`).classList.add('active');
+
+            // تحديث النقاط (Dots)
+            document.querySelectorAll('.step-dot').forEach((d, i) => {
+                if (i + 1 === currentStep) {
+                    d.classList.remove('bg-gray-300', 'dark:bg-gray-600');
+                    d.classList.add('bg-brand', 'w-6'); // تكبير النقطة النشطة
+                } else {
+                    d.classList.add('bg-gray-300', 'dark:bg-gray-600');
+                    d.classList.remove('bg-brand', 'w-6');
+                }
+            });
+
+            // تغيير نص الزر في الخطوة الأخيرة
+            const btn = document.getElementById('nextBtn');
+            if (currentStep === totalSteps) {
+                btn.innerHTML = 'ابدأ الآن <i class="fas fa-check mr-2"></i>';
+                btn.classList.add('bg-green-500', 'hover:bg-green-600');
+                btn.classList.remove('bg-brand', 'hover:bg-blue-600');
+            } else {
+                btn.innerHTML = 'التالي <i class="fas fa-arrow-left mr-2 text-xs"></i>';
+                btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                btn.classList.add('bg-brand', 'hover:bg-blue-600');
+            }
+        }
+
+        // --- Core Functions ---
         function checkStreak() {
             const today = new Date().toDateString();
             if (appData.user.lastLogin !== today) {
                 const yest = new Date(); yest.setDate(yest.getDate() - 1);
-                
-                // إذا كان آخر دخول هو البارحة، زد العدد
                 if (appData.user.lastLogin === yest.toDateString()) appData.user.streak = (appData.user.streak || 0) + 1;
-                else appData.user.streak = 1; // ابدأ من جديد
-                
+                else appData.user.streak = 1;
                 appData.user.lastLogin = today;
                 localStorage.setItem(DB_KEY, JSON.stringify(appData));
             }
         }
 
-        // === رسم لوحة القيادة ===
         function renderDashboard() {
-            // الدروس المستحقة اليوم (تاريخها أقل من أو يساوي اليوم)
             const dueLessons = appData.lessons.filter(l => new Date(l.nextReview) <= new Date());
             
-            // حساب مستوى الحفظ لكل درس لتمييزه (جودة البطاقة)
             function getLessonStatus(lesson) {
                 if (lesson.layer === 0) return { text: 'جديد / نسيان', color: 'border-red-500', icon: 'fa-times' };
                 if (lesson.layer < 3) return { text: 'قيد التعلم', color: 'border-yellow-500', icon: 'fa-exclamation' };
-                if (lesson.layer < 5) return { text: 'مراجعة دورية', color: 'border-blue-500', icon: 'fa-redo' };
-                return { text: 'تم الحفظ', color: 'border-green-500', icon: 'fa-check' };
+                return { text: 'مراجعة دورية', color: 'border-blue-500', icon: 'fa-redo' };
             }
 
             const html = `
@@ -291,9 +331,8 @@
                 </div>
 
                 ${dueLessons.length > 0 ? `
-                    <h3 class="font-bold text-xl dark:text-white mb-4">المهام المستحقة اليوم:</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        ${dueLessons.slice(0, 6).map(l => { // عرض 6 دروس كحد أقصى
+                        ${dueLessons.slice(0, 6).map(l => {
                             const status = getLessonStatus(l);
                             return `
                                 <div class="bg-white dark:bg-dark-card p-5 rounded-3xl shadow-md border-r-4 ${status.color} flex flex-col justify-between hover:shadow-lg transition">
@@ -301,21 +340,17 @@
                                         <span class="text-[10px] font-bold text-brand bg-blue-50 dark:bg-blue-900/30 px-2.5 py-1 rounded-lg mb-2 inline-block">${l.subject}</span>
                                         <h4 class="font-bold text-lg dark:text-white leading-tight">${l.title}</h4>
                                     </div>
-                                    <div class="flex justify-between items-center text-xs text-gray-400 mb-2">
-                                        <span><i class="fas ${status.icon}"></i> ${status.text}</span>
-                                        <span>المستوى ${l.layer}</span>
-                                    </div>
                                     <a href="srs_study.html" class="w-full py-2 rounded-xl bg-brand/10 text-brand text-sm font-bold hover:bg-brand hover:text-white transition text-center active:scale-95">بدء المراجعة</a>
                                 </div>
                             `;
                         }).join('')}
                     </div>
-                    ${dueLessons.length > 6 ? `<a href="srs_schedule.html" class="block text-center mt-6 text-brand font-bold hover:underline">عرض جميع ${dueLessons.length} مهمة</a>` : ''}
+                    ${dueLessons.length > 6 ? `<a href="srs_schedule.html" class="block text-center mt-6 text-brand font-bold hover:underline">عرض جميع المهام</a>` : ''}
                 ` : `
                     <div class="text-center py-16 bg-white dark:bg-dark-card rounded-3xl border border-dashed border-gray-200 dark:border-gray-700 shadow-inner">
                         <div class="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500 text-2xl animate-bounce"><i class="fas fa-check"></i></div>
-                        <h3 class="font-black text-xl dark:text-white mb-2">كل شيء تحت السيطرة!</h3>
-                        <p class="text-gray-500 mb-4">لا توجد مراجعات مستحقة الآن. استمتع بوقتك أو أضف محتوى جديداً.</p>
+                        <h3 class="font-black text-xl dark:text-white mb-2">أنت رائع!</h3>
+                        <p class="text-gray-500 mb-4">أنهيت كل شيء. أضف درساً جديداً أو خذ قسطاً من الراحة.</p>
                         <button onclick="openModal()" class="bg-brand text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg shadow-brand/30 active:scale-95 transition">
                             <i class="fas fa-plus ml-1"></i> إضافة درس جديد
                         </button>
@@ -325,88 +360,29 @@
             document.getElementById('dashboardContent').innerHTML = html;
         }
 
-        // === منطق النافذة المنبثقة (Modal) ===
-        function openModal() {
-            document.getElementById('addModal').classList.remove('hidden');
-            setTimeout(() => {
-                document.getElementById('modalCard').classList.remove('scale-90', 'opacity-0');
-                document.getElementById('modalCard').classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        function closeModal() {
-            document.getElementById('modalCard').classList.remove('scale-100', 'opacity-100');
-            document.getElementById('modalCard').classList.add('scale-90', 'opacity-0');
-            setTimeout(() => document.getElementById('addModal').classList.add('hidden'), 300);
-        }
-
-        // === منطق القائمة الجانبية للهواتف ===
-        function openMobileSidebar() {
-            document.getElementById('mobileSidebar').classList.add('open');
-            document.getElementById('mobileSidebarOverlay').classList.add('open');
-            document.body.style.overflow = 'hidden'; // منع التمرير خلف القائمة
-        }
-
-        function closeMobileSidebar() {
-            document.getElementById('mobileSidebar').classList.remove('open');
-            document.getElementById('mobileSidebarOverlay').classList.remove('open');
-            document.body.style.overflow = ''; // إعادة تفعيل التمرير
-        }
+        // --- Modal & Sidebar Functions ---
+        function openModal() { document.getElementById('addModal').classList.remove('hidden'); setTimeout(() => { document.getElementById('modalCard').classList.remove('scale-90', 'opacity-0'); document.getElementById('modalCard').classList.add('scale-100', 'opacity-100'); }, 10); }
+        function closeModal() { document.getElementById('modalCard').classList.remove('scale-100', 'opacity-100'); document.getElementById('modalCard').classList.add('scale-90', 'opacity-0'); setTimeout(() => document.getElementById('addModal').classList.add('hidden'), 300); }
+        function openMobileSidebar() { document.getElementById('mobileSidebar').classList.add('open'); document.getElementById('mobileSidebarOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeMobileSidebar() { document.getElementById('mobileSidebar').classList.remove('open'); document.getElementById('mobileSidebarOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 
         function saveLesson() {
             const subject = document.getElementById('inpSubject').value.trim();
             const title = document.getElementById('inpTitle').value.trim();
-            
-            if(!subject || !title) {
-                Swal.fire({ icon: 'error', title: 'خطأ', text: 'الرجاء ملء حقل المادة والعنوان.', toast: true, position: 'top-end', showConfirmButton: false, timer: 2000 });
-                return;
-            }
+            if(!subject || !title) return Swal.fire({ icon: 'error', title: 'خطأ', text: 'الرجاء ملء البيانات.', toast: true, position: 'top-end', showConfirmButton: false, timer: 2000 });
             
             const now = new Date();
-            const next = new Date(); 
-            next.setDate(now.getDate() + 1); // أول مراجعة بعد يوم واحد
+            const next = new Date(); next.setDate(now.getDate() + 1);
             
-            appData.lessons.push({ 
-                id: Date.now() + Math.random(), 
-                subject, 
-                title, 
-                layer: 0, 
-                nextReview: next.toISOString(), 
-                lastReview: now.toISOString(), 
-                easeFactor: 2.5 
-            });
-            
+            appData.lessons.push({ id: Date.now() + Math.random(), subject, title, layer: 0, nextReview: next.toISOString(), lastReview: now.toISOString(), easeFactor: 2.5 });
             localStorage.setItem(DB_KEY, JSON.stringify(appData));
             
             closeModal();
             renderDashboard();
             document.getElementById('inpTitle').value = '';
-            
-            Swal.fire({ 
-                icon: 'success', 
-                title: 'تمت إضافة الدرس!', 
-                toast: true, 
-                position: 'top-end', 
-                showConfirmButton: false, 
-                timer: 1500 
-            });
+            Swal.fire({ icon: 'success', title: 'تمت الإضافة!', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500 });
         }
         
-        // === وظيفة العودة للصفحة السابقة ===
-        function goBackWithAccuracy() {
-            // 1. نبحث عن "بطاقة العنوان" المخزنة
-            const storedUrl = sessionStorage.getItem('return_url_safe');
-
-            if (storedUrl) {
-                // 2. إذا وجدنا العنوان، ننتقل إليه مباشرةً!
-                window.location.href = storedUrl;
-            } else {
-                // 3. إذا لم نجد العنوان (لأن المستخدم بدأ التصفح من هنا)، نعود خطوة واحدة عادية.
-                window.history.back();
-            }
-        }
-        
-        // تشغيل التهيئة عند تحميل الصفحة
         init();
     </script>
 </body>
