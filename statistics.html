@@ -7,155 +7,258 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#10b981',
+                        dark: '#1e1b4b'
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; }
-        .nav-item.active { background-color: #e0e7ff; color: #4338ca; border-right: 4px solid #4338ca; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a1a1a1; }
+        
+        .nav-item { position: relative; overflow: hidden; }
+        .nav-item.active { background: linear-gradient(90deg, #e0e7ff 0%, rgba(255,255,255,0) 100%); color: #4338ca; border-right: 4px solid #4338ca; }
+        .nav-item:not(.active):hover { background-color: #f9fafb; color: #4338ca; }
+        
+        /* Sidebar Transition */
+        #sidebar { transition: transform 0.3s ease-in-out; }
+        
         .chart-container { position: relative; height: 300px; width: 100%; }
-        .matrix-table th, .matrix-table td { text-align: center; border: 1px solid #e5e7eb; padding: 0.75rem; white-space: nowrap; }
-        .matrix-table th { background-color: #f9fafb; font-weight: 700; color: #374151; }
-        .matrix-table tr:hover { background-color: #f3f4f6; }
+        
+        /* Table Styling */
+        .matrix-table th, .matrix-table td { text-align: center; border: 1px solid #e5e7eb; padding: 0.85rem; white-space: nowrap; font-size: 0.9rem; }
+        .matrix-table th { background-color: #f8fafc; font-weight: 700; color: #334155; }
+        .matrix-table tr:hover { background-color: #f1f5f9; transition: background-color 0.2s; }
     </style>
 </head>
-<body class="h-screen flex overflow-hidden">
+<body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
 
-    <div class="flex-shrink-0 w-64 bg-white border-l border-gray-200 overflow-y-auto hidden md:block z-20">
-        <div class="p-6 text-center border-b border-gray-200">
-            <h1 class="text-xl font-extrabold text-indigo-700">بوابة الإشراف</h1>
-            <p class="text-xs text-gray-400 mt-1">Analytics Module</p>
+    <div id="mobile-overlay" class="fixed inset-0 bg-gray-900/50 z-40 hidden transition-opacity opacity-0 lg:hidden"></div>
+
+    <aside id="sidebar" class="fixed lg:static top-0 right-0 z-50 h-full w-72 bg-white border-l border-gray-200 flex flex-col transform translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none">
+        
+        <div class="h-20 flex items-center justify-between px-6 border-b border-gray-100">
+            <div>
+                <h1 class="text-xl font-extrabold text-primary tracking-wide">بوابة الإشراف</h1>
+                <p class="text-xs text-gray-400 font-medium">Analytics Dashboard</p>
+            </div>
+            <button id="close-sidebar" class="lg:hidden text-gray-400 hover:text-red-500 transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
-        <nav class="p-4 space-y-2">
-            <a href="statistics.html" class="nav-item active flex items-center p-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition">
-                <i class="fas fa-chart-pie ml-3 text-lg"></i>
-                <span>التحليلات الشاملة</span>
+
+        <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+            <a href="statistics.html" class="nav-item active flex items-center px-4 py-3 text-sm font-semibold rounded-xl text-gray-600 transition group">
+                <span class="w-8 flex justify-center"><i class="fas fa-chart-pie text-lg group-hover:scale-110 transition-transform"></i></span>
+                <span class="mr-3">التحليلات الشاملة</span>
             </a>
-            <a href="srs_admin_curricula.html" class="nav-item flex items-center p-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition">
-                <i class="fas fa-book ml-3 text-lg"></i>
-                <span>تعديل برنامج المراجعات</span>
-            </a>
-
-
-
-      <a href="TAWASLE_LAWHAT_TAHAKOM_KISM_EL_TIB_ISHAARAT_PRO.html" class="nav-item flex items-center p-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition">
-                <i class="fas fa-book ml-3 text-lg"></i>
-                <span>الاشعارت داخل المنصة</span>
-            </a>
-
-
-
-
-
             
-            <a href="users_v2.html" class="nav-item flex items-center p-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition">
-                <i class="fas fa-users ml-3 text-lg"></i>
-                <span>قاعدة بيانات الطلاب</span>
+            <a href="srs_admin_curricula.html" class="nav-item flex items-center px-4 py-3 text-sm font-semibold rounded-xl text-gray-600 transition group">
+                <span class="w-8 flex justify-center"><i class="fas fa-book text-lg group-hover:scale-110 transition-transform"></i></span>
+                <span class="mr-3">تعديل برنامج المراجعات</span>
             </a>
-            <a href="contributions_v2.html" class="nav-item flex items-center p-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition">
-                <i class="fas fa-file-signature ml-3 text-lg"></i>
-                <span>مراجعة المساهمات</span>
+
+            <a href="TAWASLE_LAWHAT_TAHAKOM_KISM_EL_TIB_ISHAARAT_PRO.html" class="nav-item flex items-center px-4 py-3 text-sm font-semibold rounded-xl text-gray-600 transition group">
+                <span class="w-8 flex justify-center"><i class="fas fa-bell text-lg text-yellow-500 animate-pulse group-hover:scale-110 transition-transform"></i></span>
+                <span class="mr-3">الإشعارات داخل المنصة</span>
             </a>
-            <button id="logout-btn" class="w-full flex items-center p-3 text-sm font-medium rounded-lg text-red-600 hover:bg-red-50 transition mt-6 border-t pt-4">
-                <i class="fas fa-sign-out-alt ml-3 text-lg"></i>
+            
+            <a href="users_v2.html" class="nav-item flex items-center px-4 py-3 text-sm font-semibold rounded-xl text-gray-600 transition group">
+                <span class="w-8 flex justify-center"><i class="fas fa-users text-lg group-hover:scale-110 transition-transform"></i></span>
+                <span class="mr-3">قاعدة بيانات الطلاب</span>
+            </a>
+            
+            <a href="contributions_v2.html" class="nav-item flex items-center px-4 py-3 text-sm font-semibold rounded-xl text-gray-600 transition group">
+                <span class="w-8 flex justify-center"><i class="fas fa-file-signature text-lg group-hover:scale-110 transition-transform"></i></span>
+                <span class="mr-3">مراجعة المساهمات</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-100">
+            <button id="logout-btn" class="w-full flex items-center justify-center px-4 py-3 text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition shadow-sm">
+                <i class="fas fa-sign-out-alt ml-2"></i>
                 <span>تسجيل الخروج</span>
             </button>
-        </nav>
-    </div>
+        </div>
+    </aside>
 
-    <div class="flex-1 flex flex-col overflow-hidden relative">
+    <div class="flex-1 flex flex-col h-full relative w-full lg:w-auto">
         
-        <div id="login-overlay" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center">
-            <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full mx-4 text-center border-t-4 border-indigo-600">
-                <div class="mb-6"><div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto"><i class="fas fa-chart-line text-4xl text-indigo-600"></i></div></div>
-                <h2 class="text-2xl font-bold mb-2 text-gray-800">تحليلات النظام</h2>
+        <div id="login-overlay" class="fixed inset-0 bg-gray-900 z-[60] flex items-center justify-center backdrop-blur-sm">
+            <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-md w-full mx-4 text-center border-t-4 border-primary relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-purple-600"></div>
+                <div class="mb-8 relative">
+                    <div class="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                        <i class="fas fa-chart-line text-5xl text-primary"></i>
+                    </div>
+                </div>
+                <h2 class="text-3xl font-extrabold mb-2 text-gray-800">تحليلات النظام</h2>
+                <p class="text-gray-500 mb-8 text-sm">يرجى تسجيل الدخول للمتابعة</p>
                 
-                <form id="login-form" class="space-y-4 mt-6 text-right">
+                <form id="login-form" class="space-y-5 text-right">
                     <div>
-                        <input type="email" id="admin-email" placeholder="البريد الإلكتروني" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" required>
+                        <label class="block text-xs font-bold text-gray-500 mb-1 mr-1">البريد الإلكتروني</label>
+                        <input type="email" id="admin-email" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition bg-gray-50 focus:bg-white" required dir="ltr">
                     </div>
 
                     <div class="relative">
-                        <input type="password" id="admin-password" placeholder="كلمة المرور" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" required>
-                        <button type="button" id="toggle-password" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-indigo-600 focus:outline-none transition">
+                        <label class="block text-xs font-bold text-gray-500 mb-1 mr-1">كلمة المرور</label>
+                        <input type="password" id="admin-password" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition bg-gray-50 focus:bg-white" required dir="ltr">
+                        <button type="button" id="toggle-password" class="absolute left-4 top-9 text-gray-400 hover:text-primary focus:outline-none transition">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
 
-                    <div class="flex items-center justify-between mt-2">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" id="remember-me" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer">
-                            <span class="mr-2 text-sm text-gray-600 font-medium">تذكر البريد للدخول السريع</span>
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center cursor-pointer group">
+                            <input type="checkbox" id="remember-me" class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer">
+                            <span class="mr-2 text-sm text-gray-600 group-hover:text-primary transition">تذكرني</span>
                         </label>
                     </div>
 
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg mt-4">دخول المشرف</button>
+                    <button type="submit" class="w-full bg-gradient-to-r from-primary to-indigo-700 text-white py-3.5 rounded-xl font-bold hover:shadow-lg hover:translate-y-[-2px] transition-all duration-200 mt-6">دخول المشرف</button>
                 </form>
             </div>
         </div>
 
-        <header class="flex-shrink-0 border-b border-gray-200 bg-white shadow-sm p-4 sm:p-6 flex justify-between items-center z-10">
-            <div>
-                <h2 class="text-2xl font-bold text-gray-800">التحليلات الشاملة</h2>
-                <p class="text-sm text-gray-500 mt-1">نظرة عامة ورسوم بيانية لأداء النظام</p>
-            </div>
-            <div class="flex items-center space-x-4 space-x-reverse">
-                <div class="text-left hidden sm:block">
-                    <p id="admin-name" class="text-sm font-bold text-gray-800">المشرف</p>
-                    <p class="text-xs text-green-600">متصل الآن</p>
+        <header class="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-8 z-30 sticky top-0">
+            <div class="flex items-center gap-4">
+                <button id="sidebar-toggle" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600 transition">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800">التحليلات الشاملة</h2>
+                    <p class="text-xs sm:text-sm text-gray-500 hidden sm:block">نظرة عامة ورسوم بيانية لأداء النظام</p>
                 </div>
-                <img src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff&size=40" class="w-10 h-10 rounded-full border-2 border-white shadow-md">
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="text-left hidden md:block">
+                    <p id="admin-name" class="text-sm font-bold text-gray-800">المشرف</p>
+                    <div class="flex items-center justify-end gap-1">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        <p class="text-xs text-green-600 font-medium">متصل الآن</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff&size=40" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-white shadow-md cursor-pointer hover:shadow-lg transition">
+                </div>
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8 bg-gray-50/50">
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8 bg-gray-50">
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 flex items-center justify-between">
-                    <div><p class="text-sm font-medium text-gray-500 mb-1">إجمالي الطلاب</p><h3 id="total-users" class="text-3xl font-extrabold text-indigo-600">...</h3></div>
-                    <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600"><i class="fas fa-users text-xl"></i></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 hover:shadow-md transition duration-300 group">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-500 mb-1">إجمالي الطلاب</p>
+                            <h3 id="total-users" class="text-3xl font-extrabold text-indigo-600 group-hover:scale-105 transition-transform origin-right">...</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-users text-xl"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-green-100 flex items-center justify-between">
-                    <div><p class="text-sm font-medium text-gray-500 mb-1">المساهمات</p><h3 id="total-contributions" class="text-3xl font-extrabold text-green-600">...</h3></div>
-                    <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-600"><i class="fas fa-check-circle text-xl"></i></div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-green-100 hover:shadow-md transition duration-300 group">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-500 mb-1">المساهمات</p>
+                            <h3 id="total-contributions" class="text-3xl font-extrabold text-green-600 group-hover:scale-105 transition-transform origin-right">...</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-check-circle text-xl"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-yellow-100 flex items-center justify-between">
-                    <div><p class="text-sm font-medium text-gray-500 mb-1">التخصصات النشطة</p><h3 id="active-specs" class="text-3xl font-extrabold text-yellow-600">...</h3></div>
-                    <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center text-yellow-600"><i class="fas fa-flask text-xl"></i></div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-yellow-100 hover:shadow-md transition duration-300 group">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-500 mb-1">التخصصات النشطة</p>
+                            <h3 id="active-specs" class="text-3xl font-extrabold text-yellow-600 group-hover:scale-105 transition-transform origin-right">...</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-yellow-50 rounded-2xl flex items-center justify-center text-yellow-600 group-hover:bg-yellow-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-flask text-xl"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-chart-line text-blue-500"></i> معدل التسجيل (شهرياً)</h4>
-                    <div class="chart-container">
+                    <div class="flex items-center justify-between mb-6">
+                        <h4 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-500"><i class="fas fa-chart-line"></i></span>
+                            معدل التسجيل (شهرياً)
+                        </h4>
+                    </div>
+                    <div class="chart-container h-64 sm:h-80">
                         <canvas id="registration-chart"></canvas>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h4 class="text-lg font-bold text-gray-800 mb-4">توزيع التخصصات</h4>
-                    <div class="chart-container">
+                    <div class="flex items-center justify-between mb-6">
+                        <h4 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-500"><i class="fas fa-chart-pie"></i></span>
+                            توزيع التخصصات
+                        </h4>
+                    </div>
+                    <div class="chart-container h-64 sm:h-80 flex justify-center">
                         <canvas id="specialization-doughnut"></canvas>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
-                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-layer-group text-indigo-500"></i> التحليل العميق: التخصصات والسنوات</h4>
-                <div style="height: 400px; width: 100%;">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-500"><i class="fas fa-layer-group"></i></span>
+                        التحليل العميق: التخصصات والسنوات
+                    </h4>
+                </div>
+                <div class="h-[400px] w-full">
                     <canvas id="years-spec-bar-chart"></canvas>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fas fa-table text-gray-500"></i> التفاصيل الرقمية الدقيقة</h4>
-                <div class="overflow-x-auto">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600"><i class="fas fa-table"></i></span>
+                        التفاصيل الرقمية الدقيقة
+                    </h4>
+                </div>
+                <div class="overflow-x-auto pb-2">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 matrix-table">
-                        <thead id="matrix-head"></thead>
-                        <tbody id="matrix-body"></tbody>
-                        <tfoot id="matrix-foot" class="bg-gray-50 font-bold text-indigo-900"></tfoot>
+                        <thead id="matrix-head" class="text-xs uppercase bg-gray-50 text-gray-700"></thead>
+                        <tbody id="matrix-body" class="divide-y divide-gray-100"></tbody>
+                        <tfoot id="matrix-foot" class="bg-gray-50 font-bold text-indigo-900 border-t-2 border-indigo-100"></tfoot>
                     </table>
                 </div>
             </div>
+            
+            <div class="h-6"></div>
 
         </main>
     </div>
@@ -165,7 +268,7 @@
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // إعدادات فايربيس
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDAEbxYuAHu5stGx5c02VbgsUKBhoidTeA",
             authDomain: "informationpassmemberessystem.firebaseapp.com",
@@ -182,9 +285,32 @@
         let specChart = null;
         let yearsChart = null;
 
-        // --- ميزات تسجيل الدخول الجديدة ---
+        // --- Mobile Sidebar Logic ---
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const mobileOverlay = document.getElementById('mobile-overlay');
 
-        // 1. استرجاع البريد المحفوظ
+        function toggleSidebar() {
+            const isClosed = sidebar.classList.contains('translate-x-full');
+            if (isClosed) {
+                // Open Sidebar
+                sidebar.classList.remove('translate-x-full');
+                mobileOverlay.classList.remove('hidden');
+                setTimeout(() => mobileOverlay.classList.remove('opacity-0'), 10);
+            } else {
+                // Close Sidebar
+                sidebar.classList.add('translate-x-full');
+                mobileOverlay.classList.add('opacity-0');
+                setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
+            }
+        }
+
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        closeSidebar.addEventListener('click', toggleSidebar);
+        mobileOverlay.addEventListener('click', toggleSidebar);
+
+        // --- Login Features ---
         window.addEventListener('load', () => {
             const savedEmail = localStorage.getItem('admin_saved_email');
             if(savedEmail) {
@@ -193,7 +319,6 @@
             }
         });
 
-        // 2. تفعيل زر إظهار/إخفاء كلمة المرور
         const toggleBtn = document.getElementById('toggle-password');
         const passInput = document.getElementById('admin-password');
         
@@ -209,8 +334,6 @@
                 icon.classList.add('fa-eye');
             }
         });
-
-        // --- نهاية الميزات الجديدة ---
 
         onAuthStateChanged(auth, (user) => {
             const overlay = document.getElementById('login-overlay');
@@ -230,7 +353,6 @@
             const pass = document.getElementById('admin-password').value;
             const rememberMe = document.getElementById('remember-me').checked;
 
-            // حفظ البريد إذا تم اختيار "تذكرني"
             if(rememberMe) {
                 localStorage.setItem('admin_saved_email', email);
             } else {
@@ -240,13 +362,41 @@
             try {
                 if (!adminEmails.includes(email)) throw new Error("Unauthorized");
                 await signInWithEmailAndPassword(auth, email, pass);
+                
+                const Toast = Swal.mixin({
+                    toast: true, position: 'top-start', showConfirmButton: false, timer: 3000, timerProgressBar: true
+                });
+                Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول بنجاح' });
+
             } catch (err) {
-                Swal.fire({ icon: 'error', title: 'خطأ', text: 'بيانات الدخول غير صحيحة أو ليس لديك صلاحية' });
+                Swal.fire({ 
+                    icon: 'error', 
+                    title: 'خطأ في الدخول', 
+                    text: 'بيانات الدخول غير صحيحة أو ليس لديك صلاحية',
+                    confirmButtonText: 'حاول مرة أخرى',
+                    confirmButtonColor: '#4f46e5'
+                });
             }
         });
 
-        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            Swal.fire({
+                title: 'تسجيل الخروج؟',
+                text: "هل أنت متأكد من رغبتك في الخروج؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'نعم، خروج',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    signOut(auth);
+                }
+            })
+        });
 
+        // --- Dashboard Logic ---
         function initDashboard() {
             onSnapshot(collection(db, "student_contributions"), (snap) => {
                 document.getElementById('total-contributions').textContent = snap.size;
@@ -278,6 +428,10 @@
             document.getElementById('active-specs').textContent = uniqueSpecs.size;
         }
 
+        // Configuration for better charts
+        Chart.defaults.font.family = "'Cairo', sans-serif";
+        Chart.defaults.color = '#64748b';
+
         function renderRegistrationChart(users) {
             const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
             const counts = new Array(12).fill(0);
@@ -285,13 +439,40 @@
 
             const ctx = document.getElementById('registration-chart').getContext('2d');
             if(regChart) regChart.destroy();
+            
+            // Create gradient
+            let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(79, 70, 229, 0.5)');
+            gradient.addColorStop(1, 'rgba(79, 70, 229, 0.0)');
+
             regChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: months,
-                    datasets: [{ label: 'المسجلين', data: counts, borderColor: '#4f46e5', backgroundColor: 'rgba(79, 70, 229, 0.1)', borderWidth: 3, tension: 0.4, fill: true }]
+                    datasets: [{ 
+                        label: 'المسجلين', 
+                        data: counts, 
+                        borderColor: '#4f46e5', 
+                        backgroundColor: gradient, 
+                        borderWidth: 3, 
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#4f46e5',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        tension: 0.4, 
+                        fill: true 
+                    }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e1b4b', padding: 10, cornerRadius: 8 } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { borderDash: [2, 4], color: '#f1f5f9' } },
+                        x: { grid: { display: false } }
+                    }
+                }
             });
         }
 
@@ -307,9 +488,22 @@
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(data),
-                    datasets: [{ data: Object.values(data), backgroundColor: ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#6366f1'], borderWidth: 0 }]
+                    datasets: [{ 
+                        data: Object.values(data), 
+                        backgroundColor: ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#6366f1'], 
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 4
+                    }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { 
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } 
+                    },
+                    cutout: '70%'
+                }
             });
         }
 
@@ -332,7 +526,8 @@
             const datasets = allColumns.map((colName, i) => ({
                 label: colName,
                 data: specs.map(s => matrix[s][colName] || 0),
-                backgroundColor: i === allColumns.length - 1 ? '#9ca3af' : `hsl(${220 + (i * 10)}, 70%, ${90 - (i * 10)}%)`,
+                backgroundColor: i === allColumns.length - 1 ? '#9ca3af' : `hsl(${220 + (i * 10)}, 85%, ${65 - (i * 5)}%)`,
+                borderRadius: 4,
                 stack: 'Stack 0'
             }));
 
@@ -344,7 +539,13 @@
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     interaction: { mode: 'index', intersect: false },
-                    scales: { x: { stacked: true }, y: { stacked: true } }
+                    scales: { 
+                        x: { stacked: true, grid: { display: false } }, 
+                        y: { stacked: true, grid: { borderDash: [2, 4], color: '#f1f5f9' } } 
+                    },
+                    plugins: {
+                        tooltip: { backgroundColor: '#1e1b4b', padding: 10, cornerRadius: 8 }
+                    }
                 }
             });
 
@@ -352,7 +553,7 @@
             const tbody = document.getElementById('matrix-body');
             const tfoot = document.getElementById('matrix-foot');
 
-            thead.innerHTML = `<tr><th class="text-right p-3">التخصص</th>${allColumns.map(y => `<th>${y.replace("السنة ", "")}</th>`).join('')}<th>المجموع</th></tr>`;
+            thead.innerHTML = `<tr><th class="text-right p-4 rounded-tr-xl">التخصص</th>${allColumns.map(y => `<th>${y.replace("السنة ", "")}</th>`).join('')}<th class="rounded-tl-xl">المجموع</th></tr>`;
             
             let grandTotal = 0;
             tbody.innerHTML = specs.map(spec => {
@@ -363,16 +564,16 @@
                     return `<td class="${val ? 'bg-indigo-50 font-bold text-indigo-700' : ''}">${val || '-'}</td>`;
                 }).join('');
                 grandTotal += rowSum;
-                return `<tr><td class="font-bold text-gray-700">${spec}</td>${cols}<td class="bg-gray-100 font-bold text-gray-900">${rowSum}</td></tr>`;
+                return `<tr class="border-b border-gray-100 last:border-0"><td class="font-bold text-gray-700 p-3">${spec}</td>${cols}<td class="bg-gray-50 font-bold text-gray-900">${rowSum}</td></tr>`;
             }).join('');
 
-            let footerHtml = `<tr><td class="p-3 text-right">الإجمالي الكلي</td>`;
+            let footerHtml = `<tr><td class="p-4 text-right rounded-br-xl">الإجمالي الكلي</td>`;
             allColumns.forEach(col => {
                 let colSum = 0;
                 specs.forEach(spec => colSum += (matrix[spec][col] || 0));
-                footerHtml += `<td>${colSum}</td>`;
+                footerHtml += `<td class="p-3 text-center">${colSum}</td>`;
             });
-            footerHtml += `<td class="text-xl">${grandTotal}</td></tr>`;
+            footerHtml += `<td class="text-xl p-3 text-center rounded-bl-xl">${grandTotal}</td></tr>`;
             tfoot.innerHTML = footerHtml;
 
             document.getElementById('total-users').textContent = grandTotal;
