@@ -8,9 +8,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <script>
         tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: { sans: ['Tajawal', 'sans-serif'] }, colors: { brand: { DEFAULT: '#2563eb', dark: '#1d4ed8' }, dark: { bg: '#0f172a', card: '#1e293b', sidebar: '#111827' } }, padding: { 'safe': 'env(safe-area-inset-bottom)' } } } }
     </script>
+    <style>
+        .sortable-ghost { opacity: 0.4; background: #e2e8f0; border: 2px dashed #94a3b8; }
+        .dark .sortable-ghost { background: #334155; border-color: #64748b; }
+        .lesson-chip { touch-action: none; }
+    </style>
 </head>
 <body class="bg-slate-50 dark:bg-dark-bg text-slate-800 font-sans transition-colors duration-300 pb-24 md:pb-0">
 
@@ -27,37 +33,37 @@
     </aside>
 
     <main class="md:mr-64 min-h-screen p-4 md:p-8">
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-black text-slate-800 dark:text-white">إدارة المناهج</h1>
-                <p class="text-sm text-gray-500">تحكم بالمحتوى الذي يظهر في مكتبة الطلاب.</p>
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-white dark:bg-dark-card p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <div class="text-center md:text-right">
+                <h1 class="text-2xl font-black text-slate-800 dark:text-white">إدارة المناهج</h1>
+                <p class="text-xs text-gray-500 mt-1">قم بتعديل المحتوى ثم اضغط "نشر" ليظهر للطلاب.</p>
             </div>
-            <button onclick="createNewCourse()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-purple-600/30 transition flex items-center gap-2 active:scale-95">
-                <i class="fas fa-plus"></i> منهج جديد
-            </button>
+            <div class="flex gap-3 w-full md:w-auto">
+                <button onclick="publishChanges()" class="flex-1 md:flex-none bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-green-500/30 transition flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fas fa-save"></i> نشر التعديلات
+                </button>
+                <button onclick="createNewCourse()" class="flex-1 md:flex-none bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-purple-600/30 transition flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fas fa-plus"></i> منهج جديد
+                </button>
+            </div>
         </div>
 
-        <div id="adminList" class="space-y-6">
-            </div>
+        <div id="adminList" class="space-y-6"></div>
     </main>
 
     <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-gray-200 dark:border-gray-700 pb-safe z-50 flex justify-around items-center h-16 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
-        <a href="srs_index.html" class="flex flex-col items-center justify-center w-full h-full text-brand dark:text-blue-400 transition"><i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">الرئيسية</span></a>
-        <a href="srs_library.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-brand dark:hover:text-blue-400 transition"><i class="fas fa-layer-group text-xl mb-1"></i><span class="text-[10px] font-bold">المكتبة</span></a>
+        <a href="srs_library.html" class="flex flex-col items-center justify-center w-full h-full text-brand dark:text-blue-400 transition"><i class="fas fa-layer-group text-xl mb-1"></i><span class="text-[10px] font-bold">المعاينة</span></a>
     </nav>
 
     <script>
-        const REPO_KEY = 'srs_repo_content_v1';
+        // مفتاح التخزين الموحد (يجب أن يكون متطابقاً في صفحة المكتبة)
+        const REPO_KEY = 'srs_repo_content_live_v1'; 
         const SETTINGS_KEY = 'srs_pro_settings_v1';
         
-        // الألوان المتاحة للكروت
         const colors = [
-            { bg: 'bg-blue-500', name: 'أزرق' },
-            { bg: 'bg-green-500', name: 'أخضر' },
-            { bg: 'bg-purple-500', name: 'بنفسجي' },
-            { bg: 'bg-orange-500', name: 'برتقالي' },
-            { bg: 'bg-red-500', name: 'أحمر' },
-            { bg: 'bg-teal-500', name: 'فيروزي' },
+            { bg: 'bg-blue-500', name: 'أزرق' }, { bg: 'bg-green-500', name: 'أخضر' },
+            { bg: 'bg-purple-500', name: 'بنفسجي' }, { bg: 'bg-orange-500', name: 'برتقالي' },
+            { bg: 'bg-red-500', name: 'أحمر' }, { bg: 'bg-teal-500', name: 'فيروزي' },
             { bg: 'bg-slate-600', name: 'رمادي' }
         ];
 
@@ -67,21 +73,32 @@
             const s = localStorage.getItem(SETTINGS_KEY);
             if(s && JSON.parse(s).darkMode) document.documentElement.classList.add('dark');
             
-            // تحميل البيانات
             repoData = JSON.parse(localStorage.getItem(REPO_KEY) || '[]');
             renderAdminView();
         }
 
-        function save() {
+        // دالة الحفظ الصامت (للتخزين المحلي أثناء العمل)
+        function saveSilent() {
             localStorage.setItem(REPO_KEY, JSON.stringify(repoData));
-            renderAdminView();
+        }
+
+        // دالة النشر (التي تظهر رسالة التأكيد)
+        function publishChanges() {
+            saveSilent();
+            Swal.fire({
+                title: 'تم النشر بنجاح! 🚀',
+                text: 'تم تحديث قاعدة البيانات. ستظهر التعديلات الآن في صفحة المكتبة للطلاب.',
+                icon: 'success',
+                confirmButtonText: 'ممتاز',
+                confirmButtonColor: '#10b981'
+            });
         }
 
         function renderAdminView() {
             const container = document.getElementById('adminList');
             if(repoData.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-16 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-3xl">
+                    <div class="text-center py-16 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-3xl bg-gray-50 dark:bg-slate-800/50">
                         <div class="text-gray-400 text-4xl mb-4"><i class="fas fa-box-open"></i></div>
                         <p class="text-gray-500 font-bold">المكتبة فارغة حالياً</p>
                         <button onclick="createNewCourse()" class="mt-4 text-purple-600 font-bold hover:underline">أضف أول منهج</button>
@@ -90,233 +107,127 @@
             }
 
             container.innerHTML = repoData.map((course, idx) => `
-                <div class="bg-white dark:bg-dark-card rounded-3xl shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden transition hover:shadow-lg">
+                <div class="bg-white dark:bg-dark-card rounded-3xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition hover:shadow-md mb-8">
                     <div class="flex flex-col md:flex-row border-b border-gray-100 dark:border-gray-700">
-                        <div class="p-6 ${course.color} md:w-64 flex flex-col justify-center items-center text-white text-center relative group">
-                            <i class="fas ${course.icon} text-4xl mb-3 drop-shadow-md"></i>
-                            <h3 class="font-black text-xl drop-shadow-md px-2">${course.title}</h3>
-                            <button onclick="editHeader(${idx})" class="mt-4 text-xs bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full backdrop-blur-md transition border border-white/30 font-bold shadow-sm">
-                                <i class="fas fa-pen ml-1"></i> تعديل الغلاف
-                            </button>
-                        </div>
-
-                        <div class="p-6 flex-1">
-                            <div class="flex justify-between items-start mb-6">
-                                <div>
-                                    <h4 class="font-bold text-lg dark:text-white mb-1">المحتوى التعليمي</h4>
-                                    <p class="text-gray-500 text-sm leading-relaxed">${course.desc}</p>
-                                </div>
-                                <button onclick="deleteCourse(${idx})" class="text-red-400 hover:text-red-600 bg-red-50 dark:bg-red-900/20 w-10 h-10 rounded-xl flex items-center justify-center transition hover:bg-red-100">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                        <div class="p-6 ${course.color} md:w-72 flex flex-col justify-center items-center text-white text-center relative">
+                            <i class="fas ${course.icon} text-5xl mb-4 drop-shadow-md opacity-90"></i>
+                            <h3 class="font-black text-2xl drop-shadow-md px-2 leading-tight">${course.title}</h3>
+                            <div class="flex gap-2 mt-5">
+                                <button onclick="editHeader(${idx})" class="text-xs bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full backdrop-blur-sm transition border border-white/30 font-bold shadow-sm"><i class="fas fa-pen ml-1"></i> تعديل</button>
+                                <button onclick="deleteCourse(${idx})" class="text-xs bg-red-500/20 hover:bg-red-500/40 px-3 py-2 rounded-full backdrop-blur-sm transition border border-white/10 font-bold text-red-50"><i class="fas fa-trash-alt"></i></button>
                             </div>
-
-                            <div class="space-y-4 mb-6">
+                        </div>
+                        <div class="p-6 flex-1 bg-white dark:bg-dark-card">
+                            <div class="mb-6">
+                                <h4 class="font-bold text-lg dark:text-white mb-1">وصف المنهج</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">${course.desc}</p>
+                            </div>
+                            <div class="space-y-4">
                                 ${course.subjects.map((sub, subIdx) => `
-                                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-slate-700">
-                                        <div class="flex justify-between items-center mb-3">
-                                            <h5 class="font-bold text-brand dark:text-blue-400 flex items-center gap-2">
-                                                <i class="fas fa-book-open"></i> ${sub.name}
-                                            </h5>
-                                            <div class="flex gap-2">
-                                                <button onclick="addLesson(${idx}, ${subIdx})" class="text-xs bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 px-3 py-1.5 rounded-lg hover:bg-green-200 transition font-bold">+ درس</button>
-                                                <button onclick="deleteSubject(${idx}, ${subIdx})" class="text-xs text-red-400 hover:text-red-600 px-2 py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition"><i class="fas fa-times"></i></button>
+                                    <div class="bg-gray-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-gray-100 dark:border-slate-700 group-subject">
+                                        <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200 dark:border-slate-700/50">
+                                            <div class="flex items-center gap-2">
+                                                <h5 class="font-bold text-brand dark:text-blue-400 text-lg"><i class="fas fa-book-open ml-2 opacity-70"></i>${sub.name}</h5>
+                                                <button onclick="editSubject(${idx}, ${subIdx})" class="w-7 h-7 flex items-center justify-center rounded-full text-gray-400 hover:text-brand hover:bg-blue-100 dark:hover:bg-slate-700 transition"><i class="fas fa-pen text-xs"></i></button>
                                             </div>
+                                            <button onclick="deleteSubject(${idx}, ${subIdx})" class="text-xs text-red-400 hover:text-red-600 bg-red-50 dark:bg-red-900/10 hover:bg-red-100 px-3 py-1.5 rounded-lg transition"><i class="fas fa-trash-alt ml-1"></i> حذف الوحدة</button>
                                         </div>
-                                        <div class="flex flex-wrap gap-2">
+                                        <div id="sortable-${idx}-${subIdx}" class="flex flex-wrap gap-2 min-h-[40px]">
                                             ${sub.lessons.map((lesson, lIdx) => `
-                                                <span class="text-xs bg-white dark:bg-dark-card border border-gray-200 dark:border-slate-600 px-3 py-1.5 rounded-lg flex items-center gap-2 group shadow-sm text-gray-600 dark:text-gray-300">
-                                                    ${lesson}
-                                                    <i onclick="deleteLesson(${idx}, ${subIdx}, ${lIdx})" class="fas fa-times text-gray-300 hover:text-red-500 cursor-pointer transition"></i>
-                                                </span>
+                                                <div class="lesson-chip cursor-move select-none text-sm bg-white dark:bg-dark-card border border-gray-200 dark:border-slate-600 px-1 pl-1 pr-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm hover:shadow-md hover:border-brand/50 transition" data-name="${lesson}">
+                                                    <i class="fas fa-grip-vertical text-gray-300 cursor-move"></i>
+                                                    <span onclick="editLesson(${idx}, ${subIdx}, ${lIdx})" class="font-medium text-slate-700 dark:text-slate-200 cursor-pointer hover:text-brand underline-offset-4 decoration-dashed hover:underline">${lesson}</span>
+                                                    <div class="w-px h-4 bg-gray-200 dark:bg-slate-600 mx-1"></div>
+                                                    <button onclick="deleteLesson(${idx}, ${subIdx}, ${lIdx})" class="text-gray-400 hover:text-red-500 px-1.5 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition"><i class="fas fa-times"></i></button>
+                                                </div>
                                             `).join('')}
-                                            ${sub.lessons.length === 0 ? '<span class="text-xs text-gray-400 italic">لا توجد دروس مضافة لهذه المادة</span>' : ''}
                                         </div>
+                                        <button onclick="addLesson(${idx}, ${subIdx})" class="mt-3 w-full py-2 border border-dashed border-gray-300 dark:border-slate-600 text-gray-500 dark:text-gray-400 rounded-lg text-xs font-bold hover:border-brand hover:text-brand hover:bg-white dark:hover:bg-slate-700 transition flex items-center justify-center gap-2"><i class="fas fa-plus"></i> إضافة درس جديد</button>
                                     </div>
                                 `).join('')}
                             </div>
-                            
-                            <button onclick="addSubject(${idx})" class="w-full py-3 border-2 border-dashed border-gray-300 dark:border-slate-600 text-gray-400 rounded-xl font-bold hover:border-brand hover:text-brand hover:bg-brand/5 transition text-sm flex items-center justify-center gap-2">
-                                <i class="fas fa-plus-circle"></i> إضافة مادة جديدة
-                            </button>
+                            <button onclick="addSubject(${idx})" class="mt-6 w-full py-3 bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-gray-300 rounded-xl font-bold hover:bg-gray-100 dark:hover:bg-slate-700 transition flex items-center justify-center gap-2 shadow-sm border border-gray-200 dark:border-gray-700"><i class="fas fa-layer-group"></i> إضافة وحدة جديدة</button>
                         </div>
                     </div>
                 </div>
             `).join('');
+            initSortables();
         }
 
-        // ==========================================
-        //           Logic Functions
-        // ==========================================
+        function initSortables() {
+            repoData.forEach((course, cIdx) => {
+                course.subjects.forEach((_, sIdx) => {
+                    const el = document.getElementById(`sortable-${cIdx}-${sIdx}`);
+                    if(el) {
+                        new Sortable(el, {
+                            animation: 150, ghostClass: 'sortable-ghost', handle: '.lesson-chip',
+                            onEnd: function (evt) {
+                                const lessonsArr = repoData[cIdx].subjects[sIdx].lessons;
+                                const [movedItem] = lessonsArr.splice(evt.oldIndex, 1);
+                                lessonsArr.splice(evt.newIndex, 0, movedItem);
+                                saveSilent();
+                            }
+                        });
+                    }
+                });
+            });
+        }
 
+        // Logic Functions
         async function createNewCourse() {
             const { value: formValues } = await Swal.fire({
                 title: 'إضافة منهج جديد',
-                html: `
-                    <div class="space-y-3 pt-2">
-                        <input id="swal-title" class="swal2-input dark:bg-slate-800 dark:text-white m-0 w-full" placeholder="عنوان المنهج (مثال: فيزياء 101)">
-                        <input id="swal-desc" class="swal2-input dark:bg-slate-800 dark:text-white m-0 w-full" placeholder="وصف قصير للمنهج">
-                        <select id="swal-color" class="swal2-input dark:bg-slate-800 dark:text-white m-0 w-full">
-                            ${colors.map(c => `<option value="${c.bg}">${c.name}</option>`).join('')}
-                        </select>
-                    </div>
-                `,
-                focusConfirm: false,
-                confirmButtonText: 'إنشاء',
-                cancelButtonText: 'إلغاء',
-                showCancelButton: true,
+                html: `<div class="space-y-3 pt-2 text-right"><input id="swal-title" class="swal2-input dark:bg-slate-800 dark:text-white m-0 w-full" placeholder="عنوان المنهج"><input id="swal-desc" class="swal2-input dark:bg-slate-800 dark:text-white m-0 w-full" placeholder="وصف قصير"><select id="swal-color" class="swal2-input dark:bg-slate-800 dark:text-white m-0 w-full">${colors.map(c => `<option value="${c.bg}">${c.name}</option>`).join('')}</select></div>`,
+                focusConfirm: false, confirmButtonText: 'إنشاء', cancelButtonText: 'إلغاء', showCancelButton: true,
                 preConfirm: () => {
                     const title = document.getElementById('swal-title').value;
-                    const desc = document.getElementById('swal-desc').value;
-                    const color = document.getElementById('swal-color').value;
-                    if (!title) { Swal.showValidationMessage('عنوان المنهج مطلوب'); return false; }
-                    return [title, desc, color]
+                    return title ? [title, document.getElementById('swal-desc').value, document.getElementById('swal-color').value] : false;
                 }
             });
-
             if (formValues) {
-                repoData.push({
-                    id: Date.now(),
-                    title: formValues[0],
-                    desc: formValues[1],
-                    color: formValues[2],
-                    icon: 'fa-graduation-cap',
-                    subjects: []
-                });
-                save();
-                Swal.fire({ icon: 'success', title: 'تم الإنشاء بنجاح', timer: 1500, showConfirmButton: false, toast: true, position: 'top-end' });
+                repoData.push({ id: Date.now(), title: formValues[0], desc: formValues[1], color: formValues[2], icon: 'fa-graduation-cap', subjects: [] });
+                saveSilent(); renderAdminView();
             }
         }
 
-        // --- الدالة التي كانت مفقودة (تعديل الغلاف) ---
         async function editHeader(idx) {
             const course = repoData[idx];
-            
             const { value: formValues } = await Swal.fire({
-                title: 'تعديل غلاف المنهج',
-                html: `
-                    <div class="text-right mb-4 space-y-4">
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 block mb-1">اسم المنهج</label>
-                            <input id="swal-edit-title" class="swal2-input dark:bg-slate-800 dark:text-white w-full m-0" value="${course.title}">
-                        </div>
-                        
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 block mb-1">الوصف</label>
-                            <textarea id="swal-edit-desc" class="swal2-textarea dark:bg-slate-800 dark:text-white w-full m-0 h-20 resize-none">${course.desc}</textarea>
-                        </div>
-                        
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 block mb-1">لون الخلفية</label>
-                            <select id="swal-edit-color" class="swal2-input dark:bg-slate-800 dark:text-white w-full m-0">
-                                ${colors.map(c => `<option value="${c.bg}" ${c.bg === course.color ? 'selected' : ''}>${c.name}</option>`).join('')}
-                            </select>
-                        </div>
-                    </div>
-                `,
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonText: 'حفظ التعديلات',
-                cancelButtonText: 'إلغاء',
-                preConfirm: () => {
-                    const title = document.getElementById('swal-edit-title').value;
-                    if (!title) { Swal.showValidationMessage('الاسم مطلوب'); return false; }
-                    return [
-                        title,
-                        document.getElementById('swal-edit-desc').value,
-                        document.getElementById('swal-edit-color').value
-                    ]
-                }
+                title: 'تعديل المنهج',
+                html: `<div class="text-right space-y-3"><input id="t" class="swal2-input w-full m-0" value="${course.title}"><textarea id="d" class="swal2-textarea w-full m-0 h-20 resize-none">${course.desc}</textarea><select id="c" class="swal2-input w-full m-0">${colors.map(c => `<option value="${c.bg}" ${c.bg === course.color ? 'selected' : ''}>${c.name}</option>`).join('')}</select></div>`,
+                focusConfirm: false, showCancelButton: true, confirmButtonText: 'حفظ', preConfirm: () => [document.getElementById('t').value, document.getElementById('d').value, document.getElementById('c').value]
             });
-
-            if (formValues) {
-                course.title = formValues[0];
-                course.desc = formValues[1];
-                course.color = formValues[2];
-                save();
-                
-                const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2000, timerProgressBar: true });
-                Toast.fire({ icon: 'success', title: 'تم تعديل الغلاف بنجاح' });
+            if (formValues && formValues[0]) {
+                course.title = formValues[0]; course.desc = formValues[1]; course.color = formValues[2];
+                saveSilent(); renderAdminView();
             }
         }
 
-        async function addSubject(courseIdx) {
-            const { value: name } = await Swal.fire({
-                title: 'إضافة مادة جديدة',
-                input: 'text',
-                inputPlaceholder: 'اكتب اسم المادة (مثال: رياضيات)',
-                confirmButtonText: 'إضافة',
-                showCancelButton: true,
-                cancelButtonText: 'إلغاء'
-            });
-
-            if (name) {
-                repoData[courseIdx].subjects.push({ name: name, lessons: [] });
-                save();
-            }
+        async function addSubject(cIdx) {
+            const { value: name } = await Swal.fire({ title: 'اسم الوحدة', input: 'text', confirmButtonText: 'إضافة', showCancelButton: true });
+            if (name) { repoData[cIdx].subjects.push({ name, lessons: [] }); saveSilent(); renderAdminView(); }
         }
 
-        async function addLesson(courseIdx, subjectIdx) {
-            const { value: title } = await Swal.fire({
-                title: 'عنوان الدرس الجديد',
-                input: 'text',
-                inputPlaceholder: 'مثال: الدوال الأسية',
-                confirmButtonText: 'إضافة',
-                showCancelButton: true,
-                cancelButtonText: 'إلغاء'
-            });
-
-            if (title) {
-                repoData[courseIdx].subjects[subjectIdx].lessons.push(title);
-                save();
-            }
+        async function editSubject(cIdx, sIdx) {
+            const { value: name } = await Swal.fire({ title: 'تعديل اسم الوحدة', input: 'text', inputValue: repoData[cIdx].subjects[sIdx].name, confirmButtonText: 'حفظ', showCancelButton: true });
+            if (name) { repoData[cIdx].subjects[sIdx].name = name; saveSilent(); renderAdminView(); }
         }
 
-        function deleteLesson(cIdx, sIdx, lIdx) {
-            repoData[cIdx].subjects[sIdx].lessons.splice(lIdx, 1);
-            save();
+        async function addLesson(cIdx, sIdx) {
+            const { value: title } = await Swal.fire({ title: 'عنوان الدرس', input: 'text', confirmButtonText: 'إضافة', showCancelButton: true });
+            if (title) { repoData[cIdx].subjects[sIdx].lessons.push(title); saveSilent(); renderAdminView(); }
         }
 
-        function deleteSubject(cIdx, sIdx) {
-            Swal.fire({
-                title: 'هل أنت متأكد؟', 
-                text: "سيتم حذف المادة وجميع الدروس بداخلها.", 
-                icon: 'warning', 
-                showCancelButton: true,
-                confirmButtonText: 'نعم، احذف',
-                cancelButtonText: 'تراجع',
-                confirmButtonColor: '#d33'
-            }).then((res) => {
-                if (res.isConfirmed) {
-                    repoData[cIdx].subjects.splice(sIdx, 1);
-                    save();
-                }
-            });
+        async function editLesson(cIdx, sIdx, lIdx) {
+            const { value: title } = await Swal.fire({ title: 'تعديل اسم الدرس', input: 'text', inputValue: repoData[cIdx].subjects[sIdx].lessons[lIdx], confirmButtonText: 'حفظ', showCancelButton: true });
+            if (title) { repoData[cIdx].subjects[sIdx].lessons[lIdx] = title; saveSilent(); renderAdminView(); }
         }
 
-        function deleteCourse(idx) {
-            Swal.fire({
-                title: 'حذف المنهج بالكامل؟', 
-                text: "لا يمكن التراجع عن هذا الإجراء وسيختفي من المكتبة.", 
-                icon: 'warning', 
-                showCancelButton: true, 
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'حذف نهائي',
-                cancelButtonText: 'إلغاء'
-            }).then((res) => {
-                if (res.isConfirmed) {
-                    repoData.splice(idx, 1);
-                    save();
-                    Swal.fire({ icon: 'success', title: 'تم الحذف', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500 });
-                }
-            });
-        }
+        function deleteLesson(c, s, l) { repoData[c].subjects[s].lessons.splice(l, 1); saveSilent(); renderAdminView(); }
+        function deleteSubject(c, s) { Swal.fire({ title: 'حذف الوحدة؟', icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم' }).then(r => { if(r.isConfirmed) { repoData[c].subjects.splice(s, 1); saveSilent(); renderAdminView(); }}); }
+        function deleteCourse(i) { Swal.fire({ title: 'حذف المنهج؟', icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم' }).then(r => { if(r.isConfirmed) { repoData.splice(i, 1); saveSilent(); renderAdminView(); }}); }
 
-        // تشغيل التطبيق
         init();
     </script>
 </body>
 </html>
-
-
-
