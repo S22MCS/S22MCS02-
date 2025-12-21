@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>كلمات التحدي الطبي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0fb9b1; /* لون طبي */
+            --primary-dark: #20bf6b;
+            --accent: #f7b731;
+            --bg-body: #1e272e;
+            --bg-app: #f1f2f6;
+            --bg-grad: linear-gradient(135deg, #4bcffa 0%, #0fb9b1 100%);
+            --text: #2d3436;
+            --text-light: #636e72;
+            --slot-bg: #dfe6e9;
+            --key-bg: #ffffff;
+            --shadow: rgba(0,0,0,0.1);
+            --font: 'Cairo', sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --primary: #4bcffa;
+            --primary-dark: #0fb9b1;
+            --bg-body: #000000;
+            --bg-app: #1e272e;
+            --text: #f5f6fa;
+            --text-light: #b2bec3;
+            --slot-bg: #2f3640;
+            --key-bg: #353b48;
+        }
+
+        * { box-sizing: border-box; font-family: var(--font); user-select: none; -webkit-tap-highlight-color: transparent; outline: none; }
+        
+        body { 
+            margin: 0; background: var(--bg-body); height: 100dvh; 
+            display: flex; justify-content: center; align-items: center; overflow: hidden;
+        }
+
+        /* طبقة حماية العين */
+        #eye-protect-layer {
+            position: fixed; inset: 0; background: rgba(255, 160, 0, 0.15);
+            pointer-events: none; z-index: 9999; display: none; mix-blend-mode: multiply;
+        }
+        body.eye-mode #eye-protect-layer { display: block; }
+        
+        #app { 
+            width: 100%; height: 100%; max-width: 500px; 
+            background: var(--bg-app); display: flex; flex-direction: column; 
+            position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); overflow: hidden;
+        }
+        
+        .screen { 
+            display: none; flex-direction: column; height: 100%; padding: 20px; 
+            animation: fadeIn 0.3s ease; overflow-y: auto; position: relative;
+        }
+        .screen.active { display: flex; }
+        .screen.center-content { justify-content: center; align-items: center; text-align: center; }
+        @keyframes fadeIn { from {opacity:0; transform: scale(0.98);} to {opacity:1; transform: scale(1);} }
+
+        /* UI Elements */
+        .logo { font-size: clamp(2rem, 7vw, 3.5rem); color: var(--primary-dark); margin-bottom: 10px; line-height: 1.1; font-weight: 900; }
+        .logo-sub { font-size: 1rem; color: var(--text-light); margin-bottom: 30px; letter-spacing: 1px; }
+
+        .main-btn {
+            background: var(--primary); color: white; border: none; padding: 15px 40px; 
+            border-radius: 50px; font-size: 1.2rem; font-weight: bold; width: 90%; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; margin: 10px 0;
+        }
+        .main-btn:active { transform: translateY(3px); }
+        
+        .top-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; margin-bottom: 10px; }
+        .coin-badge { background: var(--accent); color: #2d3436; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.9rem; }
+        .settings-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); padding: 5px; }
+
+        /* Game Content */
+        .game-content { flex: 1; display: flex; flex-direction: column; align-items: center; width: 100%; }
+        
+        .img-wrapper {
+            width: 100%; max-height: 25vh; background: var(--slot-bg); border-radius: 15px;
+            margin-bottom: 15px; display: none; justify-content: center; align-items: center; 
+            overflow: hidden; box-shadow: 0 5px 15px var(--shadow);
+        }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: contain; }
+
+        .question-box { text-align: center; margin-bottom: 20px; width: 100%; }
+        .q-main { font-size: clamp(1.1rem, 5vw, 1.5rem); font-weight: 800; color: var(--text); margin-bottom: 5px; }
+        .q-sub { font-size: clamp(0.9rem, 4vw, 1.1rem); color: var(--text-light); direction: ltr; margin-top: 2px; }
+
+        /* Slots (تعديل الاتجاه) */
+        .slots-area { 
+            display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; 
+            margin-bottom: auto; padding-bottom: 20px; 
+            direction: rtl; /* هام جداً لترتيب الحروف العربية */
+        }
+        .slot {
+            width: clamp(35px, 11vw, 50px); height: clamp(35px, 11vw, 50px);
+            background: var(--slot-bg); border-radius: 8px; display: flex; justify-content: center; align-items: center;
+            font-size: clamp(1.2rem, 5vw, 1.6rem); font-weight: 800; color: var(--primary); 
+            cursor: pointer; color: var(--text); border-bottom: 3px solid rgba(0,0,0,0.1);
+        }
+        .slot.filled { background: var(--primary); color: white; transform: scale(1.05); }
+        .slot.hinted { background: #00cec9 !important; color: white; }
+
+        .controls-area { width: 100%; position: relative; padding-top: 10px; }
+        .hint-btn {
+            position: absolute; top: -70px; left: 10px; width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(45deg, #fdcb6e, #e17055); border: none; color: white; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            box-shadow: 0 6px 15px rgba(225, 112, 85, 0.4); cursor: pointer; z-index: 5;
+        }
+        .keyboard {
+            background: var(--key-bg); padding: 15px; border-radius: 25px 25px 0 0;
+            box-shadow: 0 -5px 20px var(--shadow); display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); gap: 8px;
+        }
+        .key-btn {
+            aspect-ratio: 1; background: var(--bg-app); border: none; border-radius: 10px; 
+            font-size: 1.1rem; font-weight: bold; color: var(--text); box-shadow: 0 3px 0 var(--shadow);
+            border: 1px solid var(--shadow);
+        }
+        .key-btn.used { opacity: 0; pointer-events: none; }
+
+        /* Settings Modal */
+        .settings-modal {
+            position: absolute; bottom: 0; left: 0; width: 100%; background: var(--key-bg);
+            border-radius: 25px 25px 0 0; padding: 30px; z-index: 100;
+            transform: translateY(100%); transition: transform 0.3s;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.2); color: var(--text);
+        }
+        .settings-modal.show { transform: translateY(0); }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-weight: bold; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* Win Modal (Info Card Style) */
+        .modal-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: none; 
+            justify-content: center; align-items: center; z-index: 50; backdrop-filter: blur(5px);
+        }
+        
+        /* تصميم البطاقة الاحترافي للحفظ */
+        .win-card {
+            background: white; width: 85%; max-width: 350px; padding: 0; border-radius: 20px; 
+            text-align: center; animation: popUp 0.4s; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .win-header {
+            background: linear-gradient(135deg, #20bf6b, #0fb9b1);
+            color: white; padding: 15px;
+        }
+        .brand-pill {
+            background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px;
+            font-size: 0.8rem; display: inline-block; margin-bottom: 5px;
+        }
+
+        .win-body { padding: 20px; color: #2d3436; } /* لون نص ثابت للصورة */
+        .win-img { max-height: 120px; max-width: 100%; object-fit: contain; margin-bottom: 10px; border-radius: 8px; }
+        .win-answer { font-size: 2rem; font-weight: 900; color: #20bf6b; margin: 10px 0; }
+        .win-q { font-size: 1rem; color: #636e72; line-height: 1.4; }
+
+        .win-footer {
+            background: #f1f2f6; padding: 10px; font-size: 0.8rem; color: #636e72;
+            border-top: 1px solid #ddd;
+        }
+        
+        .action-btns {
+            display: flex; gap: 10px; justify-content: center; padding: 15px;
+            width: 100%; max-width: 350px;
+        }
+        .action-btn {
+            flex: 1; padding: 12px; border: none; border-radius: 12px; 
+            font-weight: bold; cursor: pointer; color: white;
+        }
+        .btn-save { background: #f7b731; color: #2d3436; }
+        .btn-next { background: #20bf6b; }
+
+        @keyframes popUp { from {transform:scale(0.5); opacity:0;} to {transform:scale(1); opacity:1;} }
+    </style>
+</head>
+<body>
+
+<div id="eye-protect-layer"></div>
+
+<div id="app">
+    <div id="screen-home" class="screen active center-content" style="background: var(--bg-grad);">
+        <div class="logo">أداة علم<br>الطبية</div>
+        <div class="logo-sub">قسم المصطلحات الطبية</div>
+        <button class="main-btn" onclick="startGame()" style="background:white; color:var(--primary);">ابدأ التحدي ▶️</button>
+        <div style="margin-top:20px; color:white;">مرحلة: <span id="home-lvl">1</span></div>
+    </div>
+
+    <div id="screen-game" class="screen">
+        <div class="top-header">
+            <button onclick="location.reload()" class="settings-btn">🏠</button>
+            <div style="font-weight:bold; color:var(--text-light)">مرحلة <span id="game-lvl">1</span></div>
+            <div style="display:flex; gap:10px; align-items:center">
+                <div class="coin-badge">💎 <span id="game-coins">0</span></div>
+                <button onclick="toggleSettings()" class="settings-btn">⚙️</button>
+            </div>
+        </div>
+
+        <div class="game-content">
+            <div id="img-container" class="img-wrapper">
+                <img id="game-img" src="">
+            </div>
+            <div id="question-container" class="question-box"></div>
+            <div id="slots-area" class="slots-area"></div>
+        </div>
+
+        <div class="controls-area">
+            <button class="hint-btn" onclick="useHint()">
+                <span style="font-size:1.4rem">💡</span>
+                <span style="font-size:0.7rem; font-weight:bold">-30</span>
+            </button>
+            <div id="keyboard-area" class="keyboard"></div>
+        </div>
+        
+        <div style="margin-top:10px; text-align:center; opacity:0.5; font-size:0.8rem; color:var(--text-light)">
+            أداة علم - قسم الطب
+        </div>
+    </div>
+
+    <div id="settings-menu" class="settings-modal">
+        <h3 style="margin-top:0;">الإعدادات</h3>
+        <div class="setting-row">
+            <span>🌙 الوضع الليلي</span>
+            <label class="switch"><input type="checkbox" id="toggle-dark" onchange="toggleDarkMode()"><span class="slider"></span></label>
+        </div>
+        <div class="setting-row">
+            <span>👁️ حماية العين</span>
+            <label class="switch"><input type="checkbox" id="toggle-eye" onchange="toggleEyeMode()"><span class="slider"></span></label>
+        </div>
+        <button class="main-btn" onclick="toggleSettings()" style="width:100%; margin-top:10px;">إغلاق</button>
+    </div>
+
+    <div id="screen-finish" class="screen center-content">
+        <div style="font-size: 5rem;">🎓</div>
+        <h1 style="color:var(--primary); margin:10px 0;">مبروك التخرج!</h1>
+        <p style="color:var(--text-light);">أنهيت جميع المصطلحات الطبية المتوفرة.</p>
+        <button class="main-btn" onclick="resetProgress()">إعادة الدورة 🔄</button>
+    </div>
+
+    <div id="modal-win" class="modal-overlay">
+        <div style="display:flex; flex-direction:column; align-items:center;">
+            
+            <div id="win-card-content" class="win-card">
+                <div class="win-header">
+                    <div class="brand-pill">أداة علم - قسم الطب 🧪</div>
+                    <div style="font-size:1.5rem; font-weight:bold;">معلومة طبية</div>
+                </div>
+                <div class="win-body">
+                    <img id="win-img-display" class="win-img" src="" style="display:none">
+                    <div class="win-q" id="win-q-text">السؤال هنا</div>
+                    <div class="win-answer" id="win-a-text">الإجابة</div>
+                </div>
+                <div class="win-footer">
+                    تمت المراجعة بواسطة أداة علم
+                </div>
+            </div>
+            
+            <div class="action-btns">
+                <button class="action-btn btn-save" onclick="shareInfo()">📸 حفظ كصورة</button>
+                <button class="action-btn btn-next" onclick="nextLevel()">التالي ⬅️</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'shared_game_v5'; 
+    const SETTINGS_KEY = 'game_settings_pref';
+
+    const DEFAULTS = {
+        levels: [{q: "عضو يضخ الدم؟", a: "قلب", img: ""}],
+        progress: 0, coins: 100
+    };
+
+    let state = {};
+    let currentAns = [];
+    let targetAns = "";
+    let settings = { dark: false, eye: false };
+
+    // --- System ---
+    function init() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        state = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULTS));
+        if(!state.levels.length) state.levels = DEFAULTS.levels;
+        updateUI();
+
+        const s = localStorage.getItem(SETTINGS_KEY);
+        if(s) {
+            settings = JSON.parse(s);
+            if(settings.dark) document.documentElement.setAttribute('data-theme', 'dark');
+            if(settings.eye) document.body.classList.add('eye-mode');
+            document.getElementById('toggle-dark').checked = settings.dark;
+            document.getElementById('toggle-eye').checked = settings.eye;
+        }
+    }
+
+    function toggleSettings() { document.getElementById('settings-menu').classList.toggle('show'); }
+    function toggleDarkMode() {
+        settings.dark = !settings.dark;
+        document.documentElement.setAttribute('data-theme', settings.dark ? 'dark' : 'light');
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    }
+    function toggleEyeMode() {
+        settings.eye = !settings.eye;
+        document.body.classList.toggle('eye-mode');
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    }
+
+    function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); updateUI(); }
+    function updateUI() {
+        document.getElementById('home-lvl').innerText = state.progress + 1;
+        document.getElementById('game-lvl').innerText = state.progress + 1;
+        document.getElementById('game-coins').innerText = state.coins;
+    }
+
+    function switchScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startGame() {
+        if (state.progress >= state.levels.length) { switchScreen('screen-finish'); return; }
+        switchScreen('screen-game');
+        loadLevel(state.progress);
+    }
+
+    function loadLevel(idx) {
+        const lvl = state.levels[idx];
+        targetAns = lvl.a.trim();
+        currentAns = new Array(targetAns.length).fill(null);
+
+        const qBox = document.getElementById('question-container');
+        qBox.innerHTML = `<div class="q-main">${lvl.q}</div>`; 
+        if(lvl.q_en) qBox.innerHTML += `<div class="q-sub">🇬🇧 ${lvl.q_en}</div>`;
+        if(lvl.q_fr) qBox.innerHTML += `<div class="q-sub">🇫🇷 ${lvl.q_fr}</div>`;
+
+        const imgBox = document.getElementById('img-container');
+        const imgEl = document.getElementById('game-img');
+        if(lvl.img && lvl.img.length > 5) {
+            imgEl.src = lvl.img;
+            imgBox.style.display = 'flex';
+        } else {
+            imgBox.style.display = 'none';
+        }
+
+        renderSlots();
+        renderKeyboard(targetAns);
+    }
+
+    function renderSlots() {
+        const box = document.getElementById('slots-area');
+        box.innerHTML = '';
+        currentAns.forEach((item, i) => {
+            const el = document.createElement('div');
+            el.className = `slot ${item ? 'filled' : ''}`;
+            if(item && item.isHint) el.classList.add('hinted');
+            el.innerText = item ? item.char : '';
+            if(item) el.onclick = () => removeChar(i);
+            box.appendChild(el);
+        });
+    }
+
+    function renderKeyboard(ansStr) {
+        const box = document.getElementById('keyboard-area');
+        box.innerHTML = '';
+        let chars = ansStr.split('').map((c, i) => ({c, id: i}));
+        chars.sort(() => Math.random() - 0.5);
+
+        chars.forEach(obj => {
+            const btn = document.createElement('button');
+            btn.className = 'key-btn';
+            btn.innerText = obj.c;
+            btn.dataset.id = obj.id;
+            btn.onclick = () => { if(!btn.classList.contains('used')) addChar(obj, btn); }
+            box.appendChild(btn);
+        });
+    }
+
+    function addChar(obj, btn) {
+        const emptyIdx = currentAns.indexOf(null);
+        if(emptyIdx !== -1) {
+            currentAns[emptyIdx] = { char: obj.c, btnId: obj.id, isHint: false };
+            btn.classList.add('used');
+            renderSlots();
+            checkWin();
+        }
+    }
+
+    function removeChar(idx) {
+        const item = currentAns[idx];
+        if(item) {
+            const btn = document.querySelector(`.key-btn[data-id="${item.btnId}"]`);
+            if(btn) btn.classList.remove('used');
+            currentAns[idx] = null;
+            renderSlots();
+        }
+    }
+
+    function checkWin() {
+        if(!currentAns.includes(null)) {
+            const txt = currentAns.map(x => x.char).join('');
+            if(txt === targetAns) {
+                setTimeout(() => showWinModal(), 300);
+            } else {
+                document.getElementById('slots-area').animate([
+                    {transform: 'translateX(0)'}, {transform: 'translateX(5px)'}, {transform: 'translateX(-5px)'}, {transform: 'translateX(0)'}
+                ], {duration: 300});
+            }
+        }
+    }
+
+    // --- Win Modal & Share Logic ---
+    function showWinModal() {
+        state.coins += 20;
+        save();
+        
+        // Populate the info card
+        const lvl = state.levels[state.progress];
+        document.getElementById('win-q-text').innerText = lvl.q;
+        document.getElementById('win-a-text').innerText = lvl.a;
+        
+        const winImg = document.getElementById('win-img-display');
+        if(lvl.img && lvl.img.length > 5) {
+            winImg.src = lvl.img;
+            winImg.style.display = 'block';
+        } else {
+            winImg.style.display = 'none';
+        }
+        
+        document.getElementById('modal-win').style.display = 'flex';
+    }
+
+    function shareInfo() {
+        const card = document.getElementById('win-card-content');
+        // استخدام html2canvas لالتقاط صورة للبطاقة
+        html2canvas(card, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
+            // إنشاء رابط تحميل وهمي
+            const link = document.createElement('a');
+            link.download = `Medical_Info_${state.progress+1}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }).catch(err => {
+            alert("حدث خطأ أثناء حفظ الصورة");
+            console.error(err);
+        });
+    }
+
+    function nextLevel() {
+        document.getElementById('modal-win').style.display = 'none';
+        state.progress++;
+        save();
+        startGame();
+    }
+
+    function useHint() {
+        if(state.coins < 30) { alert('تحتاج 30 ماسة 💎'); return; }
+        const emptyIdx = currentAns.indexOf(null);
+        if(emptyIdx === -1) { alert('احذف حرفاً خاطئاً أولاً.'); return; }
+        
+        const correctChar = targetAns[emptyIdx];
+        const allKeys = Array.from(document.querySelectorAll('.key-btn:not(.used)'));
+        const targetKey = allKeys.find(k => k.innerText === correctChar);
+
+        if(targetKey) {
+            state.coins -= 30;
+            save();
+            currentAns[emptyIdx] = { char: correctChar, btnId: targetKey.dataset.id, isHint: true };
+            targetKey.classList.add('used');
+            renderSlots();
+            checkWin();
+        }
+    }
+
+    function resetProgress() {
+        if(confirm('إعادة اللعب من البداية؟')) {
+            state.progress = 0;
+            save();
+            startGame();
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>
