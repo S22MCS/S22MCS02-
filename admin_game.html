@@ -9,37 +9,58 @@
         body { margin: 0; background: #1e272e; color: #ecf0f1; font-family: 'Cairo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .container { width: 100%; max-width: 700px; flex: 1; display: none; }
         
+        /* Toast */
+        .toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: #20bf6b; color: white; padding: 10px 30px; border-radius: 25px;
+            font-size: 1rem; z-index: 2000; transition: transform 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Login */
         #login-overlay { position: fixed; inset: 0; background: #1e272e; z-index: 1000; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-        .login-box { background: #2f3640; padding: 40px; border-radius: 20px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .login-input { padding: 15px; font-size: 1.2rem; border-radius: 10px; border: 2px solid #4b6584; width: 100%; margin: 20px 0; background: #dcdde1; text-align: center; }
-        
+        .login-box { background: #2f3640; padding: 40px; border-radius: 20px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); position: relative; }
+        .pass-wrapper { position: relative; margin: 20px 0; }
+        .login-input { padding: 15px; padding-left: 40px; font-size: 1.2rem; border-radius: 10px; border: 2px solid #4b6584; width: 100%; background: #dcdde1; text-align: center; box-sizing: border-box;}
+        .toggle-pass { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem; }
+
+        /* Dashboard */
         h2 { color: #0fb9b1; text-align: center; margin-bottom: 30px; border-bottom: 2px solid #34495e; padding-bottom: 20px; }
         .form-card { background: #2f3640; padding: 25px; border-radius: 15px; margin-bottom: 30px; border: 1px solid #4b6584; }
-        input, button { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; font-family: inherit; font-size: 1rem; border: none; }
-        input { background: #dcdde1; color: #2d3436; }
+        input, textarea, button { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; font-family: inherit; font-size: 1rem; border: none; }
+        input, textarea { background: #dcdde1; color: #2d3436; }
+        textarea { resize: vertical; min-height: 60px; }
         
         .btn-add { background: #20bf6b; color: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn-add:hover { background: #26de81; }
         .btn-add.editing { background: #f7b731; color: #2d3436; }
         
-        .level-item { background: #353b48; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-right: 4px solid #0fb9b1; }
+        .level-item { background: #353b48; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-right: 4px solid #0fb9b1; flex-wrap: wrap; gap: 10px; }
         .actions { display: flex; gap: 5px; }
-        .btn-action { width: auto; padding: 5px 15px; cursor: pointer; color: white; border-radius: 5px; font-size: 0.9rem; }
+        .btn-action { width: auto; padding: 5px 10px; cursor: pointer; color: white; border-radius: 5px; font-size: 0.9rem; }
         .btn-del { background: #eb3b5a; }
         .btn-edit { background: #3867d6; }
-        
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #0fb9b1; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: none; margin: 0 auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .btn-move { background: #4b6584; }
         
         .footer { margin-top: 30px; color: #7f8fa6; font-size: 0.9rem; text-align: center; width: 100%; }
+        
+        /* Collapsible Section */
+        .collapsible { cursor: pointer; background: #34495e; color: white; padding: 10px; width: 100%; border: none; text-align: right; outline: none; border-radius: 8px; font-weight: bold; margin-bottom: 10px; }
+        .content { display: none; overflow: hidden; }
+        .content.show { display: block; }
     </style>
 </head>
 <body>
 
+<div id="toast" class="toast"></div>
+
 <div id="login-overlay">
     <div class="login-box">
         <h2 style="border:none">🔐 دخول المشرف</h2>
-        <input type="password" id="admin-pass" class="login-input" placeholder="كلمة المرور">
+        <div class="pass-wrapper">
+            <input type="password" id="admin-pass" class="login-input" placeholder="كلمة المرور">
+            <span class="toggle-pass" onclick="togglePass()">👁️</span>
+        </div>
         <button class="btn-add" onclick="checkLogin()">دخول</button>
     </div>
 </div>
@@ -55,7 +76,14 @@
         <input type="text" id="inp-q-fr" placeholder="السؤال (فرنسي - اختياري)" dir="ltr">
         <input type="text" id="inp-a" placeholder="الإجابة (عربي أو إنجليزي)" dir="auto">
         
-        <label style="display:block; margin-bottom:5px; color:#bdc3c7;">صور المرحلة (يمكنك اختيار أكثر من صورة):</label>
+        <button type="button" class="collapsible" onclick="toggleExp()">📝 إضافة تفسير (يظهر بعد الفوز)</button>
+        <div id="exp-content" class="content">
+            <textarea id="inp-exp" placeholder="تفسير بالعربية (اختياري)" dir="auto"></textarea>
+            <textarea id="inp-exp-en" placeholder="Explanation (English - Optional)" dir="ltr"></textarea>
+            <textarea id="inp-exp-fr" placeholder="Explication (Français - Optionnel)" dir="ltr"></textarea>
+        </div>
+
+        <label style="display:block; margin-top:10px; margin-bottom:5px; color:#bdc3c7;">صور المرحلة:</label>
         <div style="background:#dcdde1; border-radius:8px; padding:5px; display:flex; align-items:center;">
             <input type="file" id="inp-file" accept="image/*" multiple style="margin:0; background:transparent;">
             <span id="upload-msg" style="margin-right:10px; color:#2d3436; font-weight:bold;"></span>
@@ -66,7 +94,6 @@
     </div>
 
     <h3 style="color:#d1d8e0">📋 القائمة الحالية (<span id="count">0</span>):</h3>
-    <div class="loader" id="loader"></div>
     <div id="list-levels"></div>
 </div>
 
@@ -89,17 +116,37 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-
+    const IMGBB_KEY = "ac296feb5a275923598bdbfd4f9aed8c"; 
+    
     let levels = [];
     let editingIndex = -1;
-    // مفتاحك
-    const IMGBB_KEY = "ac296feb5a275923598bdbfd4f9aed8c"; 
 
+    // Expose Functions
     window.checkLogin = checkLogin;
+    window.togglePass = togglePass;
     window.saveLevel = saveLevel;
     window.editLevel = editLevel;
     window.delLevel = delLevel;
+    window.moveUp = moveUp;
+    window.moveDown = moveDown;
     window.cancelEdit = cancelEdit;
+    window.toggleExp = toggleExp;
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = "✅ " + msg;
+        t.className = "toast show";
+        setTimeout(() => t.className = "toast", 3000);
+    }
+
+    function togglePass() {
+        const input = document.getElementById('admin-pass');
+        input.type = input.type === "password" ? "text" : "password";
+    }
+
+    function toggleExp() {
+        document.getElementById('exp-content').classList.toggle('show');
+    }
 
     function checkLogin() {
         const pass = document.getElementById('admin-pass').value;
@@ -113,32 +160,20 @@
     }
 
     async function loadFromFirebase() {
-        document.getElementById('loader').style.display = 'block';
-        try {
-            const snapshot = await get(ref(db, 'levels'));
-            if (snapshot.exists()) {
-                levels = snapshot.val();
-                if(!Array.isArray(levels)) levels = [];
-                levels = levels.filter(l => l != null);
-            } else {
-                levels = [];
-            }
-            render();
-        } catch (error) {
-            console.error(error);
-            alert("خطأ في تحميل البيانات");
+        const snapshot = await get(ref(db, 'levels'));
+        if (snapshot.exists()) {
+            levels = snapshot.val();
+            if(!Array.isArray(levels)) levels = [];
+            levels = levels.filter(l => l != null);
+        } else {
+            levels = [];
         }
-        document.getElementById('loader').style.display = 'none';
+        render();
     }
 
     async function syncToFirebase() {
-        try {
-            await set(ref(db, 'levels'), levels);
-            render();
-        } catch (error) {
-            alert("فشل الحفظ في Firebase!");
-            console.error(error);
-        }
+        await set(ref(db, 'levels'), levels);
+        render();
     }
 
     async function uploadImageToImgBB(file) {
@@ -149,11 +184,8 @@
             const response = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: formData });
             const result = await response.json();
             if (result.success) return result.data.url;
-            else throw new Error(result.error.message);
-        } catch (error) {
-            alert("فشل الرفع: " + error.message);
             return null;
-        }
+        } catch (error) { return null; }
     }
 
     async function saveLevel() {
@@ -161,49 +193,43 @@
         const q_en = document.getElementById('inp-q-en').value;
         const q_fr = document.getElementById('inp-q-fr').value;
         const a = document.getElementById('inp-a').value;
-        const fileInput = document.getElementById('inp-file');
         
+        // Explanations
+        const exp = document.getElementById('inp-exp').value;
+        const exp_en = document.getElementById('inp-exp-en').value;
+        const exp_fr = document.getElementById('inp-exp-fr').value;
+
+        const fileInput = document.getElementById('inp-file');
         const btn = document.getElementById('btn-submit');
         const msg = document.getElementById('upload-msg');
 
-        if(!q || !a) { alert('السؤال العربي والإجابة مطلوبان'); return; }
+        if(!q || !a) { alert('السؤال والإجابة مطلوبان'); return; }
 
-        // معالجة الصور المتعددة
+        // Images Logic
         let uploadedImages = [];
-        
-        // إذا كنا نعدل، نحتفظ بالصور القديمة ما لم يتم رفع جديد
-        if(editingIndex > -1 && levels[editingIndex].images) {
-             uploadedImages = levels[editingIndex].images;
-        } else if (editingIndex > -1 && levels[editingIndex].img) {
-             uploadedImages = [levels[editingIndex].img]; // دعم القديم
-        }
+        if(editingIndex > -1 && levels[editingIndex].images) uploadedImages = levels[editingIndex].images;
+        else if (editingIndex > -1 && levels[editingIndex].img) uploadedImages = [levels[editingIndex].img];
 
-        // إذا تم اختيار ملفات جديدة، نقوم برفعها
         if (fileInput.files.length > 0) {
-            msg.innerText = "جاري رفع الصور... ⏳";
+            msg.innerText = "جاري الرفع... ⏳";
             btn.disabled = true;
-            
-            // إعادة تعيين المصفوفة للصور الجديدة (أو يمكنك دمجها، هنا سنستبدل القديم بالجديد)
-            uploadedImages = []; 
-
+            uploadedImages = []; // Replace old with new if uploading
             for(const file of fileInput.files) {
                 const url = await uploadImageToImgBB(file);
                 if(url) uploadedImages.push(url);
             }
-            
             btn.disabled = false;
             msg.innerText = "";
-            if(uploadedImages.length === 0) return; // فشل الكل
         }
 
-        const newLevel = { q, q_en, q_fr, a, images: uploadedImages };
+        const newLevel = { q, q_en, q_fr, a, exp, exp_en, exp_fr, images: uploadedImages };
 
         if (editingIndex > -1) {
             levels[editingIndex] = newLevel;
-            alert("تم التعديل!");
+            showToast("تم تعديل المرحلة");
         } else {
             levels.push(newLevel);
-            alert("تم الإضافة!");
+            showToast("تم إضافة المرحلة");
         }
 
         syncToFirebase();
@@ -218,6 +244,13 @@
         document.getElementById('inp-q-fr').value = lvl.q_fr || '';
         document.getElementById('inp-a').value = lvl.a || '';
         
+        document.getElementById('inp-exp').value = lvl.exp || '';
+        document.getElementById('inp-exp-en').value = lvl.exp_en || '';
+        document.getElementById('inp-exp-fr').value = lvl.exp_fr || '';
+        
+        // Open explanation if exists
+        if(lvl.exp || lvl.exp_en || lvl.exp_fr) document.getElementById('exp-content').classList.add('show');
+
         document.getElementById('form-title').innerText = "✏️ تعديل المرحلة";
         const btn = document.getElementById('btn-submit');
         btn.innerText = "تحديث وحفظ";
@@ -229,14 +262,14 @@
 
     function cancelEdit() {
         editingIndex = -1;
-        document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
+        document.querySelectorAll('input, textarea').forEach(i => i.value = '');
         document.getElementById('inp-file').value = '';
-        
         document.getElementById('form-title').innerText = "➕ إضافة المرحلة";
         const btn = document.getElementById('btn-submit');
         btn.innerText = "حفظ في Firebase ☁️";
         btn.classList.remove('editing');
         document.getElementById('btn-cancel').style.display = 'none';
+        document.getElementById('exp-content').classList.remove('show');
     }
 
     function delLevel(i) {
@@ -247,23 +280,36 @@
         }
     }
 
+    function moveUp(i) {
+        if (i > 0) {
+            [levels[i], levels[i-1]] = [levels[i-1], levels[i]];
+            syncToFirebase();
+        }
+    }
+
+    function moveDown(i) {
+        if (i < levels.length - 1) {
+            [levels[i], levels[i+1]] = [levels[i+1], levels[i]];
+            syncToFirebase();
+        }
+    }
+
     function render() {
         document.getElementById('count').innerText = levels.length;
         const list = document.getElementById('list-levels');
         list.innerHTML = '';
         
         levels.forEach((lvl, i) => {
-            const imgCount = lvl.images ? lvl.images.length : (lvl.img ? 1 : 0);
-            
             const div = document.createElement('div');
             div.className = 'level-item';
             div.innerHTML = `
-                <div>
+                <div style="flex:1">
                     <strong>#${i+1}: ${lvl.a}</strong><br>
                     <small>${lvl.q}</small>
-                    ${imgCount > 0 ? `<span style="font-size:0.8rem; color:#f1c40f"> (صور: ${imgCount})</span>` : ''}
                 </div>
                 <div class="actions">
+                    <button class="btn-action btn-move" onclick="moveUp(${i})">⬆️</button>
+                    <button class="btn-action btn-move" onclick="moveDown(${i})">⬇️</button>
                     <button class="btn-action btn-edit" onclick="editLevel(${i})">✏️</button>
                     <button class="btn-action btn-del" onclick="delLevel(${i})">🗑️</button>
                 </div>
@@ -271,7 +317,6 @@
             list.appendChild(div);
         });
     }
-
 </script>
 </body>
 </html>
