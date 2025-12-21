@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>كلمات التحدي الطبي</title>
+    <title>الموسوعة الطبية التفاعلية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     
@@ -12,7 +12,6 @@
             --primary: #0fb9b1; --primary-dark: #20bf6b; --accent: #f7b731;
             --bg-body: #1e272e; --bg-app: #f1f2f6; --text: #2d3436; --text-light: #636e72;
             --slot-bg: #dfe6e9; --key-bg: #ffffff; --font: 'Cairo', sans-serif;
-            --shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         [data-theme="dark"] {
             --primary: #4bcffa; --primary-dark: #0fb9b1;
@@ -21,23 +20,14 @@
         }
 
         * { box-sizing: border-box; font-family: var(--font); user-select: none; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { margin: 0; background: var(--bg-body); height: 100dvh; display: flex; justify-content: center; align-items: center; overflow: hidden; transition: background 0.3s; }
+        body { margin: 0; background: var(--bg-body); height: 100dvh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
         
-        #eye-protect-layer { position: fixed; inset: 0; background: rgba(255, 160, 0, 0.15); pointer-events: none; z-index: 9999; display: none; mix-blend-mode: multiply; }
-        body.eye-mode #eye-protect-layer { display: block; }
-
-        #app { width: 100%; height: 100%; max-width: 500px; background: var(--bg-app); display: flex; flex-direction: column; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); overflow: hidden; transition: background 0.3s; }
+        #app { width: 100%; height: 100%; max-width: 500px; background: var(--bg-app); display: flex; flex-direction: column; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); overflow: hidden; }
         
-        /* Toast Notification */
-        .toast {
-            position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
-            background: #333; color: white; padding: 10px 20px; border-radius: 25px;
-            font-size: 0.9rem; z-index: 10000; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 10px;
-        }
+        /* Toast */
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #333; color: white; padding: 10px 20px; border-radius: 25px; z-index: 10000; transition: 0.3s; display:flex; gap:10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         .toast.show { transform: translateX(-50%) translateY(0); }
-        .toast.success { background: #20bf6b; }
-        .toast.error { background: #eb3b5a; }
+        .toast.success { background: #20bf6b; } .toast.error { background: #eb3b5a; }
 
         /* Screens */
         .screen { display: none; flex-direction: column; height: 100%; padding: 20px; animation: fadeIn 0.3s ease; overflow-y: auto; position: relative; }
@@ -45,57 +35,79 @@
         .screen.center-content { justify-content: center; align-items: center; text-align: center; }
         @keyframes fadeIn { from {opacity:0; transform: scale(0.98);} to {opacity:1; transform: scale(1);} }
 
-        /* UI Elements */
+        /* Headers & UI */
         .top-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; margin-bottom: 10px; }
-        .coin-badge { background: var(--accent); color: #2d3436; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.9rem; box-shadow: var(--shadow); }
-        .icon-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-light); padding: 5px; transition: 0.2s; }
-        .icon-btn:hover { color: var(--primary); transform: scale(1.1); }
+        .coin-badge { background: var(--accent); color: #2d3436; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.9rem; }
+        .icon-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-light); }
 
         /* Game Content */
         .game-content { flex: 1; display: flex; flex-direction: column; align-items: center; width: 100%; overflow-y: auto; }
         
-        /* Image Slider */
-        .images-container { width: 100%; height: 22vh; margin-bottom: 15px; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 5px; }
-        .game-img-wrapper { flex: 0 0 auto; width: 100%; height: 100%; background: var(--slot-bg); border-radius: 15px; display: flex; justify-content: center; align-items: center; overflow: hidden; scroll-snap-align: center; position: relative; border: 1px solid rgba(0,0,0,0.1); }
-        .game-img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
-        
+        /* Question Image Area */
+        .q-image-container { 
+            width: 100%; max-height: 25vh; margin-bottom: 15px; background: var(--slot-bg); 
+            border-radius: 15px; display: none; justify-content: center; align-items: center; 
+            overflow: hidden; border: 1px solid rgba(0,0,0,0.1); position: relative;
+        }
+        .q-image { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; }
+
         .question-box { text-align: center; margin-bottom: 20px; width: 100%; }
         .q-main { font-size: clamp(1.1rem, 5vw, 1.4rem); font-weight: 800; color: var(--text); }
         .q-sub { font-size: clamp(0.8rem, 4vw, 1rem); color: var(--text-light); direction: ltr; margin-top: 2px; }
 
         .slots-area { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin-bottom: auto; padding-bottom: 20px; direction: rtl; }
-        .slot { width: clamp(35px, 11vw, 45px); height: clamp(35px, 11vw, 45px); background: var(--slot-bg); border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: clamp(1.1rem, 5vw, 1.4rem); font-weight: 800; color: var(--text); cursor: pointer; border-bottom: 3px solid rgba(0,0,0,0.1); transition: 0.2s; }
-        .slot.filled { background: var(--primary); color: white; transform: scale(1.05); border-color: var(--primary-dark); }
+        .slot { width: clamp(35px, 11vw, 45px); height: clamp(35px, 11vw, 45px); background: var(--slot-bg); border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: clamp(1.1rem, 5vw, 1.4rem); font-weight: 800; color: var(--text); cursor: pointer; border-bottom: 3px solid rgba(0,0,0,0.1); }
+        .slot.filled { background: var(--primary); color: white; transform: scale(1.05); }
         .slot.hinted { background: #00cec9 !important; color: white; }
 
-        /* Keyboard & Controls */
         .controls-area { width: 100%; position: relative; padding-top: 10px; }
-        
-        /* Hint Button - Improved Position */
-        .hint-btn-wrapper {
-            position: absolute; top: -50px; left: 10px; z-index: 10;
-        }
-        .hint-btn {
-            background: linear-gradient(45deg, #fdcb6e, #e17055); border: none; color: white;
-            width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s;
-        }
-        .hint-btn:active { transform: scale(0.9); }
-        .hint-badge {
-            position: absolute; bottom: -5px; right: -5px; background: #2d3436; color: #f7b731;
-            font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; font-weight: bold;
-        }
+        .hint-btn-wrapper { position: absolute; top: -50px; left: 10px; z-index: 10; }
+        .hint-btn { background: linear-gradient(45deg, #fdcb6e, #e17055); border: none; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; }
+        .hint-badge { position: absolute; bottom: -5px; right: -5px; background: #2d3436; color: #f7b731; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
 
         .keyboard { background: var(--key-bg); padding: 10px; border-radius: 20px 20px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); display: grid; grid-template-columns: repeat(auto-fit, minmax(38px, 1fr)); gap: 6px; }
-        .key-btn { aspect-ratio: 1; background: var(--bg-app); border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; color: var(--text); box-shadow: 0 2px 0 rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
+        .key-btn { aspect-ratio: 1; background: var(--bg-app); border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; color: var(--text); box-shadow: 0 2px 0 rgba(0,0,0,0.1); }
         .key-btn.used { opacity: 0.2; pointer-events: none; }
 
-        /* Settings Modal */
-        .bottom-sheet {
-            position: absolute; bottom: 0; left: 0; width: 100%; background: var(--key-bg);
-            border-radius: 25px 25px 0 0; padding: 30px; z-index: 100;
-            transform: translateY(100%); transition: transform 0.3s; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); color: var(--text);
+        /* Win Modal (Info Card) */
+        .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 50; backdrop-filter: blur(5px); }
+        
+        .win-card { 
+            background: white; width: 90%; max-width: 380px; max-height: 90vh; 
+            border-radius: 20px; text-align: center; animation: popUp 0.4s; 
+            overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            display: flex; flex-direction: column; 
         }
+        
+        .win-header { background: linear-gradient(135deg, #20bf6b, #0fb9b1); color: white; padding: 15px; flex-shrink: 0; }
+        .win-body { padding: 20px; color: #2d3436; flex: 1; overflow-y: auto; }
+        
+        .win-img-container { margin-bottom: 15px; border-radius: 10px; overflow: hidden; border: 1px solid #eee; display:none; }
+        .win-img { width: 100%; max-height: 200px; object-fit: contain; cursor: zoom-in; }
+        
+        .win-answer { font-size: 1.8rem; font-weight: 900; color: #20bf6b; margin: 5px 0 15px 0; }
+        
+        /* Explanation Section */
+        .exp-box { background: #f8f9fa; border-right: 4px solid #0fb9b1; padding: 10px; margin-top: 15px; text-align: right; border-radius: 5px; }
+        .exp-text { font-size: 0.95rem; color: #2d3436; line-height: 1.6; }
+        .exp-img-container { margin-top: 10px; border-radius: 8px; overflow: hidden; display:none; }
+        .exp-img { width: 100%; max-height: 150px; object-fit: cover; cursor: zoom-in; }
+
+        .action-btns { display: flex; gap: 10px; justify-content: center; padding: 15px; background: white; border-top: 1px solid #eee; }
+        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; color: white; font-size: 1rem; }
+        .btn-save { background: #f7b731; color: #2d3436; } .btn-next { background: #20bf6b; }
+
+        @keyframes popUp { from {transform:scale(0.5); opacity:0;} to {transform:scale(1); opacity:1;} }
+
+        /* Lightbox */
+        #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        #lightbox img { max-width: 100%; max-height: 80vh; object-fit: contain; transition: transform 0.2s ease-out; }
+        .lightbox-controls { position: absolute; bottom: 30px; display: flex; gap: 20px; }
+        .zoom-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; }
+        .close-lightbox { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
+        
+        /* Settings Sheet */
+        .bottom-sheet { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--key-bg); border-radius: 25px 25px 0 0; padding: 30px; z-index: 100; transform: translateY(100%); transition: transform 0.3s; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); color: var(--text); }
         .bottom-sheet.show { transform: translateY(0); }
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-weight: bold; }
         .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
@@ -104,48 +116,12 @@
         .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--primary); }
         input:checked + .slider:before { transform: translateX(24px); }
-
-        /* Win Modal (Info Card) */
-        .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 50; backdrop-filter: blur(5px); }
-        .win-card { background: white; width: 90%; max-width: 360px; max-height: 85vh; border-radius: 20px; text-align: center; animation: popUp 0.4s; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: flex; flex-direction: column; }
-        .win-header { background: linear-gradient(135deg, #20bf6b, #0fb9b1); color: white; padding: 15px; flex-shrink: 0; }
-        .win-body { padding: 20px; color: #2d3436; flex: 1; overflow-y: auto; }
-        .win-img { max-height: 120px; max-width: 100%; object-fit: contain; margin-bottom: 10px; border-radius: 8px; }
-        .win-answer { font-size: 1.8rem; font-weight: 900; color: #20bf6b; margin: 10px 0; }
-        
-        .explanation-box {
-            background: #f1f2f6; border-radius: 10px; padding: 10px; margin-top: 10px; text-align: right;
-        }
-        .exp-text { font-size: 0.9rem; color: #636e72; margin-bottom: 5px; line-height: 1.5; }
-        .exp-sub { font-size: 0.85rem; color: #0fb9b1; direction: ltr; text-align: left; margin-bottom: 3px; }
-
-        .action-btns { display: flex; gap: 10px; justify-content: center; padding: 15px; background: white; border-top: 1px solid #eee; }
-        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; color: white; font-size: 1rem; }
-        .btn-save { background: #f7b731; color: #2d3436; } .btn-next { background: #20bf6b; }
-
-        /* End Screen (Professional) */
-        .end-card {
-            background: white; padding: 40px 20px; border-radius: 20px; text-align: center; width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid var(--primary);
-        }
-        .end-icon { font-size: 4rem; margin-bottom: 10px; display: block; animation: bounce 2s infinite; }
-        
-        @keyframes popUp { from {transform:scale(0.5); opacity:0;} to {transform:scale(1); opacity:1;} }
-        @keyframes bounce { 0%, 100% {transform:translateY(0);} 50% {transform:translateY(-10px);} }
-
-        /* Lightbox */
-        #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        #lightbox img { max-width: 100%; max-height: 80vh; object-fit: contain; transition: transform 0.2s ease-out; }
-        .lightbox-controls { position: absolute; bottom: 30px; display: flex; gap: 20px; }
-        .zoom-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid white; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; }
-        .close-lightbox { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div id="toast" class="toast"></div>
-
-<div id="eye-protect-layer"></div>
+<div id="eye-protect-layer" style="position:fixed;inset:0;background:rgba(255,160,0,0.15);pointer-events:none;z-index:9999;display:none;mix-blend-mode:multiply;"></div>
 
 <div id="lightbox">
     <button class="close-lightbox" onclick="closeLightbox()">✕</button>
@@ -158,15 +134,10 @@
 
 <div id="app">
     <div id="screen-home" class="screen active center-content">
-        <div style="font-size: 4rem; margin-bottom:10px;">🧬</div>
         <div class="logo" style="font-size: 2.5rem; color:var(--primary);">أداة علم<br><span style="font-size:1.2rem; color:var(--text-light)">الطبية</span></div>
         <p id="status-msg" style="color:var(--text); font-size:0.9rem; margin-bottom:30px;">جاري تحميل البيانات...</p>
         <button class="action-btn btn-next" onclick="startGame()" id="btn-start" style="display:none; width:80%;">ابدأ التحدي ▶️</button>
         <div style="margin-top:20px; color:var(--text-light); font-size:0.8rem;">المرحلة الحالية: <b id="home-lvl">1</b></div>
-        
-        <div style="position:absolute; bottom:20px; color:#aaa; font-size:0.7rem;">
-            صنعت من طرف <b>أداة علم</b> قسم الطب
-        </div>
     </div>
 
     <div id="screen-game" class="screen">
@@ -180,7 +151,10 @@
         </div>
 
         <div class="game-content">
-            <div id="images-container" class="images-container" style="display:none;"></div>
+            <div id="q-img-container" class="q-image-container">
+                <img id="q-img" class="q-image" src="" onclick="openLightbox(this.src)">
+            </div>
+            
             <div id="question-container" class="question-box"></div>
             <div id="slots-area" class="slots-area"></div>
         </div>
@@ -194,56 +168,52 @@
         </div>
     </div>
 
-    <div id="screen-finish" class="screen center-content">
-        <div class="end-card">
-            <span class="end-icon">🎓</span>
-            <h1 style="color:var(--primary); margin:10px 0;">ألف مبروك!</h1>
-            <p style="color:var(--text); margin-bottom:20px;">لقد أتممت جميع المصطلحات الطبية بنجاح.</p>
-            <div style="background:var(--bg-app); padding:10px; border-radius:10px; margin-bottom:20px;">
-                <div style="font-size:0.9rem; color:var(--text-light)">الرصيد النهائي</div>
-                <div style="font-size:1.5rem; font-weight:bold; color:var(--accent)">💎 <span id="final-coins">0</span></div>
-            </div>
-            <button class="action-btn btn-save" onclick="resetProgress()" style="width:100%;">إعادة الدورة 🔄</button>
-        </div>
-    </div>
-
-    <div id="settings-menu" class="bottom-sheet">
-        <h3 style="margin-top:0;">الإعدادات</h3>
-        <div class="setting-row">
-            <span>🌙 الوضع الليلي</span>
-            <label class="switch"><input type="checkbox" id="toggle-dark" onchange="toggleDarkMode()"><span class="slider"></span></label>
-        </div>
-        <div class="setting-row">
-            <span>👁️ حماية العين</span>
-            <label class="switch"><input type="checkbox" id="toggle-eye" onchange="toggleEyeMode()"><span class="slider"></span></label>
-        </div>
-        <button class="action-btn btn-save" onclick="toggleSettings()" style="width:100%; margin-top:10px;">إغلاق</button>
-    </div>
-
     <div id="modal-win" class="modal-overlay">
-        <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="display:flex; flex-direction:column; align-items:center; width:100%">
             <div id="win-card-content" class="win-card">
                 <div class="win-header">
                     <div style="font-size:1.2rem; font-weight:bold;">معلومة طبية</div>
                 </div>
                 <div class="win-body">
-                    <img id="win-img-display" class="win-img" src="" style="display:none">
+                    <div id="win-img-box" class="win-img-container">
+                        <img id="win-img" class="win-img" src="" onclick="openLightbox(this.src)">
+                    </div>
+
                     <div class="q-main" id="win-q-text" style="font-size:1rem;color:#555"></div>
                     <div class="win-answer" id="win-a-text"></div>
                     
-                    <div id="explanation-container" class="explanation-box" style="display:none;">
-                        <div id="exp-ar" class="exp-text"></div>
-                        <div id="exp-en" class="exp-sub"></div>
-                        <div id="exp-fr" class="exp-sub"></div>
+                    <div id="exp-container" class="exp-box" style="display:none;">
+                        <strong style="color:var(--primary)">التفسير:</strong>
+                        <div id="exp-text" class="exp-text"></div>
+                        <div id="exp-en" class="q-sub" style="text-align:left"></div>
+                        <div id="exp-fr" class="q-sub" style="text-align:left"></div>
+                        
+                        <div id="exp-img-box" class="exp-img-container">
+                            <img id="exp-img" class="exp-img" src="" onclick="openLightbox(this.src)">
+                        </div>
                     </div>
                 </div>
-                <div style="background:#f9f9f9; padding:5px; font-size:0.7rem; color:#aaa; border-top:1px solid #eee;">أداة علم - قسم الطب</div>
+                <div style="background:#f9f9f9; padding:8px; font-size:0.7rem; color:#aaa; border-top:1px solid #eee;">أداة علم - قسم الطب</div>
             </div>
             <div class="action-btns">
-                <button class="action-btn btn-save" onclick="shareInfo()">📸 حفظ</button>
+                <button class="action-btn btn-save" onclick="shareInfo()">📸 حفظ البطاقة</button>
                 <button class="action-btn btn-next" onclick="nextLevel()">التالي ⬅️</button>
             </div>
         </div>
+    </div>
+    
+    <div id="settings-menu" class="bottom-sheet">
+        <h3 style="margin-top:0;">الإعدادات</h3>
+        <div class="setting-row"><span>🌙 الوضع الليلي</span><label class="switch"><input type="checkbox" id="toggle-dark" onchange="toggleDarkMode()"><span class="slider"></span></label></div>
+        <div class="setting-row"><span>👁️ حماية العين</span><label class="switch"><input type="checkbox" id="toggle-eye" onchange="toggleEyeMode()"><span class="slider"></span></label></div>
+        <button class="action-btn btn-save" onclick="toggleSettings()" style="width:100%; margin-top:10px;">إغلاق</button>
+    </div>
+
+    <div id="screen-finish" class="screen center-content">
+        <div style="font-size: 5rem;">🎓</div>
+        <h1 style="color:var(--primary);">ألف مبروك!</h1>
+        <p style="color:var(--text);">أنهيت الدورة بنجاح.</p>
+        <button class="action-btn btn-save" onclick="resetProgress()" style="width:80%;">إعادة الدورة 🔄</button>
     </div>
 </div>
 
@@ -273,7 +243,7 @@
     let settings = { dark: false, eye: false };
     let currentZoom = 1;
 
-    // Expose functions
+    // Globals
     window.startGame = startGame;
     window.useHint = useHint;
     window.nextLevel = nextLevel;
@@ -287,21 +257,19 @@
     window.zoomIn = zoomIn;
     window.zoomOut = zoomOut;
 
-    // Toast Function
     function showToast(msg, type = 'success') {
-        const toast = document.getElementById('toast');
-        toast.innerText = (type === 'success' ? '✅ ' : '⚠️ ') + msg;
-        toast.className = `toast show ${type}`;
-        setTimeout(() => toast.className = 'toast', 3000);
+        const t = document.getElementById('toast');
+        t.innerText = (type === 'success' ? '✅ ' : '⚠️ ') + msg;
+        t.className = `toast show ${type}`;
+        setTimeout(() => t.className = 'toast', 3000);
     }
 
     async function init() {
-        // Load settings
         const s = localStorage.getItem('game_settings');
         if(s) {
             settings = JSON.parse(s);
             if(settings.dark) document.documentElement.setAttribute('data-theme', 'dark');
-            if(settings.eye) document.body.classList.add('eye-mode');
+            if(settings.eye) document.getElementById('eye-protect-layer').style.display = 'block';
             document.getElementById('toggle-dark').checked = settings.dark;
             document.getElementById('toggle-eye').checked = settings.eye;
         }
@@ -315,12 +283,9 @@
                 document.getElementById('status-msg').innerText = `تم تحميل ${levels ? levels.length : 0} مصطلح`;
                 document.getElementById('btn-start').style.display = 'block';
             } else {
-                document.getElementById('status-msg').innerText = "جاري إضافة المراحل...";
+                document.getElementById('status-msg').innerText = "جاري إضافة الأسئلة...";
             }
-        } catch (error) {
-            console.error(error);
-            document.getElementById('status-msg').innerText = "تحقق من الإنترنت!";
-        }
+        } catch (error) { console.error(error); document.getElementById('status-msg').innerText = "خطأ في الاتصال"; }
     }
 
     function toggleSettings() { document.getElementById('settings-menu').classList.toggle('show'); }
@@ -331,7 +296,7 @@
     }
     function toggleEyeMode() {
         settings.eye = !settings.eye;
-        document.body.classList.toggle('eye-mode');
+        document.getElementById('eye-protect-layer').style.display = settings.eye ? 'block' : 'none';
         localStorage.setItem('game_settings', JSON.stringify(settings));
     }
 
@@ -339,7 +304,6 @@
         document.getElementById('home-lvl').innerText = progress + 1;
         document.getElementById('game-lvl').innerText = progress + 1;
         document.getElementById('game-coins').innerText = coins;
-        document.getElementById('final-coins').innerText = coins;
     }
 
     function startGame() {
@@ -347,7 +311,6 @@
         if (progress >= levels.length) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-finish').classList.add('active');
-            updateUI();
             return;
         }
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -360,33 +323,22 @@
         targetAns = lvl.a.trim();
         currentAns = new Array(targetAns.length).fill(null);
 
+        // 1. Texts
         const qBox = document.getElementById('question-container');
         qBox.innerHTML = `<div class="q-main">${lvl.q}</div>`;
         if(lvl.q_en) qBox.innerHTML += `<div class="q-sub">🇬🇧 ${lvl.q_en}</div>`;
         if(lvl.q_fr) qBox.innerHTML += `<div class="q-sub">🇫🇷 ${lvl.q_fr}</div>`;
 
-        const imgContainer = document.getElementById('images-container');
-        imgContainer.innerHTML = '';
-        let imgsToLoad = [];
-        if(lvl.images && Array.isArray(lvl.images)) imgsToLoad = lvl.images;
-        else if (lvl.img) imgsToLoad = [lvl.img];
-
-        if(imgsToLoad.length > 0) {
-            imgContainer.style.display = 'flex';
-            imgsToLoad.forEach(src => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'game-img-wrapper';
-                const img = document.createElement('img');
-                img.className = 'game-img';
-                img.src = src;
-                img.onclick = () => openLightbox(src);
-                wrapper.appendChild(img);
-                imgContainer.appendChild(wrapper);
-            });
+        // 2. Question Image (img_q)
+        const qImgBox = document.getElementById('q-img-container');
+        if(lvl.img_q) {
+            document.getElementById('q-img').src = lvl.img_q;
+            qImgBox.style.display = 'flex';
         } else {
-            imgContainer.style.display = 'none';
+            qImgBox.style.display = 'none';
         }
 
+        // 3. Direction
         const slotsArea = document.getElementById('slots-area');
         const isArabic = /[\u0600-\u06FF]/.test(targetAns);
         slotsArea.style.direction = isArabic ? 'rtl' : 'ltr';
@@ -452,7 +404,7 @@
                 document.getElementById('slots-area').animate([
                     {transform: 'translateX(0)'}, {transform: 'translateX(5px)'}, {transform: 'translateX(-5px)'}, {transform: 'translateX(0)'}
                 ], {duration: 300});
-                showToast('إجابة خاطئة، حاول مرة أخرى', 'error');
+                showToast('خطأ! حاول مرة أخرى', 'error');
             }
         }
     }
@@ -461,32 +413,36 @@
         coins += 20;
         localStorage.setItem('game_coins', coins);
         updateUI();
-
         const lvl = levels[progress];
+
         document.getElementById('win-q-text').innerText = lvl.q;
         document.getElementById('win-a-text').innerText = lvl.a;
-        
-        const winImg = document.getElementById('win-img-display');
-        const imgToShow = (lvl.images && lvl.images[0]) || lvl.img;
-        
-        if(imgToShow) {
-            winImg.src = imgToShow;
-            winImg.style.display = 'block';
-        } else {
-            winImg.style.display = 'none';
-        }
 
-        // عرض التفسير إن وجد
-        const expBox = document.getElementById('explanation-container');
-        if (lvl.exp || lvl.exp_en || lvl.exp_fr) {
-            expBox.style.display = 'block';
-            document.getElementById('exp-ar').innerText = lvl.exp || "";
+        // Image Answer
+        const winImgBox = document.getElementById('win-img-box');
+        if(lvl.img_a) {
+            document.getElementById('win-img').src = lvl.img_a;
+            winImgBox.style.display = 'block';
+        } else { winImgBox.style.display = 'none'; }
+
+        // Explanation Section
+        const expContainer = document.getElementById('exp-container');
+        if(lvl.exp || lvl.exp_en || lvl.exp_fr || lvl.img_exp) {
+            expContainer.style.display = 'block';
+            document.getElementById('exp-text').innerText = lvl.exp || "";
             document.getElementById('exp-en').innerText = lvl.exp_en || "";
             document.getElementById('exp-fr').innerText = lvl.exp_fr || "";
+            
+            // Explanation Image
+            const expImgBox = document.getElementById('exp-img-box');
+            if(lvl.img_exp) {
+                document.getElementById('exp-img').src = lvl.img_exp;
+                expImgBox.style.display = 'block';
+            } else { expImgBox.style.display = 'none'; }
         } else {
-            expBox.style.display = 'none';
+            expContainer.style.display = 'none';
         }
-        
+
         document.getElementById('modal-win').style.display = 'flex';
         showToast('إجابة صحيحة! +20 💎');
     }
@@ -499,10 +455,10 @@
     }
 
     function useHint() {
-        if(coins < 30) { showToast('لا تملك رصيد كافي (30💎)', 'error'); return; }
+        if(coins < 30) { showToast('تحتاج 30 ماسة 💎', 'error'); return; }
         const emptyIdx = currentAns.indexOf(null);
-        if(emptyIdx === -1) { showToast('لا توجد خانات فارغة!', 'error'); return; }
-
+        if(emptyIdx === -1) { showToast('احذف حرفاً أولاً', 'error'); return; }
+        
         const correctChar = targetAns[emptyIdx];
         const btns = Array.from(document.querySelectorAll('.key-btn:not(.used)'));
         const targetBtn = btns.find(b => b.innerText === correctChar);
@@ -522,15 +478,15 @@
         const card = document.getElementById('win-card-content');
         html2canvas(card, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `Medical_Info_${progress+1}.png`;
+            link.download = `Info_${progress+1}.png`;
             link.href = canvas.toDataURL("image/png");
             link.click();
-            showToast('تم حفظ الصورة بنجاح');
+            showToast('تم حفظ الصورة');
         });
     }
 
     function resetProgress() {
-        if(confirm("إعادة اللعب من البداية؟")) {
+        if(confirm("هل أنت متأكد؟")) {
             progress = 0;
             localStorage.setItem('game_progress', 0);
             location.reload();
