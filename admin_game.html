@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدارة اللعبة</title>
+    <title>إدارة اللعبة - أداة علم</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; background: #1e272e; color: #ecf0f1; font-family: 'Cairo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .container { width: 100%; max-width: 700px; flex: 1; }
+        .container { width: 100%; max-width: 700px; flex: 1; display: none; }
+        
+        #login-overlay { position: fixed; inset: 0; background: #1e272e; z-index: 1000; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .login-box { background: #2f3640; padding: 40px; border-radius: 20px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .login-input { padding: 15px; font-size: 1.2rem; border-radius: 10px; border: 2px solid #4b6584; width: 100%; margin: 20px 0; background: #dcdde1; text-align: center; }
         
         h2 { color: #0fb9b1; text-align: center; margin-bottom: 30px; border-bottom: 2px solid #34495e; padding-bottom: 20px; }
-        
         .form-card { background: #2f3640; padding: 25px; border-radius: 15px; margin-bottom: 30px; border: 1px solid #4b6584; }
-        
         input, button { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; font-family: inherit; font-size: 1rem; border: none; }
         input { background: #dcdde1; color: #2d3436; }
-        input:focus { outline: 2px solid #0fb9b1; }
         
-        .btn-add { background: #20bf6b; color: white; cursor: pointer; font-weight: bold; }
+        .btn-add { background: #20bf6b; color: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn-add:hover { background: #26de81; }
-        .btn-add.editing { background: #f7b731; color: #2d3436; } /* لون مختلف عند التعديل */
+        .btn-add.editing { background: #f7b731; color: #2d3436; }
         
         .level-item { background: #353b48; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-right: 4px solid #0fb9b1; }
         .actions { display: flex; gap: 5px; }
@@ -27,49 +28,118 @@
         .btn-del { background: #eb3b5a; }
         .btn-edit { background: #3867d6; }
         
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #0fb9b1; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: none; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
         .footer { margin-top: 30px; color: #7f8fa6; font-size: 0.9rem; text-align: center; width: 100%; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>🛠️ لوحة التحكم - أداة علم</h2>
+<div id="login-overlay">
+    <div class="login-box">
+        <h2 style="border:none">🔐 دخول المشرف</h2>
+        <input type="password" id="admin-pass" class="login-input" placeholder="كلمة المرور">
+        <button class="btn-add" onclick="checkLogin()">دخول</button>
+    </div>
+</div>
+
+<div class="container" id="dashboard">
+    <h2>🛠️ لوحة التحكم - Firebase</h2>
 
     <div class="form-card" id="form-area">
         <h3 style="margin-top:0; color:#4bcffa;" id="form-title">➕ إضافة مرحلة</h3>
         
-        <input type="text" id="inp-q" placeholder="السؤال (عربي)">
+        <input type="text" id="inp-q" placeholder="السؤال (عربي)" dir="auto">
         <input type="text" id="inp-q-en" placeholder="السؤال (إنجليزي - اختياري)" dir="ltr">
         <input type="text" id="inp-q-fr" placeholder="السؤال (فرنسي - اختياري)" dir="ltr">
-        <input type="text" id="inp-a" placeholder="الإجابة (عربي)">
+        <input type="text" id="inp-a" placeholder="الإجابة (عربي أو إنجليزي)" dir="auto">
         
+        <label style="display:block; margin-bottom:5px; color:#bdc3c7;">صور المرحلة (يمكنك اختيار أكثر من صورة):</label>
         <div style="background:#dcdde1; border-radius:8px; padding:5px; display:flex; align-items:center;">
-            <input type="file" id="inp-file" accept="image/*" style="margin:0; background:transparent;">
+            <input type="file" id="inp-file" accept="image/*" multiple style="margin:0; background:transparent;">
             <span id="upload-msg" style="margin-right:10px; color:#2d3436; font-weight:bold;"></span>
         </div>
-        <input type="hidden" id="inp-img-url">
 
-        <button id="btn-submit" class="btn-add" onclick="handleAddLevel()" style="margin-top:15px;">إضافة المرحلة</button>
-        <button id="btn-cancel" onclick="cancelEdit()" style="background:#636e72; color:white; display:none;">إلغاء التعديل</button>
+        <button id="btn-submit" class="btn-add" onclick="saveLevel()" style="margin-top:15px;">حفظ في Firebase ☁️</button>
+        <button id="btn-cancel" onclick="cancelEdit()" style="background:#636e72; color:white; display:none;">إلغاء</button>
     </div>
 
-    <h3 style="color:#d1d8e0">📋 القائمة الحالية:</h3>
+    <h3 style="color:#d1d8e0">📋 القائمة الحالية (<span id="count">0</span>):</h3>
+    <div class="loader" id="loader"></div>
     <div id="list-levels"></div>
-    
-    <div style="text-align:center; margin-top:20px">
-        <button onclick="resetGame()" style="background:#eb3b5a; width:auto; color:white">⚠️ حذف جميع البيانات</button>
-    </div>
 </div>
 
-<div class="footer">صنعت من طرف <b>أداة علم</b> قسم الطب 🧪</div>
+<div class="footer">صنعت من طرف <b>أداة علم</b></div>
 
-<script>
-    const STORAGE_KEY = 'shared_game_v5'; 
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDAEbxYuAHu5stGx5c02VbgsUKBhoidTeA",
+        authDomain: "informationpassmemberessystem.firebaseapp.com",
+        databaseURL: "https://informationpassmemberessystem-default-rtdb.firebaseio.com",
+        projectId: "informationpassmemberessystem",
+        storageBucket: "informationpassmemberessystem.firebasestorage.app",
+        messagingSenderId: "890696552799",
+        appId: "1:890696552799:web:b0889cdfcd6e1e6b7466ea",
+        measurementId: "G-RTB7F6BK3Y"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let levels = [];
+    let editingIndex = -1;
+    // مفتاحك
     const IMGBB_KEY = "ac296feb5a275923598bdbfd4f9aed8c"; 
 
-    const DEFAULT_DATA = { levels: [], progress: 0, coins: 100 };
-    let data = {};
-    let editingIndex = -1; // لتتبع المرحلة التي يتم تعديلها
+    window.checkLogin = checkLogin;
+    window.saveLevel = saveLevel;
+    window.editLevel = editLevel;
+    window.delLevel = delLevel;
+    window.cancelEdit = cancelEdit;
+
+    function checkLogin() {
+        const pass = document.getElementById('admin-pass').value;
+        if(pass === "ADMIN") {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            loadFromFirebase();
+        } else {
+            alert("كلمة المرور خاطئة!");
+        }
+    }
+
+    async function loadFromFirebase() {
+        document.getElementById('loader').style.display = 'block';
+        try {
+            const snapshot = await get(ref(db, 'levels'));
+            if (snapshot.exists()) {
+                levels = snapshot.val();
+                if(!Array.isArray(levels)) levels = [];
+                levels = levels.filter(l => l != null);
+            } else {
+                levels = [];
+            }
+            render();
+        } catch (error) {
+            console.error(error);
+            alert("خطأ في تحميل البيانات");
+        }
+        document.getElementById('loader').style.display = 'none';
+    }
+
+    async function syncToFirebase() {
+        try {
+            await set(ref(db, 'levels'), levels);
+            render();
+        } catch (error) {
+            alert("فشل الحفظ في Firebase!");
+            console.error(error);
+        }
+    }
 
     async function uploadImageToImgBB(file) {
         const formData = new FormData();
@@ -86,24 +156,112 @@
         }
     }
 
-    function load() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        data = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_DATA));
-        render();
+    async function saveLevel() {
+        const q = document.getElementById('inp-q').value;
+        const q_en = document.getElementById('inp-q-en').value;
+        const q_fr = document.getElementById('inp-q-fr').value;
+        const a = document.getElementById('inp-a').value;
+        const fileInput = document.getElementById('inp-file');
+        
+        const btn = document.getElementById('btn-submit');
+        const msg = document.getElementById('upload-msg');
+
+        if(!q || !a) { alert('السؤال العربي والإجابة مطلوبان'); return; }
+
+        // معالجة الصور المتعددة
+        let uploadedImages = [];
+        
+        // إذا كنا نعدل، نحتفظ بالصور القديمة ما لم يتم رفع جديد
+        if(editingIndex > -1 && levels[editingIndex].images) {
+             uploadedImages = levels[editingIndex].images;
+        } else if (editingIndex > -1 && levels[editingIndex].img) {
+             uploadedImages = [levels[editingIndex].img]; // دعم القديم
+        }
+
+        // إذا تم اختيار ملفات جديدة، نقوم برفعها
+        if (fileInput.files.length > 0) {
+            msg.innerText = "جاري رفع الصور... ⏳";
+            btn.disabled = true;
+            
+            // إعادة تعيين المصفوفة للصور الجديدة (أو يمكنك دمجها، هنا سنستبدل القديم بالجديد)
+            uploadedImages = []; 
+
+            for(const file of fileInput.files) {
+                const url = await uploadImageToImgBB(file);
+                if(url) uploadedImages.push(url);
+            }
+            
+            btn.disabled = false;
+            msg.innerText = "";
+            if(uploadedImages.length === 0) return; // فشل الكل
+        }
+
+        const newLevel = { q, q_en, q_fr, a, images: uploadedImages };
+
+        if (editingIndex > -1) {
+            levels[editingIndex] = newLevel;
+            alert("تم التعديل!");
+        } else {
+            levels.push(newLevel);
+            alert("تم الإضافة!");
+        }
+
+        syncToFirebase();
+        cancelEdit();
     }
 
-    function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); render(); }
+    function editLevel(i) {
+        editingIndex = i;
+        const lvl = levels[i];
+        document.getElementById('inp-q').value = lvl.q || '';
+        document.getElementById('inp-q-en').value = lvl.q_en || '';
+        document.getElementById('inp-q-fr').value = lvl.q_fr || '';
+        document.getElementById('inp-a').value = lvl.a || '';
+        
+        document.getElementById('form-title').innerText = "✏️ تعديل المرحلة";
+        const btn = document.getElementById('btn-submit');
+        btn.innerText = "تحديث وحفظ";
+        btn.classList.add('editing');
+        document.getElementById('btn-cancel').style.display = 'block';
+        
+        document.getElementById('form-area').scrollIntoView({behavior: 'smooth'});
+    }
+
+    function cancelEdit() {
+        editingIndex = -1;
+        document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
+        document.getElementById('inp-file').value = '';
+        
+        document.getElementById('form-title').innerText = "➕ إضافة المرحلة";
+        const btn = document.getElementById('btn-submit');
+        btn.innerText = "حفظ في Firebase ☁️";
+        btn.classList.remove('editing');
+        document.getElementById('btn-cancel').style.display = 'none';
+    }
+
+    function delLevel(i) {
+        if(confirm('حذف؟')) {
+            levels.splice(i, 1);
+            syncToFirebase();
+            if(editingIndex === i) cancelEdit();
+        }
+    }
 
     function render() {
+        document.getElementById('count').innerText = levels.length;
         const list = document.getElementById('list-levels');
         list.innerHTML = '';
-        data.levels.forEach((lvl, i) => {
+        
+        levels.forEach((lvl, i) => {
+            const imgCount = lvl.images ? lvl.images.length : (lvl.img ? 1 : 0);
+            
             const div = document.createElement('div');
             div.className = 'level-item';
             div.innerHTML = `
                 <div>
                     <strong>#${i+1}: ${lvl.a}</strong><br>
                     <small>${lvl.q}</small>
+                    ${imgCount > 0 ? `<span style="font-size:0.8rem; color:#f1c40f"> (صور: ${imgCount})</span>` : ''}
                 </div>
                 <div class="actions">
                     <button class="btn-action btn-edit" onclick="editLevel(${i})">✏️</button>
@@ -114,101 +272,6 @@
         });
     }
 
-    // تجهيز الفورم للتعديل
-    function editLevel(index) {
-        editingIndex = index;
-        const lvl = data.levels[index];
-        
-        document.getElementById('inp-q').value = lvl.q || '';
-        document.getElementById('inp-q-en').value = lvl.q_en || '';
-        document.getElementById('inp-q-fr').value = lvl.q_fr || '';
-        document.getElementById('inp-a').value = lvl.a || '';
-        document.getElementById('inp-img-url').value = lvl.img || '';
-        
-        // تغيير شكل الأزرار
-        document.getElementById('form-title').innerText = "✏️ تعديل المرحلة #" + (index+1);
-        const btn = document.getElementById('btn-submit');
-        btn.innerText = "تحديث البيانات";
-        btn.classList.add('editing');
-        document.getElementById('btn-cancel').style.display = 'block';
-        
-        // الصعود للأعلى
-        document.getElementById('form-area').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function cancelEdit() {
-        editingIndex = -1;
-        document.getElementById('inp-q').value = '';
-        document.getElementById('inp-q-en').value = '';
-        document.getElementById('inp-q-fr').value = '';
-        document.getElementById('inp-a').value = '';
-        document.getElementById('inp-file').value = '';
-        document.getElementById('inp-img-url').value = '';
-        
-        document.getElementById('form-title').innerText = "➕ إضافة المرحلة";
-        const btn = document.getElementById('btn-submit');
-        btn.innerText = "إضافة المرحلة";
-        btn.classList.remove('editing');
-        document.getElementById('btn-cancel').style.display = 'none';
-    }
-
-    async function handleAddLevel() {
-        const q = document.getElementById('inp-q').value;
-        const q_en = document.getElementById('inp-q-en').value;
-        const q_fr = document.getElementById('inp-q-fr').value;
-        const a = document.getElementById('inp-a').value;
-        const fileInput = document.getElementById('inp-file');
-        const hiddenImgUrl = document.getElementById('inp-img-url').value; // للصورة القديمة عند التعديل
-        
-        const btn = document.getElementById('btn-submit');
-        const msg = document.getElementById('upload-msg');
-
-        if(!q || !a) { alert('البيانات الأساسية ناقصة'); return; }
-
-        let finalImgUrl = hiddenImgUrl;
-
-        // إذا قام المستخدم برفع صورة جديدة
-        if (fileInput.files.length > 0) {
-            msg.innerText = "جاري الرفع... ⏳";
-            btn.disabled = true;
-            finalImgUrl = await uploadImageToImgBB(fileInput.files[0]);
-            btn.disabled = false;
-            if(!finalImgUrl) { msg.innerText = "❌ خطأ"; return; }
-        }
-
-        const newLevelObj = { q, q_en, q_fr, a, img: finalImgUrl };
-
-        if (editingIndex > -1) {
-            // تحديث المرحلة الموجودة
-            data.levels[editingIndex] = newLevelObj;
-            alert("تم التحديث بنجاح");
-        } else {
-            // إضافة مرحلة جديدة
-            data.levels.push(newLevelObj);
-        }
-
-        save();
-        cancelEdit(); // لتنظيف الحقول والعودة للوضع الطبيعي
-        msg.innerText = "";
-    }
-
-    function delLevel(i) {
-        if(confirm('حذف؟')) {
-            data.levels.splice(i, 1);
-            save();
-            // إذا كنا نعدل نفس العنصر الذي حذفناه، نلغي التعديل
-            if(editingIndex === i) cancelEdit();
-        }
-    }
-
-    function resetGame() {
-        if(confirm('هل أنت متأكد من حذف كل شيء؟')) {
-            localStorage.removeItem(STORAGE_KEY);
-            location.reload();
-        }
-    }
-
-    load();
 </script>
 </body>
 </html>
