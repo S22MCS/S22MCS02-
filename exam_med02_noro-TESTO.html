@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>تحميل...</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="css/exam_modern.css">
+  <link rel="stylesheet" href="css/overlays.css">
+</head>
+
+<body>
+
+  <!-- Header & Timer -->
+  <header>
+    <div class="timer-container">
+      <i class="fas fa-stopwatch"></i>
+      <span id="timer">00:00</span>
+    </div>
+    <h1 id="examTitle">تحميل المعلومات...</h1>
+  </header>
+
+  <div class="container">
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="fade-in">
+      <div class="quiz-settings">
+        <div class="setting-group" id="time-mode-selector">
+          <label>نظام الوقت:</label>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-secondary option-btn active" data-mode="limited">
+              <i class="fas fa-hourglass-half"></i> وقت محدد
+            </button>
+            <button class="btn btn-secondary option-btn" data-mode="unlimited">
+              <i class="fas fa-infinity"></i> مفتوح
+            </button>
+          </div>
+        </div>
+
+        <div class="setting-group" id="duration-input-container">
+          <label>المدة (بالدقائق):</label>
+          <input type="number" id="custom-duration" value="10" min="1">
+        </div>
+
+        <div class="setting-group">
+          <label>عدد الأسئلة:</label>
+          <select id="question-count">
+            <option value="10">10 أسئلة</option>
+            <option value="20">20 سؤال</option>
+            <option value="30">30 سؤال</option>
+            <option value="all" selected>جميع الأسئلة</option>
+          </select>
+        </div>
+
+        <div class="setting-group">
+          <label>
+            <input type="checkbox" id="shuffle-questions" checked>
+            خلق الأسئلة عشوائياً
+          </label>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <button id="start-btn" class="btn btn-primary">
+          <i class="fas fa-play"></i> ابدأ الاختبار
+        </button>
+        <button id="quick-test-btn" class="btn btn-secondary">
+          <i class="fas fa-bolt"></i> اختبار سريع (5د)
+        </button>
+      </div>
+    </div>
+
+    <!-- Question Screen -->
+    <div id="question-container" style="display: none;" class="fade-in">
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="progress-text" id="progress-text"></div>
+
+      <div id="question-display" style="margin-top: 2rem;">
+        <!-- Question Content Injected Here -->
+      </div>
+
+      <div style="margin-top: 2rem; text-align: center;">
+        <button id="submit-btn" class="btn btn-primary">
+          <i class="fas fa-check"></i> تأكيد الإجابة
+        </button>
+        <button id="next-btn" class="btn btn-primary" style="display: none;">
+          التالي <i class="fas fa-arrow-left"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-section" style="display: none;" class="fade-in">
+      <div class="result-header">
+        <h2>نتيجة الاختبار</h2>
+        <div id="score-display" class="score-display">0%</div>
+
+        <div class="chart-container" style="max-width: 300px; margin: 0 auto;">
+          <canvas id="results-chart"></canvas>
+        </div>
+      </div>
+
+      <div id="results-detail" style="margin-top: 2rem;">
+        <!-- Detailed Results -->
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem;">
+        <button id="restart-btn" class="btn btn-secondary">
+          <i class="fas fa-redo"></i> اعادة الاختبار
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scroll to Top -->
+  <button id="back-to-top" class="btn btn-primary"
+    style="position:fixed; bottom:20px; right:20px; border-radius:50%; width:50px; height:50px; padding:0; box-shadow:0 5px 15px rgba(0,0,0,0.2); display:none; flex">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- EXAM CONFIGURATION -->
+  <script>
+    const examConfig = {
+      title: "اِخْتِبارُ الدَّوْرَةِ عادية 2025- – وَحْدَةُ الْجِهازِ الْعَصَبِيِّ وَالْأَعْضاءِ الْحِسِّيَّةِ سكيكدة",
+      noteUrl: "https://s22mcs.github.io/S22MCS02-/MEDECINE_EXAM_NOTE.html"
+    };
+  </script>
+
+  <!-- Questions Data -->
+  <script src="js/questions/exam_med02_noro_questions.js"></script>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Engine & Features -->
+  <script src="js/overlays.js"></script>
+  <script src="js/exam_engine.js"></script>
+
+</body>
+
+</html>
