@@ -1,0 +1,264 @@
+/* settings: "Modern Premium Chat Design" */
+
+:root {
+    /* --- Palette: Indigo Luxe --- */
+    --primary-hue: 245;
+    /* Deep Indigo */
+    --primary-color: hsl(var(--primary-hue), 75%, 55%);
+    --primary-dark: hsl(var(--primary-hue), 75%, 45%);
+    --primary-light: hsl(var(--primary-hue), 80%, 96%);
+
+    --bg-base: #f8fafc;
+    --bg-surface: #ffffff;
+
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* --- Spacing --- */
+    --header-height: 70px;
+    --input-area-height: 80px;
+
+    /* --- Animations --- */
+    --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global Reset & Base */
+body {
+    background-color: var(--bg-base);
+    font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+    color: var(--text-main);
+    overflow: hidden;
+    /* App-like behavior */
+    user-select: none;
+    /* App-like feel */
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* --- Utilities --- */
+.glass {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-morphism {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+/* Scrollbar Styling (Hidden but functional) */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* --- Layout: App Shell --- */
+#app-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background: radial-gradient(circle at top right, #eef2ff, transparent 40%),
+        radial-gradient(circle at bottom left, #fdf4ff, transparent 40%);
+}
+
+/* --- Group List (Sidebar) --- */
+#sidebar-view {
+    width: 380px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+    /* RTL means border-left is logical end */
+    flex-shrink: 0;
+    transition: transform 0.4s var(--ease-smooth);
+    z-index: 20;
+}
+
+/* --- Chat View (Main) --- */
+#chat-view {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-surface);
+    position: relative;
+    transition: transform 0.4s var(--ease-smooth), opacity 0.3s ease;
+    z-index: 10;
+}
+
+/* Mobile: Stacked Views with Slide Transition */
+@media (max-width: 768px) {
+    #app-container {
+        flex-direction: column;
+    }
+
+    #sidebar-view {
+        width: 100%;
+        position: absolute;
+        inset: 0;
+        background: var(--bg-base);
+    }
+
+    #chat-view {
+        position: absolute;
+        inset: 0;
+        transform: translateX(110%);
+        /* Start off-screen (RTL: negative logic or just push right) */
+        background: var(--bg-surface);
+        z-index: 30;
+    }
+
+    /* Active State for Mobile Navigation */
+    body.chat-active #chat-view {
+        transform: translateX(0);
+    }
+
+    /* RTL: If direction is RTL, translateX(100%) moves it to LEFT. 
+       We want it to come from one side. Let's assume standard push. 
+       If RTL, 'translate-x-full' usually moves to left. 
+       We will handle this with specific Logic classes.
+    */
+}
+
+/* --- Components: List Items --- */
+.group-item {
+    transition: all 0.2s ease;
+    border-radius: 16px;
+    margin: 4px 8px;
+    padding: 12px;
+}
+
+.group-item:active {
+    transform: scale(0.98);
+}
+
+.group-item.active {
+    background: white;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(79, 70, 229, 0.1);
+}
+
+.group-avatar {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+}
+
+/* --- Components: Messages --- */
+.message-bubble {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    animation: popIn 0.3s var(--ease-elastic) forwards;
+    transform-origin: bottom center;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.8) translateY(10px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.msg-mine {
+    background: linear-gradient(135deg, #4f46e5, #4338ca);
+    color: white;
+    border-radius: 20px 20px 4px 20px;
+}
+
+.msg-theirs {
+    background: white;
+    color: var(--text-main);
+    border: 1px solid #e2e8f0;
+    border-radius: 20px 20px 20px 4px;
+    /* RTL rounded corners might need Flipping */
+}
+
+/* --- Input Area --- */
+.input-area {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.02);
+    border-top: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.modern-input {
+    background: #f1f5f9;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.modern-input:focus {
+    background: white;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* --- Header --- */
+.chat-header {
+    height: var(--header-height);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
+}
+
+/* --- Animations --- */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Dark Mode Support (Class-based) */
+.dark-mode {
+    --bg-base: #0f172a;
+    --bg-surface: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+}
+
+.dark-mode .group-item.active {
+    background: #334155;
+    border-color: #475569;
+}
+
+.dark-mode .msg-theirs {
+    background: #334155;
+    border-color: #475569;
+    color: white;
+}
